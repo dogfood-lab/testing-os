@@ -266,7 +266,12 @@ function ciTests(mapped, listed) {
   // A run of '' is the whole repository, a runner started at its root.
   const covered = (path) => exact.has(path) || exact.has('') || dirs.some((dir) => path.startsWith(dir));
   const notRun = files.filter((file) => isNamedTest(file) && !covered(file.path)).map((file) => file.path).sort();
-  return { runners, notRun };
+  // A test file no workflow runs because a runner's own configuration
+  // excludes it, with that configuration: left out on purpose.
+  const leftOut = new Map();
+  for (const door of workflows) for (const entry of door.testsLeftOut ?? []) if (!leftOut.has(entry.path)) leftOut.set(entry.path, entry.config);
+  const unrun = new Set(notRun);
+  return { runners, notRun, leftOut: [...leftOut].filter(([path]) => unrun.has(path)).map(([path, config]) => ({ path, config })).sort((a, b) => cmp(a.path, b.path)) };
 }
 
 // A boundary file may leave a role out; the role is then derived from the
@@ -338,6 +343,7 @@ export function buildArtifact(mapped, commit) {
     symlinks: mapped.symlinks.filter((link) => !inAtlas(link.path)).map((link) => ({ path: link.path, target: link.target })).sort(byPath),
     testFiles: tested.testFiles,
     ...(notRun.length > 0 ? { testsNotRun: notRun } : {}),
+    ...(ci.leftOut.some((entry) => notRun.includes(entry.path)) ? { testsLeftOut: ci.leftOut.filter((entry) => notRun.includes(entry.path)) } : {}),
     unassigned,
     ...(mapped.unseen?.length > 0 ? { unseen: mapped.unseen.map(carryUnseen) } : {}),
     ...(mapped.workspaces?.length > 0 ? { workspaces: mapped.workspaces.filter((dir) => !inAtlas(dir)) } : {}),

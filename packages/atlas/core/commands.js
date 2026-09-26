@@ -466,10 +466,11 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     const key = [entry.runner, entry.dir, entry.config ?? '', entry.through.join('\u0001')].join('\0');
     const existing = tests.get(key);
     if (!existing) {
-      tests.set(key, { ...entry, paths: new Set(entry.paths) });
+      tests.set(key, { ...entry, paths: new Set(entry.paths), leftOut: new Map(entry.leftOut) });
       return;
     }
     for (const path of entry.paths) existing.paths.add(path);
+    for (const [path, config] of entry.leftOut) if (!existing.leftOut.has(path)) existing.leftOut.set(path, config);
     existing.coverage ||= entry.coverage;
     existing.junit ||= entry.junit;
     existing.known &&= entry.known;
@@ -483,7 +484,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
    * reader cannot list, so its count is not known.
    */
   function invoke(runner, dir, frame, run, { known = true } = {}) {
-    const entry = { runner, dir, config: null, through: frame.through ?? [], coverage: frame.coverage === true, junit: false, known, paths: new Set(), setup: new Set() };
+    const entry = { runner, dir, config: null, through: frame.through ?? [], coverage: frame.coverage === true, junit: false, known, paths: new Set(), setup: new Set(), leftOut: new Map() };
     const outer = open;
     open = entry;
     let found;
@@ -504,6 +505,17 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     addTest(entry);
   }
 
+  // The test files a vitest config's own exclude leaves out of a run that
+  // would otherwise collect them, each with the config.
+  function vitestLeftOut(found, kept, filters) {
+    if (!(found.ownExclude?.length > 0) || found.config == null) return [];
+    const run = new Set(kept);
+    const defaults = found.exclude.filter((pattern) => !found.ownExclude.includes(pattern));
+    return repo.filesMatching(found.base, found.include, defaults)
+      .filter((path) => !run.has(path) && isTestFile(path) && (filters.length === 0 || filters.some((filter) => path.includes(filter))))
+      .map((path) => ({ path, config: found.config }));
+  }
+
   // A script an interpreter runs; a test file it runs directly is a test run
   // by the interpreter (node tests/smoke.test.mjs).
   function runsScript(interpreter, token, dir, frame, args) {
@@ -513,13 +525,16 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
   }
 
   // What a runner's handler learns of the run it is making: a file it loads
-  // first to set the run up (mocha --require) is run, and is not a test.
-  function note({ config = null, coverage = false, junit = false, setup = null }) {
+  // first to set the run up (mocha --require) is run, and is not a test; a
+  // test file its configuration excludes on purpose is left out, by that
+  // configuration.
+  function note({ config = null, coverage = false, junit = false, setup = null, leftOut = [] }) {
     if (!open) return;
     if (config != null && open.config == null) open.config = config;
     if (coverage) open.coverage = true;
     if (junit) open.junit = true;
     if (setup != null) open.setup.add(setup);
+    for (const entry of leftOut) if (!open.leftOut.has(entry.path)) open.leftOut.set(entry.path, entry.config);
   }
 
   function read(text, dir, frame) {
@@ -1483,12 +1498,14 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
           if (own.base == null || own.projects) continue;
           const files = repo.filesMatching(own.base, own.include, own.exclude)
             .filter((path) => filters.length === 0 || filters.some((filter) => path.includes(filter)));
+          note({ leftOut: vitestLeftOut(own, files, filters) });
           matched(repo.compact(files), frame, own.config ? `vitest ${own.config}` : `vitest ${found.config}`);
         }
         return;
       }
       const files = repo.filesMatching(found.base, found.include, found.exclude)
         .filter((path) => filters.length === 0 || filters.some((filter) => path.includes(filter)));
+      note({ leftOut: vitestLeftOut(found, files, filters) });
       matched(repo.compact(files), frame, found.config ? `vitest ${found.config}` : 'vitest');
     },
     jest(argv, dir, frame) {
@@ -1778,6 +1795,7 @@ function testRun(entry) {
     ...(entry.junit ? { junit: true } : {}),
     ...(entry.known ? { files: entry.paths.size } : {}),
     paths: [...entry.paths].sort(),
+    ...(entry.leftOut.size > 0 ? { leftOut: [...entry.leftOut].map(([path, config]) => ({ path, config })).sort((a, b) => (a.path < b.path ? -1 : 1)) } : {}),
   };
 }
 

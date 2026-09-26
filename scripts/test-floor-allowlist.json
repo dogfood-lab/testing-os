@@ -322,6 +322,14 @@
       "reason": "Atlas fixture, not a test. It sits inside the runners-vitest-dir fixture repository that packages/atlas/core/test-runners.test.js and packages/atlas/adapter/test-reach.test.js map, where CI runs vitest run --dir src and so never runs it: the map lists it among the tests no workflow runs. It runs only inside that fixture, never here."
     },
     {
+      "path": "fixtures/atlas/runners-vitest-exclude/test/sum.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-vitest-exclude fixture repository that packages/atlas/adapter/test-runs.test.js maps, where CI runs it through npm test to Vitest, beside a smoke test the Vitest config leaves out. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-vitest-exclude/test/smoke/corpus.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-vitest-exclude fixture repository that packages/atlas/adapter/test-runs.test.js maps, where the fixture's vitest.config.ts excludes it, so the map says no workflow runs it and names that config as what leaves it out. It contains no test of this repository and runs nowhere, here or in that fixture's CI."
+    },
+    {
       "path": "fixtures/atlas/runners-coverage/test/a.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the runners-coverage fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through node --test under c8 and under NODE_V8_COVERAGE, so the map attributes that run to its runner. It contains no test of this repository and runs only inside that fixture, never here."
     },

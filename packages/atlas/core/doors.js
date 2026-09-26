@@ -520,8 +520,8 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
         for (const path of named.mentions) mentions.set(`${path}\0${job}`, { path, job });
       }
       for (const run of stepTests) {
-        const { paths, dir, ...fields } = run;
-        tests.push({ job, step: name, ...fields, ...(dir !== '' ? { dir } : {}), paths });
+        const { paths, dir, leftOut, ...fields } = run;
+        tests.push({ job, step: name, ...fields, ...(dir !== '' ? { dir } : {}), paths, ...(leftOut ? { leftOut } : {}) });
       }
       if (stepTests.length === 0 && testShaped(name, stepEnds)) {
         const end = stepEnds.find((entry) => entry.through.some((hop) => TEST_WORD.test(hop))) ?? stepEnds.find((entry) => entry.through.length > 0);
@@ -587,11 +587,12 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
     ...(handed.size > 0 ? { handedWrites: [...handed].sort() } : {}),
     ...(workedIn.size > 0 ? { workedIn: [...workedIn].sort() } : {}),
     ...(testScripts.length > 0 ? { testScripts } : {}),
-    ...(tests.length > 0 ? { tests: tests.map(({ paths, ...fields }) => fields) } : {}),
+    ...(tests.length > 0 ? { tests: tests.map(({ paths, leftOut, ...fields }) => fields) } : {}),
     // Read by adapter/artifact.js, which carries neither: the test files each
     // named runner runs, and every path a step executes, before the list
     // kept on the door is cut to RUNS_RECORDED.
     ...(tests.some((run) => run.runner != null) ? { testPaths: tests.filter((run) => run.runner != null).map((run) => ({ runner: run.runner, paths: run.paths })) } : {}),
+    ...(tests.some((run) => run.leftOut) ? { testsLeftOut: tests.flatMap((run) => run.leftOut ?? []) } : {}),
     ranPaths: [...new Set([...runs.values()].filter((run) => run.runKind !== 'checks' && !run.built).map((run) => run.path))].sort(),
     // Read by index.js markUnshipped, then dropped.
     publishedCrates: [sends, ...[...gates.values()].map((entry) => entry.sends)].flatMap((scope) => scope.crates),
