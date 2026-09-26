@@ -145,7 +145,7 @@ export function testGaps(structure, { statistics = null, repository = null, scop
   const kept = (entry) => (entry.path != null ? inScope(entry.path) : partInScope(entry.part));
   const ranked = rank(gaps.filter(kept), { structure, statistics, fileOf, partOf });
   for (const gap of ranked) gap.wouldReach = wouldReach(gap, { structure, attributed, repository });
-  const hygiene = [...notRunRule(facts.notRun, { attributed, notAttributed, partOf, kinds, repository, fileOf, leftOut: facts.leftOut, missed: workflows.flatMap((door) => door.shellMissed ?? []) }), ...coverageRule({ attributed, notAttributed })]
+  const hygiene = [...notRunRule(facts.notRun, { attributed, notAttributed, fileOf, leftOut: facts.leftOut, missed: workflows.flatMap((door) => door.shellMissed ?? []) }), ...coverageRule({ attributed, notAttributed })]
     .map((entry) => (entry.rule === 'G2' && scope != null ? { ...entry, facts: { ...entry.facts, files: entry.facts.files.filter(inScope), count: entry.facts.files.filter(inScope).length } } : entry))
     .filter((entry) => (entry.rule === 'G2' ? entry.facts.count > 0 : scope == null || (structure.boundaries ?? []).some((boundary) => scope.parts.has(boundary.name) && (boundary.testRunners ?? []).some((runner) => entry.facts.runners.includes(runner)))));
 
@@ -172,9 +172,10 @@ function kindForFile(path, kind) {
 // them: the framework a file imports, else the runner CI runs for its
 // family. Silent while a test step's runner is not attributed, since that
 // step may be the one that runs them; for a file a runner CI runs may run
-// though Atlas does not list its files; and for one a runner's own
-// configuration leaves out on purpose, which the facts name instead.
-function notRunRule(files, { attributed, notAttributed, partOf, kinds, repository, fileOf, leftOut, missed }) {
+// though Atlas does not list its files; for one a runner's own
+// configuration leaves out on purpose, which the facts name instead; and
+// for one no framework and no runner in CI names.
+function notRunRule(files, { attributed, notAttributed, fileOf, leftOut, missed }) {
   if (files.length === 0 || notAttributed.length > 0) return [];
   const excluded = new Set(leftOut.map((entry) => entry.path));
   const groups = new Map();
@@ -185,13 +186,16 @@ function notRunRule(files, { attributed, notAttributed, partOf, kinds, repositor
     const runs = (run) => (framework != null ? run.runner === framework : RUNNER_FAMILY[run.runner] === family);
     if (attributed.some((run) => run.files == null && runs(run))) continue;
     const listed = attributed.find((run) => run.files != null && runs(run))?.runner ?? null;
+    // A file that imports no framework Atlas knows, of a family CI runs no
+    // runner for, may run itself (python test_gate.py): no runner is guessed.
+    if (listed == null && framework == null) continue;
     // sh reads ** as *, so a glob a shell expands can leave files out.
     const star = listed != null && missed.some((entry) => entry.twoStars && path.startsWith(entry.base));
     const key = `${listed ?? framework ?? `\0${family}`}\0${star}`;
-    if (!groups.has(key)) groups.set(key, { listed, framework, family, star, files: [] });
+    if (!groups.has(key)) groups.set(key, { listed, framework, star, files: [] });
     groups.get(key).files.push(path);
   }
-  return [...groups.values()].map(({ listed, framework, family, star, files: group }) => {
+  return [...groups.values()].map(({ listed, framework, star, files: group }) => {
     const facts = { files: group.sort(), count: group.length };
     if (listed != null && star) {
       return {
@@ -205,20 +209,11 @@ function notRunRule(files, { attributed, notAttributed, partOf, kinds, repositor
       const way = DISCOVERY[listed] ?? { text: `let ${listed}'s own discovery collect them, or name their directory in the run`, source: `${listed}'s test discovery` };
       return { rule: 'G2', facts, suggest: { runner: listed, text: way.text }, source: { from: 'external', text: way.source } };
     }
-    if (framework != null) {
-      return {
-        rule: 'G2',
-        facts,
-        suggest: { runner: framework, text: `run them in CI with ${framework}, the runner they are written for` },
-        source: { from: 'external', text: `the test framework the files import (${FRAMEWORK_MODULES[framework] ?? framework})` },
-      };
-    }
-    const fallback = runnerFor(family === 'python' ? 'python' : kinds.get(partOf.get(group[0]))?.kind ?? 'node', { repository });
     return {
       rule: 'G2',
       facts,
-      suggest: { ...(fallback ? { runner: fallback.runner } : {}), text: 'run them in CI with the runner they are written for' },
-      source: fallback?.source ?? null,
+      suggest: { runner: framework, text: `run them in CI with ${framework}, the runner they are written for` },
+      source: { from: 'external', text: `the test framework the files import (${FRAMEWORK_MODULES[framework] ?? framework})` },
     };
   });
 }

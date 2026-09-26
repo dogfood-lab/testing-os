@@ -19,3 +19,7 @@ And two it must stay silent on:
 - CI runs AVA, whose test files Atlas does not list, so ava/one.test.js,
   which imports ava, may be among them and gets no G2 (world-forge's
   Playwright specs).
+- scripts/test_gate.py imports no test framework and runs itself under
+  `python`, recording failures rather than raising them, so pytest would
+  pass it whatever it found; with no runner of its family in CI, Atlas
+  names none rather than guess (role-os).

@@ -164,6 +164,7 @@ describe('the shapes the fleet run found the rules wrong on', () => {
 
 const frameworks = gapsOf('gaps-frameworks', [
   { name: 'lib', globs: ['lib/**'], role: 'code' },
+  { name: 'scripts', globs: ['scripts/**'], role: 'code' },
   { name: 'test', globs: ['test/**', 'other/**', 'e2e/**', 'ava/**'], role: 'test' },
   { name: 'config', globs: ['package.json', 'README.md', 'vitest.config.ts', '.github/**'], role: 'config' },
 ]);
@@ -197,5 +198,10 @@ describe('G2 and the runner each test file is written for', () => {
   it('stays silent for files a runner whose files Atlas does not list may run', () => {
     assert.equal(ofRule(frameworks, 'G2').some((entry) => entry.facts.files.includes('ava/one.test.js')), false);
     assert.equal(ofRule(frameworks, 'G2').length, 3);
+  });
+
+  it('names no runner for a test file that imports no framework when CI runs none of its family (role-os)', () => {
+    assert.ok(frameworks.facts.notRun.includes('scripts/test_gate.py'));
+    assert.equal(ofRule(frameworks, 'G2').some((entry) => entry.facts.files.includes('scripts/test_gate.py')), false);
   });
 });
