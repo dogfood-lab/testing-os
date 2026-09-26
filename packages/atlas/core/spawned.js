@@ -49,6 +49,7 @@ export function spawnedCommands(root, pathText = () => null) {
   const programs = new Set();
   let built = 0;
   const helpers = commandHelpers(root);
+  helpers.aliases = promisified(root);
   const imports = relativeImports(root);
   const pending = [];
   const stack = [root];
@@ -121,7 +122,16 @@ function commandOf(node, pathText, helpers) {
     if (command == null) return { built: true };
     return command.trim() === '' ? null : { command };
   }
-  const name = calledName(callee);
+  // A helper that hands spawn its program and its arguments runs what each
+  // call hands it: runProcess('npx', ['tsx', cli]).
+  if (callee?.type === 'identifier' && helpers.programs.has(callee.text)) {
+    const [program, list] = helpers.programs.get(callee.text);
+    if (args.length <= program) return null;
+    return commandFrom(args[program], args[list], true, pathText);
+  }
+  // execFile made a promise (const execFileAsync = promisify(execFile)) is
+  // execFile.
+  const name = callee?.type === 'identifier' && helpers.aliases?.has(callee.text) ? helpers.aliases.get(callee.text) : calledName(callee);
   if (name == null) return null;
   if (args.length === 0) return null;
   if (helpers.params.has(key(args[0]))) return null;
@@ -165,14 +175,21 @@ function commandFrom(programNode, listNode, separate, pathText) {
   const outside = OUTSIDE_PROGRAMS.has(program.trim());
   if (list.type !== 'array') return outside ? { program: program.trim() } : { built: true };
   // An argument read at run time after the file the program runs (a spread
-  // of the caller's flags) leaves the file named; one before it does not.
+  // of the caller's flags) leaves the file named; one before it does not,
+  // unless it is the value of a flag Node reads one for (--import <loader>).
   const unread = (word) => word == null || word === UNREAD_WORD;
   if (outside && words.some(unread)) return { program: program.trim() };
-  const script = words.findIndex((word) => word !== UNREAD_WORD && !(word ?? '').startsWith('-'));
+  const values = new Set();
+  if (program.trim() === 'node') words.forEach((word, index) => { if (NODE_VALUE_FLAGS.has(word)) values.add(index + 1); });
+  const script = words.findIndex((word, index) => !values.has(index) && word !== UNREAD_WORD && !(word ?? '').startsWith('-'));
   const lead = script === -1 ? words : words.slice(0, script + 1);
-  if (lead.some(unread)) return { built: true };
+  if (lead.some((word, index) => unread(word) && !values.has(index))) return { built: true };
   return { command: [quoted(program), ...words.map((word) => (unread(word) ? UNREAD : quoted(word)))].join(' ') };
 }
+
+// The flags Node reads a value for, so a value computed at run time after
+// one is the flag's, not the script Node runs.
+const NODE_VALUE_FLAGS = new Set(['--import', '--require', '-r', '--loader', '--experimental-loader', '--env-file', '--conditions', '-C', '--input-type']);
 
 // Marks an argument read at run time in an argument list, apart from null,
 // one that is not an argument at all.
@@ -203,18 +220,66 @@ function commandHelpers(root) {
   const byName = new Map();
   const exported = new Map();
   const params = new Set();
+  const programs = new Map();
   for (const statement of root.namedChildren) {
     const isExport = statement.type === 'export_statement';
     const declaration = isExport ? statement.childForFieldName('declaration') : statement;
     for (const [name, fn] of declaredFunctions(declaration)) {
-      const hit = runsParameter(fn, parameterNames(fn));
-      if (hit == null) continue;
-      byName.set(name, hit.index);
-      params.add(key(hit.node));
-      if (isExport) exported.set(name, hit.index);
+      const names = parameterNames(fn);
+      const hit = runsParameter(fn, names);
+      if (hit != null) {
+        byName.set(name, hit.index);
+        params.add(key(hit.node));
+        if (isExport) exported.set(name, hit.index);
+        continue;
+      }
+      const handed = handsProgram(fn, names);
+      if (handed == null) continue;
+      programs.set(name, [handed.program, handed.list]);
+      params.add(key(handed.node));
     }
   }
-  return { byName, exported, params };
+  return { byName, exported, params, programs };
+}
+
+// A helper whose parameters reach spawn or execFile as its program and its
+// argument list, unchanged: function runProcess(cmd, args) { spawn(cmd, args) },
+// the call often inside the callback of the promise the helper returns.
+function handsProgram(fn, names) {
+  if (!names.some(Boolean)) return null;
+  const stack = [fn.childForFieldName('body')].filter(Boolean);
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (node.type === 'call_expression' && ARGUMENT_LISTS.has(calledName(node.childForFieldName('function')) ?? '')) {
+      const [first, second] = node.childForFieldName('arguments')?.namedChildren ?? [];
+      if (first?.type === 'identifier' && second?.type === 'identifier' && names.includes(first.text) && names.includes(second.text)) {
+        return { program: names.indexOf(first.text), list: names.indexOf(second.text), node: first };
+      }
+    }
+    for (const child of node.namedChildren) stack.push(child);
+  }
+  return null;
+}
+
+// The names a file binds to a command call made a promise:
+// const execFileAsync = promisify(execFile), or util.promisify(cp.execFile).
+function promisified(root) {
+  const out = new Map();
+  const stack = [root];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (node.type === 'variable_declarator') {
+      const value = node.childForFieldName('value');
+      const name = node.childForFieldName('name');
+      const fn = value?.type === 'call_expression' ? value.childForFieldName('function') : null;
+      const called = fn?.type === 'identifier' ? fn.text : fn?.type === 'member_expression' ? fn.childForFieldName('property')?.text : null;
+      const wrapped = called === 'promisify' ? value.childForFieldName('arguments')?.namedChildren[0] : null;
+      const target = wrapped?.type === 'identifier' ? wrapped.text : wrapped?.type === 'member_expression' ? wrapped.childForFieldName('property')?.text : null;
+      if (name?.type === 'identifier' && target != null && COMMAND_CALLS.has(target)) out.set(name.text, target);
+    }
+    for (const child of node.namedChildren) stack.push(child);
+  }
+  return out;
 }
 
 function declaredFunctions(declaration) {

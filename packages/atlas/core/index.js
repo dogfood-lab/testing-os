@@ -876,6 +876,19 @@ function parseFile(language, path, original, places) {
 // GDScript) holds, read from its tree. `native` is what the file carries
 // past its imports: testsInside, for a file holding its own unit tests, and
 // what resolution reads once every file is known and then drops.
+// The binaries a Rust integration test runs by the path Cargo hands it,
+// env!("CARGO_BIN_EXE_<name>"): each is the command its crate installs as
+// <name>.
+function cargoBinaries(root) {
+  const commands = new Set();
+  walkNamed(root, (node) => {
+    if (node.type !== 'macro_invocation' || node.childForFieldName('macro')?.text !== 'env') return;
+    const named = /"CARGO_BIN_EXE_([A-Za-z0-9_-]+)"/.exec(node.text);
+    if (named) commands.add(named[1]);
+  });
+  return { commands: [...commands].sort(), built: 0 };
+}
+
 function nativeReadings(language, root) {
   const rust = language === 'rust' ? { ...rustImports(root), paths: rustPaths(root), calls: rustCalls(root) } : null;
   const gd = language === 'gdscript' ? gdscriptReadings(root) : null;
@@ -885,7 +898,7 @@ function nativeReadings(language, root) {
     ...(rust ? { native: { rustModule: rust.module, ...(rust.includes.length > 0 ? { rustIncludes: rust.includes } : {}), ...(rust.paths.length > 0 ? { rustPaths: rust.paths } : {}), ...(rust.calls.calls.length + rust.calls.fields.length > 0 ? { rustCalls: rust.calls } : {}), ...(rust.tests ? { testsInside: true } : {}) } } : {}),
     landings: noLandings(),
     sequence: rust ? rustSequence(root, rust.imports) : gd ? gd.sequence : { functions: [], topLevel: [], reexports: [] },
-    spawned: { commands: [], built: 0 },
+    spawned: rust ? cargoBinaries(root) : { commands: [], built: 0 },
     githubChanges: 0,
     noStatements: statementless(root),
     startsOnLoad: false,
