@@ -400,6 +400,10 @@
     {
       "path": "fixtures/atlas/runners-mocha-built/test/unit/range.test.ts",
       "reason": "Atlas fixture, not a test. It sits inside the runners-mocha-built fixture repository that packages/atlas/core/test-runners.test.js maps, where the test script compiles it with tsconfig.test.json and hands Mocha a glob over the built tree, so the map counts it as a spec Mocha runs. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/spawn-ts-source/src/tests/cli.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the spawn-ts-source fixture repository that packages/atlas/core/spawn-sources.test.js maps, where it spawns ../cli.js beside it so the map reads that as running src/cli.ts, its TypeScript source. It contains no test of this repository and runs only inside that fixture, never here."
     }
   ]
 }

@@ -735,8 +735,10 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
   function file(token, dir, frame, { directories = false, script = false, args = [] } = {}) {
     const named = pathFrom(dir, token);
     if (named == null) return null;
-    // A build output is not tracked; what runs when it runs is its source.
-    const path = repo.tracked.has(named) ? named : repo.builtFrom(named) ?? named;
+    // A build output is not tracked; what runs when it runs is its source,
+    // and a .js path whose TypeScript file is tracked beside it is that
+    // file, as TypeScript's own .js import convention reads it.
+    const path = repo.tracked.has(named) ? named : repo.builtFrom(named) ?? typeScriptSource(named, repo.tracked) ?? named;
     if (repo.tracked.has(path)) {
       const passes = script ? flagsOf(args) : [];
       record(stamp({ path, ...(passes.length > 0 ? { passes } : {}) }, frame));
@@ -2058,6 +2060,14 @@ function shellWord(word) {
 
 // A run carries the chain that reached it, and whether the tool that reached
 // it runs the file or only reads it to check it.
+const TYPESCRIPT_SOURCES = { '.js': ['.ts', '.tsx'], '.mjs': ['.mts'], '.cjs': ['.cts'], '.jsx': ['.tsx'] };
+
+function typeScriptSource(path, tracked) {
+  const ext = /\.(?:m|c)?jsx?$/.exec(path)?.[0];
+  if (ext == null) return null;
+  return TYPESCRIPT_SOURCES[ext].map((source) => `${path.slice(0, -ext.length)}${source}`).find((source) => tracked.has(source)) ?? null;
+}
+
 function stamp(entry, frame, via = frame.via) {
   const out = { ...entry, runKind: frame.runKind ?? 'executes' };
   if (via) out.via = via;
