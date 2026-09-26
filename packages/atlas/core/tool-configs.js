@@ -204,6 +204,22 @@ function objectAt(src, at) {
   return src[i] === '{' ? i : -1;
 }
 
+// The text of the value that starts at `at`: a string, or an array or object
+// with everything nested in it.
+function valueText(src, at) {
+  let i = at;
+  while (i < src.length && /\s/.test(src[i])) i += 1;
+  if (src[i] === '[' || src[i] === '{') return src.slice(i, closing(src, i) + 1);
+  if (src[i] === '"' || src[i] === "'" || src[i] === '`') return src.slice(i, stringEnd(src, i, src[i]) + 1);
+  return '';
+}
+
+// Whether a value's text holds `word` as a string literal, at any depth: a
+// reporter written ['junit', { outputFile }] is still the junit reporter.
+function holds(text, word) {
+  return [...text.matchAll(/(["'`])((?:\\.|(?!\1).)*)\1/g)].some((match) => match[2] === word);
+}
+
 // Every value of `key` anywhere in the source, for configurations whose keys
 // do not nest under one another (eslint's ignores, jest's testMatch).
 function everyStrings(src, key) {
@@ -387,12 +403,23 @@ export function tscTargets(repo, cwd, project, { build }) {
 
 /* ---------- vitest ---------- */
 
-export function vitestTargets(repo, cwd, { config, root }) {
+/**
+ * What vitest runs from `cwd`: its config, the directory it looks for tests
+ * under, the patterns it matches there, and whether the config itself turns
+ * coverage on or adds a junit reporter. --dir, like the config's test.dir,
+ * moves where vitest looks, relative to its root; given on the command line
+ * it wins over the config's.
+ */
+export function vitestTargets(repo, cwd, { config, root, dir: lookIn = null }) {
   const path = config != null ? join(cwd, config) : firstTracked(repo, root != null ? join(cwd, root) : cwd, VITEST_CONFIGS);
   const found = path != null && repo.tracked.has(path) ? path : null;
-  let base = root != null ? join(cwd, root) : cwd;
+  const rootDir = root != null ? join(cwd, root) : cwd;
+  let base = rootDir;
   let include = VITEST_INCLUDE;
   let exclude = VITEST_EXCLUDE;
+  let coverage = false;
+  let junit = false;
+  let projects = null;
   if (found) {
     const src = withoutComments(repo.text(found) ?? '');
     const test = [...src.matchAll(/(?:^|[\s{,(])test\s*:/g)]
@@ -407,16 +434,24 @@ export function vitestTargets(repo, cwd, { config, root }) {
       if (excludes) exclude = excludes.complete ? excludes.values : [...VITEST_EXCLUDE, ...excludes.values];
       const dir = read('dir');
       if (dir?.values.length === 1 && root == null) base = join(cwd, dir.values[0]) ?? base;
+      const covered = keys.has('coverage') ? objectAt(src, keys.get('coverage')) : -1;
+      if (covered !== -1) {
+        const own = ownKeys(src, covered);
+        coverage = own.has('enabled') && /^\s*true\b/.test(src.slice(own.get('enabled')));
+      }
+      junit = keys.has('reporters') && holds(valueText(src, keys.get('reporters')), 'junit');
       // projects (and the older workspace) hands the run to each project's
       // own config: a directory, a glob of them, or a config file.
-      const projects = read('projects') ?? read('workspace');
-      if (projects && projects.values.length > 0) {
-        const from = posix.dirname(found) === '.' ? '' : posix.dirname(found);
-        return { config: found, base, include, exclude, projects: vitestProjects(repo, from, projects.values) };
-      }
+      const listed = read('projects') ?? read('workspace');
+      if (listed && listed.values.length > 0) projects = listed.values;
     }
   }
-  return { config: found, base, include, exclude };
+  if (lookIn != null && rootDir != null) base = join(rootDir, lookIn) ?? base;
+  if (projects) {
+    const from = posix.dirname(found) === '.' ? '' : posix.dirname(found);
+    return { config: found, base, include, exclude, coverage, junit, projects: vitestProjects(repo, from, projects) };
+  }
+  return { config: found, base, include, exclude, coverage, junit };
 }
 
 // The directories (with a config file, when one is named) the projects of a
@@ -441,11 +476,18 @@ export function jestTargets(repo, cwd, { config }) {
   let match = null;
   let ignore = [];
   let roots = null;
+  let coverage = false;
+  let reporters = [];
+  const fromObject = (options) => {
+    match = stringList(options?.testMatch);
+    ignore = stringList(options?.testPathIgnorePatterns) ?? [];
+    roots = stringList(options?.roots);
+    coverage = options?.collectCoverage === true;
+    // A reporter is its name, or [name, options].
+    reporters = Array.isArray(options?.reporters) ? options.reporters.map((entry) => (Array.isArray(entry) ? entry[0] : entry)).filter((name) => typeof name === 'string') : [];
+  };
   if (found?.endsWith('.json')) {
-    const json = parseJsonc(repo.text(found));
-    match = stringList(json?.testMatch);
-    ignore = stringList(json?.testPathIgnorePatterns) ?? [];
-    roots = stringList(json?.roots);
+    fromObject(parseJsonc(repo.text(found)));
   } else if (found) {
     const src = withoutComments(repo.text(found) ?? '');
     const listed = everyStrings(src, 'testMatch');
@@ -453,19 +495,19 @@ export function jestTargets(repo, cwd, { config }) {
     ignore = everyStrings(src, 'testPathIgnorePatterns');
     const rooted = everyStrings(src, 'roots');
     if (rooted.length > 0) roots = rooted;
+    coverage = /(?:^|[\s{,])collectCoverage\s*:\s*true\b/.test(src);
+    reporters = [...src.matchAll(/(?:^|[\s{,(])(["']?)reporters\1\s*:/g)].some((match) => holds(valueText(src, match.index + match[0].length), 'jest-junit')) ? ['jest-junit'] : [];
   } else {
     const pkg = repo.manifest(cwd);
     if (pkg && typeof pkg.jest === 'object' && pkg.jest != null) {
       found = cwd ? `${cwd}/package.json` : 'package.json';
-      match = stringList(pkg.jest.testMatch);
-      ignore = stringList(pkg.jest.testPathIgnorePatterns) ?? [];
-      roots = stringList(pkg.jest.roots);
+      fromObject(pkg.jest);
     }
   }
   const bases = (roots ?? ['<rootDir>'])
     .map((item) => join(cwd, item.replace(/^<rootDir>\/?/, '') || '.'))
     .filter((item) => item != null);
-  return { config: found, bases, include: match ?? JEST_MATCH, ignore };
+  return { config: found, bases, include: match ?? JEST_MATCH, ignore, coverage, junit: reporters.includes('jest-junit') };
 }
 
 /* ---------- mocha ---------- */
@@ -537,26 +579,30 @@ export function pytestTargets(repo, cwd, { config }) {
     if (section == null) continue;
     const dir = posix.dirname(path) === '.' ? '' : posix.dirname(path);
     const paths = (section.testpaths ?? []).map((item) => join(dir, item)).filter((item) => item != null);
-    return { config: path, testpaths: paths };
+    return { config: path, testpaths: paths, addopts: section.addopts ?? '' };
   }
-  return { config: null, testpaths: [] };
+  return { config: null, testpaths: [], addopts: '' };
 }
 
+// The testpaths a section names, and its addopts as one line of flags, which
+// say whether every run collects coverage (--cov) or writes JUnit results
+// (--junitxml).
 function pytestSection(name, text) {
   const base = posix.basename(name);
   if (base === 'pyproject.toml') {
     const body = tomlSection(text, 'tool.pytest.ini_options');
     if (body == null) return null;
-    const match = /^\s*testpaths\s*=\s*(\[[^\]]*\]|"[^"]*"|'[^']*')/m.exec(body);
-    if (!match) return { testpaths: [] };
-    const values = [...match[1].matchAll(/"([^"]*)"|'([^']*)'/g)].map((m) => m[1] ?? m[2]);
-    return { testpaths: values };
+    const strings = (key) => {
+      const match = new RegExp(`^\\s*${key}\\s*=\\s*(\\[[^\\]]*\\]|"""[\\s\\S]*?"""|"[^"]*"|'[^']*')`, 'm').exec(body);
+      return match ? [...match[1].matchAll(/"([^"]*)"|'([^']*)'/g)].map((m) => m[1] ?? m[2]) : [];
+    };
+    return { testpaths: strings('testpaths'), addopts: strings('addopts').join(' ') };
   }
   const header = base === 'setup.cfg' ? 'tool:pytest' : 'pytest';
   const body = iniSection(text, header);
-  if (body == null) return base === 'pytest.ini' || base === '.pytest.ini' ? { testpaths: [] } : null;
-  const match = /^testpaths\s*=\s*(.*(?:\n[ \t]+.*)*)/m.exec(body);
-  return { testpaths: match ? match[1].split(/\s+/).filter(Boolean) : [] };
+  if (body == null) return base === 'pytest.ini' || base === '.pytest.ini' ? { testpaths: [], addopts: '' } : null;
+  const value = (key) => new RegExp(`^${key}\\s*=\\s*(.*(?:\\n[ \\t]+.*)*)`, 'm').exec(body)?.[1] ?? '';
+  return { testpaths: value('testpaths').split(/\s+/).filter(Boolean), addopts: value('addopts').split(/\s+/).filter(Boolean).join(' ') };
 }
 
 function tomlSection(text, name) {

@@ -1,0 +1,10 @@
+{
+  "name": "runners-verify",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc -p tsconfig.test.json",
+    "test": "vitest run",
+    "verify": "npm run build && npm run typecheck && npm test"
+  }
+}

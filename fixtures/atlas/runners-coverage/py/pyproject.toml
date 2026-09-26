@@ -1,0 +1,7 @@
+[project]
+name = "runners-coverage-py"
+version = "0.1.0"
+
+[tool.pytest.ini_options]
+addopts = "--cov=lib --junitxml=reports/junit.xml"
+testpaths = ["tests"]

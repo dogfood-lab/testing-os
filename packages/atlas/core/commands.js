@@ -5,6 +5,7 @@ import { parse as parseYaml } from 'yaml';
 import { cargoProject, owningCrate } from './cargo.js';
 import { godotProjects, projectOf, resPath } from './godot.js';
 import { isCodePath } from './languages.js';
+import { isTestFile } from './test-names.js';
 import { wheelPackages } from './python-manifest.js';
 import { storedText } from './text.js';
 import {
@@ -37,6 +38,14 @@ import {
  * target or a JavaScript file that level 0 runs is read once more as command
  * text, at level 1, and what it runs carries `via` naming it. Level 1 reads no
  * further file, so a chain of scripts stops after one.
+ *
+ * Each time a test runner runs, the reading also records the run: the
+ * runner, the directory it runs in, the configuration it read, the scripts,
+ * files and targets the chain passed through to reach it (`through`),
+ * whether it collects coverage or writes JUnit results, and the test files
+ * it runs. A chain that stops at a program this reader does not know is kept
+ * as an end, so a step that says it runs tests can be said to run them
+ * through a runner Atlas cannot name.
  */
 
 export const RUNS_RECORDED = 200;
@@ -56,6 +65,27 @@ const NON_EXECUTING = new Set([
   'wget', 'which', 'yarn', 'uv',
 ]);
 const PACKAGE_RUNNERS = new Set(['npm', 'pnpm', 'yarn']);
+// Runners named from the command alone, whose configuration this reader does
+// not read: which tests they run is not known here, only that they run them.
+// The value is the subcommand that runs tests, or null when the bare command
+// does.
+const NAMED_RUNNERS = new Map([
+  ['tox', null], ['nox', null], ['ava', null], ['tap', null], ['uvu', null], ['bats', null], ['vscode-test', null],
+  ['playwright', 'test'], ['cypress', 'run'], ['karma', 'start'], ['go', 'test'],
+]);
+// Programs that start no test run, so a chain that stops at one of them is
+// not a runner this reader failed to name.
+const RUNS_NO_TESTS = new Set([
+  'exit', 'true', 'false', ':', 'return', 'shift', 'wait', 'trap', 'sleep', 'pwd', 'date', 'mktemp', 'uname', 'basename',
+  'dirname', 'readlink', 'realpath', 'diff', 'cmp', 'tar', 'unzip', 'zip', 'gzip', 'find', 'du', 'df', 'ln', 'stat',
+  'file', 'openssl', 'shasum', 'sha256sum', 'md5sum', 'base64',
+]);
+// The flags c8 and nyc take a value after, before the command they run.
+const COVERAGE_VALUE_FLAGS = new Set([
+  '-r', '--reporter', '-o', '--report-dir', '--reports-dir', '--temp-directory', '--temp-dir', '-t', '--src', '-n',
+  '--include', '-x', '--exclude', '-e', '--extension', '--lines', '--functions', '--branches', '--statements', '--config',
+  '--cwd', '--nycrc-path', '-i', '--require',
+]);
 const SHELLS = new Set(['bash', 'sh', 'zsh', 'dash', 'ksh', 'source', '.']);
 const PY_TOOLS = new Set(['pytest', 'py.test', 'mypy', 'black', 'flake8', 'pylint', 'bandit', 'ruff', 'coverage']);
 // The tools that read the files they are handed, to lint, format, type-check
@@ -329,9 +359,11 @@ function packagingRoots(repo) {
 
 /**
  * Read one piece of level-0 command text run from `dir`.
- * Returns the runs keyed by path, the tracked files it mentions, and the
- * files a shell's expansion of an unquoted glob leaves out that the tool
- * would have run had it expanded the glob itself (shellMissed).
+ * Returns the runs keyed by path, the tracked files it mentions, the files a
+ * shell's expansion of an unquoted glob leaves out that the tool would have
+ * run had it expanded the glob itself (shellMissed), the test runs it makes
+ * (tests), and the chains that stop at a program this reader does not know
+ * (ends).
  *
  * `platforms`, when given, are the systems the job runs on (linux, macos,
  * windows). A package script the text starts is handed to sh on Linux and
@@ -340,16 +372,20 @@ function packagingRoots(repo) {
  * line, so its globs are read as sh reads them; a step's own text and a
  * shell script are not, since a bare * there is as often a case pattern or
  * a loop's list as an argument. Without platforms nothing is expanded.
+ *
+ * `through` is where the text itself was reached from (a reusable workflow
+ * or a composite action of this repository), and `env` gives the value of
+ * a variable the step's environment sets, or null.
  */
-export function readCommands(text, dir, repo, platforms = null) {
+export function readCommands(text, dir, repo, platforms = null, { through = [], env = null } = {}) {
   const runs = new Map();
   const mentions = new Set();
   const missed = new Map();
   const reader = makeReader(repo, runs, mentions, missed);
   const where = platforms ? { platforms: [...platforms] } : {};
-  reader.read(text, dir, { level: 0, via: null, active: new Set(), ...where });
+  reader.read(text, dir, { level: 0, via: null, active: new Set(), through, env, ...where });
   for (const path of runs.keys()) mentions.delete(path);
-  return { runs, mentions, shellMissed: [...missed.values()] };
+  return { runs, mentions, shellMissed: [...missed.values()], tests: reader.tests(), ends: reader.ends() };
 }
 
 /**
@@ -417,6 +453,70 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     const existing = sink.get(entry.path);
     sink.set(entry.path, existing ? better(existing, entry) : entry);
   };
+  // The test runs the reading makes, one per runner, directory, configuration
+  // and chain, and the chains that stop at a program it does not know. A
+  // scratch reading keeps its own until it is taken.
+  let tests = new Map();
+  let ends = [];
+  // The test run whose runner is being read, which notes its configuration
+  // and whether it collects coverage or writes JUnit results.
+  let open = null;
+
+  function addTest(entry) {
+    const key = [entry.runner, entry.dir, entry.config ?? '', entry.through.join('\u0001')].join('\0');
+    const existing = tests.get(key);
+    if (!existing) {
+      tests.set(key, { ...entry, paths: new Set(entry.paths) });
+      return;
+    }
+    for (const path of entry.paths) existing.paths.add(path);
+    existing.coverage ||= entry.coverage;
+    existing.junit ||= entry.junit;
+    existing.known &&= entry.known;
+  }
+
+  /**
+   * A test runner's run. What its handler records is recorded as any run
+   * is, and the run is kept with the test files it stands for: every code
+   * file under a directory the runner matched whole, and the tests under one
+   * it was handed. A runner named from its command alone runs tests this
+   * reader cannot list, so its count is not known.
+   */
+  function invoke(runner, dir, frame, run, { known = true } = {}) {
+    const entry = { runner, dir, config: null, through: frame.through ?? [], coverage: frame.coverage === true, junit: false, known, paths: new Set() };
+    const outer = open;
+    open = entry;
+    let found;
+    try {
+      found = scratch(run);
+    } finally {
+      open = outer;
+    }
+    keep(found);
+    for (const item of found.runs.values()) {
+      if (item.runKind === 'checks' || item.built) continue;
+      if (item.directory) {
+        for (const path of repo.filesUnder(item.path.replace(/\/$/, ''))) if (isCodePath(path) && (item.matched || isTestFile(path))) entry.paths.add(path);
+      } else if (item.matched || isTestFile(item.path)) entry.paths.add(item.path);
+    }
+    addTest(entry);
+  }
+
+  // A script an interpreter runs; a test file it runs directly is a test run
+  // by the interpreter (node tests/smoke.test.mjs).
+  function runsScript(interpreter, token, dir, frame, args) {
+    const named = pathFrom(dir, token);
+    if (named != null && repo.tracked.has(named) && isTestFile(named)) invoke(interpreter, dir, frame, () => file(token, dir, frame, { script: true, args }));
+    else file(token, dir, frame, { script: true, args });
+  }
+
+  // What a runner's handler learns of the run it is making.
+  function note({ config = null, coverage = false, junit = false }) {
+    if (!open) return;
+    if (config != null && open.config == null) open.config = config;
+    if (coverage) open.coverage = true;
+    if (junit) open.junit = true;
+  }
 
   function read(text, dir, frame) {
     if (frame.level === 0) {
@@ -445,16 +545,26 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     }
   }
 
-  // The runs one reading of a line records, kept apart from the rest.
+  // What one reading of a line records, kept apart from the rest: its runs,
+  // its test runs and the chains it ends.
   function scratch(read) {
-    const saved = sink;
+    const saved = { sink, tests, ends };
     sink = new Map();
+    tests = new Map();
+    ends = [];
     try {
       read();
-      return sink;
+      return { runs: sink, tests, ends };
     } finally {
-      sink = saved;
+      ({ sink, tests, ends } = saved);
     }
+  }
+
+  // A scratch reading taken as this reading's own.
+  function keep(found) {
+    for (const entry of found.runs.values()) record(entry);
+    for (const entry of found.tests.values()) addTest(entry);
+    ends.push(...found.ends);
   }
 
   // The code files a set of runs stands for, a directory for its own.
@@ -502,16 +612,16 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     }
     const literal = scratch(() => line(tokens, dir, plain));
     const shell = scratch(() => line(expanded, dir, plain));
-    const ran = codeFiles(shell);
-    const left = [...codeFiles(literal)].filter((path) => !ran.has(path)).sort();
+    const ran = codeFiles(shell.runs);
+    const left = [...codeFiles(literal.runs)].filter((path) => !ran.has(path)).sort();
     // Where the two readings run the same files the glob's own reading is
     // kept, a directory standing for its files as before; otherwise each
     // platform's is: what sh selects, and on a platform whose shell expands
     // nothing, the glob.
     const unexpanded = (frame.platforms ?? []).some((os) => !frame.expanding.includes(os));
-    if (left.length === 0 || unexpanded) for (const entry of literal.values()) record(entry);
+    if (left.length === 0 || unexpanded) keep(literal);
     if (left.length === 0) return;
-    for (const entry of shell.values()) record(entry);
+    keep(shell);
     const platform = frame.expanding.includes('linux') ? 'linux' : frame.expanding[0];
     const base = commonDirectory(left);
     const key = `${base}\0${platform}`;
@@ -530,9 +640,16 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
 
   function line(tokens, dir, frame) {
     let first = 0;
-    while (first < tokens.length && (PREFIX_WORDS.has(tokens[first]) || /^[A-Za-z_][A-Za-z0-9_]*=/.test(tokens[first]))) first += 1;
+    const assigned = new Map();
+    while (first < tokens.length && (PREFIX_WORDS.has(tokens[first]) || /^[A-Za-z_][A-Za-z0-9_]*=/.test(tokens[first]))) {
+      const at = tokens[first].indexOf('=');
+      if (!PREFIX_WORDS.has(tokens[first]) && at > 0) assigned.set(tokens[first].slice(0, at), tokens[first].slice(at + 1));
+      first += 1;
+    }
     if (first >= tokens.length) return;
-    for (const target of npmTargets(tokens, dir, repo)) npmScript(target.dir, target.script, frame, target.args ?? []);
+    // A variable the line sets is in the environment of what the line runs.
+    if (assigned.size > 0) frame = { ...frame, env: withEnv(frame.env, assigned) };
+    for (const target of npmTargets(tokens, dir, repo)) npmScript(target.dir, target.script, frame, target.args ?? [], target.manager);
     const argv = tokens.slice(first);
     // pnpm vitest run, with no script named vitest, is vitest.
     const binary = runnerBinary(argv, dir, repo);
@@ -566,6 +683,9 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
         return;
       }
     }
+    // A program this reader does not know ends the chain that reached it.
+    const named = pathFrom(dir, argv[0]);
+    if (!RUNS_NO_TESTS.has(baseName(argv[0])) && !(named != null && (repo.tracked.has(named) || repo.builtFrom(named) != null))) ends.push({ through: frame.through ?? [] });
     // Any other command handed a tracked file reads it (a packager, a
     // bundler, a linter this reader has no rule for). Whether it also runs
     // the file is not known, so it is checked: its reach is walked, and what
@@ -579,16 +699,21 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
 
   // What npm run hands the script after its name (npm run tauri build --
   // --bundles deb) is appended to the script's own command, as npm does.
-  function npmScript(target, script, frame, args = []) {
+  // The script is a step of the chain, named as the manager that ran it
+  // spells it (npm test, pnpm run ci), with its package when that is not the
+  // root.
+  function npmScript(target, script, frame, args = [], manager = null) {
     const key = `${target}\0${script}`;
     if (frame.active.has(key)) return;
     const pkg = repo.manifest(target);
     const scripts = pkg && typeof pkg.scripts === 'object' && pkg.scripts != null ? pkg.scripts : null;
     if (!scripts) return;
     frame.active.add(key);
+    const hop = manager == null ? null : `${manager} ${script === 'test' ? 'test' : `run ${script}`}${target ? ` (${target})` : ''}`;
+    const reached = hop ? { ...frame, through: [...(frame.through ?? []), hop] } : frame;
     // A package script runs in the manager's shell, sh or cmd, whatever
     // shell the step that started it names.
-    const shell = frame.platforms ? { ...frame, expanding: frame.platforms.filter((os) => os !== 'windows') } : frame;
+    const shell = reached.platforms ? { ...reached, expanding: reached.platforms.filter((os) => os !== 'windows') } : reached;
     // A package's own test script is a test of that package, whatever it
     // runs (armature's launcher self-test is its bin run with a flag).
     const next = script === 'test' ? { ...shell, testScript: target } : shell;
@@ -612,6 +737,9 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const passes = script ? flagsOf(args) : [];
       record(stamp({ path, ...(passes.length > 0 ? { passes } : {}) }, frame));
       if (script && frame.level === 0) readFile(path, dir, frame);
+      // A script a script runs is read no further, so what it runs is not
+      // known: the chain ends there.
+      else if (script) ends.push({ through: [...(frame.through ?? []), path] });
       return path;
     }
     if (directories && path !== '' && repo.dirs.has(path)) {
@@ -623,7 +751,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
 
   function readFile(path, dir, frame) {
     const where = frame.platforms ? { platforms: frame.platforms } : {};
-    const next = { level: 1, via: via(frame, path), active: frame.active, installed: frame.installed, ...where };
+    const next = { level: 1, via: via(frame, path), active: frame.active, installed: frame.installed, through: [...(frame.through ?? []), path], env: frame.env, coverage: frame.coverage, ...where };
     if (isShellScript(path, repo)) {
       // cd "$(dirname "$0")" moves to the script's own directory, which is
       // where the rest of the script reads its paths from.
@@ -679,16 +807,31 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
   }
 
   // Returns true when the first word is a tool this reader knows; the tool's
-  // own rules then decide everything the line runs.
+  // own rules then decide everything the line runs. A tool that runs tests
+  // does so as a test run.
   function interpret(argv, dir, frame) {
     const tool = toolOf(argv[0]);
+    if (tool == null || tool === 'none') namedRunner(argv, dir, frame);
     if (tool == null) {
       const path = pathFrom(dir, argv[0]);
       if (path != null && (repo.tracked.has(path) || repo.builtFrom(path) != null)) file(argv[0], dir, frame, { script: true, args: argv.slice(1) });
       return false;
     }
-    handlers[tool](argv, dir, CHECKERS.has(tool) ? { ...frame, runKind: 'checks' } : frame);
+    const next = CHECKERS.has(tool) ? { ...frame, runKind: 'checks' } : frame;
+    const runner = runnerOf(tool, argv);
+    if (runner != null) invoke(runner, dir, next, () => handlers[tool](argv, dir, next));
+    else handlers[tool](argv, dir, next);
     return true;
+  }
+
+  // A runner named from its command alone records its run, listing none of
+  // the tests it runs; what else the line runs is read as before.
+  function namedRunner(argv, dir, frame) {
+    const name = baseName(argv[0] ?? '');
+    if (!NAMED_RUNNERS.has(name)) return;
+    const sub = NAMED_RUNNERS.get(name);
+    if (sub != null && argv.slice(1).find((word) => !word.startsWith('-')) !== sub) return;
+    invoke(sub != null ? `${name} ${sub}` : name, dir, frame, () => {}, { known: false });
   }
 
   function scriptRunner(argv, dir, frame, valueFlags, { runValues = [], stopAt = [], subcommands = [] } = {}) {
@@ -780,7 +923,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     // python -m unittest discover -s tests runs the tests under its start
     // directory; python -m unittest tests.test_x.Case runs that module.
     if (name === 'unittest') {
-      unittestRuns(rest, dir, frame);
+      invoke('unittest', dir, frame, () => unittestRuns(rest, dir, frame));
       return;
     }
     const parts = name.split('.');
@@ -985,6 +1128,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const parsed = [];
       let test = false;
       let check = false;
+      const reporters = [];
       let i = 1;
       for (; i < argv.length; i += 1) {
         const token = argv[i];
@@ -1003,6 +1147,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
         const name = eq === -1 ? token : token.slice(0, eq);
         const value = eq !== -1 ? token.slice(eq + 1) : VALUE_SETS.node.has(name) ? argv[++i] : null;
         if (value != null && ['--import', '--loader', '--experimental-loader', '--require', '-r'].includes(name)) file(value, dir, frame);
+        if (value != null && name === '--test-reporter') reporters.push(value);
       }
       if (check) {
         if (i < argv.length) file(argv[i], dir, { ...frame, runKind: 'checks' });
@@ -1011,10 +1156,20 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       if (!test) {
         const tool = i < argv.length ? nodeModulesTool(argv[i]) : null;
         if (tool != null) interpret([tool, ...argv.slice(i + 1)], dir, frame);
-        else if (i < argv.length) file(argv[i], dir, frame, { script: true, args: argv.slice(i + 1) });
+        else if (i < argv.length) runsScript('node', argv[i], dir, frame, argv.slice(i + 1));
         return;
       }
       for (; i < argv.length; i += 1) parsed.push(argv[i]);
+      // Coverage by its flag or the environment's NODE_V8_COVERAGE, which a
+      // later c8 report reads; JUnit by a junit reporter on the line or in
+      // NODE_OPTIONS.
+      const v8 = envValue(frame, 'NODE_V8_COVERAGE');
+      const words = [...parsed, ...(envValue(frame, 'NODE_OPTIONS') ?? '').split(/\s+/)];
+      words.forEach((word, at) => {
+        if (word === '--test-reporter' && words[at + 1] != null) reporters.push(words[at + 1]);
+        else if (word.startsWith('--test-reporter=')) reporters.push(word.slice('--test-reporter='.length));
+      });
+      note({ coverage: [...argv, ...words].includes('--experimental-test-coverage') || (v8 != null && v8 !== ''), junit: reporters.includes('junit') });
       const patterns = parsed.filter((token) => !token.startsWith('-'));
       if (patterns.length === 0) {
         matched(repo.compact(repo.filesMatching(dir, NODE_TEST_DEFAULTS)), frame, 'node --test');
@@ -1048,7 +1203,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
           if (VALUE_SETS.python.has(token)) i += 1;
           continue;
         }
-        file(token, dir, frame, { script: true, args: argv.slice(i + 1) });
+        runsScript('python', token, dir, frame, argv.slice(i + 1));
         return;
       }
     },
@@ -1095,6 +1250,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       if (sub === 'run') scriptRunner(argv.slice(1), dir, frame, VALUE_SETS.deno);
       else if (sub === 'test') {
         const parsed = split(argv, 2, VALUE_SETS.deno);
+        note({ coverage: parsed.flags.has('--coverage') || parsed.values.has('--coverage'), junit: (parsed.values.get('--reporter') ?? []).includes('junit') || parsed.values.has('--junit-path') });
         if (parsed.positional.length === 0) matched(repo.compact(repo.filesMatching(dir, ['**/{*_,*.,}test.{ts,tsx,mts,js,mjs,jsx}'])), frame, 'deno test');
         for (const token of parsed.positional) file(token, dir, frame, { directories: true });
       } else if (sub != null && !sub.startsWith('-')) {
@@ -1110,6 +1266,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       }
       if (sub === 'test') {
         const parsed = split(argv, 2, VALUE_SETS.bun);
+        note({ coverage: parsed.flags.has('--coverage') || parsed.values.has('--coverage'), junit: (parsed.values.get('--reporter') ?? []).includes('junit') });
         if (parsed.positional.length === 0) matched(repo.compact(repo.filesMatching(dir, ['**/*{.test,_test,.spec,_spec}.{js,jsx,ts,tsx,mjs,cjs,mts,cts}'])), frame, 'bun test');
         for (const token of parsed.positional) file(token, dir, frame, { directories: true });
         return;
@@ -1120,7 +1277,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       if (target == null) return;
       const path = pathFrom(dir, target);
       if (path != null && repo.tracked.has(path)) file(target, dir, frame, { script: true });
-      else if (sub === 'run') npmScript(dir, target, frame);
+      else if (sub === 'run') npmScript(dir, target, frame, [], 'bun');
     },
     npx(argv, dir, frame) {
       let i = 1;
@@ -1145,7 +1302,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
         return;
       }
       const name = bin.replace(/@[^@/]+$/, '');
-      if (toolOf(name) != null) {
+      if (toolOf(name) != null || NAMED_RUNNERS.has(baseName(name))) {
         interpret([name, ...argv.slice(i + 1)], dir, frame);
         return;
       }
@@ -1188,6 +1345,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     },
     coverage(argv, dir, frame) {
       if (argv[1] !== 'run') return;
+      frame = { ...frame, coverage: true };
       const next = [];
       for (let i = 2; i < argv.length; i += 1) {
         const token = argv[i];
@@ -1206,8 +1364,12 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     },
     pytest(argv, dir, frame) {
       const parsed = pathArguments(argv, dir, frame, 'pytest');
-      if (parsed.positional.length > 0) return;
       const config = pytestTargets(repo, dir, { config: valueOf(parsed, '-c') });
+      // --cov and --junitxml on the line, in the configuration's addopts, or
+      // in PYTEST_ADDOPTS, which pytest adds to every run.
+      const words = [...argv.slice(1), ...config.addopts.split(/\s+/), ...(envValue(frame, 'PYTEST_ADDOPTS') ?? '').split(/\s+/)];
+      note({ config: config.config, coverage: words.some((word) => /^--cov(?:=|$)/.test(word)), junit: words.some((word) => /^--junit-?xml(?:=|$)/.test(word)) });
+      if (parsed.positional.length > 0) return;
       const tool = config.config ? `pytest ${config.config}` : 'pytest';
       if (config.testpaths.length > 0) {
         for (const testpath of config.testpaths) {
@@ -1287,7 +1449,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       for (const task of parsed.positional) {
         for (const member of members) {
           const scripts = repo.manifest(member)?.scripts;
-          if (scripts && typeof scripts[task] === 'string') npmScript(member, task, { ...frame, via: via(frame, `turbo run ${task}`) });
+          if (scripts && typeof scripts[task] === 'string') npmScript(member, task, { ...frame, via: via(frame, `turbo run ${task}`), through: [...(frame.through ?? []), `turbo run ${task}${member ? ` (${member})` : ''}`] });
         }
       }
     },
@@ -1302,7 +1464,9 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     vitest(argv, dir, frame) {
       const start = ['run', 'watch', 'dev', 'related', 'bench'].includes(argv[1]) ? 2 : 1;
       const parsed = split(argv, start, VALUE_SETS.vitest);
-      const found = vitestTargets(repo, dir, { config: valueOf(parsed, '-c', '--config'), root: valueOf(parsed, '-r', '--root') });
+      const found = vitestTargets(repo, dir, { config: valueOf(parsed, '-c', '--config'), root: valueOf(parsed, '-r', '--root'), dir: valueOf(parsed, '--dir') });
+      const flagged = (name) => parsed.flags.has(name) || (parsed.values.get(name) ?? []).some((value) => value !== 'false');
+      note({ config: found.config, coverage: found.coverage || flagged('--coverage') || flagged('--coverage.enabled'), junit: found.junit || (parsed.values.get('--reporter') ?? []).includes('junit') });
       if (found.base == null) return;
       const filters = parsed.positional.map((token) => stripDot(token));
       if (found.projects) {
@@ -1324,6 +1488,8 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     jest(argv, dir, frame) {
       const parsed = split(argv, 1, VALUE_SETS.jest);
       const found = jestTargets(repo, dir, { config: valueOf(parsed, '-c', '--config') });
+      const flagged = (name) => parsed.flags.has(name) || (parsed.values.get(name) ?? []).some((value) => value !== 'false');
+      note({ config: found.config, coverage: found.coverage || flagged('--coverage') || flagged('--collectCoverage'), junit: found.junit || (parsed.values.get('--reporters') ?? []).some((value) => value.includes('jest-junit')) });
       const ignore = found.ignore.map(patternOf);
       const filters = parsed.positional.map(patternOf);
       const files = found.bases.flatMap((base) => repo.filesMatching(base, found.include))
@@ -1335,6 +1501,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const parsed = split(argv, 1, VALUE_SETS.mocha);
       for (const name of ['-r', '--require', '--file']) for (const value of parsed.values.get(name) ?? []) file(value, dir, frame);
       const found = mochaTargets(repo, dir, { config: valueOf(parsed, '--config') });
+      note({ config: found.config, junit: [...(parsed.values.get('--reporter') ?? []), ...(parsed.values.get('-R') ?? [])].some((value) => /junit/i.test(value)) });
       const explicit = [...parsed.positional, ...(parsed.values.get('--spec') ?? [])];
       const specs = explicit.length > 0 ? explicit : found.spec;
       const recursive = found.recursive || parsed.flags.has('--recursive');
@@ -1377,7 +1544,8 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       if (makefile == null || !repo.tracked.has(makefile)) return;
       // make -j 4 takes its count apart from the flag; a target is never a number.
       const targets = parsed.positional.filter((token) => !/^[A-Za-z_][A-Za-z0-9_]*=/.test(token) && !/^\d+$/.test(token));
-      read(makeRecipes(repo.text(makefile) ?? '', targets), cwd, { level: 1, via: via(frame, makefile), active: frame.active, installed: frame.installed });
+      const hop = `make${targets.length > 0 ? ` ${targets.join(' ')}` : ''}${/^(?:GNUmakefile|makefile|Makefile)$/.test(makefile) ? '' : ` (${makefile})`}`;
+      read(makeRecipes(repo.text(makefile) ?? '', targets), cwd, { level: 1, via: via(frame, makefile), active: frame.active, installed: frame.installed, through: [...(frame.through ?? []), hop], env: frame.env, coverage: frame.coverage });
     },
     // astro build and its kin run the site's config and the code under its
     // src/, from the site's own directory; astro check only reads them.
@@ -1420,6 +1588,22 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       const src = pathFrom(at, 'src');
       if (src != null && repo.dirs.has(src)) record(stamp({ path: `${src}/`, directory: true, matched: true }, frame, chain));
     },
+    // c8 and nyc run the command after their own flags and collect its
+    // coverage; their report, check-coverage and merge commands run nothing.
+    covered(argv, dir, frame) {
+      let i = 1;
+      for (; i < argv.length; i += 1) {
+        const token = argv[i];
+        if (token === '--') {
+          i += 1;
+          break;
+        }
+        if (!token.startsWith('-')) break;
+        if (!token.includes('=') && COVERAGE_VALUE_FLAGS.has(token)) i += 1;
+      }
+      if (i >= argv.length || ['report', 'check-coverage', 'merge', 'instrument'].includes(argv[i])) return;
+      line(argv.slice(i), dir, { ...frame, coverage: true });
+    },
     wrapper(argv, dir, frame) {
       const name = baseName(argv[0]);
       wrapped(argv, 1, dir, frame, VALUE_SETS[name] ?? new Set(), { assignments: name === 'env', count: name === 'timeout', chdir: name === 'env' ? ['-C', '--chdir'] : [] });
@@ -1443,6 +1627,8 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       for (let i = 2; i < argv.length; i += 1) {
         const word = argv[i];
         if (values.has(word)) {
+          if (sub === 'test' && word === '--collect') note({ coverage: /coverage/i.test(argv[i + 1] ?? '') });
+          if (sub === 'test' && (word === '--logger' || word === '-l')) note({ junit: /junit/i.test(argv[i + 1] ?? '') });
           i += 1;
           continue;
         }
@@ -1459,8 +1645,13 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
         if (argv[i] === '-C' && argv[i + 1] != null) cwd = cleanDir(posix.join(cwd || '.', argv[++i])) ?? cwd;
         else if (CARGO_VALUE_FLAGS.has(argv[i])) i += 1;
       }
-      const sub = CARGO_ALIASES[argv[i]] ?? argv[i];
+      const named = CARGO_ALIASES[argv[i]] ?? argv[i];
+      // cargo llvm-cov and cargo tarpaulin run the tests under coverage; llvm-cov
+      // report, clean and show-env run none.
+      const covers = named === 'tarpaulin' || (named === 'llvm-cov' && !['report', 'clean', 'show-env'].includes(argv.slice(i + 1).find((word) => !word.startsWith('-'))));
+      const sub = covers ? 'test' : named;
       if (sub == null || cwd == null) return;
+      if (covers) note({ coverage: true });
       if (sub === 'tauri') {
         handlers.tauri(['tauri', ...argv.slice(i + 1)], cwd, frame);
         return;
@@ -1544,7 +1735,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
         for (const found of path ? repo.discovered?.get(path) ?? [] : []) record(stamp({ path: found, matched: true, foundBy: path }, checks, via(frame, path)));
         const base = path ? posix.basename(path) : posix.basename(script);
         const runner = base === 'gut_cmdln.gd' ? 'gut' : /^GdUnitCmdTool\.gd$/i.test(base) ? 'gdUnit4' : null;
-        if (runner) matched(repo.compact(godotTests(repo, project, runner, argv, place)), frame, runner);
+        if (runner) invoke(runner, dir, frame, () => matched(repo.compact(godotTests(repo, project, runner, argv, place)), frame, runner));
         return;
       }
       const scene = parsed.positional.map(place).find((path) => path != null && /\.t?scn$/.test(path)) ?? project?.mainScene ?? null;
@@ -1562,7 +1753,67 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     read,
     program: (path, frame) => file(path, '', frame, { script: true }),
     container: (context, dockerfile, dir, frame) => readContainer(context, dockerfile, dir, frame),
+    tests: () => [...tests.values()].map(testRun),
+    ends: () => [...ends],
   };
+}
+
+// A test run as the reading hands it on: the fields that say something, the
+// number of test files when the runner's are known, and the files themselves.
+function testRun(entry) {
+  return {
+    runner: entry.runner,
+    dir: entry.dir,
+    ...(entry.config != null ? { config: entry.config } : {}),
+    ...(entry.through.length > 0 ? { through: [...entry.through] } : {}),
+    ...(entry.coverage ? { coverage: true } : {}),
+    ...(entry.junit ? { junit: true } : {}),
+    ...(entry.known ? { files: entry.paths.size } : {}),
+    paths: [...entry.paths].sort(),
+  };
+}
+
+// The runner a known tool is when these words run tests with it, or null.
+function runnerOf(tool, argv) {
+  if (tool === 'vitest') return ['bench', 'list'].includes(argv[1]) ? null : 'vitest';
+  if (tool === 'jest' || tool === 'mocha' || tool === 'pytest') return tool;
+  if (tool === 'node') return nodeRunsTests(argv) ? 'node --test' : null;
+  if (tool === 'deno' || tool === 'bun' || tool === 'dotnet') return argv[1] === 'test' ? `${tool} test` : null;
+  if (tool === 'cargo') return cargoRunner(argv);
+  return null;
+}
+
+// node --test, given before the script node would otherwise run.
+function nodeRunsTests(argv) {
+  for (let i = 1; i < argv.length; i += 1) {
+    const token = argv[i];
+    if (token === '--test') return true;
+    if (!token.startsWith('-') || ['-e', '--eval', '-p', '--print'].includes(token)) return false;
+    if (!token.includes('=') && VALUE_SETS.node.has(token)) i += 1;
+  }
+  return false;
+}
+
+function cargoRunner(argv) {
+  let i = 1;
+  if (argv[i]?.startsWith('+')) i += 1;
+  for (; i < argv.length && argv[i].startsWith('-'); i += 1) if (argv[i] === '-C' || CARGO_VALUE_FLAGS.has(argv[i])) i += 1;
+  const sub = CARGO_ALIASES[argv[i]] ?? argv[i];
+  if (sub === 'test' || sub === 'tarpaulin') return 'cargo test';
+  if (sub === 'nextest') return argv[i + 1] === 'run' ? 'cargo nextest' : null;
+  if (sub !== 'llvm-cov') return null;
+  const next = argv.slice(i + 1).find((word) => !word.startsWith('-'));
+  if (['report', 'clean', 'show-env'].includes(next)) return null;
+  return next === 'nextest' ? 'cargo nextest' : 'cargo test';
+}
+
+// A frame's environment with the variables a line sets laid over it.
+function withEnv(base, set) {
+  return (name) => (set.has(name) ? set.get(name) : base ? base(name) : null);
+}
+
+function envValue(frame, name) {
+  return frame.env ? frame.env(name) : null;
 }
 
 const GODOT_BINARY = /^godot(?:[\d.]*|_v[\w.-]+)(?:\.exe)?$/i;
@@ -1869,6 +2120,7 @@ function toolOf(word) {
   if (name === 'poetry' || name === 'flit' || name === 'pdm') return name === 'poetry' ? 'poetry' : 'pybuild';
   if (name === 'gmake') return 'make';
   if (name === 'tox') return 'none';
+  if (name === 'c8' || name === 'nyc') return 'covered';
   if (name === 'gdlint' || name === 'gdformat') return 'gdtoolkit';
   if (name === 'cargo') return 'cargo';
   if (name === 'dotnet') return 'dotnet';
@@ -2101,9 +2353,10 @@ function npmTargets(tokens, dir, repo) {
   const start = tokens.findIndex((token) => PACKAGE_RUNNERS.has(token));
   if (start === -1) return [];
   const manager = tokens[start];
-  if (manager === 'pnpm') return pnpmTargets(tokens.slice(start + 1), dir, repo);
-  if (manager === 'yarn') return yarnTargets(tokens.slice(start + 1), dir, repo);
-  return npmCommandTargets(tokens.slice(start + 1), dir, repo);
+  const targets = manager === 'pnpm' ? pnpmTargets(tokens.slice(start + 1), dir, repo)
+    : manager === 'yarn' ? yarnTargets(tokens.slice(start + 1), dir, repo)
+      : npmCommandTargets(tokens.slice(start + 1), dir, repo);
+  return targets.map((target) => ({ ...target, manager }));
 }
 
 function npmCommandTargets(args, dir, repo) {
@@ -2235,7 +2488,7 @@ function runnerBinary(argv, dir, repo) {
   if (command == null || own.has(command) || RUN_ALIASES.has(command) || TEST_ALIASES.has(command) || LIFECYCLE.has(command)) return null;
   const scripts = repo.manifest(dir)?.scripts;
   if (scripts && typeof scripts === 'object' && typeof scripts[command] === 'string') return null;
-  return toolOf(command) != null ? i : null;
+  return toolOf(command) != null || NAMED_RUNNERS.has(command) ? i : null;
 }
 
 function pnpmSelected(repo, selector, prefix) {

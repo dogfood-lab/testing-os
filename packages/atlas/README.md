@@ -26,7 +26,7 @@ npx --yes @dogfood-lab/atlas mcp
 |------|------------|
 | `README.md` | The page. GitHub renders it when anyone opens the folder. |
 | `page.json` | The same sections as data, for sites and tools. |
-| `structure.json` | Every tracked file in its part, the import edges between parts, the doors, the landing places and their readers (each writer and reader with how it was found: `ast`, `config`, `text` or `weak`), and the order of calls inside the files the doors run. Byte-deterministic. |
+| `structure.json` | Every tracked file in its part, the import edges between parts, the doors, the landing places and their readers (each writer and reader with how it was found: `ast`, `config`, `text` or `weak`), and the order of calls inside the files the doors run. For tests: each workflow's test runs (the runner, the scripts and targets that reach it, and whether it collects coverage or writes JUnit results), the runners whose tests reach each part, and the test files no workflow runs. Byte-deterministic. |
 | `statistics.json` | What changes together over the last 180 days, dated. |
 
 Each file records the Atlas version that made it (`engine`), and the page's dated line names it: "Mapped at <date> from commit <sha> by Atlas <version>."

@@ -198,7 +198,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   doors.push(...memberDoors);
   markUnshipped(doors, cargoProject(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
-  attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom, emitted }));
+  attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom, emitted }), repositoryView({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }));
   const edges = [...resolution.edges, ...spawnEdges(graph), ...httpEdges(graph.files, graph.boundaryOf, isTestMaterial)]
     .sort((a, b) => a.from.localeCompare(b.from) || a.to.localeCompare(b.to) || a.kind.localeCompare(b.kind));
   for (const file of graph.files.values()) delete file.http;
@@ -621,18 +621,30 @@ function repositoryManifests(repoPath, tracked) {
  * one above it. Recorded as spawns on the test file, so a test that runs a
  * script reaches it as one that imports it does.
  */
-function attachTestSpawns(files, spawned, repo) {
+/**
+ * The files each file runs as a child process. A test also runs a command
+ * the repository installs by typing its name (spawnSync('atlas', ...)), which
+ * runs the command's entry: those are its spawns too, and are kept apart as
+ * spawnsInstalled, known through the manifest that installs them.
+ */
+function attachTestSpawns(files, spawned, repo, withCommands) {
   for (const [path, commands] of spawned) {
     const file = files.get(path);
     if (!file) continue;
+    const test = isTestFile(path);
+    const view = test ? withCommands : repo;
     // Production code runs its child processes from where the door that
     // runs it stands, the repository root.
     const dirs = [''];
-    if (isTestFile(path)) for (let at = path.lastIndexOf('/'); at > 0; at = path.lastIndexOf('/', at - 1)) dirs.push(path.slice(0, at));
+    if (test) for (let at = path.lastIndexOf('/'); at > 0; at = path.lastIndexOf('/', at - 1)) dirs.push(path.slice(0, at));
     for (const dir of dirs) {
       const runs = new Set();
+      const installed = new Set();
       for (const command of commands) {
-        for (const run of readCommands(command, dir, repo).runs.values()) {
+        const program = command.trim().split(/\s+/)[0] ?? '';
+        const entry = test && !view.tracked.has(program) ? view.installed.get(program) : null;
+        if (entry != null) installed.add(entry);
+        for (const run of readCommands(command, dir, view).runs.values()) {
           // Production code that type-checks or lints another part runs none
           // of it; a test's checks are how it reaches what it checks.
           if (!isTestFile(path) && run.runKind === 'checks') continue;
@@ -643,6 +655,8 @@ function attachTestSpawns(files, spawned, repo) {
       }
       if (runs.size > 0) {
         file.spawns = [...runs].sort();
+        const named = [...installed].filter((entry) => runs.has(entry)).sort();
+        if (named.length > 0) file.spawnsInstalled = named;
         break;
       }
     }

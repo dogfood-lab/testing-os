@@ -288,6 +288,82 @@
     {
       "path": "fixtures/atlas/sidecar-reach/app/main.test.js",
       "reason": "Atlas fixture, not a test of this repository. It sits inside the sidecar-reach fixture repository that the packages/atlas/sidecar tests map and serve, where it is the test that imports app/main.js, so atlas_reach lists a test that reaches a change apart from production. It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-verify/src/add.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-verify fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through npm run verify and then npm test, roll's shape, to Vitest, so the map attributes that run to its runner. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-npm-nested/src/sum.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-npm-nested fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through npm test and then npm run test:unit to Jest, so the map attributes that run to its runner. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-pnpm-nested/src/scale.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-pnpm-nested fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through pnpm run ci and then pnpm test to Vitest with coverage, so the map attributes that run to its runner. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-yarn-nested/test/greet.spec.js",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-yarn-nested fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through yarn test and then yarn run unit to Mocha, so the map attributes that run to its runner. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-makefile/test/math.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-makefile fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through make test to node --test, so the map attributes that run to its runner. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-local-workflow/src/clamp.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-local-workflow fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through a local reusable workflow and npm test to Vitest, so the map attributes that run to its runner. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-vitest-dir/src/wrap.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-vitest-dir fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through vitest run --dir src, which runs it, so the map attributes that run to its runner. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-vitest-dir/e2e/flow.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-vitest-dir fixture repository that packages/atlas/core/test-runners.test.js and packages/atlas/adapter/test-reach.test.js map, where CI runs vitest run --dir src and so never runs it: the map lists it among the tests no workflow runs. It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-coverage/test/a.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-coverage fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through node --test under c8 and under NODE_V8_COVERAGE, so the map attributes that run to its runner. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-coverage/src/b.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-coverage fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through a package script that runs Vitest with --coverage and a junit reporter, so the map attributes that run to its runner. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-coverage/web/src/view.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-coverage fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through a Vitest configuration that turns coverage on and names a junit reporter, so the map attributes that run to its runner. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-coverage/jest/lib/half.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-coverage fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through a Jest configuration that collects coverage and names jest-junit, so the map attributes that run to its runner. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-named/tests/smoke.test.mjs",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-named fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through node running the file directly, so the map attributes that run to its runner. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/reach-kinds/test/direct.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the reach-kinds fixture repository that packages/atlas/adapter/test-reach.test.js maps, where it is the test that imports src/direct.js directly, so the map says how a test reaches that file and with what basis. It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/reach-kinds/test/helper.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the reach-kinds fixture repository that packages/atlas/adapter/test-reach.test.js maps, where it is the test that reaches src/deep.js through src/helper.js, so the map says how a test reaches that file and with what basis. It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/reach-kinds/test/mocked.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the reach-kinds fixture repository that packages/atlas/adapter/test-reach.test.js maps, where it is the test that mocks src/mocked.js and still imports it, so the map says how a test reaches that file and with what basis. It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/reach-kinds/test/tool.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the reach-kinds fixture repository that packages/atlas/adapter/test-reach.test.js maps, where it is the test that runs bin/tool.js as a child process by its path, so the map says how a test reaches that file and with what basis. It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/reach-kinds/test/cli.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the reach-kinds fixture repository that packages/atlas/adapter/test-reach.test.js maps, where it is the test that runs bin/cli.js by the command name package.json installs it as, so the map says how a test reaches that file and with what basis. It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/reach-kinds/fixtures/demo/test/demo.test.js",
+      "reason": "Atlas fixture, not a test. It is a test-shaped file inside a repository the reach-kinds fixture keeps among its own fixtures, and packages/atlas/adapter/test-reach.test.js asserts that such a file is data that reaches nothing. It contains no test and never runs."
     }
   ]
 }

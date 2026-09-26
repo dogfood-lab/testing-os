@@ -1,0 +1,64 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  node-c8:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node tests with c8
+        run: npx c8 node --test
+  vitest-flags:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Vitest
+        run: npm run test:ci
+  node-env:
+    runs-on: ubuntu-latest
+    env:
+      NODE_V8_COVERAGE: ${{ runner.temp }}/v8-coverage
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node tests under the environment
+        run: node --test
+        env:
+          NODE_OPTIONS: --test-reporter=junit --test-reporter-destination=junit.xml
+  pytest-flags:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pytest
+        run: pytest tests --cov=pkg --junitxml=junit.xml
+  pytest-config:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: py
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pytest from its configuration
+        run: python -m pytest
+  plain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Plain tests
+        run: node --test
+  vitest-config:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - name: Vitest from its configuration
+        run: npx vitest run
+  jest-config:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: jest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Jest from its configuration
+        run: npx jest
