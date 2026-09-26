@@ -20,6 +20,7 @@ import {
   commandReason,
   defaultRun,
   earlierWindow,
+  fleetIndex,
   headSha,
   historyEntry,
   mergeFleet,
@@ -37,6 +38,8 @@ export { BACKOFF_MS, HISTORY_CAP, REPO_BUDGET_MS, WINDOW_DAYS, appendHistory, ch
 
 export const ORGS = ['mcp-tool-shop-org', 'dogfood-lab'];
 export const HOME = 'dogfood-lab/testing-os';
+// The render branch as agents and the site read it: every file the run writes, over plain HTTP.
+export const RAW_BRANCH = `https://raw.githubusercontent.com/${HOME}/atlas-render/`;
 export const JOB_BUDGET_MS = 50 * 60 * 1000;
 const PUBLIC_HEADERS = {
   accept: 'application/vnd.github+json',
@@ -171,7 +174,7 @@ function diffRows(beforeEnvelope, afterEnvelope) {
 // and the branch keeps the one it has, rather than restarting a year of
 // entries from one.
 async function previousHistory(fetchImpl, fullName) {
-  const url = `https://raw.githubusercontent.com/${HOME}/atlas-render/indexes/atlas/${fullName}/history.json`;
+  const url = `${RAW_BRANCH}indexes/atlas/${fullName}/history.json`;
   let response;
   try {
     response = await github(fetchImpl, url);
@@ -207,7 +210,7 @@ function renderPublic({ run, sleep, fetchImpl, repoRoot, fullName, branch, sha, 
       return { ...cloned, dir, env, dispose: () => rmSync(dir, { recursive: true, force: true }) };
     },
     previous: {
-      divergence: () => readJsonUrl(fetchImpl, `https://raw.githubusercontent.com/${HOME}/atlas-render/indexes/atlas/${fullName}/divergence.json`),
+      divergence: () => readJsonUrl(fetchImpl, `${RAW_BRANCH}indexes/atlas/${fullName}/divergence.json`),
       history: () => previousHistory(fetchImpl, fullName),
     },
   });
@@ -277,8 +280,8 @@ export async function renderFleet(options = {}) {
   const clock = options.clock ?? (() => new Date());
   const jobStartedMs = clock().getTime();
   const jobBudgetMs = options.jobBudgetMs ?? JOB_BUDGET_MS;
-  const stateResponse = await readJsonUrl(fetchImpl, `https://raw.githubusercontent.com/${HOME}/atlas-render/indexes/atlas/state.json`);
-  const previousFleet = await readJsonUrl(fetchImpl, `https://raw.githubusercontent.com/${HOME}/atlas-render/indexes/atlas/fleet.json`);
+  const stateResponse = await readJsonUrl(fetchImpl, `${RAW_BRANCH}indexes/atlas/state.json`);
+  const previousFleet = await readJsonUrl(fetchImpl, `${RAW_BRANCH}indexes/atlas/fleet.json`);
   const state = stateFrom(stateResponse);
   const ownOut = !options.outRoot;
   const outRoot = options.outRoot ?? mkdtempSync(join(tmpdir(), 'atlas-out-'));
@@ -338,21 +341,22 @@ export async function renderFleet(options = {}) {
   const keep = (name) => publicNames.has(name) && !excluded.has(name) && !state.rendered[name]?.notMapped;
   const fleet = mergeFleet(previousFleet?.repositories, renderedNow, keep, now);
   const date = now.toISOString().slice(0, 10);
-  const paths = ['indexes/atlas/state.json', 'indexes/atlas/fleet.json'];
+  const paths = ['indexes/atlas/state.json', 'indexes/atlas/fleet.json', 'indexes/atlas/llms.txt'];
   for (const entry of renderedNow) {
     const names = [...RENDER_FILES, 'divergence.json', ...(withHistory.has(entry.repo) ? ['history.json'] : [])];
     for (const name of names) paths.push(`indexes/atlas/${entry.repo}/${name}`);
   }
   rejectForeignPaths(paths, publicNames);
   const fleetDoc = { generatedAt: now.toISOString(), repositories: fleet };
+  const index = fleetIndex(fleetDoc, `${RAW_BRANCH}indexes/atlas/`);
   log(`would commit atlas: weekly render ${date}`);
   for (const path of paths) log(`file ${path}`);
   let issue = null;
   if (!dryRun) {
-    if (options.writeBranch) await options.writeBranch({ state, fleet: fleetDoc, outRoot, paths, date, publicNames });
+    if (options.writeBranch) await options.writeBranch({ state, fleet: fleetDoc, index, outRoot, paths, date, publicNames });
     if (changed && options.issues) issue = await publishIssue(options.issues, date, changes);
   }
-  return { logs, state, fleet: fleetDoc, paths, changed, changes, issue, publicCount: listed.length };
+  return { logs, state, fleet: fleetDoc, index, paths, changed, changes, issue, publicCount: listed.length };
   } finally {
     if (ownOut) rmSync(outRoot, { recursive: true, force: true });
   }
@@ -397,7 +401,24 @@ function githubIssues(fetchImpl, token) {
   };
 }
 
-async function commitBranch({ state, fleet, outRoot, date, publicNames }, token) {
+/**
+ * One run laid into `work`, a checkout of the render branch: the state, the
+ * fleet and its agent index beside it, then every render over what the branch
+ * held. Split from the clone and the push so a fixture branch can take a run.
+ */
+export function writeRenderFiles(work, { state, fleet, index, outRoot, publicNames }) {
+  const atlasDir = join(work, 'indexes', 'atlas');
+  mkdirSync(atlasDir, { recursive: true });
+  writeFileSync(join(atlasDir, 'state.json'), `${JSON.stringify(state, null, 2)}\n`);
+  writeFileSync(join(atlasDir, 'fleet.json'), `${JSON.stringify(fleet, null, 2)}\n`);
+  writeFileSync(join(atlasDir, 'llms.txt'), index);
+  cpSync(outRoot, atlasDir, { recursive: true });
+  const published = filesUnder(atlasDir).map((abs) => relative(work, abs).replaceAll('\\', '/'));
+  rejectForeignPaths(published, publicNames);
+}
+
+async function commitBranch(payload, token) {
+  const { date } = payload;
   const work = mkdtempSync(join(tmpdir(), 'atlas-render-branch-'));
   try {
     const remote = `https://github.com/${HOME}.git`;
@@ -413,12 +434,7 @@ async function commitBranch({ state, fleet, outRoot, date, publicNames }, token)
       const created = await defaultRun('git', ['checkout', '-B', 'atlas-render'], { cwd: work });
       if (created.status !== 0) throw new Error(gitError('could not create atlas-render', created));
     }
-    mkdirSync(join(work, 'indexes', 'atlas'), { recursive: true });
-    writeFileSync(join(work, 'indexes', 'atlas', 'state.json'), `${JSON.stringify(state, null, 2)}\n`);
-    writeFileSync(join(work, 'indexes', 'atlas', 'fleet.json'), `${JSON.stringify(fleet, null, 2)}\n`);
-    cpSync(outRoot, join(work, 'indexes', 'atlas'), { recursive: true });
-    const published = filesUnder(join(work, 'indexes', 'atlas')).map((abs) => relative(work, abs).replaceAll('\\', '/'));
-    rejectForeignPaths(published, publicNames);
+    writeRenderFiles(work, payload);
     await defaultRun('git', ['add', '--', 'indexes/atlas'], { cwd: work });
     const committed = await defaultRun('git', ['-c', 'user.email=64996768+mcp-tool-shop@users.noreply.github.com', '-c', 'user.name=mcp-tool-shop', 'commit', '-m', `atlas: weekly render ${date}`], { cwd: work });
     if (committed.status !== 0) throw new Error(gitError('commit of atlas-render failed', committed));
