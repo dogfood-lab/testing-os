@@ -1,0 +1,27 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20, 22]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - name: Tests
+        run: npm test
+      - name: Coverage (Node 22 only)
+        if: matrix.node-version == 22
+        run: npm run coverage
+      - name: Upload coverage
+        if: matrix.node-version == 22
+        uses: codecov/codecov-action@v7
+        with:
+          files: ./coverage/lcov.info

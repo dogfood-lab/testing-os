@@ -46,6 +46,13 @@ All notable changes to `testing-os` are documented here. The format follows [Kee
   - `failurePaths` on code files;
   - `ran` on a test step Atlas cannot attribute, at most 50 files;
   - `testsLeftOut`, the test files a runner's own configuration leaves out on purpose (Vitest's `exclude`), listed apart from those no workflow runs.
+- **`scripts/codecov-rollout.mjs`: Codecov recipe v2 across the fleet** (`docs/codecov-rollout.md`). It works on a local checkout of each repository:
+  - `check` lists how its CI differs from the recipe;
+  - `plan` shows the change as a diff;
+  - `apply` commits it on branch `ci/codecov` and never pushes;
+  - `delivered` asks Codecov whether the default branch has coverage.
+
+  Atlas says which step runs the tests, and with which runner: Vitest, pytest or node --test. The tool adds to that step the flags that write coverage and JUnit results. It then adds the save steps, a `codecov` job that alone holds the OIDC token, and `codecov.yml`, with `codecov.yml` in the paths filters. It edits the workflow as text and checks its own result against the recipe. What it cannot edit safely it leaves to a person, with the reason. A dry run over waves 1 and 2 planned 22 of the 29 repositories.
 
 ### Fixed
 - **Vitest's `--dir`.** `vitest run --dir src` looks for tests under `src/` alone, as Vitest does. The flag was ignored, so tests outside that directory read as run.
