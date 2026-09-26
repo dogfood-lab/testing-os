@@ -50,6 +50,7 @@ export function spawnedCommands(root, pathText = () => null) {
   let built = 0;
   const helpers = commandHelpers(root);
   helpers.aliases = promisified(root);
+  helpers.forks = forksOf(root);
   const imports = relativeImports(root);
   const pending = [];
   const stack = [root];
@@ -122,12 +123,34 @@ function commandOf(node, pathText, helpers) {
     if (command == null) return { built: true };
     return command.trim() === '' ? null : { command };
   }
-  // A helper that hands spawn its program and its arguments runs what each
-  // call hands it: runProcess('npx', ['tsx', cli]).
+  // A helper that hands spawn a program and an argument list built from its
+  // own parameters runs what each call hands it: runProcess('npx', ['tsx',
+  // cli]), runNode([check, '--dir=x']), run(sweep, ['--help']).
   if (callee?.type === 'identifier' && helpers.programs.has(callee.text)) {
-    const [program, list] = helpers.programs.get(callee.text);
-    if (args.length <= program) return null;
-    return commandFrom(args[program], args[list], true, pathText);
+    const template = helpers.programs.get(callee.text);
+    const program = template.program.param != null ? args[template.program.param] : template.program.node;
+    if (program == null) return null;
+    let words = null;
+    if (template.list.param != null) {
+      const list = arrayOf(args[template.list.param]);
+      if (list?.type !== 'array') return { built: true };
+      words = argumentWords(list, pathText);
+    } else {
+      words = template.list.items.flatMap((item) => {
+        if (item.node) return [wordOf(item.node, pathText)];
+        const handed = args[item.param];
+        if (!item.spread) return [wordOf(handed, pathText)];
+        const list = arrayOf(handed);
+        return list?.type === 'array' ? argumentWords(list, pathText) : [UNREAD_WORD];
+      });
+    }
+    return commandFrom(program, null, true, pathText, words);
+  }
+  // fork(module, args) runs the module under Node, when it is child_process's.
+  if (helpers.forks?.has(callee?.type === 'identifier' ? callee.text : callee?.type === 'member_expression' ? callee.text : '')) {
+    if (args.length === 0) return null;
+    const list = arrayOf(args[1]);
+    return commandFrom({ text: 'process.execPath' }, null, true, pathText, [wordOf(args[0], pathText), ...(list?.type === 'array' ? argumentWords(list, pathText) : [])]);
   }
   // execFile made a promise (const execFileAsync = promisify(execFile)) is
   // execFile.
@@ -153,11 +176,11 @@ function transportOf(node, pathText) {
 
 // The command line a program and, when they are handed apart, its argument
 // list spell.
-function commandFrom(programNode, listNode, separate, pathText) {
+function commandFrom(programNode, listNode, separate, pathText, given = null) {
   // spawn(process.execPath, [...]) runs Node.
   const program = programNode?.text === 'process.execPath' ? 'node' : text(programNode, pathText);
-  const list = separate ? arrayOf(listNode) : null;
-  const words = list?.type === 'array' ? argumentWords(list, pathText) : null;
+  const list = given != null ? { type: 'array' } : separate ? arrayOf(listNode) : null;
+  const words = given ?? (list?.type === 'array' ? argumentWords(list, pathText) : null);
   // spawn(pythonPath, ['-m', 'jobs']) runs the module whatever interpreter
   // is handed in: -m is Python's, and the module is the program.
   if (program == null && words && words[0] === '-m' && words[1] != null) {
@@ -200,13 +223,16 @@ const UNREAD_WORD = Symbol('unread');
 // path, and anything else, a spread of the caller's arguments included, as
 // read at run time.
 function argumentWords(list, pathText) {
-  return list.namedChildren.filter((word) => word.type !== 'comment').map((word) => {
-    if (word.type === 'spread_element') return UNREAD_WORD;
-    const plain = text(word, pathText);
-    if (plain != null) return plain;
-    const path = word.type === 'string' || word.type === 'template_string' ? null : pathText(word);
-    return path == null || path === '' ? null : path;
-  });
+  return list.namedChildren.filter((word) => word.type !== 'comment').map((word) => wordOf(word, pathText));
+}
+
+function wordOf(word, pathText) {
+  if (word == null) return null;
+  if (word.type === 'spread_element') return UNREAD_WORD;
+  const plain = text(word, pathText);
+  if (plain != null) return plain;
+  const path = word.type === 'string' || word.type === 'template_string' ? null : pathText(word);
+  return path == null || path === '' ? null : path;
 }
 
 /**
@@ -235,30 +261,75 @@ function commandHelpers(root) {
       }
       const handed = handsProgram(fn, names);
       if (handed == null) continue;
-      programs.set(name, [handed.program, handed.list]);
-      params.add(key(handed.node));
+      programs.set(name, handed);
+      for (const node of handed.nodes) params.add(key(node));
     }
   }
   return { byName, exported, params, programs };
 }
 
-// A helper whose parameters reach spawn or execFile as its program and its
-// argument list, unchanged: function runProcess(cmd, args) { spawn(cmd, args) },
-// the call often inside the callback of the promise the helper returns.
+// A helper that hands spawn or execFile a program and an argument list made
+// from its parameters: the program a parameter, Node or a literal; the list
+// a parameter, or an array of literals, parameters and spreads of them.
+// function runProcess(cmd, args) { spawn(cmd, args) }, runNode(args) {
+// spawnSync(process.execPath, args) }, run(script, args) {
+// spawnSync(process.execPath, [script, ...args]) }; the call often inside
+// the callback of the promise the helper returns. Null for any other.
 function handsProgram(fn, names) {
   if (!names.some(Boolean)) return null;
+  const param = (node) => (node?.type === 'identifier' && names.includes(node.text) ? names.indexOf(node.text) : null);
   const stack = [fn.childForFieldName('body')].filter(Boolean);
   while (stack.length > 0) {
     const node = stack.pop();
     if (node.type === 'call_expression' && ARGUMENT_LISTS.has(calledName(node.childForFieldName('function')) ?? '')) {
-      const [first, second] = node.childForFieldName('arguments')?.namedChildren ?? [];
-      if (first?.type === 'identifier' && second?.type === 'identifier' && names.includes(first.text) && names.includes(second.text)) {
-        return { program: names.indexOf(first.text), list: names.indexOf(second.text), node: first };
+      const [first, second] = (node.childForFieldName('arguments')?.namedChildren ?? []).filter((child) => child.type !== 'comment');
+      const programParam = param(first);
+      const fixed = programParam == null && (first?.text === 'process.execPath' || literal(first) != null);
+      if (programParam != null || fixed) {
+        const nodes = programParam != null ? [first] : [];
+        const listParam = param(second);
+        if (listParam != null) return { program: programParam != null ? { param: programParam } : { node: first }, list: { param: listParam }, nodes: [...nodes, second] };
+        if (second?.type === 'array') {
+          const items = [];
+          let usesParams = programParam != null;
+          for (const element of second.namedChildren.filter((child) => child.type !== 'comment')) {
+            const spread = element.type === 'spread_element' ? param(element.namedChildren[0]) : null;
+            if (spread != null) {
+              items.push({ param: spread, spread: true });
+              usesParams = true;
+            } else if (param(element) != null) {
+              items.push({ param: param(element) });
+              usesParams = true;
+            } else items.push({ node: element });
+          }
+          if (usesParams) return { program: programParam != null ? { param: programParam } : { node: first }, list: { items }, nodes: [...nodes, second] };
+        }
       }
     }
     for (const child of node.namedChildren) stack.push(child);
   }
   return null;
+}
+
+// The names child_process's fork is called by in a file: imported by name,
+// or on the module imported whole (cp.fork).
+function forksOf(root) {
+  const out = new Set();
+  const stack = [root];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (node.type === 'import_statement') {
+      const source = literal(node.childForFieldName('source'));
+      if (source === 'child_process' || source === 'node:child_process') {
+        for (const inner of node.descendantsOfType ? node.descendantsOfType('import_specifier') : []) {
+          if (inner.childForFieldName('name')?.text === 'fork') out.add(inner.childForFieldName('alias')?.text ?? 'fork');
+        }
+        for (const inner of node.descendantsOfType ? node.descendantsOfType('namespace_import') : []) out.add(`${inner.namedChildren[0]?.text}.fork`);
+      }
+    }
+    for (const child of node.namedChildren) stack.push(child);
+  }
+  return out;
 }
 
 // The names a file binds to a command call made a promise:
@@ -399,6 +470,11 @@ function text(node, pathText, depth = 0) {
   if (node?.type === 'identifier' && depth < 2) {
     const value = constBound(node);
     if (value != null) return text(value, pathText, depth + 1);
+  }
+  // process.env.PYTHON || 'python': the default, when the environment names
+  // none.
+  if (node?.type === 'binary_expression' && ['||', '??'].includes(node.childForFieldName('operator')?.text) && depth < 3) {
+    return text(node.childForFieldName('right'), pathText, depth + 1);
   }
   const plain = literal(node);
   if (plain != null || node?.type !== 'template_string') return plain;

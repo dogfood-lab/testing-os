@@ -1401,6 +1401,13 @@ function collectScript(root, path = null) {
       for (const specifier of table) imports.push({ specifier, kind: 'dynamic-literal', line: lineOf(node), table: true });
       return;
     }
+    // for (const { mod } of CASES) await import(mod), CASES a const array of
+    // literal paths or of objects holding them: every path the loop hands it.
+    const looped = loopValues(root, node, first);
+    if (looped.length > 0) {
+      for (const specifier of looped) imports.push({ specifier, kind: 'dynamic-literal', line: lineOf(node), table: true });
+      return;
+    }
     // import(pathToFileURL(resolve(HERE, '../tools/sim.mjs')).href), or the
     // same held in a const: the file the path names, as a relative import.
     const located = isImport && path != null ? fileUrlImport(root, first, path) : null;
@@ -1460,6 +1467,43 @@ function tableValues(root, arg) {
     if (value != null && !values.includes(value)) values.push(value);
   }
   return values;
+}
+
+/**
+ * The literal values a for...of loop around a call binds a name to: each
+ * literal of the array it loops over, or each object's literal under the
+ * key the loop destructures into the name. Empty for anything else.
+ */
+function loopValues(root, call, arg) {
+  if (arg?.type !== 'identifier') return [];
+  for (let scope = call.parent; scope != null; scope = scope.parent) {
+    if (scope.type !== 'for_in_statement') continue;
+    const left = scope.childForFieldName('left');
+    let key = null;
+    if (left?.type === 'identifier') key = left.text === arg.text ? '' : null;
+    else if (left?.type === 'object_pattern') {
+      for (const part of left.namedChildren) {
+        if (part.type === 'shorthand_property_identifier_pattern' && part.text === arg.text) key = part.text;
+        if (part.type === 'pair_pattern' && part.childForFieldName('value')?.text === arg.text) key = part.childForFieldName('key')?.text ?? null;
+      }
+    }
+    if (key == null) continue;
+    let right = scope.childForFieldName('right');
+    if (right?.type === 'identifier') right = constValue(root, right.text);
+    if (right?.type !== 'array') return [];
+    const values = [];
+    for (const element of right.namedChildren) {
+      let value = null;
+      if (key === '') value = jsString(element);
+      else if (element.type === 'object') {
+        const pair = element.namedChildren.find((child) => child.type === 'pair' && (child.childForFieldName('key')?.text ?? '').replace(/^['"]|['"]$/g, '') === key);
+        value = pair ? jsString(pair.childForFieldName('value')) : null;
+      }
+      if (value != null && !values.includes(value)) values.push(value);
+    }
+    return values;
+  }
+  return [];
 }
 
 // The value a const declares for a name, when the file declares it once.

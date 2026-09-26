@@ -82,7 +82,7 @@ describe('runner attribution', () => {
     assert.deepEqual(testsOf(doorsOf('runners-unattributed'), '.github/workflows/ci.yml'), [
       { job: 'checks', step: 'Run tests', runner: null, through: ['make check'] },
       { job: 'checks', step: '3', runner: null, through: ['npm test'] },
-      { job: 'checks', step: 'Integration tests', runner: null, through: ['scripts/ci.sh', 'scripts/run-suite.sh'] },
+      { job: 'checks', step: 'Integration tests', runner: null, through: ['scripts/ci.sh', 'scripts/run-suite.sh'], ran: ['scripts/ci.sh', 'scripts/run-suite.sh'] },
       { job: 'checks', step: 'Headless suite', runner: null },
     ]);
   });

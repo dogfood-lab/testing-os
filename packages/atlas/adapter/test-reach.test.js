@@ -27,10 +27,10 @@ after(() => {
   while (roots.length > 0) rmSync(roots.pop(), { recursive: true, force: true });
 });
 
-function structureOf(fixture) {
+function structureOf(fixture, parts = PARTS) {
   const root = makeRepo(resolve(FIXTURES, fixture));
   roots.push(root);
-  return buildArtifact(mapRepository({ repoPath: root, boundaries: PARTS }), '0'.repeat(40));
+  return buildArtifact(mapRepository({ repoPath: root, boundaries: parts }), '0'.repeat(40));
 }
 
 describe('reach, with its basis', () => {
@@ -94,5 +94,38 @@ describe('test files no workflow runs', () => {
 
   it('lists none when every test file runs', () => {
     assert.equal(structureOf('reach-kinds').testsNotRun, undefined);
+  });
+});
+
+// fixtures/atlas/reach-shapes: more ways the fleet's tests reach the file
+// they test (see the fixture's README).
+describe('the ways the fleet\'s tests reach a file', () => {
+  const reach = testReachOf(structureOf('reach-shapes', [
+    { name: 'scripts', globs: ['scripts/**'], role: 'code' },
+    { name: 'tools', globs: ['tools/**'], role: 'code' },
+    { name: 'npm', globs: ['npm/**'], role: 'code' },
+    { name: 'test', globs: ['test/**'], role: 'test' },
+  ]));
+
+  it('reads an import of each path a test loops over from a table of them (style-dataset-lab)', () => {
+    assert.equal(reach.files.get('scripts/alpha.js')?.kind, 'imports');
+    assert.equal(reach.files.get('scripts/beta.js')?.kind, 'imports');
+  });
+
+  it('reads a fork as a run (testing-os)', () => {
+    assert.equal(reach.files.get('scripts/worker.mjs')?.kind, 'runs');
+  });
+
+  it('follows helpers that hand Node an argument list (ai-rpg-engine, mcp-arcade-cabinets)', () => {
+    assert.equal(reach.files.get('scripts/check.mjs')?.kind, 'runs');
+    assert.equal(reach.files.get('scripts/sweep.mjs')?.kind, 'runs');
+  });
+
+  it('reads the program an environment variable names, or its default (style-dataset-lab)', () => {
+    assert.equal(reach.files.get('tools/gen.py')?.kind, 'runs');
+  });
+
+  it('reads a file a test step runs with no runner Atlas names as run by that step (armature)', () => {
+    assert.deepEqual(reach.files.get('npm/bin/launcher.mjs'), { kind: 'runs', basis: 'parsed', step: '.github/workflows/ci.yml › launcher › Launcher self-test' });
   });
 });

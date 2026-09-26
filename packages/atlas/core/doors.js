@@ -470,6 +470,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
       const firstStart = firstDir == null ? { here: false } : placeOf({ here: true, dir: '' }, firstDir, clones, repo, lookup);
       commands.push({ job, step: name, text: step.run, ...(firstStart.here && rawDirs.length === 1 ? { dir: firstStart.dir } : {}), ...held });
       const stepTests = [];
+      const stepRan = new Set();
       const stepEnds = [];
       for (const rawDir of rawDirs) {
         const ownDir = own(rawDir);
@@ -504,6 +505,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
         const named = readCommands(expandEnv(step.run, lookup), dir, repo, platforms, { through: [...jobThrough, ...(step[REACHED_THROUGH] ?? [])], env: written });
         stepTests.push(...named.tests);
         stepEnds.push(...named.ends);
+        for (const entry of named.runs.values()) if (entry.runKind === 'executes' && !entry.built && !entry.directory) stepRan.add(entry.path);
         for (const entry of named.shellMissed) {
           const key = `${entry.base}\0${entry.platform}`;
           const found = missed.get(key) ?? { base: entry.base, files: new Set(), platform: entry.platform, twoStars: false };
@@ -525,7 +527,9 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
       }
       if (stepTests.length === 0 && testShaped(name, stepEnds)) {
         const end = stepEnds.find((entry) => entry.through.some((hop) => TEST_WORD.test(hop))) ?? stepEnds.find((entry) => entry.through.length > 0);
-        tests.push({ job, step: name, runner: null, ...(end ? { through: [...end.through] } : {}) });
+        // The files such a step runs, which its tests are, or run.
+        const ran = [...stepRan].sort().slice(0, STEP_RAN_KEPT);
+        tests.push({ job, step: name, runner: null, ...(end ? { through: [...end.through] } : {}), ...(ran.length > 0 ? { ran } : {}) });
       }
       jobTexts.push(step.run);
       const released = releaseUploads(expandEnv(step.run, lookup));
@@ -606,6 +610,9 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
 // uploads their results or log, runs none; nor does one whose word is part
 // of a hyphenated name (Dispatch to testing-os).
 const TEST_WORD = /(?:^|[^a-z0-9])(?:unit[ _-]?)?(?:tests?|testing|specs?|suites?)(?![-_][a-z0-9])(?:[^a-z0-9]|$)/i;
+// How many of the files a test step with no runner Atlas names runs are
+// kept on it.
+const STEP_RAN_KEPT = 50;
 const NOT_A_TEST_RUN = /\b(?:install|installs|setup|set up|dependencies|deps|results?|reports?|upload|publish|summary|logs?)\b/i;
 
 function testShaped(name, ends) {

@@ -619,6 +619,7 @@ function carryTestRun(run) {
     ...(run.dir ? { dir: run.dir } : {}),
     ...(run.config ? { config: run.config } : {}),
     ...(run.through?.length > 0 ? { through: [...run.through] } : {}),
+    ...(run.ran?.length > 0 ? { ran: run.ran.filter((path) => !inAtlas(path)) } : {}),
     ...(run.coverage ? { coverage: true } : {}),
     ...(run.junit ? { junit: true } : {}),
     ...(run.files != null ? { files: run.files } : {}),

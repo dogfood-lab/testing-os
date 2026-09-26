@@ -139,14 +139,19 @@ export function testReachOf(structure, { tests = null } = {}) {
   if (tests == null) {
     for (const { file } of listed) if (file.testsInside && !isTest(file)) reach(file.path, { kind: 'discovers', basis: 'parsed' });
     // What a workflow's test step runs on its way: each file of its chain,
-    // run by the step, the later ones through the earlier.
+    // run by the step, the later ones through the earlier; and each file a
+    // step whose runner Atlas cannot name runs.
     for (const door of structure.doors ?? []) {
       if (door.kind || door.parseError) continue;
       for (const entry of door.tests ?? []) {
         const chain = (entry.through ?? []).filter((hop) => byPath.has(hop));
-        if (chain.length === 0) continue;
+        const ran = (entry.ran ?? []).filter((path) => byPath.has(path) && !chain.includes(path));
+        if (chain.length + ran.length === 0) continue;
         const step = `${door.file} › ${entry.job} › ${entry.step}`;
-        walk(chain.map((path, index) => ({ path, test: null, step, basis: 'parsed', through: chain.slice(0, index), reached: true })), 'runs', run);
+        walk([
+          ...chain.map((path, index) => ({ path, test: null, step, basis: 'parsed', through: chain.slice(0, index), reached: true })),
+          ...ran.map((path) => ({ path, test: null, step, basis: 'parsed', through: [], reached: true })),
+        ], 'runs', run);
       }
     }
   }
