@@ -404,6 +404,10 @@
     {
       "path": "fixtures/atlas/spawn-ts-source/src/tests/cli.test.ts",
       "reason": "Atlas fixture, not a test. It sits inside the spawn-ts-source fixture repository that packages/atlas/core/spawn-sources.test.js maps, where it spawns ../cli.js beside it so the map reads that as running src/cli.ts, its TypeScript source. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/spawn-mcp-transport/test/server.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the spawn-mcp-transport fixture repository that packages/atlas/core/spawn-sources.test.js maps, where it starts src/server.ts through the MCP SDK's StdioClientTransport so the map reads that as the test running the server. It contains no test of this repository and runs only inside that fixture, never here."
     }
   ]
 }

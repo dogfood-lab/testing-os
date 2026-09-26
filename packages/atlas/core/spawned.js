@@ -54,6 +54,11 @@ export function spawnedCommands(root, pathText = () => null) {
   const stack = [root];
   while (stack.length > 0) {
     const node = stack.pop();
+    if (node.type === 'new_expression') {
+      const read = transportOf(node, pathText);
+      if (read?.command != null) found.add(read.command);
+      else if (read?.built) built += 1;
+    }
     if (node.type === 'call_expression') {
       const read = commandOf(node, pathText, helpers);
       if (read?.command != null) found.add(read.command);
@@ -120,9 +125,28 @@ function commandOf(node, pathText, helpers) {
   if (name == null) return null;
   if (args.length === 0) return null;
   if (helpers.params.has(key(args[0]))) return null;
+  return commandFrom(args[0], args[1], ARGUMENT_LISTS.has(name), pathText);
+}
+
+// new StdioClientTransport({ command, args }), the MCP SDK's client
+// transport, starts the server it names as a child process, as spawn does.
+function transportOf(node, pathText) {
+  const made = node.childForFieldName('constructor');
+  const name = made?.type === 'identifier' ? made.text : made?.type === 'member_expression' ? made.childForFieldName('property')?.text : null;
+  if (name !== 'StdioClientTransport') return null;
+  const options = node.childForFieldName('arguments')?.namedChildren.find((child) => child.type !== 'comment');
+  if (options?.type !== 'object') return null;
+  const value = (field) => options.namedChildren.find((pair) => pair.type === 'pair' && pair.childForFieldName('key')?.text === field)?.childForFieldName('value') ?? null;
+  const program = value('command');
+  return program == null ? null : commandFrom(program, value('args'), true, pathText);
+}
+
+// The command line a program and, when they are handed apart, its argument
+// list spell.
+function commandFrom(programNode, listNode, separate, pathText) {
   // spawn(process.execPath, [...]) runs Node.
-  const program = args[0]?.text === 'process.execPath' ? 'node' : text(args[0], pathText);
-  const list = ARGUMENT_LISTS.has(name) ? arrayOf(args[1]) : null;
+  const program = programNode?.text === 'process.execPath' ? 'node' : text(programNode, pathText);
+  const list = separate ? arrayOf(listNode) : null;
   const words = list?.type === 'array' ? argumentWords(list, pathText) : null;
   // spawn(pythonPath, ['-m', 'jobs']) runs the module whatever interpreter
   // is handed in: -m is Python's, and the module is the program.
@@ -136,7 +160,7 @@ function commandOf(node, pathText, helpers) {
   }
   if (program == null) return { built: true };
   if (program.trim() === '') return null;
-  if (!ARGUMENT_LISTS.has(name)) return { command: program };
+  if (!separate) return { command: program };
   if (list == null || list.type === 'object') return { command: program };
   const outside = OUTSIDE_PROGRAMS.has(program.trim());
   if (list.type !== 'array') return outside ? { program: program.trim() } : { built: true };
