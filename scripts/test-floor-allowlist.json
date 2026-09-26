@@ -398,6 +398,38 @@
       "reason": "Atlas fixture, not a test. It sits inside the gaps-quiet fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where it runs quietcli by the name package.json installs, so rule G3 stays silent. It runs only inside that fixture, never here."
     },
     {
+      "path": "fixtures/atlas/gaps-shapes/test/cli.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-shapes fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where it imports src/cli.js and drives main() with arguments, so G3 stays silent for the command whose entry that is. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-frameworks/lib/deep/x.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-frameworks fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where what it imports names the runner it is written for and whether that fixture's CI runs it decides what G2 says of it. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-frameworks/lib/y.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-frameworks fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where what it imports names the runner it is written for and whether that fixture's CI runs it decides what G2 says of it. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-frameworks/test/a.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-frameworks fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where what it imports names the runner it is written for and whether that fixture's CI runs it decides what G2 says of it. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-frameworks/other/d.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-frameworks fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where what it imports names the runner it is written for and whether that fixture's CI runs it decides what G2 says of it. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-frameworks/e2e/b.spec.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-frameworks fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where what it imports names the runner it is written for and whether that fixture's CI runs it decides what G2 says of it. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-frameworks/test/slow/corpus.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-frameworks fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where what it imports names the runner it is written for and whether that fixture's CI runs it decides what G2 says of it. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-frameworks/ava/one.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-frameworks fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where what it imports names the runner it is written for and whether that fixture's CI runs it decides what G2 says of it. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
       "path": "fixtures/atlas/runners-test-args/src/add.test.ts",
       "reason": "Atlas fixture, not a test. It sits inside the runners-test-args fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through npm test -- --coverage, pnpm test --coverage and yarn test --coverage, so the map reads the flag each hands the test script. It contains no test of this repository and runs only inside that fixture, never here."
     },

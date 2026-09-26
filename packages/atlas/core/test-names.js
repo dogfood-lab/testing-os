@@ -13,3 +13,13 @@ export function isTestFile(path) {
   if (parts.slice(0, -1).some((part) => TEST_NAMED_DIRS.has(part))) return true;
   return TEST_NAMED.test(parts[parts.length - 1]);
 }
+
+// A smoke test by its name (smoke.mjs, pack-install-smoke.mjs,
+// smoke_test_binary.py): a script that runs the product and fails when it
+// breaks. It is a test for what reaches the code, though no runner
+// discovers it by that name.
+const SMOKE_NAMED = /(^|[-_.])smoke([-_.]|$)/i;
+
+export function isSmokeTest(path) {
+  return SMOKE_NAMED.test(path.slice(path.lastIndexOf('/') + 1));
+}

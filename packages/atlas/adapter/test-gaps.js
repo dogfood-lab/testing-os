@@ -1,7 +1,6 @@
 import { isCodePath, languageOf } from '../core/languages.js';
-import { isTestFile } from '../core/landings.js';
-import { dominantLanguage, kindsOf } from './test-kinds.js';
-import { testReachOf } from './test-reach.js';
+import { dominantLanguage, KIND_LABELS, kindsOf } from './test-kinds.js';
+import { isFixture, isTest, testReachOf } from './test-reach.js';
 import { COVERAGE_RECIPE, COVERAGE_TOOLS, runnerFor, SMOKE_GATE } from './test-sources.js';
 
 /**
@@ -31,6 +30,19 @@ const RUNNER_FAMILY = {
 const LANGUAGE_FAMILY = { javascript: 'script', typescript: 'script', tsx: 'script', python: 'python', rust: 'rust', gdscript: 'gdscript' };
 // Families whose runners have no coverage tool the studio uses.
 const NO_COVERAGE = new Set(['gdscript', 'shell']);
+// The families of code each kind's suggested runner runs, and the kind a
+// file of another family takes: a Python script in a part of JavaScript is
+// tested with pytest, whatever its part's kind.
+const KIND_FAMILIES = {
+  node: ['script'], 'ts-monorepo': ['script'], 'vscode-extension': ['script'], 'mcp-server': ['script', 'python'],
+  'tauri-app': ['script', 'rust'], python: ['python'], data: ['python'], rust: ['rust'], 'godot-game': ['gdscript'],
+};
+const FAMILY_KIND = { script: 'node', python: 'python', rust: 'rust', gdscript: 'godot-game' };
+// The module each framework's tests import, which a suggestion cites.
+const FRAMEWORK_MODULES = {
+  vitest: 'vitest', 'playwright test': '@playwright/test', 'node --test': 'node:test', jest: '@jest/globals', mocha: 'mocha',
+  'bun test': 'bun:test', ava: 'ava', uvu: 'uvu', tap: 'tap', pytest: 'pytest', unittest: 'unittest',
+};
 
 // How each runner's own discovery would collect a test file a workflow runs
 // none of, and the documentation that says so.
@@ -58,8 +70,8 @@ export function testGaps(structure, { statistics = null, repository = null } = {
   const partOf = new Map();
   for (const boundary of structure.boundaries ?? []) for (const file of boundary.files ?? []) partOf.set(file.path, boundary.name);
   const fileOf = new Map([...(structure.boundaries ?? []).flatMap((boundary) => boundary.files ?? []), ...(structure.unassigned ?? []), ...(structure.overlaps ?? [])].map((file) => [file.path, file]));
-  const isTest = (file) => isTestFile(file.path) || file.testSuite === true;
-  const codeOf = (boundary) => (boundary.files ?? []).filter((file) => !isTest(file) && isCodePath(file.path));
+  // A file among fixtures is material a test reads, never a gap.
+  const codeOf = (boundary) => (boundary.files ?? []).filter((file) => !isTest(file) && isCodePath(file.path) && !isFixture(file.path));
   const familyOfPart = (boundary) => LANGUAGE_FAMILY[dominantLanguage(codeOf(boundary).map((file) => file.path))] ?? null;
   const ciFamilies = new Set(attributed.map((run) => RUNNER_FAMILY[run.runner]).filter(Boolean));
   const testFamilies = new Set([...fileOf.values()].filter(isTest).map((file) => LANGUAGE_FAMILY[languageOf(file.path)]).filter(Boolean));
@@ -68,6 +80,7 @@ export function testGaps(structure, { statistics = null, repository = null } = {
     runs,
     codecov: workflows.filter((door) => (door.uses ?? []).includes('codecov/codecov-action')).map((door) => door.file),
     notRun: structure.testsNotRun ?? [],
+    leftOut: structure.testsLeftOut ?? [],
     notAttributed: notAttributed.map(({ workflow, job, step, through }) => ({ workflow, job, step, ...(through ? { through } : {}) })),
     parts: [...kinds].map(([part, kind]) => {
       const boundary = (structure.boundaries ?? []).find((entry) => entry.name === part);
@@ -88,14 +101,16 @@ export function testGaps(structure, { statistics = null, repository = null } = {
     for (const file of code) {
       if (reach.files.has(file.path) || !(file.failurePaths?.length > 0)) continue;
       const constructs = file.failurePaths.map((site) => `the ${site.kind === 'match-err' ? 'Err arm' : site.kind === 'err' ? 'Err' : site.kind} in ${site.in ?? 'the module body'} (line ${site.line})`);
+      const own = kindForFile(file.path, kind);
+      const ownSource = own === kind ? source : runnerFor(own.kind, { repository });
       suggestions.push({
         rule: 'G6',
         part: boundary.name,
         path: file.path,
-        kind,
+        kind: own,
         facts: { constructs, reach: 'no test imports or runs this file' },
-        suggest: { ...(source ? { runner: source.runner } : {}), text: `tests that make ${list(constructs)} run, with the input that sends ${file.path} down each` },
-        ...(source ? { source: source.source } : {}),
+        suggest: { ...(ownSource ? { runner: ownSource.runner } : {}), text: `tests that make ${list(constructs)} run, with the input that sends ${file.path} down each` },
+        ...(ownSource ? { source: ownSource.source } : {}),
       });
     }
     if (!reach.parts.has(boundary.name)) {
@@ -114,11 +129,11 @@ export function testGaps(structure, { statistics = null, repository = null } = {
         });
       }
     } else {
-      for (const file of code) if (!reach.files.has(file.path)) gaps.push({ part: boundary.name, path: file.path, kind });
+      for (const file of code) if (!reach.files.has(file.path)) gaps.push({ part: boundary.name, path: file.path, kind: kindForFile(file.path, kind) });
     }
   }
 
-  const ranked = rank(gaps, { structure, statistics, fileOf, partOf, isTest });
+  const ranked = rank(gaps, { structure, statistics, fileOf, partOf });
   for (const gap of ranked) gap.wouldReach = wouldReach(gap, { structure, attributed, repository });
 
   return {
@@ -126,32 +141,71 @@ export function testGaps(structure, { statistics = null, repository = null } = {
     facts,
     gaps: { items: ranked.slice(0, SHOWN), rest: Math.max(0, ranked.length - SHOWN) },
     suggestions,
-    hygiene: [...notRunRule(facts.notRun, { attributed, notAttributed, partOf, kinds, repository }), ...coverageRule({ attributed, notAttributed })],
-    commands: commandRule(doors, reach),
+    hygiene: [...notRunRule(facts.notRun, { attributed, notAttributed, partOf, kinds, repository, fileOf, leftOut: facts.leftOut, missed: workflows.flatMap((door) => door.shellMissed ?? []) }), ...coverageRule({ attributed, notAttributed })],
+    commands: commandRule(doors, reach, workflows),
   };
 }
 
+// The kind a file is tested as: its part's, unless the file is of a family
+// the part's kind has no runner for, when it is the kind of its own family.
+function kindForFile(path, kind) {
+  const family = LANGUAGE_FAMILY[languageOf(path)];
+  if (family == null || (KIND_FAMILIES[kind.kind] ?? []).includes(family)) return kind;
+  const own = FAMILY_KIND[family];
+  return own ? { kind: own, label: KIND_LABELS[own] } : kind;
+}
+
 // G2: test files no workflow runs, grouped by the runner that would run
-// them. Silent while a test step's runner is not attributed, since that
-// step may be the one that runs them.
-function notRunRule(files, { attributed, notAttributed, partOf, kinds, repository }) {
+// them: the framework a file imports, else the runner CI runs for its
+// family. Silent while a test step's runner is not attributed, since that
+// step may be the one that runs them; for a file a runner CI runs may run
+// though Atlas does not list its files; and for one a runner's own
+// configuration leaves out on purpose, which the facts name instead.
+function notRunRule(files, { attributed, notAttributed, partOf, kinds, repository, fileOf, leftOut, missed }) {
   if (files.length === 0 || notAttributed.length > 0) return [];
+  const excluded = new Set(leftOut.map((entry) => entry.path));
   const groups = new Map();
   for (const path of files) {
+    if (excluded.has(path)) continue;
     const family = LANGUAGE_FAMILY[languageOf(path)] ?? null;
-    const runner = attributed.find((run) => RUNNER_FAMILY[run.runner] === family && run.files != null)?.runner ?? null;
-    const key = runner ?? `\0${family}`;
-    if (!groups.has(key)) groups.set(key, { runner, family, files: [] });
+    const framework = fileOf.get(path)?.testFramework ?? null;
+    const runs = (run) => (framework != null ? run.runner === framework : RUNNER_FAMILY[run.runner] === family);
+    if (attributed.some((run) => run.files == null && runs(run))) continue;
+    const listed = attributed.find((run) => run.files != null && runs(run))?.runner ?? null;
+    // sh reads ** as *, so a glob a shell expands can leave files out.
+    const star = listed != null && missed.some((entry) => entry.twoStars && path.startsWith(entry.base));
+    const key = `${listed ?? framework ?? `\0${family}`}\0${star}`;
+    if (!groups.has(key)) groups.set(key, { listed, framework, family, star, files: [] });
     groups.get(key).files.push(path);
   }
-  return [...groups.values()].map(({ runner, family, files: group }) => {
-    const way = runner ? DISCOVERY[runner] : null;
-    const fallback = !way ? runnerFor(family === 'python' ? 'python' : kinds.get(partOf.get(group[0]))?.kind ?? 'node', { repository }) : null;
+  return [...groups.values()].map(({ listed, framework, family, star, files: group }) => {
+    const facts = { files: group.sort(), count: group.length };
+    if (listed != null && star) {
+      return {
+        rule: 'G2',
+        facts,
+        suggest: { runner: listed, text: `the shell a package script runs in reads ** in a glob as *, so the run leaves these out: quote the glob so ${listed} expands ** itself` },
+        source: { from: 'external', text: 'the POSIX shell, whose pattern matching has no **' },
+      };
+    }
+    if (listed != null) {
+      const way = DISCOVERY[listed] ?? { text: `let ${listed}'s own discovery collect them, or name their directory in the run`, source: `${listed}'s test discovery` };
+      return { rule: 'G2', facts, suggest: { runner: listed, text: way.text }, source: { from: 'external', text: way.source } };
+    }
+    if (framework != null) {
+      return {
+        rule: 'G2',
+        facts,
+        suggest: { runner: framework, text: `run them in CI with ${framework}, the runner they are written for` },
+        source: { from: 'external', text: `the test framework the files import (${FRAMEWORK_MODULES[framework] ?? framework})` },
+      };
+    }
+    const fallback = runnerFor(family === 'python' ? 'python' : kinds.get(partOf.get(group[0]))?.kind ?? 'node', { repository });
     return {
       rule: 'G2',
-      facts: { files: group.sort(), count: group.length },
-      suggest: way ? { runner, text: way.text } : { ...(fallback ? { runner: fallback.runner } : {}), text: 'run them in CI with the runner they are written for' },
-      source: way ? { from: 'external', text: way.source } : fallback?.source ?? null,
+      facts,
+      suggest: { ...(fallback ? { runner: fallback.runner } : {}), text: 'run them in CI with the runner they are written for' },
+      source: fallback?.source ?? null,
     };
   });
 }
@@ -183,20 +237,24 @@ function coverageRule({ attributed, notAttributed }) {
   return out;
 }
 
-// G3: a command the repository installs that no test runs as a process.
-// A desktop app or a game is started by a person, not a test harness, and a
-// Cargo example is no command anyone installs.
-function commandRule(doors, reach) {
+// G3: a command the repository installs that nothing runs end to end: no
+// test imports or runs its entry, and no workflow starts it. A test that
+// imports the entry drives it in-process with its arguments (click's
+// CliRunner, main(argv)); a workflow that runs it, a dogfood run or a smoke
+// step, starts it as a person does. A desktop app or a game is started by a
+// person, not a test harness, and a Cargo example is no command anyone
+// installs.
+function commandRule(doors, reach, workflows) {
+  const started = new Set(workflows.flatMap((door) => (door.runs ?? []).filter((run) => run.runKind === 'executes' && !run.built && !run.directory).map((run) => run.path)));
   const out = [];
   for (const door of doors) {
     if (door.kind !== 'command' || door.app || door.example) continue;
     const entry = (door.runs ?? []).find((run) => run.runKind === 'executes')?.path;
-    if (!entry || reach.ran.has(entry)) continue;
-    const imported = reach.files.get(entry);
+    if (!entry || reach.files.has(entry) || reach.ran.has(entry) || started.has(entry)) continue;
     out.push({
       rule: 'G3',
       path: entry,
-      facts: { command: door.name, entry, manifest: door.file, reach: imported ? `${imported.test} imports it, but no test runs ${door.name}` : 'no test imports or runs it' },
+      facts: { command: door.name, entry, manifest: door.file, reach: 'no test imports or runs it, and no workflow starts it' },
       suggest: { text: `an end-to-end test that runs ${door.name} as a person does: start it with its arguments and check its output and exit code` },
       source: SMOKE_GATE,
     });
@@ -206,7 +264,7 @@ function commandRule(doors, reach) {
 
 // The order of the code gaps, fixed: on a door's path first, then fan-in,
 // changes in the history window, failure paths, and the path itself.
-function rank(gaps, { structure, statistics, fileOf, partOf, isTest }) {
+function rank(gaps, { structure, statistics, fileOf, partOf }) {
   const doorParts = new Set((structure.doors ?? []).filter(shipsOrRunsInCi).flatMap((door) => (door.reach ?? []).map((entry) => entry.boundary)));
   const importers = new Map();
   for (const file of fileOf.values()) {

@@ -1,6 +1,7 @@
 import { commandLines } from '../core/commands.js';
 import { loadsManifest } from '../core/languages.js';
 import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
+import { isSmokeTest } from '../core/test-names.js';
 import { ENGINE } from './engine.js';
 import { isNamedTest, testReachOf } from './test-reach.js';
 import { roleFor } from './templates.js';
@@ -365,9 +366,14 @@ function carryFile(file) {
   if (file.testsInside) out.testsInside = true;
   if (file.testSuite) out.testSuite = true;
   if (file.failurePaths?.length > 0) out.failurePaths = file.failurePaths.map((site) => ({ ...site }));
+  // The framework a test file is written for, by what it imports: the runner
+  // that would run it where no workflow does.
+  const framework = isTestFile(file.path) || file.testSuite ? testFramework(file) : null;
+  if (framework) out.testFramework = framework;
   // What a test runs as a child process, and which of those it runs by the
   // name a manifest installs them as: a test reaches them by running them.
-  if ((isTestFile(file.path) || file.testSuite) && file.spawns?.length > 0) {
+  // A smoke test by its name is a test here too.
+  if ((isTestFile(file.path) || file.testSuite || isSmokeTest(file.path)) && file.spawns?.length > 0) {
     out.spawns = file.spawns.filter((path) => !inAtlas(path));
     if (file.spawnsInstalled?.length > 0) out.spawnsInstalled = file.spawnsInstalled.filter((path) => !inAtlas(path));
   }
@@ -391,6 +397,32 @@ function carryFile(file) {
     out.entryRule = file.entryRule;
   }
   return out;
+}
+
+// The test frameworks a file's imports name, and the runner each is run
+// with; the first a file imports is the one it is written for.
+const TEST_FRAMEWORKS = [
+  [/^vitest(?:\/|$)/, 'vitest'],
+  [/^@playwright\/test$/, 'playwright test'],
+  [/^node:test$/, 'node --test'],
+  [/^@jest\/globals$/, 'jest'],
+  [/^mocha$/, 'mocha'],
+  [/^bun:test$/, 'bun test'],
+  [/^ava$/, 'ava'],
+  [/^uvu(?:\/|$)/, 'uvu'],
+  [/^tap$/, 'tap'],
+  [/^pytest$/, 'pytest'],
+  [/^unittest$/, 'unittest'],
+];
+
+function testFramework(file) {
+  if (!Array.isArray(file.imports)) return null;
+  for (const site of file.imports) {
+    if (typeof site.specifier !== 'string') continue;
+    const hit = TEST_FRAMEWORKS.find(([pattern]) => pattern.test(site.specifier));
+    if (hit) return hit[1];
+  }
+  return null;
 }
 
 /**

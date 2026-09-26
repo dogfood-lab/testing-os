@@ -9,7 +9,8 @@ import { makeRepo } from '../core/fixture-repo.js';
 
 // The test-gap rules, their ranking and their size (docs/atlas-test-gaps.spec.md,
 // acceptance 3, 6 and 7): each rule fires on the gaps fixture and stays silent
-// on gaps-quiet, where each of its shapes is closed.
+// on gaps-quiet, where each of its shapes is closed. gaps-shapes and
+// gaps-frameworks hold the shapes the fleet run found the rules wrong on.
 
 const FIXTURES = resolve(import.meta.dirname, '../../../fixtures/atlas');
 const PARTS = [
@@ -28,10 +29,10 @@ after(() => {
   while (roots.length > 0) rmSync(roots.pop(), { recursive: true, force: true });
 });
 
-function gapsOf(fixture) {
+function gapsOf(fixture, parts = PARTS) {
   const root = makeRepo(resolve(FIXTURES, fixture));
   roots.push(root);
-  return testGaps(buildArtifact(mapRepository({ repoPath: root, boundaries: PARTS }), '0'.repeat(40)), { statistics: STATISTICS });
+  return testGaps(buildArtifact(mapRepository({ repoPath: root, boundaries: parts }), '0'.repeat(40)), { statistics: STATISTICS });
 }
 
 const fired = gapsOf('gaps');
@@ -118,5 +119,83 @@ describe('ranking and size', () => {
   it('lists hygiene items apart from code gaps', () => {
     assert.deepEqual(fired.hygiene.map((entry) => entry.rule).sort(), ['G2', 'G4']);
     assert.equal(fired.gaps.items.some((item) => item.rule === 'G2' || item.rule === 'G4'), false);
+  });
+});
+
+const shapes = gapsOf('gaps-shapes', [
+  { name: 'bin', globs: ['bin/**'], role: 'code' },
+  { name: 'src', globs: ['src/**'], role: 'code' },
+  { name: 'scripts', globs: ['scripts/**'], role: 'code' },
+  { name: 'fixtures', globs: ['fixtures/**'], role: 'code' },
+  { name: 'test', globs: ['test/**'], role: 'test' },
+  { name: 'config', globs: ['package.json', 'README.md', 'vitest.config.ts', '.github/**'], role: 'config' },
+]);
+
+describe('the shapes the fleet run found the rules wrong on', () => {
+  it('reads a script a test step runs, and what it starts, as run by that step (study-swarm)', () => {
+    assert.equal(ofRule(shapes, 'G3').some((entry) => entry.facts.command === 'shapecli'), false);
+    assert.equal(ofRule(shapes, 'G6').some((entry) => entry.path === 'bin/shapecli.mjs' || entry.path === 'scripts/smoke.mjs'), false);
+  });
+
+  it('reads a smoke test by its name as a test, whose throws are its assertions', () => {
+    assert.equal(ofRule(shapes, 'G6').some((entry) => entry.path === 'scripts/pack-smoke.mjs'), false);
+  });
+
+  it('leaves G3 silent for a command whose entry a test imports and drives (the CliRunner shape)', () => {
+    assert.equal(ofRule(shapes, 'G3').some((entry) => entry.facts.command === 'importedcli'), false);
+  });
+
+  it('leaves G3 silent for a command a workflow runs as a person would (claude-guardian)', () => {
+    assert.equal(ofRule(shapes, 'G3').some((entry) => entry.facts.command === 'dogcli'), false);
+  });
+
+  it('names the runner for a file\'s own language, not its part\'s', () => {
+    const [g6] = ofRule(shapes, 'G6');
+    assert.equal(g6.path, 'scripts/measure.py');
+    assert.equal(g6.suggest.runner, 'pytest with pytest-cov');
+    assert.equal(g6.source.from, 'fleet');
+  });
+
+  it('counts no file among fixtures as a gap', () => {
+    assert.deepEqual(ofRule(shapes, 'G6').map((entry) => entry.path), ['scripts/measure.py']);
+    assert.equal(shapes.gaps.items.some((item) => (item.path ?? '').startsWith('fixtures/')), false);
+  });
+});
+
+const frameworks = gapsOf('gaps-frameworks', [
+  { name: 'lib', globs: ['lib/**'], role: 'code' },
+  { name: 'test', globs: ['test/**', 'other/**', 'e2e/**', 'ava/**'], role: 'test' },
+  { name: 'config', globs: ['package.json', 'README.md', 'vitest.config.ts', '.github/**'], role: 'config' },
+]);
+
+describe('G2 and the runner each test file is written for', () => {
+  const byRunner = (runner) => ofRule(frameworks, 'G2').find((entry) => entry.suggest.runner === runner);
+
+  it('points a file its runner\'s discovery would collect to that discovery', () => {
+    assert.deepEqual(byRunner('vitest').facts.files, ['other/d.test.ts']);
+  });
+
+  it('names the framework a file imports when no workflow runs it (vocal-synth-engine)', () => {
+    const playwright = byRunner('playwright test');
+    assert.deepEqual(playwright.facts.files, ['e2e/b.spec.ts']);
+    assert.match(playwright.suggest.text, /run them in CI with playwright test/);
+    assert.equal(playwright.source.from, 'external');
+    assert.match(playwright.source.text, /@playwright\/test/);
+  });
+
+  it('says to quote a glob the shell reads ** in as * (repo-dataset, stillpoint)', () => {
+    const node = byRunner('node --test');
+    assert.deepEqual(node.facts.files, ['lib/y.test.js']);
+    assert.match(node.suggest.text, /quote the glob/);
+  });
+
+  it('stays silent for a file its runner\'s configuration leaves out on purpose, and says which', () => {
+    assert.equal(ofRule(frameworks, 'G2').some((entry) => entry.facts.files.includes('test/slow/corpus.test.ts')), false);
+    assert.deepEqual(frameworks.facts.leftOut, [{ path: 'test/slow/corpus.test.ts', config: 'vitest.config.ts' }]);
+  });
+
+  it('stays silent for files a runner whose files Atlas does not list may run', () => {
+    assert.equal(ofRule(frameworks, 'G2').some((entry) => entry.facts.files.includes('ava/one.test.js')), false);
+    assert.equal(ofRule(frameworks, 'G2').length, 3);
   });
 });

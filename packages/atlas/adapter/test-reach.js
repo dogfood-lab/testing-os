@@ -1,5 +1,6 @@
 import { isCodePath } from '../core/languages.js';
 import { isTestFile } from '../core/landings.js';
+import { isSmokeTest } from '../core/test-names.js';
 
 /**
  * What tests reach, read from a map (structure.json). A test reaches a file
@@ -13,6 +14,11 @@ import { isTestFile } from '../core/landings.js';
  *   imports is run with it.
  * - discovers: the file holds tests of its own that a runner finds, as
  *   cargo test finds a #[cfg(test)] module (parsed).
+ *
+ * A smoke test by its name (scripts/smoke.mjs) is a test, and so is what a
+ * workflow's test step runs on its way to the tests: the script a step
+ * named Smoke-test the CLI runs, and the CLI that script starts, are run by
+ * that step, and the fact names it.
  *
  * Reach is not proof that a test exercises the file: a test that mocks a
  * module still imports it. So a file with no fact is one no test imports or
@@ -35,8 +41,14 @@ export function isNamedTest(file) {
   return (NAMED_TEST.test(file.path) || file.testSuite === true) && !FIXTURE_DIRS.test(file.path);
 }
 
-function isTest(file) {
-  return isTestFile(file.path) || file.testSuite === true;
+/** Whether a path lies among fixtures, material a test reads. */
+export function isFixture(path) {
+  return FIXTURE_DIRS.test(path);
+}
+
+/** Whether a file is a test: named as one, a suite a runner finds, or a smoke test. */
+export function isTest(file) {
+  return isTestFile(file.path) || file.testSuite === true || isSmokeTest(file.path);
 }
 
 // A test a test starts from: a test, and not one of a repository kept among
@@ -96,7 +108,7 @@ export function testReachOf(structure, { tests = null } = {}) {
     for (const start of starts) {
       if (visited.has(start.path)) continue;
       visited.add(start.path);
-      if (start.reached) sink(start.path, fact(kind, start.basis, start.test, []));
+      if (start.reached) sink(start.path, fact(kind, start.basis, start.test, start.through, start.step));
       queue.push(start);
     }
     for (let i = 0; i < queue.length; i += 1) {
@@ -110,8 +122,8 @@ export function testReachOf(structure, { tests = null } = {}) {
         }
         if (visited.has(target)) continue;
         visited.add(target);
-        sink(target, fact(kind, at.basis, at.test, through));
-        queue.push({ path: target, test: at.test, basis: at.basis, through, reached: true });
+        sink(target, fact(kind, at.basis, at.test, through, at.step));
+        queue.push({ path: target, test: at.test, step: at.step, basis: at.basis, through, reached: true });
       }
     }
   };
@@ -126,6 +138,17 @@ export function testReachOf(structure, { tests = null } = {}) {
   walk(spawned, 'runs', run);
   if (tests == null) {
     for (const { file } of listed) if (file.testsInside && !isTest(file)) reach(file.path, { kind: 'discovers', basis: 'parsed' });
+    // What a workflow's test step runs on its way: each file of its chain,
+    // run by the step, the later ones through the earlier.
+    for (const door of structure.doors ?? []) {
+      if (door.kind || door.parseError) continue;
+      for (const entry of door.tests ?? []) {
+        const chain = (entry.through ?? []).filter((hop) => byPath.has(hop));
+        if (chain.length === 0) continue;
+        const step = `${door.file} › ${entry.job} › ${entry.step}`;
+        walk(chain.map((path, index) => ({ path, test: null, step, basis: 'parsed', through: chain.slice(0, index), reached: true })), 'runs', run);
+      }
+    }
   }
 
   const parts = new Map();
@@ -140,8 +163,8 @@ export function testReachOf(structure, { tests = null } = {}) {
   return { files, parts, ran };
 }
 
-function fact(kind, basis, test, through) {
-  return { kind, basis, test, ...(through.length > 0 ? { through } : {}) };
+function fact(kind, basis, test, through, step = null) {
+  return { kind, basis, ...(test != null ? { test } : {}), ...(step != null ? { step } : {}), ...(through.length > 0 ? { through } : {}) };
 }
 
 function strongerFirst(a, b) {
