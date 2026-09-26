@@ -25,6 +25,8 @@ Six tools, ordered by how often the evidence says the question is asked. Reachab
 | `atlas_changes` | What changed structurally since a commit. | `atlas diff --base` |
 | `atlas_refresh` | Re-maps the checkout with this engine into a cache outside the repository, in the background, and reports progress. Later answers say which map they used. | `mapRepository` |
 
+A seventh tool came with the test-gap slice: `atlas_test_gaps`, what no test reaches and what should, specified in `docs/atlas-test-gaps.spec.md`. `atlas_check_change` gained that slice's facts for each changed code file.
+
 The first five answer from the committed map at once (about a second, as `explain` does today). A full map takes 1 min 43 s and a full check 1 min 10 s on this repository (measured 2026-09-26), so nothing interactive waits on one. `atlas_check_change` re-reads only the changed files; target under 5 s for 20 changed files here.
 
 **What `atlas_check_change` can settle.** It recomputes what the changed files import, write and read, and updates who imports what from that. It cannot settle a change to a manifest, a workflow, a configuration file, the boundaries file, or a deleted or renamed file; for those it says a full refresh is needed and does not guess.

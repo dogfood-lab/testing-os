@@ -21,7 +21,11 @@ A test **reaches** a file when:
 - a test runs it as a process: a spawn or exec of the file, or of an installed command whose entry is the file; or
 - a runner's own discovery collects tests inside its part.
 
-Every reach fact carries its basis (the sidecar spec's `basis`) and says which of the three it is. Reach is not proof of exercise: a test that mocks a module still imports it (Hora & Robbes 2026: agents add mocks more often). So facts say **"no test imports or runs this"**, never "untested". The word *untested* is reserved for measured coverage (G7). Reach is stated at the file and part level, where test-to-code linking is reliable; finer claims are qualified (White et al. 2020: 93% precision for class-level links, 78% at function level).
+Every reach fact carries its basis (the sidecar spec's `basis`) and says which of the three it is.
+
+**A fourth fact, added by the fleet check.** A test may spell a file's name in a string by a way the map cannot follow to an import or a run: a conftest helper that runs a tool by name, or a path joined to a root another file sets. That fact is `names`, basis `text`, and what the named file imports is named with it. Atlas cannot tell whether such a test runs the file, reads it, or means another file of that name, so no rule says no test reaches it. The answers say "spells its name in a string" (`docs/atlas-test-gaps.fleet-check.md`).
+
+Reach is not proof of exercise: a test that mocks a module still imports it (Hora & Robbes 2026: agents add mocks more often). So facts say **"no test imports or runs this"**, never "untested". The word *untested* is reserved for measured coverage (G7). Reach is stated at the file and part level, where test-to-code linking is reliable; finer claims are qualified (White et al. 2020: 93% precision for class-level links, 78% at function level).
 
 ## Three layers
 
@@ -147,7 +151,7 @@ Every test is red on the tree before the slice.
 7. **Size:** at most five ranked code gaps and a count of the rest.
 8. **Offline:** the modules behind this feature import no network module (the static check from the sidecar spec, applied to the CLI as well).
 9. **Read-only:** the checkout is as it was after every command.
-10. **The fleet run:** every rule over all fleet maps, with its firing count, and the coordinator's error rate per rule and per kind. The precision bar is met before shipping.
+10. **The fleet run:** every rule over all fleet maps, with its firing count, and the coordinator's error rate per rule and per kind. The precision bar is met before shipping. Met on 2026-09-26: `docs/atlas-test-gaps.fleet-check.md`.
 
 ## Cross-family review (2026-09-26)
 

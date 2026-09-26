@@ -58,6 +58,33 @@ npx --yes @dogfood-lab/atlas explain packages/ingest/persist.js
 
 `explain` says what a file, a directory or a part is in the system, for a person about to edit it or an agent in a coding session: its part, the doors that run it, build it into a binary or pass through its part, what it imports and what imports it (a manifest it loads is listed under what it reads, never under what it imports), its own test, where it writes and who reads that, the order of work inside it, and what it changes with. Given a place that code writes or reads, it says who writes it and who reads it. `--json` gives the same facts as fields. It reads the committed map and never maps again, so it answers at once and names the commit it describes.
 
+## Ask what no test reaches
+
+```bash
+npx --yes @dogfood-lab/atlas gaps
+npx --yes @dogfood-lab/atlas gaps packages/ingest
+```
+
+`gaps` says what no test reaches and what should reach it, for the repository, a part, a directory or a file. It reads the committed map alone: it never maps, writes nothing and makes no network call.
+
+It gives the facts first:
+- what CI runs, and the runner behind each run;
+- which parts and files tests reach, and how: a test imports the file, runs it, holds tests a runner finds in it, or spells its name in a string Atlas cannot follow;
+- the code gaps, ranked: on the path of a door that ships or runs in CI first, then fan-in, changes and failure paths. Five are shown, with a count of the rest.
+- apart from them, the test files no workflow runs, coverage CI does not collect, and the installed commands nothing runs.
+
+Then the suggestions. Each names its rule, the facts that triggered it and the source of what it suggests: the house standard first, then what the fleet does, then outside documentation.
+
+| Rule | Fires when |
+|------|------------|
+| G1 | A code part no test reaches is of a kind no runner here tests: a first test of its entry. |
+| G2 | Test files no workflow runs: how the runner they are written for would collect them. |
+| G3 | A command the repository installs, which no test runs and no workflow starts: an end-to-end test that runs it as a person does. |
+| G4 | CI runs a language's tests and collects no coverage: the studio's coverage recipe. |
+| G6 | A code file no test reaches holds failure paths: tests that make them run. |
+
+Reach is not proof a test exercises a file, so Atlas says "no test imports or runs this", never "untested". Where it cannot see enough it says so and stays silent: while a test step's runner cannot be named, and for a file whose name a test spells in a string. Every rule was held to a precision bar over the 79 fleet repositories: wrong at most once in ten, overall and for each kind of code it fired on five or more times. G1 and G2 fired fewer than 20 times and are provisional. The record is `docs/atlas-test-gaps.fleet-check.md`. `--json` prints the same answer as fields.
+
 ## Ask from an agent
 
 `atlas mcp` lets an agent ask the same questions during a session, over the Model Context Protocol. The agent's client starts it on stdio, for the repository the agent works in.
@@ -75,7 +102,8 @@ Any other client starts the same command, `atlas` with the argument `mcp`. On Wi
 | `atlas_explain` | One file, directory or part, as `atlas explain` answers it, including who writes and who reads a place. |
 | `atlas_reach` | What a change to given files reaches: the doors that run them or pass through their part, and the files and parts that import them or read what they write, production and tests apart. |
 | `atlas_changes` | What changed structurally between the map committed at a commit and the map it answers from: imports between parts (a new cycle first), doors, writers and readers of places, parts, and new files in no part. |
-| `atlas_check_change` | What a change does before it is committed: the tests that reach the changed files, the doors that run them, imports between parts gained or lost, files in no part, and whether the map must be regenerated. It reads only the changed files again. A changed manifest, workflow, boundary file or configuration the engine reads, or a deleted file, gets "a full refresh is needed" instead. |
+| `atlas_check_change` | What a change does before it is committed: the tests that reach the changed files, the doors that run them, imports between parts gained or lost, files in no part, and whether the map must be regenerated. For each changed code file it says how tests reach it, or that none does and the failure paths it holds as it is now. It reads only the changed files again. A changed manifest, workflow, boundary file or configuration the engine reads, or a deleted file, gets "a full refresh is needed" instead. |
+| `atlas_test_gaps` | What no test reaches and what should, as `atlas gaps` answers it: facts in groups of one basis, then the suggestions apart. |
 | `atlas_refresh` | Maps the checkout again in the background, into a cache outside the repository. Later answers use the new map once it is complete, and calling it again reports progress. |
 
 Every answer begins with where it came from: the map's commit, the Atlas version that made it, and any file it names that changed after the map. Every fact carries its basis (`parsed`, `declared`, `text`, `weak`, `history`, `unresolved` or `outside`), and every answer lists what Atlas cannot see for that question. An answer is at most 8 KB of JSON, or 64 KB with `full: true`, most important first. A list cut to fit says so, and a cut list at the top of an answer carries a cursor for the rest. `part` keeps the entries in one part, and `kind` keeps one kind of fact. A failure is a tool error with the same fields the CLI prints: the code, one sentence, what changed and what to do.
