@@ -4,13 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Atlas</title>
+<link rel="alternate" type="text/plain" href="https://raw.githubusercontent.com/dogfood-lab/testing-os/atlas-render/indexes/atlas/llms.txt" title="Atlas fleet index">
 <!--
   Atlas page: how one repository works, rendered from its page.json on the
   atlas-render branch. With ?repo=<owner>/<name> it shows that repository;
   without it, the list of every rendered repository. The sentences are built
   by render.js from the same fields the committed atlas/README.md is built
   from. The only data URL is CONFIG.atlasBase, which a meta tag named
-  atlas-base overrides; a 404 is a state, not an error.
+  atlas-base overrides; a 404 is a state, not an error. For a reader that runs
+  no script, the link above and the noscript block below name the agent index
+  the weekly render publishes; the Atlas container rewrites both to its own.
 -->
 <script>
 "use strict";
@@ -127,6 +130,9 @@ footer { border-top: 1px solid var(--border); padding: 14px 0 30px; font-size: 1
   </div>
 </header>
 <main class="wrap" id="content">
+  <noscript>
+    <p class="state">Atlas draws this page with JavaScript. Without it, the <a href="https://raw.githubusercontent.com/dogfood-lab/testing-os/atlas-render/indexes/atlas/llms.txt">Atlas fleet index</a> lists every rendered repository as plain text, with links to its page as markdown and as page.json.</p>
+  </noscript>
   <article id="page" aria-live="polite" aria-busy="true">
     <p class="state" role="status">Loading the map.</p>
   </article>

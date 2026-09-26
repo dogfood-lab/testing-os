@@ -298,6 +298,13 @@ describe('fleet server', () => {
     assert.throws(() => servedShell('<html><body></body></html>'), /no <head>/);
   });
 
+  it("points the page's script-free pointer at this server's index, never the published one", () => {
+    const shell = servedShell(readFileSync(join(ASSETS, 'index.html'), 'utf8'));
+    assert.match(shell, /<link rel="alternate" type="text\/plain" href="\/llms\.txt"/);
+    assert.match(shell, /<noscript>[\s\S]*?<a href="\/llms\.txt">[\s\S]*?<\/noscript>/);
+    assert.doesNotMatch(shell, /atlas-render\/indexes\/atlas\/llms\.txt/);
+  });
+
   it('serves the agent index at /llms.txt, a line per rendered repository, every link on this server', async (t) => {
     const repo = checkoutOf('doors', 'https://github.com/acme/doors.git');
     const dataDir = scratch('atlas-fleet-data-');

@@ -780,13 +780,18 @@ const ASSETS = new Set(['render.js', 'hero.webp']);
 const DATA_PREFIXES = ['/indexes/atlas/', '/atlas/'];
 const DATA_FILE = /^(?:(?:state|fleet)\.json|llms\.txt|[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+\/(?:structure\.json|statistics\.json|page\.json|divergence\.json|history\.json|README\.md))$/;
 
+// The public page's script-free pointer names the index on the render branch.
+const PUBLISHED_INDEX = /https:\/\/raw\.githubusercontent\.com\/[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+\/atlas-render\/indexes\/atlas\/llms\.txt/g;
+
 /**
- * The page shell with its data base pointed at this server. The public page
+ * The page shell with its data base pointed at this server, and its pointer
+ * for a reader that runs no script at this server's own /llms.txt, so a
+ * private fleet never sends an agent to the published one. The public page
  * has no such tag and reads the render branch.
  */
 export function servedShell(html) {
   if (!/<head>/i.test(html)) throw new Error('the Atlas page shell has no <head> to name its data base in');
-  return html.replace(/<head>/i, '<head>\n<meta name="atlas-base" content="/">');
+  return html.replace(/<head>/i, '<head>\n<meta name="atlas-base" content="/">').replace(PUBLISHED_INDEX, '/llms.txt');
 }
 
 /**
