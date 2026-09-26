@@ -39,6 +39,16 @@ describe('the plan for a repository', () => {
     });
   }
 
+  it('adds to a literal block run at the same place in a checkout with CRLF line endings', () => {
+    const { files, read, facts, expected } = fixture('pytest-matrix');
+    const crlf = new Map(files);
+    crlf.set(WORKFLOW, files.get(WORKFLOW).replaceAll('\n', '\r\n'));
+    const plan = planRepository({ files: crlf, read, facts });
+    assert.equal(plan.status, 'ready');
+    assert.match(plan.files[0].after, /--cov-report=term-missing --junitxml=junit\.xml\r?\n/);
+    assert.equal(plan.files[0].after.replaceAll('\r\n', '\n'), expected);
+  });
+
   it('says what it changes, in plain words', () => {
     const { files, read, facts } = fixture('vitest-pnpm');
     const plan = planRepository({ files, read, facts });
