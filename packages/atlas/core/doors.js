@@ -5,6 +5,7 @@ import { parse } from 'yaml';
 import { better, cleanDir, commandLines, readCommands, readContainer, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
 import { godotProjects } from './godot.js';
 import { isTestFile } from './landings.js';
+import { runsAProgram } from './step-programs.js';
 import { storedText } from './text.js';
 
 const WORKFLOW = /^\.github\/workflows\/[^/]+\.ya?ml$/;
@@ -529,7 +530,9 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
         const end = stepEnds.find((entry) => entry.through.some((hop) => TEST_WORD.test(hop))) ?? stepEnds.find((entry) => entry.through.length > 0);
         // The files such a step runs, which its tests are, or run.
         const ran = [...stepRan].sort().slice(0, STEP_RAN_KEPT);
-        tests.push({ job, step: name, runner: null, ...(end ? { through: [...end.through] } : {}), ...(ran.length > 0 ? { ran } : {}) });
+        // One that runs only the shell's own tools, an audit, a linter or a
+        // type-check runs no tests, whatever its name (core/step-programs.js).
+        if (ran.length > 0 || end || runsAProgram(step.run)) tests.push({ job, step: name, runner: null, ...(end ? { through: [...end.through] } : {}), ...(ran.length > 0 ? { ran } : {}) });
       }
       jobTexts.push(step.run);
       const released = releaseUploads(expandEnv(step.run, lookup));

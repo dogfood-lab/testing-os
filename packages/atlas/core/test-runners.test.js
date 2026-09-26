@@ -84,6 +84,7 @@ describe('runner attribution', () => {
       { job: 'checks', step: '3', runner: null, through: ['npm test'] },
       { job: 'checks', step: 'Integration tests', runner: null, through: ['scripts/ci.sh', 'scripts/run-suite.sh'], ran: ['scripts/ci.sh', 'scripts/run-suite.sh'] },
       { job: 'checks', step: 'Headless suite', runner: null },
+      { job: 'checks', step: 'Smoke-test the binary', runner: null },
     ]);
   });
 

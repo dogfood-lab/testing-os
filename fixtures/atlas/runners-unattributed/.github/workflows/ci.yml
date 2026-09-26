@@ -18,3 +18,21 @@ jobs:
         run: godot --headless --path . --script res://tools/headless.gd
       - name: Upload suite log
         run: cp suite.log "$RUNNER_TEMP/"
+      - name: Check for placeholder tests
+        run: |
+          if grep -rn "expect(true).toBe(true)" src/; then
+            echo "::error::placeholder tests"
+            exit 1
+          fi
+      - name: Audit the test toolchain
+        run: pip-audit --strict
+      - name: Typecheck test files
+        run: npm run typecheck:tests
+      - name: Test count matches its marker
+        run: |
+          COUNT="$(grep -oE '[0-9]+ tests' README.md | head -1)"
+          echo "stated: $COUNT"
+      - name: Smoke-test the binary
+        run: |
+          BIN="dist/tool-linux"
+          "$BIN" --version
