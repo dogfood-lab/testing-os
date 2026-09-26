@@ -112,7 +112,9 @@ export function settleSpawnHelpers(files, spawned) {
 // null when the call hands nothing to a child process; an empty literal
 // command names nothing and is not counted as built either. Inside a helper,
 // the call that runs the helper's own parameter is counted at each call to
-// the helper instead.
+// the helper instead; one that spells its command whatever program it is
+// handed (spawn(pythonPath, ['-m', 'jobs'])) is read where it stands too,
+// since a call from another file fills in no template.
 function commandOf(node, pathText, helpers) {
   const callee = node.childForFieldName('function');
   const args = node.childForFieldName('arguments')?.namedChildren ?? [];
@@ -158,6 +160,10 @@ function commandOf(node, pathText, helpers) {
   if (name == null) return null;
   if (args.length === 0) return null;
   if (helpers.params.has(key(args[0]))) return null;
+  if (helpers.handed.has(key(args[0]))) {
+    const read = commandFrom(args[0], args[1], ARGUMENT_LISTS.has(name), pathText);
+    return read?.command != null ? read : null;
+  }
   return commandFrom(args[0], args[1], ARGUMENT_LISTS.has(name), pathText);
 }
 
@@ -260,6 +266,8 @@ function commandHelpers(root) {
   const exported = new Map();
   const params = new Set();
   const programs = new Map();
+  // The program and list nodes of a helper that hands spawn its parameters.
+  const given = new Set();
   for (const statement of root.namedChildren) {
     const isExport = statement.type === 'export_statement';
     const declaration = isExport ? statement.childForFieldName('declaration') : statement;
@@ -275,10 +283,10 @@ function commandHelpers(root) {
       const handed = handsProgram(fn, names);
       if (handed == null) continue;
       programs.set(name, handed);
-      for (const node of handed.nodes) params.add(key(node));
+      for (const node of handed.nodes) given.add(key(node));
     }
   }
-  return { byName, exported, params, programs };
+  return { byName, exported, params, programs, handed: given };
 }
 
 // A helper that hands spawn or execFile a program and an argument list made
