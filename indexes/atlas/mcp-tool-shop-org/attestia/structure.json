@@ -21,7 +21,7 @@
           "path": ".github/pull_request_template.md"
         },
         {
-          "hash": "6c4e45ab1ebc568c31005a8d3ad4e114176d484de2ad085024c3e539c3c7e016",
+          "hash": "f54815c45c691937f49bebf6489e7c1740e659f7cc972a628e725af84ad77f31",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -4669,7 +4669,7 @@
           "path": "VERIFICATION_GUIDE.md"
         },
         {
-          "hash": "8946426c34daba68dd0098ee8e36f84360c9f4d5e8be4e2520ff97a0f3a928e5",
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
           "path": "codecov.yml"
         },
         {
@@ -7951,6 +7951,7 @@
             "**/*.tsx",
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package.json",
             "pnpm-lock.yaml",
             "site/astro.config.mjs",
@@ -7971,6 +7972,7 @@
             "**/*.tsx",
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package.json",
             "pnpm-lock.yaml",
             "site/astro.config.mjs",
@@ -7985,7 +7987,9 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
+        "actions/upload-artifact",
         "codecov/codecov-action",
         "pnpm/action-setup"
       ],
@@ -9992,8 +9996,9 @@
       "to": "types"
     }
   ],
+  "engine": "1.23.0",
   "generatedFrom": {
-    "commit": "47e1a456d9ec50c9bec0e9fb73890e9e5da93621",
+    "commit": "8b49fcc6bf0a62f24852fb9ff3c9f3e23e0aa7b1",
     "tracked": 591
   },
   "landings": [
@@ -10044,7 +10049,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "scripts/status.js",
@@ -10084,7 +10090,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         }
       ],
       "target": "packages/attestia/package.json",

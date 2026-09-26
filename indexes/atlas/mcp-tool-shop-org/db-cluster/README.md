@@ -1,6 +1,6 @@
 # db-cluster: how it works
 
-Mapped at 2026-09-25 from commit fe9bf66.
+Mapped at 2026-09-26 from commit fe9bf66 by Atlas 1.23.0.
 
 ## What this is
 

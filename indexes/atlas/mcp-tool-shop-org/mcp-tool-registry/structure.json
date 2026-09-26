@@ -1435,6 +1435,7 @@
         },
         {
           "by": ".github/workflows/ci.yml",
+          "confidence": "config",
           "target": "registry.json"
         },
         {
@@ -1937,6 +1938,7 @@
     }
   ],
   "edges": [],
+  "engine": "1.23.0",
   "generatedFrom": {
     "commit": "2bb195fa484d4e572d28ef756d371624b1efac32",
     "tracked": 105
@@ -2328,7 +2330,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/publish.yml"
+          "by": ".github/workflows/publish.yml",
+          "confidence": "config"
         }
       ],
       "target": "package-lock.json",
@@ -2364,7 +2367,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         },
         {
           "by": "scripts/build-bundles.mjs",

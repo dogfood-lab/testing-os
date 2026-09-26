@@ -1,6 +1,6 @@
 # runforge-vscode: how it works
 
-Mapped at 2026-09-25 from commit da77f7a.
+Mapped at 2026-09-26 from commit da77f7a by Atlas 1.23.0.
 
 ## What this is
 

@@ -29,7 +29,7 @@
           "path": ".github/websketch-logo.png"
         },
         {
-          "hash": "afc113de46980d2e930e79640f643ffd771447bdce3fa57c4cf6ed9d00547ac3",
+          "hash": "cdb03c31440a54b968b8ee1f631fe51890a860fce3fad5d37e72c9b1322d0933",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -155,6 +155,10 @@
         {
           "hash": "4f54bd19d731c6ba4030157c80c406dff51d3ef49b3be55188cd0cd84bcfcb3c",
           "path": "SHIP_GATE.md"
+        },
+        {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
         },
         {
           "hash": "05d4576abd4cde135e67db4b20fe69f7f2dcc82a09727a11d8646ab43182d549",
@@ -1135,7 +1139,10 @@
       "landings": [],
       "mentions": [],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -1394,6 +1401,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "src/**",
@@ -1406,7 +1414,9 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
+        "actions/upload-artifact",
         "codecov/codecov-action",
         "trufflesecurity/trufflehog"
       ],
@@ -1950,9 +1960,10 @@
       "to": "src"
     }
   ],
+  "engine": "1.23.0",
   "generatedFrom": {
-    "commit": "d18f24a18416d9e3243ba26386b47fab1bb961d7",
-    "tracked": 96
+    "commit": "6a7f45d8edf14fa1e5abd046bda09668a85312f3",
+    "tracked": 97
   },
   "landings": [
     {
@@ -1970,7 +1981,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "tests/stage-bc-regression.test.ts",

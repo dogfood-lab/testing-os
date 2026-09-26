@@ -3040,6 +3040,7 @@
       "readers": [
         {
           "by": ".github/workflows/ci.yml",
+          "confidence": "config",
           "target": "manifest.json"
         },
         {
@@ -3208,6 +3209,7 @@
       "to": "src"
     }
   ],
+  "engine": "1.23.0",
   "generatedFrom": {
     "commit": "5657ed46b83528aa6cb884a87e3af22722002cfb",
     "tracked": 387
@@ -3216,7 +3218,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         }
       ],
       "target": ".github/audit-allowlist.json",
@@ -3225,7 +3228,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         }
       ],
       "target": "CHANGELOG.md",
@@ -5992,7 +5996,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         },
         {
           "by": "site/integrations/model-passthrough.mjs",
@@ -6033,14 +6038,16 @@
       "target": "manifest.json",
       "writers": [
         {
-          "by": ".github/workflows/sync.yml"
+          "by": ".github/workflows/sync.yml",
+          "confidence": "config"
         }
       ]
     },
     {
       "readers": [
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "src/cli.ts",
@@ -6054,7 +6061,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/pages.yml"
+          "by": ".github/workflows/pages.yml",
+          "confidence": "config"
         }
       ],
       "target": "site/package-lock.json",

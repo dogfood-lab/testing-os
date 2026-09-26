@@ -1,6 +1,6 @@
 # stillpoint: how it works
 
-Mapped at 2026-09-25 from commit c7fbc27.
+Mapped at 2026-09-26 from commit c7fbc27 by Atlas 1.23.0.
 
 ## What this is
 
@@ -44,15 +44,7 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-- **packages/server/src/routes/api.test.ts** and **packages/ui/src/hooks/useRegulator.ts** changed together in 6 of 7 commits, and the ui part calls the server part over HTTP.
-- **packages/server/src/presets.ts** and **packages/ui/src/App.tsx** changed together in 5 of 6 commits, and the ui part calls the server part over HTTP.
-- **packages/server/src/routes/api.ts** and **packages/ui/src/hooks/useRegulator.ts** changed together in 6 of 8 commits, and the ui part calls the server part over HTTP.
-- **packages/server/src/routes/api.test.ts** and **packages/ui/src/App.tsx** changed together in 5 of 8 commits, and the ui part calls the server part over HTTP.
-- **packages/server/src/routes/api.ts** and **packages/ui/src/App.tsx** changed together in 5 of 9 commits, and the ui part calls the server part over HTTP.
-
-1 file changed together with its own test, as expected.
-
-Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+No two source files changed together often enough to name.
 
 Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
 
@@ -73,14 +65,21 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
+- **.claude/** is written by dependabot[bot], which added every file in it.
+- **.github/** is written by dependabot[bot], which added every file in it.
+- **apps/desktop/** is written by dependabot[bot], which added every file in it.
 - **apps/desktop/msix/Assets/** is written by apps/desktop/msix/gen-assets.mjs.
 - **apps/desktop/msix/layout/** is written by apps/desktop/msix/build-msix.ps1.
 - **apps/desktop/src-tauri/gen/schemas/** is written by apps/desktop/src-tauri/build.rs (a build script).
 - **apps/desktop/src-tauri/icons/** is written by apps/desktop/src-tauri/gen-icons.mjs.
+- **packages/server/** is written by dependabot[bot], which added every file in it.
+- **packages/ui/** is written by dependabot[bot], which added every file in it.
+- **the repository root** is written by dependabot[bot], which added every file in it.
+- **site/** is written by dependabot[bot], which added every file in it.
 
 ## Hand-authored
 
-People write .claude/, .github/, the repository root and site/. Nothing in this repository writes to them.
+No configuration or documentation part is left to people alone.
 
 ## Where to start
 

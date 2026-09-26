@@ -1,6 +1,6 @@
 # npm-launcher: how it works
 
-Mapped at 2026-09-25 from commit 07c7132.
+Mapped at 2026-09-26 from commit 07c7132 by Atlas 1.23.0.
 
 ## What this is
 

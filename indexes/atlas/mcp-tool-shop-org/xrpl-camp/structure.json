@@ -7709,6 +7709,7 @@
       "to": "xrpl_camp"
     }
   ],
+  "engine": "1.23.0",
   "generatedFrom": {
     "commit": "8af7371876e940ba47b35af0bb39e9080d541074",
     "tracked": 85
@@ -7719,7 +7720,8 @@
       "target": ".github/freshness-report.md",
       "writers": [
         {
-          "by": ".github/workflows/freshness-check.yml"
+          "by": ".github/workflows/freshness-check.yml",
+          "confidence": "config"
         }
       ]
     },
@@ -7761,7 +7763,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "bin/xrpl-camp.js",

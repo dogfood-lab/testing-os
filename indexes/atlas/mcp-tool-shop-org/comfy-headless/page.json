@@ -32,16 +32,23 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 1,
+      "changed": 1,
       "moved": 0,
-      "parts": 0,
+      "parts": 2,
       "removed": 0
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; no file changed.",
+        "sentence": "1 file added and 1 changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -49,14 +56,14 @@
       "commit": "bfb7973f01276325e75a4dfcc5ec34cbdf37f815",
       "generatedAt": "2026-09-25T09:30:17.927Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "923204ef325bacbb02003bbcbbe5600c201bd3b4",
+  "commit": "a804d340931e04aa742876692ed3ef9a25cd6830",
   "defaultBranch": "main",
   "derived": "9 parts, mostly Python (83 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI and a container image. It deploys a site to GitHub Pages. People run comfy-headless.",
   "doors": [
@@ -101,7 +108,7 @@
       "stages": [],
       "triggers": [
         "on a pull request to main",
-        "on a push to main touching 5 paths",
+        "on a push to main touching 6 paths",
         "or by hand"
       ]
     },
@@ -227,6 +234,7 @@
       "to": "comfy_headless"
     }
   ],
+  "engine": "1.23.0",
   "generated": [
     {
       "place": "kb/",
@@ -235,7 +243,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T16:28:48.235Z",
+  "generatedAt": "2026-09-26T14:41:31.782Z",
   "limits": [
     "1 import could not be resolved: `tests/run_fuzz.py` imports `comfy_headless.tests.test_fuzz`, which is no module on its import path and no declared dependency.",
     "2 writes and 2 reads use paths built at run time and are not named here.",

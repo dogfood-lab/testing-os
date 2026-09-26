@@ -1,6 +1,6 @@
 # brand: how it works
 
-Mapped at 2026-09-25 from commit 5657ed4.
+Mapped at 2026-09-26 from commit 5657ed4 by Atlas 1.23.0.
 
 ## What this is
 
@@ -84,7 +84,7 @@ Every tracked place code writes here is edited by people too; see Hand-authored.
 
 People write .claude/, .githooks/, .github/, assets/, docs/, logos/ and site/. Nothing in this repository writes to them.
 
-- **manifest.json** is written by .github/workflows/sync.yml, and by people: 43 of its 44 commits in the window are theirs.
+- **manifest.json** is written by .github/workflows/sync.yml, and by people: 44 of its 45 commits in the window are theirs.
 
 ## Where to start
 

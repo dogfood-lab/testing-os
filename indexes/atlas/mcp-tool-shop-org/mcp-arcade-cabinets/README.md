@@ -1,6 +1,6 @@
 # mcp-arcade-cabinets: how it works
 
-Mapped at 2026-09-25 from commit 745115c.
+Mapped at 2026-09-26 from commit 745115c by Atlas 1.23.0.
 
 ## What this is
 

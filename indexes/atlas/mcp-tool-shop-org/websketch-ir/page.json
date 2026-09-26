@@ -26,16 +26,23 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 2,
+      "added": 1,
+      "changed": 3,
       "moved": 0,
-      "parts": 1,
+      "parts": 2,
       "removed": 0
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-25; 2 files changed content.",
+        "sentence": "1 file added and 3 changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -43,14 +50,14 @@
       "commit": "e9980b15b46aa40fefe42e9d8b370d84e9fc1b25",
       "generatedAt": "2026-09-25T02:16:10.944Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "d18f24a18416d9e3243ba26386b47fab1bb961d7",
+  "commit": "6a7f45d8edf14fa1e5abd046bda09668a85312f3",
   "defaultBranch": "main",
   "derived": "6 parts, mostly TypeScript (46 files), CSS (2), JavaScript (2) and Astro (1). Work enters through 4 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People import @mcptoolshop/websketch-ir.",
   "doors": [
@@ -117,7 +124,7 @@
       "stages": [],
       "triggers": [
         "on a pull request to main",
-        "on a push to main touching 6 paths",
+        "on a push to main touching 7 paths",
         "or by hand"
       ]
     },
@@ -259,8 +266,9 @@
       "to": "src"
     }
   ],
+  "engine": "1.23.0",
   "generated": [],
-  "generatedAt": "2026-09-25T16:39:39.174Z",
+  "generatedAt": "2026-09-26T14:47:55.825Z",
   "limits": [
     "1 read goes to a path its caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."

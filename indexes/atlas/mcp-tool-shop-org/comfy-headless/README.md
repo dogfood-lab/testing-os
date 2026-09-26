@@ -1,6 +1,6 @@
 # comfy-headless: how it works
 
-Mapped at 2026-09-25 from commit 923204e.
+Mapped at 2026-09-26 from commit a804d34 by Atlas 1.23.0.
 
 ## What this is
 
@@ -8,11 +8,12 @@ Mapped at 2026-09-25 from commit 923204e.
 
 ## What changed since 2026-09-25 (bfb7973)
 
-Nothing structural changed since 2026-09-25; no file changed.
+- CI's push trigger now also names `codecov.yml`.
+- 1 file added and 1 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main; on a push to main touching 5 paths; or by hand. Runs tests/; checks comfy_headless/ and scripts/.
+1. **CI.** On a pull request to main; on a push to main touching 6 paths; or by hand. Runs tests/; checks comfy_headless/ and scripts/.
 2. **Publish.** When a release is published; or by hand. Runs comfy_headless/__init__.py and comfy_headless/__main__.py; checks comfy_headless/. On a release event, it also packs LICENSE, README.md and pyproject.toml into an image.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **comfy-headless** (a command people run). Runs comfy_headless/__main__.py.

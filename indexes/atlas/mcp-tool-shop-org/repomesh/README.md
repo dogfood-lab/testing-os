@@ -1,6 +1,6 @@
 # repomesh: how it works
 
-Mapped at 2026-09-25 from commit 8843b88.
+Mapped at 2026-09-26 from commit 8843b88 by Atlas 1.23.0.
 
 ## What this is
 
@@ -115,8 +115,10 @@ And 9 more pairs.
 ## Generated, never hand-edited
 
 - **anchor/xrpl/manifests/** is written by anchor/xrpl/scripts/compute-root.mjs.
+- **assets/** is written by repomesh-bot, which added every file in it.
 - **ledger/events/events.jsonl** is written by .github/workflows/anchor-xrpl.yml, .github/workflows/attestor-ci.yml, attestor/scripts/emit-key-event.mjs and packages/repomesh-cli/src/key/rotate-revoke.mjs.
 - **ledger/nodes/** is written by attestor/scripts/emit-key-event.mjs, tools/join-node.mjs and tools/register-node.mjs.
+- **profiles/** is written by repomesh-bot, which added every file in it.
 - **registry/anchors.json** is written by verifiers/lib/common.mjs.
 - **registry/badges/** is written by registry/scripts/build-badges.mjs.
 - **registry/capabilities.json** is written by registry/scripts/build-registry.mjs.
@@ -125,10 +127,12 @@ And 9 more pairs.
 - **registry/snippets/** is written by registry/scripts/build-snippets.mjs.
 - **registry/trust.json** is written by verifiers/lib/common.mjs.
 - **registry/verifiers.json** is written by registry/scripts/build-verifiers.mjs.
+- **scripts/** is written by repomesh-bot, which added every file in it.
+- **templates/** is written by repomesh-bot, which added every file in it.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/, profiles/, the repository root, schemas/, scripts/, site/ and templates/. Nothing in this repository writes to them.
+People write .github/, docs/, the repository root, schemas/ and site/. Nothing in this repository writes to them.
 
 ## Where to start
 

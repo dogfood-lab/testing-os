@@ -1,6 +1,6 @@
 # attestia: how it works
 
-Mapped at 2026-09-25 from commit 47e1a45.
+Mapped at 2026-09-26 from commit 8b49fcc by Atlas 1.23.0.
 
 ## What this is
 
@@ -8,16 +8,16 @@ Mapped at 2026-09-25 from commit 47e1a45.
 
 ## What changed since 2026-09-24 (245af30)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - CI now also builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 10 more.
-- Publish to GHCR now also builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 24 more.
-- Release now also builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 10 more.
-- And 2 more changes to doors.
-- 588 files changed content, across 22 parts.
+- And 4 more changes to doors.
+- 589 files changed content, across 22 parts.
 
 ## What comes in
 
 1. **Publish to GHCR.** When a release is published; or by hand. Runs packages/node/src/main.ts; builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 193 more; packs package.json, packages/, packages/chain-observer/package.json and 16 more into an image.
-2. **CI.** On a pull request to main touching 12 paths; on a push to main touching 12 paths; or by hand. Runs packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts, packages/chain-observer/tests/evm/ and 175 more; builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 193 more.
+2. **CI.** On a pull request to main touching 13 paths; on a push to main touching 13 paths; or by hand. Runs packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts, packages/chain-observer/tests/evm/ and 175 more; builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 193 more.
 3. **Release.** When a tag matching `v*` is pushed. Runs packages/attestia/tests/, packages/chain-observer/tests/chains.test.ts, packages/chain-observer/tests/error-ux.test.ts and 181 more; builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 193 more.
 4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 5. **@mcptoolshop/attestia** (the package people import). Loads packages/attestia/dist/index.d.ts, built from a source this map cannot place.

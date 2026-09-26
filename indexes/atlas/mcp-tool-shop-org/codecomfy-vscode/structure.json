@@ -2265,6 +2265,7 @@
       "to": "src"
     }
   ],
+  "engine": "1.23.0",
   "generatedFrom": {
     "commit": "93df7e1bb9d6c2cf9580b625ecd8454f19be8507",
     "tracked": 113
@@ -2273,7 +2274,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/publish.yml"
+          "by": ".github/workflows/publish.yml",
+          "confidence": "config"
         }
       ],
       "target": "CHANGELOG.md",
@@ -2282,7 +2284,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/publish.yml"
+          "by": ".github/workflows/publish.yml",
+          "confidence": "config"
         }
       ],
       "target": "package.json",
@@ -2376,10 +2379,12 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         },
         {
-          "by": ".github/workflows/publish.yml"
+          "by": ".github/workflows/publish.yml",
+          "confidence": "config"
         }
       ],
       "target": "tsconfig.test.json",

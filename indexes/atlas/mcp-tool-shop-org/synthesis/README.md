@@ -1,6 +1,6 @@
 # synthesis: how it works
 
-Mapped at 2026-09-25 from commit dd0e1de.
+Mapped at 2026-09-26 from commit dd0e1de by Atlas 1.23.0.
 
 ## What this is
 

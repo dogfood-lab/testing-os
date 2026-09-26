@@ -1,6 +1,6 @@
 # claude-synergy: how it works
 
-Mapped at 2026-09-25 from commit 6d91d8c.
+Mapped at 2026-09-26 from commit 6d91d8c by Atlas 1.23.0.
 
 ## What this is
 

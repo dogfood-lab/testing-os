@@ -1,6 +1,6 @@
 # record-index: how it works
 
-Mapped at 2026-09-25 from commit b48f7b6.
+Mapped at 2026-09-26 from commit b48f7b6 by Atlas 1.23.0.
 
 ## What this is
 

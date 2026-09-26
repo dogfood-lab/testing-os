@@ -1,6 +1,6 @@
 # xrpl-camp: how it works
 
-Mapped at 2026-09-25 from commit 8af7371.
+Mapped at 2026-09-26 from commit 8af7371 by Atlas 1.23.0.
 
 ## What this is
 

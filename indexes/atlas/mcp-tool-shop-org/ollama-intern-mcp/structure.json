@@ -7118,6 +7118,7 @@
       "to": "src"
     }
   ],
+  "engine": "1.23.0",
   "generatedFrom": {
     "commit": "1249f8307d15e578f101622a6ab257d340dab8ab",
     "tracked": 351
@@ -7173,10 +7174,12 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/doc-drift.yml"
+          "by": ".github/workflows/doc-drift.yml",
+          "confidence": "config"
         },
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         }
       ],
       "target": "CHANGELOG.md",
@@ -7354,7 +7357,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         },
         {
           "by": "src/index.ts",
@@ -7368,13 +7372,16 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         },
         {
-          "by": ".github/workflows/doc-drift.yml"
+          "by": ".github/workflows/doc-drift.yml",
+          "confidence": "config"
         },
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "scripts/sync-doc-versions.mjs",
@@ -7631,7 +7638,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         }
       ],
       "target": "tests/pack.test.ts",

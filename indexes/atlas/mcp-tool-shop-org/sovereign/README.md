@@ -1,6 +1,6 @@
 # sovereign: how it works
 
-Mapped at 2026-09-25 from commit b5f1ba5.
+Mapped at 2026-09-26 from commit b5f1ba5 by Atlas 1.23.0.
 
 ## What this is
 

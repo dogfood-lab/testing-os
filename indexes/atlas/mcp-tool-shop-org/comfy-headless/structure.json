@@ -21,7 +21,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "525090eff97d315f03d43a30641e727815d1efc91edc0ed56c4e1f65b131f899",
+          "hash": "c6dc2687e7a6408f7ed1d827ffe3a472fbb4230487cd81cb9d6eafd1849b0ab1",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -1012,6 +1012,10 @@
           "path": "UI_AUDIT.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "292645320d19b0fdd09c68d8c7f5ccfc03ca087c27458abffe4a34481c9a1209",
           "path": "llms.txt"
         },
@@ -1933,7 +1937,10 @@
       "landings": [],
       "mentions": [],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -2011,6 +2018,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "comfy_headless/**",
             "pyproject.toml",
             "tests/**"
@@ -2022,8 +2030,10 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
         "actions/setup-python",
+        "actions/upload-artifact",
         "codecov/codecov-action",
         "trufflesecurity/trufflehog"
       ],
@@ -2401,9 +2411,10 @@
       "to": "scripts"
     }
   ],
+  "engine": "1.23.0",
   "generatedFrom": {
-    "commit": "923204ef325bacbb02003bbcbbe5600c201bd3b4",
-    "tracked": 179
+    "commit": "a804d340931e04aa742876692ed3ef9a25cd6830",
+    "tracked": 180
   },
   "landings": [
     {

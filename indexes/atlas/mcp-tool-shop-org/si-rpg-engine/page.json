@@ -5,6 +5,7 @@
     "predicates/beliefs/",
     "predicates/hazards/",
     "predicates/intents/",
+    "predicates/roles/",
     "root",
     "worlds/"
   ],
@@ -34,8 +35,10 @@
       "partLabel": "frame"
     },
     {
-      "doors": 3,
-      "importedBy": [],
+      "doors": 4,
+      "importedBy": [
+        "propose"
+      ],
       "importedByTests": [
         "tick"
       ],
@@ -44,8 +47,10 @@
       "partLabel": "harness"
     },
     {
-      "doors": 2,
-      "importedBy": [],
+      "doors": 3,
+      "importedBy": [
+        "harness"
+      ],
       "importedByTests": [
         "tick"
       ],
@@ -84,7 +89,7 @@
         "workflows"
       ],
       "target": "fixtures/golden.txt",
-      "tests": 2,
+      "tests": 3,
       "writers": [
         "harness"
       ]
@@ -93,18 +98,19 @@
   "changes": {
     "fileCounts": {
       "added": 0,
-      "changed": 230,
+      "changed": 320,
       "moved": 0,
-      "parts": 15,
+      "parts": 16,
       "removed": 0
     },
     "items": [
       {
         "kind": "door",
-        "sentence": "CI now also runs solver/build.rs and solver/src/rapier_law.rs.",
+        "sentence": "CI now also runs solver/build.rs, solver/src/kcc.rs and solver/src/rapier_law.rs.",
         "subjects": [
           ".github/workflows/ci.yml",
           "solver/build.rs",
+          "solver/src/kcc.rs",
           "solver/src/rapier_law.rs"
         ]
       },
@@ -134,56 +140,26 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 12 more new writers and readers of places.",
+        "sentence": "And 13 more new writers and readers of places.",
         "subjects": []
       },
       {
         "kind": "counts",
-        "sentence": "230 files changed content, across 15 parts.",
+        "sentence": "320 files changed content, across 16 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "39ba1fe01bbf2dc960a59309fe32ce983f01b3ea",
-      "generatedAt": "2026-09-25T15:34:19.832Z"
+      "commit": "386f0d9c9514e0d293fa9f7a5d71acf35a737b65",
+      "generatedAt": "2026-09-26T12:13:24.565Z"
     },
     "unchanged": false
   },
   "changesTogether": [
     {
-      "a": "packages/propose/prompt.js",
-      "b": "packages/propose/propose.test.js",
-      "either": 7,
-      "partLabels": [
-        "propose",
-        "propose"
-      ],
-      "parts": [
-        "propose",
-        "propose"
-      ],
-      "relation": "inside",
-      "shared": 6
-    },
-    {
-      "a": "packages/propose/propose.test.js",
-      "b": "packages/propose/seat.js",
-      "either": 7,
-      "partLabels": [
-        "propose",
-        "propose"
-      ],
-      "parts": [
-        "propose",
-        "propose"
-      ],
-      "relation": "inside",
-      "shared": 6
-    },
-    {
       "a": "harness/bundle.test.js",
       "b": "harness/corpus.mjs",
-      "either": 6,
+      "either": 10,
       "partLabels": [
         "harness",
         "harness"
@@ -193,27 +169,57 @@
         "harness"
       ],
       "relation": "inside",
-      "shared": 5
+      "shared": 7
     },
     {
-      "a": "packages/frame/types.d.ts",
-      "b": "packages/tick/tick.js",
-      "either": 11,
+      "a": "packages/propose/bin/propose.js",
+      "b": "packages/propose/seat.js",
+      "either": 13,
       "partLabels": [
-        "frame",
-        "tick"
+        "propose",
+        "propose"
       ],
       "parts": [
-        "frame",
-        "tick"
+        "propose",
+        "propose"
       ],
-      "relation": "b-imports-a",
+      "relation": "inside",
       "shared": 9
     },
     {
+      "a": "packages/host/host.test.js",
+      "b": "packages/host/session.js",
+      "either": 12,
+      "partLabels": [
+        "host",
+        "host"
+      ],
+      "parts": [
+        "host",
+        "host"
+      ],
+      "relation": "inside",
+      "shared": 8
+    },
+    {
       "a": "packages/propose/prompt.js",
       "b": "packages/propose/seat.js",
-      "either": 8,
+      "either": 12,
+      "partLabels": [
+        "propose",
+        "propose"
+      ],
+      "parts": [
+        "propose",
+        "propose"
+      ],
+      "relation": "inside",
+      "shared": 8
+    },
+    {
+      "a": "packages/propose/prompt.js",
+      "b": "packages/propose/schema.js",
+      "either": 9,
       "partLabels": [
         "propose",
         "propose"
@@ -227,14 +233,14 @@
     }
   ],
   "changesTogetherNote": [
-    "1 file changed together with its own test, as expected.",
+    "2 files changed together with their own tests, as expected.",
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 14 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
-  "changesTogetherWithTests": 1,
-  "commit": "036b18d7eb30e0b7c64c3b1b1a2ad0f42aa24488",
+  "changesTogetherWithTests": 2,
+  "commit": "4231c2df4d25e322c37dc012234244b22ba372cf",
   "defaultBranch": "main",
-  "derived": "15 parts, mostly JavaScript (88 files), Rust (4), TypeScript (3), CSS (2), Astro (1) and HTML (1). Work enters through 9 doors; the busiest is CI, which reaches 8 parts. It deploys a site to GitHub Pages. host, load, play, propose, replay and write-golden are commands of a private package (nothing ships them).",
+  "derived": "16 parts, mostly JavaScript (104 files), Rust (6), TypeScript (3), CSS (2), shell (2), Astro (1) and HTML (1). Work enters through 9 doors; the busiest is CI, which reaches 8 parts. It deploys a site to GitHub Pages. host, load, play, propose, replay and write-golden are commands of a private package (nothing ships them).",
   "doors": [
     {
       "checks": [
@@ -245,10 +251,13 @@
         "harness/behaviour.mjs",
         "harness/corpus.mjs",
         "harness/events.mjs",
+        "harness/law-runs.mjs",
         "harness/minds-scene.mjs",
+        "harness/plant-throw.mjs",
         "harness/product-run.mjs",
         "harness/product-scene.mjs",
         "harness/replay-to.mjs",
+        "harness/role-session.mjs",
         "harness/solver-scene.mjs",
         "harness/trace-line.mjs",
         "harness/verbs-scene.mjs",
@@ -266,8 +275,8 @@
         "tools/review.mjs",
         "tools/verdicts.js"
       ],
-      "checksCount": 27,
-      "checksMore": 62,
+      "checksCount": 30,
+      "checksMore": 74,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -290,7 +299,7 @@
         {
           "boundary": "harness",
           "depth": 0,
-          "files": 31
+          "files": 36
         },
         {
           "boundary": "host",
@@ -300,7 +309,7 @@
         {
           "boundary": "load",
           "depth": 0,
-          "files": 5
+          "files": 7
         },
         {
           "boundary": "propose",
@@ -310,12 +319,12 @@
         {
           "boundary": "solver",
           "depth": 0,
-          "files": 8
+          "files": 10
         },
         {
           "boundary": "tick",
           "depth": 0,
-          "files": 23
+          "files": 30
         }
       ],
       "runs": [
@@ -329,19 +338,25 @@
         "harness/golden-gate.test.js",
         "harness/outcome.test.js",
         "harness/product.test.js",
+        "harness/push.test.js",
         "harness/restore.test.js",
         "harness/solver.test.js",
         "harness/soundness.test.js",
         "harness/source.test.js",
         "harness/surface.test.js",
+        "harness/sweep.test.js",
         "harness/switch.test.js",
         "harness/trace.mjs",
         "harness/trace.test.js",
         "packages/host/host.test.js",
         "packages/load/load.test.js",
         "packages/propose/propose.test.js",
+        "packages/propose/record.test.js",
+        "packages/tick/gate.test.js",
+        "packages/tick/load-hash.test.js",
         "packages/tick/minds.test.js",
         "packages/tick/order.test.js",
+        "packages/tick/roles.test.js",
         "packages/tick/scene.test.js",
         "packages/tick/tick.test.js",
         "packages/tick/verbs.test.js",
@@ -349,14 +364,16 @@
         "solver/lint.mjs",
         "solver/lint.test.js",
         "solver/source.test.js",
+        "tools/coordinator/check-translations.test.js",
         "tools/panel.test.js",
         "tools/prompt.test.js",
         "tools/verdicts.test.js",
         "solver/build.rs",
+        "solver/src/kcc.rs",
         "solver/src/rapier_law.rs"
       ],
-      "runsCount": 35,
-      "runsMore": 32,
+      "runsCount": 43,
+      "runsMore": 40,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -372,7 +389,9 @@
       "checksMore": 0,
       "file": ".github/workflows/corpus.yml",
       "id": ".github/workflows/corpus.yml",
-      "landings": [],
+      "landings": [
+        "fixtures/sweep/verdicts.json"
+      ],
       "name": "Corpus",
       "programs": [
         "git"
@@ -390,13 +409,18 @@
           "files": 2
         },
         {
+          "boundary": "load",
+          "depth": 1,
+          "files": 1
+        },
+        {
           "boundary": "tick",
           "depth": 1,
-          "files": 13
+          "files": 18
         },
         {
           "boundary": "frame",
-          "depth": 3,
+          "depth": 2,
           "files": 2
         }
       ],
@@ -447,6 +471,50 @@
       "checksCount": 0,
       "checksMore": 0,
       "file": "package.json",
+      "id": "package.json#propose",
+      "kind": "command",
+      "landings": [],
+      "name": "propose",
+      "privatePackage": true,
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "propose",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "tick",
+          "depth": 1,
+          "files": 14
+        },
+        {
+          "boundary": "frame",
+          "depth": 2,
+          "files": 2
+        },
+        {
+          "boundary": "harness",
+          "depth": 2,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "packages/propose/bin/propose.js"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [],
+      "unshipped": true
+    },
+    {
+      "builtFrom": "the repository root",
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
       "id": "package.json#host",
       "kind": "command",
       "landings": [],
@@ -462,7 +530,7 @@
         {
           "boundary": "tick",
           "depth": 1,
-          "files": 10
+          "files": 14
         },
         {
           "boundary": "frame",
@@ -491,65 +559,29 @@
       "landings": [],
       "name": "load",
       "privatePackage": true,
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
           "boundary": "load",
           "depth": 0,
-          "files": 4
+          "files": 6
         },
         {
           "boundary": "tick",
           "depth": 1,
-          "files": 9
+          "files": 18
         },
         {
           "boundary": "frame",
-          "depth": 2,
+          "depth": 3,
           "files": 2
         }
       ],
       "runs": [
         "packages/load/bin/load.js"
-      ],
-      "runsCount": 1,
-      "runsMore": 0,
-      "sends": [],
-      "stages": [],
-      "triggers": [],
-      "unshipped": true
-    },
-    {
-      "builtFrom": "the repository root",
-      "checks": [],
-      "checksCount": 0,
-      "checksMore": 0,
-      "file": "package.json",
-      "id": "package.json#propose",
-      "kind": "command",
-      "landings": [],
-      "name": "propose",
-      "privatePackage": true,
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "propose",
-          "depth": 0,
-          "files": 8
-        },
-        {
-          "boundary": "tick",
-          "depth": 1,
-          "files": 9
-        },
-        {
-          "boundary": "frame",
-          "depth": 2,
-          "files": 2
-        }
-      ],
-      "runs": [
-        "packages/propose/bin/propose.js"
       ],
       "runsCount": 1,
       "runsMore": 0,
@@ -587,7 +619,7 @@
         {
           "boundary": "tick",
           "depth": 1,
-          "files": 6
+          "files": 7
         }
       ],
       "runs": [
@@ -617,7 +649,7 @@
         {
           "boundary": "tick",
           "depth": 0,
-          "files": 9
+          "files": 13
         },
         {
           "boundary": "frame",
@@ -654,7 +686,7 @@
         {
           "boundary": "tick",
           "depth": 0,
-          "files": 15
+          "files": 19
         },
         {
           "boundary": "frame",
@@ -673,30 +705,19 @@
       "unshipped": true
     }
   ],
-  "duplicates": [
-    {
-      "files": [
-        "packages/propose/scene.js",
-        "packages/tick/scene.js"
-      ],
-      "name": "reachedGoal",
-      "partLabels": [
-        "propose",
-        "tick"
-      ],
-      "parts": [
-        "propose",
-        "tick"
-      ]
-    }
-  ],
-  "duplicatesLead": "These are candidates from names and call order, not a judgement.",
+  "duplicates": [],
+  "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [
     {
       "from": "harness",
       "fromTests": false,
       "to": "frame"
+    },
+    {
+      "from": "harness",
+      "fromTests": false,
+      "to": "load"
     },
     {
       "from": "harness",
@@ -712,6 +733,11 @@
       "from": "load",
       "fromTests": false,
       "to": "tick"
+    },
+    {
+      "from": "propose",
+      "fromTests": false,
+      "to": "harness"
     },
     {
       "from": "propose",
@@ -734,6 +760,7 @@
       "to": "load"
     }
   ],
+  "engine": "1.23.0",
   "generated": [
     {
       "block": true,
@@ -749,23 +776,36 @@
       ]
     },
     {
+      "place": "fixtures/law-runs/",
+      "writers": [
+        "harness/law-runs.mjs"
+      ]
+    },
+    {
       "block": true,
       "place": "fixtures/solver.sha256",
       "writers": [
         "solver/build.mjs when run without --check"
       ]
+    },
+    {
+      "block": true,
+      "place": "fixtures/sweep/verdicts.json",
+      "writers": [
+        "harness/corpus.mjs"
+      ]
     }
   ],
-  "generatedAt": "2026-09-25T16:36:08.453Z",
+  "generatedAt": "2026-09-26T14:45:57.222Z",
   "limits": [
-    "14 imports could not be resolved: `harness/bundle.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/caps.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/corpus.mjs` imports `../solver/dist/solver.mjs`, which a build generates; and 11 more.",
-    "1 read uses a path built at run time and is not named here.",
+    "15 imports could not be resolved: `harness/bundle.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/caps.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/corpus.mjs` imports `../solver/dist/solver.mjs`, which a build generates; and 12 more.",
+    "2 writes and 2 reads use paths built at run time and are not named here.",
     "2 writes go to places this repository does not track, so they are not listed as generated.",
-    "7 writes and 16 reads go to a path their caller passes, not to this repository.",
-    "3 writes and 11 reads go to the directory the command is run in (harness/, predicates/ and worlds/), not to this repository.",
-    "4 writes and 1 read go to a temporary directory or a path their caller passes, not to this repository.",
-    "4 commands are built at run time and not followed, 1 of them in tests.",
-    "27 files belong to no part: packages/tool/guard.js, site/astro.config.mjs, site/package-lock.json and 24 more.",
+    "9 writes and 31 reads go to a path their caller passes, not to this repository.",
+    "3 writes and 14 reads go to the directory the command is run in (harness/, predicates/ and worlds/), not to this repository.",
+    "2 writes and 1 read go to a temporary directory or a path their caller passes, not to this repository.",
+    "13 commands are built at run time and not followed, 10 of them in tests.",
+    "32 files belong to no part: packages/tool/guard.js, site/astro.config.mjs, site/package-lock.json and 29 more.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -780,13 +820,14 @@
     "intents": "intents",
     "load": "load",
     "propose": "propose",
+    "roles": "roles",
     "root": "the repository root",
     "solver": "solver",
     "tick": "tick",
     "workflows": "workflows",
     "worlds": "worlds"
   },
-  "parts": 15,
+  "parts": 16,
   "readers": [],
   "repo": "mcp-tool-shop-org/si-rpg-engine",
   "sequences": [
@@ -875,80 +916,32 @@
       ]
     },
     {
-      "entry": "restoresAt",
+      "entry": "plantedRerun",
       "file": "harness/restore.test.js",
-      "inner": [
-        {
-          "file": "harness/bundle.mjs",
-          "name": "expectIdentical",
-          "part": "harness",
-          "partLabel": "harness",
-          "phrase": "`expectIdentical`",
-          "steps": [
-            {
-              "name": "traceDifference",
-              "part": "tick",
-              "partLabel": "tick",
-              "phrase": "`traceDifference`"
-            },
-            {
-              "name": "withRecords",
-              "part": "harness",
-              "partLabel": "harness",
-              "phrase": "`withRecords`"
-            },
-            {
-              "name": "captureBundle",
-              "part": "tick",
-              "partLabel": "tick",
-              "phrase": "`captureBundle`"
-            },
-            {
-              "name": "writeBundle",
-              "part": "tick",
-              "partLabel": "tick",
-              "phrase": "`writeBundle`"
-            }
-          ]
-        },
-        {
-          "file": "harness/bundle.mjs",
-          "name": "expectIdentical",
-          "part": "harness",
-          "partLabel": "harness",
-          "phrase": "`expectIdentical`",
-          "steps": [
-            {
-              "name": "traceDifference",
-              "part": "tick",
-              "partLabel": "tick",
-              "phrase": "`traceDifference`"
-            },
-            {
-              "name": "withRecords",
-              "part": "harness",
-              "partLabel": "harness",
-              "phrase": "`withRecords`"
-            },
-            {
-              "name": "captureBundle",
-              "part": "tick",
-              "partLabel": "tick",
-              "phrase": "`captureBundle`"
-            },
-            {
-              "name": "writeBundle",
-              "part": "tick",
-              "partLabel": "tick",
-              "phrase": "`writeBundle`"
-            }
-          ]
-        }
-      ],
+      "inner": [],
       "part": "harness",
       "partLabel": "harness",
-      "phrase": "`restoresAt`",
+      "phrase": "`plantedRerun`",
       "steps": [
+        {
+          "name": "replayTo",
+          "part": "harness",
+          "partLabel": "harness",
+          "phrase": "`replayTo`"
+        },
+        {
+          "count": 4,
+          "name": null,
+          "part": "harness",
+          "partLabel": "harness",
+          "phrase": "`events.mjs`"
+        },
+        {
+          "name": "replayTo",
+          "part": "harness",
+          "partLabel": "harness",
+          "phrase": "`replayTo`"
+        },
         {
           "name": "createWorld",
           "part": "tick",
@@ -962,28 +955,16 @@
           "phrase": "`createHasher`"
         },
         {
-          "name": "replayTo",
+          "name": "endLine",
           "part": "harness",
           "partLabel": "harness",
-          "phrase": "`replayTo`"
+          "phrase": "`endLine`"
         },
         {
-          "name": "expectIdentical",
+          "name": "endLine",
           "part": "harness",
           "partLabel": "harness",
-          "phrase": "`expectIdentical`"
-        },
-        {
-          "name": "replayTo",
-          "part": "harness",
-          "partLabel": "harness",
-          "phrase": "`replayTo`"
-        },
-        {
-          "name": "expectIdentical",
-          "part": "harness",
-          "partLabel": "harness",
-          "phrase": "`expectIdentical`"
+          "phrase": "`endLine`"
         }
       ]
     },
@@ -1010,8 +991,230 @@
       ]
     },
     {
-      "entry": "fresh",
+      "entry": "sweepOf",
+      "file": "harness/sweep.test.js",
+      "inner": [
+        {
+          "file": "packages/tick/scene.js",
+          "name": "loadScene",
+          "part": "tick",
+          "partLabel": "tick",
+          "phrase": "`loadScene`",
+          "steps": [
+            {
+              "name": "createWorld",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`createWorld`"
+            },
+            {
+              "name": "beliefRefusal",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`beliefRefusal`"
+            }
+          ]
+        },
+        {
+          "file": "packages/load/sweep.js",
+          "name": "sweep",
+          "part": "load",
+          "partLabel": "load",
+          "phrase": "`sweep`",
+          "steps": [
+            {
+              "name": "loadIntentRules",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`loadIntentRules`"
+            },
+            {
+              "name": "createWorld",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`createWorld`"
+            },
+            {
+              "name": "createMemory",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`createMemory`"
+            },
+            {
+              "name": "createRestorableTick",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`createRestorableTick`"
+            },
+            {
+              "name": "worldFloor",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`worldFloor`"
+            }
+          ]
+        }
+      ],
+      "part": "harness",
+      "partLabel": "harness",
+      "phrase": "`sweepOf`",
+      "steps": [
+        {
+          "name": "loadScene",
+          "part": "tick",
+          "partLabel": "tick",
+          "phrase": "`loadScene`"
+        },
+        {
+          "count": 3,
+          "name": null,
+          "part": "load",
+          "partLabel": "load",
+          "phrase": "`sweep.js`"
+        }
+      ]
+    },
+    {
+      "entry": "probeSession",
       "file": "packages/propose/propose.test.js",
+      "inner": [
+        {
+          "file": "packages/tick/tick.js",
+          "name": "createTick",
+          "part": "tick",
+          "partLabel": "tick",
+          "phrase": "`createTick`",
+          "steps": [
+            {
+              "name": "createHasher",
+              "part": "frame",
+              "partLabel": "frame",
+              "phrase": "`createHasher`"
+            },
+            {
+              "name": "installMinds",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`installMinds`"
+            },
+            {
+              "name": "mixMinds",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`mixMinds`"
+            },
+            {
+              "name": "commitFrame",
+              "part": "frame",
+              "partLabel": "frame",
+              "phrase": "`commitFrame`"
+            }
+          ]
+        },
+        {
+          "file": "packages/propose/seat.js",
+          "name": "runSession",
+          "part": "propose",
+          "partLabel": "propose",
+          "phrase": "`runSession`",
+          "steps": [
+            {
+              "name": "templateSlots",
+              "part": "propose",
+              "partLabel": "propose",
+              "phrase": "`templateSlots`"
+            },
+            {
+              "name": "renderTemplate",
+              "part": "propose",
+              "partLabel": "propose",
+              "phrase": "`renderTemplate`"
+            },
+            {
+              "name": "beliefKeys",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`beliefKeys`"
+            },
+            {
+              "name": "buildSchema",
+              "part": "propose",
+              "partLabel": "propose",
+              "phrase": "`buildSchema`"
+            },
+            {
+              "count": 3,
+              "name": null,
+              "part": "propose",
+              "partLabel": "propose",
+              "phrase": "`record.js`"
+            }
+          ]
+        }
+      ],
+      "part": "propose",
+      "partLabel": "propose",
+      "phrase": "`probeSession`",
+      "steps": [
+        {
+          "name": "loadRoles",
+          "part": "tick",
+          "partLabel": "tick",
+          "phrase": "`loadRoles`"
+        },
+        {
+          "name": "scratchWorld",
+          "part": "propose",
+          "partLabel": "propose",
+          "phrase": "`scratchWorld`"
+        },
+        {
+          "name": "loadIntentRules",
+          "part": "tick",
+          "partLabel": "tick",
+          "phrase": "`loadIntentRules`"
+        },
+        {
+          "name": "createWorld",
+          "part": "tick",
+          "partLabel": "tick",
+          "phrase": "`createWorld`"
+        },
+        {
+          "name": "createMemory",
+          "part": "tick",
+          "partLabel": "tick",
+          "phrase": "`createMemory`"
+        },
+        {
+          "name": "createTick",
+          "part": "tick",
+          "partLabel": "tick",
+          "phrase": "`createTick`"
+        },
+        {
+          "name": "runSession",
+          "part": "propose",
+          "partLabel": "propose",
+          "phrase": "`runSession`"
+        },
+        {
+          "name": "settle",
+          "part": "tick",
+          "partLabel": "tick",
+          "phrase": "`settle`"
+        },
+        {
+          "name": "writeSession",
+          "part": "propose",
+          "partLabel": "propose",
+          "phrase": "`writeSession`"
+        }
+      ]
+    },
+    {
+      "entry": "roleTick",
+      "file": "packages/tick/gate.test.js",
       "inner": [
         {
           "file": "packages/tick/tick.js",
@@ -1047,15 +1250,27 @@
           ]
         }
       ],
-      "part": "propose",
-      "partLabel": "propose",
-      "phrase": "`fresh`",
+      "part": "tick",
+      "partLabel": "tick",
+      "phrase": "`roleTick`",
       "steps": [
+        {
+          "name": "catalogOf",
+          "part": "tick",
+          "partLabel": "tick",
+          "phrase": "`catalogOf`"
+        },
         {
           "name": "loadIntentRules",
           "part": "tick",
           "partLabel": "tick",
           "phrase": "`loadIntentRules`"
+        },
+        {
+          "name": "createMemory",
+          "part": "tick",
+          "partLabel": "tick",
+          "phrase": "`createMemory`"
         },
         {
           "name": "fixtureWorld",
@@ -1070,16 +1285,32 @@
           "phrase": "`createWorld`"
         },
         {
-          "name": "createMemory",
-          "part": "tick",
-          "partLabel": "tick",
-          "phrase": "`createMemory`"
-        },
-        {
           "name": "createTick",
           "part": "tick",
           "partLabel": "tick",
           "phrase": "`createTick`"
+        }
+      ]
+    },
+    {
+      "entry": "snapshotAtLoad",
+      "file": "packages/tick/load-hash.test.js",
+      "inner": [],
+      "part": "tick",
+      "partLabel": "tick",
+      "phrase": "`snapshotAtLoad`",
+      "steps": [
+        {
+          "name": "createWorld",
+          "part": "tick",
+          "partLabel": "tick",
+          "phrase": "`createWorld`"
+        },
+        {
+          "name": "createHasher",
+          "part": "frame",
+          "partLabel": "frame",
+          "phrase": "`createHasher`"
         }
       ]
     },
@@ -1238,20 +1469,27 @@
   ],
   "summary": "Deterministic 3D RPG tick: the model proposes, a checker admits, and the host draws committed frames.",
   "summaryFrom": "person",
-  "testFiles": 28,
+  "testFiles": 36,
   "testedBy": {
-    "frame": 13,
-    "host": 1,
-    "load": 2,
-    "propose": 1,
-    "solver": 2,
-    "tick": 21
+    "frame": 17,
+    "host": 2,
+    "load": 4,
+    "propose": 2,
+    "solver": 3,
+    "tick": 27
   },
-  "unnamedWrites": 0,
-  "unread": [],
+  "unnamedWrites": 2,
+  "unread": [
+    {
+      "place": "fixtures/law-runs/",
+      "writers": [
+        "harness/law-runs.mjs"
+      ]
+    }
+  ],
   "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],
-  "written": 3
+  "written": 5
 }

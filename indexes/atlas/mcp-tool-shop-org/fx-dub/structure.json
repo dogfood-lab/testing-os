@@ -1767,6 +1767,7 @@
       "to": "tools"
     }
   ],
+  "engine": "1.23.0",
   "generatedFrom": {
     "commit": "8bb7ee7a8362d980f7286d7cdfe0d859be859a97",
     "tracked": 178
@@ -1834,7 +1835,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         }
       ],
       "target": "SECURITY.md",
@@ -1994,10 +1996,12 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         },
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "tests/test_audition_receipt.py",

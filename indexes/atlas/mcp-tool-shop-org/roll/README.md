@@ -1,6 +1,6 @@
 # roll: how it works
 
-Mapped at 2026-09-25 from commit 936fb0a.
+Mapped at 2026-09-26 from commit 936fb0a by Atlas 1.23.0.
 
 ## What this is
 

@@ -2278,11 +2278,19 @@
       "origin": "mixed",
       "outsidePlaces": [
         {
-          "reads": 1,
+          "reads": 0,
           "where": [
             "caller"
           ],
-          "writes": 2
+          "writes": 1
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:docs/"
+          ],
+          "writes": 1
         }
       ],
       "outsideReads": 1,
@@ -2484,6 +2492,14 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -3826,8 +3842,14 @@
             "test_t64_the_opening_curve_is_monotonic"
           ],
           "hash": "ee2c0dcf9a85a81ef61465000fb332436418ee5f0817b6d7b3f40930ce6a8427",
+          "importOrder": [
+            "tests/conftest.py",
+            "tools/mask_geometry.py",
+            "tools/diagnostics/e32_plate_geometry.py"
+          ],
           "importsFiles": [
             "tests/conftest.py",
+            "tools/diagnostics/e32_plate_geometry.py",
             "tools/mask_geometry.py"
           ],
           "path": "tests/test_t64_plate_geometry.py"
@@ -4609,13 +4631,13 @@
           "why": "dynamic"
         }
       ],
-      "unresolvedSites": 6
+      "unresolvedSites": 5
     },
     {
-      "dynamicReads": 100,
+      "dynamicReads": 56,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 126,
+      "dynamicWrites": 91,
       "entryPoints": [
         "tools/facet_index.py",
         "tools/record_mcp.py"
@@ -7136,18 +7158,83 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 90,
+          "reads": 135,
           "where": [
             "caller"
           ],
-          "writes": 389
+          "writes": 454
+        },
+        {
+          "reads": 2,
+          "where": [
+            "caller",
+            "cwd"
+          ],
+          "writes": 2
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:canon/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:docs/"
+          ],
+          "writes": 1
         },
         {
           "reads": 0,
           "where": [
-            "cwd"
+            "caller",
+            "cwd:masks/"
           ],
-          "writes": 4
+          "writes": 2
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:negative"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 2,
+          "where": [
+            "caller",
+            "cwd:profiles/"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:prompt"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
+            "caller",
+            "cwd:restylize_views.py"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 2,
+          "where": [
+            "caller",
+            "cwd:tools/"
+          ],
+          "writes": 0
         },
         {
           "reads": 1,
@@ -7164,8 +7251,8 @@
           "writes": 0
         }
       ],
-      "outsideReads": 92,
-      "outsideWrites": 393,
+      "outsideReads": 148,
+      "outsideWrites": 459,
       "role": "code",
       "testedBy": 55,
       "unresolvedNamed": [
@@ -7184,28 +7271,38 @@
       "commands": [
         {
           "job": "hermetic",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.14.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "hermetic",
-          "step": "install pinned test deps",
-          "text": "python -m pip install --upgrade pip\npython -m pip install pytest==9.1.1 numpy==2.4.6 scipy==1.17.1 \\\n  pillow==12.2.0 trimesh==4.12.2 open3d==0.19.0 mcp==2.0.0 \\\n  opencv-python-headless==4.13.0.92 build==1.5.0 \\\n  record-index==0.1.0\n"
+          "programs": [
+            "python"
+          ],
+          "step": "install pinned test deps"
         },
         {
           "job": "hermetic",
-          "step": "hermetic set",
-          "text": "python -m pytest -m \"not artifacts\""
+          "programs": [
+            "python"
+          ],
+          "step": "hermetic set"
         },
         {
           "job": "hermetic",
-          "step": "dependency scan - python (published surface)",
-          "text": "python -m venv /tmp/audit\n/tmp/audit/bin/python -m pip install --quiet --upgrade pip\n/tmp/audit/bin/python -m pip install --quiet . pip-audit\n/tmp/audit/bin/pip-audit --skip-editable\n"
+          "programs": [
+            "python"
+          ],
+          "step": "dependency scan - python (published surface)"
         },
         {
           "job": "hermetic",
-          "step": "dependency scan - npm (published surface)",
-          "text": "npm install --package-lock-only --omit=dev --no-audit --no-fund\nnpm audit --omit=dev --audit-level=high\n"
+          "programs": [
+            "npm"
+          ],
+          "step": "dependency scan - npm (published surface)"
         }
       ],
       "elsewhere": [],
@@ -7228,7 +7325,7 @@
             "file": "tools/facet_index.py",
             "from": "tests/mcp_support.py"
           },
-          "files": 29
+          "files": 30
         }
       ],
       "readers": [],
@@ -7287,13 +7384,17 @@
       "commands": [
         {
           "job": "build",
-          "step": "Install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
         },
         {
           "job": "build",
-          "step": "Build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
         }
       ],
       "elsewhere": [],
@@ -7311,7 +7412,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -7373,63 +7474,103 @@
       "commands": [
         {
           "job": "binaries",
-          "step": "Install the package and PyInstaller",
-          "text": "python -m pip install --upgrade pip\npython -m pip install .\npython -m pip install pyinstaller==6.22.0\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Install the package and PyInstaller"
         },
         {
           "job": "binaries",
-          "step": "Build the single-file binary",
-          "text": "pyinstaller --onefile --name facet \\\n  --paths tools \\\n  --exclude-module mcp.cli \\\n  --exclude-module typer \\\n  --exclude-module IPython \\\n  --console --noconfirm \\\n  tools/record_mcp.py\n"
+          "programs": [
+            "pyinstaller"
+          ],
+          "step": "Build the single-file binary"
         },
         {
           "job": "binaries",
-          "step": "Name it by the launcher's convention",
-          "text": "VERSION=\"${GITHUB_REF_NAME#v}\"\nmkdir -p out\nmv \"dist/facet${{ matrix.ext }}\" \"out/facet-${VERSION}-${{ matrix.label }}${{ matrix.ext }}\"\nls -l out/\n"
+          "programs": [
+            "ls",
+            "mkdir",
+            "mv"
+          ],
+          "step": "Name it by the launcher's convention"
         },
         {
           "job": "binaries",
-          "step": "Smoke-test the binary before it can ever reach a user",
-          "text": "VERSION=\"${GITHUB_REF_NAME#v}\"\nBIN=\"out/facet-${VERSION}-${{ matrix.label }}${{ matrix.ext }}\"\nchmod +x \"$BIN\" || true\n\"$BIN\" --print-tools\n"
+          "programs": [
+            "chmod"
+          ],
+          "step": "Smoke-test the binary before it can ever reach a user"
         },
         {
           "job": "release",
-          "step": "Verify tag matches every declared version",
-          "text": "TAG=\"${GITHUB_REF_NAME#v}\"\nPYPROJECT=$(python -c \"import tomllib,pathlib;print(tomllib.loads(pathlib.Path('pyproject.toml').read_text())['project']['version'])\")\nPKGJSON=$(node -p \"require('./package.json').version\")\n# Extracted with python, NOT a node one-liner. The obvious node version\n# uses a regex replacement containing $1, and bash expands $1 inside\n# double quotes to an empty positional parameter - the JSON.parse then\n# dies and takes the whole release with it. Caught in pre-flight.\nBINJS=$(python -c \"import re,pathlib;print(re.search(r'version:\\s*\\\"([^\\\"]+)\\\"', pathlib.Path('bin/facet.js').read_text()).group(1))\")\nBINTAG=$(python -c \"import re,pathlib;print(re.search(r'tag:\\s*\\\"([^\\\"]+)\\\"', pathlib.Path('bin/facet.js').read_text()).group(1))\")\nif [ \"$BINTAG\" != \"$GITHUB_REF_NAME\" ]; then\n  echo \"::error::bin/facet.js pins tag $BINTAG but this release is $GITHUB_REF_NAME - npm-launcher would fetch the wrong release\"\n  exit 1\nfi\nSERVER=$(python -c \"import re,pathlib;print(re.search(r'SERVER_VERSION = \\\"([^\\\"]+)\\\"', pathlib.Path('tools/record_mcp.py').read_text()).group(1))\")\necho \"tag=$TAG pyproject=$PYPROJECT package.json=$PKGJSON bin/facet.js=$BINJS record_mcp=$SERVER\"\nfail=0\nfor pair in \"pyproject:$PYPROJECT\" \"package.json:$PKGJSON\" \"bin/facet.js:$BINJS\" \"record_mcp.py:$SERVER\"; do\n  name=\"${pair%%:*}\"; val=\"${pair#*:}\"\n  if [ \"$val\" != \"$TAG\" ]; then echo \"::error::$name declares $val but the tag is $TAG\"; fail=1; fi\ndone\n[ \"$fail\" -eq 0 ]\n"
+          "programs": [
+            "echo",
+            "node",
+            "python"
+          ],
+          "step": "Verify tag matches every declared version"
         },
         {
           "job": "release",
-          "step": "Generate checksums",
-          "text": "VERSION=\"${GITHUB_REF_NAME#v}\"\ncd assets\nsha256sum * > \"checksums-${VERSION}.txt\"\ncat \"checksums-${VERSION}.txt\"\n"
+          "programs": [
+            "cat",
+            "cd",
+            "sha256sum"
+          ],
+          "step": "Generate checksums"
         },
         {
           "job": "release",
-          "step": "Build sdist + wheel",
-          "text": "python -m pip install --upgrade build\npython -m build\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Build sdist + wheel"
         },
         {
           "job": "release",
-          "step": "Verify the wheel runs from a clean venv",
-          "text": "set -euo pipefail\npython -m venv /tmp/verify\n/tmp/verify/bin/pip install --quiet dist/*.whl\n\n# the floor: what this step used to be, in full\n/tmp/verify/bin/facet-index --help > /dev/null\n/tmp/verify/bin/facet-mcp --print-tools > /dev/null\n\n# A VERB THAT TOUCHES THE CORPUS. `build` is the one that died with\n# FileNotFoundError on <venv>/Lib/docs/experiments. It writes to a\n# scratch path so the tracked index is never the thing under test.\n/tmp/verify/bin/facet-index build --db /tmp/verify/index.db > /dev/null\n\n# A VERB THAT TOUCHES THE DB, with no --db, which is how the default\n# gets exercised at all. This exited 2 with \"unable to open database\n# file\" on every published wheel.\n/tmp/verify/bin/facet-index q erosion > /dev/null\n\n# THE REFUSAL, from a directory that is not the record: 4 = REFUSED\n# (E21 Ruling 4). A non-zero here is not enough - 2 is what the DEFECT\n# returned, so this asserts the exact code.\nrc=0\n( cd /tmp && /tmp/verify/bin/facet-index build ) > /dev/null 2>&1 || rc=$?\nif [ \"$rc\" -ne 4 ]; then\n  echo \"expected 4 = REFUSED outside a checkout, got $rc\" >&2\n  exit 1\nfi\n\n# And the server's own banner must name a path inside this checkout.\n# The 0.1.0 binary printed a path under its extraction dir and exited\n# 0; the wheel printed one under <venv>/Lib and exited 0.\ndb=$(/tmp/verify/bin/facet-mcp --print-tools | sed -n 's/^db: *//p' | head -1)\ncase \"$db\" in\n  \"$PWD\"/*) ;;\n  *) echo \"the banner names a path outside the checkout: $db\" >&2; exit 1 ;;\nesac\necho \"verbs run, the refusal returns 4, and the banner names $db\"\n"
+          "programs": [
+            "1",
+            "2",
+            "cd",
+            "echo",
+            "head",
+            "python",
+            "sed"
+          ],
+          "step": "Verify the wheel runs from a clean venv"
         },
         {
           "job": "release",
-          "step": "Cut the GitHub Release with binaries + dists",
-          "text": "gh release create \"${GITHUB_REF_NAME}\" \\\n  --title \"facet ${GITHUB_REF_NAME}\" \\\n  --notes-file \".github/release-notes-${GITHUB_REF_NAME}.md\" \\\n  --verify-tag \\\n  assets/* dist/*\n"
+          "programs": [
+            "gh"
+          ],
+          "step": "Cut the GitHub Release with binaries + dists"
         },
         {
           "job": "release",
-          "step": "Install npm >=11.5 in a sandbox for OIDC",
-          "text": "SANDBOX=\"$HOME/.npm-cli-sandbox\"\nmkdir -p \"$SANDBOX\"\npushd \"$SANDBOX\" >/dev/null\necho '{\"name\":\"npm-cli-sandbox\",\"version\":\"0.0.0\",\"private\":true}' > package.json\nnpm install --no-save --no-audit --no-fund --silent npm@latest\npopd >/dev/null\necho \"$SANDBOX/node_modules/.bin\" >> \"$GITHUB_PATH\"\n\"$SANDBOX/node_modules/.bin/npm\" --version\n"
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in a sandbox for OIDC"
         },
         {
           "job": "release",
-          "step": "npm pack dry-run (verify tarball shape)",
-          "text": "npm pack --dry-run"
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (verify tarball shape)"
         },
         {
           "job": "release",
-          "step": "Publish to npm with provenance (OIDC trusted publisher)",
-          "text": "npm publish --provenance --access public"
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
         }
       ],
       "elsewhere": [],
@@ -7675,6 +7816,7 @@
       "to": "tools"
     }
   ],
+  "engine": "1.23.0",
   "generatedFrom": {
     "commit": "8d2fa3456e3412198ed38bbb069775efebe65d86",
     "tracked": 909
@@ -7905,7 +8047,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "tests/test_t27_packaging_shape.py",
@@ -8356,7 +8499,13 @@
         }
       ],
       "target": "docs/brand/four-accepted-assets.png",
-      "writers": []
+      "writers": [
+        {
+          "by": "docs/brand/make_asset_sheet.py",
+          "confidence": "ast",
+          "fromCwd": true
+        }
+      ]
     },
     {
       "readers": [
@@ -9349,6 +9498,11 @@
         {
           "by": "tools/boundary_repair.py",
           "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "tools/boundary_repair.py",
+          "call": "open",
           "confidence": "ast"
         }
       ],
@@ -10801,7 +10955,13 @@
         }
       ],
       "target": "docs/experiments/E14-brush-prompts.json",
-      "writers": []
+      "writers": [
+        {
+          "by": "tools/diagnostics/e14_make_brush_prompts.py",
+          "confidence": "ast",
+          "fromCwd": true
+        }
+      ]
     },
     {
       "readers": [
@@ -14659,7 +14819,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "tests/test_t27_packaging_shape.py",
@@ -14904,7 +15065,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "tests/test_t27_packaging_shape.py",
@@ -15744,6 +15906,11 @@
           "by": "tools/measure_mcp.py",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "tools/measure_mcp.py",
+          "call": "open",
+          "confidence": "ast"
         }
       ],
       "target": "tools",
@@ -15775,6 +15942,17 @@
         }
       ],
       "target": "tools/diagnostics",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/diagnostics/e55_prompt_elements.py",
+          "call": "open",
+          "confidence": "ast"
+        }
+      ],
+      "target": "tools/diagnostics/__e55_no_such_file__.json",
       "writers": []
     },
     {
@@ -15899,11 +16077,6 @@
     {
       "readers": [
         {
-          "by": "docs/experiments/E14-brush-prompts.json",
-          "call": "literal",
-          "confidence": "text"
-        },
-        {
           "by": "tools/diagnostics/e14_make_brush_prompts.py",
           "call": "literal",
           "confidence": "ast"
@@ -15978,6 +16151,17 @@
     {
       "readers": [
         {
+          "by": "tools/emit_view_aovs.py",
+          "call": "open",
+          "confidence": "ast"
+        }
+      ],
+      "target": "tools/emit_view_aovs.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "docs/experiments/E18-index-mcp-report.md",
           "call": ".",
           "confidence": "text"
@@ -16041,6 +16225,17 @@
         }
       ],
       "target": "tools/project_twins.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/reconstruct_mesh.py",
+          "call": "open",
+          "confidence": "ast"
+        }
+      ],
+      "target": "tools/reconstruct_mesh.py",
       "writers": []
     },
     {
@@ -16114,6 +16309,28 @@
         }
       ],
       "target": "tools/superseded",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/twin_despeckle.py",
+          "call": "open",
+          "confidence": "ast"
+        }
+      ],
+      "target": "tools/twin_despeckle.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/twin_fuse.py",
+          "call": "open",
+          "confidence": "ast"
+        }
+      ],
+      "target": "tools/twin_fuse.py",
       "writers": []
     },
     {

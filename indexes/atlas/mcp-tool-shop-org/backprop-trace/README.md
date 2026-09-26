@@ -1,6 +1,6 @@
 # backprop-trace: how it works
 
-Mapped at 2026-09-25 from commit 8b16ae0.
+Mapped at 2026-09-26 from commit 8b16ae0 by Atlas 1.23.0.
 
 ## What this is
 

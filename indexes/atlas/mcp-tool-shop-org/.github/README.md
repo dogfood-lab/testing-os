@@ -1,6 +1,6 @@
 # .github: how it works
 
-Mapped at 2026-09-25 from commit 8d8d1d2.
+Mapped at 2026-09-26 from commit 8d8d1d2 by Atlas 1.23.0.
 
 ## What this is
 

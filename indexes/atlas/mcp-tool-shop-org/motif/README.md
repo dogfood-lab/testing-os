@@ -1,6 +1,6 @@
 # motif: how it works
 
-Mapped at 2026-09-25 from commit 83531a1.
+Mapped at 2026-09-26 from commit 83531a1 by Atlas 1.23.0.
 
 ## What this is
 

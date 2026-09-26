@@ -1,6 +1,6 @@
 # ai-playtest: how it works
 
-Mapped at 2026-09-25 from commit ddf3c8c.
+Mapped at 2026-09-26 from commit ddf3c8c by Atlas 1.23.0.
 
 ## What this is
 

@@ -2645,6 +2645,7 @@
       "to": "src"
     }
   ],
+  "engine": "1.23.0",
   "generatedFrom": {
     "commit": "53be69f8bd3e3aca26a8cde1aa9e8f0b36f0cd84",
     "tracked": 153
@@ -2665,7 +2666,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "tests/version-alignment.test.ts",
@@ -2680,7 +2682,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "tests/index.test.ts",
@@ -2796,10 +2799,12 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         },
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         }
       ],
       "target": "tsconfig.build.json",

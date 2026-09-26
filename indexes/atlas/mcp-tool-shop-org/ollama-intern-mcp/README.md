@@ -1,6 +1,6 @@
 # ollama-intern-mcp: how it works
 
-Mapped at 2026-09-25 from commit 1249f83.
+Mapped at 2026-09-26 from commit 1249f83 by Atlas 1.23.0.
 
 ## What this is
 

@@ -1,6 +1,6 @@
 # role-os: how it works
 
-Mapped at 2026-09-25 from commit c0ee720.
+Mapped at 2026-09-26 from commit c0ee720 by Atlas 1.23.0.
 
 ## What this is
 

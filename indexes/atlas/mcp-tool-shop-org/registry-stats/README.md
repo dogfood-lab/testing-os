@@ -1,6 +1,6 @@
 # registry-stats: how it works
 
-Mapped at 2026-09-25 from commit ccdcd13.
+Mapped at 2026-09-26 from commit ccdcd13 by Atlas 1.23.0.
 
 ## What this is
 
@@ -83,6 +83,11 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
+- **.claude/** is written by github-actions[bot], which added every file in it.
+- **assets/** is written by github-actions[bot], which added every file in it.
+- **desktop/** is written by github-actions[bot], which added every file in it.
+- **the repository root** is written by github-actions[bot], which added every file in it.
+- **site/** is written by github-actions[bot], which added every file in it.
 - **site/public/data/packages.json** is written by site/scripts/fetch-stats.mjs.
 - **site/public/data/stats.json** is written by site/scripts/fetch-stats.mjs.
 - **site/src/data/history.json** has a block written by site/scripts/fetch-stats.mjs.
@@ -91,7 +96,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .claude/, .github/, assets/ and the repository root. Nothing in this repository writes to them.
+People write .github/. Nothing in this repository writes to them.
 
 ## Where to start
 

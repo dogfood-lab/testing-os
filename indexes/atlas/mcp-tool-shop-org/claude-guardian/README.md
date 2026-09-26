@@ -1,6 +1,6 @@
 # claude-guardian: how it works
 
-Mapped at 2026-09-25 from commit 65dce69.
+Mapped at 2026-09-26 from commit 65dce69 by Atlas 1.23.0.
 
 ## What this is
 

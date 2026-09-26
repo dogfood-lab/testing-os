@@ -4382,6 +4382,7 @@
       "readers": [
         {
           "by": ".github/workflows/ci.yml",
+          "confidence": "config",
           "target": ".github/upstream-pins.env"
         }
       ],
@@ -5034,6 +5035,7 @@
       "to": "stage"
     }
   ],
+  "engine": "1.23.0",
   "generatedFrom": {
     "commit": "5e9e75f945d6fed8b119d8709e20e12a72d11a34",
     "tracked": 679
@@ -5042,13 +5044,15 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         }
       ],
       "target": ".github/upstream-pins.env",
       "writers": [
         {
-          "by": ".github/workflows/bump-upstream-pins.yml"
+          "by": ".github/workflows/bump-upstream-pins.yml",
+          "confidence": "config"
         }
       ]
     },
@@ -8221,7 +8225,8 @@
       "target": "fixtures",
       "writers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         }
       ]
     },

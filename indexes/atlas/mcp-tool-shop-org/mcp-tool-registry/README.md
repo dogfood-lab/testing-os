@@ -1,6 +1,6 @@
 # mcp-tool-registry: how it works
 
-Mapped at 2026-09-25 from commit 2bb195f.
+Mapped at 2026-09-26 from commit 2bb195f by Atlas 1.23.0.
 
 ## What this is
 

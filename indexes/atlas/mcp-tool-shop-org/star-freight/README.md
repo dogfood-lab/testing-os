@@ -1,6 +1,6 @@
 # star-freight: how it works
 
-Mapped at 2026-09-25 from commit 743f657.
+Mapped at 2026-09-26 from commit 743f657 by Atlas 1.23.0.
 
 ## What this is
 

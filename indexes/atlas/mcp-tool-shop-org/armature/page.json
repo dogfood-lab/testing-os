@@ -24,6 +24,14 @@
       "importedBy": [],
       "importedByTests": [],
       "kind": "part",
+      "name": "npm",
+      "partLabel": "npm"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
       "name": "site",
       "partLabel": "the site"
     },
@@ -79,7 +87,7 @@
       },
       {
         "kind": "door",
-        "sentence": "And 1 more change to a door.",
+        "sentence": "And 2 more changes to doors.",
         "subjects": []
       },
       {
@@ -101,12 +109,16 @@
       },
       {
         "kind": "landing",
-        "sentence": "verify.ps1 is now also read by .github/workflows/ci.yml and .github/workflows/release.yml.",
+        "sentence": "tests/ is now also read by tests/test_refusal_clauses.py.",
         "subjects": [
-          "verify.ps1",
-          ".github/workflows/ci.yml",
-          ".github/workflows/release.yml"
+          "tests/",
+          "tests/test_refusal_clauses.py"
         ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 4 more new writers and readers of places.",
+        "subjects": []
       },
       {
         "kind": "sequence",
@@ -229,7 +241,7 @@
   "changesTogetherWithTests": 0,
   "commit": "7a70d6fb97ef1cf5b33f8f03d18860611954e386",
   "defaultBranch": "main",
-  "derived": "8 parts, mostly Python (320 files), JavaScript (2) and TypeScript (2). Work enters through 4 doors; the busiest is ci, which reaches 4 parts. It publishes to PyPI and @mcptoolshop/armature-studio to npm. People run armature.",
+  "derived": "8 parts, mostly Python (320 files), CSS (2), JavaScript (2), TypeScript (2), Astro (1) and PowerShell (1). Work enters through 5 doors; the busiest is ci, which reaches 4 parts. It publishes to PyPI and @mcptoolshop/armature-studio to npm. It deploys a site to GitHub Pages. People run armature.",
   "doors": [
     {
       "checks": [
@@ -251,7 +263,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         },
         {
           "boundary": "tests",
@@ -332,7 +344,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -349,6 +361,32 @@
         "on a push to main touching 2 paths",
         "or by hand"
       ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "npm/package.json",
+      "id": "npm/package.json#armature",
+      "kind": "command",
+      "landings": [],
+      "name": "armature",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "npm",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "npm/bin/armature.mjs"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
     },
     {
       "checks": [],
@@ -387,13 +425,14 @@
       "to": "tools"
     }
   ],
+  "engine": "1.23.0",
   "generated": [],
-  "generatedAt": "2026-09-25T09:13:28.260Z",
+  "generatedAt": "2026-09-26T14:40:01.014Z",
   "limits": [
     "43 imports could not be resolved: `tests/blender/test_check_pack.py` imports `conftest`, which is no module on its import path and no declared dependency; `tests/blender_stub.py` imports a path built at run time; `tests/conftest.py` imports a path built at run time; and 40 more.",
-    "141 writes and 181 reads use paths built at run time and are not named here.",
-    "43 writes and 7 reads go to a path their caller passes, not to this repository.",
-    "9 writes go to the directory the command is run in, not to this repository.",
+    "116 writes and 73 reads use paths built at run time and are not named here.",
+    "80 writes and 156 reads go to a path their caller passes, not to this repository.",
+    "3 writes go to the directory the command is run in, not to this repository.",
     "3 commands are built at run time and not followed."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -639,20 +678,19 @@
   "summaryFrom": null,
   "testFiles": 223,
   "testedBy": {
-    "npm": 0,
+    "npm": 1,
     "tools": 191
   },
-  "unnamedWrites": 141,
+  "testedByScript": [
+    "npm"
+  ],
+  "unnamedWrites": 116,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],
-  "untested": [
-    {
-      "part": "npm",
-      "partLabel": "npm",
-      "testedBy": 0
-    }
+  "untested": [],
+  "untestedNote": [
+    "npm is tested only by its package's own test script, which a workflow runs."
   ],
-  "untestedNote": [],
   "written": 0
 }

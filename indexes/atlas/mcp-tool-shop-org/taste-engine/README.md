@@ -1,6 +1,6 @@
 # taste-engine: how it works
 
-Mapped at 2026-09-25 from commit c87c284.
+Mapped at 2026-09-26 from commit c87c284 by Atlas 1.23.0.
 
 ## What this is
 

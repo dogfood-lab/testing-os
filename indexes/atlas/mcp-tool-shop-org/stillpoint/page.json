@@ -1,10 +1,5 @@
 {
-  "authored": [
-    ".claude/",
-    ".github/",
-    "root",
-    "site/"
-  ],
+  "authored": [],
   "breaks": [
     {
       "calledBy": [
@@ -105,89 +100,11 @@
     },
     "unchanged": false
   },
-  "changesTogether": [
-    {
-      "a": "packages/server/src/routes/api.test.ts",
-      "b": "packages/ui/src/hooks/useRegulator.ts",
-      "either": 7,
-      "partLabels": [
-        "server",
-        "ui"
-      ],
-      "parts": [
-        "server",
-        "ui"
-      ],
-      "relation": "b-calls-a",
-      "shared": 6
-    },
-    {
-      "a": "packages/server/src/presets.ts",
-      "b": "packages/ui/src/App.tsx",
-      "either": 6,
-      "partLabels": [
-        "server",
-        "ui"
-      ],
-      "parts": [
-        "server",
-        "ui"
-      ],
-      "relation": "b-calls-a",
-      "shared": 5
-    },
-    {
-      "a": "packages/server/src/routes/api.ts",
-      "b": "packages/ui/src/hooks/useRegulator.ts",
-      "either": 8,
-      "partLabels": [
-        "server",
-        "ui"
-      ],
-      "parts": [
-        "server",
-        "ui"
-      ],
-      "relation": "b-calls-a",
-      "shared": 6
-    },
-    {
-      "a": "packages/server/src/routes/api.test.ts",
-      "b": "packages/ui/src/App.tsx",
-      "either": 8,
-      "partLabels": [
-        "server",
-        "ui"
-      ],
-      "parts": [
-        "server",
-        "ui"
-      ],
-      "relation": "b-calls-a",
-      "shared": 5
-    },
-    {
-      "a": "packages/server/src/routes/api.ts",
-      "b": "packages/ui/src/App.tsx",
-      "either": 9,
-      "partLabels": [
-        "server",
-        "ui"
-      ],
-      "parts": [
-        "server",
-        "ui"
-      ],
-      "relation": "b-calls-a",
-      "shared": 5
-    }
-  ],
+  "changesTogether": [],
   "changesTogetherNote": [
-    "1 file changed together with its own test, as expected.",
-    "Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.",
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
-  "changesTogetherWithTests": 1,
+  "changesTogetherWithTests": 0,
   "commit": "c7fbc277057214aea33336843166518ea69f7d9d",
   "defaultBranch": "main",
   "derived": "7 parts, mostly TypeScript (26 files), CSS (3), JavaScript (3), Rust (2), Astro (1), HTML (1) and PowerShell (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. stillpoint is a desktop app built from apps/desktop/src-tauri (nothing ships it).",
@@ -295,7 +212,23 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
+  "engine": "1.23.0",
   "generated": [
+    {
+      "addedBy": "dependabot[bot]",
+      "place": ".claude/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": ".github/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "apps/desktop/",
+      "writers": []
+    },
     {
       "place": "apps/desktop/msix/Assets/",
       "writers": [
@@ -319,9 +252,29 @@
       "writers": [
         "apps/desktop/src-tauri/gen-icons.mjs"
       ]
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "packages/server/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "packages/ui/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "root",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "site/",
+      "writers": []
     }
   ],
-  "generatedAt": "2026-09-25T16:38:30.192Z",
+  "generatedAt": "2026-09-26T14:47:11.939Z",
   "limits": [
     "2 writes and 12 reads go to a path their caller passes, not to this repository.",
     "4 test files under `packages/server/src/` are not run by CI on Linux, where the shell expands `**` as one directory level.",

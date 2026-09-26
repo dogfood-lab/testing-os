@@ -127,12 +127,26 @@
   "changes": {
     "fileCounts": {
       "added": 0,
-      "changed": 588,
+      "changed": 589,
       "moved": 0,
       "parts": 22,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "CI now also builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 10 more.",
@@ -155,66 +169,12 @@
       },
       {
         "kind": "door",
-        "sentence": "Publish to GHCR now also builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 24 more.",
-        "subjects": [
-          ".github/workflows/docker.yml",
-          "packages/attestia/src/chain-observer.ts",
-          "packages/attestia/src/event-store.ts",
-          "packages/attestia/src/index.ts",
-          "packages/attestia/src/ledger.ts",
-          "packages/attestia/src/proof.ts",
-          "packages/attestia/src/reconciler.ts",
-          "packages/attestia/src/registrum.ts",
-          "packages/attestia/src/sdk.ts",
-          "packages/attestia/src/treasury.ts",
-          "packages/attestia/src/types.ts",
-          "packages/attestia/src/vault.ts",
-          "packages/attestia/src/verify.ts",
-          "packages/attestia/src/witness.ts",
-          "packages/chain-observer/src/",
-          "packages/demo/src/",
-          "packages/event-store/src/",
-          "packages/ledger/src/",
-          "packages/node/src/",
-          "packages/proof/src/",
-          "packages/reconciler/src/",
-          "packages/registrum/src/",
-          "packages/sdk/src/",
-          "packages/treasury/src/",
-          "packages/types/src/",
-          "packages/vault/src/",
-          "packages/verify/src/",
-          "packages/witness/src/"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Release now also builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 10 more.",
-        "subjects": [
-          ".github/workflows/release.yml",
-          "packages/attestia/src/chain-observer.ts",
-          "packages/attestia/src/event-store.ts",
-          "packages/attestia/src/index.ts",
-          "packages/attestia/src/ledger.ts",
-          "packages/attestia/src/proof.ts",
-          "packages/attestia/src/reconciler.ts",
-          "packages/attestia/src/registrum.ts",
-          "packages/attestia/src/sdk.ts",
-          "packages/attestia/src/treasury.ts",
-          "packages/attestia/src/types.ts",
-          "packages/attestia/src/vault.ts",
-          "packages/attestia/src/verify.ts",
-          "packages/attestia/src/witness.ts"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 2 more changes to doors.",
+        "sentence": "And 4 more changes to doors.",
         "subjects": []
       },
       {
         "kind": "counts",
-        "sentence": "588 files changed content, across 22 parts.",
+        "sentence": "589 files changed content, across 22 parts.",
         "subjects": []
       }
     ],
@@ -229,7 +189,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "47e1a456d9ec50c9bec0e9fb73890e9e5da93621",
+  "commit": "8b49fcc6bf0a62f24852fb9ff3c9f3e23e0aa7b1",
   "defaultBranch": "main",
   "derived": "23 parts, mostly TypeScript (407 files), CSS (2), JavaScript (2) and Astro (1). Work enters through 5 doors; the busiest is Publish to GHCR, which reaches 16 parts. It publishes @mcptoolshop/attestia to npm and a container image. It deploys a site to GitHub Pages. People import @mcptoolshop/attestia.",
   "doors": [
@@ -608,8 +568,8 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request to main touching 12 paths",
-        "on a push to main touching 12 paths",
+        "on a pull request to main touching 13 paths",
+        "on a push to main touching 13 paths",
         "or by hand"
       ]
     },
@@ -965,8 +925,9 @@
       "to": "types"
     }
   ],
+  "engine": "1.23.0",
   "generated": [],
-  "generatedAt": "2026-09-25T16:25:01.469Z",
+  "generatedAt": "2026-09-26T14:40:11.697Z",
   "limits": [
     "5 writes and 7 reads use paths built at run time and are not named here.",
     "6 writes and 66 reads go to a path their caller passes, not to this repository.",

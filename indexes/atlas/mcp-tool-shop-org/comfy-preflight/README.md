@@ -1,6 +1,6 @@
 # comfy-preflight: how it works
 
-Mapped at 2026-09-25 from commit 855e57c.
+Mapped at 2026-09-26 from commit 855e57c by Atlas 1.23.0.
 
 ## What this is
 

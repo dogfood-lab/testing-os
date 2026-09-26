@@ -725,7 +725,8 @@
       "name": "npm",
       "origin": "authored",
       "role": "code",
-      "testedBy": 0,
+      "testedBy": 1,
+      "testedByScript": true,
       "unresolvedSites": 0
     },
     {
@@ -906,6 +907,14 @@
         },
         {
           "hash": "f738990912ebc01d3061758c79b30ef63c806fac210bd003727ee0aa8b9c634d",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
@@ -25811,10 +25820,10 @@
       "unresolvedSites": 39
     },
     {
-      "dynamicReads": 181,
+      "dynamicReads": 73,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 141,
+      "dynamicWrites": 116,
       "entryPoints": [
         "tools/armature_core/cli.py"
       ],
@@ -33717,22 +33726,22 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 6,
+          "reads": 155,
           "where": [
             "caller"
           ],
-          "writes": 42
+          "writes": 79
         },
         {
           "reads": 0,
           "where": [
             "cwd"
           ],
-          "writes": 9
+          "writes": 3
         }
       ],
-      "outsideReads": 6,
-      "outsideWrites": 51,
+      "outsideReads": 155,
+      "outsideWrites": 82,
       "role": "code",
       "testedBy": 191,
       "unresolvedNamed": [
@@ -33761,78 +33770,125 @@
       "commands": [
         {
           "job": "site-build",
-          "step": "scan site dependencies",
-          "text": "npm audit --package-lock-only --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "scan site dependencies"
         },
         {
           "job": "site-build",
-          "step": "install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "install site dependencies"
         },
         {
           "job": "site-build",
-          "step": "build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "build site"
         },
         {
           "job": "python-tests",
-          "step": "release.yml rehearsal STATUS must be recorded",
-          "text": "set -eu\n# Header STATUS comment only — not this step's own error text.\nif grep -E -q '^[[:space:]]*#[[:space:]]*STATUS:[[:space:]]*NOT YET RUN\\b' .github/workflows/release.yml; then\n  echo \"::error::release.yml header STATUS is still unset; rehearse before the next live release.\"\n  echo \"::error::gh workflow run release.yml --ref <tag-carrying-actions> -f rehearse=true\"\n  exit 1\nfi\nif grep -E -q '^[[:space:]]*#[[:space:]]*STATUS:[[:space:]]*STALE\\b' .github/workflows/release.yml; then\n  echo \"::error::release.yml header STATUS is STALE; re-dispatch after the gate-set change.\"\n  echo \"::error::gh workflow run release.yml --ref <tag-carrying-actions> -f rehearse=true\"\n  exit 1\nfi\nif grep -E -q '^[[:space:]]*#[[:space:]]*STATUS:[[:space:]]*RUN[[:space:]]+34073888719\\b' .github/workflows/release.yml; then\n  echo \"::error::release.yml STATUS still names pre-pip-audit rehearsal 34073888719.\"\n  echo \"::error::Re-dispatch after pip-audit and rewrite STATUS with the new run id.\"\n  exit 1\nfi\necho \"STATUS line is recorded and fresh.\"\n"
+          "programs": [
+            "echo",
+            "grep"
+          ],
+          "step": "release.yml rehearsal STATUS must be recorded"
         },
         {
           "job": "python-tests",
-          "step": "install test dependencies",
-          "text": "python -m pip install --upgrade pip numpy pillow pytest opencv-python-headless==5.0.0.93 matplotlib==3.11.1 \"build>=1.5,<2\" \"requests>=2.32,<3\""
+          "programs": [
+            "python"
+          ],
+          "step": "install test dependencies"
         },
         {
           "job": "python-tests",
-          "step": "audit Python dependencies",
-          "text": "# The hosted interpreter ships setuptools 79.0.1 (PYSEC-2026-3447, fix 83.0.0).\n# pip-audit inspects the whole env, not only extras, so upgrade before the audit.\npython -m pip install \"setuptools>=83.0.0,<84\" \"pip-audit>=2.7,<3\"\npython -m pip_audit --progress-spinner off\n"
+          "programs": [
+            "python"
+          ],
+          "step": "audit Python dependencies"
         },
         {
           "job": "python-tests",
-          "step": "install a licence-verified font for the sheet composers",
-          "text": "set -eu\n\n# No pipelines: `shell: bash` runs with `-o pipefail`, and `find` over a directory\n# that does not exist on this image would then decide the answer instead of the face.\nlocate_face() {\n  find /usr/share/fonts /usr/local/share/fonts -iname \"$1\" -print -quit 2>/dev/null || true\n}\n\n# The faces tools/sheet_compose.py FONT_ALIASES falls back to off Windows.\nFACES=\"LiberationSans-Regular.ttf LiberationSans-Bold.ttf\"\n\nneed_install=\"\"\nfor face in $FACES; do\n  if [ -z \"$(locate_face \"$face\")\" ]; then need_install=\"yes\"; fi\ndone\n\nif [ -n \"$need_install\" ]; then\n  sudo apt-get update\n  sudo apt-get install -y --no-install-recommends fonts-liberation\nelse\n  echo \"a Liberation face is already on this image; nothing to install\"\nfi\n\nmissing=\"\"\nfor face in $FACES; do\n  found=\"$(locate_face \"$face\")\"\n  if [ -z \"$found\" ]; then missing=\"$missing $face\"; else echo \"$face -> $found\"; fi\ndone\nif [ -n \"$missing\" ]; then\n  echo \"::error::fonts-liberation reported success but these faces are not where the composers look:$missing\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "find",
+            "locate_face",
+            "sudo"
+          ],
+          "step": "install a licence-verified font for the sheet composers"
         },
         {
           "job": "python-tests",
-          "step": "run tests",
-          "text": "python -m pytest tests -q"
+          "programs": [
+            "python"
+          ],
+          "step": "run tests"
         },
         {
           "job": "python-tests",
-          "step": "run tests under -O (gates must still raise)",
-          "text": "python -O -m pytest -q tests/test_amend_w12_core_gates.py tests/test_amend_w12_core_solvers.py tests/test_amend_w16_core_solvers.py tests/test_amend_w3_andons.py tests/test_amend_w6_andons.py tests/test_assembly.py tests/test_cascade.py tests/test_ci_workflows.py tests/test_donor_gate.py tests/test_gate_s.py tests/test_gate_survives_optimize.py tests/test_instruments_amend_w18.py tests/test_instruments_amend_w18_optics.py tests/test_instruments_measure_amend_w12.py tests/test_instruments_measure_amend_w14.py tests/test_instruments_measure_amend_w18.py tests/test_lift_solve.py tests/test_resample.py tests/test_turnaround.py"
+          "programs": [
+            "python"
+          ],
+          "step": "run tests under -O (gates must still raise)"
         },
         {
           "job": "python-tests",
-          "step": "build the package and run it from a clean install",
-          "text": "set -eu\n# Log phases are collapsible in the Actions UI so a red clean-room transcript is not\n# one undifferentiated blob (pip-freeze wall vs classifier refusal). Andon `::error::`\n# lines stay at group end so the annotation still surfaces.\necho ::group::build\npython -m pip install \"build>=1.5,<2\" \"twine>=7,<8\"\n# THE LEG JUDGES WHAT THIS RUN BUILT, AND NOTHING ELSE -- the invariant `verify.ps1`\n# leg 3 established at wave 23 and this implementation of the same leg did not get.\n# `python -m build` does not clear `dist/`, and until this line nothing here did\n# either: a grep for a remove or a clean over this file returned nothing, while\n# `twine check dist/*` below and the classifier gate in the step after it both range\n# over the whole directory, and release.yml's upload step carries the whole of\n# `dist/` to the job that publishes it. Not live on today's configuration and said so\n# plainly -- every caller is a fresh `ubuntu-latest` runner whose `dist/` is empty at\n# checkout, and the suite builds its sdist with `--outdir` into a tmp path -- but a\n# self-hosted runner, or a second call to this action in one job, makes the two\n# implementations of one leg behave differently on the same command, which is what\n# wave 23 wrote the refusal for. CLEARED, then CHECKED: the clear is not assumed to\n# have worked, in the by-name refusal's own shape.\nrm -rf dist\nif [ -e dist ]; then\n  echo \"::error::dist/ could not be cleared; every verdict below is a claim about what THIS run built, so this refuses rather than judging an artifact it did not produce.\"\n  ls -la dist/\n  exit 1\nfi\npython -m build\n# THE ARTIFACTS ARE SELECTED BY NAME, and until this line all three selections here\n# were globs: `twine check dist/*`, `pip install --no-deps dist/*.tar.gz` and\n# `pip install dist/*.whl` were each handed to their tool verbatim. Under\n# `shell: bash` (`-eo pipefail`) plus this script's `set -eu`, an unmatched glob is\n# passed through as the literal pattern -- so a build that renamed or dropped an\n# artifact turned the release gate red with a message about a PATH, in the job whose\n# whole purpose is to say what the artifact IS. The other two implementations of this\n# selection already refuse by name: verify.ps1's leg 3 derives both filenames from\n# `project.name` / `project.version` and lists what `dist/` holds, and the sibling\n# npm clean room refuses an unmatched glob and a missing shim in its own words. The\n# names here are PEP 503/427 normalisation of `project.name` with `project.version`,\n# read the way release.yml's tag gate reads the version -- never globbed, never\n# chosen by timestamp.\nDIST_NAME=\"$(python -c \"import re,tomllib;print(re.sub(r'[-_.]+','_',tomllib.load(open('pyproject.toml','rb'))['project']['name']).lower())\")\"\nVERSION=\"$(python -c \"import tomllib;print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])\")\"\nWHEEL=\"dist/${DIST_NAME}-${VERSION}-py3-none-any.whl\"\nSDIST=\"dist/${DIST_NAME}-${VERSION}.tar.gz\"\nfor expected in \"$WHEEL\" \"$SDIST\"; do\n  if [ ! -f \"$expected\" ]; then\n    echo \"::error::the build produced no $(basename \"$expected\"); dist/ holds:\"\n    ls -la dist/\n    exit 1\n  fi\ndone\necho ::endgroup::\n# `dist/*` is deliberate HERE and only here: the classifier gate's own docstring\n# records that the population is the DIRECTORY, because release.yml uploads the whole\n# of it and the publish action publishes what it uploads. The clear and the two\n# by-name checks above are what make that range a known quantity rather than a guess.\necho ::group::twine\npython -m twine check dist/*\necho ::endgroup::\n# THE SDIST, BUILT FROM AND RUN. Three artifacts leave this repository and, until this\n# line, two of them were installed before the publish: the wheel below, and the npm\n# tarball in the sibling action. `twine check dist/*` reads METADATA and never opens\n# either archive; release.yml uploads the whole of `dist/` and\n# `pypa/gh-action-pypi-publish` publishes both files -- so the sdist was the third\n# artifact, and this action's own header states the law it was written for: \"the\n# artifact handed to publish was the one artifact never installed in the workflow that\n# publishes it.\"\n#\n# What the suite covers is CONTENTS, not buildability: `tests/test_packaging.py`\n# unpacks a built sdist and asserts what it carries. An edit to MANIFEST.in or to\n# `[tool.setuptools]`, or a setuptools inside the `>=77,<85` window that changes sdist\n# file selection, ships an archive that cannot build -- with every gate in release.yml\n# green, because nothing here builds from it. That failure lands on\n# `pip install --no-binary :all:`, on a distro or conda-forge packager, after the\n# version is taken on PyPI forever.\n#\n# `pip install <sdist>` runs the backend under build isolation, so this exercises\n# `[build-system].requires` and MANIFEST.in the way a downstream packager does, which\n# installing a wheel cannot. Its OWN venv, because a wheel already present in the other\n# room would satisfy the requirement without the archive ever being opened.\n#\n# `--no-deps`, and `modules --json` rather than the wheel room's full probe: the\n# question here is whether the ARCHIVE builds and the command it installs runs, and the\n# room below already resolves and exercises the runtime dependency set. Measured on the\n# rig 2026-09-04 against this tree's sdist -- `pip install --no-deps` exit 0,\n# `armature modules --json` exit 0, `armature_core` imported from that venv's\n# site-packages -- so this is a guard on a path that works today, not a repair.\n#\n# WHAT EACH ROOM RESOLVED, STATED. Both installs carried `--quiet`, which removes the\n# one line saying what came out of the index. The wheel room deliberately resolves the\n# runtime set FRESH (that is a user's experience of `pip install armature-studio`, and\n# the thing this room exists to exercise) at the unbounded specifiers pyproject\n# declares -- so when this step goes red on release day, after `release: published`\n# has fired, the log has to say which numpy and which cv2 the probe ran against.\n# Measured on the rig 2026-09-04: `pip install --quiet` emitted nothing at all, while\n# the same install without the flag printed `Successfully installed\n# armature-studio-0.3.0`. `pip freeze` after each install is the full answer: a\n# dependency-day break and a wheel defect are then two different reds.\n#\n# THE ROOMS ARE REMOVED BEFORE THEY ARE CREATED, and they live under `$RUNNER_TEMP`.\n# Both were fixed `/tmp` paths with no removal first, and creating a virtual\n# environment over an existing directory REUSES it rather than emptying it -- the\n# measurement wave 24 filed this on -- so a room whose whole name\n# is \"clean\" could meet a directory it did not create. The sibling written one wave\n# later already does this character for character (the npm clean room sets its prefix\n# from `${RUNNER_TEMP:-/tmp}`, removes it, then makes it), and verify.ps1 is\n# defensible for a different reason: both its rooms are GUID-suffixed and removed in\n# a `finally`. This was the only one of the three implementations that could meet a\n# directory it did not create. Not live on the stated configuration -- the studio\n# Actions rule mandates `ubuntu-latest`, every caller gets a fresh ephemeral runner,\n# and no job calls this action twice -- and if that changes, the room installs the\n# wheel into a venv still holding a previous run's packages and goes GREEN on a wheel\n# missing a module the stale venv still carries, which is the defect class this\n# repository names first.\necho ::group::sdist room\nSDIST_ROOM=\"${RUNNER_TEMP:-/tmp}/cleanroom-sdist\"\nWHEEL_ROOM=\"${RUNNER_TEMP:-/tmp}/cleanroom\"\nrm -rf \"$SDIST_ROOM\" \"$WHEEL_ROOM\"\npython -m venv \"$SDIST_ROOM\"\n\"$SDIST_ROOM/bin/python\" -m pip install --no-deps \"$SDIST\"\n\"$SDIST_ROOM/bin/python\" -m pip freeze\n# The console script the archive installs, checked before it is run. verify.ps1\n# gained this refusal at wave 23 (\"the sdist install provides no armature command\n# at ...\") and the sibling npm room carries the same clause for its shim; this\n# action, which grew the sdist room at wave 14, had neither. Without it a wheel whose\n# `[project.scripts]` entry point stopped being installed dies as a bash\n# `No such file or directory` at exit 127.\nif [ ! -x \"$SDIST_ROOM/bin/armature\" ]; then\n  echo \"::error::the sdist install provides no armature command at $SDIST_ROOM/bin/armature; check [project.scripts] in pyproject.toml\"\n  ls -la \"$SDIST_ROOM/bin\" || echo \"(no bin/ in the sdist room at all)\"\n  exit 1\nfi\n\"$SDIST_ROOM/bin/armature\" modules --json > /dev/null\necho ::endgroup::\necho ::group::wheel room\npython -m venv \"$WHEEL_ROOM\"\n\"$WHEEL_ROOM/bin/python\" -m pip install \"$WHEEL\"\n\"$WHEEL_ROOM/bin/python\" -m pip freeze\nif [ ! -x \"$WHEEL_ROOM/bin/armature\" ]; then\n  echo \"::error::the wheel install provides no armature command at $WHEEL_ROOM/bin/armature; check [project.scripts] in pyproject.toml\"\n  ls -la \"$WHEEL_ROOM/bin\" || echo \"(no bin/ in the wheel room at all)\"\n  exit 1\nfi\n\"$WHEEL_ROOM/bin/armature\" check\n\"$WHEEL_ROOM/bin/armature\" modules --json > /dev/null\necho ::endgroup::\n# THE PROBE IS A FILE, NOT A HEREDOC, for the reason the classifier gate beside it is\n# one: `verify.ps1`'s leg 3 runs the SAME text, and a copy forks. Its own docstring\n# carries the measurement (one copy gutted, 256 tests still green) and the reason the\n# printed line is BUILT from the calls rather than written as a literal.\necho ::group::probe\n\"$WHEEL_ROOM/bin/python\" \"$GITHUB_ACTION_PATH/lazy_import_probe.py\"\necho ::endgroup::\n# CycloneDX SBOM of the wheel room's resolved set — beside dist/, never inside it.\n# release.yml uploads `sbom/` next to `dist/` (retention-days 14). Stdlib emitter\n# only: no extra pip tool on the publish path (toolchain ceiling census).\necho ::group::sbom\nrm -rf sbom\nmkdir -p sbom\nSBOM_PATH=\"sbom/${DIST_NAME}-${VERSION}.cdx.json\"\npython \"$GITHUB_ACTION_PATH/sbom_emit.py\" \"$WHEEL_ROOM/bin/python\" \"$SBOM_PATH\" \\\n  --name \"$DIST_NAME\" --version \"$VERSION\"\nif [ ! -f \"$SBOM_PATH\" ]; then\n  echo \"::error::SBOM was not written at $SBOM_PATH\"\n  exit 1\nfi\necho ::endgroup::\n"
+          "programs": [
+            "basename",
+            "echo",
+            "ls",
+            "mkdir",
+            "python",
+            "rm"
+          ],
+          "step": "build the package and run it from a clean install"
         },
         {
           "job": "python-tests",
-          "step": "refuse a classifier PyPI does not have",
-          "text": "set -eu\npython -m pip install \"trove-classifiers>=2026.6.1.19,<2027\"\npython \"$GITHUB_ACTION_PATH/classifier_gate.py\" dist\n"
+          "programs": [
+            "python"
+          ],
+          "step": "refuse a classifier PyPI does not have"
         },
         {
           "job": "python-tests",
-          "step": "pack the npm package and run it from a clean install",
-          "text": "set -eu\n# Collapsible phases (pack / install / selftest [/ handoff]) match the wheel clean\n# room's groups so a red npm log is not one unsectioned transcript. Andon `::error::`\n# stays at group end so the Actions annotation still surfaces.\necho ::group::pack\nrm -f ./*.tgz\nnpm pack\n# NO PIPELINE. `shell: bash` runs with `-o pipefail` and this script adds `set -eu`,\n# so `$(ls -1 ./*.tgz | head -1)` -- what this line was until 2026-09-04 -- could\n# abort the whole step with nothing said about tarballs: `head -1` closes the pipe\n# after the first line, `ls` is signalled (141), pipefail makes the substitution fail\n# and `set -e` exits. The window is small, which is what makes it the bad kind: a rare\n# red on the gate standing between the npm package and an irreversible publish,\n# indistinguishable from a real packaging break, green on the retry. The sibling\n# action says the same thing in its own words at\n# .github/actions/sheet-fonts/action.yml:38-39 -- written with its PATH, because two\n# files in this tree are called action.yml and a basename resolver answers the\n# citation with the wrong one.\n#\n# `rm -f ./*.tgz` above guarantees the glob has exactly one match, so the positional\n# is the answer with no plumbing between. The existence check is verify.ps1's\n# `npm pack produced no tarball` clause, carried: an unmatched glob leaves `$1` as the\n# literal pattern, and this refuses by name rather than handing it to `npm install`.\nset -- ./*.tgz\nif [ ! -f \"$1\" ]; then\n  echo \"::error::npm pack produced no tarball in $PWD\"\n  exit 1\nfi\nTARBALL=\"$PWD/${1#./}\"\necho ::endgroup::\necho ::group::install\nPREFIX=\"${RUNNER_TEMP:-/tmp}/npm-cleanroom\"\nrm -rf \"$PREFIX\"\nmkdir -p \"$PREFIX\"\nnpm install --prefix \"$PREFIX\" \"$TARBALL\"\nSHIM=\"$PREFIX/node_modules/.bin/armature\"\n# npm reports `added 1 package` for a package whose bin map resolves to nothing, so\n# the install's own exit code is not the check. The command is.\nif [ ! -x \"$SHIM\" ]; then\n  echo \"::error::the installed package provides no armature command at $SHIM; check bin/ and files/ in npm/package.json\"\n  ls -la \"$PREFIX/node_modules/.bin\" || echo \"(no node_modules/.bin at all)\"\n  exit 1\nfi\necho ::endgroup::\necho ::group::selftest\n\"$SHIM\" --node-selftest\necho ::endgroup::\n# Optional handoff: the packed shim must reach a real CLI through the pin, not only\n# the no-Python self-test. The pin SUBSTITUTES for PATH (npm/bin/armature.mjs), so a\n# wheel-room interpreter that cannot import armature_core is a refusal by name here\n# rather than a fall-through to some other Python on the runner.\nif [ -n \"${ARMATURE_HANDOFF_PYTHON}\" ]; then\n  echo ::group::handoff\n  if [ ! -x \"${ARMATURE_HANDOFF_PYTHON}\" ]; then\n    echo \"::error::handoff python is not executable: ${ARMATURE_HANDOFF_PYTHON}\"\n    exit 1\n  fi\n  if ! \"${ARMATURE_HANDOFF_PYTHON}\" -c \"import armature_core\"; then\n    echo \"::error::handoff python cannot import armature_core: ${ARMATURE_HANDOFF_PYTHON}\"\n    exit 1\n  fi\n  export ARMATURE_PYTHON=\"${ARMATURE_HANDOFF_PYTHON}\"\n  \"$SHIM\" --version\n  \"$SHIM\" check\n  echo ::endgroup::\nfi\nrm -f ./*.tgz\n"
+          "programs": [
+            "echo",
+            "ls",
+            "mkdir",
+            "npm",
+            "rm"
+          ],
+          "step": "pack the npm package and run it from a clean install"
         },
         {
           "job": "launcher",
-          "step": "Atlas check",
-          "text": "npx --yes @dogfood-lab/atlas@1.20.0 check"
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
         },
         {
           "job": "launcher",
-          "step": "launcher self-test",
-          "text": "npm test"
+          "programs": [
+            "npm"
+          ],
+          "step": "launcher self-test"
         },
         {
           "job": "launcher",
-          "step": "pack the npm package and run it from a clean install",
-          "text": "set -eu\n# Collapsible phases (pack / install / selftest [/ handoff]) match the wheel clean\n# room's groups so a red npm log is not one unsectioned transcript. Andon `::error::`\n# stays at group end so the Actions annotation still surfaces.\necho ::group::pack\nrm -f ./*.tgz\nnpm pack\n# NO PIPELINE. `shell: bash` runs with `-o pipefail` and this script adds `set -eu`,\n# so `$(ls -1 ./*.tgz | head -1)` -- what this line was until 2026-09-04 -- could\n# abort the whole step with nothing said about tarballs: `head -1` closes the pipe\n# after the first line, `ls` is signalled (141), pipefail makes the substitution fail\n# and `set -e` exits. The window is small, which is what makes it the bad kind: a rare\n# red on the gate standing between the npm package and an irreversible publish,\n# indistinguishable from a real packaging break, green on the retry. The sibling\n# action says the same thing in its own words at\n# .github/actions/sheet-fonts/action.yml:38-39 -- written with its PATH, because two\n# files in this tree are called action.yml and a basename resolver answers the\n# citation with the wrong one.\n#\n# `rm -f ./*.tgz` above guarantees the glob has exactly one match, so the positional\n# is the answer with no plumbing between. The existence check is verify.ps1's\n# `npm pack produced no tarball` clause, carried: an unmatched glob leaves `$1` as the\n# literal pattern, and this refuses by name rather than handing it to `npm install`.\nset -- ./*.tgz\nif [ ! -f \"$1\" ]; then\n  echo \"::error::npm pack produced no tarball in $PWD\"\n  exit 1\nfi\nTARBALL=\"$PWD/${1#./}\"\necho ::endgroup::\necho ::group::install\nPREFIX=\"${RUNNER_TEMP:-/tmp}/npm-cleanroom\"\nrm -rf \"$PREFIX\"\nmkdir -p \"$PREFIX\"\nnpm install --prefix \"$PREFIX\" \"$TARBALL\"\nSHIM=\"$PREFIX/node_modules/.bin/armature\"\n# npm reports `added 1 package` for a package whose bin map resolves to nothing, so\n# the install's own exit code is not the check. The command is.\nif [ ! -x \"$SHIM\" ]; then\n  echo \"::error::the installed package provides no armature command at $SHIM; check bin/ and files/ in npm/package.json\"\n  ls -la \"$PREFIX/node_modules/.bin\" || echo \"(no node_modules/.bin at all)\"\n  exit 1\nfi\necho ::endgroup::\necho ::group::selftest\n\"$SHIM\" --node-selftest\necho ::endgroup::\n# Optional handoff: the packed shim must reach a real CLI through the pin, not only\n# the no-Python self-test. The pin SUBSTITUTES for PATH (npm/bin/armature.mjs), so a\n# wheel-room interpreter that cannot import armature_core is a refusal by name here\n# rather than a fall-through to some other Python on the runner.\nif [ -n \"${ARMATURE_HANDOFF_PYTHON}\" ]; then\n  echo ::group::handoff\n  if [ ! -x \"${ARMATURE_HANDOFF_PYTHON}\" ]; then\n    echo \"::error::handoff python is not executable: ${ARMATURE_HANDOFF_PYTHON}\"\n    exit 1\n  fi\n  if ! \"${ARMATURE_HANDOFF_PYTHON}\" -c \"import armature_core\"; then\n    echo \"::error::handoff python cannot import armature_core: ${ARMATURE_HANDOFF_PYTHON}\"\n    exit 1\n  fi\n  export ARMATURE_PYTHON=\"${ARMATURE_HANDOFF_PYTHON}\"\n  \"$SHIM\" --version\n  \"$SHIM\" check\n  echo ::endgroup::\nfi\nrm -f ./*.tgz\n"
+          "programs": [
+            "echo",
+            "ls",
+            "mkdir",
+            "npm",
+            "rm"
+          ],
+          "step": "pack the npm package and run it from a clean install"
         }
       ],
       "elsewhere": [],
@@ -33870,7 +33926,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         },
         {
           "boundary": "tests",
@@ -34102,18 +34158,24 @@
       "commands": [
         {
           "job": "build",
-          "step": "scan site dependencies",
-          "text": "npm audit --package-lock-only --audit-level=high"
+          "programs": [
+            "npm"
+          ],
+          "step": "scan site dependencies"
         },
         {
           "job": "build",
-          "step": "install site dependencies",
-          "text": "npm ci"
+          "programs": [
+            "npm"
+          ],
+          "step": "install site dependencies"
         },
         {
           "job": "build",
-          "step": "build site",
-          "text": "npm run build"
+          "programs": [
+            "npm"
+          ],
+          "step": "build site"
         }
       ],
       "elsewhere": [],
@@ -34148,7 +34210,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -34210,68 +34272,113 @@
       "commands": [
         {
           "job": "verify",
-          "step": "The version in the tag must equal the version in the package",
-          "text": "case \"$GITHUB_REF\" in\n  refs/tags/*) ;;\n  *)\n    echo \"::error::release.yml requires a tag ref; GITHUB_REF=${GITHUB_REF:-<empty>}.\"\n    echo \"::error::Re-run by dispatching at the tag: gh workflow run release.yml --ref vX.Y.Z\"\n    exit 1\n    ;;\nesac\nTAG_NAME=\"$GITHUB_REF_NAME\"\nTAG=\"${TAG_NAME#v}\"\nPKG=$(python -c \"import tomllib;print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])\")\nNPM=$(node -p \"require('./npm/package.json').version\")\necho \"tag=$TAG pyproject=$PKG npm=$NPM rehearse=${REHEARSE:-<empty>}\"\ncase \"$REHEARSE\" in\n  true)\n    case \"$TAG_NAME\" in\n      rehearse-*)\n        echo \"::notice::throwaway rehearsal tag $TAG_NAME; skipping version-equality (publish jobs are already skipped).\"\n        ;;\n      *)\n        [ \"$TAG\" = \"$PKG\" ] || { echo \"::error::tag $TAG != pyproject $PKG\"; exit 1; }\n        [ \"$PKG\" = \"$NPM\" ] || { echo \"::error::pyproject $PKG != npm $NPM\"; exit 1; }\n        ;;\n    esac\n    ;;\n  *)\n    [ \"$TAG\" = \"$PKG\" ] || { echo \"::error::tag $TAG != pyproject $PKG\"; exit 1; }\n    [ \"$PKG\" = \"$NPM\" ] || { echo \"::error::pyproject $PKG != npm $NPM\"; exit 1; }\n    ;;\nesac\n"
+          "programs": [
+            "echo",
+            "node",
+            "python"
+          ],
+          "step": "The version in the tag must equal the version in the package"
         },
         {
           "job": "verify",
-          "step": "The two workflows must read the same visibility",
-          "text": "case \"$REPOSITORY_IS_PRIVATE\" in\n  true)\n    echo \"::notice::repository is PRIVATE; the npm job publishes without provenance.\"\n    ;;\n  false)\n    echo \"::notice::repository is PUBLIC; the npm job publishes with provenance.\"\n    ;;\n  *)\n    echo \"::error::github.event.repository.private read as '${REPOSITORY_IS_PRIVATE:-<empty>}', which is neither true nor false.\"\n    echo \"::error::Both publish jobs branch on this fact; refusing before either registry is reached.\"\n    exit 1\n    ;;\nesac\n"
+          "programs": [
+            "echo"
+          ],
+          "step": "The two workflows must read the same visibility"
         },
         {
           "job": "verify",
-          "step": "A pre-release must not reach either registry",
-          "text": "case \"$GITHUB_EVENT_NAME\" in\n  release)\n    case \"$RELEASE_IS_PRERELEASE\" in\n      false)\n        echo \"::notice::the release is not a pre-release; both publish jobs may run.\"\n        ;;\n      true)\n        echo \"::error::this release is marked PRE-RELEASE, and the step that reaches the registry carries no --tag, so npm would move the latest dist-tag onto it for every user of @mcptoolshop/armature-studio.\"\n        echo \"::error::This studio publishes no pre-release channel. Refusing before either registry is reached; unmark the release, or cut a normal version.\"\n        exit 1\n        ;;\n      *)\n        echo \"::error::github.event.release.prerelease read as '${RELEASE_IS_PRERELEASE:-<empty>}', which is neither true nor false.\"\n        echo \"::error::This gate decides whether the publish fork may run; refusing rather than guessing.\"\n        exit 1\n        ;;\n    esac\n    ;;\n  *)\n    echo \"::notice::$GITHUB_EVENT_NAME carries no release object, so there is no pre-release flag to read; the tag gate above is what constrains this arrival.\"\n    ;;\nesac\n# REHEARSAL STATUS (same step, not a fourth gate — tests pin exactly three pure-shell\n# gates in verify). A live release:published refuses while the header STATUS line\n# is unset (NOT YET RUN), marked STALE after a gate-set change, or still names the\n# pre-pip-audit rehearsal id 34073888719. Match only that comment line, never this\n# script's needle. On workflow_dispatch the obligation notices and continues so a\n# fresh proof can clear the line. ci.yml carries the same STATUS check so the debt\n# is CI-reachable before a tag is cut.\ncase \"$GITHUB_EVENT_NAME\" in\n  release)\n    if grep -E -q '^[[:space:]]*#[[:space:]]*STATUS:[[:space:]]*NOT YET RUN\\b' .github/workflows/release.yml; then\n      echo \"::error::release.yml header STATUS is still unset; a live release must not be the first execution of this workflow's gates.\"\n      echo \"::error::Rehearse first: gh workflow run release.yml --ref <tag> -f rehearse=true — then record the run id and tag on the STATUS line.\"\n      exit 1\n    fi\n    if grep -E -q '^[[:space:]]*#[[:space:]]*STATUS:[[:space:]]*STALE\\b' .github/workflows/release.yml; then\n      echo \"::error::release.yml header STATUS is STALE; the recorded rehearsal predates a later gate-set change (e.g. pip-audit).\"\n      echo \"::error::Re-dispatch: gh workflow run release.yml --ref <tag-carrying-actions> -f rehearse=true — then rewrite STATUS: RUN <id> ...\"\n      exit 1\n    fi\n    if grep -E -q '^[[:space:]]*#[[:space:]]*STATUS:[[:space:]]*RUN[[:space:]]+34073888719\\b' .github/workflows/release.yml; then\n      echo \"::error::release.yml STATUS still names pre-pip-audit rehearsal 34073888719; that run never exercised audit Python dependencies.\"\n      echo \"::error::Re-dispatch after pip-audit and rewrite STATUS with the new run id.\"\n      exit 1\n    fi\n    echo \"::notice::STATUS is recorded and fresh; live release may proceed past the rehearsal obligation.\"\n    ;;\n  *)\n    echo \"::notice::$GITHUB_EVENT_NAME is not release: published; STATUS obligation applies to a live release only.\"\n    ;;\nesac\n"
+          "programs": [
+            "echo",
+            "grep",
+            "release"
+          ],
+          "step": "A pre-release must not reach either registry"
         },
         {
           "job": "verify",
-          "step": "Install",
-          "text": "python -m pip install --upgrade pip\npython -m pip install pytest numpy pillow opencv-python-headless==5.0.0.93 matplotlib==3.11.1 \"build>=1.5,<2\" \"requests>=2.32,<3\"\n"
+          "programs": [
+            "python"
+          ],
+          "step": "Install"
         },
         {
           "job": "verify",
-          "step": "audit Python dependencies",
-          "text": "# Same as ci.yml python-tests: runner setuptools 79.0.1 is PYSEC-2026-3447.\npython -m pip install \"setuptools>=83.0.0,<84\" \"pip-audit>=2.7,<3\"\npython -m pip_audit --progress-spinner off\n"
+          "programs": [
+            "python"
+          ],
+          "step": "audit Python dependencies"
         },
         {
           "job": "verify",
-          "step": "install a licence-verified font for the sheet composers",
-          "text": "set -eu\n\n# No pipelines: `shell: bash` runs with `-o pipefail`, and `find` over a directory\n# that does not exist on this image would then decide the answer instead of the face.\nlocate_face() {\n  find /usr/share/fonts /usr/local/share/fonts -iname \"$1\" -print -quit 2>/dev/null || true\n}\n\n# The faces tools/sheet_compose.py FONT_ALIASES falls back to off Windows.\nFACES=\"LiberationSans-Regular.ttf LiberationSans-Bold.ttf\"\n\nneed_install=\"\"\nfor face in $FACES; do\n  if [ -z \"$(locate_face \"$face\")\" ]; then need_install=\"yes\"; fi\ndone\n\nif [ -n \"$need_install\" ]; then\n  sudo apt-get update\n  sudo apt-get install -y --no-install-recommends fonts-liberation\nelse\n  echo \"a Liberation face is already on this image; nothing to install\"\nfi\n\nmissing=\"\"\nfor face in $FACES; do\n  found=\"$(locate_face \"$face\")\"\n  if [ -z \"$found\" ]; then missing=\"$missing $face\"; else echo \"$face -> $found\"; fi\ndone\nif [ -n \"$missing\" ]; then\n  echo \"::error::fonts-liberation reported success but these faces are not where the composers look:$missing\"\n  exit 1\nfi\n"
+          "programs": [
+            "echo",
+            "find",
+            "locate_face",
+            "sudo"
+          ],
+          "step": "install a licence-verified font for the sheet composers"
         },
         {
           "job": "verify",
-          "step": "Suite",
-          "text": "python -m pytest -q"
+          "programs": [
+            "python"
+          ],
+          "step": "Suite"
         },
         {
           "job": "verify",
-          "step": "Suite under -O",
-          "text": "python -O -m pytest -q"
+          "programs": [
+            "python"
+          ],
+          "step": "Suite under -O"
         },
         {
           "job": "verify",
-          "step": "build the package and run it from a clean install",
-          "text": "set -eu\n# Log phases are collapsible in the Actions UI so a red clean-room transcript is not\n# one undifferentiated blob (pip-freeze wall vs classifier refusal). Andon `::error::`\n# lines stay at group end so the annotation still surfaces.\necho ::group::build\npython -m pip install \"build>=1.5,<2\" \"twine>=7,<8\"\n# THE LEG JUDGES WHAT THIS RUN BUILT, AND NOTHING ELSE -- the invariant `verify.ps1`\n# leg 3 established at wave 23 and this implementation of the same leg did not get.\n# `python -m build` does not clear `dist/`, and until this line nothing here did\n# either: a grep for a remove or a clean over this file returned nothing, while\n# `twine check dist/*` below and the classifier gate in the step after it both range\n# over the whole directory, and release.yml's upload step carries the whole of\n# `dist/` to the job that publishes it. Not live on today's configuration and said so\n# plainly -- every caller is a fresh `ubuntu-latest` runner whose `dist/` is empty at\n# checkout, and the suite builds its sdist with `--outdir` into a tmp path -- but a\n# self-hosted runner, or a second call to this action in one job, makes the two\n# implementations of one leg behave differently on the same command, which is what\n# wave 23 wrote the refusal for. CLEARED, then CHECKED: the clear is not assumed to\n# have worked, in the by-name refusal's own shape.\nrm -rf dist\nif [ -e dist ]; then\n  echo \"::error::dist/ could not be cleared; every verdict below is a claim about what THIS run built, so this refuses rather than judging an artifact it did not produce.\"\n  ls -la dist/\n  exit 1\nfi\npython -m build\n# THE ARTIFACTS ARE SELECTED BY NAME, and until this line all three selections here\n# were globs: `twine check dist/*`, `pip install --no-deps dist/*.tar.gz` and\n# `pip install dist/*.whl` were each handed to their tool verbatim. Under\n# `shell: bash` (`-eo pipefail`) plus this script's `set -eu`, an unmatched glob is\n# passed through as the literal pattern -- so a build that renamed or dropped an\n# artifact turned the release gate red with a message about a PATH, in the job whose\n# whole purpose is to say what the artifact IS. The other two implementations of this\n# selection already refuse by name: verify.ps1's leg 3 derives both filenames from\n# `project.name` / `project.version` and lists what `dist/` holds, and the sibling\n# npm clean room refuses an unmatched glob and a missing shim in its own words. The\n# names here are PEP 503/427 normalisation of `project.name` with `project.version`,\n# read the way release.yml's tag gate reads the version -- never globbed, never\n# chosen by timestamp.\nDIST_NAME=\"$(python -c \"import re,tomllib;print(re.sub(r'[-_.]+','_',tomllib.load(open('pyproject.toml','rb'))['project']['name']).lower())\")\"\nVERSION=\"$(python -c \"import tomllib;print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])\")\"\nWHEEL=\"dist/${DIST_NAME}-${VERSION}-py3-none-any.whl\"\nSDIST=\"dist/${DIST_NAME}-${VERSION}.tar.gz\"\nfor expected in \"$WHEEL\" \"$SDIST\"; do\n  if [ ! -f \"$expected\" ]; then\n    echo \"::error::the build produced no $(basename \"$expected\"); dist/ holds:\"\n    ls -la dist/\n    exit 1\n  fi\ndone\necho ::endgroup::\n# `dist/*` is deliberate HERE and only here: the classifier gate's own docstring\n# records that the population is the DIRECTORY, because release.yml uploads the whole\n# of it and the publish action publishes what it uploads. The clear and the two\n# by-name checks above are what make that range a known quantity rather than a guess.\necho ::group::twine\npython -m twine check dist/*\necho ::endgroup::\n# THE SDIST, BUILT FROM AND RUN. Three artifacts leave this repository and, until this\n# line, two of them were installed before the publish: the wheel below, and the npm\n# tarball in the sibling action. `twine check dist/*` reads METADATA and never opens\n# either archive; release.yml uploads the whole of `dist/` and\n# `pypa/gh-action-pypi-publish` publishes both files -- so the sdist was the third\n# artifact, and this action's own header states the law it was written for: \"the\n# artifact handed to publish was the one artifact never installed in the workflow that\n# publishes it.\"\n#\n# What the suite covers is CONTENTS, not buildability: `tests/test_packaging.py`\n# unpacks a built sdist and asserts what it carries. An edit to MANIFEST.in or to\n# `[tool.setuptools]`, or a setuptools inside the `>=77,<85` window that changes sdist\n# file selection, ships an archive that cannot build -- with every gate in release.yml\n# green, because nothing here builds from it. That failure lands on\n# `pip install --no-binary :all:`, on a distro or conda-forge packager, after the\n# version is taken on PyPI forever.\n#\n# `pip install <sdist>` runs the backend under build isolation, so this exercises\n# `[build-system].requires` and MANIFEST.in the way a downstream packager does, which\n# installing a wheel cannot. Its OWN venv, because a wheel already present in the other\n# room would satisfy the requirement without the archive ever being opened.\n#\n# `--no-deps`, and `modules --json` rather than the wheel room's full probe: the\n# question here is whether the ARCHIVE builds and the command it installs runs, and the\n# room below already resolves and exercises the runtime dependency set. Measured on the\n# rig 2026-09-04 against this tree's sdist -- `pip install --no-deps` exit 0,\n# `armature modules --json` exit 0, `armature_core` imported from that venv's\n# site-packages -- so this is a guard on a path that works today, not a repair.\n#\n# WHAT EACH ROOM RESOLVED, STATED. Both installs carried `--quiet`, which removes the\n# one line saying what came out of the index. The wheel room deliberately resolves the\n# runtime set FRESH (that is a user's experience of `pip install armature-studio`, and\n# the thing this room exists to exercise) at the unbounded specifiers pyproject\n# declares -- so when this step goes red on release day, after `release: published`\n# has fired, the log has to say which numpy and which cv2 the probe ran against.\n# Measured on the rig 2026-09-04: `pip install --quiet` emitted nothing at all, while\n# the same install without the flag printed `Successfully installed\n# armature-studio-0.3.0`. `pip freeze` after each install is the full answer: a\n# dependency-day break and a wheel defect are then two different reds.\n#\n# THE ROOMS ARE REMOVED BEFORE THEY ARE CREATED, and they live under `$RUNNER_TEMP`.\n# Both were fixed `/tmp` paths with no removal first, and creating a virtual\n# environment over an existing directory REUSES it rather than emptying it -- the\n# measurement wave 24 filed this on -- so a room whose whole name\n# is \"clean\" could meet a directory it did not create. The sibling written one wave\n# later already does this character for character (the npm clean room sets its prefix\n# from `${RUNNER_TEMP:-/tmp}`, removes it, then makes it), and verify.ps1 is\n# defensible for a different reason: both its rooms are GUID-suffixed and removed in\n# a `finally`. This was the only one of the three implementations that could meet a\n# directory it did not create. Not live on the stated configuration -- the studio\n# Actions rule mandates `ubuntu-latest`, every caller gets a fresh ephemeral runner,\n# and no job calls this action twice -- and if that changes, the room installs the\n# wheel into a venv still holding a previous run's packages and goes GREEN on a wheel\n# missing a module the stale venv still carries, which is the defect class this\n# repository names first.\necho ::group::sdist room\nSDIST_ROOM=\"${RUNNER_TEMP:-/tmp}/cleanroom-sdist\"\nWHEEL_ROOM=\"${RUNNER_TEMP:-/tmp}/cleanroom\"\nrm -rf \"$SDIST_ROOM\" \"$WHEEL_ROOM\"\npython -m venv \"$SDIST_ROOM\"\n\"$SDIST_ROOM/bin/python\" -m pip install --no-deps \"$SDIST\"\n\"$SDIST_ROOM/bin/python\" -m pip freeze\n# The console script the archive installs, checked before it is run. verify.ps1\n# gained this refusal at wave 23 (\"the sdist install provides no armature command\n# at ...\") and the sibling npm room carries the same clause for its shim; this\n# action, which grew the sdist room at wave 14, had neither. Without it a wheel whose\n# `[project.scripts]` entry point stopped being installed dies as a bash\n# `No such file or directory` at exit 127.\nif [ ! -x \"$SDIST_ROOM/bin/armature\" ]; then\n  echo \"::error::the sdist install provides no armature command at $SDIST_ROOM/bin/armature; check [project.scripts] in pyproject.toml\"\n  ls -la \"$SDIST_ROOM/bin\" || echo \"(no bin/ in the sdist room at all)\"\n  exit 1\nfi\n\"$SDIST_ROOM/bin/armature\" modules --json > /dev/null\necho ::endgroup::\necho ::group::wheel room\npython -m venv \"$WHEEL_ROOM\"\n\"$WHEEL_ROOM/bin/python\" -m pip install \"$WHEEL\"\n\"$WHEEL_ROOM/bin/python\" -m pip freeze\nif [ ! -x \"$WHEEL_ROOM/bin/armature\" ]; then\n  echo \"::error::the wheel install provides no armature command at $WHEEL_ROOM/bin/armature; check [project.scripts] in pyproject.toml\"\n  ls -la \"$WHEEL_ROOM/bin\" || echo \"(no bin/ in the wheel room at all)\"\n  exit 1\nfi\n\"$WHEEL_ROOM/bin/armature\" check\n\"$WHEEL_ROOM/bin/armature\" modules --json > /dev/null\necho ::endgroup::\n# THE PROBE IS A FILE, NOT A HEREDOC, for the reason the classifier gate beside it is\n# one: `verify.ps1`'s leg 3 runs the SAME text, and a copy forks. Its own docstring\n# carries the measurement (one copy gutted, 256 tests still green) and the reason the\n# printed line is BUILT from the calls rather than written as a literal.\necho ::group::probe\n\"$WHEEL_ROOM/bin/python\" \"$GITHUB_ACTION_PATH/lazy_import_probe.py\"\necho ::endgroup::\n# CycloneDX SBOM of the wheel room's resolved set — beside dist/, never inside it.\n# release.yml uploads `sbom/` next to `dist/` (retention-days 14). Stdlib emitter\n# only: no extra pip tool on the publish path (toolchain ceiling census).\necho ::group::sbom\nrm -rf sbom\nmkdir -p sbom\nSBOM_PATH=\"sbom/${DIST_NAME}-${VERSION}.cdx.json\"\npython \"$GITHUB_ACTION_PATH/sbom_emit.py\" \"$WHEEL_ROOM/bin/python\" \"$SBOM_PATH\" \\\n  --name \"$DIST_NAME\" --version \"$VERSION\"\nif [ ! -f \"$SBOM_PATH\" ]; then\n  echo \"::error::SBOM was not written at $SBOM_PATH\"\n  exit 1\nfi\necho ::endgroup::\n"
+          "programs": [
+            "basename",
+            "echo",
+            "ls",
+            "mkdir",
+            "python",
+            "rm"
+          ],
+          "step": "build the package and run it from a clean install"
         },
         {
           "job": "verify",
-          "step": "refuse a classifier PyPI does not have",
-          "text": "set -eu\npython -m pip install \"trove-classifiers>=2026.6.1.19,<2027\"\npython \"$GITHUB_ACTION_PATH/classifier_gate.py\" dist\n"
+          "programs": [
+            "python"
+          ],
+          "step": "refuse a classifier PyPI does not have"
         },
         {
           "job": "verify",
-          "step": "pack the npm package and run it from a clean install",
-          "text": "set -eu\n# Collapsible phases (pack / install / selftest [/ handoff]) match the wheel clean\n# room's groups so a red npm log is not one unsectioned transcript. Andon `::error::`\n# stays at group end so the Actions annotation still surfaces.\necho ::group::pack\nrm -f ./*.tgz\nnpm pack\n# NO PIPELINE. `shell: bash` runs with `-o pipefail` and this script adds `set -eu`,\n# so `$(ls -1 ./*.tgz | head -1)` -- what this line was until 2026-09-04 -- could\n# abort the whole step with nothing said about tarballs: `head -1` closes the pipe\n# after the first line, `ls` is signalled (141), pipefail makes the substitution fail\n# and `set -e` exits. The window is small, which is what makes it the bad kind: a rare\n# red on the gate standing between the npm package and an irreversible publish,\n# indistinguishable from a real packaging break, green on the retry. The sibling\n# action says the same thing in its own words at\n# .github/actions/sheet-fonts/action.yml:38-39 -- written with its PATH, because two\n# files in this tree are called action.yml and a basename resolver answers the\n# citation with the wrong one.\n#\n# `rm -f ./*.tgz` above guarantees the glob has exactly one match, so the positional\n# is the answer with no plumbing between. The existence check is verify.ps1's\n# `npm pack produced no tarball` clause, carried: an unmatched glob leaves `$1` as the\n# literal pattern, and this refuses by name rather than handing it to `npm install`.\nset -- ./*.tgz\nif [ ! -f \"$1\" ]; then\n  echo \"::error::npm pack produced no tarball in $PWD\"\n  exit 1\nfi\nTARBALL=\"$PWD/${1#./}\"\necho ::endgroup::\necho ::group::install\nPREFIX=\"${RUNNER_TEMP:-/tmp}/npm-cleanroom\"\nrm -rf \"$PREFIX\"\nmkdir -p \"$PREFIX\"\nnpm install --prefix \"$PREFIX\" \"$TARBALL\"\nSHIM=\"$PREFIX/node_modules/.bin/armature\"\n# npm reports `added 1 package` for a package whose bin map resolves to nothing, so\n# the install's own exit code is not the check. The command is.\nif [ ! -x \"$SHIM\" ]; then\n  echo \"::error::the installed package provides no armature command at $SHIM; check bin/ and files/ in npm/package.json\"\n  ls -la \"$PREFIX/node_modules/.bin\" || echo \"(no node_modules/.bin at all)\"\n  exit 1\nfi\necho ::endgroup::\necho ::group::selftest\n\"$SHIM\" --node-selftest\necho ::endgroup::\n# Optional handoff: the packed shim must reach a real CLI through the pin, not only\n# the no-Python self-test. The pin SUBSTITUTES for PATH (npm/bin/armature.mjs), so a\n# wheel-room interpreter that cannot import armature_core is a refusal by name here\n# rather than a fall-through to some other Python on the runner.\nif [ -n \"${ARMATURE_HANDOFF_PYTHON}\" ]; then\n  echo ::group::handoff\n  if [ ! -x \"${ARMATURE_HANDOFF_PYTHON}\" ]; then\n    echo \"::error::handoff python is not executable: ${ARMATURE_HANDOFF_PYTHON}\"\n    exit 1\n  fi\n  if ! \"${ARMATURE_HANDOFF_PYTHON}\" -c \"import armature_core\"; then\n    echo \"::error::handoff python cannot import armature_core: ${ARMATURE_HANDOFF_PYTHON}\"\n    exit 1\n  fi\n  export ARMATURE_PYTHON=\"${ARMATURE_HANDOFF_PYTHON}\"\n  \"$SHIM\" --version\n  \"$SHIM\" check\n  echo ::endgroup::\nfi\nrm -f ./*.tgz\n"
+          "programs": [
+            "echo",
+            "ls",
+            "mkdir",
+            "npm",
+            "rm"
+          ],
+          "step": "pack the npm package and run it from a clean install"
         },
         {
           "job": "npm",
-          "step": "Upgrade npm for OIDC",
-          "text": "npm install -g npm@^11.5.1"
+          "programs": [
+            "npm"
+          ],
+          "step": "Upgrade npm for OIDC"
         },
         {
           "job": "npm",
-          "step": "Publish",
-          "text": "NAME=$(node -p \"require('./package.json').name\")\nVER=$(node -p \"require('./package.json').version\")\n# THE PROBE KEEPS BOTH ANSWERS. It was\n# `if npm view \"$NAME@$VER\" version >/dev/null 2>&1; then` — both streams to\n# /dev/null, branching on the exit code alone — and `npm view` exits 1 for\n# `this version is not on the registry` (E404) AND for `this job could not ask`.\n# Measured on `e8263a3` with no external egress:\n# `npm view @mcptoolshop/armature-studio@0.3.0 version --registry=http://127.0.0.1:1/`\n# exits 1 with `npm error code ECONNREFUSED`, the same code an E404 produces, and\n# driving this step's own `if` shape over a transport failure and over an E404 took\n# the SAME branch — fall through to `npm publish` — with the reason discarded in\n# both. So a re-run of a release whose npm publish had already succeeded would meet\n# a registry blip here, publish, and be refused a version that already exists: the\n# job turns red for having already succeeded, which is the outcome the comment\n# above says this step exists to prevent, with nothing in the log naming the\n# probe's failure.\n#\n# Only an E404 means \"not published\". Anything else is a refusal that halts with\n# the registry's own message. The verdict is echoed either way.\nVIEW_CODE=0\nVIEW=$(npm view \"$NAME@$VER\" version 2>&1) || VIEW_CODE=$?\nif [ \"$VIEW_CODE\" = \"0\" ]; then\n  echo \"::notice::$NAME@$VER is already on the registry (npm view answered '$VIEW') — nothing to publish.\"\nelif case \"$VIEW\" in *E404*) false ;; *) true ;; esac; then\n  echo \"::error::npm view $NAME@$VER exited $VIEW_CODE and the answer was not an E404, so this job cannot tell 'not published' from 'could not ask'.\"\n  echo \"::error::$VIEW\"\n  echo \"::error::Refusing rather than publishing on an unanswered probe; publishing is the one step here with no compensator.\"\n  exit 1\nelse\n  echo \"::notice::$NAME@$VER: the registry answered E404 — not on the registry, so this run publishes.\"\n  if [ \"$REPOSITORY_IS_PRIVATE\" = \"false\" ]; then\n    echo \"::notice::$NAME@$VER: repository is public — publishing WITH provenance.\"\n    npm publish --provenance --access public\n  elif [ \"$REPOSITORY_IS_PRIVATE\" = \"true\" ]; then\n    echo \"::notice::$NAME@$VER: repository is private — publishing WITHOUT provenance.\"\n    npm publish --access public\n  else\n    echo \"::error::github.event.repository.private read as '${REPOSITORY_IS_PRIVATE:-<empty>}'; refusing to publish on a visibility this job could not read.\"\n    exit 1\n  fi\nfi\n"
+          "programs": [
+            "1",
+            "echo",
+            "node",
+            "npm"
+          ],
+          "step": "Publish"
         }
       ],
       "elsewhere": [],
@@ -34402,6 +34509,48 @@
       "checksCount": 0,
       "commands": [],
       "elsewhere": [],
+      "file": "npm/package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "armature",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "npm",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "npm/bin/armature.mjs",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
       "file": "pyproject.toml",
       "kind": "command",
       "landings": [],
@@ -34454,6 +34603,7 @@
       "to": "tools"
     }
   ],
+  "engine": "1.23.0",
   "generatedFrom": {
     "commit": "7a70d6fb97ef1cf5b33f8f03d18860611954e386",
     "tracked": 558
@@ -34654,10 +34804,12 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         },
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         }
       ],
       "target": ".github/workflows/release.yml",
@@ -34745,10 +34897,12 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         },
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "tests/test_ci_workflows.py",
@@ -36345,6 +36499,12 @@
           "fromTests": true
         },
         {
+          "by": "tests/test_record_index.py",
+          "call": "open",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tools/armature_index.py",
           "call": "literal",
           "confidence": "ast"
@@ -36536,7 +36696,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "tests/test_ci_workflows.py",
@@ -36556,10 +36717,12 @@
           "confidence": "text"
         },
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         },
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "tests/test_amend_w16_builders.py",
@@ -37051,6 +37214,12 @@
           "call": "os.listdir",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tests/test_refusal_clauses.py",
+          "call": "os.listdir",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "tests",
@@ -37181,6 +37350,12 @@
         {
           "by": "tests/test_run_export.py",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_run_export.py",
+          "call": "open",
           "confidence": "ast",
           "fromTests": true
         }
@@ -37361,6 +37536,12 @@
         {
           "by": "tests/test_amend_w26_suite.py",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_amend_w26_suite.py",
+          "call": "open",
           "confidence": "ast",
           "fromTests": true
         }
@@ -37558,6 +37739,12 @@
         {
           "by": "tests/test_instruments_measure_amend_w12.py",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_instruments_measure_amend_w12.py",
+          "call": "open",
           "confidence": "ast",
           "fromTests": true
         }
@@ -37780,6 +37967,12 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tests/test_refusal_clauses.py",
+          "call": "open",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "tools/armature_core/framing.py",
@@ -37796,6 +37989,12 @@
         {
           "by": "tests/test_refusal_clauses.py",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_refusal_clauses.py",
+          "call": "open",
           "confidence": "ast",
           "fromTests": true
         }
@@ -37908,6 +38107,12 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tests/test_refusal_clauses.py",
+          "call": "open",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "tools/armature_core/walk.py",
@@ -37949,6 +38154,12 @@
           "by": "specs/routes.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_amend_w32_builders.py",
+          "call": "open",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "tools/build_animate_payload.py",
@@ -37964,6 +38175,12 @@
         {
           "by": "tests/test_amend_w16_builders.py",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_amend_w16_builders.py",
+          "call": "open",
           "confidence": "ast",
           "fromTests": true
         },
@@ -38019,6 +38236,12 @@
           "fromTests": true
         },
         {
+          "by": "tests/test_amend_w32_builders.py",
+          "call": "open",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tests/test_ci_workflows.py",
           "call": "literal",
           "confidence": "ast",
@@ -38061,6 +38284,12 @@
         {
           "by": "tests/test_amend_w32_builders.py",
           "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_amend_w32_builders.py",
+          "call": "open",
           "confidence": "ast",
           "fromTests": true
         },
@@ -38251,6 +38480,12 @@
           "fromTests": true
         },
         {
+          "by": "tests/test_amend_w32_builders.py",
+          "call": "open",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "tests/test_ci_workflows.py",
           "call": "literal",
           "confidence": "ast",
@@ -38266,6 +38501,12 @@
           "by": "specs/routes.json",
           "call": "literal",
           "confidence": "text"
+        },
+        {
+          "by": "tests/test_amend_w32_builders.py",
+          "call": "open",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "tools/fetch_t2v_run.py",
@@ -38445,6 +38686,12 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tests/test_instruments_measure_amend_w12.py",
+          "call": "open",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "tools/measure_tracking.py",
@@ -38565,6 +38812,12 @@
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tests/test_instruments_measure_amend_w12.py",
+          "call": "open",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "tools/stage_render.py",
@@ -38597,10 +38850,12 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         },
         {
-          "by": ".github/workflows/release.yml"
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
         },
         {
           "by": "tests/test_amend_w16_builders.py",

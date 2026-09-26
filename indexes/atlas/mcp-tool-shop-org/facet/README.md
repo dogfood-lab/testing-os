@@ -1,10 +1,10 @@
 # facet: how it works
 
-Mapped at 2026-09-25 from commit 8d2fa34.
+Mapped at 2026-09-26 from commit 8d2fa34 by Atlas 1.23.0.
 
 ## What this is
 
-10 parts, mostly Markdown (489 files); code in Python (292), JavaScript (2) and TypeScript (2). Work enters through 6 doors; the busiest is ci, which reaches 2 parts. It publishes to npm and PyPI. People run facet, facet-index and facet-mcp.
+10 parts, mostly Markdown (489 files); code in Python (292), CSS (2), JavaScript (2), TypeScript (2), Astro (1), PowerShell (1) and shell (1). Work enters through 6 doors; the busiest is ci, which reaches 2 parts. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run facet, facet-index and facet-mcp.
 
 ## What changed since 2026-09-23 (7c06851)
 
@@ -12,10 +12,10 @@ Mapped at 2026-09-25 from commit 8d2fa34.
 - Release now also runs tools/facet_index.py and tools/record_mcp.py.
 - Release now also checks tools/diagnostics/ and tools/verify/.
 - And 3 more changes to doors.
+- docs/brand/four-accepted-assets.png is now written by docs/brand/make_asset_sheet.py.
+- docs/experiments/E14-brush-prompts.json is now written by tools/diagnostics/e14_make_brush_prompts.py.
 - tools/diagnostics/front_padded.png is now written by tools/diagnostics/prep_front.py.
-- .gitattributes is now read by tests/test_t06_line_endings.py.
-- .github/workflows/release.yml is now read by tests/test_t27_packaging_shape.py.
-- And 79 more new writers and readers of places.
+- And 86 more new writers and readers of places.
 - 1 file changed content, across 1 part.
 
 ## What comes in
@@ -30,7 +30,7 @@ Mapped at 2026-09-25 from commit 8d2fa34.
 ## What happens through ci
 
 1. The workflow runs tests/ in tests.
-2. That reaches tools (29 files).
+2. That reaches tools (30 files).
 
 ## Who reads the results
 
@@ -70,7 +70,9 @@ Window: 180 days; a pair counts from 3 shared commits, since 10 source files rea
 
 ## Written but never read
 
+- **docs/brand/four-accepted-assets.png** is written by docs/brand/make_asset_sheet.py and read by nothing else in this repository.
 - **docs/experiments/E04-brush-prompts.json** is written by tools/diagnostics/e04_make_brush_prompts.py and read by nothing else in this repository.
+- **docs/experiments/E14-brush-prompts.json** is written by tools/diagnostics/e14_make_brush_prompts.py and read by nothing else in this repository.
 
 ## Helpers that look duplicated
 
@@ -78,12 +80,14 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
+- **docs/brand/four-accepted-assets.png** is written by docs/brand/make_asset_sheet.py when run from the repository root, and committed.
 - **docs/experiments/E04-brush-prompts.json** is written by tools/diagnostics/e04_make_brush_prompts.py.
+- **docs/experiments/E14-brush-prompts.json** is written by tools/diagnostics/e14_make_brush_prompts.py when run from the repository root, and committed.
 - **site/src/content/docs/handbook/** is written by docs/handbook/sync_to_site.py.
 
 ## Hand-authored
 
-People write .claude/, .github/, canon/, profiles/ and the repository root; 126 writes with paths built at run time may land here.
+People write .claude/, .github/, canon/, profiles/ and the repository root; 91 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -93,11 +97,12 @@ Read those in order to follow one run of facet-mcp end to end. This path follows
 
 ## What this map cannot see
 
-- 7 imports could not be resolved: `tests/conftest.py` imports a path built at run time; `tests/test_t25_mask_geometry.py` imports a path built at run time; `tests/test_t27_packaging_shape.py` imports a path built at run time; and 4 more.
-- 126 writes and 100 reads use paths built at run time and are not named here.
+- 6 imports could not be resolved: `tests/conftest.py` imports a path built at run time; `tests/test_t25_mask_geometry.py` imports a path built at run time; `tests/test_t27_packaging_shape.py` imports a path built at run time; and 3 more.
+- 91 writes and 56 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
-- 391 writes and 91 reads go to a path their caller passes, not to this repository.
-- 4 writes and 2 reads go to the directory the command is run in, not to this repository.
+- 455 writes and 135 reads go to a path their caller passes, not to this repository.
+- 6 writes and 12 reads go to the directory the command is run in or a path their caller passes, not to this repository.
+- 2 reads go to the directory the command is run in (docs/ and tools/), not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

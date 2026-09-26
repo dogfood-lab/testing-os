@@ -13170,6 +13170,7 @@
       "to": "sov_transport"
     }
   ],
+  "engine": "1.23.0",
   "generatedFrom": {
     "commit": "8bed6b624294b05e8ec37d74ba9cff50a47d4229",
     "tracked": 397
@@ -14008,10 +14009,12 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         },
         {
-          "by": ".github/workflows/publish.yml"
+          "by": ".github/workflows/publish.yml",
+          "confidence": "config"
         },
         {
           "by": "sov_cli/main.py",
@@ -14223,7 +14226,8 @@
     {
       "readers": [
         {
-          "by": ".github/workflows/ci.yml"
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
         }
       ],
       "target": "uv.lock",

@@ -1,6 +1,6 @@
 # xrpl-creator-capsule: how it works
 
-Mapped at 2026-09-25 from commit e2ce19a.
+Mapped at 2026-09-26 from commit e2ce19a by Atlas 1.23.0.
 
 ## What this is
 

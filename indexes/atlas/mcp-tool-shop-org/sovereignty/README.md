@@ -1,6 +1,6 @@
 # sovereignty: how it works
 
-Mapped at 2026-09-25 from commit 8bed6b6.
+Mapped at 2026-09-26 from commit 8bed6b6 by Atlas 1.23.0.
 
 ## What this is
 

@@ -61,6 +61,22 @@
       },
       {
         "kind": "landing",
+        "sentence": "docs/brand/four-accepted-assets.png is now written by docs/brand/make_asset_sheet.py.",
+        "subjects": [
+          "docs/brand/four-accepted-assets.png",
+          "docs/brand/make_asset_sheet.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "docs/experiments/E14-brush-prompts.json is now written by tools/diagnostics/e14_make_brush_prompts.py.",
+        "subjects": [
+          "docs/experiments/E14-brush-prompts.json",
+          "tools/diagnostics/e14_make_brush_prompts.py"
+        ]
+      },
+      {
+        "kind": "landing",
         "sentence": "tools/diagnostics/front_padded.png is now written by tools/diagnostics/prep_front.py.",
         "subjects": [
           "tools/diagnostics/front_padded.png",
@@ -69,23 +85,7 @@
       },
       {
         "kind": "landing",
-        "sentence": ".gitattributes is now read by tests/test_t06_line_endings.py.",
-        "subjects": [
-          ".gitattributes",
-          "tests/test_t06_line_endings.py"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": ".github/workflows/release.yml is now read by tests/test_t27_packaging_shape.py.",
-        "subjects": [
-          ".github/workflows/release.yml",
-          "tests/test_t27_packaging_shape.py"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 79 more new writers and readers of places.",
+        "sentence": "And 86 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -184,7 +184,7 @@
   "changesTogetherWithTests": 0,
   "commit": "8d2fa3456e3412198ed38bbb069775efebe65d86",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly Markdown (489 files); code in Python (292), JavaScript (2) and TypeScript (2). Work enters through 6 doors; the busiest is ci, which reaches 2 parts. It publishes to npm and PyPI. People run facet, facet-index and facet-mcp.",
+  "derived": "10 parts, mostly Markdown (489 files); code in Python (292), CSS (2), JavaScript (2), TypeScript (2), Astro (1), PowerShell (1) and shell (1). Work enters through 6 doors; the busiest is ci, which reaches 2 parts. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run facet, facet-index and facet-mcp.",
   "doors": [
     {
       "checks": [],
@@ -204,7 +204,7 @@
         {
           "boundary": "tools",
           "depth": 1,
-          "files": 29
+          "files": 30
         }
       ],
       "runs": [
@@ -232,7 +232,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 3
+          "files": 5
         }
       ],
       "runs": [
@@ -368,11 +368,26 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
+  "engine": "1.23.0",
   "generated": [
+    {
+      "fromRoot": true,
+      "place": "docs/brand/four-accepted-assets.png",
+      "writers": [
+        "docs/brand/make_asset_sheet.py"
+      ]
+    },
     {
       "place": "docs/experiments/E04-brush-prompts.json",
       "writers": [
         "tools/diagnostics/e04_make_brush_prompts.py"
+      ]
+    },
+    {
+      "fromRoot": true,
+      "place": "docs/experiments/E14-brush-prompts.json",
+      "writers": [
+        "tools/diagnostics/e14_make_brush_prompts.py"
       ]
     },
     {
@@ -382,13 +397,14 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-25T09:16:33.032Z",
+  "generatedAt": "2026-09-26T14:42:48.560Z",
   "limits": [
-    "7 imports could not be resolved: `tests/conftest.py` imports a path built at run time; `tests/test_t25_mask_geometry.py` imports a path built at run time; `tests/test_t27_packaging_shape.py` imports a path built at run time; and 4 more.",
-    "126 writes and 100 reads use paths built at run time and are not named here.",
+    "6 imports could not be resolved: `tests/conftest.py` imports a path built at run time; `tests/test_t25_mask_geometry.py` imports a path built at run time; `tests/test_t27_packaging_shape.py` imports a path built at run time; and 3 more.",
+    "91 writes and 56 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
-    "391 writes and 91 reads go to a path their caller passes, not to this repository.",
-    "4 writes and 2 reads go to the directory the command is run in, not to this repository.",
+    "455 writes and 135 reads go to a path their caller passes, not to this repository.",
+    "6 writes and 12 reads go to the directory the command is run in or a path their caller passes, not to this repository.",
+    "2 reads go to the directory the command is run in (docs/ and tools/), not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -421,12 +437,24 @@
     "bin": 0,
     "tools": 55
   },
-  "unnamedWrites": 126,
+  "unnamedWrites": 91,
   "unread": [
+    {
+      "place": "docs/brand/four-accepted-assets.png",
+      "writers": [
+        "docs/brand/make_asset_sheet.py"
+      ]
+    },
     {
       "place": "docs/experiments/E04-brush-prompts.json",
       "writers": [
         "tools/diagnostics/e04_make_brush_prompts.py"
+      ]
+    },
+    {
+      "place": "docs/experiments/E14-brush-prompts.json",
+      "writers": [
+        "tools/diagnostics/e14_make_brush_prompts.py"
       ]
     }
   ],
@@ -440,5 +468,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 2
+  "written": 4
 }

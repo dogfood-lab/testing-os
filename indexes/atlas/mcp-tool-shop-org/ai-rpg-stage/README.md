@@ -1,6 +1,6 @@
 # ai-rpg-stage: how it works
 
-Mapped at 2026-09-25 from commit 5e9e75f.
+Mapped at 2026-09-26 from commit 5e9e75f by Atlas 1.23.0.
 
 ## What this is
 

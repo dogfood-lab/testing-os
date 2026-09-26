@@ -1,6 +1,6 @@
 # websketch-ir: how it works
 
-Mapped at 2026-09-25 from commit d18f24a.
+Mapped at 2026-09-26 from commit 6a7f45d by Atlas 1.23.0.
 
 ## What this is
 
@@ -8,11 +8,12 @@ Mapped at 2026-09-25 from commit d18f24a.
 
 ## What changed since 2026-09-25 (e9980b1)
 
-Nothing structural changed since 2026-09-25; 2 files changed content.
+- CI's push trigger now also names `codecov.yml`.
+- 1 file added and 3 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main; on a push to main touching 6 paths; or by hand. Runs tests/codegen.test.ts, tests/compat.test.ts, tests/diff.test.ts and 25 more; builds src/.
+1. **CI.** On a pull request to main; on a push to main touching 7 paths; or by hand. Runs tests/codegen.test.ts, tests/compat.test.ts, tests/diff.test.ts and 25 more; builds src/.
 2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/codegen.test.ts, tests/compat.test.ts, tests/diff.test.ts and 25 more; builds src/.
 3. **Deploy site to GitHub Pages.** On a pull request to main touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/websketch-ir** (the package people import). Loads src/index.ts, src/codegen/index.ts, src/errors.ts and 1 more.
