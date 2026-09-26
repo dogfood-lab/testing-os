@@ -676,6 +676,16 @@ Every failure names what changed and what to do; the second line is never option
 | `ATLAS_EXPLAIN_NO_MAP` | 2 | LOW | `adapter/explain.js` |
 | `ATLAS_EXPLAIN_UNKNOWN_PATH` | 2 | LOW | `adapter/explain.js` |
 | `ATLAS_DIFF_NO_BASE` | 2 | LOW | `adapter/diff.js` |
+| `ATLAS_SIDECAR_NOT_A_REPOSITORY` | none | LOW | `sidecar/tools.js` |
+| `ATLAS_SIDECAR_NO_MAP` | none | LOW | `sidecar/map.js` |
+| `ATLAS_SIDECAR_MAP_UNREADABLE` | none | LOW | `sidecar/map.js` |
+| `ATLAS_SIDECAR_MAP_FORMAT` | none | LOW | `sidecar/map.js` |
+| `ATLAS_SIDECAR_MAP_FOREIGN` | none | LOW | `sidecar/map.js` |
+| `ATLAS_SIDECAR_INVALID_ARGUMENTS` | none | LOW | `sidecar/tools.js` |
+| `ATLAS_SIDECAR_CACHE_INSIDE` | none | LOW | `sidecar/refresh.js` |
+| `ATLAS_SIDECAR_REFRESH_FAILED` | none | LOW | `sidecar/refresh-tool.js` |
+| `ATLAS_SIDECAR_CURSOR_STALE` | none | LOW | `sidecar/size.js` |
+| `ATLAS_SIDECAR_TOO_LARGE` | none | LOW | `sidecar/size.js` |
 
 ### `ATLAS_BOUNDARY_FILE_INVALID`
 
@@ -782,11 +792,11 @@ A file that the committed roster placed in one boundary is now in another.
 ### `ATLAS_EXPLAIN_UNKNOWN_PATH`
 
 :::tip[Severity: LOW]
-The path given to `atlas explain` is not a file in the committed map, nor a directory that contains one.
+The path given to `atlas explain` is not a file in the committed map, nor a directory that contains one, nor the name of a part.
 :::
 
 - **Trigger:** a typo, a file added since the last `atlas map`, or a path outside the repository. A leading `./` and either separator are accepted; a directory prefix explains the part it maps to.
-- **Operator action:** check the path, or run `atlas map` and commit if the file is new.
+- **Operator action:** check the path or the part name, or run `atlas map` and commit if the file is new.
 
 ### `ATLAS_DIFF_NO_BASE`
 
@@ -796,6 +806,100 @@ The path given to `atlas explain` is not a file in the committed map, nor a dire
 
 - **Trigger:** a base ref that was not fetched (a shallow clone), a branch that predates Atlas, or a hand-edited artifact at the base. The CI step fetches the pull request's base branch before it diffs; the comment step never fails the build on this code, it prints the diff to the log instead.
 - **Operator action:** fetch the base ref, or run `atlas map` on it and commit `atlas/`. The flag has no default: `--base` names the ref explicitly.
+
+### The sidecar's codes
+
+`atlas mcp` neither prints nor exits on a failure. It returns the same fields as a tool error (`isError: true`), after the answer's provenance line, and keeps serving: `Atlas cannot answer: <sentence> (<code>)`, then what changed and what to do. The Exit column above reads "none" for these codes.
+
+### `ATLAS_SIDECAR_NOT_A_REPOSITORY`
+
+:::tip[Severity: LOW]
+The directory the sidecar answers for is not in a git repository.
+:::
+
+- **Trigger:** no root the client offers is inside a git repository, and neither is the directory `atlas mcp` was started in.
+- **Operator action:** start `atlas mcp` in the repository it should answer for, or have the client offer that repository as a root.
+
+### `ATLAS_SIDECAR_NO_MAP`
+
+:::tip[Severity: LOW]
+The repository has no map: `atlas/structure.json` is absent.
+:::
+
+- **Trigger:** a repository that has not adopted Atlas, or one whose map was never committed.
+- **Operator action:** run `atlas init`, then `atlas map`, and commit `atlas/`. Until then `atlas_refresh` can map the checkout into the cache.
+
+### `ATLAS_SIDECAR_MAP_UNREADABLE`
+
+:::tip[Severity: LOW]
+A file of the map is not valid JSON.
+:::
+
+- **Trigger:** a hand-edited or truncated `atlas/*.json`, or a merge conflict left in it.
+- **Operator action:** run `atlas map` and commit `atlas/`.
+
+### `ATLAS_SIDECAR_MAP_FORMAT`
+
+:::tip[Severity: LOW]
+The map is not in a format this engine reads.
+:::
+
+- **Trigger:** `structure.json` lacks a list the sidecar reads (parts, edges, doors or landing places), names no commit it was made from, holds a part with no name or no file list, or names its engine in a form this engine does not read; or `page.json` is absent or holds no doors when the overview needs them. A map from an older release that records no engine is read as it is.
+- **Operator action:** run `atlas map` with this engine and commit `atlas/`.
+
+### `ATLAS_SIDECAR_MAP_FOREIGN`
+
+:::tip[Severity: LOW]
+The map names a commit that is not in this checkout's history.
+:::
+
+- **Trigger:** a shallow clone that does not hold the map's commit, or a map copied in from another repository or branch.
+- **Operator action:** in a shallow clone, fetch the history (`git fetch --unshallow`); otherwise run `atlas map` and commit `atlas/`.
+
+### `ATLAS_SIDECAR_INVALID_ARGUMENTS`
+
+:::tip[Severity: LOW]
+The tool was called with arguments it does not take.
+:::
+
+- **Trigger:** an argument outside the tool's input schema, a `part` the map does not name, or a cursor that Atlas did not give, that belongs to another question, or that names a list the answer does not have.
+- **Operator action:** call the tool with the arguments its input schema names; name a part as `atlas_overview` lists them; pass a cursor exactly as the earlier answer gave it, with the same tool and arguments.
+
+### `ATLAS_SIDECAR_CACHE_INSIDE`
+
+:::tip[Severity: LOW]
+The refresh cache would be inside the repository.
+:::
+
+- **Trigger:** `LOCALAPPDATA`, `XDG_CACHE_HOME` or the home directory resolves to a directory inside the repository being mapped. The sidecar never writes into the repository, so it refuses.
+- **Operator action:** point `LOCALAPPDATA` or `XDG_CACHE_HOME` outside the repository.
+
+### `ATLAS_SIDECAR_REFRESH_FAILED`
+
+:::tip[Severity: LOW]
+The refresh could not map the checkout.
+:::
+
+- **Trigger:** the background map failed; what changed carries the engine's own error. A repository with no commit yet fails here too.
+- **Operator action:** fix what the error names, or commit first. `atlas_refresh` maps again once the checkout changes; the answers keep using the map they had.
+
+### `ATLAS_SIDECAR_CURSOR_STALE`
+
+:::tip[Severity: LOW]
+The cursor was given for another map than the one answering now.
+:::
+
+- **Trigger:** a refresh swapped in a new map between an answer and the call that continued its cut list.
+- **Operator action:** ask again without the cursor, and follow the cursors of the new answer.
+
+### `ATLAS_SIDECAR_TOO_LARGE`
+
+:::tip[Severity: LOW]
+The answer does not fit its size even with every list cut.
+:::
+
+- **Trigger:** the smallest form of an answer, every list cut to its first entries, is still over 8 KB (or over 64 KB with `full: true`).
+- **Operator action:** pass `full: true`, or narrow the answer with `part` or `kind`.
 
 ## Cross-references
 

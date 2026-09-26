@@ -12,7 +12,8 @@ The page is for anyone who has to understand a repository they did not write: a 
 npx --yes @dogfood-lab/atlas init
 npx --yes @dogfood-lab/atlas map
 npx --yes @dogfood-lab/atlas check
-npx --yes @dogfood-lab/atlas explain <path>
+npx --yes @dogfood-lab/atlas explain <path-or-part>
+npx --yes @dogfood-lab/atlas mcp
 ```
 
 `init` proposes `atlas/boundaries.yaml`: the named parts of the repository and the globs that own them. Edit the names and globs if the proposal is wrong. The one line a person may add is `summary`. `init` also adds `atlas/**` to an existing `.vscodeignore`, `atlas/` to an existing `.npmignore` when the manifest has no `files` list, and `atlas/` to `.prettierignore` when prettier is used, and says what it added.
@@ -25,12 +26,38 @@ npx --yes @dogfood-lab/atlas explain <path>
 |------|------------|
 | `README.md` | The page. GitHub renders it when anyone opens the folder. |
 | `page.json` | The same sections as data, for sites and tools. |
-| `structure.json` | Every tracked file in its part, the import edges between parts, the doors, the landing places and their readers, and the order of calls inside the files the doors run. Byte-deterministic. |
+| `structure.json` | Every tracked file in its part, the import edges between parts, the doors, the landing places and their readers (each writer and reader with how it was found: `ast`, `config`, `text` or `weak`), and the order of calls inside the files the doors run. Byte-deterministic. |
 | `statistics.json` | What changes together over the last 180 days, dated. |
+
+Each file records the Atlas version that made it (`engine`), and the page's dated line names it: "Mapped at <date> from commit <sha> by Atlas <version>."
 
 `check` compares the committed map with the working tree and fails when a part gains or loses a dependency, a file changes part, a new file belongs to no part, a named part matches nothing, or a file belongs to two parts. Run it in the test job so the map moves with the code. A repository with no `atlas/` directory is a notice and exit 0, so adopting Atlas reddens nothing.
 
-`explain` says what one file is in the system, for a person about to edit it or an agent in a coding session: its part, the door that runs it or passes through its part, what its part imports and who imports it, where it writes and who reads that, the order of work inside it, and what it changes with. It reads the committed map and never maps again, so it answers at once and names the commit it answers from. `--json` prints the same facts for a machine.
+`explain` says what a file, a directory or a part is in the system, for a person about to edit it or an agent in a coding session: its part, the door that runs it or passes through its part, what its part imports and who imports it, where it writes and who reads that, the order of work inside it, and what it changes with. Given a place that code writes or reads, it also says who writes it and who reads it. It reads the committed map and never maps again, so it answers at once and names the commit it answers from. `--json` prints the same facts for a machine.
+
+## For agents: `atlas mcp`
+
+`atlas mcp` lets an agent ask the committed map questions during a session, over the Model Context Protocol. The agent's client starts it and talks to it on stdio. It answers for the git repository of the first root the client offers, or else of the directory it was started in. With Claude Code:
+
+```bash
+npm i -g @dogfood-lab/atlas
+claude mcp add --scope user atlas -- atlas mcp
+```
+
+Any other client starts the same command, `atlas` with the argument `mcp`. On Windows a global npm command is a `.cmd` file, which a client cannot start directly, so give the client `cmd /c atlas mcp`, or `node` with the package's `cli.js` and `mcp`.
+
+| Tool | What it answers |
+|------|-----------------|
+| `atlas_overview` | The repository: its parts, every door with its trigger, what it runs and sends and how far it reaches, the main flow, and where to start reading. |
+| `atlas_explain` | One file, directory or part, as `atlas explain` answers it, including who writes and who reads a place. |
+| `atlas_reach` | What a change to given files reaches: the doors that run them or pass through their part, and the files and parts that import them or read what they write, production and tests apart. |
+| `atlas_changes` | What changed structurally between the map committed at a commit and the map it answers from: imports between parts (a new cycle first), doors, writers and readers of places, parts, and new files in no part. |
+| `atlas_check_change` | What a change does before it is committed: the tests that reach the changed files, the doors that run them, imports between parts gained or lost, files in no part, and whether the map must be regenerated. It reads only the changed files again. A changed manifest, workflow, boundary file or configuration the engine reads, or a deleted file, gets "a full refresh is needed" instead. |
+| `atlas_refresh` | Maps the checkout again in the background, into a cache outside the repository. Later answers use the new map once it is complete, and calling it again reports progress. |
+
+Every answer begins with where it came from: the map's commit, the Atlas version that made it, and any file it names that changed after the map. Every fact carries its basis (`parsed`, `declared`, `text`, `weak`, `history`, `unresolved` or `outside`), and every answer lists what Atlas cannot see for that question. An answer is at most 8 KB of JSON, or 64 KB with `full: true`, most important first. A list cut to fit says so, and a cut list at the top of an answer carries a cursor for the rest. `part` keeps the entries in one part, and `kind` keeps one kind of fact. A failure is a tool error with the same fields the CLI prints: the code, one sentence, what changed and what to do.
+
+The sidecar only reads. Git runs only read commands, with optional locks and the filesystem monitor off, so a question never writes into `.git`. Nothing goes over the network, and there is no model inside it: every sentence comes from the map. `atlas_refresh` writes only to its cache, `%LOCALAPPDATA%/atlas` on Windows and otherwise `$XDG_CACHE_HOME/atlas` or `~/.cache/atlas`, and refuses a cache inside the repository. The server speaks MCP revision 2026-07-28, and 2025-11-25 and 2025-06-18 through `initialize`. It is a local process; the container does not run it.
 
 ## What it reads
 
@@ -58,7 +85,7 @@ exit 1
 
 `templates/atlas-refresh.yml` is a workflow that maps a private repository inside its own CI and commits the page there. Nothing leaves the repository.
 
-A whole private fleet runs as a container with persistent memory: `ghcr.io/dogfood-lab/atlas` maps the repositories listed in its `fleet.yml`, keeps every render and its history on the `/data` volume, and serves the fleet list and each page on a port. The same image runs the CLI on a repository mounted at `/repo`. Run commands live in the repository's `docker/README.md`.
+A whole private fleet runs as a container with persistent memory: `ghcr.io/dogfood-lab/atlas` maps the repositories listed in its `fleet.yml`, keeps every render and its history on the `/data` volume, and serves the fleet list, each page and an index for agents (`/llms.txt`) on a port. The same image runs the CLI on a repository mounted at `/repo`. Run commands live in the repository's `docker/README.md`.
 
 ## Part of testing-os
 

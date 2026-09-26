@@ -40,7 +40,7 @@ What you get:
 - **A policy contract you control.** Declare what counts as "verified" in YAML — a bounded, no-eval predicate DSL (`field`/`op`/`value` + `all`/`any`/`not`/`implies`) — and enforce it across your repos. Lint a policy before you ship it with `dogfood-verify lint`.
 - **A parallel-agent swarm protocol.** Run multi-agent audits against a codebase, then turn raw findings into reusable patterns and doctrine.
 - **A live status surface.** Per-repo records, indexes, and a status badge, all served from one evidence store.
-- **A page that says how a repository works.** Atlas reads a repository's workflows and manifests, the tools they run, its imports, writes and history, and writes `atlas/README.md`: what comes in, what runs, where it lands, who reads it, what breaks what, what changed since the last map, where to start. No sentence on it is written by a person; `atlas check` fails CI when the map stops matching the code, `atlas explain <file>` answers what one file is in the system, and every pull request gets the structural delta as a comment.
+- **A page that says how a repository works.** Atlas reads a repository's workflows and manifests, the tools they run, its imports, writes and history, and writes `atlas/README.md`: what comes in, what runs, where it lands, who reads it, what breaks what, what changed since the last map, where to start. No sentence on it is written by a person; `atlas check` fails CI when the map stops matching the code, `atlas explain` answers what a file, directory or part is in the system, `atlas mcp` lets an agent ask the map the same questions during a session, and every pull request gets the structural delta as a comment.
 
 It's the flagship monorepo of the [Dogfood Lab](https://github.com/dogfood-lab) org — eight `@dogfood-lab/*` packages behind one `swarm` CLI and one `atlas` CLI.
 
@@ -63,7 +63,7 @@ cp docker/fleet.example.yml atlas-data/fleet.yml   # list your repositories, by 
 docker compose -f docker/compose.example.yml up -d
 ```
 
-`./atlas-data` is the memory: `fleet.yml`, every render, each repository's history and the state. The service maps once at start when the memory is empty, then on the schedule in `fleet.yml`, and serves the fleet list at `http://127.0.0.1:8080/` and each page at `/?repo=owner/name`. Nothing leaves the container except git fetches of the repositories you listed; deleting `./atlas-data` is the only way to forget. The same image runs the CLI on one repository: `docker run --rm -v "$PWD:/repo" ghcr.io/dogfood-lab/atlas map`. Run commands and the file shapes are in [`docker/README.md`](docker/README.md).
+`./atlas-data` is the memory: `fleet.yml`, every render, each repository's history and the state. The service maps once at start when the memory is empty, then on the schedule in `fleet.yml`, and serves the fleet list at `http://127.0.0.1:8080/`, each page at `/?repo=owner/name`, and an index for agents at `/llms.txt`. Nothing leaves the container except git fetches of the repositories you listed; deleting `./atlas-data` is the only way to forget. The same image runs the CLI on one repository: `docker run --rm -v "$PWD:/repo" ghcr.io/dogfood-lab/atlas map`. Run commands and the file shapes are in [`docker/README.md`](docker/README.md).
 
 ## Threat Model
 
@@ -92,7 +92,7 @@ testing-os processes dogfood submissions dispatched via `repository_dispatch` fr
 | `@dogfood-lab/report` | JS | Submission builder for source repos. |
 | `@dogfood-lab/portfolio` | JS | Cross-repo portfolio generator. |
 | `@dogfood-lab/dogfood-swarm` | JS | The 10-phase parallel-agent protocol + SQLite control plane + `swarm` bin. |
-| `@dogfood-lab/atlas` | JS | Reads a repository and writes the page that says how it works (`atlas/README.md`); `atlas check` gates the map in CI. No sibling dependencies; runs in any repository. |
+| `@dogfood-lab/atlas` | JS | Reads a repository and writes the page that says how it works (`atlas/README.md`); `atlas check` gates the map in CI, and `atlas mcp` answers agents from it. No sibling dependencies; runs in any repository. |
 
 Sibling testing tools that **stay independent** but integrate via published APIs: [`shipcheck`](https://github.com/mcp-tool-shop-org/shipcheck), [`repo-knowledge`](https://github.com/mcp-tool-shop-org/repo-knowledge), [`ai-eyes-mcp`](https://github.com/mcp-tool-shop-org/ai-eyes-mcp), [`taste-engine`](https://github.com/mcp-tool-shop-org/taste-engine), [`style-dataset-lab`](https://github.com/mcp-tool-shop-org/style-dataset-lab).
 

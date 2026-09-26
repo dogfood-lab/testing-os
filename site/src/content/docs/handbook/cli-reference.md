@@ -490,11 +490,12 @@ The repository mapper, `@dogfood-lab/atlas`: a standalone binary with no sibling
 | `atlas init` | Proposes `atlas/boundaries.yaml` from the tree and refuses to overwrite one that exists | `--force` rewrites it from a fresh proposal |
 | `atlas map` | Writes `atlas/README.md`, `page.json`, `structure.json` and `statistics.json` | `--divergence <file>` also writes the divergence report; `--name owner/repo` names a clone that carries no origin; `--baseline <dir>` holds the last committed map for a copy that has none; `--previous <file>` supplies the previous statistics report, as the weekly job does |
 | `atlas check` | Compares the committed map with the tree: exit 1 on drift with what to do, exit 0 with a notice when there is no `atlas/` folder | |
-| `atlas explain <path>` | What one file is in the system, read from the committed map | `--json` |
+| `atlas explain <path>` | What a file, directory or part is in the system, and who writes and reads a place, read from the committed map | `--json` |
 | `atlas diff` | The "what changed" section between the committed map at a ref and a fresh map of the tree, writing nothing | `--base <ref>` (required), `--json` |
+| `atlas mcp` | Serves the committed map to an agent over the Model Context Protocol on stdio: six read-only tools, each answer at most 8 KB with its provenance and the basis of every fact. The [Atlas page](../atlas/#ask-from-an-agent) lists the tools | none; it answers for the client's root or the directory it starts in |
 | `atlas-fleet` | The container's service: maps the repositories listed in `fleet.yml` on its schedule and serves the fleet list and the pages | `ATLAS_DATA` (default `/data`), `ATLAS_ASSETS` (default `/srv/atlas`) |
 
-Every failure prints one shape: the code, one sentence, what changed, what to do, and the exit code. Exit 2 means the input was unusable and nothing was checked. The codes are listed on the [error codes](../error-codes/#atlas-codes) page.
+Every failure prints one shape: the code, one sentence, what changed, what to do, and the exit code. Exit 2 means the input was unusable and nothing was checked. `atlas mcp` neither prints nor exits on a failure: it returns the same fields in a tool error and keeps serving. The codes are listed on the [error codes](../error-codes/#atlas-codes) page.
 
 ## See also
 

@@ -17,7 +17,7 @@ Eight workspace packages, all `@dogfood-lab/*`:
 | `report` | Submission builder | JS |
 | `portfolio` | Cross-repo portfolio generator | JS |
 | `dogfood-swarm` | 10-phase parallel-agent protocol + SQLite control plane + `swarm` bin | JS |
-| `atlas` | Repository mapper: reads doors, parts, imports, landing places and history, writes the page (`atlas/README.md` + `page.json`) and checks the map in CI; no sibling dependencies, published as a standalone binary | JS |
+| `atlas` | Repository mapper: reads doors, parts, imports, landing places and history, writes the page (`atlas/README.md` + `page.json`), checks the map in CI, and answers agents from it over MCP (`atlas mcp`); no sibling dependencies, published as a standalone binary | JS |
 
 JS packages use `node --test`. The TS schemas package uses `vitest`. Root `npm test` fans out via `npm test --workspaces --if-present`.
 
@@ -102,12 +102,12 @@ Six workflows, each with a distinct purpose — exceeds the org-wide soft cap of
 
 | Workflow | Trigger | What it does |
 |----------|---------|--------------|
-| `ci.yml` | `push` / `pull_request` on `packages/**`, `package*.json`, `tsconfig*.json`, `.github/workflows/**`, `docs/**`, `site/**`, `swarms/PROTOCOL.md`, `swarms/manifest-schema.json`, `swarms/templates/**`, `scripts/**`, `policies/**`, `fixtures/**`, `dogfood/**`, and the root honesty surfaces (`README.md`, `SHIP_GATE.md`, `SCORECARD.md`, `CLAUDE.md`, `HANDOFF.md`) + `swarms/__schema-fixtures__/**` + `atlas/**` | Build + test on Node 22 + 24, then `atlas check` against the committed map |
+| `ci.yml` | `push` / `pull_request` on `packages/**`, `package*.json`, `tsconfig*.json`, `.github/workflows/**`, `docs/**`, `site/**`, `swarms/PROTOCOL.md`, `swarms/manifest-schema.json`, `swarms/templates/**`, `scripts/**`, `policies/**`, `fixtures/**`, `dogfood/**`, and the root honesty surfaces (`README.md`, `SHIP_GATE.md`, `SCORECARD.md`, `CLAUDE.md`, `HANDOFF.md`) + `swarms/__schema-fixtures__/**` + `atlas/**` + `codecov.yml` | Build + test (`npm run verify`, with `atlas check` inside it) on Node 22 + 24. On a pull request or a push to `main`, the Node 22 leg also collects coverage and JUnit results, and a separate `codecov` job, with only `contents: read` + `id-token: write` and no repository code run, uploads them to Codecov with OIDC; `codecov.yml` keeps both statuses informational |
 | `ingest.yml` | `repository_dispatch` (`dogfood_submission`) + `workflow_dispatch` | Receives consumer dogfood submissions, runs `packages/ingest/run.js --provenance=github`, commits new records + indexes back to `main`. Concurrency-serialized at workflow level; push conflicts handled by git pull --rebase retry loop (3 attempts). |
-| `pages.yml` | `push` to `main` on `site/**` or `.github/workflows/pages.yml` | Builds the Astro Starlight handbook, deploys to `dogfood-lab.github.io/testing-os/`, curls the URL with retry to verify deploy. |
+| `pages.yml` | `push` to `main` on `site/**` or `.github/workflows/pages.yml` | Builds the Astro Starlight handbook, checks the agent front door in the build (`scripts/check-atlas-front-door.test.mjs`: the root `llms.txt` and the Atlas page's no-script pointer), deploys to `dogfood-lab.github.io/testing-os/`, curls the URL with retry to verify deploy. |
 | `release.yml` | `push` of a `v*.*.*` tag + `workflow_dispatch` (tag input) | Publishes every `@dogfood-lab/*` package not marked `private` (seven, including `atlas`) to npm via OIDC trusted publishing (`--provenance`) and creates the GitHub Release from the matching `CHANGELOG.md` section, in one workflow. Verifies the tag matches `package.json` and runs the full `npm run verify` gate before publishing. |
 | `self-dogfood.yml` | `workflow_run` on CI completion + `workflow_dispatch` | Submits this repo's own CI verdict through the same public dispatch path consumers use (honest `fail` submissions included) — builds the submission with the local CLI, dispatches with the workflow's own `github.token` (consumers use their `DOGFOOD_TOKEN`), guarded against the ingest-commit loop. |
-| `atlas-render.yml` | `schedule` (`0 6 * * 1`, Monday 06:00 UTC) + `workflow_dispatch` | Renders every public repository that has adopted Atlas onto the `atlas-render` branch, and opens an issue when the divergence set changes. |
+| `atlas-render.yml` | `schedule` (`0 6 * * 1`, Monday 06:00 UTC) + `workflow_dispatch` | Renders every public repository that has adopted Atlas onto the `atlas-render` branch, with `fleet.json` and the agent index `llms.txt` beside them, removes the files a render no longer writes, and opens an issue when the divergence set changes. |
 
 All action SHAs pinned (no floating `@v4`). The $130 GitHub Actions incident memory (`memory/github-actions-incident.md`) is why.
 
@@ -151,7 +151,7 @@ Per-package isolation:
 npm test --workspace @dogfood-lab/findings
 ```
 
-CI runs the same `verify` flow on Node 22 + 24.
+CI runs the same `verify` flow on Node 22 + 24. On a pull request or a push to `main`, the Node 22 leg also sends coverage and test results to Codecov.
 
 ## Working with the legacy
 
