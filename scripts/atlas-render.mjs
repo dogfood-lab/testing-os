@@ -353,7 +353,10 @@ export async function renderFleet(options = {}) {
   for (const path of paths) log(`file ${path}`);
   let issue = null;
   if (!dryRun) {
-    if (options.writeBranch) await options.writeBranch({ state, fleet: fleetDoc, index, outRoot, paths, date, publicNames });
+    if (options.writeBranch) {
+      const rendered = renderedNow.map((entry) => entry.repo);
+      await options.writeBranch({ state, fleet: fleetDoc, index, outRoot, paths, rendered, date, publicNames, log });
+    }
     if (changed && options.issues) issue = await publishIssue(options.issues, date, changes);
   }
   return { logs, state, fleet: fleetDoc, index, paths, changed, changes, issue, publicCount: listed.length };
@@ -401,18 +404,37 @@ function githubIssues(fetchImpl, token) {
   };
 }
 
+// The two files a render carries from one run to the next: history.json,
+// which it keeps unwritten when the last one could not be read, and
+// divergence.json, which the next render compares against.
+const CARRIED = new Set(['divergence.json', 'history.json']);
+
 /**
  * One run laid into `work`, a checkout of the render branch: the state, the
  * fleet and its agent index beside it, then every render over what the branch
- * held. Split from the clone and the push so a fixture branch can take a run.
+ * held. In a repository the run rendered, a file it neither wrote (`paths`)
+ * nor carries was written by an earlier engine and is removed; a repository
+ * the run skipped keeps what it has. Split from the clone and the push so a
+ * fixture branch can take a run.
  */
-export function writeRenderFiles(work, { state, fleet, index, outRoot, publicNames }) {
+export function writeRenderFiles(work, { state, fleet, index, outRoot, paths, rendered, publicNames, log }) {
   const atlasDir = join(work, 'indexes', 'atlas');
   mkdirSync(atlasDir, { recursive: true });
   writeFileSync(join(atlasDir, 'state.json'), `${JSON.stringify(state, null, 2)}\n`);
   writeFileSync(join(atlasDir, 'fleet.json'), `${JSON.stringify(fleet, null, 2)}\n`);
   writeFileSync(join(atlasDir, 'llms.txt'), index);
   cpSync(outRoot, atlasDir, { recursive: true });
+  const written = new Set(paths);
+  for (const repo of rendered) {
+    const dir = join(atlasDir, ...repo.split('/'));
+    const retired = filesUnder(dir)
+      .filter((abs) => !written.has(relative(work, abs).replaceAll('\\', '/')) && !CARRIED.has(relative(dir, abs).replaceAll('\\', '/')))
+      .sort();
+    for (const abs of retired) {
+      rmSync(abs);
+      log(`removed ${relative(work, abs).replaceAll('\\', '/')}`);
+    }
+  }
   const published = filesUnder(atlasDir).map((abs) => relative(work, abs).replaceAll('\\', '/'));
   rejectForeignPaths(published, publicNames);
 }
@@ -435,7 +457,8 @@ async function commitBranch(payload, token) {
       if (created.status !== 0) throw new Error(gitError('could not create atlas-render', created));
     }
     writeRenderFiles(work, payload);
-    await defaultRun('git', ['add', '--', 'indexes/atlas'], { cwd: work });
+    // --all stages the files the run removed as well as those it wrote.
+    await defaultRun('git', ['add', '--all', '--', 'indexes/atlas'], { cwd: work });
     const committed = await defaultRun('git', ['-c', 'user.email=64996768+mcp-tool-shop@users.noreply.github.com', '-c', 'user.name=mcp-tool-shop', 'commit', '-m', `atlas: weekly render ${date}`], { cwd: work });
     if (committed.status !== 0) throw new Error(gitError('commit of atlas-render failed', committed));
     // A missing remote ref has no lease to compare. Create it with a plain push; later runs use the lease.
