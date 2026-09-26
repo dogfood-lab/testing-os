@@ -4,6 +4,9 @@ All notable changes to `testing-os` are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Fixed
+- **`codecov-rollout` adds flags at the right place in a CRLF checkout.** In a literal block `run: |`, the tool counted each line's carriage return as part of the command, so on a line below the first its flags landed one character early per line above. On Windows with `core.autocrlf` this cut `--cov-report=term-missing` to `term-missin` in audiobooker, split a stray `l` off `junit.xml` in portlight, and put `--junitxml` inside a pytest `-m` expression in backpropagate. All three pull requests failed CI, and all three were rebuilt with the fix. The plan now also reads the edited run text back and hands the step to a person unless it is exactly the command the tool meant to write. The recipe check reads only the flags it asks for, so it passed all three edits.
+
 ## [1.23.4] — 2026-09-26
 
 The version skips 1.23.1 to 1.23.3 by choice; none of them was published.

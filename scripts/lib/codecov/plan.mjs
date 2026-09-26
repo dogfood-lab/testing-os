@@ -197,6 +197,11 @@ export function planRepository({ files, read, facts, step: chosen = null }) {
   const after = applyEdits(text, edits);
   const reread = parseDocument(after);
   if (reread.errors.length > 0) return hand(`the tool's edit of ${file} is not valid YAML; edit it by hand (${reread.errors[0].message.split('\n')[0]})`);
+  // The recipe check below reads only the flags it asks for, so an edit that
+  // lands a character off, cutting the command's own words, would pass it.
+  const rereadSteps = reread.getIn(['jobs', job, 'steps'], true);
+  const rereadStep = isSeq(rereadSteps) ? rereadSteps.items.find((node) => isMap(node) && node.get('id') === id) : null;
+  if (rereadStep?.get('run') !== (edit.run ?? run)) return hand(`the tool's edit of ${label} does not read back as the command it meant to write; add the flags by hand`);
   const out = new Map(files);
   out.set(workflow, after);
   if (!files.has('codecov.yml')) out.set('codecov.yml', CODECOV_YML);
@@ -560,11 +565,14 @@ function scalarInsert(text, scalar, before, after) {
     const own = explicit ? column(text, start) - column(text, start) + Number(explicit[1] ?? explicit[2]) : Math.min(...lines.filter((line) => line.trim() !== '').map((line) => line.length - line.trimStart().length));
     let offset = header;
     let seen = 0;
-    for (const line of lines) {
+    for (const raw of lines) {
+      // The parsed value holds no \r, so a CRLF line's is not counted, or
+      // each later line's text lands one character earlier per line above it.
+      const line = raw.endsWith('\r') ? raw.slice(0, -1) : raw;
       const value = line.length >= own ? line.slice(own) : '';
       if (at <= seen + value.length) return { at: offset + (line.length >= own ? own : line.length) + (at - seen), text: added };
       seen += value.length + 1;
-      offset += line.length + 1;
+      offset += raw.length + 1;
     }
   }
   return { reason: `its run text is written as a ${scalar.type.toLowerCase().replace('_', ' ')} scalar, which the tool does not edit; add the flags by hand` };
