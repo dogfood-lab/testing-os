@@ -178,7 +178,7 @@ function transportOf(node, pathText) {
 // list spell.
 function commandFrom(programNode, listNode, separate, pathText, given = null) {
   // spawn(process.execPath, [...]) runs Node.
-  const program = programNode?.text === 'process.execPath' ? 'node' : text(programNode, pathText);
+  const program = programNode?.text === 'process.execPath' ? 'node' : text(programNode, pathText) ?? defaultProgram(programNode, pathText);
   const list = given != null ? { type: 'array' } : separate ? arrayOf(listNode) : null;
   const words = given ?? (list?.type === 'array' ? argumentWords(list, pathText) : null);
   // spawn(pythonPath, ['-m', 'jobs']) runs the module whatever interpreter
@@ -208,6 +208,19 @@ function commandFrom(programNode, listNode, separate, pathText, given = null) {
   const lead = script === -1 ? words : words.slice(0, script + 1);
   if (lead.some((word, index) => unread(word) && !values.has(index))) return { built: true };
   return { command: [quoted(program), ...words.map((word) => (unread(word) ? UNREAD : quoted(word)))].join(' ') };
+}
+
+// The interpreter a program the environment may name defaults to:
+// process.env.PYTHON || 'python' runs python unless told otherwise. Only the
+// program is read this way; a script the environment may swap stays built
+// at run time.
+function defaultProgram(node, pathText, depth = 0) {
+  if (node?.type === 'identifier' && depth < 2) {
+    const value = constBound(node);
+    return value != null ? defaultProgram(value, pathText, depth + 1) : null;
+  }
+  if (node?.type !== 'binary_expression' || !['||', '??'].includes(node.childForFieldName('operator')?.text)) return null;
+  return text(node.childForFieldName('right'), pathText);
 }
 
 // The flags Node reads a value for, so a value computed at run time after
@@ -470,11 +483,6 @@ function text(node, pathText, depth = 0) {
   if (node?.type === 'identifier' && depth < 2) {
     const value = constBound(node);
     if (value != null) return text(value, pathText, depth + 1);
-  }
-  // process.env.PYTHON || 'python': the default, when the environment names
-  // none.
-  if (node?.type === 'binary_expression' && ['||', '??'].includes(node.childForFieldName('operator')?.text) && depth < 3) {
-    return text(node.childForFieldName('right'), pathText, depth + 1);
   }
   const plain = literal(node);
   if (plain != null || node?.type !== 'template_string') return plain;
