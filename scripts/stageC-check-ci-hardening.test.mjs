@@ -164,14 +164,16 @@ test('F-92a05b18: the proof-of-life job pins the exact same actions/checkout and
   assert.equal(setupNodeShaWindows, setupNodeShaBuild, 'the proof-of-life job must pin the SAME actions/setup-node SHA as build-and-test');
 });
 
-test('F-92a05b18: exactly two top-level jobs exist — build-and-test is untouched (still the only OTHER job) and no third job crept in', () => {
+// The codecov job came with the Codecov upload: it is the one job that holds
+// an OIDC token, and scripts/ci-atlas-diff.test.mjs pins its permissions.
+test('F-92a05b18: exactly three top-level jobs exist — build-and-test, the codecov upload job and the proof-of-life job, and no fourth crept in', () => {
   const text = readFileSync(ciPath, 'utf8');
   const jobsIdx = text.indexOf('\njobs:');
   const jobsBlock = text.slice(jobsIdx);
   const jobNames = [...jobsBlock.matchAll(/^  ([a-zA-Z_][a-zA-Z0-9_-]*):\s*$/gm)].map((m) => m[1]);
   assert.deepEqual(
     jobNames,
-    ['build-and-test', 'windows-step-fixtures-proof-of-life'],
-    'exactly these two top-level jobs, in this order — a new job must not silently multiply beyond the one this finding asked for, and build-and-test must not be renamed or removed',
+    ['build-and-test', 'codecov', 'windows-step-fixtures-proof-of-life'],
+    'exactly these three top-level jobs, in this order — a new job must not silently multiply, and build-and-test must not be renamed or removed',
   );
 });
