@@ -1,9 +1,8 @@
-import { existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { ENGINE } from '../adapter/engine.js';
-import { ERRORS } from '../adapter/errors.js';
-import { explainTarget } from '../adapter/explain.js';
-import { topLevel } from './git.js';
+import { answered, CANNOT_SEE_SCHEMA, FACT_GROUP_SCHEMA, failed, provenance, PROVENANCE_SCHEMA } from './answer.js';
+import { explainAnswer } from './explain-tool.js';
+import { changedFiles, checkoutState, mapHashes } from './freshness.js';
+import { head, topLevel } from './git.js';
+import { readCommittedMap } from './map.js';
 import { outputSchema, problems } from './schema.js';
 
 /**
@@ -14,13 +13,31 @@ import { outputSchema, problems } from './schema.js';
 
 const READ_ONLY = Object.freeze({ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false });
 
-const PROVENANCE = {
+const QUESTION_PATH = {
+  type: 'object',
+  properties: { path: { type: 'string' } },
+  required: ['path'],
+};
+
+const FOUND = {
   type: 'object',
   properties: {
-    engine: { type: 'string' },
-    line: { type: 'string' },
+    kind: { type: 'string', enum: ['file', 'directory', 'part'] },
+    path: { type: ['string', 'null'] },
+    part: { type: ['string', 'null'] },
   },
-  required: ['engine', 'line'],
+  required: ['kind', 'path', 'part'],
+};
+
+const EXPLAIN_ANSWER = {
+  type: 'object',
+  properties: {
+    question: QUESTION_PATH,
+    found: FOUND,
+    facts: { type: 'array', items: FACT_GROUP_SCHEMA },
+    cannotSee: { type: 'array', items: CANNOT_SEE_SCHEMA },
+  },
+  required: ['question', 'found', 'facts', 'cannotSee'],
 };
 
 const TOOLS = [
@@ -30,6 +47,7 @@ const TOOLS = [
     description: 'What one file, directory or part of this repository is, from its Atlas map: the part it is in and its role, '
       + 'the doors that run it or pass through its part, what it imports and what imports it, what it writes and who reads that, '
       + 'who writes it and who reads it when it is a place, the order of work inside it, and what it changes with. '
+      + 'Every fact says how it was known, and the answer lists what Atlas cannot see for it. '
       + 'Give a path from the repository root, or a part name from atlas/boundaries.yaml.',
     inputSchema: {
       type: 'object',
@@ -44,8 +62,17 @@ const TOOLS = [
       required: ['path'],
       additionalProperties: false,
     },
-    outputSchema: outputSchema(PROVENANCE, { type: 'object' }),
-    run: explain,
+    outputSchema: outputSchema(PROVENANCE_SCHEMA, EXPLAIN_ANSWER),
+    answer: (snapshot, repo, args) => {
+      const result = explainAnswer(snapshot, repo, args.path);
+      if (!result.ok) return result;
+      return {
+        ok: true,
+        answer: { question: { path: args.path }, found: result.found, facts: result.facts, cannotSee: result.cannotSee },
+        sentences: result.sentences,
+        files: result.files,
+      };
+    },
   },
 ];
 
@@ -71,11 +98,39 @@ export async function callTool(name, args, context) {
   const tool = TOOLS.find((entry) => entry.name === name);
   const invalid = problems(tool.inputSchema, args);
   if (invalid.length > 0) {
-    return failure({ code: 'ATLAS_SIDECAR_INVALID_ARGUMENTS', details: invalid.slice(0, 8), whatToDo: `call ${name} with the arguments its input schema names` });
+    return failed(provenance(), { code: 'ATLAS_SIDECAR_INVALID_ARGUMENTS', details: invalid.slice(0, 8), whatToDo: `call ${name} with the arguments its input schema names` });
   }
   const repo = repositoryFor(context);
-  if (repo.error) return failure(repo.error);
-  return tool.run(args, repo);
+  if (repo.error) return failed(provenance(), repo.error);
+  const read = readCommittedMap(repo.root);
+  if (!read.ok) return failed(provenance({ repo, head: head(repo.root) }), read.error);
+  const { snapshot } = read;
+  const state = checkoutState(repo.root, snapshot.commit);
+  const result = tool.answer(snapshot, repo, args);
+  if (!result.ok) return failed(provenance({ repo, snapshot, head: state.head }), result.error);
+  const known = mapHashes(snapshot.structure);
+  const files = [...result.files, ...pathsIn(result.answer, known)];
+  const changed = changedFiles(repo.root, snapshot, state, files);
+  return answered(provenance({ repo, snapshot, head: state.head, changed }), result.answer, result.sentences);
+}
+
+// Every tracked path an answer's facts name, in the order they appear, so
+// the provenance can say which of them changed after the map.
+function pathsIn(answer, known) {
+  const dirs = new Set();
+  for (const file of known.keys()) for (let at = file.indexOf('/'); at !== -1; at = file.indexOf('/', at + 1)) dirs.add(file.slice(0, at));
+  const out = [];
+  const visit = (value) => {
+    if (typeof value === 'string') {
+      const path = value.endsWith('/') ? value.slice(0, -1) : value;
+      if (known.has(path) || dirs.has(path)) out.push(path);
+      return;
+    }
+    if (Array.isArray(value)) value.forEach(visit);
+    else if (value && typeof value === 'object') for (const key of ['by', 'path', 'file', 'place', 'a', 'b']) if (key in value) visit(value[key]);
+  };
+  for (const factGroup of answer.facts ?? []) visit(factGroup.items);
+  return out;
 }
 
 // The repository an answer is about: the first client root inside one, else
@@ -94,60 +149,4 @@ function repositoryFor({ roots = [], cwd }) {
       whatToDo: 'start atlas mcp in the repository to answer for, or offer it as a root',
     },
   };
-}
-
-function readJson(path) {
-  if (!existsSync(path)) return { absent: true };
-  try {
-    return { value: JSON.parse(readFileSync(path, 'utf8')) };
-  } catch {
-    return { invalid: true };
-  }
-}
-
-function readMap(root) {
-  const structure = readJson(join(root, 'atlas', 'structure.json'));
-  if (structure.absent) {
-    return { error: { code: 'ATLAS_SIDECAR_NO_MAP', details: ['atlas/structure.json is absent'], whatToDo: 'run atlas init, then atlas map, and commit atlas/' } };
-  }
-  if (structure.invalid) {
-    return { error: { code: 'ATLAS_SIDECAR_MAP_UNREADABLE', details: ['atlas/structure.json is not valid JSON'], whatToDo: 'run atlas map and commit atlas/' } };
-  }
-  return {
-    structure: structure.value,
-    statistics: readJson(join(root, 'atlas', 'statistics.json')).value ?? {},
-    page: readJson(join(root, 'atlas', 'page.json')).value ?? null,
-  };
-}
-
-function explain(args, repo) {
-  const map = readMap(repo.root);
-  if (map.error) return failure(map.error);
-  const answer = explainTarget(map, { repo: repo.root, target: args.path });
-  if (!answer.ok) return failure(answer);
-  return success(answer.facts, [`Atlas: ${answer.lines[0]}`, ...answer.lines.slice(1)]);
-}
-
-function provenance() {
-  return { engine: ENGINE, line: `Atlas ${ENGINE}` };
-}
-
-function success(answer, lines) {
-  const atlas = provenance();
-  return {
-    content: [{ type: 'text', text: [atlas.line, ...lines].join('\n') }],
-    structuredContent: { atlas, answer },
-  };
-}
-
-function failure({ code, details, whatToDo }) {
-  const atlas = provenance();
-  const error = { code, sentence: ERRORS[code], whatChanged: [...details], whatToDo };
-  const text = [
-    atlas.line,
-    `Atlas cannot answer: ${error.sentence} (${code})`,
-    `What changed: ${error.whatChanged.join('; ') || 'nothing listed'}.`,
-    `What to do: ${whatToDo}.`,
-  ].join('\n');
-  return { content: [{ type: 'text', text }], structuredContent: { atlas, error }, isError: true };
 }

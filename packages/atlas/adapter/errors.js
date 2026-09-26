@@ -16,6 +16,8 @@ export const ERRORS = {
   ATLAS_SIDECAR_NOT_A_REPOSITORY: 'The directory the sidecar answers for is not in a git repository.',
   ATLAS_SIDECAR_NO_MAP: 'The repository has no map.',
   ATLAS_SIDECAR_MAP_UNREADABLE: 'The map is not valid JSON.',
+  ATLAS_SIDECAR_MAP_FORMAT: 'The map is not in a format this engine reads.',
+  ATLAS_SIDECAR_MAP_FOREIGN: "The map names a commit that is not in this checkout's history.",
   ATLAS_SIDECAR_INVALID_ARGUMENTS: 'The tool was called with arguments it does not take.',
 };
 

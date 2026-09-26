@@ -85,8 +85,8 @@ describe('atlas mcp: the handshake revisions', () => {
     assert.equal(called.content.length, 1);
     assert.equal(called.content[0].type, 'text');
     assert.match(called.content[0].text, /^Atlas /);
-    assert.equal(called.structuredContent.answer.path, 'store');
-    assert.equal(called.structuredContent.answer.mapCommit, commit);
+    assert.equal(called.structuredContent.answer.found.path, 'store');
+    assert.equal(called.structuredContent.atlas.map.commit, commit);
     assert.equal(called.structuredContent.atlas.engine, VERSION);
     assert.equal(await server.close(), 0);
     assertProtocolOnly(server);
@@ -150,7 +150,7 @@ describe('atlas mcp: revision 2026-07-28, one request at a time', () => {
     assert.ok(listed.tools.some((tool) => tool.name === 'atlas_explain'));
     const called = (await server.request('tools/call', { name: 'atlas_explain', arguments: { path: 'engine' }, _meta: modernMeta() })).result;
     assert.equal(called.resultType, 'complete');
-    assert.equal(called.structuredContent.answer.kind, 'part');
+    assert.equal(called.structuredContent.answer.found.kind, 'part');
     await server.close();
   });
 
@@ -186,7 +186,7 @@ describe('atlas mcp: roots', () => {
     server.notify('notifications/initialized');
     const called = (await server.request('tools/call', { name: 'atlas_explain', arguments: { path: 'store' } })).result;
     assert.equal(asked, 1);
-    assert.equal(called.structuredContent.answer.mapCommit, commit);
+    assert.equal(called.structuredContent.atlas.map.commit, commit);
     server.notify('notifications/roots/list_changed');
     await server.request('ping');
     await server.request('tools/call', { name: 'atlas_explain', arguments: { path: 'store' } });

@@ -73,7 +73,7 @@ describe('the official SDK client', () => {
       const result = await client.callTool({ name: 'atlas_explain', arguments: { path: 'store/ledger/latest.json' } });
       assert.equal(result.isError, undefined);
       assert.equal(result.content.length, 1);
-      assert.equal(result.structuredContent.answer.path, 'store/ledger/latest.json');
+      assert.equal(result.structuredContent.answer.found.path, 'store/ledger/latest.json');
       const failed = await client.callTool({ name: 'atlas_explain', arguments: { path: 'nowhere' } });
       assert.equal(failed.isError, true);
       assert.equal(failed.structuredContent.error.code, 'ATLAS_EXPLAIN_UNKNOWN_PATH');
@@ -89,7 +89,7 @@ describe('the official SDK client', () => {
     try {
       const result = await client.callTool({ name: 'atlas_explain', arguments: { path: 'engine' } });
       assert.equal(result.isError, undefined, JSON.stringify(result.structuredContent));
-      assert.equal(result.structuredContent.answer.kind, 'part');
+      assert.equal(result.structuredContent.answer.found.kind, 'part');
     } finally {
       await client.close();
     }
