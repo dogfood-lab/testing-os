@@ -13,6 +13,7 @@ import { buildCalls } from './bundles.js';
 import { failurePaths } from './failure-paths.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, settleRelativePaths, testReadsKept, testWritesKept, textLandings, trackedPlaces } from './landings.js';
 import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
+import { isShellScript, namesFiles, settleMentions, shellWords, stringWords } from './mentions.js';
 import { walkReach } from './reach.js';
 import { attachResolution, emittedFiles, registerBuilds, resolveDeclaredPath } from './resolve.js';
 import { attachSequences, sequenceFacts } from './sequence.js';
@@ -200,6 +201,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   markUnshipped(doors, cargoProject(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom, emitted }), repositoryView({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }));
+  settleMentions(graph.files);
   const edges = [...resolution.edges, ...spawnEdges(graph), ...httpEdges(graph.files, graph.boundaryOf, isTestMaterial)]
     .sort((a, b) => a.from.localeCompare(b.from) || a.to.localeCompare(b.to) || a.kind.localeCompare(b.kind));
   for (const file of graph.files.values()) delete file.http;
@@ -800,7 +802,10 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
   // A scene or resource Godot saves as text names what it instances and
   // reads line by line, read as text by rule (core/gdscript.js).
   if (language == null && GODOT_TEXT.test(path)) return { path, hash, language: null, ...godotResourceReadings(bytes.toString('utf8')), ...noLandings() };
-  if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places) };
+  // A smoke script in the shell names the files it runs as words, read as
+  // text (core/mentions.js).
+  const shellNames = language == null && namesFiles(path) && isShellScript(path) ? shellWords(bytes.toString('utf8')) : [];
+  if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places), ...(shellNames.length > 0 ? { mentions: shellNames } : {}) };
   const extracted = parseFile(language, path, front ?? bytes.toString('utf8'), places);
   if (extracted.parseError) {
     const syntax = extracted.unreadSyntax ? { unreadSyntax: extracted.unreadSyntax } : {};
@@ -825,7 +830,9 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
   const native = extracted.native ?? {};
   // A test's own error handling is the test's; the file's are what G6 names.
   const failures = extracted.failurePaths?.length > 0 && !isTestFile(path) ? { failurePaths: extracted.failurePaths } : {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http, ...starts, ...native, ...failures };
+  // Read once every file is known, then dropped (core/mentions.js settleMentions).
+  const mentions = extracted.mentions?.length > 0 ? { mentions: extracted.mentions } : {};
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http, ...starts, ...native, ...failures, ...mentions };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
@@ -867,6 +874,7 @@ function parseFile(language, path, original, places) {
       http: language === 'python' ? null : httpFacts(tree.rootNode),
       builds: language === 'python' || isTestFile(path) ? [] : buildCalls(tree.rootNode, (node) => pathShape(node, path)),
       failurePaths: failurePaths(language, tree.rootNode),
+      mentions: namesFiles(path) ? stringWords(language, tree.rootNode) : [],
     };
   } finally {
     tree.delete();

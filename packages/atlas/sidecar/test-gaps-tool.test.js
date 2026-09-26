@@ -119,3 +119,38 @@ describe('atlas_test_gaps on the gaps fixture', () => {
     assert.equal(result.structuredContent.error.code, 'ATLAS_GAPS_UNKNOWN_PATH');
   });
 });
+
+// fixtures/atlas/reach-names: a file a test names in a string is answered
+// with the test that names it, by text, and no suggestion says no test
+// reaches it.
+describe('atlas_test_gaps on a file a test names in a string', () => {
+  let named;
+  before(async () => {
+    const root = mkdtempSync(join(tmpdir(), 'atlas-test-gaps-named-'));
+    scratch.push(root);
+    cpSync(resolve(REPO_ROOT, 'fixtures/atlas/reach-names'), root, { recursive: true });
+    git(root, ['init', '-q']);
+    git(root, ['config', 'core.autocrlf', 'false']);
+    commitAll(root, 'fixture');
+    const mapped = spawnSync(process.execPath, [CLI, 'map'], { cwd: root, encoding: 'utf8' });
+    assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
+    commitAll(root, 'map');
+    named = new Client({ name: 'atlas-test-gaps-named', version: '0.0.0' }, { capabilities: {} });
+    await named.connect(new StdioClientTransport({ command: process.execPath, args: [CLI, 'mcp'], cwd: root, stderr: 'pipe' }));
+  });
+
+  after(async () => {
+    await named?.close();
+  });
+
+  it('gives the reach as named, by text, with the test that names it', async () => {
+    const result = await named.callTool({ name: 'atlas_test_gaps', arguments: { path: 'tools/tool_a.py' } });
+    assert.equal(result.isError, undefined, JSON.stringify(result.structuredContent));
+    const answer = result.structuredContent.answer;
+    const reach = answer.facts.find((entry) => entry.fact === 'reach');
+    assert.equal(reach.basis, 'text');
+    assert.deepEqual(reach.items, [{ path: 'tools/tool_a.py', kind: 'names', basis: 'text', test: 'tests/test_tools.py' }]);
+    assert.deepEqual(answer.suggestions, []);
+    assert.match(result.content[0].text, /^Atlas: tests\/test_tools\.py names tools\/tool_a\.py in a string; it cannot tell whether that test runs it \(text\)\.$/m);
+  });
+});

@@ -172,3 +172,20 @@ describe('the time atlas_check_change takes on 20 changed files of this reposito
     assert.equal(answer.verdict.fullRefresh.needed, false);
   });
 });
+
+// fixtures/atlas/reach-names: a changed file a test names in a string is
+// given with the test that names it, by text, and never as one no test
+// reaches.
+describe('a change to a file a test names in a string', () => {
+  it('gives the named reach, and no failure paths no test reaches', async () => {
+    const root = mappedRepository(resolve(REPO_ROOT, 'fixtures/atlas/reach-names'), { prefix: 'atlas-check-named-' });
+    scratch.push(root);
+    appendFileSync(join(root, 'tools', 'tool_a.py'), "\n\ndef strict(value):\n    if value is None:\n        raise ValueError('no value')\n    return value\n");
+    const { structuredContent, content } = await check(root);
+    const reach = structuredContent.answer.facts.find((entry) => entry.fact === 'testReach');
+    assert.equal(reach.basis, 'text');
+    assert.deepEqual(reach.items.map((item) => [item.path, item.kind, item.test]), [['tools/tool_a.py', 'names', 'tests/test_tools.py']]);
+    assert.deepEqual(items(structuredContent.answer, 'noTestReaches'), []);
+    assert.doesNotMatch(content[0].text, /no test imports or runs tools\/tool_a\.py/);
+  });
+});

@@ -208,3 +208,30 @@ describe('G2 and the runner each test file is written for', () => {
     assert.equal(ofRule(frameworks, 'G2').some((entry) => entry.facts.files.includes('scripts/test_gate.py')), false);
   });
 });
+
+// fixtures/atlas/reach-names: a file a test names in a string may be the one
+// it runs (facet's conftest helpers run its tools by name), so no rule says
+// no test reaches it.
+describe('the rules on a file a test names in a string', () => {
+  const named = gapsOf('reach-names', [
+    { name: 'scripts', globs: ['scripts/**'], role: 'code' },
+    { name: 'tools', globs: ['tools/**'], role: 'code' },
+    { name: 'pair', globs: ['a/**', 'b/**'], role: 'code' },
+    { name: 'tests', globs: ['test/**', 'tests/**'], role: 'test' },
+  ]);
+
+  it('fires G6 only for the files no test names', () => {
+    assert.deepEqual(ofRule(named, 'G6').map((entry) => entry.path).sort(), ['a/run.py', 'b/run.py', 'tools/tool_b.py']);
+  });
+
+  it('says of an installed command whose entry a test names nothing (G3)', () => {
+    assert.deepEqual(ofRule(named, 'G3'), []);
+  });
+
+  it('lists a named file as no code gap', () => {
+    const gapped = [...named.gaps.items.map((gap) => gap.path ?? gap.part)];
+    assert.equal(gapped.includes('tools/tool_a.py'), false);
+    assert.equal(gapped.includes('scripts/gen.mjs'), false);
+    assert.ok(gapped.includes('tools/tool_b.py'), gapped.join(', '));
+  });
+});

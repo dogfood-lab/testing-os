@@ -394,6 +394,10 @@
       "reason": "Atlas fixture, not a test. It sits inside the reach-shapes fixture repository that packages/atlas/adapter/test-reach.test.js maps, where the way it loads or starts a file under scripts/ or tools/ is one the map must read as a test reaching that file. It contains no test of this repository and runs only inside that fixture, never here."
     },
     {
+      "path": "fixtures/atlas/reach-names/test/gen.test.mjs",
+      "reason": "Atlas fixture, not a test. It sits inside the reach-names fixture repository that packages/atlas/adapter/test-reach.test.js, adapter/test-gaps.test.js, adapter/gaps.test.js and the sidecar tests map, where it names scripts/gen.mjs in a string by a path joined to a root another file sets, which the map must read as a test naming that file. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
       "path": "fixtures/atlas/failure-paths/test/load.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the failure-paths fixture repository that packages/atlas/core/failure-paths.test.js maps, where its own catch is a test's and is not counted among the failure paths of the code. It runs only inside that fixture, never here."
     },

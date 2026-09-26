@@ -167,3 +167,31 @@ describe('atlas gaps with no map', () => {
     assert.match(result.stdout, /atlas map/);
   });
 });
+
+// fixtures/atlas/reach-names: a file a test names in a string, by a way the
+// map cannot follow to an import or a run, is answered as named, with the
+// test that names it; Atlas does not say no test imports or runs it.
+describe('atlas gaps on a file a test names in a string', () => {
+  let named;
+  before(() => {
+    named = repoFrom(resolve(REPO_ROOT, 'fixtures/atlas/reach-names'));
+    const mapped = spawnSync(process.execPath, [CLI, 'map'], { cwd: named, encoding: 'utf8' });
+    assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
+  });
+
+  it('names the test that names it, and says what Atlas cannot tell', () => {
+    const lines = answered(named, 'tools/tool_a.py');
+    assert.equal(lines[1], 'tests/test_tools.py names it in a string; Atlas cannot tell whether that test runs it (text).');
+    assert.equal(lines.some((line) => line.startsWith('G6 ')), false, lines.join('\n'));
+  });
+
+  it('says what a named file imports is named with it', () => {
+    const lines = answered(named, 'scripts/lib/util.mjs');
+    assert.equal(lines[1], 'test/gen.test.mjs names scripts/gen.mjs in a string, and that file imports it; Atlas cannot tell whether that test runs it (text).');
+  });
+
+  it('counts a part only named as named, apart from the parts tests reach', () => {
+    const lines = answered(named);
+    assert.ok(lines.includes('Tests reach 2 of 3 code parts: scripts (named in a string, 2 of 2 files) and tools (named in a string, 2 of 3 files). No test imports or runs pair.'), lines.join('\n'));
+  });
+});

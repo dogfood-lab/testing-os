@@ -129,3 +129,40 @@ describe('the ways the fleet\'s tests reach a file', () => {
     assert.deepEqual(reach.files.get('npm/bin/launcher.mjs'), { kind: 'runs', basis: 'parsed', step: '.github/workflows/ci.yml › launcher › Launcher self-test' });
   });
 });
+
+// fixtures/atlas/reach-names: tests that name the file they reach in a
+// string, by ways the map cannot follow to an import or a run (see the
+// fixture's README). Atlas cannot tell whether such a test runs the file, so
+// the file is not one no test reaches: it is named, by text.
+describe('a test that names a file in a string', () => {
+  const structure = structureOf('reach-names', [
+    { name: 'scripts', globs: ['scripts/**'], role: 'code' },
+    { name: 'tools', globs: ['tools/**'], role: 'code' },
+    { name: 'pair', globs: ['a/**', 'b/**'], role: 'code' },
+    { name: 'tests', globs: ['test/**', 'tests/**'], role: 'test' },
+  ]);
+  const files = new Map([...structure.boundaries.flatMap((boundary) => boundary.files), ...structure.unassigned].map((file) => [file.path, file]));
+  const reach = testReachOf(structure);
+
+  it('records the code files each test names, by their path or by a name only one file has', () => {
+    assert.deepEqual(files.get('tests/test_tools.py').names, ['tools/tool_a.py']);
+    assert.deepEqual(files.get('test/gen.test.mjs').names, ['scripts/gen.mjs']);
+    assert.deepEqual(files.get('scripts/pod_smoke.sh').names, ['tools/tool_c.py']);
+    assert.equal(files.get('tests/test_runs.py').names, undefined);
+  });
+
+  it('says a named file is named by the test, by text, and what it imports with it', () => {
+    assert.deepEqual(reach.files.get('tools/tool_a.py'), { kind: 'names', basis: 'text', test: 'tests/test_tools.py' });
+    assert.deepEqual(reach.files.get('scripts/gen.mjs'), { kind: 'names', basis: 'text', test: 'test/gen.test.mjs' });
+    assert.deepEqual(reach.files.get('scripts/lib/util.mjs'), { kind: 'names', basis: 'text', test: 'test/gen.test.mjs', through: ['scripts/gen.mjs'] });
+    assert.deepEqual(reach.files.get('tools/tool_c.py'), { kind: 'names', basis: 'text', test: 'scripts/pod_smoke.sh' });
+    assert.deepEqual(reach.parts.get('tools'), { kind: 'names', basis: 'text', reached: 2, files: 3 });
+  });
+
+  it('names nothing a test does not name, or names by a name two files have', () => {
+    assert.equal(reach.files.has('tools/tool_b.py'), false);
+    assert.equal(reach.files.has('a/run.py'), false);
+    assert.equal(reach.files.has('b/run.py'), false);
+    assert.equal(reach.parts.has('pair'), false);
+  });
+});

@@ -42,6 +42,17 @@ function gapItem(gap) {
   };
 }
 
+// What reaches one file, as one sentence. A test that names the file in a
+// string may run it, or only mention it, which Atlas cannot tell.
+function reachSentence(reach, path) {
+  const by = reach.test ?? 'a workflow\'s test step';
+  if (reach.kind === 'names') {
+    const named = reach.through?.length > 0 ? `${reach.through[0]} in a string, and that file imports ${path}` : `${path} in a string`;
+    return `Atlas: ${by} names ${named}; it cannot tell whether that test runs it (${reach.basis}).`;
+  }
+  return `Atlas: ${by} ${reach.kind === 'imports' ? 'imports' : reach.kind === 'runs' ? 'runs' : 'finds tests in'} ${path} (${reach.basis}).`;
+}
+
 /**
  * @param {object} snapshot from sidecar/map.js
  * @param {object} repo the repository answered for
@@ -111,7 +122,7 @@ export function testGapsAnswer(snapshot, repo, path) {
   const where = found.kind === 'repository' ? 'this repository' : found.kind === 'part' ? `the part ${found.part}` : found.kind === 'directory' ? `${found.path}/` : found.path;
   const sentences = [
     found.kind === 'file'
-      ? (facts.reach ? `Atlas: ${facts.reach.test ?? 'a workflow\'s test step'} ${facts.reach.kind === 'imports' ? 'imports' : facts.reach.kind === 'runs' ? 'runs' : 'finds tests in'} ${found.path} (${facts.reach.basis}).` : `Atlas: no test imports or runs ${found.path}.`)
+      ? (facts.reach ? reachSentence(facts.reach, found.path) : `Atlas: no test imports or runs ${found.path}.`)
       : `Atlas: ${items.length + rest === 0 ? 'a test imports or runs every code file in' : `${items.length + rest} code ${items.length + rest === 1 ? 'gap' : 'gaps'} in`} ${where}${rest > 0 ? `; the ${items.length} ranked highest are listed, with ${suggestionsLeft > 0 ? `${suggestionsLeft} more suggestions among the rest` : 'none of the rest'}` : ''}.`,
     ...(suggestions.length > 0 ? [`Atlas: ${suggestions.length} ${suggestions.length === 1 ? 'suggestion follows' : 'suggestions follow'}, each with its rule, the facts that triggered it and its source.`] : []),
     ...cannotSee.map((entry) => (entry.reason === 'a test step whose runner Atlas cannot name'

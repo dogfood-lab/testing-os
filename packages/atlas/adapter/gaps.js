@@ -152,6 +152,11 @@ function reachSentence(fact) {
   const by = fact.test ?? fact.step;
   const verb = fact.kind === 'imports' ? 'imports' : fact.kind === 'runs' ? 'runs' : 'holds tests a runner finds in';
   if (fact.kind === 'discovers') return `A runner finds tests inside it (${fact.basis}).`;
+  // A test that names the file in a string may run it, or only mention it.
+  if (fact.kind === 'names') {
+    const named = fact.through?.length > 0 ? `${fact.through[0]} in a string, and that file imports it${fact.through.length > 1 ? ` through ${list(fact.through.slice(1))}` : ''}` : 'it in a string';
+    return `${by} names ${named}; Atlas cannot tell whether that test runs it (${fact.basis}).`;
+  }
   const through = fact.through?.length > 0 ? `, through ${list(fact.through)}` : '';
   return `${by} ${verb} it${through} (${fact.basis}).`;
 }
@@ -199,7 +204,7 @@ function partsLine(parts) {
   const reached = parts.filter((entry) => entry.reach);
   const unreached = parts.filter((entry) => !entry.reach);
   if (parts.length === 0) return null;
-  const said = reached.map((entry) => `${entry.part} (${entry.reach.kind}, ${entry.reach.reached} of ${count(entry.reach.files, 'file')})`);
+  const said = reached.map((entry) => `${entry.part} (${entry.reach.kind === 'names' ? 'named in a string' : entry.reach.kind}, ${entry.reach.reached} of ${count(entry.reach.files, 'file')})`);
   const first = `Tests reach ${reached.length} of ${count(parts.length, 'code part')}${said.length > 0 ? `: ${list(said)}` : ''}.`;
   return unreached.length > 0 ? `${first} No test imports or runs ${either(unreached.map((entry) => entry.part))}.` : first;
 }

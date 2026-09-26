@@ -121,7 +121,7 @@ describe('what the sidecar can do, read from its code', () => {
     assert.ok([...MODULES.keys()].map(name).includes('sidecar/server.js'), 'atlas mcp reaches the server');
     // The test-gap answers of atlas gaps and atlas_test_gaps are held to the
     // same checks (docs/atlas-test-gaps.spec.md, acceptance 8).
-    for (const module of ['adapter/gaps.js', 'adapter/test-gaps.js', 'adapter/test-reach.js', 'adapter/test-kinds.js', 'adapter/test-sources.js', 'core/failure-paths.js', 'sidecar/test-gaps-tool.js']) {
+    for (const module of ['adapter/gaps.js', 'adapter/test-gaps.js', 'adapter/test-reach.js', 'adapter/test-kinds.js', 'adapter/test-sources.js', 'core/failure-paths.js', 'core/mentions.js', 'sidecar/test-gaps-tool.js']) {
       assert.ok([...MODULES.keys()].map(name).includes(module), `the command line reaches ${module}`);
     }
   });

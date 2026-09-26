@@ -15,6 +15,13 @@ import { isSmokeTest } from '../core/test-names.js';
  * - discovers: the file holds tests of its own that a runner finds, as
  *   cargo test finds a #[cfg(test)] module (parsed).
  *
+ * A fourth fact is weaker than all three: names, when a test names the file
+ * in a string by a way the map cannot follow to an import or a run (a
+ * conftest helper that runs tools by name, a path joined to a root another
+ * file sets), so Atlas cannot tell whether the test runs it (text). What the
+ * named file imports is named with it. A named file is not one no test
+ * reaches, and none of the three is said of it.
+ *
  * A smoke test by its name (scripts/smoke.mjs) is a test, and so is what a
  * workflow's test step runs on its way to the tests: the script a step
  * named Smoke-test the CLI runs, and the CLI that script starts, are run by
@@ -26,8 +33,8 @@ import { isSmokeTest } from '../core/test-names.js';
  * coverage (docs/atlas-test-gaps.spec.md).
  */
 
-const KIND_ORDER = ['imports', 'runs', 'discovers'];
-const BASIS_ORDER = ['parsed', 'declared'];
+const KIND_ORDER = ['imports', 'runs', 'discovers', 'names'];
+const BASIS_ORDER = ['parsed', 'declared', 'text'];
 
 // A file a test runner runs as a test by its name: a .test or .spec marker,
 // test_*.py or *_test.py, a Rust integration test under tests/, or a GDScript
@@ -155,6 +162,11 @@ export function testReachOf(structure, { tests = null } = {}) {
       }
     }
   }
+  // What a test names in a string and the map cannot follow, last, so any
+  // stronger fact about a file stands.
+  const named = [];
+  for (const test of sources) for (const target of byPath.get(test).names ?? []) named.push({ path: target, test, basis: 'text', through: [], reached: true });
+  walk(named, 'names', reach);
 
   const parts = new Map();
   for (const boundary of structure.boundaries ?? []) {

@@ -255,9 +255,10 @@ function ciTests(mapped, listed) {
     for (const run of door.testPaths ?? []) {
       const tests = run.paths.filter((path) => !inAtlas(path));
       for (const path of tests) credit(boundaryOf.get(path), run.runner);
+      // A file a test only names is not one the runner is known to reach.
       const reached = testReachOf(listed, { tests });
-      for (const path of reached.files.keys()) credit(boundaryOf.get(path), run.runner);
-      for (const part of reached.parts.keys()) credit(part, run.runner);
+      for (const [path, fact] of reached.files) if (fact.kind !== 'names') credit(boundaryOf.get(path), run.runner);
+      for (const [part, fact] of reached.parts) if (fact.kind !== 'names') credit(part, run.runner);
     }
   }
   const ran = workflows.flatMap((door) => door.ranPaths ?? []);
@@ -377,6 +378,10 @@ function carryFile(file) {
     out.spawns = file.spawns.filter((path) => !inAtlas(path));
     if (file.spawnsInstalled?.length > 0) out.spawnsInstalled = file.spawnsInstalled.filter((path) => !inAtlas(path));
   }
+  // The code files a test names in a string by a way the map cannot follow
+  // to an import or a run (core/mentions.js): it may run them.
+  const names = (file.names ?? []).filter((path) => !inAtlas(path));
+  if (names.length > 0) out.names = names;
   if (file.reexportsOnly) out.reexportsOnly = true;
   if (file.buildScript) out.buildScript = true;
   // The root of the library a Rust binary uses from its own package.
