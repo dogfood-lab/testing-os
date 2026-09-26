@@ -2,6 +2,21 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **The runner behind every test run a workflow makes.** Each workflow in `structure.json` gains `tests`, one entry per step that runs tests:
+  - the runner: Vitest, Jest, Mocha, node --test, pytest, unittest, cargo test and nextest, dotnet, deno and bun test, GUT and gdUnit4, a test file node or python runs directly, and, named from the command alone with no count of their tests, Playwright, go test, tox, nox and a few more;
+  - `through`: the package scripts, shell scripts, makefile targets and local reusable workflows or composite actions the chain passed on the way (`npm run verify` then `npm test`, roll's shape);
+  - where it runs, the configuration it read, whether it collects coverage and writes JUnit results, and how many test files it runs.
+
+  Coverage is read from the runner's flag, a c8, nyc or `coverage run` wrapper, the runner's own configuration (Vitest `coverage.enabled`, Jest `collectCoverage`, pytest `addopts`) and a step's `NODE_V8_COVERAGE`; JUnit from a reporter on the line, in the configuration (nested `['junit', { … }]` form included) or in `NODE_OPTIONS`. A step that runs tests through a runner Atlas cannot name, or through a script it reads no further, has `runner: null`: not attributed, never absent. This is the first step of the test-gap slice (`docs/atlas-test-gaps.spec.md`).
+- **What tests reach, with the basis of each fact.** A test reaches a file by importing it, directly or through the import graph (`imports`, parsed); by running it as a child process by its path (`runs`, parsed) or by the command a manifest installs it as (`runs`, declared); or by holding tests a runner finds, as cargo test finds a `#[cfg(test)]` module (`discovers`, parsed). A mocked import is still an import, and a test-shaped file among fixtures is data that reaches nothing. `adapter/test-reach.js` reads these facts from any map, at the file and the part level, so an answer can say "no test imports or runs this"; "untested" is kept for measured coverage. Each test's child processes are carried as `spawns`, and the installed commands among them as `spawnsInstalled`.
+- **The runners CI runs for each part, and the tests no workflow runs.** Each part gains `testRunners`, the runners whose CI tests sit in it or reach it, and the map gains `testsNotRun`, the test files no workflow runs. Both come from every path the steps run, not from the 200 runs each door keeps, so a repository past that limit still gets them.
+
+### Fixed
+- **Vitest's `--dir`.** `vitest run --dir src` looks for tests under `src/` alone, as Vitest does. The flag was ignored, so tests outside that directory read as run.
+
 ## [1.23.0] — 2026-09-26
 
 ### Added
