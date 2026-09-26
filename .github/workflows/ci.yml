@@ -134,8 +134,9 @@ concurrency:
 # workflow runs untrusted PR code via `npm ci` + `npm test`, so the
 # GITHUB_TOKEN scope is part of the attack surface. `contents: read` is the
 # floor needed for `actions/checkout` to fetch the ref; no job here writes
-# back to the repo. build-and-test widens its own token by one scope,
-# `pull-requests: write`, for the Atlas diff comment (see that job).
+# back to the repo. build-and-test widens its own token by two scopes,
+# `pull-requests: write` for the Atlas diff comment and `id-token: write`
+# for the Codecov uploads' OIDC sign-in (see that job).
 permissions:
   contents: read
 
@@ -148,10 +149,14 @@ jobs:
     # job-level block replaces the workflow-level one, so `contents: read` is
     # restated. On a pull request from a fork GitHub hands this job a
     # read-only token whatever this block says, and the step logs instead.
-    # `id-token: write` lets the two Codecov steps sign in with a short-lived
-    # OIDC token instead of a stored upload token; it can mint that identity
-    # token and nothing else. A fork's pull request gets no OIDC token, and
-    # the Codecov action then uploads tokenless.
+    # `id-token: write` lets a step of this job ask GitHub for a short-lived
+    # OIDC token; the two Codecov steps use one to sign in instead of a
+    # stored upload token. Any step can ask, the install and the tests
+    # included. The token names this repository and ci.yml, so a relying
+    # party that pins the workflow file refuses it; npm trusted publishing
+    # pins the publishing workflow, which is release.yml. A fork's pull
+    # request gets no OIDC token, and the Codecov action then uploads
+    # tokenless.
     permissions:
       contents: read
       pull-requests: write
