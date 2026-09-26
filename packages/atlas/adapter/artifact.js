@@ -483,6 +483,7 @@ function carryDoor(door) {
     },
     ...(door.shellMissed?.length > 0 ? { shellMissed: door.shellMissed.map((entry) => ({ ...entry })) } : {}),
     stages: [...door.stages],
+    ...(door.tests?.length > 0 ? { tests: door.tests.map(carryTestRun) } : {}),
     ...(door.unwrittenStages?.length > 0 ? { unwrittenStages: [...door.unwrittenStages] } : {}),
     triggers: door.triggers.map((trigger) => ({ ...trigger })),
     ...(door.untrackedLandings?.length > 0 ? { untrackedLandings: door.untrackedLandings.filter((target) => !inAtlas(target)) } : {}),
@@ -492,6 +493,25 @@ function carryDoor(door) {
     ...(door.privatePackage ? { privatePackage: true } : {}),
     uses: [...door.uses],
     usesWorkflowToken: door.usesWorkflowToken,
+  };
+}
+
+// A test run a workflow step makes: the runner (null when Atlas cannot name
+// it), the scripts, files and targets that reached it, where it runs and
+// with what configuration, whether it collects coverage or writes JUnit
+// results, and how many test files it runs when the runner's are known.
+// Only names and paths are kept, never script text.
+function carryTestRun(run) {
+  return {
+    job: run.job,
+    step: run.step,
+    runner: run.runner,
+    ...(run.dir ? { dir: run.dir } : {}),
+    ...(run.config ? { config: run.config } : {}),
+    ...(run.through?.length > 0 ? { through: [...run.through] } : {}),
+    ...(run.coverage ? { coverage: true } : {}),
+    ...(run.junit ? { junit: true } : {}),
+    ...(run.files != null ? { files: run.files } : {}),
   };
 }
 
