@@ -226,6 +226,11 @@ export function isWorkflow(path) {
   return WORKFLOW.test(path);
 }
 
+// Where a job or step came from when a reusable workflow or composite action
+// of this repository holds it: the file or action it was read from, first
+// the outermost, so a test run it makes can say what it was reached through.
+const REACHED_THROUGH = Symbol('reached through');
+
 // A local file a workflow names by uses: ./path, parsed, or null.
 function localYaml(repoPath, repo, path) {
   const clean = String(path).replace(/^\.\//, '').replace(/\/+$/, '');
@@ -255,9 +260,11 @@ function localJobs(repoPath, repo, jobs) {
       out[job] = body;
       continue;
     }
+    const from = String(body.uses).replace(/^\.\//, '');
     for (const [inner, innerBody] of Object.entries(called.jobs)) {
       if (!isMapping(innerBody) || typeof innerBody.uses === 'string') continue;
-      out[`${job}/${inner}`] = body.if != null && innerBody.if == null ? { ...innerBody, if: body.if } : innerBody;
+      const held = body.if != null && innerBody.if == null ? { ...innerBody, if: body.if } : { ...innerBody };
+      out[`${job}/${inner}`] = Object.assign(held, { [REACHED_THROUGH]: [from] });
     }
   }
   return out;
@@ -288,6 +295,7 @@ function localSteps(repoPath, repo, steps, depth = 0) {
       return value == null || typeof value === 'object' ? null : String(value);
     };
     const fill = (text) => (typeof text === 'string' ? text.replace(/\$\{\{\s*inputs\.([\w-]+)\s*\}\}/g, (whole, name) => input(name) ?? whole) : text);
+    const through = [...(step[REACHED_THROUGH] ?? []), String(step.uses).replace(/^\.\//, '').replace(/\/+$/, '')];
     const held = inner.map((item) => {
       if (!isMapping(item)) return item;
       const filled = {
@@ -295,6 +303,7 @@ function localSteps(repoPath, repo, steps, depth = 0) {
         ...(item.run !== undefined ? { run: fill(item.run) } : {}),
         ...(item['working-directory'] !== undefined ? { 'working-directory': fill(item['working-directory']) } : {}),
         ...(isMapping(item.env) ? { env: Object.fromEntries(Object.entries(item.env).map(([key, value]) => [key, fill(value)])) } : {}),
+        [REACHED_THROUGH]: through,
       };
       return step.if != null && item.if == null ? { ...filled, if: step.if } : filled;
     });
@@ -336,6 +345,9 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
   // What a shell's expansion of an unquoted glob leaves out, by directory
   // and platform, across the door's steps.
   const missed = new Map();
+  // The test runs the steps make, in the workflow's order, with each test
+  // step whose runner Atlas cannot name.
+  const tests = [];
   const elsewhere = new Map();
   const sends = emptySends();
   const issues = [];
@@ -354,6 +366,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
   };
   const workflowDir = workingDirectory(doc.defaults);
   const workflowEnv = envOf(doc.env);
+  const workflowSet = setEnvOf(doc.env);
   for (const [job, body] of Object.entries(localJobs(repoPath, repo, isMapping(doc.jobs) ? doc.jobs : {}))) {
     if (!isMapping(body)) continue;
     const gate = jobGate(body.if, triggers);
@@ -376,8 +389,10 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
     for (const permission of permissionList(body.permissions)) permissions.add(permission);
     const jobDir = workingDirectory(body.defaults) ?? workflowDir ?? '';
     const jobEnv = envOf(body.env);
+    const jobSet = setEnvOf(body.env);
     const platforms = jobPlatforms(body);
     const steps = localSteps(repoPath, repo, Array.isArray(body.steps) ? body.steps : []);
+    const jobThrough = body[REACHED_THROUGH] ?? [];
     // The clones a job makes, by the directory they are made in: another
     // repository's checkout, read from actions/checkout, and what a step
     // clones. A step that works inside one works on that repository.
@@ -436,6 +451,10 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
       scope.texts.push(step.run);
       const stepEnv = envOf(step.env);
       const lookup = (variable) => [stepEnv, jobEnv, workflowEnv].find((env) => env.has(variable))?.get(variable) ?? null;
+      // What a variable is set to as written, an expression included: a test
+      // run collects coverage when NODE_V8_COVERAGE is set on any leg.
+      const stepSet = setEnvOf(step.env);
+      const written = (variable) => [stepSet, jobSet, workflowSet].find((env) => env.has(variable))?.get(variable) ?? null;
       // A working directory spelled with a matrix value or a dispatch input
       // (src/${{ matrix.project }}, examples/${{ inputs.tool }}) is each
       // directory it can be: the matrix's values, the input's options, or
@@ -450,6 +469,8 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
       const firstDir = own(rawDirs[0]);
       const firstStart = firstDir == null ? { here: false } : placeOf({ here: true, dir: '' }, firstDir, clones, repo, lookup);
       commands.push({ job, step: name, text: step.run, ...(firstStart.here && rawDirs.length === 1 ? { dir: firstStart.dir } : {}), ...held });
+      const stepTests = [];
+      const stepEnds = [];
       for (const rawDir of rawDirs) {
         const ownDir = own(rawDir);
         const start = ownDir == null ? { here: false, dir: String(rawDir ?? ''), clone: null } : placeOf({ here: true, dir: '' }, ownDir, clones, repo, lookup);
@@ -480,7 +501,9 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
         if (dir == null) continue;
         if (dir !== '' && repo.tracked.has(`${dir}/package.json`)) workedIn.add(dir);
         // Actions spells ${{ env.X }} out before the shell sees the step.
-        const named = readCommands(expandEnv(step.run, lookup), dir, repo, platforms);
+        const named = readCommands(expandEnv(step.run, lookup), dir, repo, platforms, { through: [...jobThrough, ...(step[REACHED_THROUGH] ?? [])], env: written });
+        stepTests.push(...named.tests);
+        stepEnds.push(...named.ends);
         for (const entry of named.shellMissed) {
           const key = `${entry.base}\0${entry.platform}`;
           const found = missed.get(key) ?? { base: entry.base, files: new Set(), platform: entry.platform, twoStars: false };
@@ -495,6 +518,14 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
           if (entry.builds) shipped.builds.add(entry.path);
         }
         for (const path of named.mentions) mentions.set(`${path}\0${job}`, { path, job });
+      }
+      for (const run of stepTests) {
+        const { paths, dir, ...fields } = run;
+        tests.push({ job, step: name, ...fields, ...(dir !== '' ? { dir } : {}), paths });
+      }
+      if (stepTests.length === 0 && testShaped(name, stepEnds)) {
+        const end = stepEnds.find((entry) => entry.through.some((hop) => TEST_WORD.test(hop))) ?? stepEnds.find((entry) => entry.through.length > 0);
+        tests.push({ job, step: name, runner: null, ...(end ? { through: [...end.through] } : {}) });
       }
       jobTexts.push(step.run);
       const released = releaseUploads(expandEnv(step.run, lookup));
@@ -556,9 +587,23 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
     ...(handed.size > 0 ? { handedWrites: [...handed].sort() } : {}),
     ...(workedIn.size > 0 ? { workedIn: [...workedIn].sort() } : {}),
     ...(testScripts.length > 0 ? { testScripts } : {}),
+    ...(tests.length > 0 ? { tests: tests.map(({ paths, ...fields }) => fields) } : {}),
     // Read by index.js markUnshipped, then dropped.
     publishedCrates: [sends, ...[...gates.values()].map((entry) => entry.sends)].flatMap((scope) => scope.crates),
   };
+}
+
+// A step says it runs tests by its name, or by a script, file or target the
+// chain passed through before it stopped at a program Atlas does not know
+// (npm test, scripts/test.sh, make test). A step that installs, sets up or
+// reports on tests, or uploads their results, runs none; nor does one whose
+// word is part of a hyphenated name (Dispatch to testing-os).
+const TEST_WORD = /(?:^|[^a-z0-9])(?:unit[ _-]?)?(?:tests?|testing|specs?)(?![-_][a-z0-9])(?:[^a-z0-9]|$)/i;
+const NOT_A_TEST_RUN = /\b(?:install|installs|setup|set up|dependencies|deps|results?|reports?|upload|publish|summary)\b/i;
+
+function testShaped(name, ends) {
+  if (TEST_WORD.test(name) && !NOT_A_TEST_RUN.test(name)) return true;
+  return ends.some((end) => end.through.some((hop) => TEST_WORD.test(hop)));
 }
 
 // The files a door's shell leaves out, a directory and platform at a time:
@@ -1521,6 +1566,15 @@ function expandEnv(text, lookup) {
   return text
     .replace(/\$\{\{\s*env\.([A-Za-z_][A-Za-z0-9_]*)\s*\}\}/g, (whole, name) => lookup(name) ?? whole)
     .replace(/\$env:([A-Za-z_][A-Za-z0-9_]*)/g, (whole, name) => lookup(name) ?? whole);
+}
+
+// The variables an env: block sets, each as written, an expression kept as
+// its text.
+function setEnvOf(value) {
+  const env = new Map();
+  if (!isMapping(value)) return env;
+  for (const [name, raw] of Object.entries(value)) if (raw != null && typeof raw !== 'object') env.set(name, String(raw));
+  return env;
 }
 
 function envOf(value) {
