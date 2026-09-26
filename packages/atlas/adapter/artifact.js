@@ -3,6 +3,7 @@ import { loadsManifest } from '../core/languages.js';
 import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
 import { isSmokeTest } from '../core/test-names.js';
 import { ENGINE } from './engine.js';
+import { runnerMayRun } from './test-gaps.js';
 import { isNamedTest, testReachOf } from './test-reach.js';
 import { roleFor } from './templates.js';
 
@@ -267,7 +268,12 @@ function ciTests(mapped, listed) {
   const files = [...listed.boundaries.flatMap((boundary) => boundary.files), ...listed.overlaps, ...listed.unassigned];
   // A run of '' is the whole repository, a runner started at its root.
   const covered = (path) => exact.has(path) || exact.has('') || dirs.some((dir) => path.startsWith(dir));
-  const notRun = files.filter((file) => isNamedTest(file) && !covered(file.path)).map((file) => file.path).sort();
+  // A runner Atlas names from its command alone lists none of the files it
+  // runs (Playwright over the directory its configuration names): a test
+  // file it may run is not one no workflow runs.
+  const unlisted = [...new Set(workflows.flatMap((door) => (door.tests ?? []).filter((run) => run.runner != null && run.files == null).map((run) => run.runner)))];
+  const mayRun = (file) => unlisted.some((runner) => runnerMayRun(runner, file.path, file.testFramework ?? null));
+  const notRun = files.filter((file) => isNamedTest(file) && !covered(file.path) && !mayRun(file)).map((file) => file.path).sort();
   // A test file no workflow runs because a runner's own configuration
   // excludes it, with that configuration: left out on purpose.
   const leftOut = new Map();

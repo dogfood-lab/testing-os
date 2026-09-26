@@ -95,6 +95,16 @@ describe('test files no workflow runs', () => {
   it('lists none when every test file runs', () => {
     assert.equal(structureOf('reach-kinds').testsNotRun, undefined);
   });
+
+  // fixtures/atlas/runners-named: Atlas lists none of the files a runner it
+  // names from the command alone runs (vocal-synth-engine and world-forge
+  // run Playwright over a directory its configuration names).
+  it('lists no test file a runner whose files Atlas cannot list may run', () => {
+    assert.deepEqual(structureOf('runners-named', [
+      { name: 'src', globs: ['src/**'], role: 'code' },
+      { name: 'tests', globs: ['tests/**', 'e2e/**'], role: 'test' },
+    ]).testsNotRun, ['src/sum.test.ts']);
+  });
 });
 
 // fixtures/atlas/reach-shapes: more ways the fleet's tests reach the file

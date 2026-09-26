@@ -159,6 +159,22 @@ export function testGaps(structure, { statistics = null, repository = null, scop
   };
 }
 
+/**
+ * Whether a runner may run a test file: the file's own framework when it
+ * imports one, else any runner of the file's family (tox may run a pytest
+ * file that imports nothing). A runner Atlas names from its command alone
+ * lists no files, so this is what it may run.
+ *
+ * @param {string} runner
+ * @param {string} path
+ * @param {string|null} framework the file's testFramework
+ */
+export function runnerMayRun(runner, path, framework) {
+  if (framework != null) return runner === framework;
+  const family = LANGUAGE_FAMILY[languageOf(path)];
+  return family != null && RUNNER_FAMILY[runner] === family;
+}
+
 // The kind a file is tested as: its part's, unless the file is of a family
 // the part's kind has no runner for, when it is the kind of its own family.
 function kindForFile(path, kind) {
@@ -183,7 +199,7 @@ function notRunRule(files, { attributed, notAttributed, fileOf, leftOut, missed 
     if (excluded.has(path)) continue;
     const family = LANGUAGE_FAMILY[languageOf(path)] ?? null;
     const framework = fileOf.get(path)?.testFramework ?? null;
-    const runs = (run) => (framework != null ? run.runner === framework : RUNNER_FAMILY[run.runner] === family);
+    const runs = (run) => runnerMayRun(run.runner, path, framework);
     if (attributed.some((run) => run.files == null && runs(run))) continue;
     const listed = attributed.find((run) => run.files != null && runs(run))?.runner ?? null;
     // A file that imports no framework Atlas knows, of a family CI runs no
