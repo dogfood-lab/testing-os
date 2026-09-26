@@ -3,14 +3,15 @@ import { isCodePath } from './languages.js';
 import { isSmokeTest, isTestFile } from './test-names.js';
 
 /**
- * The code files a test names in a string, by a way the map cannot follow
- * to an import or a run: run_py('tool_a.py') through a conftest helper that
- * joins it to a directory built at run time, join(ROOT, 'scripts',
- * 'gen.mjs') with a root imported from another file, python3
- * tools/tool_c.py in a smoke script. The map cannot tell whether such a test
- * runs the file, reads it or only mentions it, so a file a test names is
- * never said to be one no test reaches (docs/atlas-test-gaps.spec.md,
- * "Reach, defined"): it is named, by text.
+ * The code files whose name or path a test spells in a string, by a way the
+ * map cannot follow to an import or a run: run_py('tool_a.py') through a
+ * conftest helper that joins it to a directory built at run time,
+ * join(ROOT, 'scripts', 'gen.mjs') with a root imported from another file,
+ * python3 tools/tool_c.py in a smoke script. The map cannot tell whether
+ * such a test runs the file, reads it, or means another file of that name
+ * (one inside a repository the test builds), so a file whose name a test
+ * spells is never said to be one no test reaches
+ * (docs/atlas-test-gaps.spec.md, "Reach, defined"): it is named, by text.
  */
 
 // Where a word of a string ends: a space, a quote, or what separates the

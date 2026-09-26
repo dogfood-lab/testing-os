@@ -42,13 +42,14 @@ function gapItem(gap) {
   };
 }
 
-// What reaches one file, as one sentence. A test that names the file in a
-// string may run it, or only mention it, which Atlas cannot tell.
+// What reaches one file, as one sentence. A string in a test that spells
+// the file's name may be a run of it, a read, or another file of that name,
+// which Atlas cannot tell.
 function reachSentence(reach, path) {
   const by = reach.test ?? 'a workflow\'s test step';
   if (reach.kind === 'names') {
-    const named = reach.through?.length > 0 ? `${reach.through[0]} in a string, and that file imports ${path}` : `${path} in a string`;
-    return `Atlas: ${by} names ${named}; it cannot tell whether that test runs it (${reach.basis}).`;
+    const named = reach.through?.length > 0 ? `the name of ${reach.through[0]} in a string, and that file imports ${path}` : `the name of ${path} in a string`;
+    return `Atlas: ${by} spells ${named}; it cannot tell whether that test runs it (${reach.basis}).`;
   }
   return `Atlas: ${by} ${reach.kind === 'imports' ? 'imports' : reach.kind === 'runs' ? 'runs' : 'finds tests in'} ${path} (${reach.basis}).`;
 }

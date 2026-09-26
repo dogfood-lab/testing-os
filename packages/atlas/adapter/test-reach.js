@@ -15,12 +15,13 @@ import { isSmokeTest } from '../core/test-names.js';
  * - discovers: the file holds tests of its own that a runner finds, as
  *   cargo test finds a #[cfg(test)] module (parsed).
  *
- * A fourth fact is weaker than all three: names, when a test names the file
- * in a string by a way the map cannot follow to an import or a run (a
- * conftest helper that runs tools by name, a path joined to a root another
- * file sets), so Atlas cannot tell whether the test runs it (text). What the
- * named file imports is named with it. A named file is not one no test
- * reaches, and none of the three is said of it.
+ * A fourth fact is weaker than all three: names, when a string in a test
+ * spells the file's name or path by a way the map cannot follow to an
+ * import or a run (a conftest helper that runs tools by name, a path joined
+ * to a root another file sets), so Atlas cannot tell whether the test runs
+ * it, reads it or means another file of that name (text). What the named
+ * file imports is named with it. A named file is not one no test reaches,
+ * and none of the three is said of it.
  *
  * A smoke test by its name (scripts/smoke.mjs) is a test, and so is what a
  * workflow's test step runs on its way to the tests: the script a step

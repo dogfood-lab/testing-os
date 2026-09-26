@@ -179,19 +179,19 @@ describe('atlas gaps on a file a test names in a string', () => {
     assert.equal(mapped.status, 0, mapped.stdout + mapped.stderr);
   });
 
-  it('names the test that names it, and says what Atlas cannot tell', () => {
+  it('names the test whose string spells its name, and says what Atlas cannot tell', () => {
     const lines = answered(named, 'tools/tool_a.py');
-    assert.equal(lines[1], 'tests/test_tools.py names it in a string; Atlas cannot tell whether that test runs it (text).');
+    assert.equal(lines[1], 'tests/test_tools.py spells its name in a string; Atlas cannot tell whether that test runs it (text).');
     assert.equal(lines.some((line) => line.startsWith('G6 ')), false, lines.join('\n'));
   });
 
-  it('says what a named file imports is named with it', () => {
+  it('says what a named file imports is named with it, through that file', () => {
     const lines = answered(named, 'scripts/lib/util.mjs');
-    assert.equal(lines[1], 'test/gen.test.mjs names scripts/gen.mjs in a string, and that file imports it; Atlas cannot tell whether that test runs it (text).');
+    assert.equal(lines[1], 'test/gen.test.mjs spells the name of scripts/gen.mjs in a string, and that file imports it; Atlas cannot tell whether that test runs it (text).');
   });
 
-  it('counts a part only named as named, apart from the parts tests reach', () => {
+  it('counts a part only named as spelled in a test\'s string, apart from the parts tests reach', () => {
     const lines = answered(named);
-    assert.ok(lines.includes('Tests reach 2 of 3 code parts: scripts (named in a string, 2 of 2 files) and tools (named in a string, 2 of 3 files). No test imports or runs pair.'), lines.join('\n'));
+    assert.ok(lines.includes('Tests reach 2 of 3 code parts: scripts (spelled in a test\'s string, 2 of 2 files) and tools (spelled in a test\'s string, 2 of 3 files). No test imports or runs pair.'), lines.join('\n'));
   });
 });

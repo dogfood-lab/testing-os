@@ -151,6 +151,6 @@ describe('atlas_test_gaps on a file a test names in a string', () => {
     assert.equal(reach.basis, 'text');
     assert.deepEqual(reach.items, [{ path: 'tools/tool_a.py', kind: 'names', basis: 'text', test: 'tests/test_tools.py' }]);
     assert.deepEqual(answer.suggestions, []);
-    assert.match(result.content[0].text, /^Atlas: tests\/test_tools\.py names tools\/tool_a\.py in a string; it cannot tell whether that test runs it \(text\)\.$/m);
+    assert.match(result.content[0].text, /^Atlas: tests\/test_tools\.py spells the name of tools\/tool_a\.py in a string; it cannot tell whether that test runs it \(text\)\.$/m);
   });
 });
