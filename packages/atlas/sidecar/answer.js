@@ -1,5 +1,6 @@
 import { ENGINE } from '../adapter/engine.js';
 import { ERRORS } from '../adapter/errors.js';
+import { asLine, asText, capStrings } from './data.js';
 
 /**
  * What every answer carries (docs/atlas-sidecar.spec.md, "Every answer
@@ -139,27 +140,40 @@ export function provenance({ repo = null, snapshot = null, head = null, changed 
   return atlas;
 }
 
+// The provenance as structured content: its strings capped, and its line as
+// the text's first line reads.
+function shownProvenance(atlas, names) {
+  return { ...capStrings(atlas), line: asLine(atlas.line, names) };
+}
+
 /**
  * A tool result: one text block in Atlas's voice, and the same facts as
- * structured content.
+ * structured content. Repository text in it is data (sidecar/data.js): every
+ * string capped, and in the text every name that could read as words
+ * quoted and every control character escaped.
+ *
+ * @param {object} atlas the provenance
+ * @param {object} answer
+ * @param {string[]} sentences
+ * @param {RegExp|null} [names] the map's names that could read as words (data.js unplainNames)
  */
-export function answered(atlas, answer, sentences) {
+export function answered(atlas, answer, sentences, names = null) {
   return {
-    content: [{ type: 'text', text: [atlas.line, ...sentences].join('\n') }],
-    structuredContent: { atlas, answer },
+    content: [{ type: 'text', text: asText([atlas.line, ...sentences], names) }],
+    structuredContent: { atlas: shownProvenance(atlas, names), answer: capStrings(answer) },
   };
 }
 
-/** A tool result for a failure, in Atlas's error shape. */
-export function failed(atlas, { code, details, whatToDo }) {
-  const error = { code, sentence: ERRORS[code], whatChanged: [...details], whatToDo };
-  const text = [
+/** A tool result for a failure, in Atlas's error shape, its repository text as data. */
+export function failed(atlas, { code, details, whatToDo }, names = null) {
+  const error = capStrings({ code, sentence: ERRORS[code], whatChanged: [...details], whatToDo });
+  const text = asText([
     atlas.line,
     `Atlas cannot answer: ${error.sentence} (${code})`,
     `What changed: ${error.whatChanged.length > 0 ? error.whatChanged.join('; ') : 'nothing listed'}.`,
     `What to do: ${whatToDo}.`,
-  ].join('\n');
-  return { content: [{ type: 'text', text }], structuredContent: { atlas, error }, isError: true };
+  ], names);
+  return { content: [{ type: 'text', text }], structuredContent: { atlas: shownProvenance(atlas, names), error }, isError: true };
 }
 
 /* ---------- schemas ---------- */

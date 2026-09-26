@@ -4,6 +4,7 @@ import { answered, CANNOT_SEE_SCHEMA, cutMarks, FACT_GROUP_SCHEMA, failed, fresh
 import { changesAnswer } from './changes-tool.js';
 import { checkChangeAnswer } from './check-change-tool.js';
 import { explainAnswer } from './explain-tool.js';
+import { unplainNames } from './data.js';
 import { changedFiles, checkoutState, mapHashes } from './freshness.js';
 import { head, topLevel } from './git.js';
 import { readCommittedMap } from './map.js';
@@ -320,7 +321,7 @@ export function createTools({ refresher = createRefresher() } = {}) {
     const { snapshot } = read;
     const state = checkoutState(repo.root, snapshot.commit);
     const result = tool.answer(snapshot, repo, args);
-    if (!result.ok) return failed(provenance({ repo, snapshot, head: state.head }), result.error);
+    if (!result.ok) return failed(provenance({ repo, snapshot, head: state.head }), result.error, unplainNames(snapshot));
     const known = mapHashes(snapshot.structure);
     const files = [...result.files, ...pathsIn(result.answer, known)];
     const changed = changedFiles(repo.root, snapshot, state, files);
@@ -337,10 +338,13 @@ export function createTools({ refresher = createRefresher() } = {}) {
         sentences.push(view.sentence);
       }
     }
+    // The names the text quotes as data, taken before any list is cut, so a
+    // name a sentence keeps is quoted though its entry was cut.
+    const names = unplainNames(snapshot, result.answer);
     // Narrowed as asked, most important first, and cut to its size.
-    const sized = sizeAnswer({ tool: name, snapshot, args, atlas: provenance({ repo, snapshot, head: state.head, changed }), answer: result.answer, sentences });
-    if (sized.error) return failed(provenance({ repo, snapshot, head: state.head }), sized.error);
-    return answered(sized.atlas, sized.answer, sized.sentences);
+    const sized = sizeAnswer({ tool: name, snapshot, args, atlas: provenance({ repo, snapshot, head: state.head, changed }), answer: result.answer, sentences, names });
+    if (sized.error) return failed(provenance({ repo, snapshot, head: state.head }), sized.error, names);
+    return answered(sized.atlas, sized.answer, sized.sentences, names);
   }
 
   return { listTools, callTool, stop: () => refresher.stopAll() };

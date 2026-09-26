@@ -1,4 +1,5 @@
 import { basisOf, byBasis, firmest, group } from './answer.js';
+import { capped } from './data.js';
 import { cannotSeeFor, cannotSeeSentence } from './limits.js';
 
 /**
@@ -89,7 +90,7 @@ export function overviewAnswer(snapshot) {
   const cannotSee = cannotSeeFor(snapshot, { parts: ctx.boundaries.map((boundary) => boundary.name), doors: structure.doors ?? [] });
 
   const sentences = [];
-  if (typeof page.summary === 'string' && page.summary !== '') sentences.push(`Atlas: the boundary file's summary, written by a person, reads: "${page.summary}"`);
+  if (typeof page.summary === 'string' && page.summary !== '') sentences.push(`Atlas: the boundary file's summary, written by a person, reads: ${JSON.stringify(capped(page.summary))}`);
   if (page.derived) sentences.push(`Atlas: ${page.derived}`);
   for (const door of page.doors) {
     const runs = door.runs ?? [];

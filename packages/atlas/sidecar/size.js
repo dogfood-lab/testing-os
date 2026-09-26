@@ -1,4 +1,6 @@
 import { createHash } from 'node:crypto';
+import { answered } from './answer.js';
+import { asLine, asText } from './data.js';
 
 /**
  * The size of an answer (docs/atlas-sidecar.spec.md, "Every answer is
@@ -261,8 +263,9 @@ function build(root, lists, keep, cursorOf) {
   return out;
 }
 
-function resultSize(built, text) {
-  return bytes({ content: [{ type: 'text', text }], structuredContent: built });
+// The size of the tool result as answer.js sends it.
+function resultSize(built, sentences, names) {
+  return bytes(answered(built.atlas, built.answer, sentences, names));
 }
 
 /**
@@ -307,14 +310,14 @@ function shows(list, keep) {
  * cursor continues, then the rest of the room to every list in turn, in order
  * of importance.
  */
-function allocate(root, lists, budget, text, target, cursorOf) {
+function allocate(root, lists, budget, sentences, names, target, cursorOf) {
   const keep = new Map(lists.map((list) => [list.id, { from: 0, count: list.items.length, omitFirst: false }]));
   if (target) keep.set(target.id, { from: target.from, count: target.list.items.length - target.from, omitFirst: false });
   // The entry that holds the list a cursor continues (a fact list, or what
   // Atlas cannot see of one entry) is shown first in the list that holds it.
   const holder = target?.list.parent ?? null;
   if (holder) keep.get(holder.id).from = holder.index;
-  const size = () => resultSize(build(root, lists, keep, cursorOf), text);
+  const size = () => resultSize(build(root, lists, keep, cursorOf), sentences, names);
   if (size() <= budget) return keep;
 
   const avail = (list) => list.items.length - keep.get(list.id).from;
@@ -416,12 +419,13 @@ function listName(list, root) {
   return list.id.endsWith('n') ? 'names of what Atlas cannot see' : 'places of what Atlas cannot see';
 }
 
-// The sentences that fit the text's share, then how many were left out.
-function fitSentences(line, sentences, budget) {
+// The sentences that fit the text's share, each measured as it is sent, then
+// how many were left out.
+function fitSentences(line, sentences, budget, names) {
   const kept = [];
-  let used = Buffer.byteLength(line);
+  let used = Buffer.byteLength(asLine(line, names));
   for (const sentence of sentences) {
-    const cost = Buffer.byteLength(sentence) + 1;
+    const cost = Buffer.byteLength(asLine(sentence, names)) + 1;
     if (used + cost > budget) break;
     kept.push(sentence);
     used += cost;
@@ -437,10 +441,11 @@ function fitSentences(line, sentences, budget) {
  * An answer narrowed as asked, its facts most important first, and cut to
  * its cap, or the error a cursor or a part that does not apply makes.
  *
- * @param {{ tool: string, snapshot: object, args: object, atlas: object, answer: object, sentences: string[] }} input
+ * @param {{ tool: string, snapshot: object, args: object, atlas: object, answer: object, sentences: string[], names?: RegExp|null }} input
+ *   names: the map's names that could read as words, which the text quotes (data.js)
  * @returns {{ atlas: object, answer: object, sentences: string[] } | { error: object }}
  */
-export function sizeAnswer({ tool, snapshot, args = {}, atlas, answer, sentences }) {
+export function sizeAnswer({ tool, snapshot, args = {}, atlas, answer, sentences, names = null }) {
   const cap = args.full === true ? FULL_CAP : CAP;
   const narrowed = narrow(snapshot, answer, { part: args.part ?? null, kind: args.kind ?? null });
   if (narrowed.error) return { error: narrowed.error };
@@ -472,8 +477,7 @@ export function sizeAnswer({ tool, snapshot, args = {}, atlas, answer, sentences
   }
 
   const budget = cap - ENVELOPE;
-  const whole = [atlas.line, ...said].join('\n');
-  if (!target && resultSize(root, whole) <= budget) return { atlas: root.atlas, answer: root.answer, sentences: said };
+  if (!target && resultSize(root, said, names) <= budget) return { atlas: root.atlas, answer: root.answer, sentences: said };
 
   // An entry too large to share the room (a door that runs hundreds of files)
   // is cut inside before the lists are: its longest lists keep their first
@@ -490,12 +494,12 @@ export function sizeAnswer({ tool, snapshot, args = {}, atlas, answer, sentences
   }
   if (target) target = { ...target, list: cutLists.find((entry) => entry.id === target.id) };
 
-  let kept = fitSentences(atlas.line, said, Math.floor(budget * TEXT_SHARE));
+  let kept = fitSentences(atlas.line, said, Math.floor(budget * TEXT_SHARE), names);
   let keep = null;
   for (;;) {
-    keep = allocate(cutRoot, cutLists, room, [atlas.line, ...kept].join('\n'), target, cursorOf);
+    keep = allocate(cutRoot, cutLists, room, kept, names, target, cursorOf);
     if (keep || kept.length <= 1) break;
-    kept = fitSentences(atlas.line, said, Buffer.byteLength([atlas.line, ...kept.slice(0, -2)].join('\n')));
+    kept = fitSentences(atlas.line, said, Buffer.byteLength(asText([atlas.line, ...kept.slice(0, -2)], names)), names);
   }
   if (!keep) return { error: { code: 'ATLAS_SIDECAR_TOO_LARGE', details: [`the smallest form of this answer is over ${kib(cap)}`], whatToDo: 'pass full: true, or narrow the answer with part or kind' } };
 
