@@ -21,7 +21,7 @@ npm run verify      # the canonical pre-commit check
                     # discipline depends on.
 ```
 
-CI runs the same `verify` flow on Node 22 + 24 (tightened from `20 + 22` to `22 + 24` in v1.2.2 to match `engines.node: ">=22"` in the root `package.json`).
+CI runs the same `verify` flow on Node 22 + 24 (tightened from `20 + 22` to `22 + 24` in v1.2.2 to match `engines.node: ">=22"` in the root `package.json`). On a pull request or a push to `main`, the Node 22 leg also collects coverage and test results and sends them to Codecov. Both statuses are informational, and the pull-request comment shows patch coverage: how many of the changed lines the tests ran.
 
 ## Where to start
 

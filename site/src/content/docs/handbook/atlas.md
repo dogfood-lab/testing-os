@@ -50,13 +50,37 @@ npx --yes @dogfood-lab/atlas check
 
 It fails when a part gains or loses a dependency, a file changes part, a new file belongs to no part, a named part matches nothing, or a file belongs to two parts. When it fails after a change you meant to make, run `atlas map` and commit the regenerated `atlas/` files with the change; never edit the page by hand, and never change the code to satisfy the map. A repository with no `atlas/` folder is a notice and exit 0, so adopting Atlas reddens nothing. The codes it prints are listed on the [error codes](../error-codes/#atlas-codes) page.
 
-## Ask about one file
+## Ask about a file or a part
 
 ```bash
 npx --yes @dogfood-lab/atlas explain packages/ingest/persist.js
 ```
 
-`explain` says what one file is in the system, for a person about to edit it or an agent in a coding session: its part, the doors that run it, build it into a binary or pass through its part, what it imports and what imports it (a manifest it loads is listed under what it reads, never under what it imports), its own test, where it writes and who reads that, the order of work inside it, and what it changes with. `--json` gives the same facts as fields. It reads the committed map and never maps again, so it answers at once and names the commit it describes.
+`explain` says what a file, a directory or a part is in the system, for a person about to edit it or an agent in a coding session: its part, the doors that run it, build it into a binary or pass through its part, what it imports and what imports it (a manifest it loads is listed under what it reads, never under what it imports), its own test, where it writes and who reads that, the order of work inside it, and what it changes with. Given a place that code writes or reads, it says who writes it and who reads it. `--json` gives the same facts as fields. It reads the committed map and never maps again, so it answers at once and names the commit it describes.
+
+## Ask from an agent
+
+`atlas mcp` lets an agent ask the same questions during a session, over the Model Context Protocol. The agent's client starts it on stdio, for the repository the agent works in.
+
+```bash
+npm i -g @dogfood-lab/atlas
+claude mcp add --scope user atlas -- atlas mcp
+```
+
+Any other client starts the same command, `atlas` with the argument `mcp`. On Windows a global npm command is a `.cmd` file, which a client cannot start directly, so give the client `cmd /c atlas mcp`, or `node` with the package's `cli.js` and `mcp`.
+
+| Tool | What it answers |
+|------|-----------------|
+| `atlas_overview` | The repository: its parts, every door with its trigger, what it runs and sends and how far it reaches, the main flow, and where to start reading. |
+| `atlas_explain` | One file, directory or part, as `atlas explain` answers it, including who writes and who reads a place. |
+| `atlas_reach` | What a change to given files reaches: the doors that run them or pass through their part, and the files and parts that import them or read what they write, production and tests apart. |
+| `atlas_changes` | What changed structurally between the map committed at a commit and the map it answers from: imports between parts (a new cycle first), doors, writers and readers of places, parts, and new files in no part. |
+| `atlas_check_change` | What a change does before it is committed: the tests that reach the changed files, the doors that run them, imports between parts gained or lost, files in no part, and whether the map must be regenerated. It reads only the changed files again. A changed manifest, workflow, boundary file or configuration the engine reads, or a deleted file, gets "a full refresh is needed" instead. |
+| `atlas_refresh` | Maps the checkout again in the background, into a cache outside the repository. Later answers use the new map once it is complete, and calling it again reports progress. |
+
+Every answer begins with where it came from: the map's commit, the Atlas version that made it, and any file it names that changed after the map. Every fact carries its basis (`parsed`, `declared`, `text`, `weak`, `history`, `unresolved` or `outside`), and every answer lists what Atlas cannot see for that question. An answer is at most 8 KB of JSON, or 64 KB with `full: true`, most important first. A list cut to fit says so, and a cut list at the top of an answer carries a cursor for the rest. `part` keeps the entries in one part, and `kind` keeps one kind of fact. A failure is a tool error with the same fields the CLI prints: the code, one sentence, what changed and what to do.
+
+The sidecar only reads. Git runs only read commands, with optional locks and the filesystem monitor off, so a question never writes into `.git`. Nothing goes over the network, and there is no model inside it: every sentence comes from the map. `atlas_refresh` writes only to its cache, `%LOCALAPPDATA%/atlas` on Windows and otherwise `$XDG_CACHE_HOME/atlas` or `~/.cache/atlas`, and refuses a cache inside the repository. It is a local process; the container does not run it.
 
 ## See the delta on every pull request
 
@@ -66,11 +90,11 @@ npx --yes @dogfood-lab/atlas diff --base origin/main
 
 `diff` compares the committed map at a base ref with a fresh map of the working tree and prints the "what changed" section as markdown or JSON, writing nothing. This repository's CI runs it on every pull request and posts the result as one comment, updated in place, so a reviewer sees "ingest now imports dogfood-swarm" or "nothing structural changed" before reading the diff. The step never fails the build; on a fork it prints to the job log and summary instead.
 
-Public repositories under `dogfood-lab` and `mcp-tool-shop-org` that have committed an `atlas/` folder are rendered weekly onto the `atlas-render` branch and appear on the site. A private repository uses the workflow template shipped in the package, `templates/atlas-refresh.yml`, and nothing leaves it.
+Public repositories under `dogfood-lab` and `mcp-tool-shop-org` that have committed an `atlas/` folder are rendered weekly onto the `atlas-render` branch and appear on the site. Beside the fleet list the render writes an index for agents, [`llms.txt`](https://raw.githubusercontent.com/dogfood-lab/testing-os/atlas-render/indexes/atlas/llms.txt), with one line per repository linking its page as markdown and as `page.json`, so an agent that runs no script can still read every page. The site's own `llms.txt` and the Atlas page's message for readers without JavaScript point to it, and each render removes the files it no longer writes. A private repository uses the workflow template shipped in the package, `templates/atlas-refresh.yml`, and nothing leaves it.
 
 ## Run it for a private fleet
 
-For repositories that must not leave your machine, the same engine ships as a container with persistent memory, `ghcr.io/dogfood-lab/atlas`, whose default command is `atlas-fleet`. It maps the repositories you list in `fleet.yml`, by mounted path or clone URL, once at start and then on a schedule, keeps every render and its history on a volume, and serves the same fleet list and per-repository pages as this site on a port of your choosing. Nothing leaves it except git fetches of the repositories you listed. The same image runs the CLI on a single mounted repository, with the CLI's exit codes passed through, so it can stand in for `npx` in a job that has no Node.
+For repositories that must not leave your machine, the same engine ships as a container with persistent memory, `ghcr.io/dogfood-lab/atlas`, whose default command is `atlas-fleet`. It maps the repositories you list in `fleet.yml`, by mounted path or clone URL, once at start and then on a schedule, keeps every render and its history on a volume, and serves the same fleet list and per-repository pages as this site, with the agent index at `/llms.txt`, on a port of your choosing. Nothing leaves it except git fetches of the repositories you listed. The same image runs the CLI on a single mounted repository, with the CLI's exit codes passed through, so it can stand in for `npx` in a job that has no Node.
 
 ```bash
 mkdir -p atlas-data repos
