@@ -1518,7 +1518,8 @@ function collectPython(root, path, places) {
       if (!module) return;
       const wildcard = node.namedChildren.some((child) => child.type === 'wildcard_import');
       // The names imported from it, which are its submodules when it is a
-      // namespace package (from pipeline import foundry_ingest).
+      // namespace package (from pipeline import foundry_ingest), and may be
+      // when it is a package whose __init__.py leaves them to be loaded.
       const names = node.namedChildren
         .filter((child) => child.startIndex !== module.startIndex && (child.type === 'dotted_name' || child.type === 'aliased_import'))
         .map((child) => (child.type === 'aliased_import' ? child.childForFieldName('name')?.text : child.text))
@@ -1527,7 +1528,7 @@ function collectPython(root, path, places) {
         specifier: module.text,
         kind: wildcard ? 'wildcard' : 'static',
         line: lineOf(node),
-        ...(names.length > 0 && !module.text.startsWith('.') ? { names } : {}),
+        ...(names.length > 0 ? { names } : {}),
       });
       return;
     }

@@ -69,6 +69,7 @@ export function attachResolution({ repoPath, boundaries, unassigned, overlaps, t
     if (!Array.isArray(file.imports) || file.language === 'rust' || file.godot) continue;
     const fromAbs = join(repoPath, file.path);
     for (const site of file.imports) site.resolved = resolveSite(ctx, fromAbs, file.language, site);
+    if (file.language === 'python') file.imports.push(...submoduleSites(file.imports, trackedSet));
   }
 
   let unresolved = 0;
@@ -145,6 +146,32 @@ function collectEdges(boundaries, boundaryByFile) {
   }
   edges.sort((a, b) => a.from.localeCompare(b.from) || a.to.localeCompare(b.to) || a.kind.localeCompare(b.kind));
   return edges;
+}
+
+/**
+ * from audiokit import formats loads audiokit/formats.py when the package's
+ * __init__.py does not itself define formats, and imports the package too.
+ * A name imported from a package that is also a module file in it is read
+ * as that module: a site of its own, resolved to the file. A name the
+ * package defines and that is no file (VERSION) adds nothing.
+ */
+function submoduleSites(sites, tracked) {
+  const out = [];
+  for (const site of sites) {
+    const path = site.resolved?.outcome === 'file' ? site.resolved.path : null;
+    if (path == null || !(site.names?.length > 0)) continue;
+    const init = path === '__init__.py' || path.endsWith('/__init__.py');
+    // The package a namespace import resolved into through its first name.
+    const dir = init ? posixDirname(path) : site.names.some((name) => path.endsWith(`/${name}.py`) || path === `${name}.py`) ? posixDirname(path) : null;
+    if (dir == null) continue;
+    for (const name of site.names) {
+      const base = dir ? `${dir}/${name}` : name;
+      const module = tracked.has(`${base}.py`) ? `${base}.py` : tracked.has(`${base}/__init__.py`) ? `${base}/__init__.py` : null;
+      if (module == null || module === path) continue;
+      out.push({ specifier: site.specifier.endsWith('.') ? `${site.specifier}${name}` : `${site.specifier}.${name}`, kind: site.kind, line: site.line, ...(site.roots ? { roots: site.roots } : {}), submodule: true, resolved: { outcome: 'file', path: module } });
+    }
+  }
+  return out;
 }
 
 function resolveSite(ctx, fromAbs, language, site) {
