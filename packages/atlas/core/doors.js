@@ -601,11 +601,12 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
 
 // A step says it runs tests by its name, or by a script, file or target the
 // chain passed through before it stopped at a program Atlas does not know
-// (npm test, scripts/test.sh, make test). A step that installs, sets up or
-// reports on tests, or uploads their results, runs none; nor does one whose
-// word is part of a hyphenated name (Dispatch to testing-os).
-const TEST_WORD = /(?:^|[^a-z0-9])(?:unit[ _-]?)?(?:tests?|testing|specs?)(?![-_][a-z0-9])(?:[^a-z0-9]|$)/i;
-const NOT_A_TEST_RUN = /\b(?:install|installs|setup|set up|dependencies|deps|results?|reports?|upload|publish|summary)\b/i;
+// (npm test, scripts/test.sh, make test); a suite is a run of tests too
+// (Headless suite). A step that installs, sets up or reports on tests, or
+// uploads their results or log, runs none; nor does one whose word is part
+// of a hyphenated name (Dispatch to testing-os).
+const TEST_WORD = /(?:^|[^a-z0-9])(?:unit[ _-]?)?(?:tests?|testing|specs?|suites?)(?![-_][a-z0-9])(?:[^a-z0-9]|$)/i;
+const NOT_A_TEST_RUN = /\b(?:install|installs|setup|set up|dependencies|deps|results?|reports?|upload|publish|summary|logs?)\b/i;
 
 function testShaped(name, ends) {
   if (TEST_WORD.test(name) && !NOT_A_TEST_RUN.test(name)) return true;
