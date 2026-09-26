@@ -264,7 +264,7 @@ function vitest({ run, through, coverage, config, dir = '', read }) {
     if (flags.reporters.length === 0) for (const reporter of settings.reporters ?? ['default']) add.push(`--reporter=${reporter}`);
     add.push('--reporter=junit', '--outputFile.junit=junit.xml');
   }
-  return { run: insert(run, at, `${prefix} ${add.join(' ')}`), coverage: [join(dir, reportsDirectory, file)], results: [join(dir, results)] };
+  return { run: add.length > 0 ? insert(run, at, `${prefix} ${add.join(' ')}`) : run, coverage: [join(dir, reportsDirectory, file)], results: [join(dir, results)] };
 }
 
 function dependenciesScript(read, dir, name) {

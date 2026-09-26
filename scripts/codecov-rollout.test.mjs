@@ -1,7 +1,7 @@
 import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { after, describe, it } from 'node:test';
@@ -51,6 +51,14 @@ describe('codecov-rollout check', () => {
 });
 
 describe('codecov-rollout plan', () => {
+  it('says so when a repository is already on recipe v2', async () => {
+    const moved = repository('vitest-pnpm', () => readFileSync(join(FIXTURES, 'vitest-pnpm', 'expected', WORKFLOW), 'utf8'));
+    writeFileSync(join(moved.root, 'codecov.yml'), CODECOV_YML);
+    const { code, out } = await run(['plan', moved.root]);
+    assert.equal(code, 0);
+    assert.match(out, /: already on recipe v2\n$/);
+  });
+
   it('shows the change as a diff and writes nothing', async () => {
     const { root, git } = repository('vitest-pnpm');
     const { code, out } = await run(['plan', root]);
@@ -104,6 +112,35 @@ describe('codecov-rollout apply', () => {
     assert.match(out, /\n {3}git -C \S+ push -u origin ci\/codecov\n/);
     const again = await run(['check', root]);
     assert.equal(again.code, 0);
+  });
+
+  it('adds the trailers it is given to the commit message', async () => {
+    const { root, git } = repository('pytest-matrix');
+    const { code } = await run(['apply', '--trailer', 'Refs: fleet-rollout', '--trailer', 'Checked-by: codecov-rollout', root]);
+    assert.equal(code, 0);
+    assert.match(git('log', '-1', '--format=%B'), /\n\nRefs: fleet-rollout\nChecked-by: codecov-rollout$/);
+  });
+
+  it('leaves alone what is not a git checkout, and a branch that already exists', async () => {
+    const plain = mkdtempSync(join(tmpdir(), 'codecov-rollout-'));
+    made.push(plain);
+    const outside = await run(['apply', plain]);
+    assert.equal(outside.code, 1);
+    assert.match(outside.out, /: not applied: not a git checkout\n/);
+    const { root, git } = repository('vitest-pnpm');
+    git('branch', BRANCH);
+    const taken = await run(['apply', root]);
+    assert.equal(taken.code, 1);
+    assert.match(taken.out, /\n {3}not applied: could not make branch ci\/codecov \(/);
+    assert.equal(git('branch', '--show-current'), 'main');
+  });
+
+  it('commits nothing when the pinned Atlas can neither check nor map', async () => {
+    const { root, git } = repository('vitest-pnpm', (text) => text.replace('      - run: pnpm install --frozen-lockfile\n', '      - run: pnpm install --frozen-lockfile\n\n      - run: npx --yes @dogfood-lab/atlas@1.17.0 check\n'));
+    const { code, out } = await run(['apply', root], { exec: () => ({ status: 1, output: 'atlas: boundary file invalid\n' }) });
+    assert.equal(code, 1);
+    assert.match(out, /not committed: @dogfood-lab\/atlas@1\.17\.0 check failed and map failed too; the change is staged on ci\/codecov\natlas: boundary file invalid\n/);
+    assert.equal(git('log', '-1', '--format=%s'), 'fixture');
   });
 
   it('leaves a repository with uncommitted changes alone', async () => {
@@ -182,7 +219,32 @@ describe('codecov-rollout delivered', () => {
   });
 });
 
+describe('codecov-rollout delivered, when it cannot tell', () => {
+  it('names a target it cannot read, and an answer it did not expect', async () => {
+    const fetch = async (url) => {
+      if (url.includes('/unreachable/')) throw new Error('getaddrinfo ENOTFOUND api.codecov.io');
+      if (url.includes('/broken/')) return { status: 500, json: async () => ({}) };
+      return { status: 200, json: async () => ({ name: 'idle', branch: 'main', active: false, totals: null }) };
+    };
+    const { code, out } = await run(['delivered', 'not a repository', 'mcp-tool-shop-org/unreachable', 'mcp-tool-shop-org/broken', 'mcp-tool-shop-org/idle'], { fetch });
+    assert.equal(code, 1);
+    assert.equal(out, [
+      '== not a repository: not a checkout with a GitHub origin, nor owner/name',
+      '== mcp-tool-shop-org/unreachable: could not reach api.codecov.io (getaddrinfo ENOTFOUND api.codecov.io)',
+      '== mcp-tool-shop-org/broken: Codecov answered 500',
+      "== mcp-tool-shop-org/idle: on Codecov but not active; activate it in the repository's Codecov settings",
+      '',
+    ].join('\n'));
+  });
+});
+
 describe('codecov-rollout usage', () => {
+  it('runs as a program, and exits 2 with its usage when called wrong', () => {
+    const result = spawnSync(process.execPath, [fileURLToPath(new URL('./codecov-rollout.mjs', import.meta.url)), 'plan'], { encoding: 'utf8' });
+    assert.equal(result.status, 2);
+    assert.match(result.stdout, /^codecov-rollout: plan needs at least one repository\nusage: /);
+  });
+
   it('explains itself when it is called wrong', async () => {
     for (const argv of [[], ['unknown', '.'], ['plan'], ['plan', '--step']]) {
       const { code, out } = await run(argv);

@@ -95,6 +95,40 @@ describe('the plan for a repository', () => {
     assert.ok(plan.files[0].after.includes('          files: ./junit.xml\n\n  # A note about the audit job.\n  audit:\n'));
   });
 
+  it('adds COVERAGE_LEG to an env the job already has, and NODE_OPTIONS to one the step has', () => {
+    const vitest = fixture('vitest-pnpm');
+    const jobEnv = new Map(vitest.files);
+    jobEnv.set(WORKFLOW, vitest.files.get(WORKFLOW).replace('    timeout-minutes: 20\n', '    timeout-minutes: 20\n    env:\n      FORCE_COLOR: "1"\n'));
+    const withJobEnv = planRepository({ files: jobEnv, read: vitest.read, facts: vitest.facts });
+    assert.equal(withJobEnv.status, 'ready');
+    assert.ok(withJobEnv.files[0].after.includes(`    env:\n      FORCE_COLOR: "1"\n      # 'true' on the one leg whose coverage and test results go to Codecov,\n      # on a pull request or a push to the default branch.\n      COVERAGE_LEG: \${{ matrix.node-version == 22 && (`));
+    const node = fixture('node-test-c8');
+    const stepEnv = new Map(node.files);
+    stepEnv.set(WORKFLOW, node.files.get(WORKFLOW).replace('        run: npm run coverage\n', '        run: npm run coverage\n        env:\n          FORCE_COLOR: "1"\n'));
+    const withStepEnv = planRepository({ files: stepEnv, read: node.read, facts: node.facts });
+    assert.equal(withStepEnv.status, 'ready');
+    assert.ok(withStepEnv.files[0].after.includes('        env:\n          FORCE_COLOR: "1"\n          # On the coverage leg the test runner also writes JUnit to junit.xml\n'));
+    assert.ok(withStepEnv.files[0].after.includes("\n          NODE_OPTIONS: ${{ env.COVERAGE_LEG == 'true' && '--test-reporter=spec"));
+  });
+
+  it('takes the one step a runner it edits runs, when no step collects coverage', () => {
+    const { files, read, facts } = fixture('vitest-pnpm');
+    const plain = structuredClone(facts);
+    plain.workflows[0].tests = plain.workflows[0].tests.filter((run) => !run.coverage);
+    const plan = planRepository({ files, read, facts: plain });
+    assert.equal(plan.status, 'ready');
+    assert.deepEqual(plan.target, { workflow: WORKFLOW, job: 'ci', step: 'Test', runner: 'vitest' });
+  });
+
+  it('prefers an ubuntu runner on a matrix axis the step leaves open', () => {
+    const { files, read, facts } = fixture('vitest-pnpm');
+    const oses = new Map(files);
+    oses.set(WORKFLOW, files.get(WORKFLOW).replace('        node-version: [22, 24]\n', '        os: [windows-latest, ubuntu-latest]\n        node-version: [22, 24]\n'));
+    const plan = planRepository({ files: oses, read, facts });
+    assert.equal(plan.status, 'ready');
+    assert.match(plan.files[0].after, /COVERAGE_LEG: \$\{\{ matrix\.node-version == 22 && matrix\.os == 'ubuntu-latest' && \(/);
+  });
+
   it('takes the step a person names', () => {
     const { files, read, facts } = fixture('vitest-pnpm');
     const plan = planRepository({ files, read, facts, step: 'ci.yml:ci:Test' });
@@ -149,6 +183,18 @@ describe('the plan declines, and says why', () => {
   it('when the step runs on a condition that is not a matrix leg', () => {
     assert.deepEqual(declined((input) => edit(input, '        if: matrix.node-version == 22\n        env:', "        if: matrix.node-version == 22 && github.event_name == 'push'\n        env:")), [
       "ci.yml step \"Test with coverage\" runs when matrix.node-version == 22 && github.event_name == 'push'; the tool picks a leg only from matrix values",
+    ]);
+  });
+
+  it('when the step runs on either of two conditions', () => {
+    assert.deepEqual(declined((input) => edit(input, '        if: matrix.node-version == 22\n        env:', "        if: matrix.node-version == 22 || github.event_name == 'push'\n        env:")), [
+      "ci.yml step \"Test with coverage\" runs when matrix.node-version == 22 || github.event_name == 'push'; the tool picks a leg only from matrix values",
+    ]);
+  });
+
+  it('when the run text folds its lines', () => {
+    assert.deepEqual(declined((input) => edit(input, '        run: pnpm test:coverage\n', '        run: >-\n          pnpm test:coverage\n')), [
+      'ci.yml step "Test with coverage": its run text is written as a block folded scalar, which the tool does not edit; add the flags by hand',
     ]);
   });
 
