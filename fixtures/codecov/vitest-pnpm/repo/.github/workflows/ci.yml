@@ -1,0 +1,60 @@
+name: CI
+
+permissions:
+  contents: read
+
+on:
+  push:
+    paths:
+      - "package.json"
+      - "src/**"
+    branches: [main]
+  pull_request:
+    paths:
+      - "package.json"
+      - "src/**"
+  workflow_dispatch:
+
+jobs:
+  ci:
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22, 24]
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+        with:
+          version: 10
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Test
+        run: pnpm test
+
+      - name: Test with coverage
+        if: matrix.node-version == 22
+        env:
+          SKIP_SLOW: "1"
+        run: pnpm test:coverage
+
+      # Tokenless uploads fail on a protected branch.
+      - name: Upload coverage to Codecov
+        if: matrix.node-version == 22
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+        with:
+          files: ./coverage/coverage-final.json
+          fail_ci_if_error: false
+
+      - name: Smoke
+        run: pnpm smoke
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pnpm audit
