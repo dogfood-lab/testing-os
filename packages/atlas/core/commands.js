@@ -483,7 +483,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
    * reader cannot list, so its count is not known.
    */
   function invoke(runner, dir, frame, run, { known = true } = {}) {
-    const entry = { runner, dir, config: null, through: frame.through ?? [], coverage: frame.coverage === true, junit: false, known, paths: new Set() };
+    const entry = { runner, dir, config: null, through: frame.through ?? [], coverage: frame.coverage === true, junit: false, known, paths: new Set(), setup: new Set() };
     const outer = open;
     open = entry;
     let found;
@@ -493,8 +493,10 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       open = outer;
     }
     keep(found);
+    const { setup } = entry;
+    delete entry.setup;
     for (const item of found.runs.values()) {
-      if (item.runKind === 'checks' || item.built) continue;
+      if (item.runKind === 'checks' || item.built || setup.has(item.path)) continue;
       if (item.directory) {
         for (const path of repo.filesUnder(item.path.replace(/\/$/, ''))) if (isCodePath(path) && (item.matched || isTestFile(path))) entry.paths.add(path);
       } else if (item.matched || isTestFile(item.path)) entry.paths.add(item.path);
@@ -510,12 +512,14 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     else file(token, dir, frame, { script: true, args });
   }
 
-  // What a runner's handler learns of the run it is making.
-  function note({ config = null, coverage = false, junit = false }) {
+  // What a runner's handler learns of the run it is making: a file it loads
+  // first to set the run up (mocha --require) is run, and is not a test.
+  function note({ config = null, coverage = false, junit = false, setup = null }) {
     if (!open) return;
     if (config != null && open.config == null) open.config = config;
     if (coverage) open.coverage = true;
     if (junit) open.junit = true;
+    if (setup != null) open.setup.add(setup);
   }
 
   function read(text, dir, frame) {
@@ -1499,7 +1503,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     },
     mocha(argv, dir, frame) {
       const parsed = split(argv, 1, VALUE_SETS.mocha);
-      for (const name of ['-r', '--require', '--file']) for (const value of parsed.values.get(name) ?? []) file(value, dir, frame);
+      for (const name of ['-r', '--require', '--file']) for (const value of parsed.values.get(name) ?? []) note({ setup: file(value, dir, frame) });
       const found = mochaTargets(repo, dir, { config: valueOf(parsed, '--config') });
       note({ config: found.config, junit: [...(parsed.values.get('--reporter') ?? []), ...(parsed.values.get('-R') ?? [])].some((value) => /junit/i.test(value)) });
       const explicit = [...parsed.positional, ...(parsed.values.get('--spec') ?? [])];
@@ -1513,7 +1517,9 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
         if (path == null) continue;
         if (repo.tracked.has(path)) files.push(path);
         else if (repo.dirs.has(path)) files.push(...repo.filesMatching(path, [recursive ? `**/*.${extensions}` : `*.${extensions}`]));
-        else files.push(...repo.filesMatching(dir, [stripDot(spec)]));
+        // A spec in a build's output runs the source it is compiled from.
+        else if (repo.builtFrom(path) != null) files.push(repo.builtFrom(path));
+        else files.push(...repo.filesMatching(dir, [stripDot(spec)]), ...repo.builtMatching(dir, [stripDot(spec)]));
       }
       matched(repo.compact([...new Set(files)].filter(isCodePath)), frame, found.config ? `mocha ${found.config}` : 'mocha');
     },

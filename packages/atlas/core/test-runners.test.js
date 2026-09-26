@@ -109,6 +109,17 @@ describe('Vitest --dir', () => {
   });
 });
 
+describe('a runner handed a compiled test tree', () => {
+  it('runs the specs the build compiles from, and not the setup file Mocha requires (codecomfy-vscode\'s shape)', () => {
+    const doors = doorsOf('runners-mocha-built');
+    assert.deepEqual(testsOf(doors, '.github/workflows/ci.yml'), [
+      { job: 'test', step: 'Run tests', runner: 'mocha', through: ['npm test'], files: 2 },
+    ]);
+    const ci = doors.find((door) => door.file === '.github/workflows/ci.yml');
+    assert.deepEqual(ci.runs.filter((run) => run.path.startsWith('test/') && !run.built).map((run) => run.path), ['test/register-stub.js', 'test/unit/']);
+  });
+});
+
 describe('arguments handed to a test script', () => {
   it('appends what follows npm test --, and pnpm or yarn test, to the test script (claude-guardian\'s shape)', () => {
     assert.deepEqual(testsOf(doorsOf('runners-test-args'), '.github/workflows/ci.yml'), [
