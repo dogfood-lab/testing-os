@@ -10,7 +10,7 @@ import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
 import { httpEdges, httpFacts } from './http.js';
 import { declaredEntries, deriveEntryPoints, manifestCommands, memberCommands, memberPackage, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
-import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, textLandings, trackedPlaces } from './landings.js';
+import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, settleRelativePaths, testReadsKept, testWritesKept, textLandings, trackedPlaces } from './landings.js';
 import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
 import { walkReach } from './reach.js';
 import { attachResolution, emittedFiles, registerBuilds, resolveDeclaredPath } from './resolve.js';
@@ -264,6 +264,207 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     ...(unseen.length > 0 ? { unseen } : {}),
     ...(collectIgnored(repoPath, trackedSet).length > 0 ? { collectIgnored: collectIgnored(repoPath, trackedSet) } : {}),
   };
+}
+
+/**
+ * A scoped re-read: the files given, read now with the per-file code a full
+ * map uses (parsed, their imports resolved against the tracked tree, their
+ * writes and reads placed) without mapping the rest of the repository. It
+ * answers what a file that changed after the map imports, writes and reads
+ * now, in seconds where a full map takes minutes.
+ *
+ * What only the rest of the repository settles is settled as the full map
+ * settles it, one step away: a path a helper in another file returns is
+ * followed into that file, a path a parameter receives is followed into the
+ * files that call it (callersOf), and a bare path follows the doors given.
+ * A path handed down through more than one caller is settled as far as those
+ * files reach. Two re-reads of one file (as the change check compares) are
+ * settled alike. Rust and GDScript resolve through every file of their
+ * language, so those files are read as well.
+ *
+ * @param {{
+ *   repoPath: string,
+ *   boundaries: Array<{ name: string, globs?: string[] }>,
+ *   paths: string[],
+ *   content?: (path: string) => Buffer | null,
+ *   doors?: Array<{ kind?: string, example?: boolean, stages?: string[], gated?: object[], reachFiles: string[] }> | null,
+ *   callersOf?: ((path: string) => string[]) | null,
+ * }} input
+ *   content gives a file's bytes from elsewhere than the working tree (a
+ *   committed version); a path it returns null for, and one not on disk,
+ *   is skipped. doors are the doors of the map with the files each runs and
+ *   imports (reachFiles); without them a bare path stays this repository's,
+ *   as it does for a file no door reaches. callersOf names the files that
+ *   import a file, as the map records them
+ * @returns {object[]} one reading per path read, in the order given: path,
+ *   parts, language, parseError, unreadSyntax, imports (sites with their
+ *   resolution), writes, reads, dynamic and outside counts, testsInside
+ */
+export function rereadFiles({ repoPath, boundaries, paths, content = null, doors = null, callersOf = null }) {
+  repoPath = resolve(repoPath);
+  const listed = listTracked(repoPath).regular;
+  const known = new Set(listed);
+  // A new file, not yet added, is read as if it were tracked: it may import
+  // what is, though nothing in the map can import it yet.
+  const all = [...listed, ...paths.filter((path) => !known.has(path))];
+  const tracked = new Set(all);
+  // What is tracked decides how a path in a file is placed, so a reading is
+  // reused only in a tree with the same tracked files.
+  const places = { ...trackedPlaces(all), key: createHash('sha256').update(all.join('\n')).digest('hex') };
+  const matchers = boundaries.map(validateBoundary).map((boundary) => ({ ...boundary, isMatch: picomatch(boundary.globs, { dot: true }) }));
+  const bytesOf = (path) => {
+    if (content && paths.includes(path)) return content(path);
+    try {
+      return readFileSync(join(repoPath, path));
+    } catch {
+      return null;
+    }
+  };
+  const facts = new Map();
+  const spawned = new Map();
+  const builds = new Map();
+  const described = new Map();
+  let attributes = new Map();
+  const describe = (list) => {
+    const fresh = list.filter((path) => !described.has(path));
+    attributes = new Map([...attributes, ...textAttributes(repoPath, [...fresh, ...all.filter((path) => path === '.gitattributes' || path.endsWith('/.gitattributes'))])]);
+    for (const path of fresh) {
+      const raw = bytesOf(path);
+      if (raw == null) continue;
+      described.set(path, describeCached(repoPath, path, raw, attributes.get(path), places, { facts, spawned, builds }));
+    }
+  };
+  const asked = paths.filter((path) => tracked.has(path));
+  describe(asked);
+  const native = (extension) => asked.some((path) => path.endsWith(extension)) ? all.filter((path) => path.endsWith(extension)) : [];
+  describe([...native('.rs'), ...native('.gd')]);
+
+  // Place the files in their parts, as the map does, and resolve; then read
+  // the files they import, whose helpers can settle a path they write.
+  const place = () => {
+    const parts = matchers.map((boundary) => ({ name: boundary.name, globs: boundary.globs, status: boundary.status, role: boundary.role, files: [], unresolvedSites: 0 }));
+    const unassigned = [];
+    const overlaps = [];
+    for (const file of described.values()) {
+      const hits = matchers.filter((boundary) => boundary.isMatch(file.path)).map((boundary) => boundary.name);
+      if (hits.length === 0) unassigned.push(file);
+      else if (hits.length === 1) parts.find((boundary) => boundary.name === hits[0]).files.push(file);
+      else overlaps.push({ ...file, boundaries: hits });
+    }
+    return { parts, unassigned, overlaps };
+  };
+  let placed = place();
+  attachResolution({ repoPath, boundaries: placed.parts, unassigned: placed.unassigned, overlaps: placed.overlaps, tracked: all });
+  // Only the files that settle a path of a re-read file are read as well:
+  // those defining a helper it calls for a path, and, for a file handed a
+  // path through a parameter, the files that call it. Reading every import
+  // would read the largest modules of the repository for most changes.
+  const pendingParams = [...described.values()].filter((file) => paths.includes(file.path) && (file.pendingParams ?? []).length > 0);
+  // A caller that settles a parameter's path names the function it calls;
+  // an importer that never names it cannot, and is not read.
+  const naming = (caller, names) => {
+    const text = bytesOf(caller)?.toString('utf8') ?? '';
+    return names.some((name) => text.includes(name));
+  };
+  const settling = [
+    ...helperOwners([...described.values()]),
+    ...(callersOf ? pendingParams.flatMap((file) => {
+      const names = [...new Set((file.pendingParams ?? []).flatMap((pending) => pending.values.map((value) => value.param?.fn)).filter(Boolean))];
+      return callersOf(file.path).filter((caller) => naming(caller, names));
+    }) : []),
+  ].filter((path) => tracked.has(path));
+  if (settling.length > 0) {
+    describe([...new Set(settling)].sort());
+    placed = place();
+    attachResolution({ repoPath, boundaries: placed.parts, unassigned: placed.unassigned, overlaps: placed.overlaps, tracked: all });
+  }
+
+  const files = [...described.values()];
+  const project = cargoProject(repoPath, tracked);
+  settleRustPaths({ files, places, crateDirOf: (path) => owningCrate(project, path)?.dir ?? null, isTest: isTestMaterial });
+  settleGodotPaths({ repoPath, tracked, files, places });
+  settleHelperPaths(files);
+  settleParamPaths(files, places);
+  // Whose directory a bare path is depends on the doors that reach the file:
+  // a workflow runs it from this repository's root, a command people install
+  // from wherever they stand.
+  if (doors) settleRelativePaths(files, doors);
+
+  const partsOf = new Map();
+  for (const boundary of placed.parts) for (const file of boundary.files) partsOf.set(file.path, [boundary.name]);
+  for (const file of placed.overlaps) partsOf.set(file.path, [...file.boundaries]);
+  return paths.filter((path) => described.has(path)).map((path) => {
+    const file = described.get(path);
+    const test = isTestMaterial(path);
+    return {
+      path,
+      parts: partsOf.get(path) ?? [],
+      language: file.language ?? null,
+      parseError: file.parseError === true,
+      ...(file.unreadSyntax ? { unreadSyntax: file.unreadSyntax } : {}),
+      imports: Array.isArray(file.imports) ? file.imports.map((site) => ({ ...site })) : [],
+      // As the map keeps them (landings.js attachLandings): a test's writes
+      // and reads only where they reach this repository.
+      writes: test ? testWritesKept(file.writes ?? [], places) : [...(file.writes ?? [])],
+      reads: test ? (isTestFile(path) ? testReadsKept(file.reads ?? []) : []) : [...(file.reads ?? [])],
+      dynamicReads: file.dynamicReads ?? 0,
+      dynamicWrites: file.dynamicWrites ?? 0,
+      dynamicSpawns: file.dynamicSpawns ?? 0,
+      outsideWhere: [...(file.outsideWhere ?? [])],
+      userDataReads: file.userDataReads ?? 0,
+      userDataWrites: file.userDataWrites ?? 0,
+      ...(file.testsInside ? { testsInside: true } : {}),
+    };
+  });
+}
+
+// Readings of files by the re-read, kept whole for the next re-read of the
+// same bytes in the same tree: a change check reads the files that settle a
+// path once for each side of the change, and a session asks again. The
+// oldest go first past this many.
+const READINGS = new Map();
+const READINGS_KEPT = 500;
+
+/**
+ * describeFile, answered from READINGS when the same bytes of the same path
+ * were read in the same tree with the same text attributes. Resolution and
+ * settling change a reading in place, so each caller gets a copy.
+ */
+function describeCached(repoPath, path, raw, attributes, places, sinks) {
+  const key = [repoPath, places.key, path, createHash('sha256').update(raw).digest('hex'), JSON.stringify(attributes ?? {})].join('\0');
+  let entry = READINGS.get(key);
+  if (entry) {
+    READINGS.delete(key);
+  } else {
+    const facts = new Map();
+    const spawned = new Map();
+    const builds = new Map();
+    const file = describeFile(repoPath, path, places, facts, spawned, attributes, builds, raw);
+    entry = structuredClone({ file, fact: facts.get(path), spawned: spawned.get(path), builds: builds.get(path) });
+    if (READINGS.size >= READINGS_KEPT) READINGS.delete(READINGS.keys().next().value);
+  }
+  READINGS.set(key, entry);
+  const copy = structuredClone(entry);
+  if (copy.fact !== undefined) sinks.facts.set(path, copy.fact);
+  if (copy.spawned !== undefined) sinks.spawned.set(path, copy.spawned);
+  if (copy.builds !== undefined) sinks.builds.set(path, copy.builds);
+  return copy.file;
+}
+
+// The files that define the helpers the given files call for a path they
+// read or write, which landings.js records as pending by specifier#name.
+function helperOwners(files) {
+  const out = new Set();
+  for (const file of files) {
+    for (const pending of [...(file.pendingWrites ?? []), ...(file.pendingReads ?? [])]) {
+      for (const key of pending.helpers ?? []) {
+        const specifier = key.slice(0, key.lastIndexOf('#'));
+        const site = Array.isArray(file.imports) ? file.imports.find((item) => item.specifier === specifier && item.resolved?.outcome === 'file') : null;
+        if (site) out.add(site.resolved.path);
+      }
+    }
+  }
+  return [...out].sort();
 }
 
 /**
@@ -566,9 +767,10 @@ function symlinkTarget(repoPath, path) {
 }
 
 // A file is read as git stores it (text.js), so what is hashed and parsed is
-// the same on a checkout with either line ending.
-function describeFile(repoPath, path, places, facts, spawned, attributes, builds) {
-  const bytes = storedBytes(readFileSync(join(repoPath, path)), attributes);
+// the same on a checkout with either line ending. raw is the file's content
+// from somewhere other than the working tree, a committed version of it.
+function describeFile(repoPath, path, places, facts, spawned, attributes, builds, raw = null) {
+  const bytes = storedBytes(raw ?? readFileSync(join(repoPath, path)), attributes);
   const hash = createHash('sha256').update(bytes).digest('hex');
   // An Astro file's frontmatter (the --- fenced script at its top) is
   // TypeScript the component runs, read for its imports as a TypeScript

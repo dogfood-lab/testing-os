@@ -5,14 +5,14 @@
  * the service's own handling of the clone, not a remote's.
  */
 import { spawnSync } from 'node:child_process';
-import { createHash } from 'node:crypto';
-import { cpSync, existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
-import { dirname, join, relative, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import assert from 'node:assert/strict';
 import { after, describe, it } from 'node:test';
+import { changedRows, checkoutSnapshot as snapshot } from '../core/checkout-state.js';
 import {
   ENGINE,
   HISTORY_CAP,
@@ -70,46 +70,6 @@ function checkoutOf(fixture, origin, env = {}) {
   if (origin) git(root, ['remote', 'add', 'origin', origin]);
   commit(root, 'fixture', env);
   return root;
-}
-
-// Every file under the root, .git included, by content and mtime: a service
-// that wrote anything into the checkout, or let git refresh its index there,
-// would change a row.
-function snapshot(root) {
-  const rows = [];
-  const walk = (dir) => {
-    for (const entry of readdirSync(dir, { withFileTypes: true })) {
-      const path = join(dir, entry.name);
-      if (entry.isDirectory()) {
-        walk(path);
-        continue;
-      }
-      rows.push({
-        path: relative(root, path).replaceAll('\\', '/'),
-        hash: createHash('sha256').update(readFileSync(path)).digest('hex'),
-        mtimeMs: statSync(path).mtimeMs,
-      });
-    }
-  };
-  walk(root);
-  return rows.sort((a, b) => (a.path < b.path ? -1 : a.path > b.path ? 1 : 0));
-}
-
-// The rows that differ between two snapshots, each named by its path and by
-// what moved, so a breach of "a mounted checkout is never written" says which
-// file and whether its content or only its mtime changed.
-function changedRows(before, after) {
-  const was = new Map(before.map((row) => [row.path, row]));
-  const now = new Map(after.map((row) => [row.path, row]));
-  const changes = [];
-  for (const [path, row] of now) {
-    const old = was.get(path);
-    if (!old) changes.push(`${path}: added`);
-    else if (old.hash !== row.hash) changes.push(`${path}: content changed`);
-    else if (old.mtimeMs !== row.mtimeMs) changes.push(`${path}: mtime ${old.mtimeMs} -> ${row.mtimeMs}`);
-  }
-  for (const path of was.keys()) if (!now.has(path)) changes.push(`${path}: removed`);
-  return changes;
 }
 
 function readJson(path) {

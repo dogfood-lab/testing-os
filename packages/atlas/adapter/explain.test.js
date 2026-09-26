@@ -149,8 +149,8 @@ describe('atlas explain on the doors fixture', () => {
     assert.equal(result.status, 2);
     assert.deepEqual(result.lines, [
       'ATLAS_EXPLAIN_UNKNOWN_PATH  The path is not in the committed map.',
-      '  what changed:   tools/missing.js names no file or directory in atlas/structure.json',
-      '  what to do:     check the path, or run atlas map if the file is new',
+      '  what changed:   tools/missing.js names no file, directory or part in atlas/structure.json',
+      '  what to do:     check the path or the part name, or run atlas map if the file is new',
       'exit 2',
     ]);
   });

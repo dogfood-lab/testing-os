@@ -13,6 +13,16 @@ export const ERRORS = {
   ATLAS_EXPLAIN_NO_MAP: 'There is no committed map to explain from.',
   ATLAS_EXPLAIN_UNKNOWN_PATH: 'The path is not in the committed map.',
   ATLAS_DIFF_NO_BASE: 'The base ref carries no map.',
+  ATLAS_SIDECAR_NOT_A_REPOSITORY: 'The directory the sidecar answers for is not in a git repository.',
+  ATLAS_SIDECAR_NO_MAP: 'The repository has no map.',
+  ATLAS_SIDECAR_MAP_UNREADABLE: 'The map is not valid JSON.',
+  ATLAS_SIDECAR_MAP_FORMAT: 'The map is not in a format this engine reads.',
+  ATLAS_SIDECAR_MAP_FOREIGN: "The map names a commit that is not in this checkout's history.",
+  ATLAS_SIDECAR_INVALID_ARGUMENTS: 'The tool was called with arguments it does not take.',
+  ATLAS_SIDECAR_CACHE_INSIDE: 'The refresh cache would be inside the repository.',
+  ATLAS_SIDECAR_REFRESH_FAILED: 'The refresh could not map the checkout.',
+  ATLAS_SIDECAR_CURSOR_STALE: 'The cursor was given for another map than the one answering now.',
+  ATLAS_SIDECAR_TOO_LARGE: 'The answer does not fit its size even with every list cut.',
 };
 
 export function formatFailure(code, details, { exitCode = 1, whatToDo } = {}) {

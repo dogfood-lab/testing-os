@@ -3297,32 +3297,49 @@ function heldLandings(door, byPath, places, targets) {
  *
  * @param {{ files: object[], doors: object[], boundaries: object[], places: { files: Set<string>, dirs: Set<string> } }} input
  */
+/**
+ * The writes of a test file that land in this repository. A test writes into
+ * temporary copies, except where the path is fixed to the test's own file,
+ * written out in full, and names a tracked file outside test material: a
+ * test rewriting a committed table under docs/ writes this repository, and
+ * one writing a scratch file beside itself does not. A test's path built
+ * from its own file whose tail is read at run time (materialize.test.ts
+ * writing examples/<slug>/<slug>.glyph) rewrites the tracked directory it
+ * names when tracked files there have its shape.
+ *
+ * @param {object[]} writes the test file's writes, as its reading recorded them
+ * @param {{ files: Set<string>, dirs: Set<string> }} places
+ */
+export function testWritesKept(writes, places) {
+  return writes.filter((write) => !isTestMaterial(write.target) && (
+    (write.fixed && places.files.has(write.target))
+    || (write.fixedHead && places.dirs.has(write.target) && !write.target.includes('*'))
+    || write.fromCwd
+  ));
+}
+
+/**
+ * The reads of a test file that read this repository: a place named from the
+ * repository root, from the test's own file, or by raw URL; one built on a
+ * root the test was handed is its temporary copy's.
+ *
+ * @param {object[]} reads the test file's reads, as its reading recorded them
+ */
+export function testReadsKept(reads) {
+  return reads.filter((read) => read.fixed || read.relative || read.call === 'raw-url');
+}
+
 export function attachLandings({ files, doors, boundaries, places }) {
   const mapped = doors.filter((door) => !door.parseError);
   settleRelativePaths(files, mapped);
   const own = files.filter((file) => !isTestMaterial(file.path)).sort((a, b) => compare(a.path, b.path));
-  // A test writes into temporary copies, except where the path is fixed to
-  // the test's own file, written out in full, and names a tracked file
-  // outside test material: a test rewriting a committed table under docs/
-  // writes this repository, and one writing a scratch file beside itself
-  // does not. Only those writes are kept, and none of a test's reads.
-  // A test's path built from its own file whose tail is read at run time
-  // (materialize.test.ts writing examples/<slug>/<slug>.glyph) rewrites the
-  // tracked directory it names when tracked files there have its shape.
   const tests = files.filter((file) => isTestMaterial(file.path))
-    .map((file) => ({ path: file.path, reads: file.reads ?? [], writes: (file.writes ?? []).filter((write) => !isTestMaterial(write.target) && (
-      (write.fixed && places.files.has(write.target))
-      || (write.fixedHead && places.dirs.has(write.target) && !write.target.includes('*'))
-      || write.fromCwd
-    )) }))
+    .map((file) => ({ path: file.path, reads: file.reads ?? [], writes: testWritesKept(file.writes ?? [], places) }))
     .filter((file) => file.writes.length > 0)
     .sort((a, b) => compare(a.path, b.path));
   const byPath = new Map([...own, ...tests].map((file) => [file.path, file]));
-  // A test reads a place when it names it from the repository root, from its
-  // own file, or by raw URL; one built on a root it was handed is its
-  // temporary copy's.
   const testReads = files.filter((file) => isTestFile(file.path))
-    .map((file) => ({ path: file.path, reads: (file.reads ?? []).filter((read) => read.fixed || read.relative || read.call === 'raw-url') }))
+    .map((file) => ({ path: file.path, reads: testReadsKept(file.reads ?? []) }))
     .filter((file) => file.reads.length > 0)
     .sort((a, b) => compare(a.path, b.path));
   for (const file of files) {
@@ -3390,8 +3407,8 @@ export function attachLandings({ files, doors, boundaries, places }) {
       // freshness before git add stages it), and writes nothing.
       ...door.stagedTargets.filter((place) => named.has(place) && !writers.has(place)),
     ])].sort(compare);
-    for (const target of door.ownWrites) add(writers, target, { by: door.file });
-    for (const mention of door.mentions) add(readers, mention.path, { by: door.file });
+    for (const target of door.ownWrites) add(writers, target, statedBy(door));
+    for (const mention of door.mentions) add(readers, mention.path, statedBy(door));
   }
   // A place that is not tracked is output the repository does not keep (an
   // ignored directory, a file made at run time), unless a door commits it or
@@ -3489,7 +3506,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
         const writing = door.writingJobs?.get(place);
         const readingJobs = door.mentions.filter((mention) => mention.path === place).map((mention) => mention.job);
         if (writing && readingJobs.some((job) => !writing.has(job))) continue;
-        entries.delete(canonicalEntry({ by: door.file }));
+        entries.delete(canonicalEntry(statedBy(door)));
         if (entries.size === 0 && !writers.has(place)) readers.delete(place);
       }
     }
@@ -3537,8 +3554,9 @@ export function attachLandings({ files, doors, boundaries, places }) {
  * or package people install runs wherever they are, so its bare paths are
  * theirs: counted as outside, never a place here. A file no door reaches
  * keeps its paths, as nothing says whose directory they are.
+ * Exported for the scoped re-read, which hands it the map's doors.
  */
-function settleRelativePaths(files, doors) {
+export function settleRelativePaths(files, doors) {
   const byWorkflow = new Set();
   const byInstall = new Set();
   for (const door of doors) {
@@ -3738,6 +3756,21 @@ function stagedTargets(stages, places) {
     if (target != null) out.add(target);
   }
   return [...out].sort(compare);
+}
+
+/**
+ * The entry for a place a workflow names in its steps or writes with its own
+ * shell. The workflow states it rather than code the parser read, so its
+ * confidence is config, as a configuration file's naming of a place is. It is
+ * the one shape for such an entry: the entry is added and later removed by
+ * this key, and an entry with no confidence would reach a reader of the map
+ * with no word for how it was known.
+ *
+ * @param {{ file: string }} door
+ * @returns {{ by: string, confidence: 'config' }}
+ */
+function statedBy(door) {
+  return { by: door.file, confidence: 'config' };
 }
 
 function readerEntry(by, read) {

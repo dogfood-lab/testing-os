@@ -1,6 +1,7 @@
 import { commandLines } from '../core/commands.js';
 import { loadsManifest } from '../core/languages.js';
 import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
+import { ENGINE } from './engine.js';
 import { roleFor } from './templates.js';
 
 const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
@@ -57,8 +58,9 @@ const UNRESOLVED_NAMED = 3;
 // Why a site did not resolve, in the words the page uses: an undeclared
 // package a file probes for or loads if it is there, an import of a path a
 // build generates (.next/, dist/), one of a path the repository does not
-// hold, or one built at run time.
-function unresolvedEntry(path, site) {
+// hold, or one built at run time. The sidecar words a re-read's sites the
+// same way.
+export function unresolvedEntry(path, site) {
   const reason = site.resolved?.reason ?? 'unresolved';
   const entry = { line: site.line, path, specifier: site.kind === 'dynamic' ? null : site.specifier };
   if (reason === 'undeclared-package') entry.why = site.locates ? 'probe' : site.optional ? 'optional' : 'undeclared';
@@ -261,6 +263,11 @@ export function buildArtifact(mapped, commit) {
     // and then its name.
     doors: (mapped.doors ?? []).map(carryDoor).sort((a, b) => cmp(a.file, b.file) || cmp(a.name, b.name) || cmp(a.kind ?? '', b.kind ?? '')),
     edges: mapped.edges.map((edge) => ({ from: edge.from, kind: edge.kind, to: edge.to, ...(edge.fromTests ? { fromTests: true } : {}), ...(edge.routes ? { routes: edge.routes } : {}) })),
+    // The version that made the map, beside the commit it was made from: the
+    // adopters pin many versions, and a map read later has to say which one
+    // drew it. It is the same for every map one version makes, so a map
+    // stays byte for byte the same at one commit.
+    engine: ENGINE,
     generatedFrom: { commit, tracked },
     landings: carryLandings(mapped.landings ?? []),
     overlaps,

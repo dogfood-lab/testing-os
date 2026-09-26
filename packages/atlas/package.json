@@ -38,6 +38,7 @@
     "core/unseen.js",
     "cli.js",
     "adapter/errors.js",
+    "adapter/engine.js",
     "adapter/boundary-file.js",
     "adapter/artifact.js",
     "adapter/check.js",
@@ -53,6 +54,26 @@
     "adapter/diff.js",
     "adapter/divergence.js",
     "adapter/fleet.js",
+    "sidecar/answer.js",
+    "sidecar/changes-tool.js",
+    "sidecar/check-change-tool.js",
+    "sidecar/data.js",
+    "sidecar/explain-tool.js",
+    "sidecar/freshness.js",
+    "sidecar/git.js",
+    "sidecar/limits.js",
+    "sidecar/map.js",
+    "sidecar/overview-tool.js",
+    "sidecar/protocol.js",
+    "sidecar/reach-tool.js",
+    "sidecar/refresh.js",
+    "sidecar/refresh-tool.js",
+    "sidecar/refresh-worker.js",
+    "sidecar/reread.js",
+    "sidecar/schema.js",
+    "sidecar/server.js",
+    "sidecar/size.js",
+    "sidecar/tools.js",
     "bin/atlas-fleet.js",
     "templates/atlas-refresh.yml",
     "grammars/manifest.json",
@@ -69,8 +90,8 @@
     "atlas-fleet": "./bin/atlas-fleet.js"
   },
   "scripts": {
-    "test": "node --test --test-concurrency=1 \"*.test.js\" \"core/*.test.js\" \"adapter/*.test.js\"",
-    "test:parallel": "node --test --test-concurrency=8 \"*.test.js\" \"core/*.test.js\" \"adapter/*.test.js\""
+    "test": "node --test --test-concurrency=1 \"*.test.js\" \"core/*.test.js\" \"adapter/*.test.js\" \"sidecar/*.test.js\"",
+    "test:parallel": "node --test --test-concurrency=8 \"*.test.js\" \"core/*.test.js\" \"adapter/*.test.js\" \"sidecar/*.test.js\""
   },
   "publishConfig": {
     "access": "public"
