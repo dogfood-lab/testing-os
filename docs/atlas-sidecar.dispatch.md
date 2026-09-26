@@ -4,6 +4,12 @@ Status: the research grounding for `docs/atlas-sidecar.spec.md`, approved by the
 
 Verification (Step 4, 2026-09-26; receipts kept with the coordinator's tools, outside the repository): all 31 identifiers resolved (arXiv/Crossref oracle), 0 fabricated. Run 1 (prism receipt `prism-01m3ecbjg02g732hxzhz8sef0g`) flagged two claims whose numbers came from paper bodies (SWE-agent, Gloaguen); both were restated at abstract level and re-verified once. Run 2: 21 supported by the different-family lens (mistral-small:24b, reasoning-stripped). Manual two-family fallback (mistral-small:24b + granite4.1:30b on retrieved abstracts): LaToza & Myers 2010 and Wu et al. 2025 SUPPORTED by both. Not checked by a second family (no abstract obtainable, not load-bearing for the recommendation): findings 16, 19, 20, 22, 23, 26, 28, 29. Finding 19's 39% figure is from the paper body and is unverified.
 
+**Cloud jury, 2026-09-26 (later the same day).** The largest thinking models on the live Ollama Cloud roster judged thirteen load-bearing findings against each source's own words, one claim per call. The panel was kimi-k3 (Moonshot), glm-5.3 (Z.ai), deepseek-v4-pro (DeepSeek) and minimax-m3 (MiniMax). Findings 1, 2, 5, 8, 12, 13, 14, 15, 17, 18 and 27 were confirmed, 18 by three families and the rest by all four. Two were corrected:
+- **Finding 11.** All four families refuted it as first worded. The 91.8% figure describes the 414 servers that were dynamically audited, not all 640 confirmed.
+- **Finding 31.** Two families could not confirm the words "by hand".
+
+Both now read as the source states and were re-confirmed by all four families. The single-lens runner had passed finding 11 as first worded, which is the reason a stronger cross-family panel now checks load-bearing claims.
+
 ## Research grounding (the dispatch's empirical floor)
 
 ### Agents and repository structure
@@ -21,7 +27,7 @@ Verification (Step 4, 2026-09-26; receipts kept with the coordinator's tools, ou
 8. **Stack graphs resolve names from per-file subgraphs built by syntactic analysis alone, with no build and no per-repository configuration, so indexing a commit costs only the files it touched.** Creager & van Antwerpen 2022 (arXiv:2211.01224). Atlas's committed, per-commit, build-free map is already this shape; it is served as it is, not recomputed live by a daemon.
 9. **A systematic study of MCP catalogued 16 threat scenarios across four attacker types, including malicious developers and external attackers, and demonstrated them in real-world case studies.** Hou et al. 2025 (arXiv:2503.23278). Repository-derived strings in Atlas answers are returned as quoted data fields, length-capped, never as instructions.
 10. **A demonstrated exploit chain drove an LLM through a malicious MCP server to code execution, remote access and credential theft on the client host.** Radosevich & Halloran 2025 (arXiv:2504.03767). The Atlas server has no write, shell or network tools.
-11. **Of 640 internet-facing production MCP servers, 91.8% lacked OAuth authentication and 687 tool instances exposed unrestricted shell execution.** Padilla 2026 (arXiv:2608.00150). No hosted, internet-facing Atlas endpoint; the published fleet stays static files.
+11. **Of 414 internet-facing MCP servers dynamically audited, 91.8% lacked OAuth authentication, and across 640 confirmed production servers 687 tool instances exposed shell execution without access controls.** Padilla 2026 (arXiv:2608.00150). No hosted, internet-facing Atlas endpoint; the published fleet stays static files.
 
 ### Persona, voice and trust
 
@@ -50,4 +56,4 @@ Verification (Step 4, 2026-09-26; receipts kept with the coordinator's tools, ou
 28. **Developers anchored searches on limited and misleading cues that sent them down failed searches.** Ko et al. 2006 (DOI:10.1109/TSE.2006.116). A precomputed map removes guessing at names to search for.
 29. **Professional developers spent about 58% of their time on program comprehension.** Xia et al. 2018 (DOI:10.1109/TSE.2017.2734091). Faster structural answers act on the largest share of the working day.
 30. **Programmers using LLM coding assistants reported inaccuracies and a lack of contextual awareness among the assistants' main limitations.** Akhoroz & Yildirim 2025 (arXiv:2503.16508). The sidecar supplies that structure on request.
-31. **In 11,579 real AI-assisted IDE sessions, developers managed the collaboration by injecting context by hand.** Tang et al. 2026 (arXiv:2604.00436). The sidecar replaces hand-supplied architectural context with a query.
+31. **In 11,579 real AI-assisted IDE sessions, developers actively managed the collaboration, externalizing plans and negotiating the assistant's autonomy through context injection and behavioral constraints.** Tang et al. 2026 (arXiv:2604.00436). The sidecar lets an agent query for architectural context instead of being handed it.

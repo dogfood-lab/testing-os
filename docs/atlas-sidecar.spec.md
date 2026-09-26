@@ -61,7 +61,7 @@ Every answer is capped: 8 KB of JSON by default, and up to 64 KB when the asker 
 ### Safety
 
 - **Read-only.** No tool writes the repository. `atlas_refresh` writes only to a cache outside it. The fleet test's "the checkout is as it was" assertion runs against every tool.
-- **No network.** No model inside. It never listens on a port: stdio only. (Padilla 2026: 91.8% of 640 internet-facing MCP servers lacked OAuth authentication.)
+- **No network.** No model inside. It never listens on a port: stdio only. (Padilla 2026: of 414 internet-facing MCP servers dynamically audited, 91.8% lacked OAuth authentication.)
 - **Commands.** It runs only git read commands (`rev-parse`, `status`, `diff --name-only`) and the engine.
 - **Repository text is data.** Strings taken from the repository are returned as length-capped data fields. Tool names and descriptions are static and never carry repository text. (Hou et al. 2025; Radosevich & Halloran 2025.)
 
