@@ -588,6 +588,11 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
     ...(workedIn.size > 0 ? { workedIn: [...workedIn].sort() } : {}),
     ...(testScripts.length > 0 ? { testScripts } : {}),
     ...(tests.length > 0 ? { tests: tests.map(({ paths, ...fields }) => fields) } : {}),
+    // Read by adapter/artifact.js, which carries neither: the test files each
+    // named runner runs, and every path a step executes, before the list
+    // kept on the door is cut to RUNS_RECORDED.
+    ...(tests.some((run) => run.runner != null) ? { testPaths: tests.filter((run) => run.runner != null).map((run) => ({ runner: run.runner, paths: run.paths })) } : {}),
+    ranPaths: [...new Set([...runs.values()].filter((run) => run.runKind !== 'checks' && !run.built).map((run) => run.path))].sort(),
     // Read by index.js markUnshipped, then dropped.
     publishedCrates: [sends, ...[...gates.values()].map((entry) => entry.sends)].flatMap((scope) => scope.crates),
   };

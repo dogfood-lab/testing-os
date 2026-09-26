@@ -2,6 +2,7 @@ import { commandLines } from '../core/commands.js';
 import { loadsManifest } from '../core/languages.js';
 import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
 import { ENGINE } from './engine.js';
+import { isNamedTest, testReachOf } from './test-reach.js';
 import { roleFor } from './templates.js';
 
 const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
@@ -211,6 +212,41 @@ function testReach(mapped) {
   return { testFiles: tests.length + inside.length, testedBy, throughSpawn, testedInside, testedByScript };
 }
 
+/**
+ * What the workflows' tests do, from every path their steps run rather than
+ * the list each door keeps: for each part, the runners whose tests reach it
+ * or sit in it, and the test files, by name, that no workflow runs. A test
+ * run by a directory or glob a step hands its runner is run.
+ */
+function ciTests(mapped, listed) {
+  const workflows = (mapped.doors ?? []).filter((door) => !door.kind && !door.parseError);
+  const boundaryOf = new Map();
+  for (const boundary of listed.boundaries) for (const file of boundary.files) boundaryOf.set(file.path, boundary.name);
+  const runners = new Map();
+  const credit = (part, runner) => {
+    if (part == null) return;
+    if (!runners.has(part)) runners.set(part, new Set());
+    runners.get(part).add(runner);
+  };
+  for (const door of workflows) {
+    for (const run of door.testPaths ?? []) {
+      const tests = run.paths.filter((path) => !inAtlas(path));
+      for (const path of tests) credit(boundaryOf.get(path), run.runner);
+      const reached = testReachOf(listed, { tests });
+      for (const path of reached.files.keys()) credit(boundaryOf.get(path), run.runner);
+      for (const part of reached.parts.keys()) credit(part, run.runner);
+    }
+  }
+  const ran = workflows.flatMap((door) => door.ranPaths ?? []);
+  const exact = new Set(ran.filter((run) => !run.endsWith('/')));
+  const dirs = [...new Set(ran.filter((run) => run.endsWith('/')))];
+  const files = [...listed.boundaries.flatMap((boundary) => boundary.files), ...listed.overlaps, ...listed.unassigned];
+  // A run of '' is the whole repository, a runner started at its root.
+  const covered = (path) => exact.has(path) || exact.has('') || dirs.some((dir) => path.startsWith(dir));
+  const notRun = files.filter((file) => isNamedTest(file) && !covered(file.path)).map((file) => file.path).sort();
+  return { runners, notRun };
+}
+
 // A boundary file may leave a role out; the role is then derived from the
 // files, the same way init derives the one it writes.
 export function buildArtifact(mapped, commit) {
@@ -256,6 +292,9 @@ export function buildArtifact(mapped, commit) {
     .sort(byPath);
   const unassigned = keep(mapped.unassigned).map(carryFile).sort(byPath);
   const tracked = boundaries.reduce((sum, boundary) => sum + boundary.files.length, 0) + overlaps.length + unassigned.length;
+  const ci = ciTests(mapped, { boundaries, overlaps, unassigned });
+  for (const boundary of boundaries) if (ci.runners.has(boundary.name)) boundary.testRunners = [...ci.runners.get(boundary.name)].sort();
+  const notRun = ci.notRun.filter((path) => !(mapped.collectIgnored ?? []).includes(path));
   return {
     boundaries,
     ...(mapped.collectIgnored?.length > 0 ? { collectIgnored: mapped.collectIgnored.filter((path) => !inAtlas(path)) } : {}),
@@ -274,6 +313,7 @@ export function buildArtifact(mapped, commit) {
     submodules: [...mapped.submodules].sort(),
     symlinks: mapped.symlinks.filter((link) => !inAtlas(link.path)).map((link) => ({ path: link.path, target: link.target })).sort(byPath),
     testFiles: tested.testFiles,
+    ...(notRun.length > 0 ? { testsNotRun: notRun } : {}),
     unassigned,
     ...(mapped.unseen?.length > 0 ? { unseen: mapped.unseen.map(carryUnseen) } : {}),
   };
@@ -293,6 +333,12 @@ function carryFile(file) {
   if (file.noStatements) out.noStatements = true;
   if (file.testsInside) out.testsInside = true;
   if (file.testSuite) out.testSuite = true;
+  // What a test runs as a child process, and which of those it runs by the
+  // name a manifest installs them as: a test reaches them by running them.
+  if ((isTestFile(file.path) || file.testSuite) && file.spawns?.length > 0) {
+    out.spawns = file.spawns.filter((path) => !inAtlas(path));
+    if (file.spawnsInstalled?.length > 0) out.spawnsInstalled = file.spawnsInstalled.filter((path) => !inAtlas(path));
+  }
   if (file.reexportsOnly) out.reexportsOnly = true;
   if (file.buildScript) out.buildScript = true;
   // The root of the library a Rust binary uses from its own package.
