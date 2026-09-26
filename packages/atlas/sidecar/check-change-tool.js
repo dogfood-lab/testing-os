@@ -1,6 +1,8 @@
 import { createHash } from 'node:crypto';
 import { posix } from 'node:path';
+import { isCodePath } from '../core/languages.js';
 import { isOwnTest, isTestFile } from '../core/landings.js';
+import { isTest, testReachOf } from '../adapter/test-reach.js';
 import { storedBytes, textAttributes } from '../core/text.js';
 import { basisOf, byBasis, group } from './answer.js';
 import { mapHashes } from './freshness.js';
@@ -359,6 +361,31 @@ export function checkChangeAnswer(snapshot, repo, args) {
   if (tests.length > 0) facts.push(group('tests', 'parsed', tests, { grain: 'file' }));
   if (namedTests.length > 0) facts.push(group('tests', 'weak', namedTests, { grain: 'file' }));
 
+  // The test-gap facts for each changed code file (docs/atlas-test-gaps.spec.md):
+  // what reaches it, as the map read it, or, when no test does in the map
+  // or through the change, the failure paths it holds as it is now.
+  const mapReach = testReachOf(snapshot.structure);
+  const reachedNow = (path) => {
+    const seen = new Set([path]);
+    const queue = [path];
+    for (let at = 0; at < queue.length; at += 1) {
+      for (const importer of importers.get(queue[at]) ?? []) {
+        if (isTestFile(importer)) return true;
+        if (!seen.has(importer)) {
+          seen.add(importer);
+          queue.push(importer);
+        }
+      }
+    }
+    return false;
+  };
+  const code = subjects.filter((path) => isCodePath(path) && !isTest({ path }));
+  const testReach = code.filter((path) => mapReach.files.has(path)).map((path) => ({ item: { path, ...mapReach.files.get(path) }, basis: mapReach.files.get(path).basis }));
+  facts.push(...byBasis('testReach', testReach, { grain: 'file' }));
+  const unreached = code.filter((path) => !mapReach.files.has(path) && !reachedNow(path))
+    .map((path) => ({ path, failurePaths: nowReadings.get(path)?.failurePaths ?? ctx.fileOf.get(path)?.failurePaths ?? [] }));
+  if (unreached.length > 0) facts.push(group('noTestReaches', 'parsed', unreached, { grain: 'file' }));
+
   // The doors that run a changed file, run a file that imports one, or pass
   // through the part of one.
   const readable = ctx.doors.filter((door) => !door.parseError);
@@ -422,7 +449,7 @@ export function checkChangeAnswer(snapshot, repo, args) {
     fullRefresh: { needed: false, because: [] },
     regenerate: { needed: regenerate.length > 0, because: regenerate, ...(alsoStale.length > 0 ? { alsoStale } : {}) },
   };
-  const sentences = checkSentences(ctx, { live, subjects, tests, namedTests, runs, through, passing, partEdgesAdded, partEdgesRemoved, unassigned, writes, reads, regenerate, alsoStale, unresolvedChanges });
+  const sentences = checkSentences(ctx, { live, subjects, tests, namedTests, unreached, runs, through, passing, partEdgesAdded, partEdgesRemoved, unassigned, writes, reads, regenerate, alsoStale, unresolvedChanges });
   return {
     ok: true,
     answer: { question, changed: listed, verdict, ...(unresolvedChanges.length > 0 ? { unresolvedChanges } : {}), facts, cannotSee },
@@ -456,6 +483,10 @@ function checkSentences(ctx, facts) {
   if (facts.tests.length > 0) out.push(`Atlas: ${facts.tests.length === 1 ? '1 test reaches' : `${facts.tests.length} tests reach`} the change through imports: ${named(facts.tests)}.`);
   else out.push('Atlas: no test reaches the change through imports.');
   if (facts.namedTests.length > 0) out.push(`Atlas: ${named(facts.namedTests)} ${facts.namedTests.length === 1 ? 'is' : 'are'} named for a changed file, a guess from the name (weak).`);
+  for (const entry of facts.unreached) {
+    const sites = entry.failurePaths.length;
+    out.push(`Atlas: no test imports or runs ${entry.path}${sites > 0 ? `; it holds ${sites === 1 ? '1 failure path' : `${sites} failure paths`} as it is now` : ''}.`);
+  }
   for (const entry of facts.runs) out.push(`Atlas: ${entry.door} runs ${entry.file}.`);
   for (const entry of facts.through) out.push(`Atlas: ${entry.door} reaches the change through ${entry.through}.`);
   const passing = [...new Set(facts.passing.map((entry) => entry.item.door))];

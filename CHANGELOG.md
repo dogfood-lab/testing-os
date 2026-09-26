@@ -10,9 +10,42 @@ All notable changes to `testing-os` are documented here. The format follows [Kee
   - `through`: the package scripts, shell scripts, makefile targets and local reusable workflows or composite actions the chain passed on the way (`npm run verify` then `npm test`, roll's shape);
   - where it runs, the configuration it read, whether it collects coverage and writes JUnit results, and how many test files it runs.
 
-  Coverage is read from the runner's flag, a c8, nyc or `coverage run` wrapper, the runner's own configuration (Vitest `coverage.enabled`, Jest `collectCoverage`, pytest `addopts`) and a step's `NODE_V8_COVERAGE`; JUnit from a reporter on the line, in the configuration (nested `['junit', { … }]` form included) or in `NODE_OPTIONS`. A step that runs tests through a runner Atlas cannot name, or through a script it reads no further, has `runner: null`: not attributed, never absent. This is the first step of the test-gap slice (`docs/atlas-test-gaps.spec.md`).
+  Coverage is read from the runner's flag, a c8, nyc or `coverage run` wrapper, the runner's own configuration (Vitest `coverage.enabled`, Jest `collectCoverage`, pytest `addopts`) and a step's `NODE_V8_COVERAGE`; JUnit from a reporter on the line, in the configuration (nested `['junit', { … }]` form included) or in `NODE_OPTIONS`. A step that runs tests through a runner Atlas cannot name, or through a script it reads no further, has `runner: null`: not attributed, never absent. A step named for tests that runs nothing but the shell's own tools, an audit, a linter or a type-check (it greps for placeholder tests, or checks a stated test count) runs no tests and is left out. This is the first step of the test-gap slice (`docs/atlas-test-gaps.spec.md`).
 - **What tests reach, with the basis of each fact.** A test reaches a file by importing it, directly or through the import graph (`imports`, parsed); by running it as a child process by its path (`runs`, parsed) or by the command a manifest installs it as (`runs`, declared); or by holding tests a runner finds, as cargo test finds a `#[cfg(test)]` module (`discovers`, parsed). A mocked import is still an import, and a test-shaped file among fixtures is data that reaches nothing. `adapter/test-reach.js` reads these facts from any map, at the file and the part level, so an answer can say "no test imports or runs this"; "untested" is kept for measured coverage. Each test's child processes are carried as `spawns`, and the installed commands among them as `spawnsInstalled`.
-- **The runners CI runs for each part, and the tests no workflow runs.** Each part gains `testRunners`, the runners whose CI tests sit in it or reach it, and the map gains `testsNotRun`, the test files no workflow runs. Both come from every path the steps run, not from the 200 runs each door keeps, so a repository past that limit still gets them.
+- **The runners CI runs for each part, and the tests no workflow runs.** Each part gains `testRunners`, the runners whose CI tests sit in it or reach it, and the map gains `testsNotRun`, the test files no workflow runs. Both come from every path the steps run, not from the 200 runs each door keeps, so a repository past that limit still gets them. A test file that a runner named from its command alone (Playwright, tox) may run is not listed, since Atlas lists none of that runner's files.
+- **`atlas gaps [path]`: what no test reaches, and what should.** For the repository, a part, a directory or a file, from the committed map:
+  - what CI runs and the runner behind each run;
+  - which parts and files tests reach, and how;
+  - the code gaps, ranked: on the path of a door that ships or runs in CI first, then fan-in, changes and failure paths. Five are shown, with a count of the rest.
+  - apart from the ranked gaps, the test files no workflow runs, coverage CI does not collect, and installed commands nothing runs.
+
+  Facts come first. Each suggestion after them names its rule, the facts that triggered it and the source of what it suggests (the house standard, then fleet practice, then outside documentation). `--json` gives the same answer as fields. It never maps, writes nothing and uses no network. Atlas points and the agent writes: no rule writes a test.
+- **The rules, each held to the precision bar over the 79 fleet repositories** (`docs/atlas-test-gaps.fleet-check.md`):
+  - G6: a code file no test reaches that holds failure paths (`catch` and `throw`, `except` and `raise`, a Rust `Err`). It suggests tests that make them run, with the runner for the file's language.
+  - G4: CI runs a language's tests and collects no coverage. It suggests the studio's coverage recipe.
+  - G3: a command the repository installs that no test runs and no workflow starts. It suggests an end-to-end test that runs it as a person does, one finding per entry however many names install it.
+  - G2: test files no workflow runs, grouped by the runner they are written for. It says how that runner's own discovery would collect them, or to quote a `**` glob the shell reads as `*`.
+  - G1: a code part no test reaches, of a kind no runner here tests. It suggests a first test of the part's entry.
+
+  Each part gets one kind of code: MCP server, Tauri app, TypeScript monorepo, Node, Python, Rust, Godot, VS Code extension, data or site. A file of another language is tested as its own. A rule stays silent where Atlas cannot see enough: G2 and G4 while a test step's runner is not attributed, G2 for a file a runner's own configuration leaves out, and every rule for a file a test's string spells the name of. G2 and G1 fired fewer than 20 times and are provisional.
+- **`atlas_test_gaps`, a seventh sidecar tool.** The same reading as `atlas gaps`: facts in groups of one basis, then the suggestions apart. What it cannot see includes each test step whose runner it cannot name.
+- **Test-gap facts in `atlas_check_change`.** Each changed code file carries how tests reach it. A file no test reaches carries the failure paths it holds as it is now.
+- **More of what tests reach.**
+  - A test's strings, and a smoke script's words, are read for the code files they spell by path or by a name only one file has. Such a file is reached by a fourth, weakest fact, `names` (text): Atlas cannot tell whether the test runs it. This is facet's shape, where conftest helpers run tools by name.
+  - The arguments after `npm test --`, `pnpm test` and `yarn test` reach the test script.
+  - Mocha specs taken from a build's output run their sources, and `--require` and `--file` are setup files.
+  - A Python import of a name from a package reaches the submodule of that name.
+  - A `.js` path a command runs is the TypeScript source beside it when no `.js` is tracked.
+  - A test that starts an MCP server over stdio runs it.
+  - Rust's `env!("CARGO_BIN_EXE_name")` runs the command.
+  - A dynamic import over a constant list, `promisify(execFile)`, child_process `fork`, helpers that hand spawn a program and its arguments, and an environment variable's default for the program are all read.
+  - A step named for a suite runs tests; one named for a log does not. A file named for smoke is a test.
+- **New in `structure.json`:**
+  - each test file's `testFramework`, from what it imports;
+  - `names`, the files a test's strings spell;
+  - `failurePaths` on code files;
+  - `ran` on a test step Atlas cannot attribute, at most 50 files;
+  - `testsLeftOut`, the test files a runner's own configuration leaves out on purpose (Vitest's `exclude`), listed apart from those no workflow runs.
 
 ### Fixed
 - **Vitest's `--dir`.** `vitest run --dir src` looks for tests under `src/` alone, as Vitest does. The flag was ignored, so tests outside that directory read as run.

@@ -27,10 +27,10 @@ after(() => {
   while (roots.length > 0) rmSync(roots.pop(), { recursive: true, force: true });
 });
 
-function structureOf(fixture) {
+function structureOf(fixture, parts = PARTS) {
   const root = makeRepo(resolve(FIXTURES, fixture));
   roots.push(root);
-  return buildArtifact(mapRepository({ repoPath: root, boundaries: PARTS }), '0'.repeat(40));
+  return buildArtifact(mapRepository({ repoPath: root, boundaries: parts }), '0'.repeat(40));
 }
 
 describe('reach, with its basis', () => {
@@ -51,6 +51,13 @@ describe('reach, with its basis', () => {
     assert.deepEqual(reach.files.get('bin/cli.js'), { kind: 'runs', basis: 'declared', test: 'test/cli.test.js' });
   });
 
+  it('keeps the run of a file a test also imports, apart from its stronger fact', () => {
+    assert.deepEqual(reach.files.get('bin/both.js'), { kind: 'imports', basis: 'parsed', test: 'test/both.test.js' });
+    assert.deepEqual(reach.ran.get('bin/both.js'), { kind: 'runs', basis: 'parsed', test: 'test/both.test.js' });
+    assert.deepEqual(reach.ran.get('bin/cli.js'), { kind: 'runs', basis: 'declared', test: 'test/cli.test.js' });
+    assert.equal(reach.ran.has('src/direct.js'), false);
+  });
+
   it('says a file holding the tests a runner finds is reached by discovery', () => {
     assert.deepEqual(reach.files.get('crate/src/lib.rs'), { kind: 'discovers', basis: 'parsed' });
   });
@@ -66,7 +73,7 @@ describe('reach, with its basis', () => {
 
   it('says how much of each code part is reached, and how', () => {
     assert.deepEqual(reach.parts.get('src'), { kind: 'imports', basis: 'parsed', reached: 4, files: 5 });
-    assert.deepEqual(reach.parts.get('bin'), { kind: 'runs', basis: 'parsed', reached: 2, files: 2 });
+    assert.deepEqual(reach.parts.get('bin'), { kind: 'imports', basis: 'parsed', reached: 3, files: 3 });
     assert.deepEqual(reach.parts.get('crate'), { kind: 'discovers', basis: 'parsed', reached: 1, files: 1 });
     assert.equal(reach.parts.has('tests'), false);
   });
@@ -87,5 +94,85 @@ describe('test files no workflow runs', () => {
 
   it('lists none when every test file runs', () => {
     assert.equal(structureOf('reach-kinds').testsNotRun, undefined);
+  });
+
+  // fixtures/atlas/runners-named: Atlas lists none of the files a runner it
+  // names from the command alone runs (vocal-synth-engine and world-forge
+  // run Playwright over a directory its configuration names).
+  it('lists no test file a runner whose files Atlas cannot list may run', () => {
+    assert.deepEqual(structureOf('runners-named', [
+      { name: 'src', globs: ['src/**'], role: 'code' },
+      { name: 'tests', globs: ['tests/**', 'e2e/**'], role: 'test' },
+    ]).testsNotRun, ['src/sum.test.ts']);
+  });
+});
+
+// fixtures/atlas/reach-shapes: more ways the fleet's tests reach the file
+// they test (see the fixture's README).
+describe('the ways the fleet\'s tests reach a file', () => {
+  const reach = testReachOf(structureOf('reach-shapes', [
+    { name: 'scripts', globs: ['scripts/**'], role: 'code' },
+    { name: 'tools', globs: ['tools/**'], role: 'code' },
+    { name: 'npm', globs: ['npm/**'], role: 'code' },
+    { name: 'test', globs: ['test/**'], role: 'test' },
+  ]));
+
+  it('reads an import of each path a test loops over from a table of them (style-dataset-lab)', () => {
+    assert.equal(reach.files.get('scripts/alpha.js')?.kind, 'imports');
+    assert.equal(reach.files.get('scripts/beta.js')?.kind, 'imports');
+  });
+
+  it('reads a fork as a run (testing-os)', () => {
+    assert.equal(reach.files.get('scripts/worker.mjs')?.kind, 'runs');
+  });
+
+  it('follows helpers that hand Node an argument list (ai-rpg-engine, mcp-arcade-cabinets)', () => {
+    assert.equal(reach.files.get('scripts/check.mjs')?.kind, 'runs');
+    assert.equal(reach.files.get('scripts/sweep.mjs')?.kind, 'runs');
+  });
+
+  it('reads the program an environment variable names, or its default (style-dataset-lab)', () => {
+    assert.equal(reach.files.get('tools/gen.py')?.kind, 'runs');
+  });
+
+  it('reads a file a test step runs with no runner Atlas names as run by that step (armature)', () => {
+    assert.deepEqual(reach.files.get('npm/bin/launcher.mjs'), { kind: 'runs', basis: 'parsed', step: '.github/workflows/ci.yml › launcher › Launcher self-test' });
+  });
+});
+
+// fixtures/atlas/reach-names: tests that name the file they reach in a
+// string, by ways the map cannot follow to an import or a run (see the
+// fixture's README). Atlas cannot tell whether such a test runs the file, so
+// the file is not one no test reaches: it is named, by text.
+describe('a test that names a file in a string', () => {
+  const structure = structureOf('reach-names', [
+    { name: 'scripts', globs: ['scripts/**'], role: 'code' },
+    { name: 'tools', globs: ['tools/**'], role: 'code' },
+    { name: 'pair', globs: ['a/**', 'b/**'], role: 'code' },
+    { name: 'tests', globs: ['test/**', 'tests/**'], role: 'test' },
+  ]);
+  const files = new Map([...structure.boundaries.flatMap((boundary) => boundary.files), ...structure.unassigned].map((file) => [file.path, file]));
+  const reach = testReachOf(structure);
+
+  it('records the code files each test names, by their path or by a name only one file has', () => {
+    assert.deepEqual(files.get('tests/test_tools.py').names, ['tools/tool_a.py']);
+    assert.deepEqual(files.get('test/gen.test.mjs').names, ['scripts/gen.mjs']);
+    assert.deepEqual(files.get('scripts/pod_smoke.sh').names, ['tools/tool_c.py']);
+    assert.equal(files.get('tests/test_runs.py').names, undefined);
+  });
+
+  it('says a named file is named by the test, by text, and what it imports with it', () => {
+    assert.deepEqual(reach.files.get('tools/tool_a.py'), { kind: 'names', basis: 'text', test: 'tests/test_tools.py' });
+    assert.deepEqual(reach.files.get('scripts/gen.mjs'), { kind: 'names', basis: 'text', test: 'test/gen.test.mjs' });
+    assert.deepEqual(reach.files.get('scripts/lib/util.mjs'), { kind: 'names', basis: 'text', test: 'test/gen.test.mjs', through: ['scripts/gen.mjs'] });
+    assert.deepEqual(reach.files.get('tools/tool_c.py'), { kind: 'names', basis: 'text', test: 'scripts/pod_smoke.sh' });
+    assert.deepEqual(reach.parts.get('tools'), { kind: 'names', basis: 'text', reached: 2, files: 3 });
+  });
+
+  it('names nothing a test does not name, or names by a name two files have', () => {
+    assert.equal(reach.files.has('tools/tool_b.py'), false);
+    assert.equal(reach.files.has('a/run.py'), false);
+    assert.equal(reach.files.has('b/run.py'), false);
+    assert.equal(reach.parts.has('pair'), false);
   });
 });

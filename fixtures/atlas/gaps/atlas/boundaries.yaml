@@ -1,0 +1,28 @@
+boundaries:
+  - name: src
+    globs:
+      - src/**
+    role: code
+  - name: lib
+    globs:
+      - lib/**
+    role: code
+  - name: tools
+    globs:
+      - tools/**
+    role: code
+  - name: bin
+    globs:
+      - bin/**
+    role: code
+  - name: test
+    globs:
+      - test/**
+      - e2e/**
+    role: test
+  - name: config
+    globs:
+      - package.json
+      - README.md
+      - .github/**
+    role: config

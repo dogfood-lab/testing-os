@@ -417,6 +417,9 @@ export function vitestTargets(repo, cwd, { config, root, dir: lookIn = null }) {
   let base = rootDir;
   let include = VITEST_INCLUDE;
   let exclude = VITEST_EXCLUDE;
+  // The patterns the config itself excludes, apart from vitest's defaults:
+  // the files it leaves out on purpose.
+  let ownExclude = [];
   let coverage = false;
   let junit = false;
   let projects = null;
@@ -432,6 +435,7 @@ export function vitestTargets(repo, cwd, { config, root, dir: lookIn = null }) {
       if (includes && includes.values.length > 0) include = includes.values;
       const excludes = read('exclude');
       if (excludes) exclude = excludes.complete ? excludes.values : [...VITEST_EXCLUDE, ...excludes.values];
+      if (excludes) ownExclude = excludes.values.filter((pattern) => !VITEST_EXCLUDE.includes(pattern));
       const dir = read('dir');
       if (dir?.values.length === 1 && root == null) base = join(cwd, dir.values[0]) ?? base;
       const covered = keys.has('coverage') ? objectAt(src, keys.get('coverage')) : -1;
@@ -449,9 +453,9 @@ export function vitestTargets(repo, cwd, { config, root, dir: lookIn = null }) {
   if (lookIn != null && rootDir != null) base = join(rootDir, lookIn) ?? base;
   if (projects) {
     const from = posix.dirname(found) === '.' ? '' : posix.dirname(found);
-    return { config: found, base, include, exclude, coverage, junit, projects: vitestProjects(repo, from, projects) };
+    return { config: found, base, include, exclude, ownExclude, coverage, junit, projects: vitestProjects(repo, from, projects) };
   }
-  return { config: found, base, include, exclude, coverage, junit };
+  return { config: found, base, include, exclude, ownExclude, coverage, junit };
 }
 
 // The directories (with a config file, when one is named) the projects of a

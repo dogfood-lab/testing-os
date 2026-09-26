@@ -8,7 +8,8 @@ An Atlas fixture for the three ways a test reaches code, each with its basis:
   still an import.
 - `bin/tool.js` is run by a test as a child process by its path (`runs`,
   parsed), and `bin/cli.js` by the command name package.json installs it as
-  (`runs`, declared).
+  (`runs`, declared). `bin/both.js` a test both imports and runs: imports is
+  the stronger fact, and the run is still known.
 - `crate/src/lib.rs` holds its own unit tests, which cargo test finds
   (`discovers`, parsed).
 - `src/unreached.js` no test imports or runs.

@@ -82,6 +82,25 @@ describe('a change the scoped reading settles', () => {
     assert.match(content[0].text, /^Atlas: atlas check passes on this change as it stands; regenerating the map keeps the hashes of the changed files current\.$/m);
   });
 
+  it('carries what reaches each changed code file, as atlas_test_gaps reads it from the map', async () => {
+    const root = fresh();
+    appendFileSync(join(root, 'lib', 'core.js'), 'export const version = 2;\n');
+    const { structuredContent } = await check(root);
+    const reach = structuredContent.answer.facts.find((entry) => entry.fact === 'testReach');
+    assert.equal(reach.basis, 'parsed');
+    assert.deepEqual(reach.items.map((item) => [item.path, item.kind, item.test]), [['lib/core.js', 'imports', 'app/main.test.js']]);
+  });
+
+  it('names the failure paths a changed file no test reaches holds as it is now', async () => {
+    const root = fresh();
+    appendFileSync(join(root, 'tools', 'report.js'), "export function safe(text) {\n  try {\n    return JSON.parse(text);\n  } catch {\n    throw new Error('not JSON');\n  }\n}\n");
+    const { structuredContent, content } = await check(root);
+    const [entry] = items(structuredContent.answer, 'noTestReaches');
+    assert.equal(entry.path, 'tools/report.js');
+    assert.deepEqual(entry.failurePaths.map((site) => [site.kind, site.in]), [['catch', 'safe'], ['throw', 'safe']]);
+    assert.match(content[0].text, /^Atlas: no test imports or runs tools\/report\.js; it holds 2 failure paths as it is now\.$/m);
+  });
+
   it('finds a writer or reader gained, read from the file as it is and as the map read it', async () => {
     const root = fresh();
     appendFileSync(join(root, 'app', 'main.js'), "import { readFileSync } from 'node:fs';\nexport const state = () => readFileSync('data/state.json', 'utf8');\n");
@@ -151,5 +170,22 @@ describe('the time atlas_check_change takes on 20 changed files of this reposito
     const { answer } = result.structuredContent;
     assert.equal(answer.changedTotal ?? answer.changed.length, 20);
     assert.equal(answer.verdict.fullRefresh.needed, false);
+  });
+});
+
+// fixtures/atlas/reach-names: a changed file a test names in a string is
+// given with the test that names it, by text, and never as one no test
+// reaches.
+describe('a change to a file a test names in a string', () => {
+  it('gives the named reach, and no failure paths no test reaches', async () => {
+    const root = mappedRepository(resolve(REPO_ROOT, 'fixtures/atlas/reach-names'), { prefix: 'atlas-check-named-' });
+    scratch.push(root);
+    appendFileSync(join(root, 'tools', 'tool_a.py'), "\n\ndef strict(value):\n    if value is None:\n        raise ValueError('no value')\n    return value\n");
+    const { structuredContent, content } = await check(root);
+    const reach = structuredContent.answer.facts.find((entry) => entry.fact === 'testReach');
+    assert.equal(reach.basis, 'text');
+    assert.deepEqual(reach.items.map((item) => [item.path, item.kind, item.test]), [['tools/tool_a.py', 'names', 'tests/test_tools.py']]);
+    assert.deepEqual(items(structuredContent.answer, 'noTestReaches'), []);
+    assert.doesNotMatch(content[0].text, /no test imports or runs tools\/tool_a\.py/);
   });
 });

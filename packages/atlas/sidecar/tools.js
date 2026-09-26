@@ -15,6 +15,7 @@ import { refreshAnswer, REFRESH_ANSWER } from './refresh-tool.js';
 import { reread, rereadFacts } from './reread.js';
 import { outputSchema, problems } from './schema.js';
 import { SIZE_NOTE, SIZE_PROPERTIES, sizeAnswer } from './size.js';
+import { testGapsAnswer } from './test-gaps-tool.js';
 
 /**
  * The sidecar's tools. Names, titles, descriptions and schemas are static
@@ -79,6 +80,31 @@ function answerSchema(question, extra = {}) {
 }
 
 const EXPLAIN_ANSWER = answerSchema(QUESTION_PATH, { found: FOUND });
+
+// A test-gaps question may be about the whole repository.
+const GAPS_ANSWER = answerSchema({
+  type: 'object',
+  properties: { path: { type: ['string', 'null'] } },
+  required: ['path'],
+}, {
+  found: { ...FOUND, properties: { ...FOUND.properties, kind: { type: 'string', enum: ['repository', 'file', 'directory', 'part'] } } },
+  suggestions: {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        rule: { type: 'string', enum: ['G1', 'G2', 'G3', 'G4', 'G6'] },
+        path: { type: 'string' },
+        part: { type: 'string' },
+        kind: { type: 'string' },
+        facts: { type: 'object' },
+        suggest: { type: 'object', properties: { runner: { type: 'string' }, text: { type: 'string' } }, required: ['text'] },
+        source: { type: ['object', 'null'] },
+      },
+      required: ['rule', 'facts', 'suggest', 'source'],
+    },
+  },
+});
 
 // A ref git reads: a commit, a branch, a tag, HEAD~3; never an option.
 const REF = '^[A-Za-z0-9._/~^@{}][A-Za-z0-9._/~^@{}-]*$';
@@ -154,6 +180,31 @@ const DEFINED = [
       required: ['paths'],
     })),
     answer: (snapshot, repo, args) => reachAnswer(snapshot, args.paths),
+  },
+  {
+    name: 'atlas_test_gaps',
+    title: 'What no test reaches, and what should',
+    description: 'What no test imports or runs in this repository, a part, a directory or a file, from its Atlas map, and '
+      + 'what should reach it: the test runs CI makes and the runner behind each, which parts and files tests reach and how, '
+      + 'the code gaps ranked (on a shipping door\'s path, then fan-in, changes and failure paths; five shown with a count '
+      + 'of the rest), and apart the test files no workflow runs, coverage not collected and installed commands nothing runs. '
+      + 'Facts come first; each suggestion after them names its rule, the facts that triggered it and the source of what it '
+      + 'suggests. Reach is not proof a test exercises a file. Give a path from the repository root or a part name, or none '
+      + 'for the whole repository.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        path: {
+          type: 'string',
+          minLength: 1,
+          maxLength: 1024,
+          description: 'A file or directory, from the repository root, or the name of a part; left out, the whole repository.',
+        },
+      },
+      additionalProperties: false,
+    },
+    outputSchema: outputSchema(PROVENANCE_SCHEMA, GAPS_ANSWER),
+    answer: (snapshot, repo, args) => testGapsAnswer(snapshot, repo, args.path),
   },
   {
     name: 'atlas_changes',
@@ -268,7 +319,7 @@ const TOOLS = DEFINED.map((tool) => (tool.refresh ? tool : {
 
 // The order the specification lists the questions in, by how often the
 // evidence says each is asked: reachability first.
-const ORDER = ['atlas_reach', 'atlas_explain', 'atlas_overview', 'atlas_check_change', 'atlas_changes', 'atlas_refresh'];
+const ORDER = ['atlas_reach', 'atlas_explain', 'atlas_overview', 'atlas_check_change', 'atlas_test_gaps', 'atlas_changes', 'atlas_refresh'];
 
 /**
  * The tools of one server process, with the refresher whose snapshots they

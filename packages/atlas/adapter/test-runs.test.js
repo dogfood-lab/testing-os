@@ -23,6 +23,14 @@ function structureOf(fixture) {
   return buildArtifact(mapRepository({ repoPath: root, boundaries: [{ name: 'all', globs: ['**'], role: 'code' }] }), '0'.repeat(40));
 }
 
+describe('a test file the runner\'s configuration leaves out', () => {
+  it('is run by no workflow, and the map names the configuration that leaves it out', () => {
+    const structure = structureOf('runners-vitest-exclude');
+    assert.deepEqual(structure.testsNotRun, ['test/smoke/corpus.test.ts']);
+    assert.deepEqual(structure.testsLeftOut, [{ path: 'test/smoke/corpus.test.ts', config: 'vitest.config.ts' }]);
+  });
+});
+
 describe('test runs in structure.json', () => {
   it('carries the runner, the chain, and what the run collects', () => {
     const ci = structureOf('runners-coverage').doors.find((door) => door.file === '.github/workflows/ci.yml');
@@ -36,7 +44,9 @@ describe('test runs in structure.json', () => {
     assert.deepEqual(ci.tests, [
       { job: 'checks', step: 'Run tests', runner: null, through: ['make check'] },
       { job: 'checks', step: '3', runner: null, through: ['npm test'] },
-      { job: 'checks', step: 'Integration tests', runner: null, through: ['scripts/ci.sh', 'scripts/run-suite.sh'] },
+      { job: 'checks', step: 'Integration tests', runner: null, through: ['scripts/ci.sh', 'scripts/run-suite.sh'], ran: ['scripts/ci.sh', 'scripts/run-suite.sh'] },
+      { job: 'checks', step: 'Headless suite', runner: null },
+      { job: 'checks', step: 'Smoke-test the binary', runner: null },
     ]);
   });
 });

@@ -1,0 +1,21 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test with coverage
+        run: npm test -- --coverage
+  pnpm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test with coverage
+        run: pnpm test --coverage
+  yarn:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test with coverage
+        run: yarn test --coverage

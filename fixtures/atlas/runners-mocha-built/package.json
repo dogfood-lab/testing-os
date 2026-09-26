@@ -1,0 +1,9 @@
+{
+  "name": "runners-mocha-built",
+  "private": true,
+  "scripts": {
+    "compile:test": "tsc -p ./tsconfig.test.json",
+    "pretest": "npm run compile:test",
+    "test": "mocha --require test/register-stub.js dist-test/test/**/*.test.js --timeout 10000"
+  }
+}

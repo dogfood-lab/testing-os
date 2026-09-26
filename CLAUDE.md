@@ -17,7 +17,7 @@ Eight workspace packages, all `@dogfood-lab/*`:
 | `report` | Submission builder | JS |
 | `portfolio` | Cross-repo portfolio generator | JS |
 | `dogfood-swarm` | 10-phase parallel-agent protocol + SQLite control plane + `swarm` bin | JS |
-| `atlas` | Repository mapper: reads doors, parts, imports, landing places and history, writes the page (`atlas/README.md` + `page.json`), checks the map in CI, and answers agents from it over MCP (`atlas mcp`); no sibling dependencies, published as a standalone binary | JS |
+| `atlas` | Repository mapper: reads doors, parts, imports, landing places and history, writes the page (`atlas/README.md` + `page.json`), checks the map in CI, answers agents from it over MCP (`atlas mcp`), and says what no test reaches and what should (`atlas gaps`); no sibling dependencies, published as a standalone binary | JS |
 
 JS packages use `node --test`. The TS schemas package uses `vitest`. Root `npm test` fans out via `npm test --workspaces --if-present`.
 

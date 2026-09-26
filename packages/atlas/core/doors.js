@@ -5,6 +5,7 @@ import { parse } from 'yaml';
 import { better, cleanDir, commandLines, readCommands, readContainer, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
 import { godotProjects } from './godot.js';
 import { isTestFile } from './landings.js';
+import { runsAProgram } from './step-programs.js';
 import { storedText } from './text.js';
 
 const WORKFLOW = /^\.github\/workflows\/[^/]+\.ya?ml$/;
@@ -470,6 +471,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
       const firstStart = firstDir == null ? { here: false } : placeOf({ here: true, dir: '' }, firstDir, clones, repo, lookup);
       commands.push({ job, step: name, text: step.run, ...(firstStart.here && rawDirs.length === 1 ? { dir: firstStart.dir } : {}), ...held });
       const stepTests = [];
+      const stepRan = new Set();
       const stepEnds = [];
       for (const rawDir of rawDirs) {
         const ownDir = own(rawDir);
@@ -504,6 +506,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
         const named = readCommands(expandEnv(step.run, lookup), dir, repo, platforms, { through: [...jobThrough, ...(step[REACHED_THROUGH] ?? [])], env: written });
         stepTests.push(...named.tests);
         stepEnds.push(...named.ends);
+        for (const entry of named.runs.values()) if (entry.runKind === 'executes' && !entry.built && !entry.directory) stepRan.add(entry.path);
         for (const entry of named.shellMissed) {
           const key = `${entry.base}\0${entry.platform}`;
           const found = missed.get(key) ?? { base: entry.base, files: new Set(), platform: entry.platform, twoStars: false };
@@ -520,12 +523,16 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
         for (const path of named.mentions) mentions.set(`${path}\0${job}`, { path, job });
       }
       for (const run of stepTests) {
-        const { paths, dir, ...fields } = run;
-        tests.push({ job, step: name, ...fields, ...(dir !== '' ? { dir } : {}), paths });
+        const { paths, dir, leftOut, ...fields } = run;
+        tests.push({ job, step: name, ...fields, ...(dir !== '' ? { dir } : {}), paths, ...(leftOut ? { leftOut } : {}) });
       }
       if (stepTests.length === 0 && testShaped(name, stepEnds)) {
         const end = stepEnds.find((entry) => entry.through.some((hop) => TEST_WORD.test(hop))) ?? stepEnds.find((entry) => entry.through.length > 0);
-        tests.push({ job, step: name, runner: null, ...(end ? { through: [...end.through] } : {}) });
+        // The files such a step runs, which its tests are, or run.
+        const ran = [...stepRan].sort().slice(0, STEP_RAN_KEPT);
+        // One that runs only the shell's own tools, an audit, a linter or a
+        // type-check runs no tests, whatever its name (core/step-programs.js).
+        if (ran.length > 0 || end || runsAProgram(step.run)) tests.push({ job, step: name, runner: null, ...(end ? { through: [...end.through] } : {}), ...(ran.length > 0 ? { ran } : {}) });
       }
       jobTexts.push(step.run);
       const released = releaseUploads(expandEnv(step.run, lookup));
@@ -587,11 +594,12 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
     ...(handed.size > 0 ? { handedWrites: [...handed].sort() } : {}),
     ...(workedIn.size > 0 ? { workedIn: [...workedIn].sort() } : {}),
     ...(testScripts.length > 0 ? { testScripts } : {}),
-    ...(tests.length > 0 ? { tests: tests.map(({ paths, ...fields }) => fields) } : {}),
+    ...(tests.length > 0 ? { tests: tests.map(({ paths, leftOut, ...fields }) => fields) } : {}),
     // Read by adapter/artifact.js, which carries neither: the test files each
     // named runner runs, and every path a step executes, before the list
     // kept on the door is cut to RUNS_RECORDED.
     ...(tests.some((run) => run.runner != null) ? { testPaths: tests.filter((run) => run.runner != null).map((run) => ({ runner: run.runner, paths: run.paths })) } : {}),
+    ...(tests.some((run) => run.leftOut) ? { testsLeftOut: tests.flatMap((run) => run.leftOut ?? []) } : {}),
     ranPaths: [...new Set([...runs.values()].filter((run) => run.runKind !== 'checks' && !run.built).map((run) => run.path))].sort(),
     // Read by index.js markUnshipped, then dropped.
     publishedCrates: [sends, ...[...gates.values()].map((entry) => entry.sends)].flatMap((scope) => scope.crates),
@@ -600,11 +608,15 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
 
 // A step says it runs tests by its name, or by a script, file or target the
 // chain passed through before it stopped at a program Atlas does not know
-// (npm test, scripts/test.sh, make test). A step that installs, sets up or
-// reports on tests, or uploads their results, runs none; nor does one whose
-// word is part of a hyphenated name (Dispatch to testing-os).
-const TEST_WORD = /(?:^|[^a-z0-9])(?:unit[ _-]?)?(?:tests?|testing|specs?)(?![-_][a-z0-9])(?:[^a-z0-9]|$)/i;
-const NOT_A_TEST_RUN = /\b(?:install|installs|setup|set up|dependencies|deps|results?|reports?|upload|publish|summary)\b/i;
+// (npm test, scripts/test.sh, make test); a suite is a run of tests too
+// (Headless suite). A step that installs, sets up or reports on tests, or
+// uploads their results or log, runs none; nor does one whose word is part
+// of a hyphenated name (Dispatch to testing-os).
+const TEST_WORD = /(?:^|[^a-z0-9])(?:unit[ _-]?)?(?:tests?|testing|specs?|suites?)(?![-_][a-z0-9])(?:[^a-z0-9]|$)/i;
+// How many of the files a test step with no runner Atlas names runs are
+// kept on it.
+const STEP_RAN_KEPT = 50;
+const NOT_A_TEST_RUN = /\b(?:install|installs|setup|set up|dependencies|deps|results?|reports?|upload|publish|summary|logs?)\b/i;
 
 function testShaped(name, ends) {
   if (TEST_WORD.test(name) && !NOT_A_TEST_RUN.test(name)) return true;

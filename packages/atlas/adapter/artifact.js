@@ -1,7 +1,9 @@
 import { commandLines } from '../core/commands.js';
 import { loadsManifest } from '../core/languages.js';
 import { isOwnTest, isTestFile, isTestMaterial, testedStem } from '../core/landings.js';
+import { isSmokeTest } from '../core/test-names.js';
 import { ENGINE } from './engine.js';
+import { runnerMayRun } from './test-gaps.js';
 import { isNamedTest, testReachOf } from './test-reach.js';
 import { roleFor } from './templates.js';
 
@@ -212,6 +214,28 @@ function testReach(mapped) {
   return { testFiles: tests.length + inside.length, testedBy, throughSpawn, testedInside, testedByScript };
 }
 
+// The frameworks a part's code imports that decide what kind of code it is,
+// and so which test runner a suggestion names (adapter/test-kinds.js): the
+// Model Context Protocol SDK in JavaScript (@modelcontextprotocol/sdk),
+// Python (mcp, fastmcp) or Rust (rmcp); Tauri's API; and the VS Code API.
+const FRAMEWORKS = [
+  { name: 'mcp', test: (specifier) => /^@modelcontextprotocol\/sdk(?:\/|$)|^(?:mcp|fastmcp|rmcp)(?:[.:]|$)/.test(specifier) },
+  { name: 'tauri', test: (specifier) => /^@tauri-apps\/api(?:\/|$)|^tauri(?:::|$)/.test(specifier) },
+  { name: 'vscode', test: (specifier) => specifier === 'vscode' },
+];
+
+function frameworks(files) {
+  const out = new Set();
+  for (const file of files) {
+    if (!Array.isArray(file.imports) || isTestFile(file.path)) continue;
+    for (const site of file.imports) {
+      if (typeof site.specifier !== 'string') continue;
+      for (const framework of FRAMEWORKS) if (framework.test(site.specifier)) out.add(framework.name);
+    }
+  }
+  return [...out].sort();
+}
+
 /**
  * What the workflows' tests do, from every path their steps run rather than
  * the list each door keeps: for each part, the runners whose tests reach it
@@ -232,9 +256,10 @@ function ciTests(mapped, listed) {
     for (const run of door.testPaths ?? []) {
       const tests = run.paths.filter((path) => !inAtlas(path));
       for (const path of tests) credit(boundaryOf.get(path), run.runner);
+      // A file a test only names is not one the runner is known to reach.
       const reached = testReachOf(listed, { tests });
-      for (const path of reached.files.keys()) credit(boundaryOf.get(path), run.runner);
-      for (const part of reached.parts.keys()) credit(part, run.runner);
+      for (const [path, fact] of reached.files) if (fact.kind !== 'names') credit(boundaryOf.get(path), run.runner);
+      for (const [part, fact] of reached.parts) if (fact.kind !== 'names') credit(part, run.runner);
     }
   }
   const ran = workflows.flatMap((door) => door.ranPaths ?? []);
@@ -243,8 +268,18 @@ function ciTests(mapped, listed) {
   const files = [...listed.boundaries.flatMap((boundary) => boundary.files), ...listed.overlaps, ...listed.unassigned];
   // A run of '' is the whole repository, a runner started at its root.
   const covered = (path) => exact.has(path) || exact.has('') || dirs.some((dir) => path.startsWith(dir));
-  const notRun = files.filter((file) => isNamedTest(file) && !covered(file.path)).map((file) => file.path).sort();
-  return { runners, notRun };
+  // A runner Atlas names from its command alone lists none of the files it
+  // runs (Playwright over the directory its configuration names): a test
+  // file it may run is not one no workflow runs.
+  const unlisted = [...new Set(workflows.flatMap((door) => (door.tests ?? []).filter((run) => run.runner != null && run.files == null).map((run) => run.runner)))];
+  const mayRun = (file) => unlisted.some((runner) => runnerMayRun(runner, file.path, file.testFramework ?? null));
+  const notRun = files.filter((file) => isNamedTest(file) && !covered(file.path) && !mayRun(file)).map((file) => file.path).sort();
+  // A test file no workflow runs because a runner's own configuration
+  // excludes it, with that configuration: left out on purpose.
+  const leftOut = new Map();
+  for (const door of workflows) for (const entry of door.testsLeftOut ?? []) if (!leftOut.has(entry.path)) leftOut.set(entry.path, entry.config);
+  const unrun = new Set(notRun);
+  return { runners, notRun, leftOut: [...leftOut].filter(([path]) => unrun.has(path)).map(([path, config]) => ({ path, config })).sort((a, b) => cmp(a.path, b.path)) };
 }
 
 // A boundary file may leave a role out; the role is then derived from the
@@ -264,9 +299,11 @@ export function buildArtifact(mapped, commit) {
       ...(dynamic.userDataReads > 0 ? { userDataReads: dynamic.userDataReads } : {}),
       ...(dynamic.userDataWrites > 0 ? { userDataWrites: dynamic.userDataWrites } : {}),
     };
+    const used = frameworks(files);
     return {
       ...named,
       ...outside,
+      ...(used.length > 0 ? { frameworks: used } : {}),
       dynamicReads: dynamic.reads,
       dynamicSpawns: dynamic.spawns,
       dynamicSpawnsInTests: dynamic.spawnsInTests,
@@ -314,8 +351,10 @@ export function buildArtifact(mapped, commit) {
     symlinks: mapped.symlinks.filter((link) => !inAtlas(link.path)).map((link) => ({ path: link.path, target: link.target })).sort(byPath),
     testFiles: tested.testFiles,
     ...(notRun.length > 0 ? { testsNotRun: notRun } : {}),
+    ...(ci.leftOut.some((entry) => notRun.includes(entry.path)) ? { testsLeftOut: ci.leftOut.filter((entry) => notRun.includes(entry.path)) } : {}),
     unassigned,
     ...(mapped.unseen?.length > 0 ? { unseen: mapped.unseen.map(carryUnseen) } : {}),
+    ...(mapped.workspaces?.length > 0 ? { workspaces: mapped.workspaces.filter((dir) => !inAtlas(dir)) } : {}),
   };
 }
 
@@ -333,12 +372,22 @@ function carryFile(file) {
   if (file.noStatements) out.noStatements = true;
   if (file.testsInside) out.testsInside = true;
   if (file.testSuite) out.testSuite = true;
+  if (file.failurePaths?.length > 0) out.failurePaths = file.failurePaths.map((site) => ({ ...site }));
+  // The framework a test file is written for, by what it imports: the runner
+  // that would run it where no workflow does.
+  const framework = isTestFile(file.path) || file.testSuite ? testFramework(file) : null;
+  if (framework) out.testFramework = framework;
   // What a test runs as a child process, and which of those it runs by the
   // name a manifest installs them as: a test reaches them by running them.
-  if ((isTestFile(file.path) || file.testSuite) && file.spawns?.length > 0) {
+  // A smoke test by its name is a test here too.
+  if ((isTestFile(file.path) || file.testSuite || isSmokeTest(file.path)) && file.spawns?.length > 0) {
     out.spawns = file.spawns.filter((path) => !inAtlas(path));
     if (file.spawnsInstalled?.length > 0) out.spawnsInstalled = file.spawnsInstalled.filter((path) => !inAtlas(path));
   }
+  // The code files a test names in a string by a way the map cannot follow
+  // to an import or a run (core/mentions.js): it may run them.
+  const names = (file.names ?? []).filter((path) => !inAtlas(path));
+  if (names.length > 0) out.names = names;
   if (file.reexportsOnly) out.reexportsOnly = true;
   if (file.buildScript) out.buildScript = true;
   // The root of the library a Rust binary uses from its own package.
@@ -359,6 +408,32 @@ function carryFile(file) {
     out.entryRule = file.entryRule;
   }
   return out;
+}
+
+// The test frameworks a file's imports name, and the runner each is run
+// with; the first a file imports is the one it is written for.
+const TEST_FRAMEWORKS = [
+  [/^vitest(?:\/|$)/, 'vitest'],
+  [/^@playwright\/test$/, 'playwright test'],
+  [/^node:test$/, 'node --test'],
+  [/^@jest\/globals$/, 'jest'],
+  [/^mocha$/, 'mocha'],
+  [/^bun:test$/, 'bun test'],
+  [/^ava$/, 'ava'],
+  [/^uvu(?:\/|$)/, 'uvu'],
+  [/^tap$/, 'tap'],
+  [/^pytest$/, 'pytest'],
+  [/^unittest$/, 'unittest'],
+];
+
+function testFramework(file) {
+  if (!Array.isArray(file.imports)) return null;
+  for (const site of file.imports) {
+    if (typeof site.specifier !== 'string') continue;
+    const hit = TEST_FRAMEWORKS.find(([pattern]) => pattern.test(site.specifier));
+    if (hit) return hit[1];
+  }
+  return null;
 }
 
 /**
@@ -555,6 +630,7 @@ function carryTestRun(run) {
     ...(run.dir ? { dir: run.dir } : {}),
     ...(run.config ? { config: run.config } : {}),
     ...(run.through?.length > 0 ? { through: [...run.through] } : {}),
+    ...(run.ran?.length > 0 ? { ran: run.ran.filter((path) => !inAtlas(path)) } : {}),
     ...(run.coverage ? { coverage: true } : {}),
     ...(run.junit ? { junit: true } : {}),
     ...(run.files != null ? { files: run.files } : {}),

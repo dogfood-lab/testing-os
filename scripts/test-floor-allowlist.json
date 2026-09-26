@@ -322,6 +322,14 @@
       "reason": "Atlas fixture, not a test. It sits inside the runners-vitest-dir fixture repository that packages/atlas/core/test-runners.test.js and packages/atlas/adapter/test-reach.test.js map, where CI runs vitest run --dir src and so never runs it: the map lists it among the tests no workflow runs. It runs only inside that fixture, never here."
     },
     {
+      "path": "fixtures/atlas/runners-vitest-exclude/test/sum.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-vitest-exclude fixture repository that packages/atlas/adapter/test-runs.test.js maps, where CI runs it through npm test to Vitest, beside a smoke test the Vitest config leaves out. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-vitest-exclude/test/smoke/corpus.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-vitest-exclude fixture repository that packages/atlas/adapter/test-runs.test.js maps, where the fixture's vitest.config.ts excludes it, so the map says no workflow runs it and names that config as what leaves it out. It contains no test of this repository and runs nowhere, here or in that fixture's CI."
+    },
+    {
       "path": "fixtures/atlas/runners-coverage/test/a.test.js",
       "reason": "Atlas fixture, not a test. It sits inside the runners-coverage fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through node --test under c8 and under NODE_V8_COVERAGE, so the map attributes that run to its runner. It contains no test of this repository and runs only inside that fixture, never here."
     },
@@ -364,6 +372,122 @@
     {
       "path": "fixtures/atlas/reach-kinds/fixtures/demo/test/demo.test.js",
       "reason": "Atlas fixture, not a test. It is a test-shaped file inside a repository the reach-kinds fixture keeps among its own fixtures, and packages/atlas/adapter/test-reach.test.js asserts that such a file is data that reaches nothing. It contains no test and never runs."
+    },
+    {
+      "path": "fixtures/atlas/reach-kinds/test/both.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the reach-kinds fixture repository that packages/atlas/adapter/test-reach.test.js maps, where it is the test that both imports and runs bin/both.js, so the map keeps the run apart from the stronger import. It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/reach-shapes/test/table.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the reach-shapes fixture repository that packages/atlas/adapter/test-reach.test.js maps, where the way it loads or starts a file under scripts/ or tools/ is one the map must read as a test reaching that file. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/reach-shapes/test/fork.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the reach-shapes fixture repository that packages/atlas/adapter/test-reach.test.js maps, where the way it loads or starts a file under scripts/ or tools/ is one the map must read as a test reaching that file. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/reach-shapes/test/helpers.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the reach-shapes fixture repository that packages/atlas/adapter/test-reach.test.js maps, where the way it loads or starts a file under scripts/ or tools/ is one the map must read as a test reaching that file. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/reach-shapes/test/python.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the reach-shapes fixture repository that packages/atlas/adapter/test-reach.test.js maps, where the way it loads or starts a file under scripts/ or tools/ is one the map must read as a test reaching that file. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/reach-names/test/gen.test.mjs",
+      "reason": "Atlas fixture, not a test. It sits inside the reach-names fixture repository that packages/atlas/adapter/test-reach.test.js, adapter/test-gaps.test.js, adapter/gaps.test.js and the sidecar tests map, where it names scripts/gen.mjs in a string by a path joined to a root another file sets, which the map must read as a test naming that file. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/failure-paths/test/load.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the failure-paths fixture repository that packages/atlas/core/failure-paths.test.js maps, where its own catch is a test's and is not counted among the failure paths of the code. It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps/test/core.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where it is the one test CI runs, reaching src/core.ts and src/util.ts and leaving the rest of src as ranked gaps. It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps/e2e/flow.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where CI runs vitest run --dir test and so never runs it, which rule G2 reports. It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-quiet/test/parse.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-quiet fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where it imports src/parse.ts, so rule G6 stays silent on that file's failure paths. It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-quiet/test/cli.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-quiet fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where it runs quietcli by the name package.json installs, so rule G3 stays silent. It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-shapes/test/cli.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-shapes fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where it imports src/cli.js and drives main() with arguments, so G3 stays silent for the command whose entry that is. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-frameworks/lib/deep/x.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-frameworks fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where what it imports names the runner it is written for and whether that fixture's CI runs it decides what G2 says of it. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-frameworks/lib/y.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-frameworks fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where what it imports names the runner it is written for and whether that fixture's CI runs it decides what G2 says of it. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-frameworks/test/a.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-frameworks fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where what it imports names the runner it is written for and whether that fixture's CI runs it decides what G2 says of it. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-frameworks/other/d.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-frameworks fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where what it imports names the runner it is written for and whether that fixture's CI runs it decides what G2 says of it. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-frameworks/e2e/b.spec.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-frameworks fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where what it imports names the runner it is written for and whether that fixture's CI runs it decides what G2 says of it. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-frameworks/test/slow/corpus.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-frameworks fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where what it imports names the runner it is written for and whether that fixture's CI runs it decides what G2 says of it. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/gaps-frameworks/ava/one.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the gaps-frameworks fixture repository that packages/atlas/adapter/test-gaps.test.js maps, where what it imports names the runner it is written for and whether that fixture's CI runs it decides what G2 says of it. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-test-args/src/add.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-test-args fixture repository that packages/atlas/core/test-runners.test.js maps, where CI runs it through npm test -- --coverage, pnpm test --coverage and yarn test --coverage, so the map reads the flag each hands the test script. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-mocha-built/test/unit/clamp.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-mocha-built fixture repository that packages/atlas/core/test-runners.test.js maps, where the test script compiles it with tsconfig.test.json and hands Mocha a glob over the built tree, so the map counts it as a spec Mocha runs. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-mocha-built/test/unit/range.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-mocha-built fixture repository that packages/atlas/core/test-runners.test.js maps, where the test script compiles it with tsconfig.test.json and hands Mocha a glob over the built tree, so the map counts it as a spec Mocha runs. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-named/e2e/app.spec.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-named fixture repository that packages/atlas/adapter/test-reach.test.js maps, where it is a Playwright spec the fixture's playwright test step may run, which Atlas must not list as a test file no workflow runs. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/runners-named/src/sum.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the runners-named fixture repository that packages/atlas/adapter/test-reach.test.js maps, where it is a Vitest file no workflow of the fixture runs, which Atlas must list as one. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/spawn-ts-source/src/tests/cli.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the spawn-ts-source fixture repository that packages/atlas/core/spawn-sources.test.js maps, where it spawns ../cli.js beside it so the map reads that as running src/cli.ts, its TypeScript source. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/spawn-mcp-transport/test/server.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the spawn-mcp-transport fixture repository that packages/atlas/core/spawn-sources.test.js maps, where it starts src/server.ts through the MCP SDK's StdioClientTransport so the map reads that as the test running the server. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/spawn-shapes/test/promisify.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the spawn-shapes fixture repository that packages/atlas/core/spawn-sources.test.js maps, where the way it starts a program under bin/ is one the map must read as a test running that file. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/spawn-shapes/test/flag.test.js",
+      "reason": "Atlas fixture, not a test. It sits inside the spawn-shapes fixture repository that packages/atlas/core/spawn-sources.test.js maps, where the way it starts a program under bin/ is one the map must read as a test running that file. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/spawn-shapes/test/helper.test.ts",
+      "reason": "Atlas fixture, not a test. It sits inside the spawn-shapes fixture repository that packages/atlas/core/spawn-sources.test.js maps, where the way it starts a program under bin/ is one the map must read as a test running that file. It contains no test of this repository and runs only inside that fixture, never here."
     }
   ]
 }

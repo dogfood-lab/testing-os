@@ -466,10 +466,11 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     const key = [entry.runner, entry.dir, entry.config ?? '', entry.through.join('\u0001')].join('\0');
     const existing = tests.get(key);
     if (!existing) {
-      tests.set(key, { ...entry, paths: new Set(entry.paths) });
+      tests.set(key, { ...entry, paths: new Set(entry.paths), leftOut: new Map(entry.leftOut) });
       return;
     }
     for (const path of entry.paths) existing.paths.add(path);
+    for (const [path, config] of entry.leftOut) if (!existing.leftOut.has(path)) existing.leftOut.set(path, config);
     existing.coverage ||= entry.coverage;
     existing.junit ||= entry.junit;
     existing.known &&= entry.known;
@@ -483,7 +484,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
    * reader cannot list, so its count is not known.
    */
   function invoke(runner, dir, frame, run, { known = true } = {}) {
-    const entry = { runner, dir, config: null, through: frame.through ?? [], coverage: frame.coverage === true, junit: false, known, paths: new Set() };
+    const entry = { runner, dir, config: null, through: frame.through ?? [], coverage: frame.coverage === true, junit: false, known, paths: new Set(), setup: new Set(), leftOut: new Map() };
     const outer = open;
     open = entry;
     let found;
@@ -493,13 +494,26 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       open = outer;
     }
     keep(found);
+    const { setup } = entry;
+    delete entry.setup;
     for (const item of found.runs.values()) {
-      if (item.runKind === 'checks' || item.built) continue;
+      if (item.runKind === 'checks' || item.built || setup.has(item.path)) continue;
       if (item.directory) {
         for (const path of repo.filesUnder(item.path.replace(/\/$/, ''))) if (isCodePath(path) && (item.matched || isTestFile(path))) entry.paths.add(path);
       } else if (item.matched || isTestFile(item.path)) entry.paths.add(item.path);
     }
     addTest(entry);
+  }
+
+  // The test files a vitest config's own exclude leaves out of a run that
+  // would otherwise collect them, each with the config.
+  function vitestLeftOut(found, kept, filters) {
+    if (!(found.ownExclude?.length > 0) || found.config == null) return [];
+    const run = new Set(kept);
+    const defaults = found.exclude.filter((pattern) => !found.ownExclude.includes(pattern));
+    return repo.filesMatching(found.base, found.include, defaults)
+      .filter((path) => !run.has(path) && isTestFile(path) && (filters.length === 0 || filters.some((filter) => path.includes(filter))))
+      .map((path) => ({ path, config: found.config }));
   }
 
   // A script an interpreter runs; a test file it runs directly is a test run
@@ -510,12 +524,17 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     else file(token, dir, frame, { script: true, args });
   }
 
-  // What a runner's handler learns of the run it is making.
-  function note({ config = null, coverage = false, junit = false }) {
+  // What a runner's handler learns of the run it is making: a file it loads
+  // first to set the run up (mocha --require) is run, and is not a test; a
+  // test file its configuration excludes on purpose is left out, by that
+  // configuration.
+  function note({ config = null, coverage = false, junit = false, setup = null, leftOut = [] }) {
     if (!open) return;
     if (config != null && open.config == null) open.config = config;
     if (coverage) open.coverage = true;
     if (junit) open.junit = true;
+    if (setup != null) open.setup.add(setup);
+    for (const entry of leftOut) if (!open.leftOut.has(entry.path)) open.leftOut.set(entry.path, entry.config);
   }
 
   function read(text, dir, frame) {
@@ -731,8 +750,10 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
   function file(token, dir, frame, { directories = false, script = false, args = [] } = {}) {
     const named = pathFrom(dir, token);
     if (named == null) return null;
-    // A build output is not tracked; what runs when it runs is its source.
-    const path = repo.tracked.has(named) ? named : repo.builtFrom(named) ?? named;
+    // A build output is not tracked; what runs when it runs is its source,
+    // and a .js path whose TypeScript file is tracked beside it is that
+    // file, as TypeScript's own .js import convention reads it.
+    const path = repo.tracked.has(named) ? named : repo.builtFrom(named) ?? typeScriptSource(named, repo.tracked) ?? named;
     if (repo.tracked.has(path)) {
       const passes = script ? flagsOf(args) : [];
       record(stamp({ path, ...(passes.length > 0 ? { passes } : {}) }, frame));
@@ -1477,12 +1498,14 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
           if (own.base == null || own.projects) continue;
           const files = repo.filesMatching(own.base, own.include, own.exclude)
             .filter((path) => filters.length === 0 || filters.some((filter) => path.includes(filter)));
+          note({ leftOut: vitestLeftOut(own, files, filters) });
           matched(repo.compact(files), frame, own.config ? `vitest ${own.config}` : `vitest ${found.config}`);
         }
         return;
       }
       const files = repo.filesMatching(found.base, found.include, found.exclude)
         .filter((path) => filters.length === 0 || filters.some((filter) => path.includes(filter)));
+      note({ leftOut: vitestLeftOut(found, files, filters) });
       matched(repo.compact(files), frame, found.config ? `vitest ${found.config}` : 'vitest');
     },
     jest(argv, dir, frame) {
@@ -1499,7 +1522,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     },
     mocha(argv, dir, frame) {
       const parsed = split(argv, 1, VALUE_SETS.mocha);
-      for (const name of ['-r', '--require', '--file']) for (const value of parsed.values.get(name) ?? []) file(value, dir, frame);
+      for (const name of ['-r', '--require', '--file']) for (const value of parsed.values.get(name) ?? []) note({ setup: file(value, dir, frame) });
       const found = mochaTargets(repo, dir, { config: valueOf(parsed, '--config') });
       note({ config: found.config, junit: [...(parsed.values.get('--reporter') ?? []), ...(parsed.values.get('-R') ?? [])].some((value) => /junit/i.test(value)) });
       const explicit = [...parsed.positional, ...(parsed.values.get('--spec') ?? [])];
@@ -1513,7 +1536,9 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
         if (path == null) continue;
         if (repo.tracked.has(path)) files.push(path);
         else if (repo.dirs.has(path)) files.push(...repo.filesMatching(path, [recursive ? `**/*.${extensions}` : `*.${extensions}`]));
-        else files.push(...repo.filesMatching(dir, [stripDot(spec)]));
+        // A spec in a build's output runs the source it is compiled from.
+        else if (repo.builtFrom(path) != null) files.push(repo.builtFrom(path));
+        else files.push(...repo.filesMatching(dir, [stripDot(spec)]), ...repo.builtMatching(dir, [stripDot(spec)]));
       }
       matched(repo.compact([...new Set(files)].filter(isCodePath)), frame, found.config ? `mocha ${found.config}` : 'mocha');
     },
@@ -1770,6 +1795,7 @@ function testRun(entry) {
     ...(entry.junit ? { junit: true } : {}),
     ...(entry.known ? { files: entry.paths.size } : {}),
     paths: [...entry.paths].sort(),
+    ...(entry.leftOut.size > 0 ? { leftOut: [...entry.leftOut].map(([path, config]) => ({ path, config })).sort((a, b) => (a.path < b.path ? -1 : 1)) } : {}),
   };
 }
 
@@ -2052,6 +2078,14 @@ function shellWord(word) {
 
 // A run carries the chain that reached it, and whether the tool that reached
 // it runs the file or only reads it to check it.
+const TYPESCRIPT_SOURCES = { '.js': ['.ts', '.tsx'], '.mjs': ['.mts'], '.cjs': ['.cts'], '.jsx': ['.tsx'] };
+
+function typeScriptSource(path, tracked) {
+  const ext = /\.(?:m|c)?jsx?$/.exec(path)?.[0];
+  if (ext == null) return null;
+  return TYPESCRIPT_SOURCES[ext].map((source) => `${path.slice(0, -ext.length)}${source}`).find((source) => tracked.has(source)) ?? null;
+}
+
 function stamp(entry, frame, via = frame.via) {
   const out = { ...entry, runKind: frame.runKind ?? 'executes' };
   if (via) out.via = via;
@@ -2370,7 +2404,7 @@ function npmCommandTargets(args, dir, repo) {
   for (let i = 0; i < args.length; i += 1) {
     const token = args[i];
     if (token === '--') {
-      if (script != null) passed.push(...args.slice(i + 1));
+      if (script != null || TEST_ALIASES.has(command) || LIFECYCLE.has(command)) passed.push(...args.slice(i + 1));
       break;
     }
     // npm reads its own flags anywhere before --; a word after the script's
@@ -2406,7 +2440,7 @@ function npmCommandTargets(args, dir, repo) {
   else if (named.length > 0) dirs = named.map((value) => workspaceDir(repo, value, prefix)).filter((found) => found != null);
   else dirs = [prefix];
   if (includeRoot && (allWorkspaces || named.length > 0)) dirs = [prefix, ...dirs];
-  if (!RUN_ALIASES.has(command)) passed = [];
+  if (!RUN_ALIASES.has(command) && !TEST_ALIASES.has(command) && !LIFECYCLE.has(command)) passed = [];
   return [...new Set(dirs)].map((target) => ({ dir: target, script, ...(passed.length > 0 ? { args: passed } : {}) }));
 }
 
@@ -2436,9 +2470,16 @@ function pnpmTargets(args, dir, repo) {
   let script = null;
   let recursive = false;
   const filters = [];
-  for (let i = 0; i < args.length && script == null; i += 1) {
+  // pnpm hands the script whatever follows its name that is not one of
+  // pnpm's own options: pnpm test --coverage runs the test script with it.
+  const passed = [];
+  const named = () => script != null || (command != null && !RUN_ALIASES.has(command));
+  for (let i = 0; i < args.length; i += 1) {
     const token = args[i];
-    if (token === '--') break;
+    if (token === '--') {
+      if (named()) passed.push(...args.slice(i + 1));
+      break;
+    }
     const eq = token.indexOf('=');
     const flag = token.startsWith('-') && eq !== -1 ? token.slice(0, eq) : token;
     if (PNPM_VALUE_FLAGS.has(flag)) {
@@ -2452,6 +2493,7 @@ function pnpmTargets(args, dir, repo) {
       continue;
     }
     if (token === '-r' || token === '--recursive') recursive = true;
+    else if (named()) passed.push(token);
     else if (token.startsWith('-')) continue;
     else if (command == null) command = token;
     else if (RUN_ALIASES.has(command)) script = token;
@@ -2466,7 +2508,7 @@ function pnpmTargets(args, dir, repo) {
   let dirs = [prefix];
   if (filters.length > 0) dirs = filters.flatMap((selector) => pnpmSelected(repo, selector, prefix));
   else if (recursive) dirs = workspaceDirs(repo);
-  return [...new Set(dirs)].map((target) => ({ dir: target, script }));
+  return [...new Set(dirs)].map((target) => ({ dir: target, script, ...(passed.length > 0 ? { args: passed } : {}) }));
 }
 
 /**
@@ -2521,7 +2563,10 @@ function yarnTargets(args, dir, repo) {
   const words = [];
   for (let i = 0; i < args.length; i += 1) {
     const token = args[i];
-    if (token === '--') break;
+    if (token === '--') {
+      if (words.length > 0) words.push(...args.slice(i + 1));
+      break;
+    }
     if (token === '--cwd') {
       const cleaned = cleanDir(posix.join(dir || '.', args[++i] ?? ''));
       if (cleaned == null) return [];
@@ -2549,10 +2594,15 @@ function yarnTargets(args, dir, repo) {
     return script == null ? [] : workspaceDirs(repo).map((target) => ({ dir: target, script }));
   }
   let script = command;
-  if (RUN_ALIASES.has(command)) script = rest.find((token) => !token.startsWith('-')) ?? null;
-  else if (TEST_ALIASES.has(command)) script = 'test';
+  let passed = rest;
+  if (RUN_ALIASES.has(command)) {
+    const at = rest.findIndex((token) => !token.startsWith('-'));
+    script = at === -1 ? null : rest[at];
+    passed = rest.slice(at + 1);
+  } else if (TEST_ALIASES.has(command)) script = 'test';
   else if (YARN_COMMANDS.has(command)) return [];
-  return script == null ? [] : [{ dir: prefix, script }];
+  // yarn hands the script whatever follows its name: yarn test --coverage.
+  return script == null ? [] : [{ dir: prefix, script, ...(passed.length > 0 ? { args: passed } : {}) }];
 }
 
 function workspaceMembers(repo) {

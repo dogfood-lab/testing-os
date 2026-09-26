@@ -205,6 +205,9 @@ describe('repository text is data', () => {
         ['atlas_changes', { since: 'HEAD' }],
         ['atlas_check_change', { files: [FILE] }],
         ['atlas_check_change', {}],
+        ['atlas_test_gaps', {}],
+        ['atlas_test_gaps', { path: FILE }],
+        ['atlas_test_gaps', { path: PART }],
         ['atlas_explain', { path: `${FILE}.missing` }],
       ];
       let seen = 0;

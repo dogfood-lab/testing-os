@@ -82,7 +82,9 @@ describe('runner attribution', () => {
     assert.deepEqual(testsOf(doorsOf('runners-unattributed'), '.github/workflows/ci.yml'), [
       { job: 'checks', step: 'Run tests', runner: null, through: ['make check'] },
       { job: 'checks', step: '3', runner: null, through: ['npm test'] },
-      { job: 'checks', step: 'Integration tests', runner: null, through: ['scripts/ci.sh', 'scripts/run-suite.sh'] },
+      { job: 'checks', step: 'Integration tests', runner: null, through: ['scripts/ci.sh', 'scripts/run-suite.sh'], ran: ['scripts/ci.sh', 'scripts/run-suite.sh'] },
+      { job: 'checks', step: 'Headless suite', runner: null },
+      { job: 'checks', step: 'Smoke-test the binary', runner: null },
     ]);
   });
 
@@ -105,6 +107,27 @@ describe('Vitest --dir', () => {
     assert.deepEqual(ci.runs.map((run) => run.path), ['src/wrap.test.ts']);
     assert.deepEqual(testsOf(doors, '.github/workflows/ci.yml'), [
       { job: 'test', step: 'Test', runner: 'vitest', through: ['npm test'], files: 1 },
+    ]);
+  });
+});
+
+describe('a runner handed a compiled test tree', () => {
+  it('runs the specs the build compiles from, and not the setup file Mocha requires (codecomfy-vscode\'s shape)', () => {
+    const doors = doorsOf('runners-mocha-built');
+    assert.deepEqual(testsOf(doors, '.github/workflows/ci.yml'), [
+      { job: 'test', step: 'Run tests', runner: 'mocha', through: ['npm test'], files: 2 },
+    ]);
+    const ci = doors.find((door) => door.file === '.github/workflows/ci.yml');
+    assert.deepEqual(ci.runs.filter((run) => run.path.startsWith('test/') && !run.built).map((run) => run.path), ['test/register-stub.js', 'test/unit/']);
+  });
+});
+
+describe('arguments handed to a test script', () => {
+  it('appends what follows npm test --, and pnpm or yarn test, to the test script (claude-guardian\'s shape)', () => {
+    assert.deepEqual(testsOf(doorsOf('runners-test-args'), '.github/workflows/ci.yml'), [
+      { job: 'npm', step: 'Test with coverage', runner: 'vitest', through: ['npm test'], coverage: true, files: 1 },
+      { job: 'pnpm', step: 'Test with coverage', runner: 'vitest', through: ['pnpm test'], coverage: true, files: 1 },
+      { job: 'yarn', step: 'Test with coverage', runner: 'vitest', through: ['yarn test'], coverage: true, files: 1 },
     ]);
   });
 });

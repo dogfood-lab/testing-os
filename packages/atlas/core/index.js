@@ -10,8 +10,10 @@ import { mapCommandDoors, mapDoors, markUnpublished } from './doors.js';
 import { httpEdges, httpFacts } from './http.js';
 import { declaredEntries, deriveEntryPoints, manifestCommands, memberCommands, memberPackage, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
+import { failurePaths } from './failure-paths.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, settleRelativePaths, testReadsKept, testWritesKept, textLandings, trackedPlaces } from './landings.js';
 import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
+import { isShellScript, namesFiles, settleMentions, shellWords, stringWords } from './mentions.js';
 import { walkReach } from './reach.js';
 import { attachResolution, emittedFiles, registerBuilds, resolveDeclaredPath } from './resolve.js';
 import { attachSequences, sequenceFacts } from './sequence.js';
@@ -199,6 +201,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   markUnshipped(doors, cargoProject(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom, emitted }), repositoryView({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }));
+  settleMentions(graph.files);
   const edges = [...resolution.edges, ...spawnEdges(graph), ...httpEdges(graph.files, graph.boundaryOf, isTestMaterial)]
     .sort((a, b) => a.from.localeCompare(b.from) || a.to.localeCompare(b.to) || a.kind.localeCompare(b.kind));
   for (const file of graph.files.values()) delete file.http;
@@ -249,6 +252,9 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   attachExports(graph.files, facts);
   const unseenView = repositoryView({ repoPath, tracked: trackedSet });
   const unseen = unseenParts(trackedSet, doors, (path) => unseenView.text(path));
+  // The members a root package.json or pnpm-workspace.yaml declares: a part
+  // among them is a package of a monorepo (adapter/test-kinds.js).
+  const workspaces = [...unseenView.workspaces().keys()].sort();
 
   return {
     generatedFrom: { repoPath, tracked: tracked.regular.length },
@@ -263,6 +269,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     landings,
     ...(unseen.length > 0 ? { unseen } : {}),
     ...(collectIgnored(repoPath, trackedSet).length > 0 ? { collectIgnored: collectIgnored(repoPath, trackedSet) } : {}),
+    ...(workspaces.length > 0 ? { workspaces } : {}),
   };
 }
 
@@ -414,6 +421,7 @@ export function rereadFiles({ repoPath, boundaries, paths, content = null, doors
       userDataReads: file.userDataReads ?? 0,
       userDataWrites: file.userDataWrites ?? 0,
       ...(file.testsInside ? { testsInside: true } : {}),
+      ...(file.failurePaths?.length > 0 ? { failurePaths: file.failurePaths.map((site) => ({ ...site })) } : {}),
     };
   });
 }
@@ -794,7 +802,10 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
   // A scene or resource Godot saves as text names what it instances and
   // reads line by line, read as text by rule (core/gdscript.js).
   if (language == null && GODOT_TEXT.test(path)) return { path, hash, language: null, ...godotResourceReadings(bytes.toString('utf8')), ...noLandings() };
-  if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places) };
+  // A smoke script in the shell names the files it runs as words, read as
+  // text (core/mentions.js).
+  const shellNames = language == null && namesFiles(path) && isShellScript(path) ? shellWords(bytes.toString('utf8')) : [];
+  if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places), ...(shellNames.length > 0 ? { mentions: shellNames } : {}) };
   const extracted = parseFile(language, path, front ?? bytes.toString('utf8'), places);
   if (extracted.parseError) {
     const syntax = extracted.unreadSyntax ? { unreadSyntax: extracted.unreadSyntax } : {};
@@ -817,7 +828,11 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
   const pending = extracted.spawned.pending?.length > 0 ? { pendingSpawns: extracted.spawned.pending } : {};
   // Read once every file and manifest is known, then dropped (core/rust-modules.js).
   const native = extracted.native ?? {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http, ...starts, ...native };
+  // A test's own error handling is the test's; the file's are what G6 names.
+  const failures = extracted.failurePaths?.length > 0 && !isTestFile(path) ? { failurePaths: extracted.failurePaths } : {};
+  // Read once every file is known, then dropped (core/mentions.js settleMentions).
+  const mentions = extracted.mentions?.length > 0 ? { mentions: extracted.mentions } : {};
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http, ...starts, ...native, ...failures, ...mentions };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
@@ -858,6 +873,8 @@ function parseFile(language, path, original, places) {
       holds: language === 'python' ? pythonHolds(tree.rootNode) : onlyHolds(tree.rootNode),
       http: language === 'python' ? null : httpFacts(tree.rootNode),
       builds: language === 'python' || isTestFile(path) ? [] : buildCalls(tree.rootNode, (node) => pathShape(node, path)),
+      failurePaths: failurePaths(language, tree.rootNode),
+      mentions: namesFiles(path) ? stringWords(language, tree.rootNode) : [],
     };
   } finally {
     tree.delete();
@@ -868,6 +885,19 @@ function parseFile(language, path, original, places) {
 // GDScript) holds, read from its tree. `native` is what the file carries
 // past its imports: testsInside, for a file holding its own unit tests, and
 // what resolution reads once every file is known and then drops.
+// The binaries a Rust integration test runs by the path Cargo hands it,
+// env!("CARGO_BIN_EXE_<name>"): each is the command its crate installs as
+// <name>.
+function cargoBinaries(root) {
+  const commands = new Set();
+  walkNamed(root, (node) => {
+    if (node.type !== 'macro_invocation' || node.childForFieldName('macro')?.text !== 'env') return;
+    const named = /"CARGO_BIN_EXE_([A-Za-z0-9_-]+)"/.exec(node.text);
+    if (named) commands.add(named[1]);
+  });
+  return { commands: [...commands].sort(), built: 0 };
+}
+
 function nativeReadings(language, root) {
   const rust = language === 'rust' ? { ...rustImports(root), paths: rustPaths(root), calls: rustCalls(root) } : null;
   const gd = language === 'gdscript' ? gdscriptReadings(root) : null;
@@ -877,13 +907,14 @@ function nativeReadings(language, root) {
     ...(rust ? { native: { rustModule: rust.module, ...(rust.includes.length > 0 ? { rustIncludes: rust.includes } : {}), ...(rust.paths.length > 0 ? { rustPaths: rust.paths } : {}), ...(rust.calls.calls.length + rust.calls.fields.length > 0 ? { rustCalls: rust.calls } : {}), ...(rust.tests ? { testsInside: true } : {}) } } : {}),
     landings: noLandings(),
     sequence: rust ? rustSequence(root, rust.imports) : gd ? gd.sequence : { functions: [], topLevel: [], reexports: [] },
-    spawned: { commands: [], built: 0 },
+    spawned: rust ? cargoBinaries(root) : { commands: [], built: 0 },
     githubChanges: 0,
     noStatements: statementless(root),
     startsOnLoad: false,
     holds: null,
     http: null,
     builds: [],
+    failurePaths: failurePaths(language, root),
   };
 }
 
@@ -1379,6 +1410,13 @@ function collectScript(root, path = null) {
       for (const specifier of table) imports.push({ specifier, kind: 'dynamic-literal', line: lineOf(node), table: true });
       return;
     }
+    // for (const { mod } of CASES) await import(mod), CASES a const array of
+    // literal paths or of objects holding them: every path the loop hands it.
+    const looped = loopValues(root, node, first);
+    if (looped.length > 0) {
+      for (const specifier of looped) imports.push({ specifier, kind: 'dynamic-literal', line: lineOf(node), table: true });
+      return;
+    }
     // import(pathToFileURL(resolve(HERE, '../tools/sim.mjs')).href), or the
     // same held in a const: the file the path names, as a relative import.
     const located = isImport && path != null ? fileUrlImport(root, first, path) : null;
@@ -1438,6 +1476,43 @@ function tableValues(root, arg) {
     if (value != null && !values.includes(value)) values.push(value);
   }
   return values;
+}
+
+/**
+ * The literal values a for...of loop around a call binds a name to: each
+ * literal of the array it loops over, or each object's literal under the
+ * key the loop destructures into the name. Empty for anything else.
+ */
+function loopValues(root, call, arg) {
+  if (arg?.type !== 'identifier') return [];
+  for (let scope = call.parent; scope != null; scope = scope.parent) {
+    if (scope.type !== 'for_in_statement') continue;
+    const left = scope.childForFieldName('left');
+    let key = null;
+    if (left?.type === 'identifier') key = left.text === arg.text ? '' : null;
+    else if (left?.type === 'object_pattern') {
+      for (const part of left.namedChildren) {
+        if (part.type === 'shorthand_property_identifier_pattern' && part.text === arg.text) key = part.text;
+        if (part.type === 'pair_pattern' && part.childForFieldName('value')?.text === arg.text) key = part.childForFieldName('key')?.text ?? null;
+      }
+    }
+    if (key == null) continue;
+    let right = scope.childForFieldName('right');
+    if (right?.type === 'identifier') right = constValue(root, right.text);
+    if (right?.type !== 'array') return [];
+    const values = [];
+    for (const element of right.namedChildren) {
+      let value = null;
+      if (key === '') value = jsString(element);
+      else if (element.type === 'object') {
+        const pair = element.namedChildren.find((child) => child.type === 'pair' && (child.childForFieldName('key')?.text ?? '').replace(/^['"]|['"]$/g, '') === key);
+        value = pair ? jsString(pair.childForFieldName('value')) : null;
+      }
+      if (value != null && !values.includes(value)) values.push(value);
+    }
+    return values;
+  }
+  return [];
 }
 
 // The value a const declares for a name, when the file declares it once.
@@ -1509,7 +1584,8 @@ function collectPython(root, path, places) {
       if (!module) return;
       const wildcard = node.namedChildren.some((child) => child.type === 'wildcard_import');
       // The names imported from it, which are its submodules when it is a
-      // namespace package (from pipeline import foundry_ingest).
+      // namespace package (from pipeline import foundry_ingest), and may be
+      // when it is a package whose __init__.py leaves them to be loaded.
       const names = node.namedChildren
         .filter((child) => child.startIndex !== module.startIndex && (child.type === 'dotted_name' || child.type === 'aliased_import'))
         .map((child) => (child.type === 'aliased_import' ? child.childForFieldName('name')?.text : child.text))
@@ -1518,7 +1594,7 @@ function collectPython(root, path, places) {
         specifier: module.text,
         kind: wildcard ? 'wildcard' : 'static',
         line: lineOf(node),
-        ...(names.length > 0 && !module.text.startsWith('.') ? { names } : {}),
+        ...(names.length > 0 ? { names } : {}),
       });
       return;
     }

@@ -61,6 +61,9 @@ describe('every tool reads only', () => {
         ['atlas_changes', { since: 'HEAD' }],
         ['atlas_check_change', {}],
         ['atlas_check_change', { files: ['lib/core.js', 'lib/fresh.js'] }],
+        ['atlas_test_gaps', {}],
+        ['atlas_test_gaps', { path: 'lib/core.js' }],
+        ['atlas_test_gaps', { path: 'lib' }],
         ['atlas_explain', { path: 'lib/core.js', cursor: '0000000000000000:f0:1' }],
       ];
       for (const [name, args] of calls) {
