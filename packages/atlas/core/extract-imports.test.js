@@ -51,12 +51,13 @@ const EXPECTED = {
     entry('a', 'static', 3, external),
     entry('b', 'static', 3, external),
     // from a.b import d carries the names it imports, which are a
-    // namespace package's modules when a.b is one.
+    // namespace package's modules when a.b is one, and may be a package's
+    // modules, relative imports included.
     { ...entry('a.b', 'static', 4, external), names: ['d'] },
-    entry('.x', 'static', 5, missing),
-    entry('..x', 'static', 6, missing),
-    entry('.', 'static', 7, missing),
-    entry('..', 'static', 8, missing),
+    { ...entry('.x', 'static', 5, missing), names: ['y'] },
+    { ...entry('..x', 'static', 6, missing), names: ['z'] },
+    { ...entry('.', 'static', 7, missing), names: ['local'] },
+    { ...entry('..', 'static', 8, missing), names: ['up'] },
   ],
   'py/wild.py': [
     entry('x', 'wildcard', 1, wildcard),

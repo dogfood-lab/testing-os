@@ -22,8 +22,9 @@ describe('setuptools source roots', () => {
     const boundaries = [{ name: 'lib', globs: ['lib/**'], role: 'code' }, { name: 'tests', globs: ['tests/**'], role: 'test' }, { name: 'tools', globs: ['tools/**'], role: 'code' }];
     const mapped = mapRepository({ repoPath: root, boundaries });
     for (const boundary of mapped.boundaries) assert.equal(boundary.unresolvedSites, 0, boundary.name);
-    // from core import gates is read as an import of the package core.
+    // from core import gates is read as an import of the package core and of
+    // its module gates, which Python loads when __init__.py does not.
     const cli = mapped.boundaries.find((boundary) => boundary.name === 'tools').files.find((file) => file.path === 'tools/core/cli.py');
-    assert.deepEqual(cli.imports.map((site) => site.resolved.path).sort(), ['lib/extra/__init__.py', 'tools/core/__init__.py']);
+    assert.deepEqual(cli.imports.map((site) => site.resolved.path).sort(), ['lib/extra/__init__.py', 'lib/extra/words.py', 'tools/core/__init__.py', 'tools/core/gates.py']);
   });
 });
