@@ -1,6 +1,6 @@
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { readFileSync, readlinkSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join, posix, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import picomatch from 'picomatch';
@@ -753,7 +753,7 @@ function listTracked(repoPath) {
     // merge of the same path, and listing them would count one file three times.
     if (record.stage !== '0') continue;
     if (record.mode === '120000') {
-      symlinks.push({ path: record.path, target: symlinkTarget(repoPath, record.path) });
+      symlinks.push({ path: record.path, target: symlinkTarget(repoPath, record.oid) });
     } else if (record.mode === '160000') {
       submodules.push(record.path);
     } else if (record.mode === '100644' || record.mode === '100755') {
@@ -778,14 +778,15 @@ function parseStageLine(line) {
   };
 }
 
-function symlinkTarget(repoPath, path) {
-  try {
-    return readlinkSync(join(repoPath, path)).replaceAll('\\', '/');
-  } catch {
-    // The index says this path is a symlink. A worktree that cannot read the
-    // link is still not a file to hash, and the walk must not throw on it.
-    return null;
-  }
+// Git stores a symlink's target as its blob. The worktree is no source: a
+// checkout with core.symlinks false writes the link as a file holding the
+// target, and readlink fails there, so the map would differ by host.
+function symlinkTarget(repoPath, oid) {
+  const result = spawnSync('git', ['cat-file', 'blob', oid], { cwd: repoPath, encoding: 'utf8' });
+  // A blob that cannot be read is still no file to hash, and the walk must
+  // not throw on it.
+  if (result.status !== 0) return null;
+  return result.stdout;
 }
 
 // A file is read as git stores it (text.js), so what is hashed and parsed is

@@ -4,6 +4,10 @@ All notable changes to `testing-os` are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+## [1.23.4] — 2026-09-26
+
+The version skips 1.23.1 to 1.23.3 by choice; none of them was published.
+
 ### Added
 - **The runner behind every test run a workflow makes.** Each workflow in `structure.json` gains `tests`, one entry per step that runs tests:
   - the runner: Vitest, Jest, Mocha, node --test, pytest, unittest, cargo test and nextest, dotnet, deno and bun test, GUT and gdUnit4, a test file node or python runs directly, and, named from the command alone with no count of their tests, Playwright, go test, tox, nox and a few more;
@@ -56,6 +60,10 @@ All notable changes to `testing-os` are documented here. The format follows [Kee
 
 ### Fixed
 - **Vitest's `--dir`.** `vitest run --dir src` looks for tests under `src/` alone, as Vitest does. The flag was ignored, so tests outside that directory read as run.
+- **A symlink's target is read as git stores it.** On a Windows checkout with `core.symlinks` false, git writes a committed link as a file that holds the target, so reading it as a link failed and the target was mapped as none. The same repository mapped differently on Linux and on Windows, and `atlas check` failed on Windows against a map made on Linux. The target now comes from the link's blob in the index.
+
+### Known
+- An import that goes through a committed symlink is still followed through the worktree, so on a Windows checkout with `core.symlinks` false it can resolve differently than on Linux. No fleet repository is known to import through a committed symlink.
 
 ## [1.23.0] — 2026-09-26
 

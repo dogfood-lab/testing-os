@@ -21,7 +21,7 @@
 *用于人工智能辅助软件的协议、证据存储和学习循环。*
 
 <!-- version:start -->
-**v1.23.0** — 当前版本。有关已发布内容，请参阅 [CHANGELOG.md](CHANGELOG.md)。
+**v1.23.4** — 当前版本。有关已发布内容，请参阅 [CHANGELOG.md](CHANGELOG.md)。
 <!-- version:end -->
 
 📖 **[阅读手册 →](https://dogfood-lab.github.io/testing-os/handbook/)**
@@ -131,7 +131,7 @@ npm run verify      # version-sync + doc-drift + regression-pin gates + build + 
 
 ## 版本控制
 
-所有 `@dogfood-lab/*` 软件包一起更新——整个单仓库使用一个版本号。七个软件包以 v1.23.0 的形式同步发布到 npm，即 `@dogfood-lab`（`schemas`、`verify`、`report`、`ingest`、`findings`、`dogfood-swarm`、`atlas`）；第八个，`@dogfood-lab/portfolio`，保持内部状态。版本号行位于此 README 文件的顶部附近，它会在每次 `npm run build` 时通过 [`scripts/sync-version.mjs`](scripts/sync-version.mjs) 从 `package.json` 自动生成。
+所有 `@dogfood-lab/*` 软件包一起更新——整个单仓库使用一个版本号。七个软件包以 v1.23.4 的形式同步发布到 npm，即 `@dogfood-lab`（`schemas`、`verify`、`report`、`ingest`、`findings`、`dogfood-swarm`、`atlas`）；第八个，`@dogfood-lab/portfolio`，保持内部状态。版本号行位于此 README 文件的顶部附近，它会在每次 `npm run build` 时通过 [`scripts/sync-version.mjs`](scripts/sync-version.mjs) 从 `package.json` 自动生成。
 
 ## 许可证
 
