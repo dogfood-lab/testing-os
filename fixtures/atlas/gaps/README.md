@@ -14,4 +14,5 @@ src/format.ts (two importers), src/parse.ts (one, two failure paths),
 src/index.ts and src/extra.ts (none, told apart by history), then the parts
 lib (one importing part), bin and tools. The five highest are listed, with a
 count of the rest. The test that runs only test/core.test.ts reaches
-src/core.ts and src/util.ts.
+src/core.ts and src/util.ts. atlas/boundaries.yaml names the same parts the
+rule tests hand the engine, so `atlas gaps` answers from a map of them.

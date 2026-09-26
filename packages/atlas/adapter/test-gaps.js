@@ -19,6 +19,8 @@ import { COVERAGE_RECIPE, COVERAGE_TOOLS, runnerFor, SMOKE_GATE } from './test-s
  */
 
 export const SHOWN = 5;
+// How many failure paths a G6 suggestion names in its text.
+const NAMED = 6;
 
 // The family of code each runner runs tests for, and each language is.
 const RUNNER_FAMILY = {
@@ -56,10 +58,12 @@ const DISCOVERY = {
 
 /**
  * @param {object} structure a map, as structure.json holds it
- * @param {{ statistics?: object | null, repository?: string | null }} [options]
- *   statistics.json, for the history ranking; the repository, owner/name
+ * @param {{ statistics?: object | null, repository?: string | null, scope?: { files: Set<string>, parts: Set<string> } | null }} [options]
+ *   statistics.json, for the history ranking; the repository, owner/name;
+ *   and the files and parts an answer is narrowed to, whose gaps are ranked
+ *   and cut among themselves (the rules still read the whole map)
  */
-export function testGaps(structure, { statistics = null, repository = null } = {}) {
+export function testGaps(structure, { statistics = null, repository = null, scope = null } = {}) {
   const reach = testReachOf(structure);
   const kinds = kindsOf(structure);
   const doors = structure.doors ?? [];
@@ -103,13 +107,15 @@ export function testGaps(structure, { statistics = null, repository = null } = {
       const constructs = file.failurePaths.map((site) => `the ${site.kind === 'match-err' ? 'Err arm' : site.kind === 'err' ? 'Err' : site.kind} in ${site.in ?? 'the module body'} (line ${site.line})`);
       const own = kindForFile(file.path, kind);
       const ownSource = own === kind ? source : runnerFor(own.kind, { repository });
+      // The suggestion names the first few; the facts hold every one.
+      const named = constructs.length > NAMED ? [...constructs.slice(0, NAMED), `${constructs.length - NAMED} more`] : constructs;
       suggestions.push({
         rule: 'G6',
         part: boundary.name,
         path: file.path,
         kind: own,
         facts: { constructs, reach: 'no test imports or runs this file' },
-        suggest: { ...(ownSource ? { runner: ownSource.runner } : {}), text: `tests that make ${list(constructs)} run, with the input that sends ${file.path} down each` },
+        suggest: { ...(ownSource ? { runner: ownSource.runner } : {}), text: `tests that make ${list(named)} run, with the input that sends ${file.path} down each` },
         ...(ownSource ? { source: ownSource.source } : {}),
       });
     }
@@ -133,16 +139,23 @@ export function testGaps(structure, { statistics = null, repository = null } = {
     }
   }
 
-  const ranked = rank(gaps, { structure, statistics, fileOf, partOf });
+  // An answer narrowed to part of the repository keeps what lies in it.
+  const inScope = (path) => scope == null || scope.files.has(path);
+  const partInScope = (part) => scope == null || scope.parts.has(part);
+  const kept = (entry) => (entry.path != null ? inScope(entry.path) : partInScope(entry.part));
+  const ranked = rank(gaps.filter(kept), { structure, statistics, fileOf, partOf });
   for (const gap of ranked) gap.wouldReach = wouldReach(gap, { structure, attributed, repository });
+  const hygiene = [...notRunRule(facts.notRun, { attributed, notAttributed, partOf, kinds, repository, fileOf, leftOut: facts.leftOut, missed: workflows.flatMap((door) => door.shellMissed ?? []) }), ...coverageRule({ attributed, notAttributed })]
+    .map((entry) => (entry.rule === 'G2' && scope != null ? { ...entry, facts: { ...entry.facts, files: entry.facts.files.filter(inScope), count: entry.facts.files.filter(inScope).length } } : entry))
+    .filter((entry) => (entry.rule === 'G2' ? entry.facts.count > 0 : scope == null || (structure.boundaries ?? []).some((boundary) => scope.parts.has(boundary.name) && (boundary.testRunners ?? []).some((runner) => entry.facts.runners.includes(runner)))));
 
   return {
-    kinds: [...kinds].map(([part, kind]) => ({ part, ...kind })),
+    kinds: [...kinds].filter(([part]) => partInScope(part)).map(([part, kind]) => ({ part, ...kind })),
     facts,
     gaps: { items: ranked.slice(0, SHOWN), rest: Math.max(0, ranked.length - SHOWN) },
-    suggestions,
-    hygiene: [...notRunRule(facts.notRun, { attributed, notAttributed, partOf, kinds, repository, fileOf, leftOut: facts.leftOut, missed: workflows.flatMap((door) => door.shellMissed ?? []) }), ...coverageRule({ attributed, notAttributed })],
-    commands: commandRule(doors, reach, workflows),
+    suggestions: suggestions.filter(kept),
+    hygiene,
+    commands: commandRule(doors, reach, workflows).filter(kept),
   };
 }
 

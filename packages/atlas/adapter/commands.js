@@ -9,6 +9,7 @@ import { compareArtifacts } from './check.js';
 import { diffAgainstBase, diffJson, diffMarkdown, readBaseMap } from './diff.js';
 import { formatFailure } from './errors.js';
 import { explainCommand } from './explain.js';
+import { gapsCommand } from './gaps.js';
 import { initCommand } from './init.js';
 import { buildEnvelope, hitsFromStatistics } from './divergence.js';
 import { buildPage } from './page.js';
@@ -24,9 +25,10 @@ export function main(argv, cwd) {
   if (argv[0] === 'map') return mapCommand(cwd, argv.slice(1));
   if (argv[0] === 'check') return checkCommand(cwd);
   if (argv[0] === 'explain') return explainAt(cwd, argv.slice(1));
+  if (argv[0] === 'gaps') return gapsAt(cwd, argv.slice(1));
   if (argv[0] === 'diff') return diffCommand(cwd, argv.slice(1));
   if (argv[0] === 'mcp') return mcpCommand(cwd, argv.slice(1));
-  process.stdout.write('atlas: expected atlas init, atlas map, atlas check, atlas explain, atlas diff, or atlas mcp\nexit 2\n');
+  process.stdout.write('atlas: expected atlas init, atlas map, atlas check, atlas explain, atlas gaps, atlas diff, or atlas mcp\nexit 2\n');
   return 2;
 }
 
@@ -62,6 +64,14 @@ function explainAt(cwd, argv) {
   const repo = repoRoot(cwd);
   if (!repo) return usage('atlas: not a git repository');
   return explainCommand(repo, showPrefix(cwd), argv);
+}
+
+// Gaps, like explain, reads only the committed artifacts; the repository's
+// name decides which house rules a suggestion cites.
+function gapsAt(cwd, argv) {
+  const repo = repoRoot(cwd);
+  if (!repo) return usage('atlas: not a git repository');
+  return gapsCommand(repo, showPrefix(cwd), argv, { repository: repositoryName(repo) });
 }
 
 export function mapCommand(cwd, argv = []) {
