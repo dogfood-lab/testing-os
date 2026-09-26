@@ -82,6 +82,9 @@ on:
       # tree by the `atlas check` step below. An edit to atlas/ alone, such as
       # a new boundary in atlas/boundaries.yaml, must run that check.
       - 'atlas/**'
+      # Codecov reads its status and comment settings from this file, so an
+      # edit to it alone must run the job that uploads.
+      - 'codecov.yml'
   pull_request:
     paths:
       - 'packages/**'
@@ -118,6 +121,8 @@ on:
       - 'swarms/templates/**'
       # The committed Atlas map (see push block above).
       - 'atlas/**'
+      # Codecov's settings (see push block above).
+      - 'codecov.yml'
   workflow_dispatch:
 
 concurrency:
@@ -130,14 +135,19 @@ concurrency:
 # GITHUB_TOKEN scope is part of the attack surface. `contents: read` is the
 # floor needed for `actions/checkout` to fetch the ref; no job here writes
 # back to the repo. build-and-test widens its own token by one scope,
-# `pull-requests: write`, for the Atlas diff comment (see that job).
+# `pull-requests: write`, for the Atlas diff comment (see that job). The
+# codecov job widens its own by `id-token: write`, for the OIDC sign-in to
+# Codecov, and runs none of the repository's code (see that job).
 permissions:
   contents: read
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # 30, not 20: on the leg that measures coverage every Node process the
+    # tests start runs under NODE_V8_COVERAGE, and a pull request's Node 22
+    # leg took about 17.5 minutes with it, too close to the old limit.
+    timeout-minutes: 30
     # `pull-requests: write` lets the Atlas diff step post its one comment on
     # the pull request; it grants no write to the repository's contents. A
     # job-level block replaces the workflow-level one, so `contents: read` is
@@ -172,6 +182,12 @@ jobs:
         # would have needed a C++ toolchain to install). Honest signal
         # beats permissive engines-with-no-test-coverage.
         node-version: [22, 24]
+    env:
+      # 'true' on the one leg whose coverage and test results go to Codecov:
+      # Node 22, on a pull request or a push to the default branch. A push to
+      # any other branch runs the tests without coverage, and a branch with
+      # an open pull request uploads once per commit, from the pull request.
+      COVERAGE_LEG: ${{ matrix.node-version == 22 && (github.event_name == 'pull_request' || github.ref == format('refs/heads/{0}', github.event.repository.default_branch)) }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v6.0.3 (node24 runtime)
         # The token this job now carries can write pull request comments.
@@ -355,8 +371,129 @@ jobs:
               || echo "::warning::atlas diff comment could not be posted; the delta is in this log"
           fi
           exit 0
+      # Coverage and test results for Codecov come from the one leg
+      # COVERAGE_LEG names; everywhere else these two commands run as they
+      # did. On that leg they run with NODE_V8_COVERAGE, so every Node process
+      # they start, the CLIs the tests spawn included, leaves raw V8 coverage
+      # outside the tree; and with NODE_OPTIONS naming the test runner's
+      # reporters, spec to the log and JUnit to junit.xml. The destination is
+      # relative on purpose: npm runs a workspace's script from that
+      # workspace's directory, so each package writes its own junit.xml and
+      # test:scripts writes the one at the root. Elsewhere both variables are
+      # empty, which Node treats as unset.
       - run: npm run test:scripts
+        id: test-scripts
+        env:
+          NODE_V8_COVERAGE: ${{ env.COVERAGE_LEG == 'true' && format('{0}/v8-coverage', runner.temp) || '' }}
+          NODE_OPTIONS: ${{ env.COVERAGE_LEG == 'true' && '--test-reporter=spec --test-reporter-destination=stdout --test-reporter=junit --test-reporter-destination=junit.xml' || '' }}
       - run: npm test
+        env:
+          NODE_V8_COVERAGE: ${{ env.COVERAGE_LEG == 'true' && format('{0}/v8-coverage', runner.temp) || '' }}
+          NODE_OPTIONS: ${{ env.COVERAGE_LEG == 'true' && '--test-reporter=spec --test-reporter-destination=stdout --test-reporter=junit --test-reporter-destination=junit.xml' || '' }}
+      # packages/schemas runs under Vitest, which reads neither variable, so
+      # its suite runs once more here with Vitest's own coverage and JUnit
+      # reporters. It runs from the repository root, filtered to the
+      # package's tests, so its lcov paths begin packages/schemas/: from
+      # inside the package they would read src/index.ts, a path that many
+      # fixture repositories under fixtures/ also carry, and Codecov could not
+      # tell which file was meant.
+      - name: Schemas coverage and test results under Vitest
+        if: ${{ env.COVERAGE_LEG == 'true' }}
+        run: npx vitest run packages/schemas/ --coverage.enabled --coverage.provider=v8 --coverage.reporter=lcov --coverage.reporter=text-summary --coverage.reportsDirectory=coverage/vitest --reporter=default --reporter=junit --outputFile.junit=packages/schemas/junit.xml
+      # One lcov report from the raw coverage of every process above. c8
+      # follows the source maps the build writes, so the schemas package's
+      # dist/ reads back as its TypeScript. The exact version keeps npx from
+      # fetching whichever c8 is newest on the day.
+      - name: Coverage report
+        if: ${{ env.COVERAGE_LEG == 'true' }}
+        run: npx --yes c8@12.0.0 report --temp-directory "$RUNNER_TEMP/v8-coverage" --reporter=lcov --reporter=text-summary --report-dir coverage/c8
+      # The codecov job below uploads what these two steps save; this job
+      # never holds an OIDC token. Coverage is saved when the steps above
+      # produced it, and test results whenever test:scripts ran, failures
+      # included, because a failing test is what that report exists to show.
+      # A save step with no files to save fails the job, so a report that
+      # should exist cannot go missing unseen. overwrite lets a re-run of this
+      # job replace the artifact its earlier attempt saved.
+      - name: Save coverage for Codecov
+        if: ${{ env.COVERAGE_LEG == 'true' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: codecov-coverage
+          path: |
+            coverage/c8/lcov.info
+            coverage/vitest/lcov.info
+          if-no-files-found: error
+          retention-days: 3
+          overwrite: true
+      - name: Save test results for Codecov
+        if: ${{ !cancelled() && env.COVERAGE_LEG == 'true' && steps.test-scripts.outcome != 'skipped' }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: codecov-test-results
+          path: |
+            junit.xml
+            packages/*/junit.xml
+          if-no-files-found: error
+          retention-days: 3
+          overwrite: true
+
+  codecov:
+    # Uploads what build-and-test saved, from a job of its own, so the OIDC
+    # token that signs in to Codecov never exists beside the install and the
+    # tests. The checkout, which keeps no token, is there only so Codecov can
+    # match report paths to files: the job installs nothing and runs none of
+    # the repository's code. It runs whenever build-and-test ran, failures
+    # included, so failing tests still reach Codecov, and only on the events
+    # that collect coverage. A run the concurrency group cancels uploads
+    # nothing, and each run reads only its own artifacts.
+    needs: build-and-test
+    if: ${{ !cancelled() && needs.build-and-test.result != 'cancelled' && needs.build-and-test.result != 'skipped' && (github.event_name == 'pull_request' || github.ref == format('refs/heads/{0}', github.event.repository.default_branch)) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v6.0.3 (node24 runtime)
+        with:
+          persist-credentials: false
+      # Each artifact unpacks where build-and-test wrote its files. A pattern
+      # that matches nothing, unlike a name, does not fail: a failing test run
+      # saves test results and no coverage.
+      - name: Download coverage
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: codecov-coverage
+          path: coverage
+      - name: Download test results
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: codecov-test-results
+          path: .
+      # After a passing build-and-test both artifacts exist, so each upload
+      # runs, and fails the job if its files are missing; after a failing one
+      # each runs when its files arrived. Both sign in with OIDC, fail the job
+      # when Codecov refuses the report, and run the Codecov CLI at a fixed
+      # version rather than whichever is newest.
+      - name: Upload coverage to Codecov
+        if: ${{ needs.build-and-test.result == 'success' || hashFiles('coverage/c8/lcov.info', 'coverage/vitest/lcov.info') != '' }}
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          version: v11.3.1
+          use_oidc: true
+          fail_ci_if_error: true
+          disable_search: true
+          files: ./coverage/c8/lcov.info,./coverage/vitest/lcov.info
+      - name: Upload test results to Codecov
+        if: ${{ needs.build-and-test.result == 'success' || hashFiles('junit.xml', 'packages/*/junit.xml') != '' }}
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          version: v11.3.1
+          use_oidc: true
+          fail_ci_if_error: true
+          report_type: test_results
+          disable_search: true
+          files: ./junit.xml,./packages/*/junit.xml
 
   # F-92a05b18 (ci-tooling amend, run swarm-1784091637-5127): scripts/check-
   # step-fixtures.test.mjs carries a win32-only branch in its local

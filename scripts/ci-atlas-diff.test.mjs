@@ -30,11 +30,18 @@ function ciText() {
   return readFileSync(ciPath, 'utf8');
 }
 
+// A top-level job, from its key to the next top-level key; the comment lines
+// that lead into the next job come along and match nothing below.
+function jobBlock(text, name) {
+  const start = text.indexOf(`\n  ${name}:\n`);
+  assert.ok(start > 0, `expected a job named ${name} in ci.yml`);
+  const after = text.slice(start + 1);
+  const next = after.search(/\n {2}[A-Za-z_][\w-]*:\n/);
+  return next === -1 ? after : after.slice(0, next + 1);
+}
+
 function buildJob(text) {
-  const start = text.indexOf('\n  build-and-test:');
-  const end = text.indexOf('\n  windows-step-fixtures-proof-of-life:');
-  assert.ok(start > 0 && end > start, 'expected build-and-test before the windows proof-of-life job');
-  return text.slice(start, end);
+  return jobBlock(text, 'build-and-test');
 }
 
 // The step from its `- name:` line to the next step at the same indentation.
@@ -122,6 +129,19 @@ test('build-and-test widens its token by pull-requests: write alone, and does no
   const workflowLevel = /^permissions:\n((?: {2}\S[^\n]*\n)+)/m.exec(text.slice(0, text.indexOf('\njobs:')));
   assert.ok(workflowLevel, 'a workflow-level permissions block');
   assert.equal(workflowLevel[1], '  contents: read\n', 'the widening is job-level, never workflow-level');
+});
+
+// The Codecov upload signs in with an OIDC token, and only a job with
+// id-token: write can mint one. That job must stay the one that runs nothing
+// from the repository: no install, no tests, only pinned actions.
+test('the codecov job alone widens its token, by id-token: write, runs no command of its own, and does not persist it', () => {
+  const text = ciText();
+  const job = jobBlock(text, 'codecov');
+  assert.match(job, /\n {4}permissions:\n {6}contents: read\n {6}id-token: write\n {4}steps:/);
+  assert.match(job, /uses: actions\/checkout@[0-9a-f]{40}[^\n]*\n(?: {8}#[^\n]*\n)* {8}with:\n {10}persist-credentials: false\n/);
+  assert.doesNotMatch(job, /^ {6}(?:- )?run:/m, 'every step is a pinned action; none runs a command');
+  for (const ref of job.match(/uses: \S+/g) ?? []) assert.match(ref, /@[0-9a-f]{40}$/, ref);
+  assert.equal((text.match(/^ +id-token: write$/gm) ?? []).length, 1, 'no other job, and not the workflow, can mint an OIDC token');
 });
 
 /* ---------- the script itself, under bash with stubbed tools ---------- */
