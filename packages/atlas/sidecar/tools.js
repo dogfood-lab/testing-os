@@ -1,4 +1,6 @@
-import { answered, CANNOT_SEE_SCHEMA, FACT_GROUP_SCHEMA, failed, provenance, PROVENANCE_SCHEMA } from './answer.js';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { answered, CANNOT_SEE_SCHEMA, FACT_GROUP_SCHEMA, failed, freshnessSentences, provenance, PROVENANCE_SCHEMA } from './answer.js';
 import { changesAnswer } from './changes-tool.js';
 import { explainAnswer } from './explain-tool.js';
 import { changedFiles, checkoutState, mapHashes } from './freshness.js';
@@ -6,6 +8,7 @@ import { head, topLevel } from './git.js';
 import { readCommittedMap } from './map.js';
 import { overviewAnswer } from './overview-tool.js';
 import { reachAnswer } from './reach-tool.js';
+import { reread, rereadFacts } from './reread.js';
 import { outputSchema, problems } from './schema.js';
 
 /**
@@ -15,6 +18,10 @@ import { outputSchema, problems } from './schema.js';
  */
 
 const READ_ONLY = Object.freeze({ readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false });
+
+// How many changed files one answer reads again; a question about more is
+// better answered by a refresh.
+const REREAD_CAP = 20;
 
 const QUESTION_PATH = {
   type: 'object',
@@ -192,7 +199,20 @@ export async function callTool(name, args, context) {
   const known = mapHashes(snapshot.structure);
   const files = [...result.files, ...pathsIn(result.answer, known)];
   const changed = changedFiles(repo.root, snapshot, state, files);
-  return answered(provenance({ repo, snapshot, head: state.head, changed }), result.answer, result.sentences);
+  const sentences = [...freshnessSentences(snapshot, changed), ...result.sentences];
+  // A file asked about that changed after the map is read again, and what
+  // it does now is set beside what the map says it did.
+  const asked = new Set(result.files);
+  const rereadable = changed.map((entry) => entry.path).filter((path) => asked.has(path) && existsSync(join(repo.root, path))).slice(0, REREAD_CAP);
+  if (rereadable.length > 0) {
+    for (const reading of reread(snapshot, repo, rereadable)) {
+      const view = rereadFacts(snapshot, reading);
+      result.answer.facts.push(...view.facts);
+      result.answer.cannotSee.push(...view.cannotSee);
+      sentences.push(view.sentence);
+    }
+  }
+  return answered(provenance({ repo, snapshot, head: state.head, changed }), result.answer, sentences);
 }
 
 // Every tracked path an answer's facts name, in the order they appear, so

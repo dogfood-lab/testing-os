@@ -1,4 +1,7 @@
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
+import { appendFileSync, cpSync, mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 /**
@@ -89,6 +92,53 @@ export function startServer({ cwd, env = {}, onRequest = () => null }) {
       return exited;
     },
   };
+}
+
+/** git in a test repository; throws with git's words when it fails. */
+export function git(cwd, args) {
+  const result = spawnSync('git', args, { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  if (result.status !== 0) throw new Error(`git ${args.join(' ')}\n${result.stderr || String(result.error ?? '')}`);
+  return result.stdout.trim();
+}
+
+/** Stages everything and commits it as the test author. */
+export function commitAll(cwd, message) {
+  git(cwd, ['add', '-A']);
+  git(cwd, ['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit', '-q', '-m', message]);
+}
+
+/** atlas map in a checkout; throws with its output when it fails. */
+export function mapIn(cwd) {
+  const result = spawnSync(process.execPath, [CLI, 'map'], { cwd, encoding: 'utf8' });
+  if (result.status !== 0) throw new Error(`atlas map failed\n${result.stdout}${result.stderr}`);
+}
+
+/**
+ * A fixture as a committed repository in a temporary directory, with a
+ * history in which the given files change together, mapped, and the map
+ * committed. Returns the root; the caller removes it.
+ *
+ * @param {string} fixture the fixture directory
+ * @param {{ together?: string[], times?: number, prefix?: string }} [options]
+ */
+export function mappedRepository(fixture, { together = [], times = 6, prefix = 'atlas-sidecar-' } = {}) {
+  const root = mkdtempSync(join(tmpdir(), prefix));
+  cpSync(fixture, root, { recursive: true });
+  git(root, ['init', '-q']);
+  git(root, ['config', 'core.autocrlf', 'false']);
+  // A commit may start git's background maintenance, which repacks objects
+  // under .git moments later; a test that checks .git is untouched must not
+  // race it.
+  git(root, ['config', 'maintenance.auto', 'false']);
+  git(root, ['config', 'gc.auto', '0']);
+  commitAll(root, 'fixture');
+  for (let i = 1; together.length > 0 && i <= times; i += 1) {
+    for (const path of together) appendFileSync(join(root, path), `// change ${i}\n`);
+    commitAll(root, `change ${i}`);
+  }
+  mapIn(root);
+  commitAll(root, 'map');
+  return root;
 }
 
 /** The _meta a 2026-07-28 request carries. */

@@ -58,8 +58,9 @@ const UNRESOLVED_NAMED = 3;
 // Why a site did not resolve, in the words the page uses: an undeclared
 // package a file probes for or loads if it is there, an import of a path a
 // build generates (.next/, dist/), one of a path the repository does not
-// hold, or one built at run time.
-function unresolvedEntry(path, site) {
+// hold, or one built at run time. The sidecar words a re-read's sites the
+// same way.
+export function unresolvedEntry(path, site) {
   const reason = site.resolved?.reason ?? 'unresolved';
   const entry = { line: site.line, path, specifier: site.kind === 'dynamic' ? null : site.specifier };
   if (reason === 'undeclared-package') entry.why = site.locates ? 'probe' : site.optional ? 'optional' : 'undeclared';

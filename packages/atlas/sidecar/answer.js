@@ -63,6 +63,45 @@ function short(commit) {
   return String(commit ?? '').slice(0, 7);
 }
 
+function version(text) {
+  const match = /^(\d+)\.(\d+)\.(\d+)/.exec(String(text ?? ''));
+  return match ? match.slice(1, 4).map(Number) : null;
+}
+
+/**
+ * How the engine that made a map compares with the engine answering:
+ * 'same', 'older', 'newer', or 'unknown' for a map made before maps named
+ * their engine (or one naming a version that is no version).
+ */
+export function engineAge(mapEngine) {
+  const made = version(mapEngine);
+  const answering = version(ENGINE);
+  if (!made || !answering) return 'unknown';
+  for (let i = 0; i < 3; i += 1) {
+    if (made[i] < answering[i]) return 'older';
+    if (made[i] > answering[i]) return 'newer';
+  }
+  return 'same';
+}
+
+/**
+ * What an answer says first about how fresh its map is: when an older or a
+ * newer engine made it, or none it names, and when files in the answer
+ * changed after it; each names the refresh where a refresh would help.
+ */
+export function freshnessSentences(snapshot, changed) {
+  const out = [];
+  const age = engineAge(snapshot.engine);
+  if (age === 'unknown') out.push(`Atlas: the map does not name the engine that made it, so it was made before maps recorded one; atlas_refresh re-maps the checkout with this engine (${ENGINE}).`);
+  else if (age === 'older') out.push(`Atlas: the map was made by Atlas ${snapshot.engine}, an older engine than this one (${ENGINE}); atlas_refresh re-maps the checkout with this engine.`);
+  else if (age === 'newer') out.push(`Atlas: the map was made by Atlas ${snapshot.engine}, newer than this engine (${ENGINE}); it may state facts this engine does not read.`);
+  if (changed.length > 0) {
+    const files = changed.length === 1 ? '1 file' : `${changed.length} files`;
+    out.push(`Atlas: ${files} in this answer changed after the map, so what the map says of ${changed.length === 1 ? 'it' : 'them'} is from before the change; atlas_refresh re-maps the checkout.`);
+  }
+  return out;
+}
+
 function changeWords(entry) {
   if (entry.committed && entry.uncommitted) return 'committed, and changed again uncommitted';
   return entry.committed ? 'committed' : 'uncommitted';
@@ -82,7 +121,7 @@ export function provenance({ repo = null, snapshot = null, head = null, changed 
   const atlas = { engine: ENGINE };
   const parts = [`Atlas ${ENGINE}`];
   if (snapshot) {
-    atlas.map = { snapshot: snapshot.id, commit: snapshot.commit, date: snapshot.date, engine: snapshot.engine };
+    atlas.map = { snapshot: snapshot.id, commit: snapshot.commit, date: snapshot.date, engine: snapshot.engine, engineAge: engineAge(snapshot.engine) };
     const by = snapshot.engine ? `made by Atlas ${snapshot.engine}` : 'made by an Atlas that did not record its version';
     const name = snapshot.id === 'committed' ? 'map' : snapshot.label;
     parts.push(`${name} ${short(snapshot.commit)}, ${snapshot.date || 'undated'}, ${by}`);
@@ -136,8 +175,9 @@ export const PROVENANCE_SCHEMA = {
         commit: { type: 'string' },
         date: { type: 'string' },
         engine: { type: ['string', 'null'] },
+        engineAge: { type: 'string', enum: ['same', 'older', 'newer', 'unknown'] },
       },
-      required: ['snapshot', 'commit', 'date', 'engine'],
+      required: ['snapshot', 'commit', 'date', 'engine', 'engineAge'],
     },
     checkout: {
       type: 'object',
@@ -177,6 +217,7 @@ export const FACT_GROUP_SCHEMA = {
     window: { type: 'object' },
     confidence: { type: 'object' },
     source: { type: 'string', enum: ['map', 're-read'] },
+    file: { type: 'string' },
   },
   required: ['fact', 'basis', 'items', 'total', 'complete'],
 };
@@ -193,6 +234,7 @@ export const CANNOT_SEE_SCHEMA = {
     reason: { type: 'string' },
     named: { type: 'array' },
     places: { type: 'array', items: { type: 'string' } },
+    source: { type: 'string', enum: ['map', 're-read'] },
   },
   required: ['basis', 'what', 'grain', 'count', 'named'],
 };

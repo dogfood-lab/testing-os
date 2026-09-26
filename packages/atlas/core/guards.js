@@ -86,7 +86,7 @@ export function mainOnly(node, python) {
 
 function guardsAt(node, lang, target, hops) {
   const guards = new Set();
-  const candidates = (condition) => ['ci', 'main', ...(target ? ['exists'] : []), ...flagsIn(condition, lang, 0, new Set())];
+  const candidates = (condition) => ['ci', 'main', ...(target ? ['exists'] : []), ...conditionFlags(condition, lang)];
   const record = (condition, value) => {
     for (const guard of candidates(condition)) if (forced(condition, guard, value, lang, 0, new Set(), target)) guards.add(guard);
   };
@@ -117,10 +117,27 @@ function guardsAt(node, lang, target, hops) {
   return [...guards].sort();
 }
 
+// What commandFunction found for each function of a tree, by the tree: the
+// answer depends only on the tree, the function, the language and the hops,
+// and finding it walks the whole file, which a large file with many guarded
+// calls would otherwise do once per call.
+const COMMAND_FUNCTIONS = new WeakMap();
+
 // A module-level function the file does not export, mentioned at least once
 // and only where the file runs as a program.
 function commandFunction(fn, lang, hops) {
   if (hops >= MAIN_HOPS) return false;
+  let known = COMMAND_FUNCTIONS.get(fn.tree);
+  if (!known) {
+    known = new Map();
+    COMMAND_FUNCTIONS.set(fn.tree, known);
+  }
+  const key = `${lang === PYTHON ? 'py' : 'js'}\0${fn.startIndex}\0${fn.endIndex}\0${hops}`;
+  if (!known.has(key)) known.set(key, findCommandFunction(fn, lang, hops));
+  return known.get(key);
+}
+
+function findCommandFunction(fn, lang, hops) {
   const named = lang.moduleFunction(fn);
   if (named == null || named.exported) return false;
   let program = fn;
@@ -210,6 +227,32 @@ function scriptReadsFirst(tryStatement, target) {
   return false;
 }
 
+/**
+ * A lookup made once per node of a tree: the tree, the language and the
+ * node's type and range are the key, so the node objects the parser hands
+ * out anew on every access still meet the same entry. Every call site under
+ * one condition asks about the same condition, and every identifier in it
+ * about the same declaration; a large file asks thousands of times.
+ */
+function perNode(cache, node, lang, find) {
+  let known = cache.get(node.tree);
+  if (!known) {
+    known = new Map();
+    cache.set(node.tree, known);
+  }
+  const key = `${lang === PYTHON ? 'py' : 'js'}\0${node.type}\0${node.startIndex}\0${node.endIndex}`;
+  if (!known.has(key)) known.set(key, find());
+  return known.get(key);
+}
+
+const CONDITION_FLAGS = new WeakMap();
+const DECLARATIONS = new WeakMap();
+
+// The flags a condition tests, followed from no name already on the way.
+function conditionFlags(condition, lang) {
+  return perNode(CONDITION_FLAGS, condition, lang, () => flagsIn(condition, lang, 0, new Set()));
+}
+
 // The flags a condition tests, by name, through the names it is bound to.
 function flagsIn(node, lang, depth, visiting) {
   if (!node || depth > MAX_DEPTH) return [];
@@ -253,6 +296,13 @@ function flagText(node) {
 // A const or let bound once in an enclosing block to the expression.
 function scriptBinding(node, visiting) {
   if (node.type !== 'identifier') return null;
+  const found = perNode(DECLARATIONS, node, SCRIPT, () => scriptDeclarator(node));
+  return found?.value && !visiting.has(found.id) ? found : null;
+}
+
+// The first declarator of the name in the nearest enclosing block, with or
+// without a value; null when no enclosing block declares it.
+function scriptDeclarator(node) {
   for (let scope = node.parent; scope; scope = scope.parent) {
     if (!JS_BLOCKS.has(scope.type)) continue;
     for (const statement of scope.namedChildren) {
@@ -260,9 +310,7 @@ function scriptBinding(node, visiting) {
       if (declaration?.type !== 'lexical_declaration' && declaration?.type !== 'variable_declaration') continue;
       for (const declarator of declaration.namedChildren) {
         if (declarator.type !== 'variable_declarator' || declarator.childForFieldName('name')?.text !== node.text) continue;
-        const id = `${declarator.startIndex}:${declarator.endIndex}`;
-        const value = declarator.childForFieldName('value');
-        return value && !visiting.has(id) ? { id, value } : null;
+        return { id: `${declarator.startIndex}:${declarator.endIndex}`, value: declarator.childForFieldName('value') };
       }
     }
   }
@@ -271,14 +319,18 @@ function scriptBinding(node, visiting) {
 
 function pythonBinding(node, visiting) {
   if (node.type !== 'identifier') return null;
+  const found = perNode(DECLARATIONS, node, PYTHON, () => pythonAssignment(node));
+  return found?.value && !visiting.has(found.id) ? found : null;
+}
+
+// The first assignment to the name in the nearest enclosing module or block.
+function pythonAssignment(node) {
   for (let scope = node.parent; scope; scope = scope.parent) {
     if (scope.type !== 'module' && scope.type !== 'block') continue;
     for (const statement of scope.namedChildren) {
       const assignment = statement.type === 'expression_statement' ? statement.namedChildren[0] : null;
       if (assignment?.type !== 'assignment' || assignment.childForFieldName('left')?.text !== node.text) continue;
-      const id = `${assignment.startIndex}:${assignment.endIndex}`;
-      const value = assignment.childForFieldName('right');
-      return value && !visiting.has(id) ? { id, value } : null;
+      return { id: `${assignment.startIndex}:${assignment.endIndex}`, value: assignment.childForFieldName('right') };
     }
   }
   return null;

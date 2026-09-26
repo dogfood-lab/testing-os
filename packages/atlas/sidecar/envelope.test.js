@@ -139,7 +139,7 @@ describe('the provenance', () => {
     const { atlas } = result.structuredContent;
     const head = git(repo, ['rev-parse', 'HEAD']);
     assert.equal(atlas.engine, VERSION);
-    assert.deepEqual(atlas.map, { snapshot: 'committed', commit: mapCommit, date: atlas.map.date, engine: VERSION });
+    assert.deepEqual(atlas.map, { snapshot: 'committed', commit: mapCommit, date: atlas.map.date, engine: VERSION, engineAge: 'same' });
     assert.match(atlas.map.date, /^\d{4}-\d{2}-\d{2}$/);
     assert.equal(atlas.checkout.head, head);
     assert.equal(atlas.checkout.rootFrom, 'working directory');
