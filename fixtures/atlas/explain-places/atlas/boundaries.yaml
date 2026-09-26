@@ -1,0 +1,29 @@
+boundaries:
+  - name: engine
+    globs:
+      - lib/**
+    role: code
+  - name: root
+    globs:
+      - "*"
+    role: config
+  - name: site
+    globs:
+      - site/**
+    role: docs
+  - name: store
+    globs:
+      - store/**
+    role: data
+  - name: tests
+    globs:
+      - test/**
+    role: test
+  - name: tools
+    globs:
+      - tools/**
+    role: code
+  - name: workflows
+    globs:
+      - .github/**
+    role: config

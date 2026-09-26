@@ -2,17 +2,20 @@ import { existsSync, readFileSync } from 'node:fs';
 import { isAbsolute, join, posix, relative } from 'node:path';
 import { isOwnTest, isTestFile } from '../core/landings.js';
 import { formatFailure } from './errors.js';
-import { collapse, count, cover, entryOrder, externalsLine, installed, list, pageFacts, readerFiles, readerItem, testsClause, under, worded } from './page.js';
+import { boundaryRoot, capitalize, collapse, count, cover, entryOrder, externalsLine, installed, list, pageFacts, readerFiles, readerItem, testsClause, under, worded } from './page.js';
 
 /**
- * atlas explain: what one file, or one directory, is in the system, read from
- * the committed artifacts alone. It never maps, so it answers from what the
- * repository last committed and says which commit that was.
+ * atlas explain: what one file, one directory or one part is in the system,
+ * read from the committed artifacts alone. It never maps, so it answers from
+ * what the repository last committed and says which commit that was.
  */
 
 const LISTED = 6;
 const PAIRS_SHOWN = 3;
 const NO_ORDER = 'No order of work is recorded; only files a door runs, and the files they call, carry one.';
+// How near a written place is to the place explained, nearest first: the
+// place itself, a place inside it, then a directory that holds it.
+const RELATIONS = ['exact', 'inside', 'parent'];
 
 function cmp(a, b) {
   if (a < b) return -1;
@@ -163,13 +166,21 @@ function overlapOf(ctx, path) {
   return (ctx.structure.overlaps ?? []).find((file) => file.path === path) ?? null;
 }
 
-function locate(ctx, tried) {
+// A path is looked for before a part, so a directory and the part drawn from
+// it (records/ and records) are explained as the directory, which says the
+// part it is in; a part is found by the name the boundary file gives it.
+function locate(ctx, tried, raw) {
   for (const path of tried) {
     if (ctx.fileOf.has(path)) return { kind: 'file', path, members: [path] };
   }
   for (const path of tried) {
     const members = [...ctx.fileOf.keys()].filter((file) => file.startsWith(`${path}/`)).sort(cmp);
     if (members.length > 0) return { kind: 'directory', path, members };
+  }
+  const name = String(raw);
+  const boundary = ctx.boundaries.find((item) => item.name === name);
+  if (boundary) {
+    return { kind: 'part', path: null, part: boundary.name, members: (boundary.files ?? []).map((file) => file.path).sort(cmp) };
   }
   return null;
 }
@@ -223,7 +234,8 @@ function doorLine(doors, partLabel, kind) {
     const { name, parseError } = doors.self;
     return parseError ? `It is the door ${name}, whose workflow could not be read.` : `It is the door ${name}.`;
   }
-  const directory = kind === 'directory';
+  // A part is spoken of as a directory is: its files, not it, are run.
+  const directory = kind === 'directory' || kind === 'part';
   const built = doors.builtBy ?? [];
   if (doors.runBy.length > 0 || built.length > 0 || doors.checkedBy.length > 0) {
     const clauses = [];
@@ -240,6 +252,7 @@ function doorLine(doors, partLabel, kind) {
     return `${text[0].toUpperCase()}${text.slice(1)}.`;
   }
   if (doors.onPath.length > 0) return `On the path of ${list(doors.onPath)} through ${partLabel}.`;
+  if (kind === 'part') return 'No door runs a file in it or reaches it.';
   const runs = directory ? 'No door runs a file in it' : 'No door runs it';
   return partLabel == null ? `${runs}.` : `${runs} or reaches its part.`;
 }
@@ -280,8 +293,117 @@ function writeLine(ctx, write) {
   return `Writes to ${write.place}; read by ${list(worded(items, ctx.shown))}.`;
 }
 
+/**
+ * How a landing target relates to the place explained: the place itself
+ * ('exact'), a place inside it ('inside'), or a directory that holds it
+ * ('parent'); null when it is none of these. A part drawn from one directory
+ * is that directory; a part drawn from other globs is a place only where a
+ * landing falls on its own files, or on a directory every tracked file of
+ * which is its own.
+ *
+ * @returns {null | 'exact' | 'inside' | 'parent'}
+ */
+function relationOf(ctx, found, target) {
+  const root = found.kind === 'part' ? partRoot(ctx, found.part) : found.path;
+  if (root != null) {
+    if (target === root) return 'exact';
+    if (under(target, root)) return 'inside';
+    if (under(root, target)) return 'parent';
+    return null;
+  }
+  const own = new Set(found.members);
+  if (own.has(target)) return 'exact';
+  const held = found.members.filter((path) => path.startsWith(`${target}/`));
+  if (held.length > 0 && [...ctx.boundaryOf.keys()].filter((path) => path.startsWith(`${target}/`)).length === held.length) return 'inside';
+  return null;
+}
+
+function partRoot(ctx, part) {
+  const boundary = ctx.boundaries.find((item) => item.name === part);
+  return boundary ? boundaryRoot(boundary) : null;
+}
+
+/**
+ * Who writes the place explained and who reads it, from the landings the
+ * page states (weak entries, places that span parts and untracked places
+ * left out, as on the page). A writer is named with the place it writes and
+ * how near that is; a reader of the place or of a place inside it is named
+ * as the page names readers. A member's own read of the place, and a
+ * workflow naming a place it writes itself, are the making of the place,
+ * not a use of it.
+ *
+ * @returns {{ readBy: object[], writtenBy: object[], writtenByDoors: string[] }}
+ */
+function placeFacts(ctx, found) {
+  const related = ctx.landings
+    .map((landing) => ({ landing, relation: relationOf(ctx, found, landing.target) }))
+    .filter((entry) => entry.relation != null);
+  const writtenBy = new Map();
+  for (const { landing, relation } of related) {
+    for (const entry of landing.writers) {
+      const place = ctx.place(landing.target);
+      writtenBy.set(`${entry.by}\0${place}`, { by: entry.by, place, relation });
+    }
+  }
+  const writers = new Set([...writtenBy.values()].map((entry) => entry.by));
+  const own = new Set(found.members);
+  const reads = related
+    .filter(({ relation }) => relation !== 'parent')
+    .flatMap(({ landing }) => landing.readers)
+    .filter((entry) => !own.has(entry.by) && (entry.call != null || !writers.has(entry.by)));
+  const readBy = readerFiles(reads).map((reader) => ({
+    by: reader.path,
+    ...(reader.config ? { config: true } : {}),
+    ...(reader.fromTests ? { fromTests: true } : {}),
+    ...(reader.text ? { text: true } : {}),
+  }));
+  const targets = related.map(({ landing }) => landing.target);
+  const writtenByDoors = ctx.doors
+    .filter((door) => !door.parseError && (door.landings ?? []).some((target) => targets.includes(target)))
+    .map((door) => door.name);
+  const rank = (entry) => RELATIONS.indexOf(entry.relation);
+  return {
+    readBy,
+    writtenBy: [...writtenBy.values()].sort((a, b) => cmp(a.by, b.by) || rank(a) - rank(b) || cmp(a.place, b.place)),
+    writtenByDoors,
+  };
+}
+
+// "lib/ledger.js (into store/ledger/)", "tools/rebuild.js (which writes
+// indexes/)", or the path alone when it writes the place itself.
+function writerText(entries) {
+  const exact = entries.some((entry) => entry.relation === 'exact');
+  const into = entries.filter((entry) => entry.relation === 'inside').map((entry) => entry.place);
+  const holding = entries.filter((entry) => entry.relation === 'parent').map((entry) => entry.place);
+  const notes = [];
+  if (into.length > 0) notes.push(`into ${list(into)}`);
+  if (holding.length > 0) notes.push(`which writes ${list(holding)}`);
+  return exact || notes.length === 0 ? entries[0].by : `${entries[0].by} (${notes.join('; ')})`;
+}
+
+function placeLines(ctx, place) {
+  const lines = [];
+  if (place.writtenBy.length > 0) {
+    const byWriter = new Map();
+    for (const entry of place.writtenBy) byWriter.set(entry.by, [...(byWriter.get(entry.by) ?? []), entry]);
+    lines.push(`Written by ${list([...byWriter.values()].map(writerText))}.`);
+  }
+  if (place.readBy.length > 0) {
+    const readers = place.readBy.map((entry) => ({ path: entry.by, text: entry.text === true, config: entry.config === true, fromTests: entry.fromTests === true }));
+    lines.push(`Read by ${list(worded(collapse(ctx, readers.map(readerItem)), ctx.shown))}.`);
+  }
+  if (place.writtenByDoors.length > 0) {
+    lines.push(`${list(place.writtenByDoors)} ${place.writtenByDoors.length === 1 ? 'writes' : 'write'} to it.`);
+  }
+  return lines;
+}
+
 function pairFacts(ctx, found) {
-  const inside = (path) => (found.kind === 'file' ? path === found.path : path.startsWith(`${found.path}/`));
+  const inside = (path) => {
+    if (found.kind === 'file') return path === found.path;
+    if (found.kind === 'part') return ctx.boundaryOf.get(path) === found.part;
+    return path.startsWith(`${found.path}/`);
+  };
   return (ctx.statistics.pairs ?? [])
     .filter((pair) => inside(pair.a) || inside(pair.b))
     .sort((x, y) => y.strength - x.strength || y.shared - x.shared || cmp(x.a, y.a) || cmp(x.b, y.b))
@@ -320,10 +442,46 @@ function mapLine(map) {
   return date ? `Map from commit ${commit}, ${date}.` : `Map from commit ${commit}.`;
 }
 
-function explainFound(ctx, found, map) {
-  const { parts, loose } = partsIn(ctx, found.members);
-  const overlap = found.kind === 'file' ? overlapOf(ctx, found.path) : null;
-  const facts = {
+// What a part imports and what imports it, at part grain, and what it could
+// not resolve. A file or directory is spoken of through its part; a part is
+// the subject itself.
+function partImportLines(ctx, facts, role, subject) {
+  const lines = [];
+  // A configuration or documentation part that no part imports and that
+  // imports nothing has no import line to state.
+  if (!(role === 'code' || facts.imports.length + facts.importedBy.length + facts.importedByTests.length + facts.unresolved + facts.externals > 0)) return lines;
+  const own = subject === 'part';
+  const lead = own ? 'It' : 'Its part';
+  lines.push(facts.imports.length > 0
+    ? `${lead} imports ${count(facts.imports.length, 'part')}: ${shownList(facts.imports.map(ctx.shown))}.`
+    : `${lead} imports no other part.`);
+  const tests = testsClause(facts.importedBy.length, facts.importedByTests.length);
+  if (facts.importedBy.length > 0) {
+    lines.push(`${lead} is imported by ${count(facts.importedBy.length, 'part')}: ${shownList(facts.importedBy.map(ctx.shown))}${tests ? `, ${tests}` : ''}.`);
+  } else {
+    lines.push(facts.importedByTests.length > 0
+      ? `${lead} is imported only from tests, by ${count(facts.importedByTests.length, 'part')}: ${shownList(facts.importedByTests.map(ctx.shown))}.`
+      : `No other part imports ${own ? 'it' : 'its part'}.`);
+  }
+  const declared = externalsLine(facts.externals, facts.externalNames ?? []);
+  if (declared) lines.push(`In ${own ? 'it' : 'its part'}, ${declared.replace(/^\d+ import sites?/, (text) => text.replace('import site', 'import'))}`);
+  if (facts.unresolved > 0) lines.push(`${count(facts.unresolved, 'import')} in ${own ? 'it' : 'its part'} could not be resolved.`);
+  return lines;
+}
+
+function partImports(ctx, part, facts) {
+  const edges = partEdges(ctx);
+  facts.imports = edges.imports(part);
+  facts.importedBy = edges.importedBy(part);
+  facts.importedByTests = edges.importedByTests(part);
+  const boundary = ctx.boundaries.find((item) => item.name === part);
+  facts.unresolved = boundary?.unresolvedSites ?? 0;
+  facts.externals = boundary?.externals ?? 0;
+  facts.externalNames = boundary?.externalNames ?? [];
+}
+
+function blankFacts(found, map) {
+  return {
     changesWith: [],
     doors: { builtBy: [], checkedBy: [], isDoor: null, onPath: [], runBy: [] },
     externals: 0,
@@ -337,12 +495,22 @@ function explainFound(ctx, found, map) {
     part: null,
     partLabel: null,
     path: found.path,
+    readBy: [],
     reads: [],
     role: null,
     sequence: null,
     unresolved: 0,
     writes: [],
+    writtenBy: [],
+    writtenByDoors: [],
   };
+}
+
+function explainFound(ctx, found, map) {
+  if (found.kind === 'part') return explainPart(ctx, found, map);
+  const { parts, loose } = partsIn(ctx, found.members);
+  const overlap = found.kind === 'file' ? overlapOf(ctx, found.path) : null;
+  const facts = blankFacts(found, map);
   const lines = [];
   const shownPath = found.kind === 'directory' ? `${found.path}/` : found.path;
   if (found.kind === 'directory') facts.files = found.members.length;
@@ -357,6 +525,9 @@ function explainFound(ctx, found, map) {
     lines.push(overlap
       ? `${shownPath} is in more than one part: ${list(named)}.`
       : `${shownPath} is a directory whose files are in ${count(parts.length, 'part')}: ${shownList(named)}${loose > 0 ? `, and ${count(loose, 'file')} in no part` : ''}.`);
+    const place = placeFacts(ctx, found);
+    Object.assign(facts, place);
+    lines.push(...placeLines(ctx, place));
     lines.push('Explain a path inside one part for its doors, imports and order of work.');
     lines.push(mapLine(map));
     facts.partLabels = labelsFor(ctx, facts);
@@ -384,6 +555,10 @@ function explainFound(ctx, found, map) {
   facts.doors = { builtBy: doors.builtBy, checkedBy: doors.checkedBy, isDoor: doors.self?.name ?? null, onPath: doors.onPath, runBy: doors.runBy };
   lines.push(doorLine(doors, part?.partLabel ?? null, found.kind));
 
+  const place = placeFacts(ctx, found);
+  Object.assign(facts, place);
+  lines.push(...placeLines(ctx, place));
+
   if (found.kind === 'file') {
     const own = fileImports(ctx, found.path);
     Object.assign(facts, own);
@@ -391,32 +566,8 @@ function explainFound(ctx, found, map) {
   }
 
   if (part) {
-    const edges = partEdges(ctx);
-    facts.imports = edges.imports(part.part);
-    facts.importedBy = edges.importedBy(part.part);
-    facts.importedByTests = edges.importedByTests(part.part);
-    const boundary = ctx.boundaries.find((item) => item.name === part.part);
-    facts.unresolved = boundary?.unresolvedSites ?? 0;
-    facts.externals = boundary?.externals ?? 0;
-    facts.externalNames = boundary?.externalNames ?? [];
-  }
-  // A configuration or documentation part that no part imports and that
-  // imports nothing has no import line to state.
-  if (part && (part.role === 'code' || facts.imports.length + facts.importedBy.length + facts.importedByTests.length + facts.unresolved + facts.externals > 0)) {
-    lines.push(facts.imports.length > 0
-      ? `Its part imports ${count(facts.imports.length, 'part')}: ${shownList(facts.imports.map(ctx.shown))}.`
-      : 'Its part imports no other part.');
-    const tests = testsClause(facts.importedBy.length, facts.importedByTests.length);
-    if (facts.importedBy.length > 0) {
-      lines.push(`Its part is imported by ${count(facts.importedBy.length, 'part')}: ${shownList(facts.importedBy.map(ctx.shown))}${tests ? `, ${tests}` : ''}.`);
-    } else {
-      lines.push(facts.importedByTests.length > 0
-        ? `Its part is imported only from tests, by ${count(facts.importedByTests.length, 'part')}: ${shownList(facts.importedByTests.map(ctx.shown))}.`
-        : 'No other part imports its part.');
-    }
-    const declared = externalsLine(facts.externals, facts.externalNames ?? []);
-    if (declared) lines.push(`In its part, ${declared.replace(/^\d+ import sites?/, (text) => text.replace('import site', 'import'))}`);
-    if (facts.unresolved > 0) lines.push(`${count(facts.unresolved, 'import')} in its part could not be resolved.`);
+    partImports(ctx, part.part, facts);
+    lines.push(...partImportLines(ctx, facts, part.role, found.kind));
   }
 
   const within = found.kind === 'directory' ? found.path : null;
@@ -435,11 +586,7 @@ function explainFound(ctx, found, map) {
       lines.push(NO_ORDER);
     }
   } else {
-    const ordered = found.members.filter((path) => entryOrder(ctx, path, () => '') != null);
-    facts.sequences = ordered;
-    lines.push(ordered.length > 0
-      ? `An order of work is recorded for ${shownList(ordered)}; explain ${ordered.length === 1 ? 'it' : 'one'} for its steps.`
-      : NO_ORDER);
+    lines.push(...orderLines(ctx, found, facts));
   }
 
   facts.changesWith = pairFacts(ctx, found);
@@ -447,6 +594,91 @@ function explainFound(ctx, found, map) {
   lines.push(mapLine(map));
   facts.partLabels = labelsFor(ctx, facts);
   return { facts, lines };
+}
+
+// The files among the members that carry an order of work, for a directory
+// or a part, each explained on its own.
+function orderLines(ctx, found, facts) {
+  const ordered = found.members.filter((path) => entryOrder(ctx, path, () => '') != null);
+  facts.sequences = ordered;
+  return [ordered.length > 0
+    ? `An order of work is recorded for ${shownList(ordered)}; explain ${ordered.length === 1 ? 'it' : 'one'} for its steps.`
+    : NO_ORDER];
+}
+
+/**
+ * A part named by its boundary-file name: what it is drawn from, the doors
+ * that run its files or pass through it, who writes it and who reads it when
+ * it is a place, what it imports and what imports it, what it writes and
+ * reads, where an order of work is recorded, and what changes with it.
+ */
+function explainPart(ctx, found, map) {
+  const boundary = ctx.boundaries.find((item) => item.name === found.part);
+  const facts = blankFacts(found, map);
+  const label = ctx.shown(boundary.name);
+  facts.part = boundary.name;
+  facts.partLabel = label;
+  facts.role = boundary.role ?? null;
+  facts.files = found.members.length;
+  facts.globs = [...(boundary.globs ?? [])];
+  facts.entryPoints = [...(boundary.entryPoints ?? [])];
+  facts.testedBy = boundary.testedBy ?? 0;
+  const globs = facts.globs.map((glob) => `\`${glob}\``);
+  // A part's name is an identifier and keeps its case; the page's words for a
+  // part drawn from the top of the tree, or the one site, are prose.
+  const subject = label === boundary.name ? label : capitalize(label);
+  const lines = [`${subject} is a part of ${count(found.members.length, 'file')} (${facts.role}), drawn from ${list(globs)}.`];
+
+  const doors = doorFacts(ctx, found, boundary.name);
+  facts.doors = { builtBy: doors.builtBy, checkedBy: doors.checkedBy, isDoor: null, onPath: doors.onPath, runBy: doors.runBy };
+  lines.push(doorLine(doors, label, 'part'));
+
+  const place = placeFacts(ctx, found);
+  Object.assign(facts, place);
+  lines.push(...placeLines(ctx, place));
+
+  partImports(ctx, boundary.name, facts);
+  lines.push(...partImportLines(ctx, facts, facts.role, 'part'));
+
+  const written = writeFacts(ctx, found.members);
+  facts.writes = written.map((write) => ({ place: write.place, readers: write.readers.map((reader) => reader.path) }));
+  for (const write of written) lines.push(writeLine(ctx, write));
+  const root = boundaryRoot(boundary);
+  facts.reads = readFacts(ctx, found.members, written, root);
+  if (facts.reads.length > 0) lines.push(`Reads ${shownList(facts.reads)}.`);
+
+  lines.push(...orderLines(ctx, found, facts));
+  facts.changesWith = pairFacts(ctx, found);
+  for (const pair of facts.changesWith) lines.push(pairLine(pair));
+  lines.push(mapLine(map));
+  facts.partLabels = labelsFor(ctx, facts);
+  return { facts, lines };
+}
+
+/**
+ * What explain says about one target, from artifacts already read: the
+ * sentences and the facts, or the failure it prints. Shared by the command
+ * line and the sidecar, so both state the same facts in the same words.
+ *
+ * @param {{ structure: object, statistics?: object, page?: object|null }} map the committed artifacts
+ * @param {{ repo: string, prefix?: string, target: string }} request
+ * @returns {{ ok: true, found: object, facts: object, lines: string[], ctx: object }
+ *   | { ok: false, code: string, details: string[], whatToDo: string }}
+ */
+export function explainTarget({ structure, statistics = {}, page = null }, { repo, prefix = '', target }) {
+  const ctx = pageFacts({ structure, statistics: statistics ?? {} });
+  const tried = candidates(repo, prefix, target);
+  const found = locate(ctx, tried, target);
+  if (!found) {
+    return {
+      ok: false,
+      code: 'ATLAS_EXPLAIN_UNKNOWN_PATH',
+      details: [`${target} names no file, directory or part in atlas/structure.json`],
+      whatToDo: 'check the path or the part name, or run atlas map if the file is new',
+    };
+  }
+  const { facts, lines } = explainFound(ctx, found, mapCommit(page, statistics, structure));
+  return { ok: true, ctx, found, facts: sortKeys(facts), lines };
 }
 
 /**
@@ -470,16 +702,11 @@ export function explainCommand(repo, prefix, argv) {
   }
   const statistics = readJson(join(repo, 'atlas', 'statistics.json')).value ?? {};
   const page = readJson(join(repo, 'atlas', 'page.json')).value ?? null;
-  const ctx = pageFacts({ structure: structure.value, statistics });
-  const tried = candidates(repo, prefix, args.target);
-  const found = locate(ctx, tried);
-  if (!found) {
-    process.stdout.write(formatFailure('ATLAS_EXPLAIN_UNKNOWN_PATH', [
-      `${args.target} names no file or directory in atlas/structure.json`,
-    ], { exitCode: 2, whatToDo: 'check the path, or run atlas map if the file is new' }));
+  const answer = explainTarget({ structure: structure.value, statistics, page }, { repo, prefix, target: args.target });
+  if (!answer.ok) {
+    process.stdout.write(formatFailure(answer.code, answer.details, { exitCode: 2, whatToDo: answer.whatToDo }));
     return 2;
   }
-  const { facts, lines } = explainFound(ctx, found, mapCommit(page, statistics, structure.value));
-  process.stdout.write(args.json ? `${JSON.stringify(sortKeys(facts), null, 2)}\n` : `${lines.join('\n')}\n`);
+  process.stdout.write(args.json ? `${JSON.stringify(answer.facts, null, 2)}\n` : `${answer.lines.join('\n')}\n`);
   return 0;
 }
