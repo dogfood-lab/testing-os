@@ -82,6 +82,9 @@ on:
       # tree by the `atlas check` step below. An edit to atlas/ alone, such as
       # a new boundary in atlas/boundaries.yaml, must run that check.
       - 'atlas/**'
+      # Codecov reads its status and comment settings from this file, so an
+      # edit to it alone must run the job that uploads.
+      - 'codecov.yml'
   pull_request:
     paths:
       - 'packages/**'
@@ -118,6 +121,8 @@ on:
       - 'swarms/templates/**'
       # The committed Atlas map (see push block above).
       - 'atlas/**'
+      # Codecov's settings (see push block above).
+      - 'codecov.yml'
   workflow_dispatch:
 
 concurrency:
@@ -143,9 +148,14 @@ jobs:
     # job-level block replaces the workflow-level one, so `contents: read` is
     # restated. On a pull request from a fork GitHub hands this job a
     # read-only token whatever this block says, and the step logs instead.
+    # `id-token: write` lets the two Codecov steps sign in with a short-lived
+    # OIDC token instead of a stored upload token; it can mint that identity
+    # token and nothing else. A fork's pull request gets no OIDC token, and
+    # the Codecov action then uploads tokenless.
     permissions:
       contents: read
       pull-requests: write
+      id-token: write
     strategy:
       # Both Node legs must run to completion so the operator can tell from a
       # single CI run whether a failure is Node-version-specific (e.g. an
@@ -355,8 +365,64 @@ jobs:
               || echo "::warning::atlas diff comment could not be posted; the delta is in this log"
           fi
           exit 0
+      # Coverage and test results go to Codecov from the Node 22 leg alone:
+      # one leg is enough, and the Node 24 leg runs as it did. On that leg the
+      # two test commands run with NODE_V8_COVERAGE, so every Node process
+      # they start, the CLIs the tests spawn included, leaves raw V8 coverage
+      # outside the tree; and with NODE_OPTIONS naming the test runner's
+      # reporters, spec to the log and JUnit to junit.xml. The destination is
+      # relative on purpose: npm runs a workspace's script from that
+      # workspace's directory, so each package writes its own junit.xml and
+      # test:scripts writes the one at the root. On the Node 24 leg both
+      # variables are empty, which Node treats as unset.
       - run: npm run test:scripts
+        id: test-scripts
+        env:
+          NODE_V8_COVERAGE: ${{ matrix.node-version == 22 && format('{0}/v8-coverage', runner.temp) || '' }}
+          NODE_OPTIONS: ${{ matrix.node-version == 22 && '--test-reporter=spec --test-reporter-destination=stdout --test-reporter=junit --test-reporter-destination=junit.xml' || '' }}
       - run: npm test
+        env:
+          NODE_V8_COVERAGE: ${{ matrix.node-version == 22 && format('{0}/v8-coverage', runner.temp) || '' }}
+          NODE_OPTIONS: ${{ matrix.node-version == 22 && '--test-reporter=spec --test-reporter-destination=stdout --test-reporter=junit --test-reporter-destination=junit.xml' || '' }}
+      # packages/schemas runs under Vitest, which reads neither variable, so
+      # its suite runs once more here with Vitest's own coverage and JUnit
+      # reporters. It runs from the repository root, filtered to the
+      # package's tests, so its lcov paths begin packages/schemas/: from
+      # inside the package they would read src/index.ts, a path that many
+      # fixture repositories under fixtures/ also carry, and Codecov could not
+      # tell which file was meant.
+      - name: Schemas coverage and test results under Vitest (Node 22)
+        if: ${{ matrix.node-version == 22 }}
+        run: npx vitest run packages/schemas/ --coverage.enabled --coverage.provider=v8 --coverage.reporter=lcov --coverage.reporter=text-summary --coverage.reportsDirectory=coverage/vitest --reporter=default --reporter=junit --outputFile.junit=packages/schemas/junit.xml
+      # One lcov report from the raw coverage of every process above. c8
+      # follows the source maps the build writes, so the schemas package's
+      # dist/ reads back as its TypeScript. The exact version keeps npx from
+      # fetching whichever c8 is newest on the day.
+      - name: Coverage report (Node 22)
+        if: ${{ matrix.node-version == 22 }}
+        run: npx --yes c8@12.0.0 report --temp-directory "$RUNNER_TEMP/v8-coverage" --reporter=lcov --reporter=text-summary --report-dir coverage/c8
+      # Both uploads sign in with the job's OIDC token and fail the job when
+      # Codecov does not accept the report: an upload that failed while the
+      # job passed is the defect this replaces. Test results go up whenever
+      # test:scripts ran, failures included, because a failing test is what
+      # that report exists to show.
+      - name: Upload coverage to Codecov (Node 22)
+        if: ${{ matrix.node-version == 22 }}
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          use_oidc: true
+          fail_ci_if_error: true
+          disable_search: true
+          files: ./coverage/c8/lcov.info,./coverage/vitest/lcov.info
+      - name: Upload test results to Codecov (Node 22)
+        if: ${{ !cancelled() && matrix.node-version == 22 && steps.test-scripts.outcome != 'skipped' }}
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          use_oidc: true
+          fail_ci_if_error: true
+          report_type: test_results
+          disable_search: true
+          files: ./junit.xml,./packages/*/junit.xml
 
   # F-92a05b18 (ci-tooling amend, run swarm-1784091637-5127): scripts/check-
   # step-fixtures.test.mjs carries a win32-only branch in its local

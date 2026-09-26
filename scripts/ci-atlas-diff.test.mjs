@@ -112,13 +112,16 @@ test('the step uses gh with the workflow token, no third-party action, and no ex
   assert.doesNotMatch(stepScript(ciText()), /\$\{\{/, 'untrusted values reach the script through env, never interpolated into it');
 });
 
-test('build-and-test widens its token by pull-requests: write alone, and does not persist it', () => {
+// id-token: write is the Codecov uploads' OIDC sign-in, not the Atlas step's,
+// but the job has one permissions block and this pin reads all of it.
+test('build-and-test widens its token by pull-requests: write and id-token: write alone, and does not persist it', () => {
   const text = ciText();
   const job = buildJob(text);
-  assert.match(job, /\n {4}permissions:\n {6}contents: read\n {6}pull-requests: write\n {4}strategy:/);
+  assert.match(job, /\n {4}permissions:\n {6}contents: read\n {6}pull-requests: write\n {6}id-token: write\n {4}strategy:/);
   assert.match(job, /uses: actions\/checkout@[0-9a-f]{40}[^\n]*\n(?: {8}#[^\n]*\n)* {8}with:\n {10}persist-credentials: false\n/);
   const windows = text.slice(text.indexOf('\n  windows-step-fixtures-proof-of-life:'));
   assert.doesNotMatch(windows, /pull-requests:/, 'the windows job keeps the workflow-level read-only token');
+  assert.doesNotMatch(windows, /id-token:/, 'the windows job uploads nothing, so it mints no OIDC token');
   const workflowLevel = /^permissions:\n((?: {2}\S[^\n]*\n)+)/m.exec(text.slice(0, text.indexOf('\njobs:')));
   assert.ok(workflowLevel, 'a workflow-level permissions block');
   assert.equal(workflowLevel[1], '  contents: read\n', 'the widening is job-level, never workflow-level');
