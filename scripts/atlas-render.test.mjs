@@ -1,4 +1,4 @@
-import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdtempSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -6,10 +6,15 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { parse } from 'yaml';
 import { ENGINE } from '@dogfood-lab/atlas/fleet';
-import { BACKOFF_MS, HISTORY_CAP, JOB_BUDGET_MS, appendHistory, changeCount, earlierWindow, historyEntry, pushAuthEnv, readExclusions, rejectForeignPaths, renderFleet, shallowSinceDate } from './atlas-render.mjs';
+import { BACKOFF_MS, HISTORY_CAP, JOB_BUDGET_MS, RAW_BRANCH, appendHistory, changeCount, earlierWindow, historyEntry, pushAuthEnv, readExclusions, rejectForeignPaths, renderFleet, shallowSinceDate, writeRenderFiles } from './atlas-render.mjs';
 
 const TEMPLATE = resolve(fileURLToPath(new URL('.', import.meta.url)), '../packages/atlas/templates/atlas-refresh.yml');
 const WORKFLOW = resolve(fileURLToPath(new URL('.', import.meta.url)), '../.github/workflows/atlas-render.yml');
+// A render branch as a run finds it: testing-os has moved since its last
+// render, shipcheck and widgets have not, and unmapped has no boundary file.
+// testing-os and widgets still hold files an earlier engine wrote.
+const FIXTURE = resolve(fileURLToPath(new URL('.', import.meta.url)), '../fixtures/atlas-render');
+const FIXTURE_STATE = JSON.parse(readFileSync(join(FIXTURE, 'branch', 'indexes', 'atlas', 'state.json'), 'utf8'));
 
 function json(body, status = 200, headers = {}) {
   return {
@@ -43,6 +48,12 @@ function harness(t, setup) {
   let maps = 0;
   const fetchImpl = async (url) => {
     fetches.push(url);
+    if (setup.branch && url.startsWith(RAW_BRANCH)) {
+      // A fixture render branch, read as raw.githubusercontent.com serves it.
+      const file = join(setup.branch, ...url.slice(RAW_BRANCH.length).split('/'));
+      if (!existsSync(file)) return json(null, 404);
+      return { ok: true, status: 200, headers: {}, json: async () => JSON.parse(readFileSync(file, 'utf8')) };
+    }
     if (url.includes('/orgs/mcp-tool-shop-org/repos')) return json(setup.org ?? []);
     if (url.includes('/orgs/dogfood-lab/repos')) return json(setup.lab ?? []);
     if (url.includes('/indexes/atlas/state.json')) return setup.state ? json(setup.state) : json(null, 404);
@@ -137,6 +148,29 @@ const PUBLIC = { full_name: 'dogfood-lab/testing-os', visibility: 'public', arch
 const OTHER = { full_name: 'mcp-tool-shop-org/widgets', visibility: 'public', archived: false, default_branch: 'main' };
 const PRIVATE = { full_name: 'dogfood-lab/secret-vault', visibility: 'private', archived: false, default_branch: 'main' };
 const ARCHIVED = { full_name: 'mcp-tool-shop-org/old', visibility: 'public', archived: true, default_branch: 'main' };
+
+function fixtureBranch(t) {
+  const tree = mkdtempSync(join(tmpdir(), 'atlas-render-branch-'));
+  t.after(() => rmSync(tree, { recursive: true, force: true }));
+  cpSync(join(FIXTURE, 'branch'), tree, { recursive: true });
+  return tree;
+}
+
+// One weekly run against a copy of the fixture branch, laid into it the way
+// commitBranch lays a run into its clone. Every head but testing-os's is the
+// one its state records, with the engine that made it, so only testing-os renders.
+function renderIntoFixture(t, tree) {
+  const heads = Object.fromEntries(Object.entries(FIXTURE_STATE.rendered).map(([name, entry]) => [name, entry.commit]));
+  heads['dogfood-lab/testing-os'] = 'a'.repeat(40);
+  const org = ['mcp-tool-shop-org/shipcheck', 'mcp-tool-shop-org/unmapped', 'mcp-tool-shop-org/widgets']
+    .map((name) => ({ full_name: name, visibility: 'public', archived: false, default_branch: 'main' }));
+  const { runFleet } = harness(t, { lab: [PUBLIC], org, heads, branch: tree });
+  return runFleet({
+    dryRun: false,
+    engine: FIXTURE_STATE.rendered['mcp-tool-shop-org/widgets'].engine,
+    writeBranch: (payload) => writeRenderFiles(tree, payload),
+  });
+}
 
 describe('atlas weekly render', () => {
   it('drops non-public and archived repositories before any log line', async (t) => {
@@ -499,6 +533,57 @@ describe('atlas weekly render', () => {
     assert.equal(workflow.concurrency['cancel-in-progress'], false);
     assert.match(readFileSync(WORKFLOW, 'utf8'), /actions\/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0/);
     assert.doesNotMatch(readFileSync(WORKFLOW, 'utf8'), /uses:.*@v\d/);
+  });
+});
+
+describe('the agent index', () => {
+  it('writes llms.txt beside fleet.json, byte for byte what the fixture expects', async (t) => {
+    const tree = fixtureBranch(t);
+    const result = await renderIntoFixture(t, tree);
+    const atlas = join(tree, 'indexes', 'atlas');
+    const index = readFileSync(join(atlas, 'llms.txt'), 'utf8');
+    // The render writes LF. The expected file is read as LF too, so a checkout
+    // that turned it into CRLF does not fail this for git's reasons.
+    assert.equal(index, readFileSync(join(FIXTURE, 'llms.txt'), 'utf8').replace(/\r\n/g, '\n'));
+    assert.equal(result.index, index, 'the run returns what it wrote');
+    assert.ok(result.paths.includes('indexes/atlas/llms.txt'), 'and lists it among its files');
+    const fleet = JSON.parse(readFileSync(join(atlas, 'fleet.json'), 'utf8'));
+    const listed = [...index.matchAll(/^- \[([^\]]+)\]/gm)].map((match) => match[1]);
+    assert.deepEqual(listed, fleet.repositories.map((row) => row.repo).sort(), 'every repository fleet.json lists, and no other');
+    for (const [, url] of index.matchAll(/\]\(([^)]+)\)/g)) {
+      assert.ok(url.startsWith(`${RAW_BRANCH}indexes/atlas/`), url);
+      assert.ok(existsSync(join(tree, ...url.slice(RAW_BRANCH.length).split('/'))), `${url} names a file the branch holds`);
+    }
+  });
+});
+
+describe('files the render no longer writes', () => {
+  it('go from a repository the run renders, and a repository it skips keeps its own', async (t) => {
+    const tree = fixtureBranch(t);
+    const atlas = join(tree, 'indexes', 'atlas');
+    const result = await renderIntoFixture(t, tree);
+    const retired = ['dev.md', 'machine-stats.txt', 'machine.md', 'orientation.md'];
+    assert.deepEqual(
+      readdirSync(join(atlas, 'dogfood-lab', 'testing-os')).sort(),
+      ['README.md', 'divergence.json', 'history.json', 'page.json', 'statistics.json', 'structure.json'],
+    );
+    assert.deepEqual(
+      result.logs.filter((line) => line.startsWith('removed ')),
+      retired.map((name) => `removed indexes/atlas/dogfood-lab/testing-os/${name}`),
+    );
+    assert.ok(existsSync(join(atlas, 'mcp-tool-shop-org', 'widgets', 'orientation.md')), 'a skipped repository keeps its files as they are');
+    assert.ok(existsSync(join(atlas, 'exclude.txt')), 'nothing outside a rendered repository is removed');
+  });
+
+  it('keep the history of a rendered repository when the render could not read it', async (t) => {
+    const tree = fixtureBranch(t);
+    const history = join(tree, 'indexes', 'atlas', 'dogfood-lab', 'testing-os', 'history.json');
+    // A torn write: the render cannot read it, so it writes none and keeps this one.
+    writeFileSync(history, '{"entries": [');
+    const result = await renderIntoFixture(t, tree);
+    assert.equal(result.paths.includes('indexes/atlas/dogfood-lab/testing-os/history.json'), false);
+    assert.equal(readFileSync(history, 'utf8'), '{"entries": [', 'kept as the branch held it');
+    assert.equal(existsSync(join(tree, 'indexes', 'atlas', 'dogfood-lab', 'testing-os', 'orientation.md')), false);
   });
 });
 

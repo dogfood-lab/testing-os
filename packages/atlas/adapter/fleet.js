@@ -260,6 +260,56 @@ export function stateFrom(previous) {
   };
 }
 
+function dayOf(value) {
+  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value) ? value.slice(0, 10) : null;
+}
+
+function counted(n, singular, plural) {
+  return typeof n === 'number' && Number.isFinite(n) ? `${n} ${n === 1 ? singular : plural}` : `${plural} not counted`;
+}
+
+/**
+ * The agent index written beside fleet.json, in the llms.txt convention: a
+ * title, a summary naming the fleet and the day it was rendered, a note that a
+ * checkout is asked directly, then one line per rendered repository, sorted by
+ * name, linking its page as markdown and as page.json. `base` is the directory
+ * that holds every repository's render files: the render branch's raw URL for
+ * the published fleet, or a same-origin path such as "/atlas/" for a fleet
+ * this service serves, the same test the page applies to its own base. Built
+ * from the fleet document alone, so the same fleet gives the same bytes and a
+ * repository the fleet does not list never appears. A row whose name is not
+ * owner/repo cannot be linked safely and is left out.
+ */
+export function fleetIndex(fleet, base) {
+  const served = base.startsWith('/') && !base.startsWith('//');
+  const rows = (Array.isArray(fleet?.repositories) ? fleet.repositories : [])
+    .filter((row) => row && typeof row === 'object' && validName(row.repo))
+    .sort((a, b) => (a.repo < b.repo ? -1 : a.repo > b.repo ? 1 : 0));
+  const day = dayOf(fleet?.generatedAt) ?? 'an unknown date';
+  const size = counted(rows.length, 'repository', 'repositories');
+  const summary = served
+    ? `> This fleet as rendered on ${day}, ${size}: every repository in this service's fleet.yml, mapped on its schedule.`
+    : `> The published fleet as rendered on ${day}, ${size}: every public repository that has adopted Atlas, mapped weekly from the repository alone.`;
+  const lines = [
+    served ? '# Atlas: this fleet' : '# Atlas: the published fleet',
+    '',
+    `${summary} Each line links a repository's page as markdown, then the same page as data.`,
+    '',
+    'For a checked-out repository, `atlas mcp` answers from the checkout itself; this index is only a projection of the last render.',
+    '',
+    '## Repositories',
+    '',
+  ];
+  if (rows.length === 0) lines.push(served ? 'No repository in this fleet has been rendered yet.' : 'No public repository has adopted Atlas yet.');
+  for (const row of rows) {
+    const dir = `${base}${row.repo}`;
+    const rendered = dayOf(row.renderedAt);
+    const facts = [counted(row.doors, 'door', 'doors'), counted(row.boundaries, 'part', 'parts'), rendered ? `rendered ${rendered}` : 'render date unknown'];
+    lines.push(`- [${row.repo}](${dir}/README.md): ${facts.join(', ')}. [page.json](${dir}/page.json)`);
+  }
+  return `${lines.join('\n')}\n`;
+}
+
 function readJsonFile(path) {
   try {
     return JSON.parse(readFileSync(path, 'utf8'));
@@ -641,8 +691,9 @@ function previousFrom(repoDir) {
 
 /**
  * One run of the service over every repository in the fleet file. Each
- * render lands under /data/atlas/<owner>/<repo>/ as it finishes; state.json
- * and fleet.json are written last, in the weekly job's shapes.
+ * render lands under /data/atlas/<owner>/<repo>/ as it finishes; state.json,
+ * fleet.json and the agent index llms.txt are written last, in the weekly
+ * job's shapes, with the index linking this server's own paths.
  */
 export async function runFleetOnce({
   dataDir, config, run = defaultRun, sleep = (ms) => new Promise((done) => setTimeout(done, ms)),
@@ -707,6 +758,7 @@ export async function runFleetOnce({
     };
     writeJsonAtomic(join(atlasDir, 'state.json'), state);
     writeJsonAtomic(join(atlasDir, 'fleet.json'), fleet);
+    writeArtifactSync(join(atlasDir, 'llms.txt'), fleetIndex(fleet, '/atlas/'));
     return { state, fleet };
   } finally {
     rmSync(workRoot, { recursive: true, force: true });
@@ -718,27 +770,35 @@ const CONTENT_TYPES = {
   '.js': 'text/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
   '.md': 'text/markdown; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8',
   '.webp': 'image/webp',
 };
 const ASSETS = new Set(['render.js', 'hero.webp']);
 // The page reads its data from CONFIG.atlasBase + "indexes/atlas/…"; the same
 // files are also at /atlas/…, the shorter address for a person or a script.
+// The agent index is also at /llms.txt, where the llms.txt convention looks.
 const DATA_PREFIXES = ['/indexes/atlas/', '/atlas/'];
-const DATA_FILE = /^(?:(?:state|fleet)\.json|[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+\/(?:structure\.json|statistics\.json|page\.json|divergence\.json|history\.json|README\.md))$/;
+const DATA_FILE = /^(?:(?:state|fleet)\.json|llms\.txt|[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+\/(?:structure\.json|statistics\.json|page\.json|divergence\.json|history\.json|README\.md))$/;
+
+// The public page's script-free pointer names the index on the render branch.
+const PUBLISHED_INDEX = /https:\/\/raw\.githubusercontent\.com\/[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+\/atlas-render\/indexes\/atlas\/llms\.txt/g;
 
 /**
- * The page shell with its data base pointed at this server. The public page
+ * The page shell with its data base pointed at this server, and its pointer
+ * for a reader that runs no script at this server's own /llms.txt, so a
+ * private fleet never sends an agent to the published one. The public page
  * has no such tag and reads the render branch.
  */
 export function servedShell(html) {
   if (!/<head>/i.test(html)) throw new Error('the Atlas page shell has no <head> to name its data base in');
-  return html.replace(/<head>/i, '<head>\n<meta name="atlas-base" content="/">');
+  return html.replace(/<head>/i, '<head>\n<meta name="atlas-base" content="/">').replace(PUBLISHED_INDEX, '/llms.txt');
 }
 
 /**
- * The fleet list at /, a repository's page at /?repo=owner/name, and the
- * render files from /data/atlas. Static, read-only, no auth; nothing else
- * under /data is reachable, so fleet.yml and its clone URLs never are.
+ * The fleet list at /, a repository's page at /?repo=owner/name, the agent
+ * index at /llms.txt, and the render files from /data/atlas. Static,
+ * read-only, no auth; nothing else under /data is reachable, so fleet.yml and
+ * its clone URLs never are.
  */
 export function createFleetServer({ dataDir, assetsDir }) {
   const shell = servedShell(readFileSync(join(assetsDir, 'index.html'), 'utf8'));
@@ -773,7 +833,7 @@ export function createFleetServer({ dataDir, assetsDir }) {
       send(200, readFileSync(join(assetsDir, asset)), CONTENT_TYPES[extname(asset)]);
       return;
     }
-    const prefix = DATA_PREFIXES.find((candidate) => pathname.startsWith(candidate));
+    const prefix = pathname === '/llms.txt' ? '/' : DATA_PREFIXES.find((candidate) => pathname.startsWith(candidate));
     const rel = prefix ? pathname.slice(prefix.length) : '';
     if (!prefix || !DATA_FILE.test(rel) || rel.split('/').some((part) => /^\.+$/.test(part))) {
       send(404, 'not found\n');

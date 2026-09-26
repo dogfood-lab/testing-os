@@ -297,6 +297,43 @@ describe('fleet server', () => {
   it('refuses a page shell it cannot name its base in', () => {
     assert.throws(() => servedShell('<html><body></body></html>'), /no <head>/);
   });
+
+  it("points the page's script-free pointer at this server's index, never the published one", () => {
+    const shell = servedShell(readFileSync(join(ASSETS, 'index.html'), 'utf8'));
+    assert.match(shell, /<link rel="alternate" type="text\/plain" href="\/llms\.txt"/);
+    assert.match(shell, /<noscript>[\s\S]*?<a href="\/llms\.txt">[\s\S]*?<\/noscript>/);
+    assert.doesNotMatch(shell, /atlas-render\/indexes\/atlas\/llms\.txt/);
+  });
+
+  it('serves the agent index at /llms.txt, a line per rendered repository, every link on this server', async (t) => {
+    const repo = checkoutOf('doors', 'https://github.com/acme/doors.git');
+    const dataDir = scratch('atlas-fleet-data-');
+    const server = createFleetServer({ dataDir, assetsDir: ASSETS });
+    await new Promise((done) => server.listen(0, '127.0.0.1', done));
+    t.after(() => new Promise((done) => server.close(done)));
+    const base = `http://127.0.0.1:${server.address().port}`;
+    assert.equal((await fetch(`${base}/llms.txt`)).status, 404, 'no index before the first run');
+
+    await once(dataDir, configFor([`  - path: ${JSON.stringify(repo)}`]), { now: new Date('2026-09-28T06:00:00.000Z') });
+    const response = await fetch(`${base}/llms.txt`);
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get('content-type'), 'text/plain; charset=utf-8');
+    const text = await response.text();
+    assert.equal(text, readFileSync(join(dataDir, 'atlas', 'llms.txt'), 'utf8'), 'the file written beside fleet.json');
+    assert.ok(text.startsWith("# Atlas: this fleet\n\n> This fleet as rendered on 2026-09-28, 1 repository: every repository in this service's fleet.yml"), text);
+    assert.doesNotMatch(text, /raw\.githubusercontent\.com|published/, 'a private fleet names nothing public');
+    const [row] = readJson(join(dataDir, 'atlas', 'fleet.json')).repositories;
+    const count = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+    assert.deepEqual(text.split('\n').filter((line) => line.startsWith('- ')), [
+      `- [acme/doors](/atlas/acme/doors/README.md): ${count(row.doors, 'door')}, ${count(row.boundaries, 'part')}, rendered 2026-09-28. [page.json](/atlas/acme/doors/page.json)`,
+    ]);
+    for (const [, path] of text.matchAll(/\]\((\/[^)]+)\)/g)) {
+      assert.equal((await fetch(base + path)).status, 200, path);
+    }
+    for (const path of ['/atlas/llms.txt', '/indexes/atlas/llms.txt']) {
+      assert.equal(await (await fetch(base + path)).text(), text, `${path}, where the branch keeps it`);
+    }
+  });
 });
 
 describe('fleet service start', () => {

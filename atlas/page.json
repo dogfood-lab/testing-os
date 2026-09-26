@@ -98,7 +98,7 @@
         "site"
       ],
       "target": "indexes/",
-      "tests": 4,
+      "tests": 5,
       "writers": [
         "ingest"
       ]
@@ -120,79 +120,73 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 96,
-      "changed": 55,
+      "added": 30,
+      "changed": 7,
       "moved": 0,
-      "parts": 17,
+      "parts": 5,
       "removed": 0
     },
     "items": [
       {
         "kind": "door",
-        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "sentence": "CI runs 2 more files than before.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
       },
       {
         "kind": "door",
-        "sentence": "CI's push trigger now also names `codecov.yml`.",
-        "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "CI now also runs files in packages/atlas/sidecar/.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "packages/atlas/sidecar/"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 3 more changes to doors.",
-        "subjects": []
-      },
-      {
-        "kind": "landing",
-        "sentence": ".github/workflows/ci.yml is now also read by packages/atlas/sidecar/check-change.test.js and packages/atlas/sidecar/data.test.js.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "packages/atlas/sidecar/check-change.test.js",
-          "packages/atlas/sidecar/data.test.js"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": ".github/workflows/pages.yml is now also read by packages/atlas/sidecar/data.test.js.",
+        "sentence": "Deploy site to GitHub Pages now also runs scripts/check-atlas-front-door.test.mjs.",
         "subjects": [
           ".github/workflows/pages.yml",
-          "packages/atlas/sidecar/data.test.js"
+          "scripts/check-atlas-front-door.test.mjs"
         ]
       },
       {
-        "kind": "landing",
-        "sentence": ".github/workflows/release.yml is now also read by packages/atlas/adapter/engine-stamp.test.js.",
+        "kind": "door",
+        "sentence": "Release runs 2 more files than before.",
         "subjects": [
-          ".github/workflows/release.yml",
-          "packages/atlas/adapter/engine-stamp.test.js"
+          ".github/workflows/release.yml"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "And 21 more new writers and readers of places.",
+        "sentence": "fixtures/atlas-render/branch/ is now read by scripts/atlas-render.test.mjs.",
+        "subjects": [
+          "fixtures/atlas-render/branch/",
+          "scripts/atlas-render.test.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "fixtures/atlas-render/branch/indexes/atlas/fleet.json is now read by packages/atlas/adapter/fleet-index.test.js.",
+        "subjects": [
+          "fixtures/atlas-render/branch/indexes/atlas/fleet.json",
+          "packages/atlas/adapter/fleet-index.test.js"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "fixtures/atlas-render/branch/indexes/atlas/state.json is now read by scripts/atlas-render.test.mjs.",
+        "subjects": [
+          "fixtures/atlas-render/branch/indexes/atlas/state.json",
+          "scripts/atlas-render.test.mjs"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 5 more new writers and readers of places.",
         "subjects": []
       },
       {
         "kind": "counts",
-        "sentence": "96 files added and 55 changed content, across 17 parts.",
+        "sentence": "30 files added and 7 changed content, across 5 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "4c18f90a4a8981b95159b1eea8e9e030f07a4544",
-      "generatedAt": "2026-09-25T14:26:48.752Z"
+      "commit": "b253757c08ce20dcac92d1984cd87a9ceebdc58e",
+      "generatedAt": "2026-09-26T13:26:30.478Z"
     },
     "unchanged": false
   },
@@ -218,9 +212,9 @@
     "Window: 180 days; a pair counts from 10 shared commits, since 37 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 1,
-  "commit": "b253757c08ce20dcac92d1984cd87a9ceebdc58e",
+  "commit": "9c8c51797987dc160504666fbd180d4f152cda9e",
   "defaultBranch": "main",
-  "derived": "23 parts, mostly JavaScript (1431 files), Python (161), TypeScript (158), Rust (88), GDScript (32), HTML (14), shell (14), Astro (8), CSS (5), C# (3) and PowerShell (1). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
+  "derived": "23 parts, mostly JavaScript (1433 files), Python (161), TypeScript (158), Rust (88), GDScript (32), HTML (14), shell (14), Astro (8), CSS (5), C# (3) and PowerShell (1). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
   "doors": [
     {
       "checks": [
@@ -329,9 +323,9 @@
         "packages/atlas/adapter/explain-manifest.test.js",
         "packages/atlas/adapter/explain-places.test.js",
         "packages/atlas/adapter/explain.test.js",
+        "packages/atlas/adapter/fleet-index.test.js",
         "packages/atlas/adapter/fleet.test.js",
         "packages/atlas/adapter/init-data-roles.test.js",
-        "packages/atlas/adapter/init-fixture-manifest.test.js",
         "packages/atlas/core/action-inputs.test.js",
         "packages/atlas/core/artifact-builds.test.js",
         "packages/atlas/core/astro-frontmatter.test.js",
@@ -499,6 +493,7 @@
         "scripts/atlas-render.test.mjs",
         "scripts/build.test.mjs",
         "scripts/check-accent-color.test.mjs",
+        "scripts/check-atlas-front-door.test.mjs",
         "scripts/check-dashboard.test.mjs",
         "scripts/check-doc-drift-allowlist-staleness.test.mjs",
         "scripts/check-doc-drift-notes-integrity.test.mjs",
@@ -506,11 +501,10 @@
         "scripts/check-doc-drift.test.mjs",
         "scripts/check-finding-regression-pins.test.mjs",
         "scripts/check-handbook-imagery.test.mjs",
-        "scripts/check-lockfile-drift-ci.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 722,
-      "runsMore": 736,
+      "runsCount": 724,
+      "runsMore": 738,
       "sends": [
         "publishes workspace packages to npm and a container image",
         "creates a GitHub release"
@@ -619,10 +613,10 @@
         "packages/atlas/adapter/explain-manifest.test.js",
         "packages/atlas/adapter/explain-places.test.js",
         "packages/atlas/adapter/explain.test.js",
+        "packages/atlas/adapter/fleet-index.test.js",
         "packages/atlas/adapter/fleet.test.js",
         "packages/atlas/adapter/init-data-roles.test.js",
         "packages/atlas/adapter/init-fixture-manifest.test.js",
-        "packages/atlas/adapter/init-godot-roles.test.js",
         "packages/atlas/core/action-inputs.test.js",
         "packages/atlas/core/artifact-builds.test.js",
         "packages/atlas/core/astro-frontmatter.test.js",
@@ -791,6 +785,7 @@
         "scripts/atlas-render.test.mjs",
         "scripts/build.test.mjs",
         "scripts/check-accent-color.test.mjs",
+        "scripts/check-atlas-front-door.test.mjs",
         "scripts/check-dashboard.test.mjs",
         "scripts/check-doc-drift-allowlist-staleness.test.mjs",
         "scripts/check-doc-drift-notes-integrity.test.mjs",
@@ -799,11 +794,10 @@
         "scripts/check-finding-regression-pins.test.mjs",
         "scripts/check-handbook-imagery.test.mjs",
         "scripts/check-lockfile-drift-ci.test.mjs",
-        "scripts/check-lockfile-drift.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 721,
-      "runsMore": 735,
+      "runsCount": 723,
+      "runsMore": 737,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -950,7 +944,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 1
+          "files": 2
         },
         {
           "boundary": "site",
@@ -960,11 +954,12 @@
       ],
       "runs": [
         "scripts/check-accent-color.test.mjs",
+        "scripts/check-atlas-front-door.test.mjs",
         "site/astro.config.mjs",
         "site/src/"
       ],
-      "runsCount": 3,
-      "runsMore": 0,
+      "runsCount": 4,
+      "runsMore": 5,
       "sends": [
         "deploys the site"
       ],
@@ -1465,7 +1460,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-26T13:26:30.478Z",
+  "generatedAt": "2026-09-26T13:31:13.459Z",
   "limits": [
     "4 import sites name declared dependencies that share their names with local modules (datasets, docx and xrpl); they are read as the dependencies, which are not in this repository.",
     "158 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 155 more.",
@@ -1476,13 +1471,13 @@
     "74 writes and 588 reads go to a path their caller passes, not to this repository.",
     "48 reads go to the directory the command is run in, not to this repository.",
     "2 writes and 8 reads go to the directory the command is run in (.github/, dogfood/, policy.example.yaml and 2 more places) or a path their caller passes, not to this repository.",
-    "6 writes and 3 reads go to a temporary directory, not to this repository.",
+    "7 writes and 3 reads go to a temporary directory, not to this repository.",
     "2 writes and 3 reads go to a temporary directory or a path their caller passes, not to this repository.",
     "31 commands are built at run time and not followed, 22 of them in tests.",
     "1 file belongs to no part: packages/.gitkeep.",
     "Readers marked (found by text) come from scanning unparsed files.",
-    "Release runs or checks 726 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "CI runs or checks 722 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
+    "Release runs or checks 728 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "CI runs or checks 724 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
   ],
   "mainDoor": ".github/workflows/ingest.yml",
   "partLabels": {
@@ -1532,7 +1527,7 @@
         "site/public/dashboard/index.html (found by text)"
       ],
       "target": "indexes/",
-      "tests": 5
+      "tests": 6
     },
     {
       "readers": [],
@@ -1776,9 +1771,9 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 876,
+  "testFiles": 878,
   "testedBy": {
-    "atlas": 247,
+    "atlas": 248,
     "dogfood-swarm": 300,
     "findings": 139,
     "ingest": 80,

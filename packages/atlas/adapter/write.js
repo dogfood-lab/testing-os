@@ -5,7 +5,7 @@ import { renameSync, unlinkSync, writeFileSync } from 'node:fs';
 // closure test rejects every @dogfood-lab dependency key, and the published
 // binary has to run where findings is not installed. This file is the one
 // writer. It writes the six generated atlas files, and the fleet service's
-// history, state and fleet files. A torn write would make
+// history, state, fleet and agent index files. A torn write would make
 // the next check fail on a partial file.
 
 function sleepSync(ms) {
