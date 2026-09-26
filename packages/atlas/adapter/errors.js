@@ -13,6 +13,10 @@ export const ERRORS = {
   ATLAS_EXPLAIN_NO_MAP: 'There is no committed map to explain from.',
   ATLAS_EXPLAIN_UNKNOWN_PATH: 'The path is not in the committed map.',
   ATLAS_DIFF_NO_BASE: 'The base ref carries no map.',
+  ATLAS_SIDECAR_NOT_A_REPOSITORY: 'The directory the sidecar answers for is not in a git repository.',
+  ATLAS_SIDECAR_NO_MAP: 'The repository has no map.',
+  ATLAS_SIDECAR_MAP_UNREADABLE: 'The map is not valid JSON.',
+  ATLAS_SIDECAR_INVALID_ARGUMENTS: 'The tool was called with arguments it does not take.',
 };
 
 export function formatFailure(code, details, { exitCode = 1, whatToDo } = {}) {

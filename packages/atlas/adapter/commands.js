@@ -15,14 +15,31 @@ import { buildPage } from './page.js';
 import { buildStatistics, parametersFrom, serializeStatistics, statisticsProblem } from './statistics.js';
 import { writeArtifactSync } from './write.js';
 
+/**
+ * @returns {number | Promise<number>} the exit code; `mcp` settles it when
+ *   the host closes the server's input
+ */
 export function main(argv, cwd) {
   if (argv[0] === 'init') return initAt(cwd, argv.slice(1));
   if (argv[0] === 'map') return mapCommand(cwd, argv.slice(1));
   if (argv[0] === 'check') return checkCommand(cwd);
   if (argv[0] === 'explain') return explainAt(cwd, argv.slice(1));
   if (argv[0] === 'diff') return diffCommand(cwd, argv.slice(1));
-  process.stdout.write('atlas: expected atlas init, atlas map, atlas check, atlas explain, or atlas diff\nexit 2\n');
+  if (argv[0] === 'mcp') return mcpCommand(cwd, argv.slice(1));
+  process.stdout.write('atlas: expected atlas init, atlas map, atlas check, atlas explain, atlas diff, or atlas mcp\nexit 2\n');
   return 2;
+}
+
+// stdout is the protocol channel from the first byte, so a usage error goes
+// to stderr, where a host shows what a server logs.
+async function mcpCommand(cwd, argv) {
+  if (argv.length > 0) {
+    process.stderr.write(`atlas: mcp takes no arguments, got ${argv[0]}\nexit 2\n`);
+    return 2;
+  }
+  const { serve } = await import('../sidecar/server.js');
+  await serve({ cwd });
+  return 0;
 }
 
 function forCore(boundaries) {

@@ -54,6 +54,11 @@
     "adapter/diff.js",
     "adapter/divergence.js",
     "adapter/fleet.js",
+    "sidecar/git.js",
+    "sidecar/protocol.js",
+    "sidecar/schema.js",
+    "sidecar/server.js",
+    "sidecar/tools.js",
     "bin/atlas-fleet.js",
     "templates/atlas-refresh.yml",
     "grammars/manifest.json",
@@ -70,8 +75,8 @@
     "atlas-fleet": "./bin/atlas-fleet.js"
   },
   "scripts": {
-    "test": "node --test --test-concurrency=1 \"*.test.js\" \"core/*.test.js\" \"adapter/*.test.js\"",
-    "test:parallel": "node --test --test-concurrency=8 \"*.test.js\" \"core/*.test.js\" \"adapter/*.test.js\""
+    "test": "node --test --test-concurrency=1 \"*.test.js\" \"core/*.test.js\" \"adapter/*.test.js\" \"sidecar/*.test.js\"",
+    "test:parallel": "node --test --test-concurrency=8 \"*.test.js\" \"core/*.test.js\" \"adapter/*.test.js\" \"sidecar/*.test.js\""
   },
   "publishConfig": {
     "access": "public"
