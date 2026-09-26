@@ -1,20 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-09-26 from commit 6859076 by Atlas 1.23.0.
+Mapped at 2026-09-26 from commit c13b5a0 by Atlas 1.23.0.
 
 ## What this is
 
 23 parts, mostly JavaScript (1530 files), TypeScript (213), Python (195), Rust (93), GDScript (33), shell (18), HTML (14), Astro (8), CSS (5), C# (3) and PowerShell (1). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
 
-## What changed since 2026-09-26 (54fb3d7)
+## What changed since 2026-09-26 (6859076)
 
-- CI runs 5 more files than before.
-- Release runs 5 more files than before.
-- .github/workflows/ is now also read by scripts/lib/codecov/check.mjs, scripts/lib/codecov/facts.mjs and scripts/lib/codecov/plan.mjs.
-- .github/workflows/ci.yml is now also read by scripts/codecov-check.test.mjs and scripts/codecov-plan.test.mjs.
-- codecov.yml is now read by scripts/codecov-check.test.mjs, scripts/codecov-plan.test.mjs, scripts/lib/codecov/check.mjs and scripts/lib/codecov/plan.mjs.
-- And 4 more new writers and readers of places.
-- 38 files added and 5 changed content, across 6 parts.
+Nothing structural changed since 2026-09-26; 7 files changed content.
 
 ## What comes in
 

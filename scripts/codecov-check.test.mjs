@@ -150,6 +150,10 @@ describe('the recipe v2 check', () => {
     ]);
   });
 
+  it('names a workflow that is not valid YAML', () => {
+    assert.deepEqual(checkRecipe(files({ '.github/workflows/ci.yml': 'jobs:\n  test: [\n' })).problems, ['ci.yml: it is not valid YAML', 'no job uses codecov/codecov-action']);
+  });
+
   it('says so when no job uploads to Codecov', () => {
     const plain = 'on: push\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - run: npm test\n';
     assert.deepEqual(checkRecipe(files({ '.github/workflows/ci.yml': plain })).problems, ['no job uses codecov/codecov-action']);

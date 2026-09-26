@@ -119,6 +119,53 @@ describe('the report edit for Vitest', () => {
     assert.deepEqual(edit.results, ['web/junit.xml']);
   });
 
+  it('reads Vitest started by path through node, and a manager flag with a value', () => {
+    const edit = reportEdit({
+      runner: 'vitest',
+      run: 'npm --prefix web run test:coverage',
+      through: ['npm run test:coverage (web)'],
+      dir: 'web',
+      coverage: true,
+      read: repo({ 'web/package.json': { scripts: { 'test:coverage': 'node --experimental-vm-modules node_modules/vitest/vitest.mjs run --coverage' }, ...VITEST_DEPS } }),
+    });
+    assert.equal(edit.run, `npm --prefix web run test:coverage -- ${JUNIT}`);
+    assert.deepEqual(edit.results, ['web/junit.xml']);
+  });
+
+  it('keeps the JUnit file a command or a config already names, and names one where the reporter has none', () => {
+    const named = reportEdit({ runner: 'vitest', run: 'npx vitest run --coverage --reporter=junit --outputFile.junit=reports/junit.xml', coverage: true, read: repo({ 'package.json': VITEST_DEPS }) });
+    assert.equal(named.run, 'npx vitest run --coverage --reporter=junit --outputFile.junit=reports/junit.xml');
+    assert.deepEqual(named.results, ['reports/junit.xml']);
+    const unnamed = reportEdit({ runner: 'vitest', run: 'npx vitest run --coverage --reporter=junit', coverage: true, read: repo({ 'package.json': VITEST_DEPS }) });
+    assert.equal(unnamed.run, 'npx vitest run --coverage --reporter=junit --outputFile.junit=junit.xml');
+    const configured = reportEdit({
+      runner: 'vitest',
+      run: 'npx vitest run --coverage',
+      coverage: true,
+      config: 'vitest.config.ts',
+      read: repo({ 'package.json': VITEST_DEPS, 'vitest.config.ts': 'export default { test: { reporters: ["default", "junit"], outputFile: { junit: "out/junit.xml" }, coverage: { reporter: [["lcov"]] } } };\n' }),
+    });
+    assert.equal(configured.run, 'npx vitest run --coverage');
+    assert.deepEqual(configured.results, ['out/junit.xml']);
+    assert.deepEqual(configured.coverage, ['coverage/lcov.info']);
+    const anyFile = reportEdit({
+      runner: 'vitest',
+      run: 'npx vitest run --coverage',
+      coverage: true,
+      config: 'vitest.config.ts',
+      read: repo({ 'package.json': VITEST_DEPS, 'vitest.config.ts': 'export default { test: { reporters: ["junit"], outputFile: "results.xml" } };\n' }),
+    });
+    assert.deepEqual(anyFile.results, ['results.xml']);
+  });
+
+  it('declines a configuration it cannot read', () => {
+    const read = (config) => repo({ 'package.json': VITEST_DEPS, 'vitest.config.ts': config });
+    const input = { runner: 'vitest', run: 'npx vitest run --coverage', coverage: true, config: 'vitest.config.ts' };
+    assert.equal(reportEdit({ ...input, read: read('export default { test: {\n') }).reason, 'vitest.config.ts could not be read as JavaScript or TypeScript');
+    assert.equal(reportEdit({ ...input, read: read('export default { test: { outputFile: process.env.OUT } };\n') }).reason, 'vitest.config.ts sets test.outputFile from an expression; the tool reads only literal values');
+    assert.equal(reportEdit({ ...input, read: read('export default { test: { coverage: { reporter: [["json", { file: "x.json" }]] } } };\n') }).reason, 'vitest.config.ts sets coverage.reporter from an expression; the tool reads only literal values');
+  });
+
   it('declines what it cannot edit safely, and says why', () => {
     const chain = reportEdit({
       runner: 'vitest',
@@ -208,7 +255,42 @@ describe('the report edit for pytest', () => {
     assert.equal(edit.run, run.replace('-m "not gpu and not slow"', '-m "not gpu and not slow" --junitxml=junit.xml'));
   });
 
+  it('finds pytest under uv run and poetry run', () => {
+    const uv = reportEdit({ runner: 'pytest', run: 'uv run --group dev pytest tests/ --cov=pkg --cov-report=xml', coverage: true, read: repo({ 'pyproject.toml': PYPROJECT }) });
+    assert.equal(uv.run, 'uv run --group dev pytest tests/ --cov=pkg --cov-report=xml --junitxml=junit.xml');
+    const poetry = reportEdit({ runner: 'pytest', run: 'poetry run python -m pytest --cov=pkg --cov-report=xml:out/cov.xml', coverage: true, read: repo({ 'pyproject.toml': PYPROJECT }) });
+    assert.equal(poetry.run, 'poetry run python -m pytest --cov=pkg --cov-report=xml:out/cov.xml --junitxml=junit.xml');
+    assert.deepEqual(poetry.coverage, ['out/cov.xml']);
+  });
+
+  it('reads addopts from pytest.ini and setup.cfg, and coverage settings from .coveragerc', () => {
+    const ini = reportEdit({
+      runner: 'pytest',
+      run: 'pytest',
+      coverage: true,
+      read: repo({ 'pytest.ini': '[pytest]\n; the suite\naddopts = -q\n  --cov=pkg\n  --junitxml=reports/junit.xml\n', 'pyproject.toml': PYPROJECT }),
+    });
+    assert.equal(ini.run, 'pytest --cov-report=term --cov-report=xml');
+    assert.deepEqual(ini.results, ['reports/junit.xml']);
+    const cfg = reportEdit({
+      runner: 'pytest',
+      run: 'pytest',
+      coverage: false,
+      read: repo({ 'setup.cfg': '[metadata]\nname = pkg\n[tool:pytest]\naddopts = --strict-markers\n[options.extras_require]\ndev = pytest-cov\n', '.coveragerc': '[run]\nsource = pkg\n[xml]\noutput = cov.xml\n' }),
+    });
+    assert.equal(cfg.run, "pytest ${{ env.COVERAGE_LEG == 'true' && '--cov --cov-report=term --cov-report=xml' || '' }} --junitxml=junit.xml");
+    assert.deepEqual(cfg.coverage, ['cov.xml']);
+  });
+
   it('declines what it cannot edit safely, and says why', () => {
+    assert.equal(
+      reportEdit({ runner: 'pytest', run: 'coverage run -m pytest tests/', coverage: true, read: repo({ 'pyproject.toml': PYPROJECT }) }).reason,
+      'the step runs pytest under coverage run; add coverage xml after it by hand',
+    );
+    assert.equal(
+      reportEdit({ runner: 'pytest', run: 'pytest --junitxml=junit-${{ matrix.os }}.xml', coverage: true, read: repo({ 'pyproject.toml': PYPROJECT }) }).reason,
+      "the JUnit file's name (junit-${{ matrix.os }}.xml) is made at run time",
+    );
     assert.equal(
       reportEdit({ runner: 'pytest', run: 'pytest tests/', coverage: false, read: repo({ 'pyproject.toml': '[project]\nname = "x"\n' }) }).reason,
       'pytest collects no coverage here and pytest-cov is not a dependency',
@@ -273,8 +355,39 @@ describe('the report edit for node --test', () => {
     assert.deepEqual(edit.results, ['packages/cli/junit.xml', 'packages/kernel/junit.xml']);
   });
 
+  it('reads c8 run through npx, its flags spelled apart from their values', () => {
+    const edit = reportEdit({
+      runner: 'node --test',
+      run: 'npx --yes c8 --reporter lcov --reports-dir out -x "test/**" node --test',
+      coverage: true,
+      read: repo({ 'package.json': {} }),
+    });
+    assert.deepEqual(edit.after, []);
+    assert.deepEqual(edit.coverage, ['out/lcov.info']);
+  });
+
   it('declines what it cannot edit safely, and says why', () => {
     const base = { runner: 'node --test', run: 'npm test', through: ['npm test'], coverage: false };
+    assert.equal(
+      reportEdit({ ...base, through: ['scripts/test.sh'], run: 'bash scripts/test.sh', read: repo({ 'scripts/test.sh': 'node --test --test-reporter=tap test/\n' }) }).reason,
+      'the scripts/test.sh names its own --test-reporter; a reporter added through NODE_OPTIONS would not pair with its destinations',
+    );
+    assert.equal(
+      reportEdit({ ...base, coverage: true, read: repo({ 'package.json': { scripts: { test: 'node --test --experimental-test-coverage' } } }) }).reason,
+      "the run measures coverage with node's own --experimental-test-coverage; add its lcov reporter by hand",
+    );
+    assert.equal(
+      reportEdit({ ...base, coverage: true, read: repo({ 'package.json': { scripts: { test: 'nyc node --test' } } }) }).reason,
+      'the run collects coverage with a tool other than c8; add its lcov report by hand',
+    );
+    assert.equal(
+      reportEdit({ ...base, run: 'c8 --per-file --watermarks npm test', coverage: true, read: repo({ 'package.json': { scripts: { test: 'node --test' } } }) }).reason,
+      'c8 runs with --watermarks, which the tool does not know how to repeat in a later report',
+    );
+    assert.match(
+      reportEdit({ ...base, run: 'node --test dist/', through: [], read: repo({ 'tsconfig.json': '{ not json' }) }).reason,
+      /built without source maps/,
+    );
     assert.equal(
       reportEdit({ ...base, env: new Set(['NODE_OPTIONS']), read: repo({ 'package.json': { scripts: { test: 'node --test' } } }) }).reason,
       'the step already sets NODE_OPTIONS, which the JUnit reporter would be added to',

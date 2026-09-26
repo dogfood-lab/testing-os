@@ -120,73 +120,24 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 38,
-      "changed": 5,
+      "added": 0,
+      "changed": 7,
       "moved": 0,
-      "parts": 6,
+      "parts": 2,
       "removed": 0
     },
     "items": [
       {
-        "kind": "door",
-        "sentence": "CI runs 5 more files than before.",
-        "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Release runs 5 more files than before.",
-        "subjects": [
-          ".github/workflows/release.yml"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": ".github/workflows/ is now also read by scripts/lib/codecov/check.mjs, scripts/lib/codecov/facts.mjs and scripts/lib/codecov/plan.mjs.",
-        "subjects": [
-          ".github/workflows/",
-          "scripts/lib/codecov/check.mjs",
-          "scripts/lib/codecov/facts.mjs",
-          "scripts/lib/codecov/plan.mjs"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": ".github/workflows/ci.yml is now also read by scripts/codecov-check.test.mjs and scripts/codecov-plan.test.mjs.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "scripts/codecov-check.test.mjs",
-          "scripts/codecov-plan.test.mjs"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "codecov.yml is now read by scripts/codecov-check.test.mjs, scripts/codecov-plan.test.mjs, scripts/lib/codecov/check.mjs and scripts/lib/codecov/plan.mjs.",
-        "subjects": [
-          "codecov.yml",
-          "scripts/codecov-check.test.mjs",
-          "scripts/codecov-plan.test.mjs",
-          "scripts/lib/codecov/check.mjs",
-          "scripts/lib/codecov/plan.mjs"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 4 more new writers and readers of places.",
-        "subjects": []
-      },
-      {
         "kind": "counts",
-        "sentence": "38 files added and 5 changed content, across 6 parts.",
+        "sentence": "Nothing structural changed since 2026-09-26; 7 files changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "54fb3d7df0cde4f22c228a17d3a17a149be4853d",
-      "generatedAt": "2026-09-26T20:34:42.782Z"
+      "commit": "68590766baf202472a5af3659c3686d41e0c13b9",
+      "generatedAt": "2026-09-26T21:48:14.631Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [
     {
@@ -210,7 +161,7 @@
     "Window: 180 days; a pair counts from 10 shared commits, since 38 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 1,
-  "commit": "68590766baf202472a5af3659c3686d41e0c13b9",
+  "commit": "c13b5a0ebcf76a61fdd339515b8b29c2a46a4e9c",
   "defaultBranch": "main",
   "derived": "23 parts, mostly JavaScript (1530 files), TypeScript (213), Python (195), Rust (93), GDScript (33), shell (18), HTML (14), Astro (8), CSS (5), C# (3) and PowerShell (1). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
   "doors": [
@@ -1458,7 +1409,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-26T21:48:14.631Z",
+  "generatedAt": "2026-09-26T22:13:29.108Z",
   "limits": [
     "4 import sites name declared dependencies that share their names with local modules (datasets, docx and xrpl); they are read as the dependencies, which are not in this repository.",
     "168 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 165 more.",

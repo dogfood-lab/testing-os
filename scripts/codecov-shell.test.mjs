@@ -70,4 +70,20 @@ describe('the shell reader', () => {
   it('reads a redirection spelled apart from its target', () => {
     assert.deepEqual(words('vitest run > out.txt 2> err.txt --coverage'), [['vitest', 'run', '--coverage']]);
   });
+
+  it('reads backticks, escapes inside double quotes, and a continuation written with CRLF', () => {
+    const text = 'echo "a \\"quoted\\" `date`" `whoami` \\\r\n  --flag\r\n';
+    const commands = simpleCommands(text);
+    assert.deepEqual(commands.map((command) => [command.words.map((word) => word.text), command.nested]), [
+      [['date'], true],
+      [['whoami'], true],
+      [['echo', 'a "quoted" `date`', '`whoami`', '--flag'], false],
+    ]);
+  });
+
+  it('reads to the end of the text when a substitution, a parameter or a backtick never closes', () => {
+    assert.deepEqual(words('echo $(date "x\\"y" \\) end'), [['date', 'x"y', ')', 'end'], ['echo', '$(date "x\\"y" \\) end']]);
+    assert.deepEqual(words('echo ${HOME'), [['echo', '${HOME']]);
+    assert.deepEqual(words('echo `date \\` x'), [['date', '`', 'x'], ['echo', '`date \\` x']]);
+  });
 });
