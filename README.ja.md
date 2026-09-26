@@ -21,7 +21,7 @@
 *AIによる支援を受けたソフトウェアのためのプロトコル、証拠ストア、および学習ループ。*
 
 <!-- version:start -->
-**v1.23.0** — 現在のリリース。変更点は[CHANGELOG.md](CHANGELOG.md)を参照してください。
+**v1.23.4** — 現在のリリース。変更点は[CHANGELOG.md](CHANGELOG.md)を参照してください。
 <!-- version:end -->
 
 📖 **[ハンドブックを読む →](https://dogfood-lab.github.io/testing-os/handbook/)**
@@ -131,7 +131,7 @@ Node ≥ 22 が必要です。CI マトリックスは、Node 22 + 24 を `ubunt
 
 ## バージョン管理
 
-すべての `@dogfood-lab/*` パッケージは、まとめてバージョンアップされます。モノリポジトリ全体で、1 つの番号が使用されます。7 つのパッケージは、v1.23.0 で、ロックステップで `@dogfood-lab` に公開されます（`schemas`、`verify`、`report`、`ingest`、`findings`、`dogfood-swarm`、`atlas`）。8 番目の `@dogfood-lab/portfolio` は、内部で使用されます。この README の上部近くにあるバージョン行は、すべての `npm run build` で、[`scripts/sync-version.mjs`](scripts/sync-version.mjs) を介して `package.json` から自動的にタイムスタンプが設定されます。
+すべての `@dogfood-lab/*` パッケージは、まとめてバージョンアップされます。モノリポジトリ全体で、1 つの番号が使用されます。7 つのパッケージは、v1.23.4 で、ロックステップで `@dogfood-lab` に公開されます（`schemas`、`verify`、`report`、`ingest`、`findings`、`dogfood-swarm`、`atlas`）。8 番目の `@dogfood-lab/portfolio` は、内部で使用されます。この README の上部近くにあるバージョン行は、すべての `npm run build` で、[`scripts/sync-version.mjs`](scripts/sync-version.mjs) を介して `package.json` から自動的にタイムスタンプが設定されます。
 
 ## ライセンス
 

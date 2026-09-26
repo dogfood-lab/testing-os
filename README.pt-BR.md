@@ -21,7 +21,7 @@
 *Protocolos, repositórios de evidências e ciclos de aprendizado para software assistido por IA.*
 
 <!-- version:start -->
-**v1.23.0** — versão atual. Consulte [CHANGELOG.md](CHANGELOG.md) para ver o que foi incluído.
+**v1.23.4** — versão atual. Consulte [CHANGELOG.md](CHANGELOG.md) para ver o que foi incluído.
 <!-- version:end -->
 
 📖 **[Leia o manual →](https://dogfood-lab.github.io/testing-os/handbook/)**
@@ -131,7 +131,7 @@ Requer Node ≥ 22. A matriz CI executa Node 22 + 24 em `ubuntu-latest`; validad
 
 ## Versionamento
 
-Todos os pacotes `@dogfood-lab/*` são atualizados juntos — um número em todo o monorepos. Sete pacotes são publicados no npm sob `@dogfood-lab` na versão 1.23.0 em sincronia (`schemas`, `verify`, `report`, `ingest`, `findings`, `dogfood-swarm`, `atlas`); o oitavo, `@dogfood-lab/portfolio`, permanece interno. A linha de versão perto do topo deste README é gerada automaticamente a partir de `package.json` por meio de [`scripts/sync-version.mjs`](scripts/sync-version.mjs) em cada `npm run build`.
+Todos os pacotes `@dogfood-lab/*` são atualizados juntos — um número em todo o monorepos. Sete pacotes são publicados no npm sob `@dogfood-lab` na versão 1.23.4 em sincronia (`schemas`, `verify`, `report`, `ingest`, `findings`, `dogfood-swarm`, `atlas`); o oitavo, `@dogfood-lab/portfolio`, permanece interno. A linha de versão perto do topo deste README é gerada automaticamente a partir de `package.json` por meio de [`scripts/sync-version.mjs`](scripts/sync-version.mjs) em cada `npm run build`.
 
 ## Licença
 

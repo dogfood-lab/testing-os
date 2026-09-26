@@ -38,6 +38,17 @@ describe('index modes', () => {
     assert.equal(result.generatedFrom.tracked, membership(result).length);
   });
 
+  it('reads a symlink target from the index on a checkout that wrote the link as a file', () => {
+    const root = makeFixtureRepo();
+    roots.push(root);
+    rmSync(join(root, 'linked.md'));
+    writeFileSync(join(root, 'linked.md'), 'README.md');
+    assert.match(git(root, ['ls-files', '--stage', '--', 'linked.md']), /^120000 /);
+    const result = mapRepository({ repoPath: root, boundaries: [ALPHA, BETA] });
+    assert.deepEqual(result.symlinks, [{ path: 'linked.md', target: 'README.md' }]);
+    assert.ok(!membership(result).includes('linked.md'));
+  });
+
   it('hashes an executable and records a gitlink without a nested repository', () => {
     const root = makeFixtureRepo();
     roots.push(root);
