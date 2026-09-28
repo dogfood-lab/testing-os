@@ -287,7 +287,7 @@
     },
     {
       "dynamicReads": 8,
-      "dynamicSpawns": 3,
+      "dynamicSpawns": 2,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 8,
       "entryPoints": [
@@ -298,6 +298,13 @@
       "externals": 0,
       "files": [
         {
+          "failurePaths": [
+            {
+              "in": "get",
+              "kind": "throw",
+              "line": 26
+            }
+          ],
           "hash": "cb97699e72cbf7308ac8f19f7135bfa14fb08d25e875fabf1654a1c8ccc8fdb3",
           "importOrder": [
             "src/dispatch.ts",
@@ -391,6 +398,13 @@
           "exports": [
             "dispatch"
           ],
+          "failurePaths": [
+            {
+              "in": "recordAudit",
+              "kind": "catch",
+              "line": 50
+            }
+          ],
           "hash": "59f3d514e3e1f3b2b400669dfefbaadb29b5519282d6ca986b96cd780d3d4517",
           "importsFiles": [
             "src/lib/audit.ts",
@@ -468,6 +482,33 @@
           "path": "src/lib/audit.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "lock_visibility_private",
+              "kind": "catch",
+              "line": 126
+            },
+            {
+              "in": "lock_default_branch",
+              "kind": "catch",
+              "line": 168
+            },
+            {
+              "in": "ensureFile",
+              "kind": "catch",
+              "line": 207
+            },
+            {
+              "in": "fileExists",
+              "kind": "catch",
+              "line": 222
+            },
+            {
+              "in": "fileExists",
+              "kind": "throw",
+              "line": 225
+            }
+          ],
           "hash": "6a7dac4830a04bb3754945f57481872cf93f95ad195fe7e3738f00ca45563e45",
           "importsFiles": [
             "src/lib/github.ts",
@@ -499,6 +540,23 @@
             "parseRepoRef",
             "scrubToken"
           ],
+          "failurePaths": [
+            {
+              "in": "buildOctokit",
+              "kind": "throw",
+              "line": 50
+            },
+            {
+              "in": "parseRepoRef",
+              "kind": "throw",
+              "line": 234
+            },
+            {
+              "in": "parseRepoRef",
+              "kind": "throw",
+              "line": 247
+            }
+          ],
           "hash": "f47861b937cf1cb5a51f562c659b93f60b0a9b96f44eccf3cf4ac1089d992795",
           "importsFiles": [
             "src/lib/errors.ts",
@@ -528,6 +586,13 @@
             "buildLogger",
             "newCorrelationId"
           ],
+          "failurePaths": [
+            {
+              "in": "emit",
+              "kind": "catch",
+              "line": 111
+            }
+          ],
           "hash": "ede0aae70190e09d7ef40583f9eb7b88f590c8221887eeee0797e321915f27f9",
           "importsFiles": [
             "src/lib/errors.ts"
@@ -535,6 +600,18 @@
           "path": "src/lib/logger.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "create",
+              "kind": "throw",
+              "line": 74
+            },
+            {
+              "in": "requireGet",
+              "kind": "throw",
+              "line": 139
+            }
+          ],
           "hash": "f8162bbbb82f9c98404fbc5547d113d792d3e0c34410b992a5be0f02b4d43d27",
           "importsFiles": [
             "src/lib/errors.ts"
@@ -545,6 +622,28 @@
           "exports": [
             "policyBlocker",
             "resolveForkPolicy"
+          ],
+          "failurePaths": [
+            {
+              "in": "resolveForkPolicy",
+              "kind": "catch",
+              "line": 52
+            },
+            {
+              "in": "resolveForkPolicy",
+              "kind": "throw",
+              "line": 53
+            },
+            {
+              "in": "resolveForkPolicy",
+              "kind": "catch",
+              "line": 124
+            },
+            {
+              "in": "resolveForkPolicy",
+              "kind": "throw",
+              "line": 139
+            }
           ],
           "hash": "5f413fb7c3fdde037f90653cc072ff43cd7a4d13b53824edcc20997682f872c1",
           "importsFiles": [
@@ -557,6 +656,13 @@
           "exports": [
             "getProfile",
             "listProfiles"
+          ],
+          "failurePaths": [
+            {
+              "in": "getProfile",
+              "kind": "throw",
+              "line": 80
+            }
           ],
           "hash": "01816246d0649892cdf80bd634cd29548ea635754227cb2b33d19400062bb1d2",
           "path": "src/lib/profiles.ts"
@@ -584,6 +690,33 @@
           "exports": [
             "runDeepTsPass"
           ],
+          "failurePaths": [
+            {
+              "in": "getTsMorph",
+              "kind": "catch",
+              "line": 44
+            },
+            {
+              "in": "tsconfigExists",
+              "kind": "catch",
+              "line": 99
+            },
+            {
+              "in": "runDeepTsPass",
+              "kind": "catch",
+              "line": 263
+            },
+            {
+              "in": "runDeepTsPass",
+              "kind": "catch",
+              "line": 305
+            },
+            {
+              "in": "runDeepTsPass",
+              "kind": "catch",
+              "line": 317
+            }
+          ],
           "hash": "849e1755c55ef57b8ae7c366912f3d6c3004446ca22be15a61bcd2e3259822e2",
           "importOrder": [
             "src/schemas/rename.ts",
@@ -608,6 +741,18 @@
           "path": "src/lib/rename/exclusions.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "recur",
+              "kind": "catch",
+              "line": 14
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 45
+            }
+          ],
           "hash": "55bbf88f35a862c0d5560d89fac319f7f7ee9a834b965ab9ca90220ca68cf4c9",
           "importOrder": [
             "src/schemas/rename.ts",
@@ -622,6 +767,13 @@
         {
           "exports": [
             "runIdentityPass"
+          ],
+          "failurePaths": [
+            {
+              "in": "runIdentityPass",
+              "kind": "catch",
+              "line": 52
+            }
           ],
           "hash": "34bc7f457441cb665d57ff9faf523060a2586eb535b77fed15b73668a3485cef",
           "importOrder": [
@@ -643,6 +795,23 @@
           "path": "src/lib/rename/identity/index.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "recur",
+              "kind": "catch",
+              "line": 42
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 68
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 74
+            }
+          ],
           "hash": "1346677821cf8632a690a7dcf824f5f00fa5919ae9e81c46d2efe9ad74801b4d",
           "importOrder": [
             "src/schemas/rename.ts",
@@ -655,6 +824,43 @@
           "path": "src/lib/rename/identity/package-json.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "recur",
+              "kind": "catch",
+              "line": 44
+            },
+            {
+              "in": "recur",
+              "kind": "catch",
+              "line": 67
+            },
+            {
+              "in": "processTextFiles",
+              "kind": "catch",
+              "line": 95
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 124
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 130
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 178
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 239
+            }
+          ],
           "hash": "03edf258f2cf08f2e1aa56ce87acdbdd1234d27ff7635e6ab1ea86184b0e1781",
           "importOrder": [
             "src/schemas/rename.ts",
@@ -667,6 +873,28 @@
           "path": "src/lib/rename/identity/simple-text.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "recur",
+              "kind": "catch",
+              "line": 40
+            },
+            {
+              "in": "runTomlEditor",
+              "kind": "catch",
+              "line": 135
+            },
+            {
+              "in": "runTomlEditor",
+              "kind": "catch",
+              "line": 141
+            },
+            {
+              "in": "runTomlEditor",
+              "kind": "catch",
+              "line": 154
+            }
+          ],
           "hash": "eb6e8bc6eb8b61f765b6169a56c74fc0d9dd05e3a8927f3380b43922181fac01",
           "importOrder": [
             "src/schemas/rename.ts",
@@ -724,6 +952,43 @@
           "exports": [
             "runPostPass"
           ],
+          "failurePaths": [
+            {
+              "in": "fileExists",
+              "kind": "catch",
+              "line": 57
+            },
+            {
+              "in": "runCommand",
+              "kind": "catch",
+              "line": 75
+            },
+            {
+              "in": "recur",
+              "kind": "catch",
+              "line": 104
+            },
+            {
+              "in": "performMove",
+              "kind": "catch",
+              "line": 165
+            },
+            {
+              "in": "performMove",
+              "kind": "catch",
+              "line": 182
+            },
+            {
+              "in": "runPostPass",
+              "kind": "catch",
+              "line": 241
+            },
+            {
+              "in": "detectAndRunVerify",
+              "kind": "catch",
+              "line": 291
+            }
+          ],
           "hash": "703f61683af509671d8177d3b6983f3929e520fcfc385496835ba18ee67081f3",
           "importOrder": [
             "src/schemas/rename.ts",
@@ -745,6 +1010,58 @@
             "rollbackSnapshot",
             "takeSnapshot"
           ],
+          "failurePaths": [
+            {
+              "in": "runCommand",
+              "kind": "catch",
+              "line": 38
+            },
+            {
+              "in": "exists",
+              "kind": "catch",
+              "line": 52
+            },
+            {
+              "in": "takeSnapshot",
+              "kind": "throw",
+              "line": 73
+            },
+            {
+              "in": "recur",
+              "kind": "catch",
+              "line": 120
+            },
+            {
+              "in": "rollbackSnapshot",
+              "kind": "throw",
+              "line": 161
+            },
+            {
+              "in": "rollbackSnapshot",
+              "kind": "throw",
+              "line": 167
+            },
+            {
+              "in": "rollbackSnapshot",
+              "kind": "throw",
+              "line": 177
+            },
+            {
+              "in": "rollbackSnapshot",
+              "kind": "throw",
+              "line": 201
+            },
+            {
+              "in": "gcSnapshots",
+              "kind": "catch",
+              "line": 234
+            },
+            {
+              "in": "gcSnapshots",
+              "kind": "catch",
+              "line": 242
+            }
+          ],
           "hash": "e1bd0d1634e25c17ebf0db345eaa4319dbee9d9e04cf6acfd18f9e7fbc8f2455",
           "importsFiles": [
             "src/lib/errors.ts"
@@ -754,6 +1071,48 @@
         {
           "exports": [
             "runSymbolsPass"
+          ],
+          "failurePaths": [
+            {
+              "in": "getNapi",
+              "kind": "catch",
+              "line": 27
+            },
+            {
+              "in": "registerDynamicLangs",
+              "kind": "catch",
+              "line": 93
+            },
+            {
+              "in": "registerDynamicLangs",
+              "kind": "catch",
+              "line": 103
+            },
+            {
+              "in": "runSymbolsPass",
+              "kind": "catch",
+              "line": 207
+            },
+            {
+              "in": "runSymbolsPass",
+              "kind": "catch",
+              "line": 217
+            },
+            {
+              "in": "findKind",
+              "kind": "catch",
+              "line": 247
+            },
+            {
+              "in": "runSymbolsPass",
+              "kind": "catch",
+              "line": 315
+            },
+            {
+              "in": "runSymbolsPass",
+              "kind": "catch",
+              "line": 466
+            }
           ],
           "hash": "be4d38c72899372ae3cea17b91f8090c9339596beb02a927a5dd4609811a2536",
           "importOrder": [
@@ -771,6 +1130,18 @@
         {
           "exports": [
             "runTextualPass"
+          ],
+          "failurePaths": [
+            {
+              "in": "runTextualPass",
+              "kind": "catch",
+              "line": 311
+            },
+            {
+              "in": "runTextualPass",
+              "kind": "catch",
+              "line": 368
+            }
           ],
           "hash": "50eee450eda0ac25c0cb75d340e142a53ae245f90a4c14988a7f2bbab57bf331",
           "importOrder": [
@@ -811,6 +1182,18 @@
             "matchGlob",
             "walkRepo"
           ],
+          "failurePaths": [
+            {
+              "in": "recur",
+              "kind": "catch",
+              "line": 65
+            },
+            {
+              "in": "recur",
+              "kind": "catch",
+              "line": 84
+            }
+          ],
           "hash": "3f89b76e24a35cb6bcf3f98fea4bced7dcddffcb3617ff3c2c2047554ae24d83",
           "importsFiles": [
             "src/lib/rename/exclusions.ts"
@@ -823,6 +1206,13 @@
             "ok",
             "safe"
           ],
+          "failurePaths": [
+            {
+              "in": "safe",
+              "kind": "catch",
+              "line": 27
+            }
+          ],
           "hash": "bbbe937af82db7c71e518086af7e4b4d4503d2a3d7c382250a4dd651de9d32d1",
           "importsFiles": [
             "src/lib/errors.ts"
@@ -832,6 +1222,58 @@
         {
           "exports": [
             "fetchSnapshot"
+          ],
+          "failurePaths": [
+            {
+              "in": "fetchSnapshot",
+              "kind": "catch",
+              "line": 59
+            },
+            {
+              "in": "fetchSnapshot",
+              "kind": "throw",
+              "line": 60
+            },
+            {
+              "in": "fetchReadme",
+              "kind": "catch",
+              "line": 121
+            },
+            {
+              "in": "fetchReadme",
+              "kind": "throw",
+              "line": 124
+            },
+            {
+              "in": "fetchFileFlags",
+              "kind": "catch",
+              "line": 139
+            },
+            {
+              "in": "fetchFileFlags",
+              "kind": "throw",
+              "line": 141
+            },
+            {
+              "in": "fetchBranchCount",
+              "kind": "catch",
+              "line": 156
+            },
+            {
+              "in": "fetchBranchCount",
+              "kind": "throw",
+              "line": 159
+            },
+            {
+              "in": "fetchWorkflowsCount",
+              "kind": "catch",
+              "line": 171
+            },
+            {
+              "in": "fetchWorkflowsCount",
+              "kind": "throw",
+              "line": 174
+            }
           ],
           "hash": "6959feb4753f9ce43786c63c0fe2dacfeb4d8f824e80814b5cfb71b4ff19b1ef",
           "importsFiles": [
@@ -849,6 +1291,28 @@
             "resolveDbPath",
             "resolveStateDir",
             "runMigrations"
+          ],
+          "failurePaths": [
+            {
+              "in": "runMigrations",
+              "kind": "throw",
+              "line": 111
+            },
+            {
+              "in": "runMigrations",
+              "kind": "throw",
+              "line": 124
+            },
+            {
+              "in": "runMigrations",
+              "kind": "catch",
+              "line": 143
+            },
+            {
+              "in": "runMigrations",
+              "kind": "throw",
+              "line": 144
+            }
           ],
           "hash": "8e14062cccc54e49c2efed47e600a4261a53cc38a646ad8d1bbb9a92901e0b65",
           "importsFiles": [
@@ -1061,6 +1525,13 @@
           "path": "src/tools/audit-log.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "syncOne",
+              "kind": "catch",
+              "line": 98
+            }
+          ],
           "hash": "5dba43781d2cea5a213311aff85cdd73c5f8a205bf47215c1075c1c3c8ee593c",
           "importsFiles": [
             "src/lib/github.ts",
@@ -1092,6 +1563,23 @@
         },
         {
           "constantOnly": true,
+          "failurePaths": [
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 25
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 40
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 51
+            }
+          ],
           "hash": "d1f9f42209568a13ced6aeb4bac234ded661cd1a555447edbdbe026574130f87",
           "importsFiles": [
             "src/lib/errors.ts",
@@ -1144,6 +1632,33 @@
           "path": "src/tools/configure-upstream.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 42
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 66
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 73
+            },
+            {
+              "in": "getAuthenticatedLogin",
+              "kind": "catch",
+              "line": 91
+            },
+            {
+              "in": "getAuthenticatedLogin",
+              "kind": "throw",
+              "line": 93
+            }
+          ],
           "hash": "530997b16c9d12fe5b26daa471aa9702d08ac7a2bc4bb4f283b8495747a5f3e1",
           "importOrder": [
             "src/lib/errors.ts",
@@ -1166,6 +1681,18 @@
           "path": "src/tools/create-fork.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 65
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 72
+            }
+          ],
           "hash": "3f3665c719e341912c3dcbff61487117e75f15ee7a016d5e47d305c3001e57c5",
           "importsFiles": [
             "src/lib/github.ts",
@@ -1177,6 +1704,33 @@
           "path": "src/tools/create-from-template.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 53
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 54
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 57
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 106
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 107
+            }
+          ],
           "hash": "1edc46b84e923f0a7d4b3851a3b92659c60e4d879e30b131b990770702b67b84",
           "importsFiles": [
             "src/lib/errors.ts",
@@ -1199,6 +1753,23 @@
           "path": "src/tools/emit-handoff.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 47
+            },
+            {
+              "in": "listMyForkRefs",
+              "kind": "catch",
+              "line": 93
+            },
+            {
+              "in": "listMyForkRefs",
+              "kind": "throw",
+              "line": 94
+            }
+          ],
           "hash": "b27eb8a6e16da3343063637a16736cb86ad5ee20f1b715c1578925a0171360e9",
           "importsFiles": [
             "src/lib/github.ts",
@@ -1209,6 +1780,28 @@
           "path": "src/tools/fleet-health.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "listMyForks",
+              "kind": "catch",
+              "line": 66
+            },
+            {
+              "in": "listMyForks",
+              "kind": "throw",
+              "line": 67
+            },
+            {
+              "in": "listForksOfRepo",
+              "kind": "catch",
+              "line": 98
+            },
+            {
+              "in": "listForksOfRepo",
+              "kind": "throw",
+              "line": 99
+            }
+          ],
           "hash": "c6d0cc88cb638cdc75d2bc2f7443356eadc16878d9cf3f4da54bcebfe4864676",
           "importsFiles": [
             "src/lib/github.ts",
@@ -1219,6 +1812,68 @@
           "path": "src/tools/list-forks.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "openPatchPr",
+              "kind": "catch",
+              "line": 116
+            },
+            {
+              "in": "openPatchPr",
+              "kind": "throw",
+              "line": 117
+            },
+            {
+              "in": "openPatchPr",
+              "kind": "catch",
+              "line": 127
+            },
+            {
+              "in": "openPatchPr",
+              "kind": "throw",
+              "line": 129
+            },
+            {
+              "in": "openPatchPr",
+              "kind": "catch",
+              "line": 143
+            },
+            {
+              "in": "openPatchPr",
+              "kind": "throw",
+              "line": 144
+            },
+            {
+              "in": "openPatchPr",
+              "kind": "throw",
+              "line": 155
+            },
+            {
+              "in": "openPatchPr",
+              "kind": "catch",
+              "line": 177
+            },
+            {
+              "in": "openPatchPr",
+              "kind": "throw",
+              "line": 183
+            },
+            {
+              "in": "openPatchPr",
+              "kind": "catch",
+              "line": 197
+            },
+            {
+              "in": "openPatchPr",
+              "kind": "throw",
+              "line": 201
+            },
+            {
+              "in": "openPatchPr",
+              "kind": "throw",
+              "line": 207
+            }
+          ],
           "hash": "85c73b1c7bc355e07d3e386b421417d4369b7dc45248bb5b33dbf6936a0f6c6f",
           "importOrder": [
             "src/lib/errors.ts",
@@ -1253,6 +1908,63 @@
           "path": "src/tools/preflight-policy.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 37
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 45
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 63
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 74
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 76
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 91
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 93
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 104
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 137
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 140
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 148
+            }
+          ],
           "hash": "a2f862fefef24ca5bab08596ced74cce48e686a20c6165d90a032b53d378e26a",
           "importsFiles": [
             "src/lib/errors.ts",
@@ -1264,6 +1976,13 @@
           "path": "src/tools/propose-sync-pr.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 25
+            }
+          ],
           "hash": "db4adcd488a9f7c307aced6dd8bbc4ec5d903f05889e3423d8101ad544ac9220",
           "importOrder": [
             "src/lib/errors.ts",
@@ -1341,6 +2060,28 @@
           "path": "src/tools/registry.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "exists",
+              "kind": "catch",
+              "line": 29
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 86
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 87
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 88
+            }
+          ],
           "hash": "aeb1eaba273467202f7149711e57e93cfce832be6dc4124bc19703df234e1781",
           "importOrder": [
             "src/lib/errors.ts",
@@ -1377,6 +2118,13 @@
           "path": "src/tools/rename-apply.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "exists",
+              "kind": "catch",
+              "line": 21
+            }
+          ],
           "hash": "e8d881b1ea70044d5160da85ce92a7182868abd51d30940603804232fa668f4d",
           "importOrder": [
             "src/lib/errors.ts",
@@ -1399,6 +2147,13 @@
           "path": "src/tools/rename-plan.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "exists",
+              "kind": "catch",
+              "line": 16
+            }
+          ],
           "hash": "03ea11473286c1bae4e35e6152ebf2038c18836bb705f3223f6e9b2ff7984b3a",
           "importOrder": [
             "src/lib/errors.ts",
@@ -1419,6 +2174,18 @@
           "path": "src/tools/rename-rollback.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 56
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 62
+            }
+          ],
           "hash": "81538db98647869b28c9de471f0dd42e1d0deaa855b57805747351835bd09a4c",
           "importOrder": [
             "src/lib/github.ts",
@@ -1437,6 +2204,28 @@
           "path": "src/tools/scan-drift.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 33
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 55
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 58
+            },
+            {
+              "in": "handler",
+              "kind": "throw",
+              "line": 67
+            }
+          ],
           "hash": "ad45104a79f524eefbdcad21f81dd9e742cafb4b0333ea502c3777a3700b5812",
           "importsFiles": [
             "src/lib/errors.ts",
@@ -1459,6 +2248,9 @@
           ],
           "path": "src/tools/types.ts"
         }
+      ],
+      "frameworks": [
+        "mcp"
       ],
       "globs": [
         "src/**"
@@ -1527,15 +2319,11 @@
       "outsideReads": 36,
       "outsideWrites": 26,
       "role": "code",
-      "testedBy": 51,
-      "unresolvedNamed": [
-        {
-          "path": "src/lib/rename/symbols.ts",
-          "specifier": null,
-          "why": "dynamic"
-        }
+      "testRunners": [
+        "vitest"
       ],
-      "unresolvedSites": 1
+      "testedBy": 51,
+      "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
@@ -1612,6 +2400,9 @@
             "seedHardCaseRepo"
           ],
           "hash": "a8737896d028866ddad74c9ccdccd2e38bffe230e3d2f177fe2b48422a366b90",
+          "names": [
+            "src/index.ts"
+          ],
           "path": "tests/_helpers/rename-fixtures.ts"
         },
         {
@@ -1645,7 +2436,8 @@
             "src/tools/assess.ts",
             "tests/_helpers/octokit.ts"
           ],
-          "path": "tests/assess.test.ts"
+          "path": "tests/assess.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "31d5c3aaa68e703bd5ab45ca73495ff6e7e81898b3c20a2bc8662cbc64c5d243",
@@ -1653,14 +2445,16 @@
             "src/lib/audit.ts",
             "src/lib/state.ts"
           ],
-          "path": "tests/audit.test.ts"
+          "path": "tests/audit.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3bf2dbf63e951d8560029943490c1a08964caaed345989b99cc81da114f06950",
           "importsFiles": [
             "src/lib/github.ts"
           ],
-          "path": "tests/backend-hardening.test.ts"
+          "path": "tests/backend-hardening.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "bca56fd8243be571234288f582ed5c40f1d5239944bd6df33e7ea6fc3dd2a72a",
@@ -1676,7 +2470,8 @@
             "src/tools/batch-sync.ts",
             "tests/_helpers/fleet-octokit.ts"
           ],
-          "path": "tests/batch-sync.test.ts"
+          "path": "tests/batch-sync.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9737e8452a0445060d3e961f25203b9706d214e2ea67e1c98d1ae1317919b463",
@@ -1692,7 +2487,8 @@
             "src/tools/bootstrap.ts",
             "tests/_helpers/bootstrap-octokit.ts"
           ],
-          "path": "tests/bootstrap.test.ts"
+          "path": "tests/bootstrap.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "fc7b705017ea19afe124ce2a785b94889beaff48090f6e43b70c4f69c2902ab7",
@@ -1708,7 +2504,8 @@
             "src/tools/check-operation.ts",
             "tests/_helpers/exec-octokit.ts"
           ],
-          "path": "tests/check-operation.test.ts"
+          "path": "tests/check-operation.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "966843a1d53192693e56b8b53a81693b57b68d74a08faa3bd2f0a6906786d747",
@@ -1724,7 +2521,8 @@
             "src/tools/choose-path.ts",
             "tests/_helpers/octokit.ts"
           ],
-          "path": "tests/choose-path.test.ts"
+          "path": "tests/choose-path.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8fee09fd55550ab456aec17ef5f0e4f4de6f3f97869d32a2f6c4fdcb6fba7fbb",
@@ -1740,7 +2538,8 @@
             "src/tools/configure-upstream.ts",
             "tests/_helpers/bootstrap-octokit.ts"
           ],
-          "path": "tests/configure-upstream.test.ts"
+          "path": "tests/configure-upstream.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "70906a92ae66e2ad14efd1249d62e0ca640a17a5548f19d2cb08f867802ef5ec",
@@ -1756,7 +2555,8 @@
             "src/tools/create-fork.ts",
             "tests/_helpers/exec-octokit.ts"
           ],
-          "path": "tests/create-fork.test.ts"
+          "path": "tests/create-fork.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0060fad71220d2000b06ea8cfaf9edf45d74fc601d322925b8d54db89fc17564",
@@ -1772,7 +2572,8 @@
             "src/tools/create-from-template.ts",
             "tests/_helpers/exec-octokit.ts"
           ],
-          "path": "tests/create-from-template.test.ts"
+          "path": "tests/create-from-template.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b754f46c4a016172792657d7a0f59ed098a0294388d8f04d23df80dcd8711c2e",
@@ -1788,7 +2589,8 @@
             "src/tools/diagnose-divergence.ts",
             "tests/_helpers/sync-octokit.ts"
           ],
-          "path": "tests/diagnose-divergence.test.ts"
+          "path": "tests/diagnose-divergence.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "99e5647d91491d1be70f6aa6b01aca239994f9495a66bc280de231fad2c9b693",
@@ -1812,7 +2614,8 @@
             "src/tools/types.ts",
             "tests/_helpers/octokit.ts"
           ],
-          "path": "tests/dispatch-error-operation-id.test.ts"
+          "path": "tests/dispatch-error-operation-id.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ec0ea0e05cce71013bdf8beef7b871ad7092a2af0f5f29d7e4416879f7d55183",
@@ -1836,14 +2639,16 @@
             "tests/_helpers/exec-octokit.ts",
             "tests/_helpers/octokit.ts"
           ],
-          "path": "tests/dispatch.test.ts"
+          "path": "tests/dispatch.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a99cd73611ae693e51808527c784e8f241aab3caf010bab3863ca5ca11d6a0ec",
           "importsFiles": [
             "src/lib/drift.ts"
           ],
-          "path": "tests/drift.test.ts"
+          "path": "tests/drift.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7fca0d07052e32d6c6d29c4d85323ba9af12dc5dd75685f6c9f4602aa37d8de6",
@@ -1859,7 +2664,8 @@
             "src/tools/emit-handoff.ts",
             "tests/_helpers/bootstrap-octokit.ts"
           ],
-          "path": "tests/emit-handoff.test.ts"
+          "path": "tests/emit-handoff.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5b0a8beb6975a98dcd40162d800782daf21c27164cf8e6a27c90e075372465de",
@@ -1867,7 +2673,8 @@
             "src/lib/errors.ts",
             "src/lib/result.ts"
           ],
-          "path": "tests/errors.test.ts"
+          "path": "tests/errors.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c9fd986e3d7b844286f849c21a2190c35669cbd8e9d8517fdaa6f272742bc45e",
@@ -1883,7 +2690,8 @@
             "src/tools/fleet-health.ts",
             "tests/_helpers/fleet-octokit.ts"
           ],
-          "path": "tests/fleet-health.test.ts"
+          "path": "tests/fleet-health.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d1bc934a313353044275a4d748bdd9dcae79ae3e4f49133081b3c335ee33f57c",
@@ -1899,7 +2707,8 @@
             "src/tools/fleet-health.ts",
             "tests/_helpers/fleet-octokit.ts"
           ],
-          "path": "tests/fleet-octokit-dispatch.test.ts"
+          "path": "tests/fleet-octokit-dispatch.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ecc4f4eb894f1c7048fbd606ff264efd15305393247e9aad9a88e8e61dcdc303",
@@ -1911,7 +2720,8 @@
             "src/lib/errors.ts",
             "src/lib/github.ts"
           ],
-          "path": "tests/github.test.ts"
+          "path": "tests/github.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4cce4e0ecf1a8cfb3e21285c2fe8758fb301ff6e56b047970846a56b820908d5",
@@ -1927,14 +2737,16 @@
             "src/tools/list-forks.ts",
             "tests/_helpers/fleet-octokit.ts"
           ],
-          "path": "tests/list-forks.test.ts"
+          "path": "tests/list-forks.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8950da957adfe820e9dc940426767b3cb45bbb0079c543cf2bd46ff667e9fa44",
           "importsFiles": [
             "src/lib/logger.ts"
           ],
-          "path": "tests/logger.test.ts"
+          "path": "tests/logger.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ce94eadaf4db99aeef6e4f16a506f4b5987273c6b6b423d7dbd6263237a00744",
@@ -1954,14 +2766,16 @@
             "tests/_helpers/make-forkable-octokit.ts",
             "tests/_helpers/octokit.ts"
           ],
-          "path": "tests/make-forkable.test.ts"
+          "path": "tests/make-forkable.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "357e0cbc17b90390d1408bc21523ab9068d9e1a92ce805181bbbcb9b7599098b",
           "importsFiles": [
             "src/lib/state.ts"
           ],
-          "path": "tests/migration-runner.test.ts"
+          "path": "tests/migration-runner.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d6cb391a0885f2ecfb42f28333118f2455145b7b23b7feffbc8ca3af54ade518",
@@ -1983,7 +2797,8 @@
             "src/tools/scan-drift.ts",
             "tests/_helpers/network-errors.ts"
           ],
-          "path": "tests/network-errors.test.ts"
+          "path": "tests/network-errors.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b260c0c01e51ddef9dc47c8277a2fbfd27534a7c855643e1ee6c5cd809a690b6",
@@ -1991,7 +2806,8 @@
             "src/lib/operations.ts",
             "src/lib/state.ts"
           ],
-          "path": "tests/operations.test.ts"
+          "path": "tests/operations.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5fb31028b068845e936a2c028dfa67da1c2edf1687ce9fa3aa0ca3360d4b68ec",
@@ -2007,7 +2823,8 @@
             "src/lib/state.ts",
             "src/tools/diagnose-divergence.ts"
           ],
-          "path": "tests/parse-repo-ref.test.ts"
+          "path": "tests/parse-repo-ref.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "405dc49f20ffb315a24681d11ad00487f20d20a5a0dee6b370f1530a5a246cec",
@@ -2019,7 +2836,8 @@
             "src/lib/errors.ts",
             "src/lib/policy.ts"
           ],
-          "path": "tests/policy.test.ts"
+          "path": "tests/policy.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "921a5ad9190ee02badb8f3dac3c148fcd816007c8ffcf80d65ac5e22fea7a80d",
@@ -2035,14 +2853,16 @@
             "src/tools/preflight-policy.ts",
             "tests/_helpers/exec-octokit.ts"
           ],
-          "path": "tests/preflight-policy.test.ts"
+          "path": "tests/preflight-policy.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "803c96318856611c988a9bdefff99432e7168c4cdb89784df3081ef8188b8d8b",
           "importsFiles": [
             "src/lib/profiles.ts"
           ],
-          "path": "tests/profiles.test.ts"
+          "path": "tests/profiles.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "62fec92861cfa1c65a8dcc4abfcd78232781e4cedebc3507de11c403b1f07e51",
@@ -2058,7 +2878,8 @@
             "src/tools/propose-sync-pr.ts",
             "tests/_helpers/sync-octokit.ts"
           ],
-          "path": "tests/propose-sync-pr.test.ts"
+          "path": "tests/propose-sync-pr.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2fe57b6b5f16cf393bf629462ee7bf1f5832f54d9e024d898313fd0c6ca1ff4d",
@@ -2078,7 +2899,8 @@
             "src/tools/scan-drift.ts",
             "tests/_helpers/network-errors.ts"
           ],
-          "path": "tests/rate-limit.test.ts"
+          "path": "tests/rate-limit.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3dddb85e3b9f3964b0102f55871aac4129c1c468a5cee24a1ffb138c2b31cf99",
@@ -2086,7 +2908,8 @@
             "src/lib/readiness.ts",
             "tests/_helpers/snapshot.ts"
           ],
-          "path": "tests/readiness.test.ts"
+          "path": "tests/readiness.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2ea10167d0e26e91ff18ff2950404595176c4e076bd9bc8fef4c7a5ee1bb8e24",
@@ -2104,14 +2927,16 @@
             "src/tools/audit-log.ts",
             "src/tools/receipt.ts"
           ],
-          "path": "tests/receipt.test.ts"
+          "path": "tests/receipt.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "23f29abff5d79bef0e8f303ecb4312764acf9b069fdd50ecf48d58970f212cbe",
           "importsFiles": [
             "src/tools/registry.ts"
           ],
-          "path": "tests/registry.test.ts"
+          "path": "tests/registry.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9b7c3dcdc9706570e64fb383fd390a0e70f4c1056be1c512882f559201773247",
@@ -2119,11 +2944,16 @@
             "src/lib/rename/categories.ts",
             "src/schemas/rename.ts"
           ],
-          "path": "tests/rename/categories.test.ts"
+          "path": "tests/rename/categories.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c9937136cbba999df24b592ebeef7fcf53f89aa07314f9dc424d80ac68981ac9",
-          "path": "tests/rename/deep-ts.test.ts"
+          "names": [
+            "src/lib/rename/deep-ts.ts"
+          ],
+          "path": "tests/rename/deep-ts.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f780fa7cd18e58ebd656b4b9a6fdd3e803581c076a5824de06fed59360205673",
@@ -2151,7 +2981,8 @@
             "tests/_helpers/octokit.ts",
             "tests/_helpers/rename-fixtures.ts"
           ],
-          "path": "tests/rename/dispatch.test.ts"
+          "path": "tests/rename/dispatch.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "365c12f85bcbbe3993428d8e17057a6b9dc5dbed50a54df82aa17a4f3516433e",
@@ -2173,7 +3004,8 @@
             "src/lib/rename/variants.ts",
             "tests/_helpers/rename-fixtures.ts"
           ],
-          "path": "tests/rename/identity.test.ts"
+          "path": "tests/rename/identity.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "610a8d2269de81f3cae648cf491deda41e0f9df92a931161805a93f8130599cb",
@@ -2189,14 +3021,19 @@
             "src/lib/rename/walk.ts",
             "tests/_helpers/rename-fixtures.ts"
           ],
-          "path": "tests/rename/post.test.ts"
+          "path": "tests/rename/post.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0ff8f81a328a41f6ae50022306c4931e14a43b9c64cd63995b3e3cbb476eb06b",
           "importsFiles": [
             "src/schemas/rename.ts"
           ],
-          "path": "tests/rename/schemas.test.ts"
+          "names": [
+            "src/index.ts"
+          ],
+          "path": "tests/rename/schemas.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b7e56c2763deff24a68ac404aff7f74855da22ec3331a788fc947d0120414935",
@@ -2208,7 +3045,8 @@
             "src/lib/rename/snapshot.ts",
             "tests/_helpers/rename-fixtures.ts"
           ],
-          "path": "tests/rename/snapshot-rollback.test.ts"
+          "path": "tests/rename/snapshot-rollback.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4b293e79d5a1e9540942aeea0be143e5d210da30aebe9d150df3d52a257e228c",
@@ -2224,7 +3062,8 @@
             "src/lib/rename/walk.ts",
             "tests/_helpers/rename-fixtures.ts"
           ],
-          "path": "tests/rename/symbols.test.ts"
+          "path": "tests/rename/symbols.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "50a8b48c950d935246038fd8f4490f703ddd67a607af09225a04e5ff2d06016c",
@@ -2240,7 +3079,8 @@
             "src/lib/rename/walk.ts",
             "tests/_helpers/rename-fixtures.ts"
           ],
-          "path": "tests/rename/textual.test.ts"
+          "path": "tests/rename/textual.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "cc782c3c9e3e88337314efafde383c4c8809e20ebf6c111aa707d9511c1cfdec",
@@ -2264,14 +3104,16 @@
             "tests/_helpers/octokit.ts",
             "tests/_helpers/rename-fixtures.ts"
           ],
-          "path": "tests/rename/tools.test.ts"
+          "path": "tests/rename/tools.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5166d88293a88170d53a430231af94f28370eda5f08b50b2e3d4d76abdc65251",
           "importsFiles": [
             "src/lib/rename/variants.ts"
           ],
-          "path": "tests/rename/variants.test.ts"
+          "path": "tests/rename/variants.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7aed4ff355466ddefd0950c0a79b8c1686d882950094861cd06d57ba6c08048e",
@@ -2287,14 +3129,16 @@
             "src/tools/scan-drift.ts",
             "tests/_helpers/bootstrap-octokit.ts"
           ],
-          "path": "tests/scan-drift.test.ts"
+          "path": "tests/scan-drift.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "18e4423ad1eb9eeea8c535ec8654b7bdfea2b8295ce6895b2f797d155d0e0d6e",
           "importsFiles": [
             "src/schemas/common.ts"
           ],
-          "path": "tests/schemas.test.ts"
+          "path": "tests/schemas.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8459a82ddd74067b1e98d59d66286fd06136444124aaf398b31e39169ca9d036",
@@ -2302,14 +3146,16 @@
             "src/lib/snapshot.ts",
             "tests/_helpers/octokit.ts"
           ],
-          "path": "tests/snapshot.test.ts"
+          "path": "tests/snapshot.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "fe6f5f8937b0b3653a7ffe8b4fab9df71c1ea99139d99671eeebbac9236e8f4f",
           "importsFiles": [
             "src/lib/state.ts"
           ],
-          "path": "tests/state.test.ts"
+          "path": "tests/state.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "698b61f9acb62627e3089d51919836b16161e318b04e248bb149b40c754708ae",
@@ -2325,7 +3171,8 @@
             "src/tools/sync.ts",
             "tests/_helpers/sync-octokit.ts"
           ],
-          "path": "tests/sync.test.ts"
+          "path": "tests/sync.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -2335,6 +3182,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -2793,6 +3643,18 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 50,
+          "job": "verify",
+          "runner": "vitest",
+          "step": "Run test suite",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -2992,12 +3854,24 @@
       "mentions": [],
       "name": "forkctl",
       "permissions": [],
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
           "boundary": "src",
           "depth": 0,
           "files": 65
+        },
+        {
+          "boundary": "tests",
+          "depth": 4,
+          "enters": {
+            "file": "tests/assess.test.ts",
+            "from": "src/lib/rename/post.ts"
+          },
+          "files": 60
         }
       ],
       "readers": [],
@@ -3035,12 +3909,24 @@
       "mentions": [],
       "name": "forkctl-mcp",
       "permissions": [],
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
           "boundary": "src",
           "depth": 0,
-          "files": 64
+          "files": 65
+        },
+        {
+          "boundary": "tests",
+          "depth": 4,
+          "enters": {
+            "file": "tests/assess.test.ts",
+            "from": "src/lib/rename/post.ts"
+          },
+          "files": 60
         }
       ],
       "readers": [],
@@ -3071,13 +3957,18 @@
   ],
   "edges": [
     {
+      "from": "src",
+      "kind": "spawns",
+      "to": "tests"
+    },
+    {
       "from": "tests",
       "fromTests": true,
       "kind": "file",
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "72e9d2192606c42df73a34dff75e045f7cef28a7",
     "tracked": 169
@@ -3086,230 +3977,8 @@
     {
       "readers": [
         {
-          "by": "tests/_helpers/rename-fixtures.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/assess.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/drift.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/make-forkable.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/rename/textual.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/snapshot.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": ".env.example",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/_helpers/rename-fixtures.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/rename/identity.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": ".github/workflows/ci.yml",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/_helpers/rename-fixtures.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/rename/textual.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "CHANGELOG.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/_helpers/rename-fixtures.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/rename/identity.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "LICENSE",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/_helpers/rename-fixtures.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/_helpers/sync-octokit.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/drift.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/emit-handoff.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/rename/identity.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/rename/tools.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/scan-drift.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "README.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/assess.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/make-forkable.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/snapshot.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "SECURITY.md",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/_helpers/rename-fixtures.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/rename/identity.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/rename/post.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "package-lock.json",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
           "by": ".github/workflows/ci.yml",
           "confidence": "config"
-        },
-        {
-          "by": "tests/_helpers/rename-fixtures.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/rename/identity.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/rename/post.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/rename/tools.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/scan-drift.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
         }
       ],
       "target": "package.json",
@@ -3335,42 +4004,6 @@
         }
       ],
       "target": "site/src/content/docs/handbook",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/_helpers/rename-fixtures.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/rename/textual.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "site/src/pages/index.astro",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tests/_helpers/rename-fixtures.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        },
-        {
-          "by": "tests/rename/schemas.test.ts",
-          "call": "literal",
-          "confidence": "ast",
-          "fromTests": true
-        }
-      ],
-      "target": "src/index.ts",
       "writers": []
     },
     {

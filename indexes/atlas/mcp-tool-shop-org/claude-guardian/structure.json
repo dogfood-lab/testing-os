@@ -244,7 +244,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "ef8588bc1d304f6e999a066ec35ca02418159a24c7dbea015421b56cc5d887ba",
+          "hash": "8639aed4cd9fcf72da95098fad22cad89e9a443aab95313758512735dc66f2c9",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -360,6 +360,10 @@
         {
           "hash": "74cacc72155593495dcc8826e9a21a942df0b8ab5d34f0ff4a0c0a508ae10a4e",
           "path": "SHIP_GATE.md"
+        },
+        {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
         },
         {
           "hash": "2551146219038a0cea583bb0b96d8109d4c64d2f7492bb154e7f7a2fa6bf7f49",
@@ -488,7 +492,7 @@
     },
     {
       "dynamicReads": 3,
-      "dynamicSpawns": 1,
+      "dynamicSpawns": 6,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 1,
       "entryPoints": [
@@ -502,6 +506,33 @@
             "readBudget",
             "withBudgetLock",
             "writeBudget"
+          ],
+          "failurePaths": [
+            {
+              "in": "writeBudget",
+              "kind": "catch",
+              "line": 66
+            },
+            {
+              "in": "writeBudget",
+              "kind": "throw",
+              "line": 67
+            },
+            {
+              "in": "readBudget",
+              "kind": "catch",
+              "line": 80
+            },
+            {
+              "in": "readBudget",
+              "kind": "catch",
+              "line": 86
+            },
+            {
+              "in": "readBudget",
+              "kind": "catch",
+              "line": 91
+            }
           ],
           "hash": "56cf34464e711a4b49cfc7affff1c78d2ea3524e0eb717ba9e0810937be98f63",
           "importOrder": [
@@ -602,6 +633,13 @@
             "generateBundle",
             "validateOutputPath"
           ],
+          "failurePaths": [
+            {
+              "in": "validateOutputPath",
+              "kind": "throw",
+              "line": 98
+            }
+          ],
           "hash": "9a86adb982f236dd534e94b264d08fa1cbe1fc1dfddc8eb21ca94fb46d27d510",
           "importOrder": [
             "src/types.ts",
@@ -647,6 +685,68 @@
             "trimFileToLines",
             "writeJournalEntry"
           ],
+          "failurePaths": [
+            {
+              "in": "fileSize",
+              "kind": "catch",
+              "line": 14
+            },
+            {
+              "in": "dirSize",
+              "kind": "catch",
+              "line": 32
+            },
+            {
+              "in": "listFilesRecursive",
+              "kind": "catch",
+              "line": 51
+            },
+            {
+              "in": "listFilesWithStats",
+              "kind": "catch",
+              "line": 77
+            },
+            {
+              "in": "listFilesWithStats",
+              "kind": "catch",
+              "line": 82
+            },
+            {
+              "in": "getDiskFreeGB",
+              "kind": "catch",
+              "line": 117
+            },
+            {
+              "in": "getDiskFreeGB",
+              "kind": "catch",
+              "line": 129
+            },
+            {
+              "in": "getDiskFreeGB",
+              "kind": "catch",
+              "line": 143
+            },
+            {
+              "in": "tailFile",
+              "kind": "catch",
+              "line": 204
+            },
+            {
+              "in": "readJournal",
+              "kind": "catch",
+              "line": 240
+            },
+            {
+              "in": "readJournal",
+              "kind": "catch",
+              "line": 248
+            },
+            {
+              "in": "pathExists",
+              "kind": "catch",
+              "line": 263
+            }
+          ],
           "hash": "25624060ad35351c56392674b0a86b6ef09c0f28e28de3f1c4d7a9d720518ccf",
           "importOrder": [
             "src/types.ts",
@@ -663,12 +763,46 @@
             "getHandleCount",
             "getHandleCounts"
           ],
+          "failurePaths": [
+            {
+              "in": "getHandleCount",
+              "kind": "catch",
+              "line": 26
+            },
+            {
+              "in": "getHandleCountWindows",
+              "kind": "catch",
+              "line": 48
+            },
+            {
+              "in": "getHandleCountLinux",
+              "kind": "catch",
+              "line": 58
+            },
+            {
+              "in": "getHandleCountMacOS",
+              "kind": "catch",
+              "line": 70
+            }
+          ],
           "hash": "ea30dad8b2daf7222d87f3851c2de3533bbf1470b5842c225af76ce52f18dc25",
           "path": "src/handle-count.ts"
         },
         {
           "exports": [
             "readIncidentLog"
+          ],
+          "failurePaths": [
+            {
+              "in": "readIncidentLog",
+              "kind": "catch",
+              "line": 129
+            },
+            {
+              "in": "readIncidentLog",
+              "kind": "catch",
+              "line": 135
+            }
           ],
           "hash": "199e5c0a889adeb8c3733baccc4d9b8998e56bc059f09caa9adf66d84beaae9d",
           "importsFiles": [
@@ -685,6 +819,58 @@
             "formatPreflightReport",
             "healthBanner",
             "scanLogs"
+          ],
+          "failurePaths": [
+            {
+              "in": "scanLogs",
+              "kind": "catch",
+              "line": 49
+            },
+            {
+              "in": "scanLogs",
+              "kind": "catch",
+              "line": 88
+            },
+            {
+              "in": "scanLogs",
+              "kind": "catch",
+              "line": 97
+            },
+            {
+              "in": "fixLogs",
+              "kind": "catch",
+              "line": 176
+            },
+            {
+              "in": "fixLogs",
+              "kind": "catch",
+              "line": 205
+            },
+            {
+              "in": "fixLogs",
+              "kind": "catch",
+              "line": 221
+            },
+            {
+              "in": "fixLogs",
+              "kind": "catch",
+              "line": 249
+            },
+            {
+              "in": "cleanStaleSessions",
+              "kind": "catch",
+              "line": 365
+            },
+            {
+              "in": "cleanStaleSessions",
+              "kind": "catch",
+              "line": 406
+            },
+            {
+              "in": "cleanStaleSessions",
+              "kind": "catch",
+              "line": 435
+            }
           ],
           "hash": "a0e1451309ddd335cda286a07d374b75278ea8fdd6dfd9bb4b92e9197119f7f6",
           "importOrder": [
@@ -704,6 +890,63 @@
             "createMcpServer",
             "formatBanner",
             "startMcpServer"
+          ],
+          "failurePaths": [
+            {
+              "in": "createMcpServer",
+              "kind": "catch",
+              "line": 101
+            },
+            {
+              "in": "createMcpServer",
+              "kind": "catch",
+              "line": 129
+            },
+            {
+              "in": "createMcpServer",
+              "kind": "catch",
+              "line": 151
+            },
+            {
+              "in": "createMcpServer",
+              "kind": "catch",
+              "line": 222
+            },
+            {
+              "in": "createMcpServer",
+              "kind": "catch",
+              "line": 234
+            },
+            {
+              "in": "createMcpServer",
+              "kind": "catch",
+              "line": 273
+            },
+            {
+              "in": "createMcpServer",
+              "kind": "catch",
+              "line": 304
+            },
+            {
+              "in": "createMcpServer",
+              "kind": "catch",
+              "line": 335
+            },
+            {
+              "in": "createMcpServer",
+              "kind": "catch",
+              "line": 389
+            },
+            {
+              "in": "createMcpServer",
+              "kind": "catch",
+              "line": 429
+            },
+            {
+              "in": "createMcpServer",
+              "kind": "catch",
+              "line": 513
+            }
           ],
           "hash": "79fdda506a00d987a83b4093963d4344eac44a3fbebbbaf5edfe02970bb62577",
           "importOrder": [
@@ -750,6 +993,33 @@
             "findClaudeProcesses",
             "recommendActions"
           ],
+          "failurePaths": [
+            {
+              "in": "findClaudeProcesses",
+              "kind": "catch",
+              "line": 79
+            },
+            {
+              "in": "findClaudeProcesses",
+              "kind": "catch",
+              "line": 103
+            },
+            {
+              "in": "findClaudeProcesses",
+              "kind": "catch",
+              "line": 112
+            },
+            {
+              "in": "findClaudeProcesses",
+              "kind": "catch",
+              "line": 114
+            },
+            {
+              "in": "findClaudeProcesses",
+              "kind": "catch",
+              "line": 116
+            }
+          ],
           "hash": "b3d61b870054c40183bb0fb7f5bb4c6832bd7df224963757e5fb3c6f0cf47723",
           "importsFiles": [
             "src/defaults.ts",
@@ -761,6 +1031,28 @@
           "exports": [
             "classifyProject",
             "extractPort"
+          ],
+          "failurePaths": [
+            {
+              "in": "exists",
+              "kind": "catch",
+              "line": 36
+            },
+            {
+              "in": "readText",
+              "kind": "catch",
+              "line": 45
+            },
+            {
+              "in": "classifyProject",
+              "kind": "catch",
+              "line": 171
+            },
+            {
+              "in": "findCsprojFiles",
+              "kind": "catch",
+              "line": 239
+            }
           ],
           "hash": "9cef3787600d97c08365c56923de35b106fdbe7ba890ea6c77221ddcdc0b333d",
           "path": "src/project-classify.ts"
@@ -784,6 +1076,33 @@
             "readState",
             "withStateLock",
             "writeState"
+          ],
+          "failurePaths": [
+            {
+              "in": "writeState",
+              "kind": "catch",
+              "line": 100
+            },
+            {
+              "in": "writeState",
+              "kind": "throw",
+              "line": 101
+            },
+            {
+              "in": "readState",
+              "kind": "catch",
+              "line": 114
+            },
+            {
+              "in": "readState",
+              "kind": "catch",
+              "line": 120
+            },
+            {
+              "in": "readState",
+              "kind": "catch",
+              "line": 125
+            }
           ],
           "hash": "5554d6d08dc4fc6b780c5c20c51fed3208beb439221eb190ee328d53b4a4d111",
           "importOrder": [
@@ -811,6 +1130,18 @@
         {
           "exports": [
             "startWatchDaemon"
+          ],
+          "failurePaths": [
+            {
+              "in": "startWatchDaemon",
+              "kind": "catch",
+              "line": 119
+            },
+            {
+              "in": "startWatchDaemon",
+              "kind": "catch",
+              "line": 197
+            }
           ],
           "hash": "525e8984b25ae4e1953567cd6248632e7e2a95d56aadb72b7b9ff4ca9a056d21",
           "importOrder": [
@@ -843,6 +1174,18 @@
           "exports": [
             "formatHealthStatus"
           ],
+          "failurePaths": [
+            {
+              "in": "getHealth",
+              "kind": "catch",
+              "line": 90
+            },
+            {
+              "in": "captureBundle",
+              "kind": "catch",
+              "line": 234
+            }
+          ],
           "hash": "201ea3adc71bd5d40fb8be15b34de1f6c5d30b720fb282891bb28165adbc637e",
           "importOrder": [
             "src/types.ts",
@@ -860,6 +1203,9 @@
           ],
           "path": "src/watchdog.ts"
         }
+      ],
+      "frameworks": [
+        "mcp"
       ],
       "globs": [
         "src/**"
@@ -923,6 +1269,9 @@
       "outsideReads": 30,
       "outsideWrites": 17,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 16,
       "unresolvedNamed": [
         {
@@ -951,7 +1300,8 @@
             "src/budget-store.ts",
             "src/mcp-server.ts"
           ],
-          "path": "tests/budget-mcp.test.ts"
+          "path": "tests/budget-mcp.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8b66ca1d2e807b6a8d2419affa8e7086847e13a510c79ed7e5836acf03128c1b",
@@ -965,7 +1315,8 @@
             "src/budget.ts",
             "src/defaults.ts"
           ],
-          "path": "tests/budget.test.ts"
+          "path": "tests/budget.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b3f2f24bb78d7dac076e929a417cf26a016333fc4878ed41068318f57e83cdc6",
@@ -973,28 +1324,32 @@
             "src/doctor.ts",
             "src/types.ts"
           ],
-          "path": "tests/doctor.test.ts"
+          "path": "tests/doctor.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f03b73da0844d06c88265b367db2e315d9834c6c5402ce83ea46da77ecc44f21",
           "importsFiles": [
             "src/errors.ts"
           ],
-          "path": "tests/errors.test.ts"
+          "path": "tests/errors.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9a5eba285d2d0c5900daf9a07f65ebeb856094ee19444ce34d1ae880fc0c8777",
           "importsFiles": [
             "src/handle-count.ts"
           ],
-          "path": "tests/handle-count.test.ts"
+          "path": "tests/handle-count.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "45d50b3feb6ebf14031a4a50e96e533be6e23c852da1555faf2b5629d703cdae",
           "importsFiles": [
             "src/incident.ts"
           ],
-          "path": "tests/incident.test.ts"
+          "path": "tests/incident.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "489b30db0b591cd20cac105c2a5e3d900d7d3903a5c176b8af77fa9c5c400ca6",
@@ -1008,7 +1363,8 @@
             "src/log-manager.ts",
             "src/types.ts"
           ],
-          "path": "tests/log-manager.test.ts"
+          "path": "tests/log-manager.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "acccdb5415188d9a81dca2290813953fb462ee69da2757601a7f053b12df60ce",
@@ -1016,35 +1372,40 @@
             "src/mcp-server.ts",
             "src/state.ts"
           ],
-          "path": "tests/mcp-server.test.ts"
+          "path": "tests/mcp-server.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c0ea76fc02beb1284c0c7191c20ce4feafd1559f9c27c980360389a6d860fcdc",
           "importsFiles": [
             "src/mcp-server.ts"
           ],
-          "path": "tests/nudge.test.ts"
+          "path": "tests/nudge.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b152ac09ac8cb12818993e38f1966d0fce341c0fc09ee511cba48e547458f1ca",
           "importsFiles": [
             "src/port-probe.ts"
           ],
-          "path": "tests/port-probe.test.ts"
+          "path": "tests/port-probe.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b1863749ecf771d15d23b40cb93ecfa44ae29a4bdb4c5f3817cbf4624c80febc",
           "importsFiles": [
             "src/process-monitor.ts"
           ],
-          "path": "tests/process-monitor.test.ts"
+          "path": "tests/process-monitor.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6124eb3be9d4f3fd16e6bcb284b344c3d049bfbce5bc6e0b0f2209ad2bc977c9",
           "importsFiles": [
             "src/project-classify.ts"
           ],
-          "path": "tests/project-classify.test.ts"
+          "path": "tests/project-classify.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "483630907701bad9db34fff4e1deca806ec61c53d22027eb13074effe7e43778",
@@ -1052,14 +1413,16 @@
             "src/recovery-plan.ts",
             "src/state.ts"
           ],
-          "path": "tests/recovery-plan.test.ts"
+          "path": "tests/recovery-plan.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a33ac9994f173065cd7a4c1c172d71470e3fc492acb9057c6ccf27c33d6a7a2c",
           "importsFiles": [
             "src/state.ts"
           ],
-          "path": "tests/state.test.ts"
+          "path": "tests/state.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e63639bfe606c1d3283e4952a60bb21dfd697b95d6c3a661e51f7478e0978213",
@@ -1077,7 +1440,8 @@
             "src/incident.ts",
             "src/process-monitor.ts"
           ],
-          "path": "tests/watch-daemon.test.ts"
+          "path": "tests/watch-daemon.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c50c51071d0846ba95d164296adc7d925b7540b0dc056d68d577bbf5a9c73d5d",
@@ -1091,7 +1455,8 @@
             "src/types.ts",
             "src/watchdog.ts"
           ],
-          "path": "tests/watchdog.test.ts"
+          "path": "tests/watchdog.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -1101,6 +1466,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -1150,7 +1518,10 @@
       "landings": [],
       "mentions": [],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -1185,9 +1556,7 @@
         }
       ],
       "runsCount": 2,
-      "secrets": [
-        "CODECOV_TOKEN"
-      ],
+      "secrets": [],
       "sends": {
         "deploysPages": false,
         "dispatchesTo": [],
@@ -1199,12 +1568,27 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "coverage": true,
+          "files": 16,
+          "job": "build",
+          "junit": true,
+          "runner": "vitest",
+          "step": "5",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "site/astro.config.mjs",
@@ -1223,6 +1607,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "site/astro.config.mjs",
@@ -1239,7 +1624,9 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
+        "actions/upload-artifact",
         "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
@@ -1644,6 +2031,19 @@
         "releases": true
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 16,
+          "job": "release",
+          "runner": "vitest",
+          "step": "Verify (repo's own contract — test + build + pack shape)",
+          "through": [
+            "npm run verify",
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -1712,10 +2112,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
-    "commit": "65dce696cf1d1022aa3a5309fe8561db6c7303c3",
-    "tracked": 130
+    "commit": "b484cb2778b43f25a9541f0f1333947b5bec42e1",
+    "tracked": 131
   },
   "landings": [
     {

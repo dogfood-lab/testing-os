@@ -1,6 +1,7 @@
 {
   "authored": [
-    ".github/"
+    ".github/",
+    "root"
   ],
   "breaks": [
     {
@@ -24,7 +25,7 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "changed": 130,
       "moved": 0,
       "parts": 7,
@@ -41,14 +42,14 @@
       },
       {
         "kind": "door",
-        "sentence": "CI's pull request trigger now also names `atlas/**`.",
+        "sentence": "CI's pull request trigger now also names `atlas/**` and `codecov.yml`.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
       },
       {
         "kind": "door",
-        "sentence": "CI's push trigger now also names `atlas/**`.",
+        "sentence": "CI's push trigger now also names `atlas/**` and `codecov.yml`.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
@@ -71,7 +72,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "130 files changed content, across 7 parts.",
+        "sentence": "1 file added and 130 changed content, across 7 parts.",
         "subjects": []
       }
     ],
@@ -86,7 +87,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "65dce696cf1d1022aa3a5309fe8561db6c7303c3",
+  "commit": "b484cb2778b43f25a9541f0f1333947b5bec42e1",
   "defaultBranch": "main",
   "derived": "7 parts, mostly Markdown (75 files); code in TypeScript (38), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run claude-guardian.",
   "doors": [
@@ -124,8 +125,8 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 10 paths",
-        "on a push to main touching 10 paths",
+        "on a pull request touching 11 paths",
+        "on a push to main touching 11 paths",
         "or by hand"
       ]
     },
@@ -279,7 +280,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [
     {
       "addedBy": "dependabot[bot]",
@@ -289,11 +290,6 @@
     {
       "addedBy": "dependabot[bot]",
       "place": "docs/",
-      "writers": []
-    },
-    {
-      "addedBy": "dependabot[bot]",
-      "place": "root",
       "writers": []
     },
     {
@@ -312,7 +308,7 @@
       "writers": []
     }
   ],
-  "generatedAt": "2026-09-26T14:41:10.750Z",
+  "generatedAt": "2026-09-28T13:15:06.261Z",
   "limits": [
     "1 import could not be resolved: `src/mcp-server.ts` imports `zod`, which is not declared.",
     "1 write and 3 reads use paths built at run time and are not named here.",
@@ -320,7 +316,7 @@
     "2 writes and 9 reads go to a path their caller passes, not to this repository.",
     "1 write and 3 reads go to the home directory (.claude-guardian/ and .claude/) or a path their caller passes, not to this repository.",
     "1 read goes to the directory the command is run in (package.json), not to this repository.",
-    "1 command is built at run time and not followed.",
+    "6 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",

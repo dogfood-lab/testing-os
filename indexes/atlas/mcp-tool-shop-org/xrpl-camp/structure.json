@@ -316,12 +316,24 @@
             "strip_ansi"
           ],
           "hash": "86ccdf855a2ea4d6b05983d8dca2c9ee4b26ca07eee2d773d4a21f31327c6b26",
+          "importOrder": [
+            "tests/helpers.py",
+            "xrpl_camp/__init__.py",
+            "xrpl_camp/errors.py",
+            "xrpl_camp/lessons.py",
+            "xrpl_camp/wallet.py",
+            "xrpl_camp/models.py"
+          ],
           "importsFiles": [
             "tests/helpers.py",
             "xrpl_camp/__init__.py",
-            "xrpl_camp/models.py"
+            "xrpl_camp/errors.py",
+            "xrpl_camp/lessons.py",
+            "xrpl_camp/models.py",
+            "xrpl_camp/wallet.py"
           ],
-          "path": "tests/conftest.py"
+          "path": "tests/conftest.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "a1fb9170d18d2d221995de160de795440109fcb4a43ec0abeb24414c0f8a5cf4",
@@ -446,13 +458,25 @@
             "test_wallet_show_without_a_wallet_is_a_user_error"
           ],
           "hash": "6cfebeedad4e6f781bad4821db0cc1ccc98c9b28aa434d0c7b9414300fafd02e",
+          "importOrder": [
+            "tests/helpers.py",
+            "xrpl_camp/__init__.py",
+            "xrpl_camp/transport.py",
+            "xrpl_camp/cli.py",
+            "xrpl_camp/models.py"
+          ],
           "importsFiles": [
             "tests/helpers.py",
             "xrpl_camp/__init__.py",
             "xrpl_camp/cli.py",
-            "xrpl_camp/models.py"
+            "xrpl_camp/models.py",
+            "xrpl_camp/transport.py"
           ],
-          "path": "tests/test_cli_behaviour.py"
+          "path": "tests/test_cli_behaviour.py",
+          "spawns": [
+            "xrpl_camp/__main__.py"
+          ],
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -474,7 +498,8 @@
             "xrpl_camp/models.py",
             "xrpl_camp/wallet.py"
           ],
-          "path": "tests/test_dry_run.py"
+          "path": "tests/test_dry_run.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -508,12 +533,22 @@
             "working_network"
           ],
           "hash": "750dd9f345546be52ac3c27a9baabe99507a93ed17e2a96449134b5e6c4f754c",
+          "importOrder": [
+            "tests/helpers.py",
+            "xrpl_camp/__init__.py",
+            "xrpl_camp/lessons.py",
+            "xrpl_camp/transport.py",
+            "xrpl_camp/models.py"
+          ],
           "importsFiles": [
             "tests/helpers.py",
             "xrpl_camp/__init__.py",
-            "xrpl_camp/models.py"
+            "xrpl_camp/lessons.py",
+            "xrpl_camp/models.py",
+            "xrpl_camp/transport.py"
           ],
-          "path": "tests/test_failure_gate.py"
+          "path": "tests/test_failure_gate.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -599,12 +634,24 @@
             "test_pause_survives_a_tty_that_reaches_eof"
           ],
           "hash": "e94af3b44448a4850c9a2e0fcccd12a6a2b15c0dcf95775789afcbc5a8621b17",
+          "importOrder": [
+            "tests/helpers.py",
+            "xrpl_camp/__init__.py",
+            "xrpl_camp/lessons.py",
+            "xrpl_camp/transport.py",
+            "xrpl_camp/wallet.py",
+            "xrpl_camp/models.py"
+          ],
           "importsFiles": [
             "tests/helpers.py",
             "xrpl_camp/__init__.py",
-            "xrpl_camp/models.py"
+            "xrpl_camp/lessons.py",
+            "xrpl_camp/models.py",
+            "xrpl_camp/transport.py",
+            "xrpl_camp/wallet.py"
           ],
-          "path": "tests/test_lessons.py"
+          "path": "tests/test_lessons.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -617,12 +664,24 @@
             "test_the_reserve_base_is_read_from_the_network_not_hardcoded"
           ],
           "hash": "4bc6229e9c0efa7d745cb76c185edf3b30bb0963269224bf25c0b8c03439af53",
+          "importOrder": [
+            "tests/helpers.py",
+            "xrpl_camp/__init__.py",
+            "xrpl_camp/lessons.py",
+            "xrpl_camp/transport.py",
+            "xrpl_camp/wallet.py",
+            "xrpl_camp/models.py"
+          ],
           "importsFiles": [
             "tests/helpers.py",
             "xrpl_camp/__init__.py",
-            "xrpl_camp/models.py"
+            "xrpl_camp/lessons.py",
+            "xrpl_camp/models.py",
+            "xrpl_camp/transport.py",
+            "xrpl_camp/wallet.py"
           ],
-          "path": "tests/test_live_testnet.py"
+          "path": "tests/test_live_testnet.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -699,7 +758,8 @@
             "xrpl_camp/models.py",
             "xrpl_camp/proof_pack.py"
           ],
-          "path": "tests/test_seed_guard.py"
+          "path": "tests/test_seed_guard.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -721,11 +781,18 @@
             "test_xrpl_camp_home_overrides_the_location"
           ],
           "hash": "ffcc35ca45f85c9630cab48c99c464bf02633731f9ad0a219c1fae1571da9183",
-          "importsFiles": [
+          "importOrder": [
             "xrpl_camp/__init__.py",
+            "xrpl_camp/wallet.py",
             "xrpl_camp/models.py"
           ],
-          "path": "tests/test_state_hygiene.py"
+          "importsFiles": [
+            "xrpl_camp/__init__.py",
+            "xrpl_camp/models.py",
+            "xrpl_camp/wallet.py"
+          ],
+          "path": "tests/test_state_hygiene.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -806,9 +873,11 @@
           "hash": "920577524532f8c065cc2b485caa7c5e8ce83411ee8d643f89a42c62633a2415",
           "importsFiles": [
             "tests/helpers.py",
-            "xrpl_camp/__init__.py"
+            "xrpl_camp/__init__.py",
+            "xrpl_camp/transport.py"
           ],
-          "path": "tests/test_transport_contract.py"
+          "path": "tests/test_transport_contract.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -827,7 +896,11 @@
           "importsFiles": [
             "xrpl_camp/__init__.py"
           ],
-          "path": "tests/test_version.py"
+          "names": [
+            "bin/xrpl-camp.js"
+          ],
+          "path": "tests/test_version.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -866,9 +939,11 @@
           ],
           "hash": "857505f443592994ad8392bb3ba5013ab35bc9814e7066e87161539005540637",
           "importsFiles": [
-            "xrpl_camp/__init__.py"
+            "xrpl_camp/__init__.py",
+            "xrpl_camp/transport.py"
           ],
-          "path": "tests/test_xrpl_models.py"
+          "path": "tests/test_xrpl_models.py",
+          "testFramework": "pytest"
         }
       ],
       "globs": [
@@ -878,6 +953,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     },
@@ -897,6 +975,18 @@
           "exports": [
             "configure_console_encoding"
           ],
+          "failurePaths": [
+            {
+              "in": "_reconfigure",
+              "kind": "except",
+              "line": 39
+            },
+            {
+              "in": "_rewrap_utf8",
+              "kind": "except",
+              "line": 53
+            }
+          ],
           "hash": "0f1181ea4e7218168e397b6a7fb73e9d0a60995501fdbf4fdc478e6517b56420",
           "path": "xrpl_camp/__init__.py",
           "sequences": []
@@ -915,6 +1005,63 @@
             "render_certificate_text",
             "save_certificate",
             "share_text"
+          ],
+          "failurePaths": [
+            {
+              "in": "_looks_like_xrpl_seed",
+              "kind": "except",
+              "line": 146
+            },
+            {
+              "in": "_write_through_tempfile",
+              "kind": "except",
+              "line": 237
+            },
+            {
+              "in": "_write_through_tempfile",
+              "kind": "raise",
+              "line": 239
+            },
+            {
+              "in": "_write_artifact",
+              "kind": "raise",
+              "line": 276
+            },
+            {
+              "in": "_write_artifact",
+              "kind": "except",
+              "line": 283
+            },
+            {
+              "in": "_write_artifact",
+              "kind": "except",
+              "line": 294
+            },
+            {
+              "in": "_write_artifact",
+              "kind": "raise",
+              "line": 296
+            },
+            {
+              "in": "_write_artifact",
+              "kind": "except",
+              "line": 297
+            },
+            {
+              "in": "_write_artifact",
+              "kind": "raise",
+              "line": 307
+            },
+            {
+              "in": "save_certificate",
+              "kind": "raise",
+              "line": 372
+            },
+            {
+              "in": "_format_duration",
+              "kind": "except",
+              "line": 417
+            }
           ],
           "hash": "dd4b3221c2f467fe6ac707cd335897640bd0f2a586f8b8011fd9f22e715bd9b0",
           "importsFiles": [
@@ -944,6 +1091,288 @@
             "verify",
             "wallet_cmd"
           ],
+          "failurePaths": [
+            {
+              "in": "_read_session",
+              "kind": "except",
+              "line": 93
+            },
+            {
+              "in": "_read_session",
+              "kind": "raise",
+              "line": 94
+            },
+            {
+              "in": "_get_session",
+              "kind": "except",
+              "line": 101
+            },
+            {
+              "in": "_get_session",
+              "kind": "raise",
+              "line": 102
+            },
+            {
+              "in": "_read_wallet",
+              "kind": "except",
+              "line": 109
+            },
+            {
+              "in": "_read_wallet",
+              "kind": "raise",
+              "line": 110
+            },
+            {
+              "in": "_read_mailbox_address",
+              "kind": "except",
+              "line": 122
+            },
+            {
+              "in": "_redact",
+              "kind": "except",
+              "line": 145
+            },
+            {
+              "in": "_tool_version",
+              "kind": "except",
+              "line": 175
+            },
+            {
+              "in": "_version_callback",
+              "kind": "raise",
+              "line": 183
+            },
+            {
+              "in": "start",
+              "kind": "raise",
+              "line": 239
+            },
+            {
+              "in": "_print_status_json",
+              "kind": "except",
+              "line": 324
+            },
+            {
+              "in": "_ago",
+              "kind": "except",
+              "line": 367
+            },
+            {
+              "in": "_live_balance",
+              "kind": "except",
+              "line": 419
+            },
+            {
+              "in": "wallet_cmd",
+              "kind": "raise",
+              "line": 552
+            },
+            {
+              "in": "wallet_cmd",
+              "kind": "raise",
+              "line": 557
+            },
+            {
+              "in": "wallet_cmd",
+              "kind": "raise",
+              "line": 565
+            },
+            {
+              "in": "fund",
+              "kind": "raise",
+              "line": 592
+            },
+            {
+              "in": "send",
+              "kind": "raise",
+              "line": 623
+            },
+            {
+              "in": "read_cmd",
+              "kind": "raise",
+              "line": 652
+            },
+            {
+              "in": "try_cmd",
+              "kind": "raise",
+              "line": 689
+            },
+            {
+              "in": "verify",
+              "kind": "raise",
+              "line": 721
+            },
+            {
+              "in": "certificate",
+              "kind": "raise",
+              "line": 769
+            },
+            {
+              "in": "certificate",
+              "kind": "raise",
+              "line": 778
+            },
+            {
+              "in": "proof_verify",
+              "kind": "raise",
+              "line": 831
+            },
+            {
+              "in": "proof_verify",
+              "kind": "raise",
+              "line": 846
+            },
+            {
+              "in": "proof_verify",
+              "kind": "except",
+              "line": 855
+            },
+            {
+              "in": "proof_verify",
+              "kind": "raise",
+              "line": 856
+            },
+            {
+              "in": "proof_verify",
+              "kind": "raise",
+              "line": 863
+            },
+            {
+              "in": "proof_verify",
+              "kind": "raise",
+              "line": 869
+            },
+            {
+              "in": "proof_verify",
+              "kind": "raise",
+              "line": 907
+            },
+            {
+              "in": "proof_verify",
+              "kind": "raise",
+              "line": 910
+            },
+            {
+              "in": "_verify_folder",
+              "kind": "except",
+              "line": 1046
+            },
+            {
+              "in": "reset",
+              "kind": "except",
+              "line": 1119
+            },
+            {
+              "in": "reset",
+              "kind": "raise",
+              "line": 1120
+            },
+            {
+              "in": "reset",
+              "kind": "except",
+              "line": 1143
+            },
+            {
+              "in": "reset",
+              "kind": "except",
+              "line": 1147
+            },
+            {
+              "in": "reset",
+              "kind": "raise",
+              "line": 1153
+            },
+            {
+              "in": "_dependency_version",
+              "kind": "except",
+              "line": 1178
+            },
+            {
+              "in": "_tcp_probe",
+              "kind": "except",
+              "line": 1223
+            },
+            {
+              "in": "_collect_network_checks",
+              "kind": "except",
+              "line": 1260
+            },
+            {
+              "in": "_collect_checks",
+              "kind": "except",
+              "line": 1307
+            },
+            {
+              "in": "_collect_checks",
+              "kind": "except",
+              "line": 1316
+            },
+            {
+              "in": "_collect_checks",
+              "kind": "except",
+              "line": 1330
+            },
+            {
+              "in": "_collect_checks",
+              "kind": "except",
+              "line": 1342
+            },
+            {
+              "in": "_diagnostics",
+              "kind": "except",
+              "line": 1387
+            },
+            {
+              "in": "self_check",
+              "kind": "raise",
+              "line": 1408
+            },
+            {
+              "in": "self_check",
+              "kind": "raise",
+              "line": 1427
+            },
+            {
+              "in": "support_bundle",
+              "kind": "except",
+              "line": 1520
+            },
+            {
+              "in": "support_bundle",
+              "kind": "except",
+              "line": 1526
+            },
+            {
+              "in": "support_bundle",
+              "kind": "except",
+              "line": 1538
+            },
+            {
+              "in": "support_bundle",
+              "kind": "raise",
+              "line": 1539
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 1572
+            },
+            {
+              "in": "run",
+              "kind": "raise",
+              "line": 1574
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 1575
+            },
+            {
+              "in": "run",
+              "kind": "raise",
+              "line": 1585
+            }
+          ],
           "hash": "85efc7b906eb886a8bd6f7ca3de2387e5d372cc8d30e88b42573522f65e7ff0c",
           "importsFiles": [
             "xrpl_camp/__init__.py",
@@ -951,7 +1380,9 @@
             "xrpl_camp/errors.py",
             "xrpl_camp/lessons.py",
             "xrpl_camp/models.py",
-            "xrpl_camp/proof_pack.py"
+            "xrpl_camp/proof_pack.py",
+            "xrpl_camp/transport.py",
+            "xrpl_camp/wallet.py"
           ],
           "path": "xrpl_camp/cli.py",
           "sequences": [
@@ -3044,9 +3475,32 @@
             "write_error",
             "wrong_network_error"
           ],
+          "failurePaths": [
+            {
+              "in": "_error_log_path",
+              "kind": "except",
+              "line": 671
+            },
+            {
+              "in": "record_error",
+              "kind": "except",
+              "line": 699
+            },
+            {
+              "in": "record_error",
+              "kind": "except",
+              "line": 704
+            },
+            {
+              "in": "read_error_history",
+              "kind": "except",
+              "line": 715
+            }
+          ],
           "hash": "8506cdb2a12355fa0a18285eff1ad50660249cddebbee1cfb87507493087ae29",
           "importsFiles": [
-            "xrpl_camp/__init__.py"
+            "xrpl_camp/__init__.py",
+            "xrpl_camp/models.py"
           ],
           "path": "xrpl_camp/errors.py"
         },
@@ -3075,13 +3529,212 @@
             "try_network",
             "validate_memo"
           ],
+          "failurePaths": [
+            {
+              "in": "is_interactive",
+              "kind": "except",
+              "line": 238
+            },
+            {
+              "in": "is_interactive",
+              "kind": "except",
+              "line": 245
+            },
+            {
+              "in": "_windows_has_console",
+              "kind": "except",
+              "line": 276
+            },
+            {
+              "in": "_pause",
+              "kind": "except",
+              "line": 286
+            },
+            {
+              "in": "_reserve_facts",
+              "kind": "except",
+              "line": 374
+            },
+            {
+              "in": "_reserve_facts",
+              "kind": "except",
+              "line": 381
+            },
+            {
+              "in": "_retry_attempts",
+              "kind": "except",
+              "line": 439
+            },
+            {
+              "in": "try_network",
+              "kind": "raise",
+              "line": 546
+            },
+            {
+              "in": "try_network",
+              "kind": "except",
+              "line": 547
+            },
+            {
+              "in": "try_network",
+              "kind": "except",
+              "line": 549
+            },
+            {
+              "in": "check_endpoint",
+              "kind": "except",
+              "line": 722
+            },
+            {
+              "in": "check_endpoint",
+              "kind": "except",
+              "line": 724
+            },
+            {
+              "in": "_load_wallet",
+              "kind": "except",
+              "line": 746
+            },
+            {
+              "in": "_load_wallet",
+              "kind": "except",
+              "line": 753
+            },
+            {
+              "in": "_resolve_mailbox",
+              "kind": "except",
+              "line": 780
+            },
+            {
+              "in": "_existing_mailbox_seed",
+              "kind": "except",
+              "line": 792
+            },
+            {
+              "in": "is_valid_address",
+              "kind": "except",
+              "line": 808
+            },
+            {
+              "in": "is_valid_address",
+              "kind": "except",
+              "line": 812
+            },
+            {
+              "in": "_looks_like_a_seed",
+              "kind": "except",
+              "line": 860
+            },
+            {
+              "in": "_ask_memo",
+              "kind": "except",
+              "line": 914
+            },
+            {
+              "in": "_validated_ledger",
+              "kind": "except",
+              "line": 974
+            },
+            {
+              "in": "_ask_prediction",
+              "kind": "except",
+              "line": 991
+            },
+            {
+              "in": "lesson_2_create_wallet",
+              "kind": "except",
+              "line": 1091
+            },
+            {
+              "in": "lesson_2_create_wallet",
+              "kind": "except",
+              "line": 1094
+            },
+            {
+              "in": "lesson_3_fund_wallet",
+              "kind": "except",
+              "line": 1178
+            },
+            {
+              "in": "lesson_3_fund_wallet",
+              "kind": "except",
+              "line": 1182
+            },
+            {
+              "in": "lesson_4_send_payment",
+              "kind": "except",
+              "line": 1307
+            },
+            {
+              "in": "lesson_4_send_payment",
+              "kind": "except",
+              "line": 1309
+            },
+            {
+              "in": "lesson_4_send_payment",
+              "kind": "except",
+              "line": 1322
+            },
+            {
+              "in": "lesson_4_send_payment",
+              "kind": "except",
+              "line": 1387
+            },
+            {
+              "in": "_own_address",
+              "kind": "except",
+              "line": 1642
+            },
+            {
+              "in": "lesson_6_certificate",
+              "kind": "except",
+              "line": 1770
+            },
+            {
+              "in": "_need",
+              "kind": "raise",
+              "line": 1837
+            },
+            {
+              "in": "_try_self_payment",
+              "kind": "except",
+              "line": 2060
+            },
+            {
+              "in": "_try_missing_hash",
+              "kind": "except",
+              "line": 2141
+            },
+            {
+              "in": "run_try",
+              "kind": "except",
+              "line": 2221
+            },
+            {
+              "in": "run_try",
+              "kind": "except",
+              "line": 2224
+            },
+            {
+              "in": "_read_mailbox_or_self",
+              "kind": "except",
+              "line": 2253
+            },
+            {
+              "in": "_guided_flow",
+              "kind": "except",
+              "line": 2382
+            }
+          ],
           "hash": "d84284b364be7d526051a33b15f09f9e8bed5bc9458edc21b697b4ef8506ad16",
           "importsFiles": [
             "xrpl_camp/__init__.py",
             "xrpl_camp/certificate.py",
             "xrpl_camp/errors.py",
             "xrpl_camp/models.py",
-            "xrpl_camp/proof_pack.py"
+            "xrpl_camp/proof_pack.py",
+            "xrpl_camp/transport.py",
+            "xrpl_camp/wallet.py"
           ],
           "path": "xrpl_camp/lessons.py",
           "sequences": [
@@ -6397,6 +7050,133 @@
             "state_lock",
             "wallet_file"
           ],
+          "failurePaths": [
+            {
+              "in": "get_state_dir",
+              "kind": "except",
+              "line": 144
+            },
+            {
+              "in": "_user_chose_this_path",
+              "kind": "except",
+              "line": 218
+            },
+            {
+              "in": "_tighten_our_own_dir",
+              "kind": "except",
+              "line": 233
+            },
+            {
+              "in": "_tighten_our_own_dir",
+              "kind": "except",
+              "line": 239
+            },
+            {
+              "in": "_warn_if_world_readable",
+              "kind": "except",
+              "line": 265
+            },
+            {
+              "in": "ensure_state_dir",
+              "kind": "except",
+              "line": 303
+            },
+            {
+              "in": "atomic_write_text",
+              "kind": "except",
+              "line": 341
+            },
+            {
+              "in": "atomic_write_text",
+              "kind": "raise",
+              "line": 344
+            },
+            {
+              "in": "_lock_is_stale",
+              "kind": "except",
+              "line": 372
+            },
+            {
+              "in": "state_lock",
+              "kind": "except",
+              "line": 431
+            },
+            {
+              "in": "state_lock",
+              "kind": "except",
+              "line": 437
+            },
+            {
+              "in": "state_lock",
+              "kind": "raise",
+              "line": 443
+            },
+            {
+              "in": "state_lock",
+              "kind": "except",
+              "line": 451
+            },
+            {
+              "in": "_as_int",
+              "kind": "except",
+              "line": 535
+            },
+            {
+              "in": "_as_float",
+              "kind": "except",
+              "line": 542
+            },
+            {
+              "in": "_merge_from_disk",
+              "kind": "except",
+              "line": 937
+            },
+            {
+              "in": "wallet_disagreement",
+              "kind": "except",
+              "line": 998
+            },
+            {
+              "in": "load",
+              "kind": "except",
+              "line": 1019
+            },
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 1020
+            },
+            {
+              "in": "load",
+              "kind": "except",
+              "line": 1023
+            },
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 1024
+            },
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 1027
+            },
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 1035
+            },
+            {
+              "in": "load",
+              "kind": "except",
+              "line": 1062
+            },
+            {
+              "in": "load",
+              "kind": "except",
+              "line": 1075
+            }
+          ],
           "hash": "500fd934dbf794ef5e061bd65f0a53f8cec60887818c8bbef912578423f2b37e",
           "importsFiles": [
             "xrpl_camp/errors.py"
@@ -6629,6 +7409,58 @@
             "summarize_online",
             "verify_proof_pack"
           ],
+          "failurePaths": [
+            {
+              "in": "_tool_version",
+              "kind": "except",
+              "line": 120
+            },
+            {
+              "in": "generate_proof_pack",
+              "kind": "except",
+              "line": 274
+            },
+            {
+              "in": "generate_proof_pack",
+              "kind": "raise",
+              "line": 275
+            },
+            {
+              "in": "save_proof_pack",
+              "kind": "raise",
+              "line": 294
+            },
+            {
+              "in": "verify_proof_pack",
+              "kind": "except",
+              "line": 339
+            },
+            {
+              "in": "online_lookup_plan",
+              "kind": "except",
+              "line": 578
+            },
+            {
+              "in": "classify_lesson_online",
+              "kind": "except",
+              "line": 732
+            },
+            {
+              "in": "classify_lesson_online",
+              "kind": "except",
+              "line": 787
+            },
+            {
+              "in": "apply_attestation_warnings",
+              "kind": "except",
+              "line": 949
+            },
+            {
+              "in": "apply_attestation_warnings",
+              "kind": "raise",
+              "line": 950
+            }
+          ],
           "hash": "23283de1a3dc61341a1c344626a7a91a4ae1b352640da3812b7f7f5b4ec48350",
           "importsFiles": [
             "xrpl_camp/__init__.py",
@@ -6756,6 +7588,401 @@
             "simulate_tx",
             "try_lesson"
           ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 184
+            },
+            {
+              "kind": "except",
+              "line": 191
+            },
+            {
+              "in": "is_valid_address",
+              "kind": "except",
+              "line": 577
+            },
+            {
+              "in": "_status_code",
+              "kind": "except",
+              "line": 619
+            },
+            {
+              "in": "_retry_after",
+              "kind": "except",
+              "line": 630
+            },
+            {
+              "in": "_retry_after",
+              "kind": "except",
+              "line": 634
+            },
+            {
+              "in": "_with_retries",
+              "kind": "except",
+              "line": 764
+            },
+            {
+              "in": "_with_retries",
+              "kind": "except",
+              "line": 767
+            },
+            {
+              "in": "_with_retries",
+              "kind": "raise",
+              "line": 769
+            },
+            {
+              "in": "_with_retries",
+              "kind": "except",
+              "line": 781
+            },
+            {
+              "in": "_with_retries",
+              "kind": "raise",
+              "line": 786
+            },
+            {
+              "in": "_from_hex",
+              "kind": "except",
+              "line": 815
+            },
+            {
+              "in": "_wallet_from_seed",
+              "kind": "except",
+              "line": 882
+            },
+            {
+              "in": "_wallet_from_seed",
+              "kind": "raise",
+              "line": 883
+            },
+            {
+              "in": "_server_state",
+              "kind": "except",
+              "line": 909
+            },
+            {
+              "in": "_int_or_none",
+              "kind": "except",
+              "line": 926
+            },
+            {
+              "in": "get_reserve_detail",
+              "kind": "except",
+              "line": 948
+            },
+            {
+              "in": "get_reserve_detail",
+              "kind": "except",
+              "line": 958
+            },
+            {
+              "in": "assert_safe_network",
+              "kind": "raise",
+              "line": 1033
+            },
+            {
+              "in": "assert_safe_network",
+              "kind": "raise",
+              "line": 1040
+            },
+            {
+              "in": "fund_wallet_detail",
+              "kind": "except",
+              "line": 1141
+            },
+            {
+              "in": "fund_wallet_detail",
+              "kind": "except",
+              "line": 1143
+            },
+            {
+              "in": "attempt",
+              "kind": "except",
+              "line": 1166
+            },
+            {
+              "in": "attempt",
+              "kind": "raise",
+              "line": 1171
+            },
+            {
+              "in": "fund_wallet_detail",
+              "kind": "except",
+              "line": 1180
+            },
+            {
+              "in": "get_account_summary",
+              "kind": "except",
+              "line": 1238
+            },
+            {
+              "in": "get_account_summary",
+              "kind": "raise",
+              "line": 1243
+            },
+            {
+              "in": "get_account_summary",
+              "kind": "raise",
+              "line": 1253
+            },
+            {
+              "in": "get_account_summary",
+              "kind": "raise",
+              "line": 1259
+            },
+            {
+              "in": "get_account_summary",
+              "kind": "except",
+              "line": 1267
+            },
+            {
+              "in": "get_account_summary",
+              "kind": "raise",
+              "line": 1268
+            },
+            {
+              "in": "account_exists",
+              "kind": "except",
+              "line": 1389
+            },
+            {
+              "in": "_resolve_after_lapse",
+              "kind": "except",
+              "line": 1522
+            },
+            {
+              "in": "_resolve_after_lapse",
+              "kind": "raise",
+              "line": 1523
+            },
+            {
+              "in": "_resolve_after_lapse",
+              "kind": "raise",
+              "line": 1540
+            },
+            {
+              "in": "_resolve_after_lapse",
+              "kind": "raise",
+              "line": 1542
+            },
+            {
+              "in": "send_memo_payment",
+              "kind": "raise",
+              "line": 1648
+            },
+            {
+              "in": "send_memo_payment",
+              "kind": "raise",
+              "line": 1654
+            },
+            {
+              "in": "send_memo_payment",
+              "kind": "raise",
+              "line": 1662
+            },
+            {
+              "in": "send_memo_payment",
+              "kind": "raise",
+              "line": 1669
+            },
+            {
+              "in": "send_memo_payment",
+              "kind": "raise",
+              "line": 1702
+            },
+            {
+              "in": "send_memo_payment",
+              "kind": "except",
+              "line": 1714
+            },
+            {
+              "in": "send_memo_payment",
+              "kind": "raise",
+              "line": 1722
+            },
+            {
+              "in": "send_memo_payment",
+              "kind": "except",
+              "line": 1759
+            },
+            {
+              "in": "send_memo_payment",
+              "kind": "except",
+              "line": 1768
+            },
+            {
+              "in": "send_memo_payment",
+              "kind": "raise",
+              "line": 1780
+            },
+            {
+              "in": "send_memo_payment",
+              "kind": "raise",
+              "line": 1787
+            },
+            {
+              "in": "send_memo_payment",
+              "kind": "raise",
+              "line": 1790
+            },
+            {
+              "in": "_fetch_tx",
+              "kind": "except",
+              "line": 1843
+            },
+            {
+              "in": "_fetch_tx",
+              "kind": "raise",
+              "line": 1846
+            },
+            {
+              "in": "lookup_tx",
+              "kind": "raise",
+              "line": 1921
+            },
+            {
+              "in": "lookup_tx",
+              "kind": "except",
+              "line": 1936
+            },
+            {
+              "in": "lookup_tx",
+              "kind": "except",
+              "line": 1958
+            },
+            {
+              "in": "lookup_tx",
+              "kind": "raise",
+              "line": 1959
+            },
+            {
+              "in": "simulate_tx",
+              "kind": "except",
+              "line": 2082
+            },
+            {
+              "in": "simulate_tx",
+              "kind": "raise",
+              "line": 2083
+            },
+            {
+              "in": "simulate_tx",
+              "kind": "raise",
+              "line": 2092
+            },
+            {
+              "in": "simulate_tx",
+              "kind": "except",
+              "line": 2105
+            },
+            {
+              "in": "simulate_tx",
+              "kind": "raise",
+              "line": 2110
+            },
+            {
+              "in": "simulate_tx",
+              "kind": "raise",
+              "line": 2115
+            },
+            {
+              "in": "simulate_tx",
+              "kind": "raise",
+              "line": 2123
+            },
+            {
+              "in": "account_transactions",
+              "kind": "raise",
+              "line": 2255
+            },
+            {
+              "in": "account_transactions",
+              "kind": "except",
+              "line": 2270
+            },
+            {
+              "in": "account_transactions",
+              "kind": "raise",
+              "line": 2275
+            },
+            {
+              "in": "account_transactions",
+              "kind": "raise",
+              "line": 2282
+            },
+            {
+              "in": "account_transactions",
+              "kind": "raise",
+              "line": 2289
+            },
+            {
+              "in": "account_transactions",
+              "kind": "raise",
+              "line": 2293
+            },
+            {
+              "in": "_try_bad_address",
+              "kind": "raise",
+              "line": 2401
+            },
+            {
+              "in": "_submit_signed",
+              "kind": "except",
+              "line": 2620
+            },
+            {
+              "in": "_submit_signed",
+              "kind": "except",
+              "line": 2626
+            },
+            {
+              "in": "_submit_signed",
+              "kind": "raise",
+              "line": 2629
+            },
+            {
+              "in": "_submit_signed",
+              "kind": "raise",
+              "line": 2635
+            },
+            {
+              "in": "account_nfts",
+              "kind": "raise",
+              "line": 2708
+            },
+            {
+              "in": "account_nfts",
+              "kind": "except",
+              "line": 2718
+            },
+            {
+              "in": "account_nfts",
+              "kind": "raise",
+              "line": 2719
+            },
+            {
+              "in": "account_nfts",
+              "kind": "raise",
+              "line": 2725
+            },
+            {
+              "in": "account_nfts",
+              "kind": "raise",
+              "line": 2729
+            },
+            {
+              "in": "mint_nft",
+              "kind": "raise",
+              "line": 2759
+            },
+            {
+              "in": "burn_nft",
+              "kind": "raise",
+              "line": 2789
+            }
+          ],
           "hash": "7a3fe0e7f34307448fa6a7c67386805ba4b6eab74a2040eb97ca486a28764964",
           "importsFiles": [
             "xrpl_camp/errors.py"
@@ -6774,6 +8001,53 @@
             "save_mailbox",
             "save_wallet",
             "wallet_exists"
+          ],
+          "failurePaths": [
+            {
+              "in": "_network_label",
+              "kind": "except",
+              "line": 93
+            },
+            {
+              "in": "_read_json_record",
+              "kind": "except",
+              "line": 113
+            },
+            {
+              "in": "_read_json_record",
+              "kind": "raise",
+              "line": 114
+            },
+            {
+              "in": "_read_json_record",
+              "kind": "except",
+              "line": 117
+            },
+            {
+              "in": "_read_json_record",
+              "kind": "raise",
+              "line": 118
+            },
+            {
+              "in": "_read_json_record",
+              "kind": "raise",
+              "line": 120
+            },
+            {
+              "in": "_read_json_record",
+              "kind": "raise",
+              "line": 125
+            },
+            {
+              "in": "_refuse_clobber",
+              "kind": "except",
+              "line": 161
+            },
+            {
+              "in": "_refuse_clobber",
+              "kind": "raise",
+              "line": 167
+            }
           ],
           "hash": "b35ff4c7fc54742e637284baf89fd591410bb6439cd06d40a6e0bde58efd97fe",
           "importsFiles": [
@@ -6809,6 +8083,9 @@
       "outsideReads": 9,
       "outsideWrites": 5,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 19,
       "unresolvedNamed": [
         {
@@ -6992,6 +8269,23 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "pyproject.toml",
+          "files": 21,
+          "job": "lint-and-test",
+          "runner": "pytest",
+          "step": "Verify (lint + test + build + smoke)",
+          "through": [
+            "scripts/verify.sh"
+          ]
+        },
+        {
+          "job": "npm-check",
+          "runner": null,
+          "step": "Launcher smoke test (real download + checksum + exec)"
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -7673,7 +8967,7 @@
         {
           "boundary": "xrpl_camp",
           "depth": 0,
-          "files": 8
+          "files": 9
         }
       ],
       "readers": [],
@@ -7709,7 +9003,7 @@
       "to": "xrpl_camp"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "8af7371876e940ba47b35af0bb39e9080d541074",
     "tracked": 85

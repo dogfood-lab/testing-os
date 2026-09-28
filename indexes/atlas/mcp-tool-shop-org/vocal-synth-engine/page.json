@@ -42,13 +42,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "changed": 203,
       "moved": 0,
       "parts": 9,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "origin",
         "sentence": "assets was generated and is now authored.",
@@ -58,7 +72,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "203 files changed content, across 9 parts.",
+        "sentence": "1 file added and 203 changed content, across 9 parts.",
         "subjects": []
       }
     ],
@@ -73,7 +87,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "a2738c5c9f7afded9611a358288c880beafa3477",
+  "commit": "984669a4ca1a385a79400795325604f03fb6dd20",
   "defaultBranch": "main",
   "derived": "10 parts, mostly TypeScript (99 files), JavaScript (3), Astro (2), CSS (2), shell (2), HTML (1) and Python (1). Work enters through 15 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run vocal-synth-engine-mcp, vse-analyze, vse-build-preset, vse-compare, vse-gen-vowel-wav, vse-inspect, vse-phonemize, vse-play-score, vse-resynth and vse-score-from-midi. People import @mcptoolshop/vocal-synth-engine.",
   "doors": [
@@ -128,11 +142,13 @@
       ],
       "runsCount": 18,
       "runsMore": 15,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request to main touching 10 paths",
-        "on a push to main touching 10 paths",
+        "on a pull request to main touching 11 paths",
+        "on a push to main touching 11 paths",
         "on a schedule (`0 6 * * 1`), Monday at 06:00 UTC",
         "or by hand"
       ]
@@ -589,7 +605,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [
     {
       "place": "ref/ah_sustain.wav",
@@ -605,13 +621,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-26T14:47:53.387Z",
+  "generatedAt": "2026-09-28T13:23:16.105Z",
   "limits": [
     "4 reads use paths built at run time and are not named here.",
     "28 writes and 33 reads go to the directory the command is run in (.vscockpit/, assets/, calib/ and 2 more places) or a path their caller passes, not to this repository.",
     "7 writes and 21 reads go to a path their caller passes, not to this repository.",
     "4 writes and 1 read go to the directory the command is run in, not to this repository.",
-    "1 command is built at run time and not followed, and it is in tests.",
     "cockpit calls src over HTTP at 11 routes, a link no import shows: the map draws it, and no door's reach follows it.",
     "scripts calls src over HTTP at 1 route, a link no import shows: the map draws it, and no door's reach follows it.",
     "There is a Dockerfile, a fly.toml and a render.yaml that no workflow runs; what deploys from them does so from outside this repository, and is not on this page.",

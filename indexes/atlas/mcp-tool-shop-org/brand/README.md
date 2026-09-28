@@ -1,28 +1,28 @@
 # brand: how it works
 
-Mapped at 2026-09-26 from commit 5657ed4 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 0c8dcb4 by Atlas 1.23.4.
 
 ## What this is
 
-11 parts, mostly images (253 files) and Markdown (60); code in TypeScript (40), JavaScript (8), Astro (2), CSS (2) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run brand.
+11 parts, mostly images (254 files) and Markdown (60); code in TypeScript (40), JavaScript (8), Astro (2), CSS (2) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run brand.
 
 ## What changed since 2026-09-23 (82d3e54)
 
-- CI's pull request trigger now also names `atlas/**`.
-- CI's push trigger now also names `atlas/**`.
+- CI's pull request trigger now also names `atlas/**` and `codecov.yml`.
+- CI's push trigger now also names `atlas/**` and `codecov.yml`.
 - CI now also runs src/cli.ts.
 - And 1 more change to a door.
 - README.ja.md is now read by tests/migrate.test.ts.
 - README.md is now also read by tests/audit.test.ts, tests/json-output.test.ts, tests/migrate-journal.test.ts and tests/migrate.test.ts.
 - README.zh.md is now read by tests/migrate.test.ts.
-- And 241 more new writers and readers of places.
+- And 242 more new writers and readers of places.
 - logos was generated and is now authored.
 - src/cli.ts now starts at `main`; it started at `withGlobals`.
-- 2 files added and 100 changed content, across 9 parts.
+- 4 files added and 100 changed content, across 9 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 16 paths; on a push touching 16 paths; or by hand. Runs scripts/check-audit-allowlist.mjs, src/cli.ts, tests/add-gallery.test.ts and 18 more; builds src/.
+1. **CI.** On a pull request touching 17 paths; on a push touching 17 paths; or by hand. Runs scripts/check-audit-allowlist.mjs, src/cli.ts, tests/add-gallery.test.ts and 18 more; builds src/.
 2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/add-gallery.test.ts, tests/add-model.test.ts, tests/audit.test.ts and 16 more; builds src/.
 3. **Deploy site to GitHub Pages.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs site/astro.config.mjs and site/src/; builds src/.
 4. **Sync org logos.** On a schedule (`0 6 * * *`); or by hand. Runs scripts/sync-org-logos.sh and src/cli.ts; builds src/.
@@ -33,6 +33,7 @@ Mapped at 2026-09-26 from commit 5657ed4 by Atlas 1.23.0.
 1. The workflow runs scripts/check-audit-allowlist.mjs in scripts, src/cli.ts in src, and 19 files in tests; it builds src/ in src.
 2. That reaches the site (1 file).
 3. It runs git.
+4. It uploads coverage to Codecov.
 
 ## Who reads the results
 

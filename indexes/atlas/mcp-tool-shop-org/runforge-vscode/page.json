@@ -40,13 +40,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "changed": 221,
       "moved": 0,
       "parts": 9,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "sequence",
         "sentence": "In src/extension.ts, `activate` lost a step, `isRunning`.",
@@ -75,7 +89,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "221 files changed content, across 9 parts.",
+        "sentence": "1 file added and 221 changed content, across 9 parts.",
         "subjects": []
       }
     ],
@@ -107,7 +121,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "da77f7a248e0f423f301ca3889d98de40845ee2f",
+  "commit": "c9c6406333bdc9b45df57da437115dce4aba0f2e",
   "defaultBranch": "main",
   "derived": "10 parts, mostly TypeScript (71 files), Python (45), JavaScript (3), CSS (2) and Astro (1). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. It deploys a site to GitHub Pages. People install the runforge extension.",
   "doors": [
@@ -185,8 +199,8 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request to main touching 12 paths",
-        "on a push to main touching 12 paths",
+        "on a pull request to main touching 13 paths",
+        "on a push to main touching 13 paths",
         "or by hand"
       ]
     },
@@ -341,13 +355,13 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [],
-  "generatedAt": "2026-09-26T14:45:45.277Z",
+  "generatedAt": "2026-09-28T13:20:50.266Z",
   "limits": [
     "1 write and 9 reads use paths built at run time and are not named here.",
     "21 writes and 31 reads go to a path their caller passes, not to this repository.",
-    "8 commands are built at run time and not followed, 5 of them in tests.",
+    "4 commands are built at run time and not followed, 2 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",

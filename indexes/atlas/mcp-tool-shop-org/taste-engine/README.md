@@ -1,6 +1,6 @@
 # taste-engine: how it works
 
-Mapped at 2026-09-26 from commit c87c284 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit c87c284 by Atlas 1.23.4.
 
 ## What this is
 
@@ -41,7 +41,7 @@ CI writes nothing this map can see.
 
 No two source files changed together often enough to name.
 
-Window: 180 days; a pair counts from 3 shared commits, since 1 source file reaches 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
 
 ## What no test touches
 
@@ -75,6 +75,6 @@ Read those in order to follow one pull request end to end.
 - 15 writes and 73 reads go to a path their caller passes, not to this repository.
 - 4 writes and 13 reads go to the directory the command is run in or a path their caller passes, not to this repository.
 - 1 command is built at run time and not followed.
-- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
+- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

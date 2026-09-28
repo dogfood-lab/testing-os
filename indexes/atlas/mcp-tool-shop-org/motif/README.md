@@ -1,6 +1,6 @@
 # motif: how it works
 
-Mapped at 2026-09-26 from commit 83531a1 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 2b08099 by Atlas 1.23.4.
 
 ## What this is
 
@@ -8,16 +8,16 @@ Mapped at 2026-09-26 from commit 83531a1 by Atlas 1.23.0.
 
 ## What changed since 2026-09-25 (bed8634)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - CI now also runs apps/studio/next.config.js, apps/studio/src/app/, apps/studio/test/asset-files.test.ts and 32 more.
-- CI now also builds packages/asset-index/src/, packages/audio-engine/src/, packages/automation/src/ and 13 more.
-- CI now also checks apps/studio/next-env.d.ts and apps/studio/src/.
-- And 19 more changes to doors.
+- And 21 more changes to doors.
 - apps/studio/public/audio is now written by packages/sample-lab/src/generation/run-ingest-grounded.ts and packages/sample-lab/src/generation/run-ingest-library.ts.
-- No file changed.
+- 1 file added and 1 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 9 paths; on a push to main touching 9 paths; or by hand. Runs apps/studio/next.config.js, apps/studio/src/app/, apps/studio/test/asset-files.test.ts and 73 more; builds packages/asset-index/src/, packages/audio-engine/src/, packages/automation/src/ and 121 more; checks apps/studio/next-env.d.ts and apps/studio/src/.
+1. **CI.** On a pull request touching 10 paths; on a push to main touching 10 paths; or by hand. Runs apps/studio/next.config.js, apps/studio/src/app/, apps/studio/test/asset-files.test.ts and 73 more; builds packages/asset-index/src/, packages/audio-engine/src/, packages/automation/src/ and 121 more; checks apps/studio/next-env.d.ts and apps/studio/src/.
 2. **Release.** When a release is published. Runs apps/studio/next.config.js, apps/studio/src/app/, apps/studio/test/asset-files.test.ts and 73 more; builds packages/asset-index/src/, packages/audio-engine/src/, packages/automation/src/ and 121 more; checks apps/studio/next-env.d.ts.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@motif-studio/playback-engine** (the package people import). Loads packages/playback-engine/src/index.ts.

@@ -99,6 +99,9 @@
       "name": "api-contract",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 5,
       "unresolvedSites": 0
     },
@@ -287,6 +290,38 @@
             "ai_ollama_models",
             "ai_ollama_status"
           ],
+          "failurePaths": [
+            {
+              "in": "ai_ollama_status",
+              "kind": "match-err",
+              "line": 145
+            },
+            {
+              "in": "ai_comfyui_status",
+              "kind": "match-err",
+              "line": 183
+            },
+            {
+              "in": "ai_ollama_models",
+              "kind": "err",
+              "line": 208
+            },
+            {
+              "in": "ai_comfyui_generate",
+              "kind": "err",
+              "line": 275
+            },
+            {
+              "in": "ai_comfyui_fetch_image",
+              "kind": "err",
+              "line": 440
+            },
+            {
+              "in": "ai_ollama_chat",
+              "kind": "err",
+              "line": 531
+            }
+          ],
           "hash": "b8a249cb8558579ac93f0a71767c955284299de8d606cff3c2771326cfdd1b61",
           "importsFiles": [
             "apps/desktop/src-tauri/src/engine/canvas_state.rs",
@@ -327,6 +362,73 @@
             "update_anchor",
             "validate_anchors"
           ],
+          "failurePaths": [
+            {
+              "in": "create_anchor",
+              "kind": "err",
+              "line": 73
+            },
+            {
+              "in": "create_anchor",
+              "kind": "err",
+              "line": 79
+            },
+            {
+              "in": "update_anchor",
+              "kind": "err",
+              "line": 125
+            },
+            {
+              "in": "update_anchor",
+              "kind": "err",
+              "line": 131
+            },
+            {
+              "in": "bind_anchor_to_selection",
+              "kind": "err",
+              "line": 234
+            },
+            {
+              "in": "move_anchor",
+              "kind": "err",
+              "line": 316
+            },
+            {
+              "in": "resize_anchor_bounds",
+              "kind": "err",
+              "line": 357
+            },
+            {
+              "in": "resize_anchor_bounds",
+              "kind": "err",
+              "line": 360
+            },
+            {
+              "in": "copy_anchors_to_frame",
+              "kind": "err",
+              "line": 490
+            },
+            {
+              "in": "copy_anchors_to_frame",
+              "kind": "err",
+              "line": 493
+            },
+            {
+              "in": "set_anchor_parent",
+              "kind": "err",
+              "line": 696
+            },
+            {
+              "in": "set_anchor_parent",
+              "kind": "err",
+              "line": 701
+            },
+            {
+              "in": "set_anchor_parent",
+              "kind": "err",
+              "line": 706
+            }
+          ],
           "hash": "ab2e205e5347bf813dfc63811b207f73e37610991575d733a1dd7154f9ace36e",
           "importOrder": [
             "apps/desktop/src-tauri/src/engine/anchor.rs",
@@ -366,6 +468,48 @@
             "export_catalog_bundle",
             "preview_asset_bundle",
             "preview_catalog_bundle"
+          ],
+          "failurePaths": [
+            {
+              "in": "export_asset_bundle",
+              "kind": "err",
+              "line": 379
+            },
+            {
+              "in": "export_asset_bundle",
+              "kind": "err",
+              "line": 426
+            },
+            {
+              "in": "export_asset_bundle",
+              "kind": "err",
+              "line": 474
+            },
+            {
+              "in": "resolve_clip",
+              "kind": "err",
+              "line": 592
+            },
+            {
+              "in": "preview_catalog_bundle",
+              "kind": "match-err",
+              "line": 845
+            },
+            {
+              "in": "export_catalog_bundle",
+              "kind": "err",
+              "line": 901
+            },
+            {
+              "in": "export_catalog_bundle",
+              "kind": "err",
+              "line": 911
+            },
+            {
+              "in": "export_catalog_bundle",
+              "kind": "match-err",
+              "line": 932
+            }
           ],
           "hash": "d967fd55f23c420d89755bda0cf797d68bb881a6425b646aea8683aa482c674e",
           "importOrder": [
@@ -413,6 +557,48 @@
             "undo",
             "write_pixel"
           ],
+          "failurePaths": [
+            {
+              "in": "write_pixel",
+              "kind": "err",
+              "line": 153
+            },
+            {
+              "in": "write_pixel",
+              "kind": "err",
+              "line": 156
+            },
+            {
+              "in": "fill_rect",
+              "kind": "err",
+              "line": 391
+            },
+            {
+              "in": "flood_fill",
+              "kind": "err",
+              "line": 439
+            },
+            {
+              "in": "flood_fill",
+              "kind": "err",
+              "line": 443
+            },
+            {
+              "in": "replace_color",
+              "kind": "err",
+              "line": 542
+            },
+            {
+              "in": "magic_select",
+              "kind": "err",
+              "line": 626
+            },
+            {
+              "in": "render_template",
+              "kind": "err",
+              "line": 832
+            }
+          ],
           "hash": "b0d7c0bf572be0ad0c35dbf869195e08e8ae4938bee5022730d5a14f149472a3",
           "importsFiles": [
             "apps/desktop/src-tauri/src/engine/canvas_state.rs",
@@ -434,6 +620,23 @@
             "update_clip",
             "validate_clips"
           ],
+          "failurePaths": [
+            {
+              "in": "create_clip",
+              "kind": "err",
+              "line": 91
+            },
+            {
+              "in": "create_clip",
+              "kind": "err",
+              "line": 97
+            },
+            {
+              "in": "add_clip_tag",
+              "kind": "err",
+              "line": 389
+            }
+          ],
           "hash": "6ebfb26be48bc3c79ee5f5cd9bcbc0871d99a7899fa6629b35a66c0707308c6f",
           "importsFiles": [
             "apps/desktop/src-tauri/src/engine/canvas_state.rs",
@@ -453,6 +656,38 @@
             "export_slice_regions",
             "package_info_from_canvas",
             "preview_sprite_sheet_layout"
+          ],
+          "failurePaths": [
+            {
+              "in": "export_clip_sequence",
+              "kind": "err",
+              "line": 706
+            },
+            {
+              "in": "export_clip_sheet",
+              "kind": "err",
+              "line": 777
+            },
+            {
+              "in": "export_all_clips_sheet",
+              "kind": "err",
+              "line": 885
+            },
+            {
+              "in": "export_all_clips_sheet",
+              "kind": "err",
+              "line": 926
+            },
+            {
+              "in": "export_clip_sequence_with_manifest",
+              "kind": "err",
+              "line": 1047
+            },
+            {
+              "in": "export_slice_regions",
+              "kind": "err",
+              "line": 1337
+            }
           ],
           "hash": "0655e4db1e7ed81e01abc40251f52961e94cf23ac2fb3a054d4282624ac5b571",
           "importOrder": [
@@ -524,6 +759,38 @@
             "reject_motion_proposal",
             "undo_motion_commit"
           ],
+          "failurePaths": [
+            {
+              "in": "begin_motion_session",
+              "kind": "err",
+              "line": 121
+            },
+            {
+              "in": "begin_motion_session",
+              "kind": "err",
+              "line": 129
+            },
+            {
+              "in": "commit_motion_proposal",
+              "kind": "err",
+              "line": 263
+            },
+            {
+              "in": "redo_motion_commit",
+              "kind": "err",
+              "line": 507
+            },
+            {
+              "in": "apply_motion_template",
+              "kind": "err",
+              "line": 612
+            },
+            {
+              "in": "apply_motion_template",
+              "kind": "err",
+              "line": 619
+            }
+          ],
           "hash": "b71a61f72c14ea0382c105514b41e7f1f041a1c0b5e2fef0b95c98a5d7a131f1",
           "importOrder": [
             "apps/desktop/src-tauri/src/engine/canvas_state.rs",
@@ -556,6 +823,33 @@
             "rename_motion_preset",
             "save_motion_preset"
           ],
+          "failurePaths": [
+            {
+              "in": "save_motion_preset",
+              "kind": "err",
+              "line": 66
+            },
+            {
+              "in": "rename_motion_preset",
+              "kind": "err",
+              "line": 104
+            },
+            {
+              "in": "apply_motion_preset_to_span",
+              "kind": "err",
+              "line": 284
+            },
+            {
+              "in": "apply_motion_preset_to_span",
+              "kind": "err",
+              "line": 291
+            },
+            {
+              "in": "parse_anchor_kind",
+              "kind": "err",
+              "line": 639
+            }
+          ],
           "hash": "a63605981d19e73a42f2d5b2fab9977be9f5ae5761b8eda280fae9c90c9300bc",
           "importsFiles": [
             "apps/desktop/src-tauri/src/engine/anchor.rs",
@@ -585,6 +879,18 @@
             "save_project",
             "set_asset_package_metadata",
             "update_recents"
+          ],
+          "failurePaths": [
+            {
+              "in": "export_animated_gif",
+              "kind": "err",
+              "line": 503
+            },
+            {
+              "in": "export_animated_gif",
+              "kind": "err",
+              "line": 509
+            }
           ],
           "hash": "814ce0e5dff7116af7e5540e337776a253dc8f7f53e23556c4e9b306eeaa91dd",
           "importOrder": [
@@ -624,6 +930,23 @@
             "duplicate_sandbox_span",
             "get_sandbox_anchor_paths",
             "get_sandbox_session"
+          ],
+          "failurePaths": [
+            {
+              "in": "begin_sandbox_session",
+              "kind": "err",
+              "line": 59
+            },
+            {
+              "in": "begin_sandbox_session",
+              "kind": "err",
+              "line": 62
+            },
+            {
+              "in": "validate_sandbox_span",
+              "kind": "err",
+              "line": 555
+            }
           ],
           "hash": "9abdd6a71ffe5f65018e129cc6e3f8954bb8a07d78e075fd7c805a18dc98f51f",
           "importsFiles": [
@@ -672,6 +995,43 @@
             "unlink_scene_instance_from_source",
             "update_scene_camera_keyframe"
           ],
+          "failurePaths": [
+            {
+              "in": "add_scene_instance",
+              "kind": "err",
+              "line": 126
+            },
+            {
+              "in": "list_source_clips",
+              "kind": "err",
+              "line": 355
+            },
+            {
+              "in": "get_source_asset_frames",
+              "kind": "err",
+              "line": 374
+            },
+            {
+              "in": "unlink_scene_instance_from_source",
+              "kind": "err",
+              "line": 724
+            },
+            {
+              "in": "unlink_scene_instance_from_source",
+              "kind": "err",
+              "line": 732
+            },
+            {
+              "in": "relink_scene_instance_to_source",
+              "kind": "err",
+              "line": 768
+            },
+            {
+              "in": "relink_scene_instance_to_source",
+              "kind": "err",
+              "line": 776
+            }
+          ],
           "hash": "a2392bc51c3daff9538620a2a97ae5b719c74adb6f800acbb7fbcf70c8beb7ef",
           "importsFiles": [
             "apps/desktop/src-tauri/src/engine/scene.rs",
@@ -685,6 +1045,18 @@
             "apply_secondary_motion_template",
             "check_secondary_readiness",
             "list_secondary_motion_templates"
+          ],
+          "failurePaths": [
+            {
+              "in": "apply_secondary_motion_template",
+              "kind": "err",
+              "line": 208
+            },
+            {
+              "in": "apply_secondary_motion_template",
+              "kind": "err",
+              "line": 215
+            }
           ],
           "hash": "f15cadb1a924551f184b59b8900e1e54c8de05fb35aa80f7e83252674e4e1458",
           "importOrder": [
@@ -724,6 +1096,33 @@
             "rotate_selection_90_cw",
             "set_selection_rect"
           ],
+          "failurePaths": [
+            {
+              "in": "cut_selection",
+              "kind": "err",
+              "line": 122
+            },
+            {
+              "in": "paste_selection",
+              "kind": "err",
+              "line": 192
+            },
+            {
+              "in": "delete_selection",
+              "kind": "err",
+              "line": 233
+            },
+            {
+              "in": "begin_selection_transform",
+              "kind": "err",
+              "line": 271
+            },
+            {
+              "in": "begin_selection_transform",
+              "kind": "err",
+              "line": 285
+            }
+          ],
           "hash": "9edf5e8b889161d9a88ceb180af231467c20ef2d0b704f704c6a408c5fac2d9f",
           "importOrder": [
             "apps/desktop/src-tauri/src/engine/canvas_state.rs",
@@ -747,6 +1146,18 @@
             "create_slice_region",
             "delete_slice_region",
             "list_slice_regions"
+          ],
+          "failurePaths": [
+            {
+              "in": "create_slice_region",
+              "kind": "err",
+              "line": 52
+            },
+            {
+              "in": "create_slice_region",
+              "kind": "err",
+              "line": 57
+            }
           ],
           "hash": "157cd899798604974c58985c4140eb7192b2803cd1728a0e34a6bb7d70843195",
           "importsFiles": [
@@ -803,6 +1214,128 @@
           "testsInside": true
         },
         {
+          "failurePaths": [
+            {
+              "in": "delete_layer",
+              "kind": "err",
+              "line": 293
+            },
+            {
+              "in": "reorder_layer",
+              "kind": "err",
+              "line": 336
+            },
+            {
+              "in": "select_layer",
+              "kind": "err",
+              "line": 345
+            },
+            {
+              "in": "begin_stroke",
+              "kind": "err",
+              "line": 355
+            },
+            {
+              "in": "begin_stroke",
+              "kind": "err",
+              "line": 364
+            },
+            {
+              "in": "begin_stroke",
+              "kind": "err",
+              "line": 367
+            },
+            {
+              "in": "stroke_points",
+              "kind": "err",
+              "line": 395
+            },
+            {
+              "in": "nudge_frames",
+              "kind": "err",
+              "line": 588
+            },
+            {
+              "in": "nudge_region_in_frames",
+              "kind": "err",
+              "line": 623
+            },
+            {
+              "in": "transform_frames",
+              "kind": "err",
+              "line": 659
+            },
+            {
+              "in": "transform_frames",
+              "kind": "err",
+              "line": 675
+            },
+            {
+              "in": "duplicate_frame_range",
+              "kind": "err",
+              "line": 799
+            },
+            {
+              "in": "duplicate_frame_range",
+              "kind": "err",
+              "line": 803
+            },
+            {
+              "in": "delete_frame",
+              "kind": "err",
+              "line": 872
+            },
+            {
+              "in": "delete_frame_range",
+              "kind": "err",
+              "line": 914
+            },
+            {
+              "in": "delete_frame_range",
+              "kind": "err",
+              "line": 918
+            },
+            {
+              "in": "reorder_frame",
+              "kind": "err",
+              "line": 976
+            },
+            {
+              "in": "insert_frame_at",
+              "kind": "err",
+              "line": 1005
+            },
+            {
+              "in": "duplicate_frame_at",
+              "kind": "err",
+              "line": 1062
+            },
+            {
+              "in": "apply_span_timing",
+              "kind": "err",
+              "line": 1201
+            },
+            {
+              "in": "apply_span_timing",
+              "kind": "err",
+              "line": 1204
+            },
+            {
+              "in": "duplicate_span",
+              "kind": "err",
+              "line": 1233
+            },
+            {
+              "in": "duplicate_span",
+              "kind": "err",
+              "line": 1236
+            },
+            {
+              "in": "remove_frames_by_ids",
+              "kind": "err",
+              "line": 1329
+            }
+          ],
           "hash": "aabf5bbaa089c555fade8f42d7e2921204c345499e75e691f1f7e70ec9f99c05",
           "importOrder": [
             "apps/desktop/src-tauri/src/engine/pixel_buffer.rs",
@@ -863,6 +1396,23 @@
           "path": "apps/desktop/src-tauri/src/engine/mod.rs"
         },
         {
+          "failurePaths": [
+            {
+              "in": "begin",
+              "kind": "err",
+              "line": 167
+            },
+            {
+              "in": "begin",
+              "kind": "err",
+              "line": 173
+            },
+            {
+              "in": "select_proposal",
+              "kind": "err",
+              "line": 357
+            }
+          ],
           "hash": "1cb950aa4a75aaf98a5a0847c43b20d243de4cbcd7d6292a6f35317f3e99d89b",
           "importOrder": [
             "apps/desktop/src-tauri/src/engine/canvas_state.rs",
@@ -878,6 +1428,18 @@
           "testsInside": true
         },
         {
+          "failurePaths": [
+            {
+              "in": "rotate_90_cw",
+              "kind": "err",
+              "line": 190
+            },
+            {
+              "in": "rotate_90_ccw",
+              "kind": "err",
+              "line": 208
+            }
+          ],
           "hash": "70619875c1a38f8a89efe60e0f0b7617cf4d1de2826960d8f622c68ef6621bb3",
           "path": "apps/desktop/src-tauri/src/engine/pixel_buffer.rs",
           "testsInside": true
@@ -915,6 +1477,23 @@
             "load_source_asset_frames",
             "resolve_instance_clip",
             "resolve_scene_camera_at_tick"
+          ],
+          "failurePaths": [
+            {
+              "in": "resolve_instance_clip",
+              "kind": "match-err",
+              "line": 606
+            },
+            {
+              "in": "composite_scene_frame",
+              "kind": "match-err",
+              "line": 964
+            },
+            {
+              "in": "resolve_instance_frame_data",
+              "kind": "err",
+              "line": 1034
+            }
           ],
           "hash": "bb29ec691e833cf0f89d36bd5d84eb21e5fed0634743a09a71914061abd3a939",
           "importsFiles": [
@@ -1169,6 +1748,13 @@
             "presets_dir",
             "save_preset"
           ],
+          "failurePaths": [
+            {
+              "in": "list_presets",
+              "kind": "match-err",
+              "line": 52
+            }
+          ],
           "hash": "99444d66b99076ab1634ba8d58f89924aa4ed80565e9bfc29b39dba0bcbf6656",
           "importsFiles": [
             "apps/desktop/src-tauri/src/engine/preset.rs"
@@ -1179,6 +1765,18 @@
           "exports": [
             "load_from_file",
             "save_to_file"
+          ],
+          "failurePaths": [
+            {
+              "in": "load_from_file",
+              "kind": "err",
+              "line": 226
+            },
+            {
+              "in": "load_from_file",
+              "kind": "err",
+              "line": 234
+            }
           ],
           "hash": "d455188c743d3a54262269e42f81afa53817dc6f3b8340f9faeb2a633be741db",
           "importOrder": [
@@ -1224,6 +1822,13 @@
             "load_scene",
             "save_scene"
           ],
+          "failurePaths": [
+            {
+              "in": "load_scene",
+              "kind": "err",
+              "line": 37
+            }
+          ],
           "hash": "3486929f87c98d95516397c6ea88ea2183397719e554dc6c7629594c70cd6103",
           "importsFiles": [
             "apps/desktop/src-tauri/src/engine/scene.rs",
@@ -1259,6 +1864,18 @@
         {
           "exports": [
             "AppShell"
+          ],
+          "failurePaths": [
+            {
+              "in": "AppShell",
+              "kind": "catch",
+              "line": 84
+            },
+            {
+              "in": "AppShell",
+              "kind": "catch",
+              "line": 96
+            }
           ],
           "hash": "5ea84c622f26dd83311d4695c214e3b4e518e3119625f263a4201f53dcf51a3e",
           "importOrder": [
@@ -1315,11 +1932,24 @@
             "apps/desktop/src/components/AISettingsPanel.tsx",
             "apps/desktop/src/test/setup.ts"
           ],
-          "path": "apps/desktop/src/components/AISettingsPanel.test.tsx"
+          "path": "apps/desktop/src/components/AISettingsPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "AISettingsPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "AISettingsPanel",
+              "kind": "catch",
+              "line": 49
+            },
+            {
+              "in": "AISettingsPanel",
+              "kind": "catch",
+              "line": 67
+            }
           ],
           "hash": "83c9720d9ed547eaa2c048676fe7ebc2ee1fa139223a4d5ae2e9be15334803b1",
           "importsFiles": [
@@ -1330,6 +1960,23 @@
         {
           "exports": [
             "AnalysisPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "AnalysisPanel",
+              "kind": "catch",
+              "line": 77
+            },
+            {
+              "in": "AnalysisPanel",
+              "kind": "catch",
+              "line": 89
+            },
+            {
+              "in": "AnalysisPanel",
+              "kind": "catch",
+              "line": 104
+            }
           ],
           "hash": "aca2bec1fcb1e95bdc7632391f2d69b0db8e0a966b1960000d51942c8e9e5724",
           "importsFiles": [
@@ -1351,11 +1998,64 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/AnchorPanel.test.tsx"
+          "path": "apps/desktop/src/components/AnchorPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "AnchorPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "AnchorPanel",
+              "kind": "catch",
+              "line": 98
+            },
+            {
+              "in": "AnchorPanel",
+              "kind": "catch",
+              "line": 109
+            },
+            {
+              "in": "AnchorPanel",
+              "kind": "catch",
+              "line": 120
+            },
+            {
+              "in": "AnchorPanel",
+              "kind": "catch",
+              "line": 131
+            },
+            {
+              "in": "AnchorPanel",
+              "kind": "catch",
+              "line": 142
+            },
+            {
+              "in": "AnchorPanel",
+              "kind": "catch",
+              "line": 207
+            },
+            {
+              "in": "AnchorPanel",
+              "kind": "catch",
+              "line": 225
+            },
+            {
+              "in": "AnchorPanel",
+              "kind": "catch",
+              "line": 241
+            },
+            {
+              "in": "AnchorPanel",
+              "kind": "catch",
+              "line": 252
+            },
+            {
+              "in": "AnchorPanel",
+              "kind": "catch",
+              "line": 287
+            }
           ],
           "hash": "e0cba5cc7da7bb08091869c02dd56845dff685841e4fc73fb231837a01a8a094",
           "importsFiles": [
@@ -1378,11 +2078,54 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/AssetBrowserPanel.test.tsx"
+          "path": "apps/desktop/src/components/AssetBrowserPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "AssetBrowserPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "AssetBrowserPanel",
+              "kind": "catch",
+              "line": 48
+            },
+            {
+              "in": "AssetBrowserPanel",
+              "kind": "catch",
+              "line": 71
+            },
+            {
+              "in": "AssetBrowserPanel",
+              "kind": "catch",
+              "line": 83
+            },
+            {
+              "in": "AssetBrowserPanel",
+              "kind": "catch",
+              "line": 91
+            },
+            {
+              "in": "AssetBrowserPanel",
+              "kind": "catch",
+              "line": 284
+            },
+            {
+              "in": "AssetBrowserPanel",
+              "kind": "catch",
+              "line": 316
+            },
+            {
+              "in": "AssetBrowserPanel",
+              "kind": "catch",
+              "line": 337
+            },
+            {
+              "in": "formatRelativeDate",
+              "kind": "catch",
+              "line": 840
+            }
           ],
           "hash": "432ce7819b6c072528a3d8ff892a8a6e40831419fcddfbd37c8af5359911a715",
           "importOrder": [
@@ -1411,11 +2154,74 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/BottomDock.test.tsx"
+          "path": "apps/desktop/src/components/BottomDock.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "BottomDock"
+          ],
+          "failurePaths": [
+            {
+              "in": "BottomDock",
+              "kind": "catch",
+              "line": 211
+            },
+            {
+              "in": "BottomDock",
+              "kind": "catch",
+              "line": 221
+            },
+            {
+              "in": "BottomDock",
+              "kind": "catch",
+              "line": 232
+            },
+            {
+              "in": "BottomDock",
+              "kind": "catch",
+              "line": 241
+            },
+            {
+              "in": "BottomDock",
+              "kind": "catch",
+              "line": 271
+            },
+            {
+              "in": "BottomDock",
+              "kind": "catch",
+              "line": 282
+            },
+            {
+              "in": "BottomDock",
+              "kind": "catch",
+              "line": 293
+            },
+            {
+              "in": "BottomDock",
+              "kind": "catch",
+              "line": 303
+            },
+            {
+              "in": "BottomDock",
+              "kind": "catch",
+              "line": 332
+            },
+            {
+              "in": "BottomDock",
+              "kind": "catch",
+              "line": 346
+            },
+            {
+              "in": "BottomDock",
+              "kind": "catch",
+              "line": 366
+            },
+            {
+              "in": "BottomDock",
+              "kind": "catch",
+              "line": 387
+            }
           ],
           "hash": "e0b4e8cba93c87ef270f95807204adf6e710e047d5e6a31f7c81df873faa7fe9",
           "importOrder": [
@@ -1458,7 +2264,8 @@
             "apps/desktop/src/components/BundlePanel.tsx",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/BundlePanel.test.tsx"
+          "path": "apps/desktop/src/components/BundlePanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1484,11 +2291,34 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/CameraKeyframePanel.test.tsx"
+          "path": "apps/desktop/src/components/CameraKeyframePanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "CameraKeyframePanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "CameraKeyframePanel",
+              "kind": "catch",
+              "line": 34
+            },
+            {
+              "in": "CameraKeyframePanel",
+              "kind": "catch",
+              "line": 67
+            },
+            {
+              "in": "CameraKeyframePanel",
+              "kind": "catch",
+              "line": 82
+            },
+            {
+              "in": "CameraKeyframePanel",
+              "kind": "catch",
+              "line": 155
+            }
           ],
           "hash": "85de9a0d35909d80fc5f4af506003fc1adfd1ef25a6aaf0bef585c6a6933a7c2",
           "importsFiles": [
@@ -1511,11 +2341,24 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/CameraTimelineLane.test.tsx"
+          "path": "apps/desktop/src/components/CameraTimelineLane.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "CameraTimelineLane"
+          ],
+          "failurePaths": [
+            {
+              "in": "CameraTimelineLane",
+              "kind": "catch",
+              "line": 76
+            },
+            {
+              "in": "CameraTimelineLane",
+              "kind": "catch",
+              "line": 96
+            }
           ],
           "hash": "24c77f0389e83d8f9184c96eae4169b0c32135a010c05ddf0a2d9534a0e856b0",
           "importOrder": [
@@ -1544,11 +2387,129 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/Canvas.test.tsx"
+          "path": "apps/desktop/src/components/Canvas.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "Canvas"
+          ],
+          "failurePaths": [
+            {
+              "in": "init",
+              "kind": "catch",
+              "line": 204
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1064
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1085
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1105
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1138
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1167
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1208
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1238
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1278
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1295
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1309
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1319
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1331
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1343
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1356
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1388
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1424
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1463
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1501
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1514
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1535
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1561
+            },
+            {
+              "in": "handleKeyDown",
+              "kind": "catch",
+              "line": 1574
+            }
           ],
           "hash": "01d580f7bd768ab56707838771afe3e192b8988ae462299008c580cf32893746",
           "importOrder": [
@@ -1585,7 +2546,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/CharacterBuilderPanel.test.tsx"
+          "path": "apps/desktop/src/components/CharacterBuilderPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1612,11 +2574,64 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/ClipPanel.test.tsx"
+          "path": "apps/desktop/src/components/ClipPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "ClipPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "ClipPanel",
+              "kind": "catch",
+              "line": 20
+            },
+            {
+              "in": "ClipPanel",
+              "kind": "catch",
+              "line": 42
+            },
+            {
+              "in": "ClipPanel",
+              "kind": "catch",
+              "line": 55
+            },
+            {
+              "in": "ClipPanel",
+              "kind": "catch",
+              "line": 79
+            },
+            {
+              "in": "ClipPanel",
+              "kind": "catch",
+              "line": 101
+            },
+            {
+              "in": "ClipPanel",
+              "kind": "catch",
+              "line": 124
+            },
+            {
+              "in": "ClipPanel",
+              "kind": "catch",
+              "line": 143
+            },
+            {
+              "in": "ClipPanel",
+              "kind": "catch",
+              "line": 157
+            },
+            {
+              "in": "ClipPanel",
+              "kind": "catch",
+              "line": 171
+            },
+            {
+              "in": "ClipPanel",
+              "kind": "catch",
+              "line": 185
+            }
           ],
           "hash": "f6b76387db4b05563b1a28d78abedee036b80631f3c1f9ee794505aa4e5350ee",
           "importsFiles": [
@@ -1631,7 +2646,8 @@
             "apps/desktop/src/components/ColorPickerPopover.tsx",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/ColorPickerPopover.test.tsx"
+          "path": "apps/desktop/src/components/ColorPickerPopover.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1649,11 +2665,24 @@
             "apps/desktop/src/components/ComfyUIGeneratePanel.tsx",
             "apps/desktop/src/test/setup.ts"
           ],
-          "path": "apps/desktop/src/components/ComfyUIGeneratePanel.test.tsx"
+          "path": "apps/desktop/src/components/ComfyUIGeneratePanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "ComfyUIGeneratePanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "ComfyUIGeneratePanel",
+              "kind": "catch",
+              "line": 99
+            },
+            {
+              "in": "ComfyUIGeneratePanel",
+              "kind": "catch",
+              "line": 116
+            }
           ],
           "hash": "97afd54ad94df2249d332acb4abf375774c8fc4a6e42be0526ed2a2ec8600340",
           "importsFiles": [
@@ -1668,11 +2697,29 @@
             "apps/desktop/src/components/CopilotPanel.tsx",
             "apps/desktop/src/test/setup.ts"
           ],
-          "path": "apps/desktop/src/components/CopilotPanel.test.tsx"
+          "path": "apps/desktop/src/components/CopilotPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "CopilotPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "CopilotPanel",
+              "kind": "catch",
+              "line": 66
+            },
+            {
+              "in": "CopilotPanel",
+              "kind": "catch",
+              "line": 216
+            },
+            {
+              "in": "CopilotPanel",
+              "kind": "catch",
+              "line": 287
+            }
           ],
           "hash": "83d0260707ea9ed319e0a5b402e5a8836643ee3290f35a98d1dd4e82b5f69689",
           "importOrder": [
@@ -1701,7 +2748,8 @@
             "apps/desktop/src/lib/canvasFrameStore.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/EditorStatusBar.test.tsx"
+          "path": "apps/desktop/src/components/EditorStatusBar.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1730,11 +2778,64 @@
             "apps/desktop/src/test/helpers.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/ExportPreviewPanel.test.tsx"
+          "path": "apps/desktop/src/components/ExportPreviewPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "ExportPreviewPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "ExportPreviewPanel",
+              "kind": "catch",
+              "line": 182
+            },
+            {
+              "in": "ExportPreviewPanel",
+              "kind": "catch",
+              "line": 215
+            },
+            {
+              "in": "ExportPreviewPanel",
+              "kind": "catch",
+              "line": 250
+            },
+            {
+              "in": "ExportPreviewPanel",
+              "kind": "catch",
+              "line": 283
+            },
+            {
+              "in": "ExportPreviewPanel",
+              "kind": "catch",
+              "line": 310
+            },
+            {
+              "in": "ExportPreviewPanel",
+              "kind": "catch",
+              "line": 331
+            },
+            {
+              "in": "ExportPreviewPanel",
+              "kind": "catch",
+              "line": 385
+            },
+            {
+              "in": "ExportPreviewPanel",
+              "kind": "catch",
+              "line": 473
+            },
+            {
+              "in": "ExportPreviewPanel",
+              "kind": "catch",
+              "line": 506
+            },
+            {
+              "in": "ExportPreviewPanel",
+              "kind": "catch",
+              "line": 529
+            }
           ],
           "hash": "93890203babf58c99024db04bbb5fd3aafdf3f0ce1893424c99af71ac96e7a09",
           "importOrder": [
@@ -1778,11 +2879,59 @@
             "apps/desktop/src/test/helpers.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/LayerPanel.test.tsx"
+          "path": "apps/desktop/src/components/LayerPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "LayerPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "LayerPanel",
+              "kind": "catch",
+              "line": 41
+            },
+            {
+              "in": "LayerPanel",
+              "kind": "catch",
+              "line": 57
+            },
+            {
+              "in": "LayerPanel",
+              "kind": "catch",
+              "line": 73
+            },
+            {
+              "in": "LayerPanel",
+              "kind": "catch",
+              "line": 85
+            },
+            {
+              "in": "LayerPanel",
+              "kind": "catch",
+              "line": 100
+            },
+            {
+              "in": "LayerPanel",
+              "kind": "catch",
+              "line": 119
+            },
+            {
+              "in": "LayerPanel",
+              "kind": "catch",
+              "line": 136
+            },
+            {
+              "in": "LayerPanel",
+              "kind": "catch",
+              "line": 149
+            },
+            {
+              "in": "LayerPanel",
+              "kind": "catch",
+              "line": 173
+            }
           ],
           "hash": "7529fc7a776f38e7de941f280dfce10cc79346aca119e973585310d4846fc4fa",
           "importOrder": [
@@ -1813,7 +2962,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/LibraryPanel.test.tsx"
+          "path": "apps/desktop/src/components/LibraryPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1848,11 +2998,64 @@
             "apps/desktop/src/test/helpers.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/MotionPanel.test.tsx"
+          "path": "apps/desktop/src/components/MotionPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "MotionPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "MotionPanel",
+              "kind": "catch",
+              "line": 400
+            },
+            {
+              "in": "MotionPanel",
+              "kind": "catch",
+              "line": 414
+            },
+            {
+              "in": "MotionPanel",
+              "kind": "catch",
+              "line": 430
+            },
+            {
+              "in": "MotionPanel",
+              "kind": "catch",
+              "line": 440
+            },
+            {
+              "in": "MotionPanel",
+              "kind": "catch",
+              "line": 451
+            },
+            {
+              "in": "MotionPanel",
+              "kind": "catch",
+              "line": 462
+            },
+            {
+              "in": "MotionPanel",
+              "kind": "catch",
+              "line": 471
+            },
+            {
+              "in": "MotionPanel",
+              "kind": "catch",
+              "line": 531
+            },
+            {
+              "in": "MotionPanel",
+              "kind": "catch",
+              "line": 553
+            },
+            {
+              "in": "MotionPanel",
+              "kind": "catch",
+              "line": 562
+            }
           ],
           "hash": "45a2275e83e0c403b159250c713199f03ad2efe8fabfb9a7010c41de75a52a02",
           "importsFiles": [
@@ -1867,11 +3070,19 @@
             "apps/desktop/src/components/OutputPresetsPanel.tsx",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/OutputPresetsPanel.test.tsx"
+          "path": "apps/desktop/src/components/OutputPresetsPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "OutputPresetsPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "OutputPresetsPanel",
+              "kind": "catch",
+              "line": 75
+            }
           ],
           "hash": "f29316588c5d1cbae9ee794f572715d44349f70bb6b1c58d2acd764d130f2d2c",
           "importsFiles": [
@@ -1891,7 +3102,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/PalettePropsPanel.test.tsx"
+          "path": "apps/desktop/src/components/PalettePropsPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1918,7 +3130,8 @@
             "apps/desktop/src/components/PaletteSetsPanel.tsx",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/PaletteSetsPanel.test.tsx"
+          "path": "apps/desktop/src/components/PaletteSetsPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1947,7 +3160,8 @@
             "apps/desktop/src/lib/partLibraryStorage.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/PartsPanel.test.tsx"
+          "path": "apps/desktop/src/components/PartsPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1980,11 +3194,34 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/PresetPanel.test.tsx"
+          "path": "apps/desktop/src/components/PresetPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "PresetPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "PresetPanel",
+              "kind": "catch",
+              "line": 115
+            },
+            {
+              "in": "PresetPanel",
+              "kind": "catch",
+              "line": 156
+            },
+            {
+              "in": "PresetPanel",
+              "kind": "catch",
+              "line": 167
+            },
+            {
+              "in": "PresetPanel",
+              "kind": "catch",
+              "line": 177
+            }
           ],
           "hash": "8156f481f7e9a25c5a3a96e0b4404e13e2263cd719ec80720ed045bf22594ddd",
           "importsFiles": [
@@ -2003,11 +3240,29 @@
             "apps/desktop/src/components/ProjectHome.tsx",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/ProjectHome.test.tsx"
+          "path": "apps/desktop/src/components/ProjectHome.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "ProjectHome"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadPinnedStarts",
+              "kind": "catch",
+              "line": 40
+            },
+            {
+              "in": "savePinnedStarts",
+              "kind": "catch",
+              "line": 44
+            },
+            {
+              "in": "handleOpen",
+              "kind": "catch",
+              "line": 196
+            }
           ],
           "hash": "570dbf8d6ee7fd8e44f1707af2a7c58cfdfacb3163b2ebb4aa035418f8e16bb4",
           "importOrder": [
@@ -2040,7 +3295,8 @@
             "apps/desktop/src/components/QuickPaletteStrip.tsx",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/QuickPaletteStrip.test.tsx"
+          "path": "apps/desktop/src/components/QuickPaletteStrip.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2066,11 +3322,19 @@
             "apps/desktop/src/test/helpers.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/RecoveryPrompt.test.tsx"
+          "path": "apps/desktop/src/components/RecoveryPrompt.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "RecoveryPrompt"
+          ],
+          "failurePaths": [
+            {
+              "in": "RecoveryPrompt",
+              "kind": "catch",
+              "line": 58
+            }
           ],
           "hash": "3f20937869269f7e0c2e2941498cb7f77e1fbcce6e7cce080c8b15d177ff2ff2",
           "importOrder": [
@@ -2105,7 +3369,8 @@
             "apps/desktop/src/components/RightDock.tsx",
             "packages/domain/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/RightDock.test.tsx"
+          "path": "apps/desktop/src/components/RightDock.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2184,11 +3449,49 @@
             "apps/desktop/src/test/helpers.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/SandboxPanel.test.tsx"
+          "path": "apps/desktop/src/components/SandboxPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "SandboxPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "SandboxPanel",
+              "kind": "catch",
+              "line": 240
+            },
+            {
+              "in": "SandboxPanel",
+              "kind": "catch",
+              "line": 249
+            },
+            {
+              "in": "SandboxPanel",
+              "kind": "catch",
+              "line": 277
+            },
+            {
+              "in": "SandboxPanel",
+              "kind": "catch",
+              "line": 289
+            },
+            {
+              "in": "SandboxPanel",
+              "kind": "catch",
+              "line": 307
+            },
+            {
+              "in": "SandboxPanel",
+              "kind": "catch",
+              "line": 327
+            },
+            {
+              "in": "SandboxPanel",
+              "kind": "catch",
+              "line": 344
+            }
           ],
           "hash": "7b1bdcd939c58ebdd6a11941d13683ce8a6a4265253f45e3e716504356372f0d",
           "importOrder": [
@@ -2217,11 +3520,89 @@
             "apps/desktop/src/test/helpers.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/SceneCanvas.test.tsx"
+          "path": "apps/desktop/src/components/SceneCanvas.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "SceneCanvas"
+          ],
+          "failurePaths": [
+            {
+              "in": "SceneCanvas",
+              "kind": "catch",
+              "line": 117
+            },
+            {
+              "in": "SceneCanvas",
+              "kind": "catch",
+              "line": 120
+            },
+            {
+              "in": "SceneCanvas",
+              "kind": "catch",
+              "line": 210
+            },
+            {
+              "in": "SceneCanvas",
+              "kind": "catch",
+              "line": 272
+            },
+            {
+              "in": "SceneCanvas",
+              "kind": "catch",
+              "line": 301
+            },
+            {
+              "in": "SceneCanvas",
+              "kind": "catch",
+              "line": 347
+            },
+            {
+              "in": "SceneCanvas",
+              "kind": "catch",
+              "line": 368
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 405
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 422
+            },
+            {
+              "in": "SceneCanvas",
+              "kind": "catch",
+              "line": 448
+            },
+            {
+              "in": "SceneCanvas",
+              "kind": "catch",
+              "line": 595
+            },
+            {
+              "in": "SceneCanvas",
+              "kind": "catch",
+              "line": 617
+            },
+            {
+              "in": "SceneCanvas",
+              "kind": "catch",
+              "line": 646
+            },
+            {
+              "in": "SceneCanvas",
+              "kind": "catch",
+              "line": 671
+            },
+            {
+              "in": "SceneAddAssetButton",
+              "kind": "catch",
+              "line": 698
+            }
           ],
           "hash": "4801af330c522f7d232624fd6ab263956a24699188af845bd78bfa1bbeed361c",
           "importsFiles": [
@@ -2254,11 +3635,64 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/SceneInstancesPanel.test.tsx"
+          "path": "apps/desktop/src/components/SceneInstancesPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "SceneInstancesPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "SceneInstancesPanel",
+              "kind": "catch",
+              "line": 35
+            },
+            {
+              "in": "SceneInstancesPanel",
+              "kind": "catch",
+              "line": 70
+            },
+            {
+              "in": "SceneInstancesPanel",
+              "kind": "catch",
+              "line": 80
+            },
+            {
+              "in": "SceneInstancesPanel",
+              "kind": "catch",
+              "line": 94
+            },
+            {
+              "in": "SceneInstancesPanel",
+              "kind": "catch",
+              "line": 108
+            },
+            {
+              "in": "SceneInstancesPanel",
+              "kind": "catch",
+              "line": 119
+            },
+            {
+              "in": "SceneInstancesPanel",
+              "kind": "catch",
+              "line": 155
+            },
+            {
+              "in": "SceneInstancesPanel",
+              "kind": "catch",
+              "line": 165
+            },
+            {
+              "in": "SceneInstancesPanel",
+              "kind": "catch",
+              "line": 273
+            },
+            {
+              "in": "SceneInstancesPanel",
+              "kind": "catch",
+              "line": 282
+            }
           ],
           "hash": "03bba0171b8f5e86f6c0da2d062ed90ce77476cf5a854194e3f871ef4dff4a9b",
           "importsFiles": [
@@ -2279,11 +3713,39 @@
             "apps/desktop/src/test/helpers.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/ScenePlaybackControls.test.tsx"
+          "path": "apps/desktop/src/components/ScenePlaybackControls.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "ScenePlaybackControls"
+          ],
+          "failurePaths": [
+            {
+              "in": "ScenePlaybackControls",
+              "kind": "catch",
+              "line": 39
+            },
+            {
+              "in": "ScenePlaybackControls",
+              "kind": "catch",
+              "line": 54
+            },
+            {
+              "in": "ScenePlaybackControls",
+              "kind": "catch",
+              "line": 114
+            },
+            {
+              "in": "ScenePlaybackControls",
+              "kind": "catch",
+              "line": 124
+            },
+            {
+              "in": "ScenePlaybackControls",
+              "kind": "catch",
+              "line": 175
+            }
           ],
           "hash": "d4be09f7ce9cc7cf7f6e6554cdbcf512d63245d1f06b2bb26dbd04c51136beed",
           "importsFiles": [
@@ -2295,6 +3757,13 @@
         {
           "exports": [
             "SceneProvenanceDrilldownPane"
+          ],
+          "failurePaths": [
+            {
+              "in": "formatTime",
+              "kind": "catch",
+              "line": 20
+            }
           ],
           "hash": "00d284b985f09e1abdbbac82d9a96ae36b5f225a1d9afae6d4d17cb155f589c8",
           "importsFiles": [
@@ -2314,11 +3783,19 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/SceneProvenancePanel.test.tsx"
+          "path": "apps/desktop/src/components/SceneProvenancePanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "SceneProvenancePanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "formatTime",
+              "kind": "catch",
+              "line": 21
+            }
           ],
           "hash": "371c2e873e75045246f7d1de6d78d809670e828e806601b506c29900594d0574",
           "importOrder": [
@@ -2350,7 +3827,8 @@
           "importsFiles": [
             "apps/desktop/src/components/ShortcutHelpOverlay.tsx"
           ],
-          "path": "apps/desktop/src/components/ShortcutHelpOverlay.test.tsx"
+          "path": "apps/desktop/src/components/ShortcutHelpOverlay.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2381,11 +3859,34 @@
             "apps/desktop/src/lib/canvasFrameStore.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/SliceManagerPanel.test.tsx"
+          "path": "apps/desktop/src/components/SliceManagerPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "SliceManagerPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "SliceManagerPanel",
+              "kind": "catch",
+              "line": 62
+            },
+            {
+              "in": "SliceManagerPanel",
+              "kind": "catch",
+              "line": 77
+            },
+            {
+              "in": "SliceManagerPanel",
+              "kind": "catch",
+              "line": 91
+            },
+            {
+              "in": "SliceManagerPanel",
+              "kind": "catch",
+              "line": 104
+            }
           ],
           "hash": "ead68861e624ffafefeb891dc237da8ed22519fac182cf1e8adb2d7291fa77df",
           "importOrder": [
@@ -2403,6 +3904,13 @@
         {
           "exports": [
             "SnapshotPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "SnapshotPanel",
+              "kind": "catch",
+              "line": 41
+            }
           ],
           "hash": "352fba1bbc641057fb38ba452044df1b29d3ae108f8538c707f066569e0966bf",
           "importOrder": [
@@ -2422,11 +3930,24 @@
           "importsFiles": [
             "apps/desktop/src/components/TemplateBrowserPanel.tsx"
           ],
-          "path": "apps/desktop/src/components/TemplateBrowserPanel.test.tsx"
+          "path": "apps/desktop/src/components/TemplateBrowserPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "TemplateBrowserPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "TemplateBrowserPanel",
+              "kind": "catch",
+              "line": 87
+            },
+            {
+              "in": "TemplateBrowserPanel",
+              "kind": "catch",
+              "line": 122
+            }
           ],
           "hash": "cbf4a3b2ab7a1e38374b0fc82b590b036d8e1371ee15a05fccbf155b574c6d99",
           "importOrder": [
@@ -2451,7 +3972,8 @@
             "apps/desktop/src/components/ToastStack.tsx",
             "apps/desktop/src/lib/toast.ts"
           ],
-          "path": "apps/desktop/src/components/ToastStack.test.tsx"
+          "path": "apps/desktop/src/components/ToastStack.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2475,11 +3997,24 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/ToolRail.test.tsx"
+          "path": "apps/desktop/src/components/ToolRail.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "ToolRail"
+          ],
+          "failurePaths": [
+            {
+              "in": "ToolRail",
+              "kind": "catch",
+              "line": 81
+            },
+            {
+              "in": "ToolRail",
+              "kind": "catch",
+              "line": 91
+            }
           ],
           "hash": "94add477d78da72f2cb3839faf3837dc64367949a38706bc9cf86d4135a96485",
           "importOrder": [
@@ -2508,7 +4043,8 @@
             "apps/desktop/src/components/TopBar.tsx",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/TopBar.test.tsx"
+          "path": "apps/desktop/src/components/TopBar.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2527,11 +4063,29 @@
             "apps/desktop/src/components/TransformBar.tsx",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/TransformBar.test.tsx"
+          "path": "apps/desktop/src/components/TransformBar.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "TransformBar"
+          ],
+          "failurePaths": [
+            {
+              "in": "TransformBar",
+              "kind": "catch",
+              "line": 52
+            },
+            {
+              "in": "TransformBar",
+              "kind": "catch",
+              "line": 66
+            },
+            {
+              "in": "TransformBar",
+              "kind": "catch",
+              "line": 78
+            }
           ],
           "hash": "db70c292205d1f551400d39d3c6bc465808b2954c2d3cd3a95767e46070263e3",
           "importOrder": [
@@ -2558,7 +4112,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/ValidationPanel.test.tsx"
+          "path": "apps/desktop/src/components/ValidationPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2587,7 +4142,8 @@
             "apps/desktop/src/components/VariantBar.tsx",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/VariantBar.test.tsx"
+          "path": "apps/desktop/src/components/VariantBar.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2616,11 +4172,19 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/VectorAICreationPanel.test.tsx"
+          "path": "apps/desktop/src/components/VectorAICreationPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "VectorAICreationPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "VectorAICreationPanel",
+              "kind": "catch",
+              "line": 149
+            }
           ],
           "hash": "f9c26da518e55000b669a912270996d3da31ccd5a6462670a8ac4ed1d5c504b6",
           "importOrder": [
@@ -2660,7 +4224,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/VectorCopilotPanel.test.tsx"
+          "path": "apps/desktop/src/components/VectorCopilotPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2684,7 +4249,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/VectorLivePreview.test.tsx"
+          "path": "apps/desktop/src/components/VectorLivePreview.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2713,7 +4279,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/VectorPropertiesPanel.test.tsx"
+          "path": "apps/desktop/src/components/VectorPropertiesPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2742,7 +4309,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/VectorReductionPanel.test.tsx"
+          "path": "apps/desktop/src/components/VectorReductionPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2771,7 +4339,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/VectorShapesPanel.test.tsx"
+          "path": "apps/desktop/src/components/VectorShapesPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2800,7 +4369,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/components/VectorSourceBanner.test.tsx"
+          "path": "apps/desktop/src/components/VectorSourceBanner.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2869,7 +4439,8 @@
             "apps/desktop/src/lib/aiSettings.ts",
             "apps/desktop/src/test/setup.ts"
           ],
-          "path": "apps/desktop/src/lib/aiSettings.test.ts"
+          "path": "apps/desktop/src/lib/aiSettings.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2887,6 +4458,18 @@
             "ollamaChat",
             "saveAiSettings"
           ],
+          "failurePaths": [
+            {
+              "in": "loadAiSettings",
+              "kind": "catch",
+              "line": 49
+            },
+            {
+              "in": "saveAiSettings",
+              "kind": "catch",
+              "line": 59
+            }
+          ],
           "hash": "5107e516a18e52dd80a5d4972a3da54740f81f5c26e7e1d4fcdec50bd8883bb1",
           "path": "apps/desktop/src/lib/aiSettings.ts"
         },
@@ -2900,7 +4483,8 @@
             "apps/desktop/src/lib/aiSettings.ts",
             "apps/desktop/src/lib/aiSuggestions.ts"
           ],
-          "path": "apps/desktop/src/lib/aiSuggestions.test.ts"
+          "path": "apps/desktop/src/lib/aiSuggestions.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2918,7 +4502,8 @@
             "apps/desktop/src/lib/aiToolDispatcher.ts",
             "apps/desktop/src/test/setup.ts"
           ],
-          "path": "apps/desktop/src/lib/aiToolDispatcher.test.ts"
+          "path": "apps/desktop/src/lib/aiToolDispatcher.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2926,6 +4511,38 @@
             "executeBatchAcrossFrames",
             "executeToolCall",
             "parseToolCalls"
+          ],
+          "failurePaths": [
+            {
+              "in": "executeToolCall",
+              "kind": "catch",
+              "line": 103
+            },
+            {
+              "in": "executeApplyToAllFrames",
+              "kind": "catch",
+              "line": 178
+            },
+            {
+              "in": "executeInstantiateTemplate",
+              "kind": "catch",
+              "line": 320
+            },
+            {
+              "in": "executeGenerateAnimation",
+              "kind": "catch",
+              "line": 453
+            },
+            {
+              "in": "parseToolCalls",
+              "kind": "catch",
+              "line": 513
+            },
+            {
+              "in": "executeBatchAcrossFrames",
+              "kind": "catch",
+              "line": 553
+            }
           ],
           "hash": "4ef6a276a51468a22c98a099d447a758651e369d6270447e1f42c40586031621",
           "importOrder": [
@@ -2951,7 +4568,8 @@
           "importsFiles": [
             "apps/desktop/src/lib/aiToolRegistry.ts"
           ],
-          "path": "apps/desktop/src/lib/aiToolRegistry.test.ts"
+          "path": "apps/desktop/src/lib/aiToolRegistry.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2967,7 +4585,8 @@
           "importsFiles": [
             "apps/desktop/src/lib/animationPresetLibrary.ts"
           ],
-          "path": "apps/desktop/src/lib/animationPresetLibrary.test.ts"
+          "path": "apps/desktop/src/lib/animationPresetLibrary.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2990,12 +4609,30 @@
             "apps/desktop/src/lib/spriteTemplateRenderer.ts",
             "packages/domain/src/index.ts"
           ],
-          "path": "apps/desktop/src/lib/animationSequenceGenerator.test.ts"
+          "path": "apps/desktop/src/lib/animationSequenceGenerator.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "applyKeyframeTransforms",
             "generateAnimationSequence"
+          ],
+          "failurePaths": [
+            {
+              "in": "generateAnimationSequence",
+              "kind": "throw",
+              "line": 113
+            },
+            {
+              "in": "generateAnimationSequence",
+              "kind": "throw",
+              "line": 118
+            },
+            {
+              "in": "generateAnimationSequence",
+              "kind": "throw",
+              "line": 123
+            }
           ],
           "hash": "2cdd3a71bb232d7ce34e1f34bcf73898f1d254e62eb07fcbab177825d442a2ad",
           "importOrder": [
@@ -3021,7 +4658,8 @@
           "importsFiles": [
             "apps/desktop/src/lib/canvasPixelMath.ts"
           ],
-          "path": "apps/desktop/src/lib/canvasPixelMath.test.ts"
+          "path": "apps/desktop/src/lib/canvasPixelMath.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3046,14 +4684,16 @@
           "importsFiles": [
             "apps/desktop/src/lib/canvasRenderHelpers.ts"
           ],
-          "path": "apps/desktop/src/lib/canvasRenderBenchmarks.test.ts"
+          "path": "apps/desktop/src/lib/canvasRenderBenchmarks.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "30055d08fecd0b70ac6877d447a6711946d694d4a75ce0d8e583f4c3562cfc40",
           "importsFiles": [
             "apps/desktop/src/lib/canvasRenderHelpers.ts"
           ],
-          "path": "apps/desktop/src/lib/canvasRenderHelpers.test.ts"
+          "path": "apps/desktop/src/lib/canvasRenderHelpers.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3069,6 +4709,18 @@
             "loadCharacterBuildLibrary",
             "saveCharacterBuildLibrary"
           ],
+          "failurePaths": [
+            {
+              "in": "loadCharacterBuildLibrary",
+              "kind": "catch",
+              "line": 98
+            },
+            {
+              "in": "saveCharacterBuildLibrary",
+              "kind": "catch",
+              "line": 106
+            }
+          ],
           "hash": "688d4a1ade192a679c4890cfa2a0ff9526492c594e3870af7e07683b36cb36d9",
           "importsFiles": [
             "packages/domain/src/index.ts",
@@ -3081,7 +4733,8 @@
           "importsFiles": [
             "apps/desktop/src/lib/comfyuiWorkflows.ts"
           ],
-          "path": "apps/desktop/src/lib/comfyuiWorkflows.test.ts"
+          "path": "apps/desktop/src/lib/comfyuiWorkflows.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3095,6 +4748,18 @@
             "loadExportSettings",
             "saveExportSettings"
           ],
+          "failurePaths": [
+            {
+              "in": "loadExportSettings",
+              "kind": "catch",
+              "line": 45
+            },
+            {
+              "in": "saveExportSettings",
+              "kind": "catch",
+              "line": 55
+            }
+          ],
           "hash": "3570f28042444e114512cbeb766e78e9f7a3202349f864e97597ca4678f9f055",
           "importsFiles": [
             "packages/domain/src/index.ts"
@@ -3106,6 +4771,18 @@
             "loadPackLibrary",
             "savePackLibrary"
           ],
+          "failurePaths": [
+            {
+              "in": "loadPackLibrary",
+              "kind": "catch",
+              "line": 45
+            },
+            {
+              "in": "savePackLibrary",
+              "kind": "catch",
+              "line": 53
+            }
+          ],
           "hash": "fbb125522d44d61828694000ab900298d444e643742a6b7f11022c0eebff0932",
           "importsFiles": [
             "packages/state/src/index.ts"
@@ -3116,6 +4793,18 @@
           "exports": [
             "loadPackagingSettings",
             "savePackagingSettings"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadPackagingSettings",
+              "kind": "catch",
+              "line": 46
+            },
+            {
+              "in": "savePackagingSettings",
+              "kind": "catch",
+              "line": 56
+            }
           ],
           "hash": "6227cfdeeb59abc2334549616b1290763ed79229fbcdec82e3d7415ca87ea7e2",
           "importsFiles": [
@@ -3135,12 +4824,25 @@
             "packages/domain/src/index.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/lib/partLibraryStorage.test.ts"
+          "path": "apps/desktop/src/lib/partLibraryStorage.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "loadPartLibrary",
             "savePartLibrary"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadPartLibrary",
+              "kind": "catch",
+              "line": 64
+            },
+            {
+              "in": "savePartLibrary",
+              "kind": "catch",
+              "line": 72
+            }
           ],
           "hash": "67374f18f82addb22d791d2acebf7ff0cdfb6aa84f54c9442c313c358307c4b7",
           "importsFiles": [
@@ -3152,6 +4854,13 @@
         {
           "exports": [
             "seedSampleContentIfNeeded"
+          ],
+          "failurePaths": [
+            {
+              "in": "seedSampleContentIfNeeded",
+              "kind": "catch",
+              "line": 47
+            }
           ],
           "hash": "e24a469c2c249d790c9168f48f422449e0d01b05d59beb7012ed6cc4acbc558e",
           "importOrder": [
@@ -3171,7 +4880,8 @@
           "importsFiles": [
             "apps/desktop/src/lib/spriteTemplateLibrary.ts"
           ],
-          "path": "apps/desktop/src/lib/spriteTemplateLibrary.test.ts"
+          "path": "apps/desktop/src/lib/spriteTemplateLibrary.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3197,12 +4907,20 @@
             "apps/desktop/src/lib/spriteTemplateRenderer.ts",
             "packages/domain/src/index.ts"
           ],
-          "path": "apps/desktop/src/lib/spriteTemplateRenderer.test.ts"
+          "path": "apps/desktop/src/lib/spriteTemplateRenderer.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "renderTemplate",
             "resolveTemplate"
+          ],
+          "failurePaths": [
+            {
+              "in": "renderTemplate",
+              "kind": "throw",
+              "line": 126
+            }
           ],
           "hash": "46332b6c382a86c62d9b7999ea119168aa5d2d47225a74bf6edf1300443fa341",
           "importOrder": [
@@ -3235,6 +4953,18 @@
             "loadTemplateLibrary",
             "saveTemplateLibrary"
           ],
+          "failurePaths": [
+            {
+              "in": "loadTemplateLibrary",
+              "kind": "catch",
+              "line": 45
+            },
+            {
+              "in": "saveTemplateLibrary",
+              "kind": "catch",
+              "line": 53
+            }
+          ],
           "hash": "6f522452077d24feb42501a61f21ba563046bae8cfad37cee1fe461042262815",
           "importsFiles": [
             "packages/state/src/index.ts"
@@ -3255,11 +4985,64 @@
             "apps/desktop/src/lib/useCanvasPointerHandlers.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "apps/desktop/src/lib/useCanvasPointerHandlers.test.ts"
+          "path": "apps/desktop/src/lib/useCanvasPointerHandlers.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "useCanvasPointerHandlers"
+          ],
+          "failurePaths": [
+            {
+              "in": "useCanvasPointerHandlers",
+              "kind": "catch",
+              "line": 184
+            },
+            {
+              "in": "useCanvasPointerHandlers",
+              "kind": "catch",
+              "line": 228
+            },
+            {
+              "in": "useCanvasPointerHandlers",
+              "kind": "catch",
+              "line": 253
+            },
+            {
+              "in": "useCanvasPointerHandlers",
+              "kind": "catch",
+              "line": 270
+            },
+            {
+              "in": "useCanvasPointerHandlers",
+              "kind": "catch",
+              "line": 288
+            },
+            {
+              "in": "useCanvasPointerHandlers",
+              "kind": "catch",
+              "line": 320
+            },
+            {
+              "in": "useCanvasPointerHandlers",
+              "kind": "catch",
+              "line": 356
+            },
+            {
+              "in": "useCanvasPointerHandlers",
+              "kind": "catch",
+              "line": 410
+            },
+            {
+              "in": "useCanvasPointerHandlers",
+              "kind": "catch",
+              "line": 652
+            },
+            {
+              "in": "useCanvasPointerHandlers",
+              "kind": "catch",
+              "line": 693
+            }
           ],
           "hash": "fb5fd1ce23ed58dabbb96f6d325ddf76bc08642c6a38348ee73738b458e82e75",
           "importOrder": [
@@ -3301,22 +5084,26 @@
             "useComponentTestLifecycle"
           ],
           "hash": "208c942789033a5b363891e1a73e59cdf05b4e37cd127ad05f5fa2fc2c8830fc",
-          "path": "apps/desktop/src/test/helpers.ts"
+          "path": "apps/desktop/src/test/helpers.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "338e119ca7b1c22335ec3692c0083d9df671518ba99c70e87b546cdf8a62f7af",
-          "path": "apps/desktop/src/test/setup.ts"
+          "path": "apps/desktop/src/test/setup.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4f255c21dc16a43b4e34dc878091819850180c06367f3b659e0163a41ed2c5f4",
-          "path": "apps/desktop/src/test/smoke.test.ts"
+          "path": "apps/desktop/src/test/smoke.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "90c321debd0b33d5358278c94afc1e9a2c0462735138d0528c84baa5cdec351a",
           "importsFiles": [
             "apps/desktop/src/workflows/definitions.ts"
           ],
-          "path": "apps/desktop/src/workflows/definitions.test.ts"
+          "path": "apps/desktop/src/workflows/definitions.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5f69dc633d8b97fb901fce7e62e041c58d88109590473d0d75e8a613219058e0",
@@ -3328,6 +5115,53 @@
         {
           "exports": [
             "executeWorkflow"
+          ],
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 60
+            },
+            {
+              "kind": "catch",
+              "line": 69
+            },
+            {
+              "kind": "catch",
+              "line": 100
+            },
+            {
+              "kind": "catch",
+              "line": 109
+            },
+            {
+              "kind": "catch",
+              "line": 127
+            },
+            {
+              "kind": "catch",
+              "line": 158
+            },
+            {
+              "kind": "catch",
+              "line": 167
+            },
+            {
+              "kind": "catch",
+              "line": 183
+            },
+            {
+              "kind": "catch",
+              "line": 227
+            },
+            {
+              "kind": "catch",
+              "line": 242
+            },
+            {
+              "in": "executeWorkflow",
+              "kind": "catch",
+              "line": 291
+            }
           ],
           "hash": "e3b544d79cfef83e19402f3639386ea5f73e9b0b30760c9bc108576e6ebb3ed0",
           "importOrder": [
@@ -3352,6 +5186,9 @@
           "hash": "c024d3d699900bb232c5e25b41edf0b74572766621190ca17eb43d44183fba78",
           "path": "apps/desktop/vitest.config.ts"
         }
+      ],
+      "frameworks": [
+        "tauri"
       ],
       "globs": [
         "apps/desktop/**"
@@ -4315,7 +6152,12 @@
         },
         {
           "hash": "3c2d898a5818d86cd6379722241cca3235c8183ed24cd94df6d93930ab30b824",
-          "path": "packages/domain/src/ciGates.test.ts"
+          "names": [
+            "apps/desktop/src/components/Canvas.tsx",
+            "apps/desktop/src/lib/useCanvasPointerHandlers.ts"
+          ],
+          "path": "packages/domain/src/ciGates.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "43d531e693e36b0e706c8be6691da9471ad19c06e48196723d00c1d4fa6b3ad2",
@@ -4465,7 +6307,8 @@
           "importsFiles": [
             "packages/domain/src/shortcutManifest.ts"
           ],
-          "path": "packages/domain/src/shortcutManifest.test.ts"
+          "path": "packages/domain/src/shortcutManifest.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "34ce62baf2c0dbd39da8e70b856f228773260b481b4d03f1faa4ee675cb9e22c",
@@ -4479,12 +6322,20 @@
           "importsFiles": [
             "packages/domain/src/sizeProfile.ts"
           ],
-          "path": "packages/domain/src/sizeProfile.test.ts"
+          "path": "packages/domain/src/sizeProfile.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "createSizeProfile",
             "generateSizeProfileId"
+          ],
+          "failurePaths": [
+            {
+              "in": "createSizeProfile",
+              "kind": "throw",
+              "line": 88
+            }
           ],
           "hash": "5657397a0895fa80e37d5200a991f9fae6df6738a1ba828e44770f715a76ed6e",
           "path": "packages/domain/src/sizeProfile.ts"
@@ -4498,7 +6349,8 @@
           "importsFiles": [
             "packages/domain/src/sprite.ts"
           ],
-          "path": "packages/domain/src/sprite.test.ts"
+          "path": "packages/domain/src/sprite.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -4536,7 +6388,8 @@
           "importsFiles": [
             "packages/domain/src/vector.ts"
           ],
-          "path": "packages/domain/src/vector.test.ts"
+          "path": "packages/domain/src/vector.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -4559,6 +6412,63 @@
             "pathMovePoint",
             "pathSetPointType",
             "pathToggleClosed"
+          ],
+          "failurePaths": [
+            {
+              "in": "createPolygonShape",
+              "kind": "throw",
+              "line": 411
+            },
+            {
+              "in": "createPathShape",
+              "kind": "throw",
+              "line": 437
+            },
+            {
+              "in": "createPathShape",
+              "kind": "throw",
+              "line": 441
+            },
+            {
+              "in": "pathAddPoint",
+              "kind": "throw",
+              "line": 576
+            },
+            {
+              "in": "pathMovePoint",
+              "kind": "throw",
+              "line": 627
+            },
+            {
+              "in": "pathDeletePoint",
+              "kind": "throw",
+              "line": 641
+            },
+            {
+              "in": "pathDeletePoint",
+              "kind": "throw",
+              "line": 644
+            },
+            {
+              "in": "pathSetPointType",
+              "kind": "throw",
+              "line": 685
+            },
+            {
+              "in": "pathConvertSegment",
+              "kind": "throw",
+              "line": 701
+            },
+            {
+              "in": "pathMoveControlPoint",
+              "kind": "throw",
+              "line": 747
+            },
+            {
+              "in": "pathMoveControlPoint",
+              "kind": "throw",
+              "line": 751
+            }
           ],
           "hash": "b5ee403ddcd8c1ebbeeeb5ce0d7f93c097d23d961bec94391b31e8ac882a3936",
           "path": "packages/domain/src/vector.ts"
@@ -4587,6 +6497,9 @@
       "name": "domain",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 140,
       "unresolvedSites": 0
     },
@@ -4840,7 +6753,8 @@
           "importsFiles": [
             "packages/mcp-sprite-server/src/adapters/storeAdapter.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.drawing.test.ts"
+          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.drawing.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d1a07753c58a5b2cb221e64014dbd127ec97841f9c43b622adb4d415a70d16d6",
@@ -4848,7 +6762,8 @@
             "packages/mcp-sprite-server/src/adapters/storeAdapter.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.history.test.ts"
+          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.history.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "80816f6d89e31e6792428cb7959f691e76a4bc7a8a9462982e5de82e2652ae40",
@@ -4856,49 +6771,56 @@
             "packages/mcp-sprite-server/src/adapters/storeAdapter.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.mcp4.test.ts"
+          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.mcp4.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e51d2c9176fa3b775f9c7d95d8070952162e93f9b8034f7f869d8c3e3d68b430",
           "importsFiles": [
             "packages/mcp-sprite-server/src/adapters/storeAdapter.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.playback.test.ts"
+          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.playback.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f27950c0633a40b0a6a5b9de1720ed60d628270af58328a925e581ef1ec5ff7e",
           "importsFiles": [
             "packages/mcp-sprite-server/src/adapters/storeAdapter.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.render.test.ts"
+          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.render.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "bdcc8bd7c8f2ea520a8f8ffb60a4ae737aba9872745ac07cc2065275ba0c5919",
           "importsFiles": [
             "packages/mcp-sprite-server/src/adapters/storeAdapter.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.selection.test.ts"
+          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.selection.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "94730b4088ed62846e39be60811ef4932debd4e61a740c737d0b6569200b02de",
           "importsFiles": [
             "packages/mcp-sprite-server/src/adapters/storeAdapter.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.state.test.ts"
+          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.state.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1283d687251719f4a4829dbef3afd9529cb9f6158a4a3082925d0cc5818e1d5c",
           "importsFiles": [
             "packages/mcp-sprite-server/src/adapters/storeAdapter.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.test.ts"
+          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1b1372fd1d24f1192a135afbbb535c42b51d7d94365a2284924bac224ee03643",
           "importsFiles": [
             "packages/mcp-sprite-server/src/adapters/storeAdapter.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.toolSettings.test.ts"
+          "path": "packages/mcp-sprite-server/src/adapters/storeAdapter.toolSettings.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -4976,6 +6898,13 @@
             "storeToggleLayerVisibility",
             "storeUndo"
           ],
+          "failurePaths": [
+            {
+              "in": "storeSaveDocument",
+              "kind": "catch",
+              "line": 246
+            }
+          ],
           "hash": "9a6b4ac28304291b9dc84f65a1c1eb3eb2e558dd1c596e0c919b92b236b6fd88",
           "importsFiles": [
             "packages/domain/src/index.ts",
@@ -5002,7 +6931,8 @@
             "packages/mcp-sprite-server/src/adapters/storeAdapter.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/dogfood/benchmarkPack.test.ts"
+          "path": "packages/mcp-sprite-server/src/dogfood/benchmarkPack.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a5df751a630736580df118975fdf1cfbd513c1ced0dfc2f1a53f902d3b9bf330",
@@ -5016,7 +6946,8 @@
             "packages/mcp-sprite-server/src/adapters/storeAdapter.ts",
             "packages/state/src/index.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/dogfood/materialize.test.ts"
+          "path": "packages/mcp-sprite-server/src/dogfood/materialize.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "35705e3b922d7d1da3707c234b4e68dd9af64e63ca30ef75d6a71df69a764c96",
@@ -5042,7 +6973,8 @@
           "importsFiles": [
             "packages/mcp-sprite-server/src/server.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/resources/catalogResource.test.ts"
+          "path": "packages/mcp-sprite-server/src/resources/catalogResource.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5124,7 +7056,8 @@
             "packages/mcp-sprite-server/src/server.ts",
             "packages/mcp-sprite-server/src/session/sessionManager.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/server.test.ts"
+          "path": "packages/mcp-sprite-server/src/server.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5185,7 +7118,8 @@
             "packages/mcp-sprite-server/src/adapters/storeAdapter.ts",
             "packages/mcp-sprite-server/src/session/sessionManager.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/session/sessionManager.test.ts"
+          "path": "packages/mcp-sprite-server/src/session/sessionManager.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "902fdd44b26b0569119d620cfd33a8d5d769fe847cba20c7e31e3d7104beeb87",
@@ -5221,7 +7155,8 @@
             "packages/mcp-sprite-server/src/server.ts",
             "packages/mcp-sprite-server/src/tools/shared.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/tools/conformance.test.ts"
+          "path": "packages/mcp-sprite-server/src/tools/conformance.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5374,6 +7309,13 @@
           "exports": [
             "registerRenderTools"
           ],
+          "failurePaths": [
+            {
+              "in": "registerRenderTools",
+              "kind": "catch",
+              "line": 139
+            }
+          ],
           "hash": "403b81957f5d5d57292f839a774aa088d4bc61cbf0b6c52bdc1a4c12515e9687",
           "importOrder": [
             "packages/mcp-sprite-server/src/session/sessionManager.ts",
@@ -5436,7 +7378,8 @@
           "importsFiles": [
             "packages/mcp-sprite-server/src/server.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/tools/shared.test.ts"
+          "path": "packages/mcp-sprite-server/src/tools/shared.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5444,6 +7387,13 @@
             "normalizeToolCallResult",
             "requireSession",
             "resolveFrameIndex"
+          ],
+          "failurePaths": [
+            {
+              "in": "normalizeToolCallResult",
+              "kind": "catch",
+              "line": 67
+            }
           ],
           "hash": "3dd2b1d37b0e07853579c4a64b7c6a44812d128af49cb611332df5f23933cdfd",
           "importOrder": [
@@ -5468,7 +7418,8 @@
             "packages/mcp-sprite-server/src/server.ts",
             "packages/mcp-sprite-server/src/tools/shared.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/tools/structuredErrors.test.ts"
+          "path": "packages/mcp-sprite-server/src/tools/structuredErrors.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5517,7 +7468,8 @@
           "importsFiles": [
             "packages/mcp-sprite-server/src/version.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/version.test.ts"
+          "path": "packages/mcp-sprite-server/src/version.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c6c3f73573f073e2f7556f0b714db1dae316355062ca83ce809a1d2ac9fac41e",
@@ -5535,7 +7487,8 @@
             "packages/mcp-sprite-server/src/workflows/runner.ts",
             "packages/mcp-sprite-server/src/workflows/types.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/workflows/cleanupSheet.test.ts"
+          "path": "packages/mcp-sprite-server/src/workflows/cleanupSheet.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "203d6c7d8f13317c9941c783d8ffb5648195d58163e6f16a54294db08ccfed01",
@@ -5562,7 +7515,8 @@
             "packages/mcp-sprite-server/src/workflows/verify.ts",
             "packages/mcp-sprite-server/src/workflows/walkCycle.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/workflows/generateGoldens.test.ts"
+          "path": "packages/mcp-sprite-server/src/workflows/generateGoldens.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ed6cce8a6528b7c23bbe1d5f3c1d85c5a2078b2cb5ae6e4f1409f3b186da95c3",
@@ -5591,11 +7545,19 @@
             "packages/mcp-sprite-server/src/workflows/types.ts",
             "packages/mcp-sprite-server/src/workflows/verify.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/workflows/runner.test.ts"
+          "path": "packages/mcp-sprite-server/src/workflows/runner.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "runWorkflow"
+          ],
+          "failurePaths": [
+            {
+              "in": "callTool",
+              "kind": "throw",
+              "line": 84
+            }
           ],
           "hash": "e73034ed96dc7ef85b7f65fb43159f14bc82be67be00c32c32e8eb5cc28cc980",
           "importOrder": [
@@ -5617,7 +7579,8 @@
             "packages/mcp-sprite-server/src/workflows/stressTest.ts",
             "packages/mcp-sprite-server/src/workflows/types.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/workflows/stressTest.test.ts"
+          "path": "packages/mcp-sprite-server/src/workflows/stressTest.test.ts",
+          "testFramework": "vitest"
         },
         {
           "constantOnly": true,
@@ -5635,6 +7598,13 @@
           "exports": [
             "updateGoldens",
             "verifyGoldens"
+          ],
+          "failurePaths": [
+            {
+              "in": "fileExists",
+              "kind": "catch",
+              "line": 231
+            }
           ],
           "hash": "23c7732bf531630cd4c0b32a44be2b9ce1ab1edf26df020d3b9c12331399664b",
           "importsFiles": [
@@ -5654,7 +7624,8 @@
             "packages/mcp-sprite-server/src/workflows/types.ts",
             "packages/mcp-sprite-server/src/workflows/walkCycle.ts"
           ],
-          "path": "packages/mcp-sprite-server/src/workflows/walkCycle.test.ts"
+          "path": "packages/mcp-sprite-server/src/workflows/walkCycle.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "28d0f867548eba08da77196f9b6ae19e4bc112bf595a89c7ec33f2fa0543be41",
@@ -5671,6 +7642,9 @@
           "hash": "a7428a670220103d5eac8c2d8d005e6f6aa365a28dfab3afae53ae223711cb2b",
           "path": "packages/mcp-sprite-server/tsconfig.json"
         }
+      ],
+      "frameworks": [
+        "mcp"
       ],
       "globs": [
         "packages/mcp-sprite-server/**"
@@ -5690,6 +7664,9 @@
       "outsideReads": 1,
       "outsideWrites": 4,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 23,
       "unresolvedSites": 0
     },
@@ -5813,6 +7790,22 @@
       "externals": 0,
       "files": [
         {
+          "failurePaths": [
+            {
+              "in": "upscalePng",
+              "kind": "catch",
+              "line": 58
+            },
+            {
+              "in": "critiqueSprite",
+              "kind": "throw",
+              "line": 108
+            },
+            {
+              "kind": "catch",
+              "line": 161
+            }
+          ],
           "hash": "91275041f282c467955c78572a42fa1115da515d1994b7b04b3a72b2fc01f879",
           "path": "scripts/critique-sprite.mjs"
         },
@@ -5841,6 +7834,32 @@
           "path": "scripts/dogfood-45-feedback.mjs"
         },
         {
+          "failurePaths": [
+            {
+              "in": "callOllama",
+              "kind": "throw",
+              "line": 118
+            },
+            {
+              "in": "extractJson",
+              "kind": "catch",
+              "line": 124
+            },
+            {
+              "in": "extractJson",
+              "kind": "catch",
+              "line": 126
+            },
+            {
+              "in": "extractJson",
+              "kind": "catch",
+              "line": 129
+            },
+            {
+              "kind": "catch",
+              "line": 214
+            }
+          ],
           "hash": "6be3319dc36beacb552f741d4a0c4835a1c96dafb019ce4ad690700324556263",
           "path": "scripts/dogfood-47-ollama.mjs"
         },
@@ -5865,18 +7884,57 @@
           "path": "scripts/showcase-46.mjs"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 140
+            },
+            {
+              "kind": "catch",
+              "line": 142
+            }
+          ],
           "hash": "cda0c8b5d05b8a1f9c05b4ec9685172570b6fbe9757f6fb61169d851953c95eb",
           "path": "scripts/test-47a-prompt.mjs"
         },
         {
+          "failurePaths": [
+            {
+              "in": "extractJson",
+              "kind": "catch",
+              "line": 82
+            },
+            {
+              "in": "extractJson",
+              "kind": "catch",
+              "line": 84
+            },
+            {
+              "in": "extractJson",
+              "kind": "catch",
+              "line": 86
+            }
+          ],
           "hash": "54a2dada5844853c6bc6e64d123a78106e8539a52424250e4fd04064b24dab81",
           "path": "scripts/test-47b-critique-loop.mjs"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 349
+            }
+          ],
           "hash": "64c7826bdbd579db86114a0a2f40fe827352de05be9a4dc4ab5ffe04bb5f5865",
           "path": "scripts/translate-character.mjs"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 369
+            }
+          ],
           "hash": "def0be1b3571804cd5924b35d8343ed6795d27f9cefd684ec8ff34a79de15e9a",
           "path": "scripts/translate-prop.mjs"
         }
@@ -6101,7 +8159,8 @@
           "importsFiles": [
             "packages/state/src/aiStore.ts"
           ],
-          "path": "packages/state/src/aiStore.test.ts"
+          "path": "packages/state/src/aiStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1c785c4b81980edf917f70d7de674747975cc326fc5eb73a682e089a11a57b91",
@@ -6120,7 +8179,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/anchorStore.ts"
           ],
-          "path": "packages/state/src/anchorStore.test.ts"
+          "path": "packages/state/src/anchorStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7b9051eac3b29a9bbfb56a96f59dcde3e12ddebe513f91d7cd9b5886f28a302b",
@@ -6138,7 +8198,8 @@
           "importsFiles": [
             "packages/state/src/brushSettingsStore.ts"
           ],
-          "path": "packages/state/src/brushSettingsStore.test.ts"
+          "path": "packages/state/src/brushSettingsStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a7880d4f5b54e092a84be9ea213445344897b6e37ebd37782abac34579604ad5",
@@ -6156,7 +8217,8 @@
             "packages/state/src/bundleExport.ts",
             "packages/state/src/spriteRaster.ts"
           ],
-          "path": "packages/state/src/bundleExport.test.ts"
+          "path": "packages/state/src/bundleExport.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6190,14 +8252,16 @@
             "packages/domain/src/index.ts",
             "packages/state/src/scenePlaybackStore.ts"
           ],
-          "path": "packages/state/src/cameraTimelineHelpers.test.ts"
+          "path": "packages/state/src/cameraTimelineHelpers.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0bae0d1679abe0ed683f8bcf9bbe6f4a85d3fc76538af40f1292fe0f14542a67",
           "importsFiles": [
             "packages/state/src/canvasViewStore.ts"
           ],
-          "path": "packages/state/src/canvasViewStore.test.ts"
+          "path": "packages/state/src/canvasViewStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7aa2e309131c086bbbdcbb5f94f5818c8dc46c4d9e19f598d7ab3593adde0465",
@@ -6209,7 +8273,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/characterBuildLibrary.ts"
           ],
-          "path": "packages/state/src/characterBuildLibrary.test.ts"
+          "path": "packages/state/src/characterBuildLibrary.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6238,7 +8303,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/characterBuildLibrary.ts"
           ],
-          "path": "packages/state/src/characterBuildStorage.test.ts"
+          "path": "packages/state/src/characterBuildStorage.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "900315ec28a574efc0b1eca3cf5054759f43dc2c1d89df63d3fd9a3853ae2584",
@@ -6246,7 +8312,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/characterHelpers.ts"
           ],
-          "path": "packages/state/src/characterHelpers.test.ts"
+          "path": "packages/state/src/characterHelpers.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6273,7 +8340,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/characterPresetHelpers.ts"
           ],
-          "path": "packages/state/src/characterPresetHelpers.test.ts"
+          "path": "packages/state/src/characterPresetHelpers.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6300,7 +8368,8 @@
             "packages/state/src/characterBuildLibrary.ts",
             "packages/state/src/characterSceneBridge.ts"
           ],
-          "path": "packages/state/src/characterSceneBridge.test.ts"
+          "path": "packages/state/src/characterSceneBridge.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6350,7 +8419,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/characterStore.ts"
           ],
-          "path": "packages/state/src/characterStore.test.ts"
+          "path": "packages/state/src/characterStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6380,7 +8450,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/collapseOverlay.ts"
           ],
-          "path": "packages/state/src/collapseOverlay.test.ts"
+          "path": "packages/state/src/collapseOverlay.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6398,7 +8469,8 @@
           "importsFiles": [
             "packages/state/src/contextualShortcuts.ts"
           ],
-          "path": "packages/state/src/contextualShortcuts.test.ts"
+          "path": "packages/state/src/contextualShortcuts.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6409,7 +8481,8 @@
         },
         {
           "hash": "badfb3f3b4068993b127dbf47a9b4fe9b922560dd26c8e89f5400e94d745ed70",
-          "path": "packages/state/src/contractParity.test.ts"
+          "path": "packages/state/src/contractParity.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "073b69d4ecba54d2dc4a1b8a81ead571259c8394a1b5d3d8dc0fbed91be43483",
@@ -6431,7 +8504,8 @@
             "packages/state/src/selectionStore.ts",
             "packages/state/src/timelineStore.ts"
           ],
-          "path": "packages/state/src/coordination.test.ts"
+          "path": "packages/state/src/coordination.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f9bfc494d6eb4cc87d498a381efe32c89254c0b6de39b345973b9d4277f5bf40",
@@ -6443,7 +8517,8 @@
             "packages/state/src/copilotAnalysis.ts",
             "packages/state/src/copilotContext.ts"
           ],
-          "path": "packages/state/src/copilotAnalysis.test.ts"
+          "path": "packages/state/src/copilotAnalysis.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6465,7 +8540,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/copilotContext.ts"
           ],
-          "path": "packages/state/src/copilotContext.test.ts"
+          "path": "packages/state/src/copilotContext.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6486,13 +8562,26 @@
             "packages/domain/src/index.ts",
             "packages/state/src/copilotVision.ts"
           ],
-          "path": "packages/state/src/copilotVision.test.ts"
+          "path": "packages/state/src/copilotVision.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "askVisionWhatDoesThisReadAs",
             "checkOllamaAvailability",
             "pixelBufferToBase64Png"
+          ],
+          "failurePaths": [
+            {
+              "in": "askVisionWhatDoesThisReadAs",
+              "kind": "catch",
+              "line": 257
+            },
+            {
+              "in": "checkOllamaAvailability",
+              "kind": "catch",
+              "line": 299
+            }
           ],
           "hash": "94fc458406c0e1690066c2f342fd24bf3a99675efe49d15f234f3a6dc9bed6a1",
           "importsFiles": [
@@ -6502,7 +8591,8 @@
         },
         {
           "hash": "2b9081e869118c015c54e4e88ab4f89bdcb64d1106bdf32bcd10cd9409ae6b16",
-          "path": "packages/state/src/exportSettings.test.ts"
+          "path": "packages/state/src/exportSettings.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1985f70c087144aaa9748941185f26b808d4cd3c625723a754d56f5130646b16",
@@ -6517,9 +8607,22 @@
           "importsFiles": [
             "packages/state/src/hintStore.ts"
           ],
-          "path": "packages/state/src/hintStore.test.ts"
+          "path": "packages/state/src/hintStore.test.ts",
+          "testFramework": "vitest"
         },
         {
+          "failurePaths": [
+            {
+              "in": "loadDismissed",
+              "kind": "catch",
+              "line": 16
+            },
+            {
+              "in": "saveDismissed",
+              "kind": "catch",
+              "line": 23
+            }
+          ],
           "hash": "21f4166347c10483cbbc34043e4916e681698299183962844f82be820033a0a5",
           "path": "packages/state/src/hintStore.ts"
         },
@@ -6714,7 +8817,8 @@
             "packages/state/src/selectionStore.ts",
             "packages/state/src/toolStore.ts"
           ],
-          "path": "packages/state/src/integration.test.ts"
+          "path": "packages/state/src/integration.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1323965b9306846393748dfcec78350174f3fa1f60eea7fc9856ec65af4777d5",
@@ -6723,7 +8827,8 @@
             "packages/state/src/interchange.ts",
             "packages/state/src/partLibrary.ts"
           ],
-          "path": "packages/state/src/interchange.test.ts"
+          "path": "packages/state/src/interchange.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6735,6 +8840,23 @@
             "parseInterchangeFile",
             "parsePack",
             "parseProjectTemplate"
+          ],
+          "failurePaths": [
+            {
+              "in": "parseInterchangeFile",
+              "kind": "catch",
+              "line": 157
+            },
+            {
+              "in": "parseProjectTemplate",
+              "kind": "catch",
+              "line": 359
+            },
+            {
+              "in": "parsePack",
+              "kind": "catch",
+              "line": 506
+            }
           ],
           "hash": "388bfbf702e906b19f35e10598eadce44542e7ecb2f7e9a516b5d07c1a822920",
           "importsFiles": [
@@ -6752,7 +8874,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/layerStore.ts"
           ],
-          "path": "packages/state/src/layerStore.test.ts"
+          "path": "packages/state/src/layerStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8886a7f75feeddfeff71f6b7ea3acbbe0e88c5bcc9a21aea2c69ebf3ba272403",
@@ -6773,7 +8896,8 @@
             "packages/state/src/libraryIndex.ts",
             "packages/state/src/partLibrary.ts"
           ],
-          "path": "packages/state/src/libraryIndex.test.ts"
+          "path": "packages/state/src/libraryIndex.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6794,7 +8918,8 @@
           "importsFiles": [
             "packages/state/src/libraryStore.ts"
           ],
-          "path": "packages/state/src/libraryStore.test.ts"
+          "path": "packages/state/src/libraryStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "fad07a64e8cf19ef9b9cbad3f1fa014aca5daec195529799248dc564a2300468",
@@ -6805,7 +8930,8 @@
           "importsFiles": [
             "packages/state/src/locomotionStore.ts"
           ],
-          "path": "packages/state/src/locomotionStore.test.ts"
+          "path": "packages/state/src/locomotionStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f9057a1f179df40b7b6cb54fce9bb1c9542ce60135809dbe149fc2de1016801b",
@@ -6824,7 +8950,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/motionStore.ts"
           ],
-          "path": "packages/state/src/motionStore.test.ts"
+          "path": "packages/state/src/motionStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "dcd6285b061b633a701118c1e4e91f72ecdd51b81410d520d483567e041c4846",
@@ -6838,7 +8965,8 @@
           "importsFiles": [
             "packages/state/src/ollamaGenerate.ts"
           ],
-          "path": "packages/state/src/ollamaGenerate.test.ts"
+          "path": "packages/state/src/ollamaGenerate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6848,6 +8976,48 @@
             "llmShapesToDocument",
             "refineShapesFromCritique",
             "shapesToProposalSet"
+          ],
+          "failurePaths": [
+            {
+              "in": "callOllamaText",
+              "kind": "catch",
+              "line": 342
+            },
+            {
+              "in": "callOllamaVision",
+              "kind": "catch",
+              "line": 384
+            },
+            {
+              "in": "extractJson",
+              "kind": "catch",
+              "line": 408
+            },
+            {
+              "in": "extractJson",
+              "kind": "catch",
+              "line": 413
+            },
+            {
+              "in": "extractJson",
+              "kind": "catch",
+              "line": 421
+            },
+            {
+              "in": "generateShapesFromDescription",
+              "kind": "catch",
+              "line": 613
+            },
+            {
+              "in": "critiqueRenderedSprite",
+              "kind": "catch",
+              "line": 658
+            },
+            {
+              "in": "refineShapesFromCritique",
+              "kind": "catch",
+              "line": 714
+            }
           ],
           "hash": "e0600dfc465eccee5df0e74022e6943696a1730e2860761fd1ec7070bda426ed",
           "importOrder": [
@@ -6867,7 +9037,8 @@
           "importsFiles": [
             "packages/state/src/packLibrary.ts"
           ],
-          "path": "packages/state/src/packLibrary.test.ts"
+          "path": "packages/state/src/packLibrary.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6884,7 +9055,8 @@
         },
         {
           "hash": "a9933b4dc07c34e7ee29ef7b1d5610b480dd417d54bd2487e76f4bca6e970bd0",
-          "path": "packages/state/src/packagingSettings.test.ts"
+          "path": "packages/state/src/packagingSettings.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9e775f712cfcd6e6497f3db6f8c0fed6ebe6b0ed2102aaed4d79e0012f3c108b",
@@ -6898,7 +9070,8 @@
             "packages/state/src/paletteRemap.ts",
             "packages/state/src/spriteRaster.ts"
           ],
-          "path": "packages/state/src/paletteRemap.test.ts"
+          "path": "packages/state/src/paletteRemap.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6924,7 +9097,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/paletteStore.ts"
           ],
-          "path": "packages/state/src/paletteStore.test.ts"
+          "path": "packages/state/src/paletteStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8cd7d907f644b7fe09371d051341a69a8d7d8df3c90e4a525162cede29f1aedb",
@@ -6939,7 +9113,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/partLibrary.ts"
           ],
-          "path": "packages/state/src/partLibrary.test.ts"
+          "path": "packages/state/src/partLibrary.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6972,7 +9147,8 @@
             "packages/state/src/partPromotion.ts",
             "packages/state/src/spriteRaster.ts"
           ],
-          "path": "packages/state/src/partPromotion.test.ts"
+          "path": "packages/state/src/partPromotion.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6991,14 +9167,16 @@
             "packages/state/src/spritePersistence.ts",
             "packages/state/src/spriteRaster.ts"
           ],
-          "path": "packages/state/src/persistenceHardening.test.ts"
+          "path": "packages/state/src/persistenceHardening.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "426e1b447a29c14da2a2e315b1ee955fdb2e6e703f6465acb9f32370bb88671c",
           "importsFiles": [
             "packages/state/src/projectStore.ts"
           ],
-          "path": "packages/state/src/projectStore.test.ts"
+          "path": "packages/state/src/projectStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7ec8c54e3d6a3c9a209da81d3abe80aa9a167d1822ecdd84422082020f08cde6",
@@ -7021,12 +9199,25 @@
             "packages/state/src/proposalModel.ts",
             "packages/state/src/vectorMasterStore.ts"
           ],
-          "path": "packages/state/src/proposalApply.test.ts"
+          "path": "packages/state/src/proposalApply.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "applyProposal",
             "duplicateProposalToGroup"
+          ],
+          "failurePaths": [
+            {
+              "in": "applyProposal",
+              "kind": "catch",
+              "line": 108
+            },
+            {
+              "in": "duplicateProposalToGroup",
+              "kind": "catch",
+              "line": 181
+            }
           ],
           "hash": "371da9247f4271ee257195af5b9a0374ff7d75b8fe4ee051c8e39514a746461d",
           "importsFiles": [
@@ -7041,7 +9232,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/proposalGenerate.ts"
           ],
-          "path": "packages/state/src/proposalGenerate.test.ts"
+          "path": "packages/state/src/proposalGenerate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7067,7 +9259,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/proposalModel.ts"
           ],
-          "path": "packages/state/src/proposalModel.test.ts"
+          "path": "packages/state/src/proposalModel.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7099,7 +9292,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/provenanceStore.ts"
           ],
-          "path": "packages/state/src/provenanceStore.test.ts"
+          "path": "packages/state/src/provenanceStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "71f8d8576333ce3d37ecf6d51650f5b24ae8b4d8f69e0295633dabf1d64a5df0",
@@ -7117,7 +9311,8 @@
           "importsFiles": [
             "packages/state/src/referenceStore.ts"
           ],
-          "path": "packages/state/src/referenceStore.test.ts"
+          "path": "packages/state/src/referenceStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3958c2e55ec403a2bd9fa2302fd74963d4396ce4f8da395b468c62e74cdc27c0",
@@ -7133,7 +9328,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/scenePlaybackStore.ts"
           ],
-          "path": "packages/state/src/resolveCameraAtTick.test.ts"
+          "path": "packages/state/src/resolveCameraAtTick.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "164987f1ff03e7b31e3393da3cfb58f16eca626abbaa08a52128f48a34a2eae2",
@@ -7145,7 +9341,8 @@
             "packages/state/src/interchange.ts",
             "packages/state/src/sampleContent.ts"
           ],
-          "path": "packages/state/src/sampleContent.test.ts"
+          "path": "packages/state/src/sampleContent.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1f518517c42d83714f97ee5780a62c4331cbf9ededba2db3c5ac51f61405c1a5",
@@ -7166,7 +9363,8 @@
           "importsFiles": [
             "packages/state/src/sandboxStore.ts"
           ],
-          "path": "packages/state/src/sandboxStore.test.ts"
+          "path": "packages/state/src/sandboxStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9c41809ee532ddef5528d60878a6737d0a56c669d679444d2bf98e31ead847d1",
@@ -7189,7 +9387,8 @@
             "packages/state/src/sceneProvenance.ts",
             "packages/state/src/sceneProvenanceDrilldown.ts"
           ],
-          "path": "packages/state/src/sceneComparison.test.ts"
+          "path": "packages/state/src/sceneComparison.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7220,7 +9419,8 @@
             "packages/state/src/sceneProvenance.ts",
             "packages/state/src/sceneProvenanceDrilldown.ts"
           ],
-          "path": "packages/state/src/sceneEditorStore.test.ts"
+          "path": "packages/state/src/sceneEditorStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "893fd3590fce94d6de722291586d6824d6e58b24052f917606b51c31079a1762",
@@ -7240,7 +9440,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/sceneHistory.ts"
           ],
-          "path": "packages/state/src/sceneHistory.test.ts"
+          "path": "packages/state/src/sceneHistory.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7267,7 +9468,8 @@
             "packages/state/src/sceneHistory.ts",
             "packages/state/src/sceneHistoryEngine.ts"
           ],
-          "path": "packages/state/src/sceneHistoryEngine.test.ts"
+          "path": "packages/state/src/sceneHistoryEngine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7297,7 +9499,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/scenePlaybackStore.ts"
           ],
-          "path": "packages/state/src/scenePlaybackStore.test.ts"
+          "path": "packages/state/src/scenePlaybackStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7323,7 +9526,8 @@
             "packages/state/src/sceneHistory.ts",
             "packages/state/src/sceneProvenance.ts"
           ],
-          "path": "packages/state/src/sceneProvenance.test.ts"
+          "path": "packages/state/src/sceneProvenance.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7351,7 +9555,8 @@
             "packages/state/src/sceneProvenance.ts",
             "packages/state/src/sceneProvenanceDrilldown.ts"
           ],
-          "path": "packages/state/src/sceneProvenanceDrilldown.test.ts"
+          "path": "packages/state/src/sceneProvenanceDrilldown.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7373,7 +9578,8 @@
           "importsFiles": [
             "packages/domain/src/index.ts"
           ],
-          "path": "packages/state/src/sceneProvenancePersistence.test.ts"
+          "path": "packages/state/src/sceneProvenancePersistence.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7bc756b74b03d0ab2cd3858679307c75983d2830c8c60b83f02106bbe9724ea9",
@@ -7381,7 +9587,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/sceneRestore.ts"
           ],
-          "path": "packages/state/src/sceneRestore.test.ts"
+          "path": "packages/state/src/sceneRestore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7411,14 +9618,16 @@
             "packages/state/src/sampleContent.ts",
             "packages/state/src/templateLibrary.ts"
           ],
-          "path": "packages/state/src/seedingHardening.test.ts"
+          "path": "packages/state/src/seedingHardening.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0c3ff6d49bc79a272825b1ba3d8d5c82ff9e5b946f91dac6d0cc2f3e78ccec8c",
           "importsFiles": [
             "packages/state/src/selectionStore.ts"
           ],
-          "path": "packages/state/src/selectionStore.test.ts"
+          "path": "packages/state/src/selectionStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0b3210ea82a9efad293b95cba7e5f7b1addf1df810fb2157d8ae385f7d82881c",
@@ -7432,7 +9641,8 @@
           "importsFiles": [
             "packages/state/src/interchange.ts"
           ],
-          "path": "packages/state/src/showcase.test.ts"
+          "path": "packages/state/src/showcase.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "55d519c7f14444c66fd38531202a51011d1613d459326acb25f21d93da4b5519",
@@ -7446,7 +9656,8 @@
             "packages/state/src/canvasViewStore.ts",
             "packages/state/src/spriteRaster.ts"
           ],
-          "path": "packages/state/src/silhouette.test.ts"
+          "path": "packages/state/src/silhouette.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7c43064ad255b82888e41b208989f8141de366f599c951907411275c48322009",
@@ -7458,7 +9669,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/sizeProfileStore.ts"
           ],
-          "path": "packages/state/src/sizeProfileStore.test.ts"
+          "path": "packages/state/src/sizeProfileStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b80447d54321fda8da23ac4fc94ede0a15377faa73d19694828392069991797b",
@@ -7472,7 +9684,8 @@
           "importsFiles": [
             "packages/state/src/sketchDab.ts"
           ],
-          "path": "packages/state/src/sketchDab.test.ts"
+          "path": "packages/state/src/sketchDab.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7489,7 +9702,8 @@
             "packages/state/src/brushSettingsStore.ts",
             "packages/state/src/sketchDab.ts"
           ],
-          "path": "packages/state/src/sketchIntegration.test.ts"
+          "path": "packages/state/src/sketchIntegration.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6d8e94cdd40675b18de2361353e940bee9a0ceb79ee752871cd32f9dacbae733",
@@ -7503,21 +9717,24 @@
             "packages/state/src/layerStore.ts",
             "packages/state/src/spriteRaster.ts"
           ],
-          "path": "packages/state/src/sketchLayer.test.ts"
+          "path": "packages/state/src/sketchLayer.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "cda9b029ce58bed4da2165340f47390e2b76776839b71b5986fc2a1966ee9833",
           "importsFiles": [
             "packages/domain/src/index.ts"
           ],
-          "path": "packages/state/src/sketchTool.test.ts"
+          "path": "packages/state/src/sketchTool.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "15d3343171efb976d7f3b3fc36e0a91216aa378a602d42cb527e20695a8ca2f4",
           "importsFiles": [
             "packages/state/src/sliceStore.ts"
           ],
-          "path": "packages/state/src/sliceStore.test.ts"
+          "path": "packages/state/src/sliceStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b9ef84b78c1aa98de11ff61a1ed2b5c908f99b3c909af7840a480b5f23a0072b",
@@ -7528,7 +9745,8 @@
           "importsFiles": [
             "packages/state/src/snapshotStore.ts"
           ],
-          "path": "packages/state/src/snapshotStore.test.ts"
+          "path": "packages/state/src/snapshotStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "67599c77173ec303d08137511cf0f24a8b963b3a29b16dbd6fe65db74c1761c6",
@@ -7546,13 +9764,21 @@
             "packages/state/src/spriteAnalysis.ts",
             "packages/state/src/spriteRaster.ts"
           ],
-          "path": "packages/state/src/spriteAnalysis.test.ts"
+          "path": "packages/state/src/spriteAnalysis.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "analyzeSpriteBounds",
             "analyzeSpriteColors",
             "compareFrames"
+          ],
+          "failurePaths": [
+            {
+              "in": "compareFrames",
+              "kind": "throw",
+              "line": 163
+            }
           ],
           "hash": "1cb70505505b27fe3f9b1adc788ffb2bbd8b18b85dc027803bec9d0fa95c8614",
           "importsFiles": [
@@ -7577,9 +9803,17 @@
             "packages/state/src/spriteEditorStore.ts",
             "packages/state/src/spriteRaster.ts"
           ],
-          "path": "packages/state/src/spriteEditorStore.test.ts"
+          "path": "packages/state/src/spriteEditorStore.test.ts",
+          "testFramework": "vitest"
         },
         {
+          "failurePaths": [
+            {
+              "in": "saveDocument",
+              "kind": "catch",
+              "line": 391
+            }
+          ],
           "hash": "d76c7ca1d29d430d4dfbba7cec3578cb0d0d0d26de392a450ff8fe7044380b55",
           "importOrder": [
             "packages/domain/src/index.ts",
@@ -7609,7 +9843,8 @@
             "packages/state/src/spriteImportExport.ts",
             "packages/state/src/spriteRaster.ts"
           ],
-          "path": "packages/state/src/spriteExport.test.ts"
+          "path": "packages/state/src/spriteExport.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7659,7 +9894,8 @@
             "packages/state/src/spriteHistory.ts",
             "packages/state/src/spriteHistoryEngine.ts"
           ],
-          "path": "packages/state/src/spriteHistoryEngine.test.ts"
+          "path": "packages/state/src/spriteHistoryEngine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7685,7 +9921,8 @@
             "packages/state/src/spriteImportExport.ts",
             "packages/state/src/spriteRaster.ts"
           ],
-          "path": "packages/state/src/spriteImportExport.test.ts"
+          "path": "packages/state/src/spriteImportExport.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7707,7 +9944,8 @@
             "packages/state/src/spritePersistence.ts",
             "packages/state/src/spriteRaster.ts"
           ],
-          "path": "packages/state/src/spritePersistence.test.ts"
+          "path": "packages/state/src/spritePersistence.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7715,6 +9953,18 @@
             "deserializeSpriteFile",
             "encodePixelData",
             "serializeSpriteFile"
+          ],
+          "failurePaths": [
+            {
+              "in": "deserializeSpriteFile",
+              "kind": "catch",
+              "line": 96
+            },
+            {
+              "in": "deserializeSpriteFile",
+              "kind": "catch",
+              "line": 178
+            }
           ],
           "hash": "8aecb0e7b13027593fbdfc902b568862cd86c5f23b3a7d400e808ae27084f403",
           "importsFiles": [
@@ -7727,7 +9977,8 @@
           "importsFiles": [
             "packages/state/src/spriteRaster.ts"
           ],
-          "path": "packages/state/src/spriteRaster.removeCorners.test.ts"
+          "path": "packages/state/src/spriteRaster.removeCorners.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4683253242f2da3a6617f97f4540f616891fc4eb5de6186917125674d07651bc",
@@ -7735,7 +9986,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/spriteRaster.ts"
           ],
-          "path": "packages/state/src/spriteRaster.test.ts"
+          "path": "packages/state/src/spriteRaster.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7776,12 +10028,20 @@
             "packages/state/src/spriteRaster.ts",
             "packages/state/src/spriteTransform.ts"
           ],
-          "path": "packages/state/src/spriteTransform.test.ts"
+          "path": "packages/state/src/spriteTransform.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "resizeBuffer",
             "rotateBuffer"
+          ],
+          "failurePaths": [
+            {
+              "in": "resizeBuffer",
+              "kind": "throw",
+              "line": 82
+            }
           ],
           "hash": "782ddc6c111dee73a0addcf5a85fadfec7efd9e0d43b2507fdd8c72823471086",
           "importsFiles": [
@@ -7800,7 +10060,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/spriteValidation.ts"
           ],
-          "path": "packages/state/src/spriteValidation.test.ts"
+          "path": "packages/state/src/spriteValidation.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7822,7 +10083,8 @@
           "importsFiles": [
             "packages/state/src/starterRecipes.ts"
           ],
-          "path": "packages/state/src/starterRecipes.test.ts"
+          "path": "packages/state/src/starterRecipes.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7836,7 +10098,8 @@
           "importsFiles": [
             "packages/state/src/structuredValueSummary.ts"
           ],
-          "path": "packages/state/src/structuredValueSummary.test.ts"
+          "path": "packages/state/src/structuredValueSummary.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7863,14 +10126,16 @@
             "packages/domain/src/index.ts",
             "packages/state/src/layerStore.ts"
           ],
-          "path": "packages/state/src/syncLayers.test.ts"
+          "path": "packages/state/src/syncLayers.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a9cf06ec2105a2668e4f1273088a6f3152cd9b6d18e0bad6632dd73030ff12ea",
           "importsFiles": [
             "packages/state/src/templateLibrary.ts"
           ],
-          "path": "packages/state/src/templateLibrary.test.ts"
+          "path": "packages/state/src/templateLibrary.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7890,7 +10155,8 @@
           "importsFiles": [
             "packages/state/src/timelineStore.ts"
           ],
-          "path": "packages/state/src/timelineStore.test.ts"
+          "path": "packages/state/src/timelineStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3cc165c78230ce6c368083993e235ada64801d6620d00fb7b346dffda6320c3d",
@@ -7901,7 +10167,8 @@
           "importsFiles": [
             "packages/state/src/toolStore.ts"
           ],
-          "path": "packages/state/src/toolStore.test.ts"
+          "path": "packages/state/src/toolStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3c80f77b10d755e4bc75db1dc2c6b7c0c18a681b7e3c04fd5b508729bb3722c0",
@@ -7922,7 +10189,8 @@
             "packages/state/src/spriteRaster.ts",
             "packages/state/src/translationComparison.ts"
           ],
-          "path": "packages/state/src/translationComparison.test.ts"
+          "path": "packages/state/src/translationComparison.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7949,7 +10217,8 @@
           "importsFiles": [
             "packages/state/src/translationStore.ts"
           ],
-          "path": "packages/state/src/translationStore.test.ts"
+          "path": "packages/state/src/translationStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "68d196d11a248f64860f45ac0dd59b1271434ceae5b2e32b787d627a8c53e3bf",
@@ -7965,7 +10234,8 @@
             "packages/state/src/exportStore.ts",
             "packages/state/src/validationStore.ts"
           ],
-          "path": "packages/state/src/validationExportStore.test.ts"
+          "path": "packages/state/src/validationExportStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6f9f8efdd6031b491bda9078881a0cbbbb94772d22ca8dc7e41c261bec01d7fd",
@@ -7984,7 +10254,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/vectorComparison.ts"
           ],
-          "path": "packages/state/src/vectorComparison.test.ts"
+          "path": "packages/state/src/vectorComparison.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -8012,7 +10283,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/vectorHandoff.ts"
           ],
-          "path": "packages/state/src/vectorHandoff.test.ts"
+          "path": "packages/state/src/vectorHandoff.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -8036,7 +10308,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/vectorMasterStore.ts"
           ],
-          "path": "packages/state/src/vectorMasterStore.test.ts"
+          "path": "packages/state/src/vectorMasterStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "33e2f4b42045fd9c218e121bb61afe91209fbd5dfe8d9e935ce4fe29a0f996e3",
@@ -8055,7 +10328,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/vectorRasterize.ts"
           ],
-          "path": "packages/state/src/vectorRasterize.test.ts"
+          "path": "packages/state/src/vectorRasterize.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -8076,7 +10350,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/vectorRegenerate.ts"
           ],
-          "path": "packages/state/src/vectorRegenerate.test.ts"
+          "path": "packages/state/src/vectorRegenerate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -8101,7 +10376,8 @@
           "importsFiles": [
             "packages/state/src/workflowHints.ts"
           ],
-          "path": "packages/state/src/workflowHints.test.ts"
+          "path": "packages/state/src/workflowHints.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -8136,7 +10412,8 @@
             "packages/state/src/spritePersistence.ts",
             "packages/state/src/spriteRaster.ts"
           ],
-          "path": "packages/state/src/workflowRegression.test.ts"
+          "path": "packages/state/src/workflowRegression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9aaccbfd37a855f73ee3795770b4f1829b53aefb8266186bc2da6661931945dc",
@@ -8148,7 +10425,8 @@
             "packages/domain/src/index.ts",
             "packages/state/src/workflowStore.ts"
           ],
-          "path": "packages/state/src/workflowStore.test.ts"
+          "path": "packages/state/src/workflowStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e2e0ab1f4bd054d5a04ce6866c305c4906952e97cd8d193a2552fd2bd8281caa",
@@ -8162,7 +10440,8 @@
           "importsFiles": [
             "packages/state/src/workspaceStore.ts"
           ],
-          "path": "packages/state/src/workspaceStore.test.ts"
+          "path": "packages/state/src/workspaceStore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "371bc47217603162e39f5c2e94298f90b192354edc7b612a559058b77faa96c6",
@@ -8197,6 +10476,9 @@
       ],
       "outsideReads": 10,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 145,
       "unresolvedSites": 0
     }
@@ -9172,6 +11454,38 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "dir": "packages/domain",
+          "files": 5,
+          "job": "test",
+          "runner": "vitest",
+          "step": "Test packages",
+          "through": [
+            "pnpm test (packages/domain)"
+          ]
+        },
+        {
+          "dir": "packages/state",
+          "files": 93,
+          "job": "test",
+          "runner": "vitest",
+          "step": "Test packages",
+          "through": [
+            "pnpm test (packages/state)"
+          ]
+        },
+        {
+          "dir": "packages/mcp-sprite-server",
+          "files": 23,
+          "job": "test",
+          "runner": "vitest",
+          "step": "Test packages",
+          "through": [
+            "pnpm test (packages/mcp-sprite-server)"
+          ]
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -9453,7 +11767,7 @@
       "to": "domain"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "67678351f3646a253815501776980898dc612ef6",
     "tracked": 850
@@ -10219,5 +12533,78 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 202,
-  "unassigned": []
+  "testsNotRun": [
+    "apps/desktop/src/components/AISettingsPanel.test.tsx",
+    "apps/desktop/src/components/AnchorPanel.test.tsx",
+    "apps/desktop/src/components/AssetBrowserPanel.test.tsx",
+    "apps/desktop/src/components/BottomDock.test.tsx",
+    "apps/desktop/src/components/BundlePanel.test.tsx",
+    "apps/desktop/src/components/CameraKeyframePanel.test.tsx",
+    "apps/desktop/src/components/CameraTimelineLane.test.tsx",
+    "apps/desktop/src/components/Canvas.test.tsx",
+    "apps/desktop/src/components/CharacterBuilderPanel.test.tsx",
+    "apps/desktop/src/components/ClipPanel.test.tsx",
+    "apps/desktop/src/components/ColorPickerPopover.test.tsx",
+    "apps/desktop/src/components/ComfyUIGeneratePanel.test.tsx",
+    "apps/desktop/src/components/CopilotPanel.test.tsx",
+    "apps/desktop/src/components/EditorStatusBar.test.tsx",
+    "apps/desktop/src/components/ExportPreviewPanel.test.tsx",
+    "apps/desktop/src/components/LayerPanel.test.tsx",
+    "apps/desktop/src/components/LibraryPanel.test.tsx",
+    "apps/desktop/src/components/MotionPanel.test.tsx",
+    "apps/desktop/src/components/OutputPresetsPanel.test.tsx",
+    "apps/desktop/src/components/PalettePropsPanel.test.tsx",
+    "apps/desktop/src/components/PaletteSetsPanel.test.tsx",
+    "apps/desktop/src/components/PartsPanel.test.tsx",
+    "apps/desktop/src/components/PresetPanel.test.tsx",
+    "apps/desktop/src/components/ProjectHome.test.tsx",
+    "apps/desktop/src/components/QuickPaletteStrip.test.tsx",
+    "apps/desktop/src/components/RecoveryPrompt.test.tsx",
+    "apps/desktop/src/components/RightDock.test.tsx",
+    "apps/desktop/src/components/SandboxPanel.test.tsx",
+    "apps/desktop/src/components/SceneCanvas.test.tsx",
+    "apps/desktop/src/components/SceneInstancesPanel.test.tsx",
+    "apps/desktop/src/components/ScenePlaybackControls.test.tsx",
+    "apps/desktop/src/components/SceneProvenancePanel.test.tsx",
+    "apps/desktop/src/components/ShortcutHelpOverlay.test.tsx",
+    "apps/desktop/src/components/SliceManagerPanel.test.tsx",
+    "apps/desktop/src/components/TemplateBrowserPanel.test.tsx",
+    "apps/desktop/src/components/ToastStack.test.tsx",
+    "apps/desktop/src/components/ToolRail.test.tsx",
+    "apps/desktop/src/components/TopBar.test.tsx",
+    "apps/desktop/src/components/TransformBar.test.tsx",
+    "apps/desktop/src/components/ValidationPanel.test.tsx",
+    "apps/desktop/src/components/VariantBar.test.tsx",
+    "apps/desktop/src/components/VectorAICreationPanel.test.tsx",
+    "apps/desktop/src/components/VectorCopilotPanel.test.tsx",
+    "apps/desktop/src/components/VectorLivePreview.test.tsx",
+    "apps/desktop/src/components/VectorPropertiesPanel.test.tsx",
+    "apps/desktop/src/components/VectorReductionPanel.test.tsx",
+    "apps/desktop/src/components/VectorShapesPanel.test.tsx",
+    "apps/desktop/src/components/VectorSourceBanner.test.tsx",
+    "apps/desktop/src/lib/aiSettings.test.ts",
+    "apps/desktop/src/lib/aiSuggestions.test.ts",
+    "apps/desktop/src/lib/aiToolDispatcher.test.ts",
+    "apps/desktop/src/lib/aiToolRegistry.test.ts",
+    "apps/desktop/src/lib/animationPresetLibrary.test.ts",
+    "apps/desktop/src/lib/animationSequenceGenerator.test.ts",
+    "apps/desktop/src/lib/canvasPixelMath.test.ts",
+    "apps/desktop/src/lib/canvasRenderBenchmarks.test.ts",
+    "apps/desktop/src/lib/canvasRenderHelpers.test.ts",
+    "apps/desktop/src/lib/comfyuiWorkflows.test.ts",
+    "apps/desktop/src/lib/partLibraryStorage.test.ts",
+    "apps/desktop/src/lib/spriteTemplateLibrary.test.ts",
+    "apps/desktop/src/lib/spriteTemplateRenderer.test.ts",
+    "apps/desktop/src/lib/useCanvasPointerHandlers.test.ts",
+    "apps/desktop/src/test/smoke.test.ts",
+    "apps/desktop/src/workflows/definitions.test.ts"
+  ],
+  "unassigned": [],
+  "workspaces": [
+    "apps/desktop",
+    "packages/api-contract",
+    "packages/domain",
+    "packages/mcp-sprite-server",
+    "packages/state"
+  ]
 }

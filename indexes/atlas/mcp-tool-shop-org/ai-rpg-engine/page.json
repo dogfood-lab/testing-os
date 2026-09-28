@@ -207,13 +207,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 1,
+      "changed": 1,
       "moved": 0,
-      "parts": 0,
+      "parts": 2,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "CI now also runs files in docs/examples/, packages/asset-registry/, packages/asset-registry/src/ and 64 more.",
@@ -290,23 +304,7 @@
       },
       {
         "kind": "door",
-        "sentence": "CI runs 425 more files than before.",
-        "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.",
-        "subjects": [
-          ".github/workflows/pages.yml",
-          "site/astro.config.mjs",
-          "site/src/"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 4 more changes to doors.",
+        "sentence": "And 6 more changes to doors.",
         "subjects": []
       },
       {
@@ -354,7 +352,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "1 file added and 1 changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -446,7 +444,7 @@
     "Window: 180 days; a pair counts from 10 shared commits, since 55 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 11,
-  "commit": "f7e56e65779e14e3b061a5e581fd13783abe2e98",
+  "commit": "a54df8500543541a6fc2f1392501c1f2741b1014",
   "defaultBranch": "main",
   "derived": "39 parts, mostly TypeScript (797 files), JavaScript (13), CSS (2), GDScript (2) and Astro (1). Work enters through 6 doors; CI and Release each reach 35 parts, and CI is followed because a pull request goes through it. It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run ai and ai-rpg-engine.",
   "doors": [
@@ -823,8 +821,8 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 15 paths",
-        "on a push touching 15 paths",
+        "on a pull request touching 16 paths",
+        "on a push touching 16 paths",
         "or by hand"
       ]
     },
@@ -1642,7 +1640,7 @@
       "to": "pack-registry"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [
     {
       "place": "docs/c0-alignment/intake-table.json",
@@ -1693,7 +1691,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-26T14:39:03.990Z",
+  "generatedAt": "2026-09-28T13:13:13.741Z",
   "limits": [
     "3 imports could not be resolved: `packages/cli/src/external-pack.ts` imports a path built at run time; `packages/pack-registry/src/discover.ts` imports a path built at run time; `packages/pack-registry/src/starter-readme-usage.test.ts` imports a path built at run time.",
     "21 writes and 34 reads use paths built at run time and are not named here.",
@@ -1943,6 +1941,9 @@
       ]
     }
   ],
+  "spawnTested": [
+    "scripts"
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
@@ -1974,7 +1975,7 @@
     "pack-registry": 105,
     "presentation": 6,
     "rumor-system": 3,
-    "scripts": 0,
+    "scripts": 1,
     "sidecar": 15,
     "soundpack-core": 8,
     "starter": 3,
@@ -2045,13 +2046,9 @@
   ],
   "unreadFiles": 0,
   "unreadNote": [],
-  "untested": [
-    {
-      "part": "scripts",
-      "partLabel": "scripts",
-      "testedBy": 0
-    }
+  "untested": [],
+  "untestedNote": [
+    "scripts is touched by tests only through a spawn: a test runs its files as a child process."
   ],
-  "untestedNote": [],
   "written": 8
 }

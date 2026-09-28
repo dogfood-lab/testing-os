@@ -281,6 +281,23 @@
             "fit",
             "main"
           ],
+          "failurePaths": [
+            {
+              "in": "cut",
+              "kind": "raise",
+              "line": 65
+            },
+            {
+              "in": "cut",
+              "kind": "raise",
+              "line": 72
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 125
+            }
+          ],
           "hash": "6565e2080229356b76299ff8132c783caadee8280e12eb12ae4e037977004d96",
           "path": "docs/brand/make_asset_sheet.py"
         },
@@ -2166,6 +2183,13 @@
             "main",
             "render"
           ],
+          "failurePaths": [
+            {
+              "in": "render",
+              "kind": "raise",
+              "line": 109
+            }
+          ],
           "hash": "9291ecaeb164e89da330c6d578a9df171c8ec6d1dcaced6bb051e9f98dd4f9d8",
           "path": "docs/handbook/sync_to_site.py"
         },
@@ -2553,7 +2577,11 @@
             "tool"
           ],
           "hash": "7fb415eb475d5c383c9c020683360d4f44728013b77590807ff16411cb3317b1",
-          "path": "tests/conftest.py"
+          "names": [
+            "tools/facet_index.py"
+          ],
+          "path": "tests/conftest.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2750,7 +2778,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t01_index_verify.py"
+          "names": [
+            "tools/facet_index.py"
+          ],
+          "path": "tests/test_t01_index_verify.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2761,7 +2793,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t02_selftest.py"
+          "names": [
+            "tools/texpass_iter.py"
+          ],
+          "path": "tests/test_t02_selftest.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2772,6 +2808,9 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
+          "names": [
+            "tools/texpass_iter.py"
+          ],
           "path": "tests/test_t03_emit_guard.py"
         },
         {
@@ -2781,7 +2820,8 @@
             "test_t04_handoff_guard_passes_on_the_real_set"
           ],
           "hash": "0410db981a66d2c87facc7c255aa195cf30fb42383ae3721c440c271fd7f4683",
-          "path": "tests/test_t04_discovery_guards.py"
+          "path": "tests/test_t04_discovery_guards.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2796,6 +2836,9 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
+          "names": [
+            "tools/facet_index.py"
+          ],
           "path": "tests/test_t05_claims_sweep.py"
         },
         {
@@ -2807,6 +2850,9 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
+          "names": [
+            "tools/facet_index.py"
+          ],
           "path": "tests/test_t06_line_endings.py"
         },
         {
@@ -2817,7 +2863,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t07_finalize_replay.py"
+          "names": [
+            "tools/texpass_finalize.py"
+          ],
+          "path": "tests/test_t07_finalize_replay.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2827,7 +2877,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t08_ceiling.py"
+          "names": [
+            "tools/diagnostics/e08_ceiling.py"
+          ],
+          "path": "tests/test_t08_ceiling.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2837,7 +2891,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t09_elevated.py"
+          "names": [
+            "tools/diagnostics/e12_elevated.py"
+          ],
+          "path": "tests/test_t09_elevated.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2848,6 +2906,9 @@
             "test_t100_the_tolerance_is_a_flag_not_a_constant"
           ],
           "hash": "c7e2c63a5a8138e1e96b3c7ee8006ebf130678635e68d4dd22106ca1aaa2d289",
+          "names": [
+            "tools/verify/prop_contact.py"
+          ],
           "path": "tests/test_t100_prop_contact_gate.py"
         },
         {
@@ -2881,6 +2942,9 @@
             "test_t102_verify_round_trips_what_build_wrote"
           ],
           "hash": "fcdf3889f82b75816e647cf1a7a1cdaa665eec9597d68a0ea5adfb08e910b8a0",
+          "names": [
+            "tools/prop_scale.py"
+          ],
           "path": "tests/test_t102_prop_scale.py"
         },
         {
@@ -2891,7 +2955,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t10_projection.py"
+          "names": [
+            "tools/project_twins.py"
+          ],
+          "path": "tests/test_t10_projection.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2902,7 +2970,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t11_edge_mode.py"
+          "names": [
+            "tools/texpass_iter.py"
+          ],
+          "path": "tests/test_t11_edge_mode.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2912,7 +2984,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t12_mesh_stats.py"
+          "names": [
+            "tools/verify/mesh_stats.py"
+          ],
+          "path": "tests/test_t12_mesh_stats.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2922,7 +2998,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t13_det_race.py"
+          "names": [
+            "tools/facet_index.py"
+          ],
+          "path": "tests/test_t13_det_race.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2933,7 +3013,12 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t16_registry_sweep.py"
+          "names": [
+            "tools/diagnostics/e04_registry_sweep.py",
+            "tools/texpass_brush.py"
+          ],
+          "path": "tests/test_t16_registry_sweep.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2947,7 +3032,112 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t18_interpreter_precheck.py"
+          "path": "tests/test_t18_interpreter_precheck.py",
+          "spawns": [
+            "tests/conftest.py",
+            "tests/fixtures/make_measure_fixture.py",
+            "tests/fixtures/make_selftest_fixture.py",
+            "tests/mcp_support.py",
+            "tests/measure_support.py",
+            "tests/test_t01_index_verify.py",
+            "tests/test_t02_selftest.py",
+            "tests/test_t03_emit_guard.py",
+            "tests/test_t04_discovery_guards.py",
+            "tests/test_t05_claims_sweep.py",
+            "tests/test_t06_line_endings.py",
+            "tests/test_t07_finalize_replay.py",
+            "tests/test_t08_ceiling.py",
+            "tests/test_t09_elevated.py",
+            "tests/test_t100_prop_contact_gate.py",
+            "tests/test_t101_rig_report.py",
+            "tests/test_t102_prop_scale.py",
+            "tests/test_t10_projection.py",
+            "tests/test_t11_edge_mode.py",
+            "tests/test_t12_mesh_stats.py",
+            "tests/test_t13_det_race.py",
+            "tests/test_t16_registry_sweep.py",
+            "tests/test_t18_interpreter_precheck.py",
+            "tests/test_t19_record_mcp_readonly.py",
+            "tests/test_t20_record_mcp_certificate.py",
+            "tests/test_t21_record_mcp_health.py",
+            "tests/test_t22_record_mcp_tools.py",
+            "tests/test_t23_mount_path.py",
+            "tests/test_t24_index_parsers.py",
+            "tests/test_t25_mask_geometry.py",
+            "tests/test_t26_finalize_lookup.py",
+            "tests/test_t27_packaging_shape.py",
+            "tests/test_t28_frozen_runtime.py",
+            "tests/test_t29_cli_contract.py",
+            "tests/test_t30_gates_survive_optimize.py",
+            "tests/test_t31_route_gates.py",
+            "tests/test_t32_installed_wheel.py",
+            "tests/test_t33_diagnostics_gates.py",
+            "tests/test_t34_front_door_counts.py",
+            "tests/test_t35_measure_mcp_surface.py",
+            "tests/test_t36_measure_mesh_stats.py",
+            "tests/test_t37_measure_reach_ceiling.py",
+            "tests/test_t38_measure_texel_provenance.py",
+            "tests/test_t39_measure_report.py",
+            "tests/test_t40_measure_not_wrapped.py",
+            "tests/test_t41_instrument_census.py",
+            "tests/test_t42_topology_tie_repair.py",
+            "tests/test_t43_measure_mesh_topology.py",
+            "tests/test_t44_measure_thin_curve.py",
+            "tests/test_t45_measure_offsurface.py",
+            "tests/test_t46_measure_anchor_check.py",
+            "tests/test_t47_measure_texel_component.py",
+            "tests/test_t50_w3_finalize_replay.py",
+            "tests/test_t51_galleon_finalize_replay.py",
+            "tests/test_t52_dragon_finalize_replay.py",
+            "tests/test_t53_w3_ceiling_replay.py",
+            "tests/test_t54_galleon_ceiling_replay.py",
+            "tests/test_t55_dragon_ceiling_replay.py",
+            "tests/test_t56_dragon_elevated_replay.py",
+            "tests/test_t57_galleon_commit_replay.py",
+            "tests/test_t58_measure_mcp_registration.py",
+            "tests/test_t59_measure_mcp_install_geometry.py",
+            "tests/test_t60_instrument_dependency_surface.py",
+            "tests/test_t61_frozen_instrument_invocation.py",
+            "tests/test_t62_recorded_invocation_form.py",
+            "tests/test_t63_the_wheel_carries_the_instruments.py",
+            "tests/test_t64_plate_geometry.py",
+            "tests/test_t65_register_sheet.py",
+            "tests/test_t66_twin_despeckle_census.py",
+            "tests/test_t67_twin_fuse.py",
+            "tests/test_t68_twin_despeckle_clean.py",
+            "tests/test_t69_silhouette_depth.py",
+            "tests/test_t70_tree_manifest.py",
+            "tests/test_t71_reconstruct_mesh_seed.py",
+            "tests/test_t72_rgba_turnaround.py",
+            "tests/test_t73_fire_repaints.py",
+            "tests/test_t74_bake_hero_prep_pack_levers.py",
+            "tests/test_t75_ceiling_custom_cams.py",
+            "tests/test_t76_callieri_border.py",
+            "tests/test_t77_s3_composite.py",
+            "tests/test_t78_emit_view_aovs.py",
+            "tests/test_t79_flow_estimate.py",
+            "tests/test_t80_s3_run.py",
+            "tests/test_t81_twin_mesh_warp.py",
+            "tests/test_t82_s3_sheet.py",
+            "tests/test_t83_atlas_from_aovs.py",
+            "tests/test_t84_callieri_border_repair.py",
+            "tests/test_t85_region_disagreement.py",
+            "tests/test_t86_boundary_repair.py",
+            "tests/test_t87_canon_gate.py",
+            "tests/test_t88_unmapped_readout.py",
+            "tests/test_t89_flat_trace.py",
+            "tests/test_t90_evidence.py",
+            "tests/test_t91_canon_in_path.py",
+            "tests/test_t92_canon_router.py",
+            "tests/test_t93_canon_worksheet.py",
+            "tests/test_t94_fail_closed.py",
+            "tests/test_t95_e55_prompt_elements.py",
+            "tests/test_t96_gen_record.py",
+            "tests/test_t97_canon_bind.py",
+            "tests/test_t98_bg_withhold_scope.py",
+            "tests/test_t99_turn_render_film.py"
+          ],
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2966,7 +3156,8 @@
             "tests/conftest.py",
             "tools/record_mcp.py"
           ],
-          "path": "tests/test_t19_record_mcp_readonly.py"
+          "path": "tests/test_t19_record_mcp_readonly.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2989,7 +3180,11 @@
             "tests/conftest.py",
             "tests/mcp_support.py"
           ],
-          "path": "tests/test_t20_record_mcp_certificate.py"
+          "names": [
+            "tools/facet_index.py"
+          ],
+          "path": "tests/test_t20_record_mcp_certificate.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3015,7 +3210,11 @@
             "tests/mcp_support.py",
             "tools/facet_index.py"
           ],
-          "path": "tests/test_t21_record_mcp_health.py"
+          "names": [
+            "tools/record_mcp.py"
+          ],
+          "path": "tests/test_t21_record_mcp_health.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3041,7 +3240,11 @@
             "tests/mcp_support.py",
             "tools/facet_index.py"
           ],
-          "path": "tests/test_t22_record_mcp_tools.py"
+          "names": [
+            "tools/record_mcp.py"
+          ],
+          "path": "tests/test_t22_record_mcp_tools.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3057,7 +3260,12 @@
             "tests/conftest.py",
             "tests/mcp_support.py"
           ],
-          "path": "tests/test_t23_mount_path.py"
+          "names": [
+            "tools/measure_mcp.py",
+            "tools/record_mcp.py"
+          ],
+          "path": "tests/test_t23_mount_path.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3109,7 +3317,8 @@
             "test_t24_verdict_order_is_most_to_least_specific"
           ],
           "hash": "5ef1330ec1473778255567a2c54b5fdff8d3bae570401f10fed140cc2d830c3e",
-          "path": "tests/test_t24_index_parsers.py"
+          "path": "tests/test_t24_index_parsers.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3134,7 +3343,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t25_mask_geometry.py"
+          "names": [
+            "tools/mask_geometry.py"
+          ],
+          "path": "tests/test_t25_mask_geometry.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3152,7 +3365,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t26_finalize_lookup.py"
+          "names": [
+            "tools/texpass_finalize.py"
+          ],
+          "path": "tests/test_t26_finalize_lookup.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3168,7 +3385,12 @@
             "test_t27_wrapper_source_is_ascii"
           ],
           "hash": "7533f1b4771b2d2bdcf9ab83bcfc7bced5f756d7283cbd7a75372a594912d4cc",
-          "path": "tests/test_t27_packaging_shape.py"
+          "names": [
+            "bin/facet.js",
+            "tools/record_mcp.py"
+          ],
+          "path": "tests/test_t27_packaging_shape.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3220,7 +3442,11 @@
             "tests/conftest.py",
             "tools/facet_index.py"
           ],
-          "path": "tests/test_t29_cli_contract.py"
+          "names": [
+            "tools/record_mcp.py"
+          ],
+          "path": "tests/test_t29_cli_contract.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3255,7 +3481,16 @@
             "tests/test_t26_finalize_lookup.py",
             "tools/facet_index.py"
           ],
-          "path": "tests/test_t30_gates_survive_optimize.py"
+          "names": [
+            "tools/e11_export_turnaround.py",
+            "tools/e11_manifest.py",
+            "tools/project_twins.py",
+            "tools/record_mcp.py",
+            "tools/texpass_finalize.py",
+            "tools/texpass_iter.py"
+          ],
+          "path": "tests/test_t30_gates_survive_optimize.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3273,7 +3508,24 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t31_route_gates.py"
+          "names": [
+            "tools/bake_hero_fuse.py",
+            "tools/bake_hero_pack.py",
+            "tools/bake_hero_prep.py",
+            "tools/brush_cloud_step.py",
+            "tools/cull_unseen.py",
+            "tools/e13_harmonize.py",
+            "tools/export_asset_source.py",
+            "tools/palette_gate.py",
+            "tools/resample_atlas.py",
+            "tools/restylize_views.py",
+            "tools/silhouette_masks.py",
+            "tools/subject_profile.py",
+            "tools/superseded/texpass_thin_mask.py",
+            "tools/texpass_brush.py"
+          ],
+          "path": "tests/test_t31_route_gates.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3301,7 +3553,127 @@
             "tools/facet_index.py",
             "tools/record_mcp.py"
           ],
-          "path": "tests/test_t32_installed_wheel.py"
+          "path": "tests/test_t32_installed_wheel.py",
+          "spawns": [
+            "tools/diagnostics/blade_band.py",
+            "tools/diagnostics/brush_reach.py",
+            "tools/diagnostics/build_masks.py",
+            "tools/diagnostics/canny_probe.py",
+            "tools/diagnostics/commit_funnel.py",
+            "tools/diagnostics/e04_backdrop.py",
+            "tools/diagnostics/e04_bands.py",
+            "tools/diagnostics/e04_blotch.py",
+            "tools/diagnostics/e04_frame_agree.py",
+            "tools/diagnostics/e04_g7_landing.py",
+            "tools/diagnostics/e04_g7_sheet.py",
+            "tools/diagnostics/e04_g7_where.py",
+            "tools/diagnostics/e04_invar_probe.py",
+            "tools/diagnostics/e04_make_brush_prompts.py",
+            "tools/diagnostics/e04_profile_check.py",
+            "tools/diagnostics/e04_registry_sweep.py",
+            "tools/diagnostics/e04_replay_owner.py",
+            "tools/diagnostics/e04_seam_sources.py",
+            "tools/diagnostics/e04_sheet_renders.py",
+            "tools/diagnostics/e04_ship_cameras.py",
+            "tools/diagnostics/e04_ship_measure.py",
+            "tools/diagnostics/e04_stroke_cameras.py",
+            "tools/diagnostics/e04_twin_baseline.py",
+            "tools/diagnostics/e07_gate0.py",
+            "tools/diagnostics/e07_l1_andon.py",
+            "tools/diagnostics/e07_l2_bound.py",
+            "tools/diagnostics/e07_score_arm.py",
+            "tools/diagnostics/e08_acceptance.py",
+            "tools/diagnostics/e08_bg_derive.py",
+            "tools/diagnostics/e08_bg_separation.py",
+            "tools/diagnostics/e08_ceiling.py",
+            "tools/diagnostics/e08_contradiction.py",
+            "tools/diagnostics/e08_deltaE.py",
+            "tools/diagnostics/e08_intersect_delta.py",
+            "tools/diagnostics/e08_metric_probe.py",
+            "tools/diagnostics/e08_registration.py",
+            "tools/diagnostics/e10_claim_replay.py",
+            "tools/diagnostics/e10_consumers_subject.py",
+            "tools/diagnostics/e10_offsurface.py",
+            "tools/diagnostics/e10_offsurface_consumers.py",
+            "tools/diagnostics/e10_offsurface_where.py",
+            "tools/diagnostics/e12_ab_sheet.py",
+            "tools/diagnostics/e12_agree_probe.py",
+            "tools/diagnostics/e12_canny_derive.py",
+            "tools/diagnostics/e12_crop_silhouette.py",
+            "tools/diagnostics/e12_elevated.py",
+            "tools/diagnostics/e12_family_mass.py",
+            "tools/diagnostics/e12_frame.py",
+            "tools/diagnostics/e12_head_evidence.py",
+            "tools/diagnostics/e12_head_render.py",
+            "tools/diagnostics/e12_head_sheet.py",
+            "tools/diagnostics/e12_help_format_scan.py",
+            "tools/diagnostics/e12_make_twin_prompts.py",
+            "tools/diagnostics/e12_mouth_geometry.py",
+            "tools/diagnostics/e12_n_sheet.py",
+            "tools/diagnostics/e12_nonmanifold.py",
+            "tools/diagnostics/e12_offsurface.py",
+            "tools/diagnostics/e12_pair_cloud_step.py",
+            "tools/diagnostics/e12_pair_sheet.py",
+            "tools/diagnostics/e12_region_colour.py",
+            "tools/diagnostics/e12_region_crops.py",
+            "tools/diagnostics/e12_stem_delta.py",
+            "tools/diagnostics/e12_thin_curve.py",
+            "tools/diagnostics/e12_twin_gate.py",
+            "tools/diagnostics/e12_twin_readout.py",
+            "tools/diagnostics/e12_view_visibility.py",
+            "tools/diagnostics/e13_a2_allocation.py",
+            "tools/diagnostics/e13_anchor_check.py",
+            "tools/diagnostics/e13_crop_registration.py",
+            "tools/diagnostics/e13_gate1_sheet.py",
+            "tools/diagnostics/e13_hole_map.py",
+            "tools/diagnostics/e13_payoff_sheet.py",
+            "tools/diagnostics/e13_stroke_cameras.py",
+            "tools/diagnostics/e13_thin_inputs.py",
+            "tools/diagnostics/e14_atlas_anatomy.py",
+            "tools/diagnostics/e14_backdrop_checks.py",
+            "tools/diagnostics/e14_band_density.py",
+            "tools/diagnostics/e14_band_edges.py",
+            "tools/diagnostics/e14_deep_share.py",
+            "tools/diagnostics/e14_demote_garnet.py",
+            "tools/diagnostics/e14_garnet_reproject.py",
+            "tools/diagnostics/e14_make_brush_prompts.py",
+            "tools/diagnostics/e14_pair_readout.py",
+            "tools/diagnostics/e14_pair_sheet.py",
+            "tools/diagnostics/e14_repair_collar.py",
+            "tools/diagnostics/e14_stroke_watch.py",
+            "tools/diagnostics/e14_topology.py",
+            "tools/diagnostics/e14_twin_registration.py",
+            "tools/diagnostics/e32_plate_geometry.py",
+            "tools/diagnostics/e32_route_preprocess.py",
+            "tools/diagnostics/e33_register_sheet.py",
+            "tools/diagnostics/e55_prompt_elements.py",
+            "tools/diagnostics/facing_masks.py",
+            "tools/diagnostics/facing_silhouette_gap.py",
+            "tools/diagnostics/flagged_identity.py",
+            "tools/diagnostics/foreshorten_table.py",
+            "tools/diagnostics/gained_bg_check.py",
+            "tools/diagnostics/hair_agree.py",
+            "tools/diagnostics/hair_edge.py",
+            "tools/diagnostics/head_yaw.py",
+            "tools/diagnostics/keyed_outside.py",
+            "tools/diagnostics/prep_front.py",
+            "tools/diagnostics/silhouette_agree.py",
+            "tools/diagnostics/texel_provenance.py",
+            "tools/diagnostics/texpass_metrics.py",
+            "tools/verify/anchor_compare.py",
+            "tools/verify/gate0_sheet.py",
+            "tools/verify/gate1_sheet.py",
+            "tools/verify/gate_mesh.py",
+            "tools/verify/head_crop.py",
+            "tools/verify/head_render.py",
+            "tools/verify/mesh_stats.py",
+            "tools/verify/montage.py",
+            "tools/verify/prop_contact.py",
+            "tools/verify/rig_report.py",
+            "tools/verify/tree_manifest.py",
+            "tools/verify/turn_render.py"
+          ],
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3322,7 +3694,54 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t33_diagnostics_gates.py"
+          "names": [
+            "tools/diagnostics/brush_reach.py",
+            "tools/diagnostics/e04_blotch.py",
+            "tools/diagnostics/e04_make_brush_prompts.py",
+            "tools/diagnostics/e04_stroke_cameras.py",
+            "tools/diagnostics/e08_acceptance.py",
+            "tools/diagnostics/e08_ceiling.py",
+            "tools/diagnostics/e08_contradiction.py",
+            "tools/diagnostics/e08_intersect_delta.py",
+            "tools/diagnostics/e12_ab_sheet.py",
+            "tools/diagnostics/e12_crop_silhouette.py",
+            "tools/diagnostics/e12_elevated.py",
+            "tools/diagnostics/e12_frame.py",
+            "tools/diagnostics/e12_head_evidence.py",
+            "tools/diagnostics/e12_head_render.py",
+            "tools/diagnostics/e12_head_sheet.py",
+            "tools/diagnostics/e12_mouth_geometry.py",
+            "tools/diagnostics/e12_nonmanifold.py",
+            "tools/diagnostics/e12_region_colour.py",
+            "tools/diagnostics/e12_thin_curve.py",
+            "tools/diagnostics/e12_twin_readout.py",
+            "tools/diagnostics/e12_view_visibility.py",
+            "tools/diagnostics/e13_a2_allocation.py",
+            "tools/diagnostics/e13_anchor_check.py",
+            "tools/diagnostics/e13_crop_registration.py",
+            "tools/diagnostics/e13_gate1_sheet.py",
+            "tools/diagnostics/e13_hole_map.py",
+            "tools/diagnostics/e13_payoff_sheet.py",
+            "tools/diagnostics/e13_stroke_cameras.py",
+            "tools/diagnostics/e13_thin_inputs.py",
+            "tools/diagnostics/e14_atlas_anatomy.py",
+            "tools/diagnostics/e14_backdrop_checks.py",
+            "tools/diagnostics/e14_band_density.py",
+            "tools/diagnostics/e14_demote_garnet.py",
+            "tools/diagnostics/e14_garnet_reproject.py",
+            "tools/diagnostics/e14_make_brush_prompts.py",
+            "tools/diagnostics/e14_pair_readout.py",
+            "tools/diagnostics/e14_repair_collar.py",
+            "tools/diagnostics/e14_topology.py",
+            "tools/diagnostics/flagged_identity.py",
+            "tools/diagnostics/gained_bg_check.py",
+            "tools/diagnostics/keyed_outside.py",
+            "tools/diagnostics/silhouette_agree.py",
+            "tools/superseded/texpass_thin_mask.py",
+            "tools/verify/gate0_sheet.py"
+          ],
+          "path": "tests/test_t33_diagnostics_gates.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3373,7 +3792,115 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t34_front_door_counts.py"
+          "names": [
+            "site/src/site-config.ts"
+          ],
+          "path": "tests/test_t34_front_door_counts.py",
+          "spawns": [
+            "tests/conftest.py",
+            "tests/fixtures/make_measure_fixture.py",
+            "tests/fixtures/make_selftest_fixture.py",
+            "tests/mcp_support.py",
+            "tests/measure_support.py",
+            "tests/test_t01_index_verify.py",
+            "tests/test_t02_selftest.py",
+            "tests/test_t03_emit_guard.py",
+            "tests/test_t04_discovery_guards.py",
+            "tests/test_t05_claims_sweep.py",
+            "tests/test_t06_line_endings.py",
+            "tests/test_t07_finalize_replay.py",
+            "tests/test_t08_ceiling.py",
+            "tests/test_t09_elevated.py",
+            "tests/test_t100_prop_contact_gate.py",
+            "tests/test_t101_rig_report.py",
+            "tests/test_t102_prop_scale.py",
+            "tests/test_t10_projection.py",
+            "tests/test_t11_edge_mode.py",
+            "tests/test_t12_mesh_stats.py",
+            "tests/test_t13_det_race.py",
+            "tests/test_t16_registry_sweep.py",
+            "tests/test_t18_interpreter_precheck.py",
+            "tests/test_t19_record_mcp_readonly.py",
+            "tests/test_t20_record_mcp_certificate.py",
+            "tests/test_t21_record_mcp_health.py",
+            "tests/test_t22_record_mcp_tools.py",
+            "tests/test_t23_mount_path.py",
+            "tests/test_t24_index_parsers.py",
+            "tests/test_t25_mask_geometry.py",
+            "tests/test_t26_finalize_lookup.py",
+            "tests/test_t27_packaging_shape.py",
+            "tests/test_t28_frozen_runtime.py",
+            "tests/test_t29_cli_contract.py",
+            "tests/test_t30_gates_survive_optimize.py",
+            "tests/test_t31_route_gates.py",
+            "tests/test_t32_installed_wheel.py",
+            "tests/test_t33_diagnostics_gates.py",
+            "tests/test_t34_front_door_counts.py",
+            "tests/test_t35_measure_mcp_surface.py",
+            "tests/test_t36_measure_mesh_stats.py",
+            "tests/test_t37_measure_reach_ceiling.py",
+            "tests/test_t38_measure_texel_provenance.py",
+            "tests/test_t39_measure_report.py",
+            "tests/test_t40_measure_not_wrapped.py",
+            "tests/test_t41_instrument_census.py",
+            "tests/test_t42_topology_tie_repair.py",
+            "tests/test_t43_measure_mesh_topology.py",
+            "tests/test_t44_measure_thin_curve.py",
+            "tests/test_t45_measure_offsurface.py",
+            "tests/test_t46_measure_anchor_check.py",
+            "tests/test_t47_measure_texel_component.py",
+            "tests/test_t50_w3_finalize_replay.py",
+            "tests/test_t51_galleon_finalize_replay.py",
+            "tests/test_t52_dragon_finalize_replay.py",
+            "tests/test_t53_w3_ceiling_replay.py",
+            "tests/test_t54_galleon_ceiling_replay.py",
+            "tests/test_t55_dragon_ceiling_replay.py",
+            "tests/test_t56_dragon_elevated_replay.py",
+            "tests/test_t57_galleon_commit_replay.py",
+            "tests/test_t58_measure_mcp_registration.py",
+            "tests/test_t59_measure_mcp_install_geometry.py",
+            "tests/test_t60_instrument_dependency_surface.py",
+            "tests/test_t61_frozen_instrument_invocation.py",
+            "tests/test_t62_recorded_invocation_form.py",
+            "tests/test_t63_the_wheel_carries_the_instruments.py",
+            "tests/test_t64_plate_geometry.py",
+            "tests/test_t65_register_sheet.py",
+            "tests/test_t66_twin_despeckle_census.py",
+            "tests/test_t67_twin_fuse.py",
+            "tests/test_t68_twin_despeckle_clean.py",
+            "tests/test_t69_silhouette_depth.py",
+            "tests/test_t70_tree_manifest.py",
+            "tests/test_t71_reconstruct_mesh_seed.py",
+            "tests/test_t72_rgba_turnaround.py",
+            "tests/test_t73_fire_repaints.py",
+            "tests/test_t74_bake_hero_prep_pack_levers.py",
+            "tests/test_t75_ceiling_custom_cams.py",
+            "tests/test_t76_callieri_border.py",
+            "tests/test_t77_s3_composite.py",
+            "tests/test_t78_emit_view_aovs.py",
+            "tests/test_t79_flow_estimate.py",
+            "tests/test_t80_s3_run.py",
+            "tests/test_t81_twin_mesh_warp.py",
+            "tests/test_t82_s3_sheet.py",
+            "tests/test_t83_atlas_from_aovs.py",
+            "tests/test_t84_callieri_border_repair.py",
+            "tests/test_t85_region_disagreement.py",
+            "tests/test_t86_boundary_repair.py",
+            "tests/test_t87_canon_gate.py",
+            "tests/test_t88_unmapped_readout.py",
+            "tests/test_t89_flat_trace.py",
+            "tests/test_t90_evidence.py",
+            "tests/test_t91_canon_in_path.py",
+            "tests/test_t92_canon_router.py",
+            "tests/test_t93_canon_worksheet.py",
+            "tests/test_t94_fail_closed.py",
+            "tests/test_t95_e55_prompt_elements.py",
+            "tests/test_t96_gen_record.py",
+            "tests/test_t97_canon_bind.py",
+            "tests/test_t98_bg_withhold_scope.py",
+            "tests/test_t99_turn_render_film.py"
+          ],
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3387,6 +3914,10 @@
           "importsFiles": [
             "tests/conftest.py",
             "tests/measure_support.py"
+          ],
+          "names": [
+            "tools/measure_mcp.py",
+            "tools/verify/mesh_stats.py"
           ],
           "path": "tests/test_t35_measure_mcp_surface.py"
         },
@@ -3404,7 +3935,8 @@
           "importsFiles": [
             "tests/measure_support.py"
           ],
-          "path": "tests/test_t36_measure_mesh_stats.py"
+          "path": "tests/test_t36_measure_mesh_stats.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3421,7 +3953,11 @@
             "tests/conftest.py",
             "tests/measure_support.py"
           ],
-          "path": "tests/test_t37_measure_reach_ceiling.py"
+          "names": [
+            "tools/diagnostics/e08_ceiling.py"
+          ],
+          "path": "tests/test_t37_measure_reach_ceiling.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3436,7 +3972,8 @@
           "importsFiles": [
             "tests/measure_support.py"
           ],
-          "path": "tests/test_t38_measure_texel_provenance.py"
+          "path": "tests/test_t38_measure_texel_provenance.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3451,7 +3988,8 @@
           "importsFiles": [
             "tests/measure_support.py"
           ],
-          "path": "tests/test_t39_measure_report.py"
+          "path": "tests/test_t39_measure_report.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3465,7 +4003,12 @@
             "tests/conftest.py",
             "tests/measure_support.py"
           ],
-          "path": "tests/test_t40_measure_not_wrapped.py"
+          "names": [
+            "tools/diagnostics/e13_anchor_check.py",
+            "tools/measure_mcp.py"
+          ],
+          "path": "tests/test_t40_measure_not_wrapped.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3514,7 +4057,12 @@
             "tests/conftest.py",
             "tools/instrument_census.py"
           ],
-          "path": "tests/test_t41_instrument_census.py"
+          "names": [
+            "tools/diagnostics/e12_thin_curve.py",
+            "tools/diagnostics/e14_topology.py"
+          ],
+          "path": "tests/test_t41_instrument_census.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3534,7 +4082,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t42_topology_tie_repair.py"
+          "names": [
+            "tools/diagnostics/e14_topology.py"
+          ],
+          "path": "tests/test_t42_topology_tie_repair.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3553,7 +4105,11 @@
             "tests/conftest.py",
             "tests/measure_support.py"
           ],
-          "path": "tests/test_t43_measure_mesh_topology.py"
+          "names": [
+            "tools/diagnostics/e14_topology.py"
+          ],
+          "path": "tests/test_t43_measure_mesh_topology.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3568,7 +4124,11 @@
             "tests/conftest.py",
             "tests/measure_support.py"
           ],
-          "path": "tests/test_t44_measure_thin_curve.py"
+          "names": [
+            "tools/diagnostics/e12_thin_curve.py"
+          ],
+          "path": "tests/test_t44_measure_thin_curve.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3584,7 +4144,11 @@
             "tests/conftest.py",
             "tests/measure_support.py"
           ],
-          "path": "tests/test_t45_measure_offsurface.py"
+          "names": [
+            "tools/diagnostics/e12_offsurface.py"
+          ],
+          "path": "tests/test_t45_measure_offsurface.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3602,7 +4166,11 @@
             "tests/conftest.py",
             "tests/measure_support.py"
           ],
-          "path": "tests/test_t46_measure_anchor_check.py"
+          "names": [
+            "tools/verify/anchor_compare.py"
+          ],
+          "path": "tests/test_t46_measure_anchor_check.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3619,7 +4187,8 @@
           "importsFiles": [
             "tests/measure_support.py"
           ],
-          "path": "tests/test_t47_measure_texel_component.py"
+          "path": "tests/test_t47_measure_texel_component.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3629,7 +4198,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t50_w3_finalize_replay.py"
+          "names": [
+            "tools/texpass_finalize.py"
+          ],
+          "path": "tests/test_t50_w3_finalize_replay.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3639,7 +4212,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t51_galleon_finalize_replay.py"
+          "names": [
+            "tools/texpass_finalize.py"
+          ],
+          "path": "tests/test_t51_galleon_finalize_replay.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3650,7 +4227,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t52_dragon_finalize_replay.py"
+          "names": [
+            "tools/texpass_finalize.py"
+          ],
+          "path": "tests/test_t52_dragon_finalize_replay.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3660,7 +4241,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t53_w3_ceiling_replay.py"
+          "names": [
+            "tools/diagnostics/e08_ceiling.py"
+          ],
+          "path": "tests/test_t53_w3_ceiling_replay.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3670,7 +4255,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t54_galleon_ceiling_replay.py"
+          "names": [
+            "tools/diagnostics/e08_ceiling.py"
+          ],
+          "path": "tests/test_t54_galleon_ceiling_replay.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3680,7 +4269,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t55_dragon_ceiling_replay.py"
+          "names": [
+            "tools/diagnostics/e08_ceiling.py"
+          ],
+          "path": "tests/test_t55_dragon_ceiling_replay.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3691,7 +4284,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t56_dragon_elevated_replay.py"
+          "names": [
+            "tools/diagnostics/e12_elevated.py"
+          ],
+          "path": "tests/test_t56_dragon_elevated_replay.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3702,7 +4299,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t57_galleon_commit_replay.py"
+          "names": [
+            "tools/texpass_iter.py"
+          ],
+          "path": "tests/test_t57_galleon_commit_replay.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3718,7 +4319,12 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t58_measure_mcp_registration.py"
+          "names": [
+            "tools/measure_mcp.py",
+            "tools/verify/mesh_stats.py"
+          ],
+          "path": "tests/test_t58_measure_mcp_registration.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3740,7 +4346,13 @@
             "tests/measure_support.py",
             "tools/measure_mcp.py"
           ],
-          "path": "tests/test_t59_measure_mcp_install_geometry.py"
+          "names": [
+            "tools/facet_index.py",
+            "tools/verify/gate1_sheet.py",
+            "tools/verify/mesh_stats.py"
+          ],
+          "path": "tests/test_t59_measure_mcp_install_geometry.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3758,7 +4370,19 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t60_instrument_dependency_surface.py"
+          "names": [
+            "tools/diagnostics/e08_ceiling.py",
+            "tools/diagnostics/e12_offsurface.py",
+            "tools/diagnostics/e12_thin_curve.py",
+            "tools/diagnostics/e14_topology.py",
+            "tools/diagnostics/texel_provenance.py",
+            "tools/subject_profile.py",
+            "tools/verify/anchor_compare.py",
+            "tools/verify/gate1_sheet.py",
+            "tools/verify/mesh_stats.py"
+          ],
+          "path": "tests/test_t60_instrument_dependency_surface.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3774,6 +4398,11 @@
           "hash": "395b219e250e516cacfffb852d2ef71b3140c098544f9911ce890b7b18cb9c34",
           "importsFiles": [
             "tests/conftest.py"
+          ],
+          "names": [
+            "bin/facet.js",
+            "tools/measure_mcp.py",
+            "tools/record_mcp.py"
           ],
           "path": "tests/test_t61_frozen_instrument_invocation.py"
         },
@@ -3792,7 +4421,23 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t62_recorded_invocation_form.py"
+          "names": [
+            "tools/diagnostics/e10_claim_replay.py",
+            "tools/diagnostics/e10_consumers_subject.py",
+            "tools/diagnostics/e10_offsurface.py",
+            "tools/diagnostics/e10_offsurface_consumers.py",
+            "tools/diagnostics/e10_offsurface_where.py",
+            "tools/diagnostics/e32_plate_geometry.py",
+            "tools/diagnostics/e32_route_preprocess.py",
+            "tools/diagnostics/e33_register_sheet.py",
+            "tools/diagnostics/e55_prompt_elements.py",
+            "tools/verify/anchor_compare.py",
+            "tools/verify/gate_mesh.py",
+            "tools/verify/rig_report.py",
+            "tools/verify/tree_manifest.py"
+          ],
+          "path": "tests/test_t62_recorded_invocation_form.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3814,7 +4459,12 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t63_the_wheel_carries_the_instruments.py"
+          "names": [
+            "tools/measure_mcp.py",
+            "tools/verify/mesh_stats.py"
+          ],
+          "path": "tests/test_t63_the_wheel_carries_the_instruments.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3852,7 +4502,11 @@
             "tools/diagnostics/e32_plate_geometry.py",
             "tools/mask_geometry.py"
           ],
-          "path": "tests/test_t64_plate_geometry.py"
+          "names": [
+            "tools/project_twins.py"
+          ],
+          "path": "tests/test_t64_plate_geometry.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3868,7 +4522,8 @@
           "importsFiles": [
             "tools/diagnostics/e33_register_sheet.py"
           ],
-          "path": "tests/test_t65_register_sheet.py"
+          "path": "tests/test_t65_register_sheet.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3898,7 +4553,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t66_twin_despeckle_census.py"
+          "names": [
+            "tools/twin_despeckle.py"
+          ],
+          "path": "tests/test_t66_twin_despeckle_census.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3920,7 +4579,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t67_twin_fuse.py"
+          "names": [
+            "tools/twin_fuse.py"
+          ],
+          "path": "tests/test_t67_twin_fuse.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3946,7 +4609,8 @@
             "tests/conftest.py",
             "tools/twin_despeckle.py"
           ],
-          "path": "tests/test_t68_twin_despeckle_clean.py"
+          "path": "tests/test_t68_twin_despeckle_clean.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3966,7 +4630,12 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t69_silhouette_depth.py"
+          "names": [
+            "tools/silhouette_masks.py",
+            "tools/subject_profile.py"
+          ],
+          "path": "tests/test_t69_silhouette_depth.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -3980,7 +4649,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t70_tree_manifest.py"
+          "names": [
+            "tools/verify/tree_manifest.py"
+          ],
+          "path": "tests/test_t70_tree_manifest.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4019,7 +4692,8 @@
             "tests/conftest.py",
             "tools/reconstruct_mesh.py"
           ],
-          "path": "tests/test_t71_reconstruct_mesh_seed.py"
+          "path": "tests/test_t71_reconstruct_mesh_seed.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4034,7 +4708,8 @@
           "importsFiles": [
             "tools/rgba_turnaround.py"
           ],
-          "path": "tests/test_t72_rgba_turnaround.py"
+          "path": "tests/test_t72_rgba_turnaround.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4058,7 +4733,8 @@
           "importsFiles": [
             "tools/e37_fire_repaints.py"
           ],
-          "path": "tests/test_t73_fire_repaints.py"
+          "path": "tests/test_t73_fire_repaints.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4070,6 +4746,9 @@
           "hash": "715e072e0bb876d6bb9c1b81eefd9a7490d9c752a51860faa8ae46830dd6dba2",
           "importsFiles": [
             "tests/conftest.py"
+          ],
+          "names": [
+            "tools/bake_hero_prep.py"
           ],
           "path": "tests/test_t74_bake_hero_prep_pack_levers.py"
         },
@@ -4094,7 +4773,11 @@
             "tests/conftest.py",
             "tests/measure_support.py"
           ],
-          "path": "tests/test_t75_ceiling_custom_cams.py"
+          "names": [
+            "tools/diagnostics/e08_ceiling.py"
+          ],
+          "path": "tests/test_t75_ceiling_custom_cams.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4115,7 +4798,8 @@
             "tests/conftest.py",
             "tools/callieri_border.py"
           ],
-          "path": "tests/test_t76_callieri_border.py"
+          "path": "tests/test_t76_callieri_border.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4134,7 +4818,8 @@
             "tests/conftest.py",
             "tools/s3_composite.py"
           ],
-          "path": "tests/test_t77_s3_composite.py"
+          "path": "tests/test_t77_s3_composite.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4163,7 +4848,8 @@
             "tests/conftest.py",
             "tools/emit_view_aovs.py"
           ],
-          "path": "tests/test_t78_emit_view_aovs.py"
+          "path": "tests/test_t78_emit_view_aovs.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4181,7 +4867,8 @@
             "tests/conftest.py",
             "tools/flow_estimate.py"
           ],
-          "path": "tests/test_t79_flow_estimate.py"
+          "path": "tests/test_t79_flow_estimate.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4191,6 +4878,9 @@
           "hash": "09cbfcb01b1d4291d1a947907fb70295fad6e668c1a8729fc457cbebe643127e",
           "importsFiles": [
             "tests/conftest.py"
+          ],
+          "names": [
+            "tools/s3_run.py"
           ],
           "path": "tests/test_t80_s3_run.py"
         },
@@ -4221,7 +4911,8 @@
             "tests/conftest.py",
             "tools/twin_mesh_warp.py"
           ],
-          "path": "tests/test_t81_twin_mesh_warp.py"
+          "path": "tests/test_t81_twin_mesh_warp.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4238,7 +4929,8 @@
             "tests/conftest.py",
             "tools/s3_sheet.py"
           ],
-          "path": "tests/test_t82_s3_sheet.py"
+          "path": "tests/test_t82_s3_sheet.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4256,7 +4948,8 @@
             "tests/conftest.py",
             "tools/atlas_from_aovs.py"
           ],
-          "path": "tests/test_t83_atlas_from_aovs.py"
+          "path": "tests/test_t83_atlas_from_aovs.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4280,7 +4973,8 @@
             "tests/conftest.py",
             "tools/callieri_border.py"
           ],
-          "path": "tests/test_t84_callieri_border_repair.py"
+          "path": "tests/test_t84_callieri_border_repair.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4306,7 +5000,8 @@
             "tools/region_disagreement.py",
             "tools/s3_sheet.py"
           ],
-          "path": "tests/test_t85_region_disagreement.py"
+          "path": "tests/test_t85_region_disagreement.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4328,7 +5023,8 @@
             "tests/conftest.py",
             "tools/boundary_repair.py"
           ],
-          "path": "tests/test_t86_boundary_repair.py"
+          "path": "tests/test_t86_boundary_repair.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4355,7 +5051,8 @@
             "tests/conftest.py",
             "tools/canon_gate.py"
           ],
-          "path": "tests/test_t87_canon_gate.py"
+          "path": "tests/test_t87_canon_gate.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4375,7 +5072,8 @@
             "tests/conftest.py",
             "tools/unmapped_readout.py"
           ],
-          "path": "tests/test_t88_unmapped_readout.py"
+          "path": "tests/test_t88_unmapped_readout.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4397,7 +5095,8 @@
             "tools/atlas_from_aovs.py",
             "tools/flat_trace.py"
           ],
-          "path": "tests/test_t89_flat_trace.py"
+          "path": "tests/test_t89_flat_trace.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4422,7 +5121,8 @@
             "tools/s3_sheet.py",
             "tools/unmapped_readout.py"
           ],
-          "path": "tests/test_t90_evidence.py"
+          "path": "tests/test_t90_evidence.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4444,7 +5144,11 @@
             "tests/conftest.py",
             "tools/canon_gate.py"
           ],
-          "path": "tests/test_t91_canon_in_path.py"
+          "names": [
+            "tools/restylize_views.py"
+          ],
+          "path": "tests/test_t91_canon_in_path.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4468,7 +5172,14 @@
             "tests/conftest.py",
             "tools/canon_gate.py"
           ],
-          "path": "tests/test_t92_canon_router.py"
+          "names": [
+            "tools/brush_cloud_step.py",
+            "tools/canon_compose.py",
+            "tools/canon_worksheet.py",
+            "tools/texpass_brush.py"
+          ],
+          "path": "tests/test_t92_canon_router.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4491,7 +5202,8 @@
             "tools/canon_gate.py",
             "tools/canon_worksheet.py"
           ],
-          "path": "tests/test_t93_canon_worksheet.py"
+          "path": "tests/test_t93_canon_worksheet.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4513,7 +5225,13 @@
             "tests/conftest.py",
             "tools/canon_gate.py"
           ],
-          "path": "tests/test_t94_fail_closed.py"
+          "names": [
+            "tools/diagnostics/e12_pair_cloud_step.py",
+            "tools/restylize_views.py",
+            "tools/texpass_brush.py"
+          ],
+          "path": "tests/test_t94_fail_closed.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4533,7 +5251,8 @@
           "importsFiles": [
             "tools/diagnostics/e55_prompt_elements.py"
           ],
-          "path": "tests/test_t95_e55_prompt_elements.py"
+          "path": "tests/test_t95_e55_prompt_elements.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4552,7 +5271,8 @@
             "tests/conftest.py",
             "tools/gen_record.py"
           ],
-          "path": "tests/test_t96_gen_record.py"
+          "path": "tests/test_t96_gen_record.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4578,7 +5298,8 @@
             "tools/canon_bind.py",
             "tools/canon_gate.py"
           ],
-          "path": "tests/test_t97_canon_bind.py"
+          "path": "tests/test_t97_canon_bind.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4591,7 +5312,11 @@
           "importsFiles": [
             "tests/conftest.py"
           ],
-          "path": "tests/test_t98_bg_withhold_scope.py"
+          "names": [
+            "tools/project_twins.py"
+          ],
+          "path": "tests/test_t98_bg_withhold_scope.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4603,6 +5328,9 @@
             "test_t99_the_opaque_flag_is_declared_store_true"
           ],
           "hash": "28f9b78a6cddf3beea979c73e97dd58aba8f74d7964ef9530b09aeae3e55d7b5",
+          "names": [
+            "tools/verify/turn_render.py"
+          ],
           "path": "tests/test_t99_turn_render_film.py"
         }
       ],
@@ -4613,6 +5341,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 0,
       "unresolvedNamed": [
         {
@@ -4665,6 +5396,38 @@
             "sha256_file",
             "valid_mask"
           ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 130
+            },
+            {
+              "in": "_selftest_andon_can_fail",
+              "kind": "except",
+              "line": 599
+            },
+            {
+              "in": "_selftest_andon_can_fail",
+              "kind": "except",
+              "line": 605
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 637
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 649
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 666
+            }
+          ],
           "hash": "83898211d2104705bb4290725356b177d5b47752f8a0253733638fd1c564736c",
           "importsFiles": [
             "tools/s3_composite.py",
@@ -4679,10 +5442,46 @@
             "figure_mask",
             "scatter"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 76
+            },
+            {
+              "kind": "raise",
+              "line": 217
+            },
+            {
+              "kind": "raise",
+              "line": 221
+            },
+            {
+              "kind": "raise",
+              "line": 271
+            }
+          ],
           "hash": "c944e1a393f7db3101c0db2fcbf0f6ca4bd54aeeadd8d13d3f8e095d77f143fb",
           "path": "tools/bake_hero_fuse.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 27
+            },
+            {
+              "kind": "raise",
+              "line": 30
+            },
+            {
+              "kind": "raise",
+              "line": 35
+            },
+            {
+              "kind": "raise",
+              "line": 61
+            }
+          ],
           "hash": "3b948714129cd605324a41035837a912a02a6b895600f5fe3cbd00d4a2eff72e",
           "path": "tools/bake_hero_pack.py"
         },
@@ -4691,6 +5490,73 @@
             "bake_pass",
             "find",
             "head_area_share"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 119
+            },
+            {
+              "kind": "raise",
+              "line": 150
+            },
+            {
+              "kind": "raise",
+              "line": 162
+            },
+            {
+              "kind": "raise",
+              "line": 167
+            },
+            {
+              "kind": "raise",
+              "line": 171
+            },
+            {
+              "kind": "raise",
+              "line": 184
+            },
+            {
+              "kind": "raise",
+              "line": 205
+            },
+            {
+              "kind": "raise",
+              "line": 240
+            },
+            {
+              "kind": "raise",
+              "line": 248
+            },
+            {
+              "kind": "raise",
+              "line": 384
+            },
+            {
+              "kind": "raise",
+              "line": 413
+            },
+            {
+              "kind": "raise",
+              "line": 421
+            },
+            {
+              "kind": "raise",
+              "line": 454
+            },
+            {
+              "kind": "raise",
+              "line": 468
+            },
+            {
+              "in": "bake_pass",
+              "kind": "raise",
+              "line": 530
+            },
+            {
+              "kind": "raise",
+              "line": 555
+            }
           ],
           "hash": "ef33ccf3203c866a9c2a7689864df5e071b780a424f36f00deda18dd54f673e6",
           "importsFiles": [
@@ -4722,6 +5588,18 @@
             "to_lab",
             "write_png"
           ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 136
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 594
+            }
+          ],
           "hash": "57cdeffbdb34c4bed8f9b70ac5e66456060d7dafb8b5787add08c2292ed5d3de",
           "path": "tools/boundary_repair.py"
         },
@@ -4729,6 +5607,65 @@
           "exports": [
             "build_graph",
             "preflight"
+          ],
+          "failurePaths": [
+            {
+              "in": "preflight",
+              "kind": "raise",
+              "line": 218
+            },
+            {
+              "in": "preflight",
+              "kind": "raise",
+              "line": 223
+            },
+            {
+              "in": "pv",
+              "kind": "raise",
+              "line": 230
+            },
+            {
+              "in": "preflight",
+              "kind": "raise",
+              "line": 324
+            },
+            {
+              "in": "preflight",
+              "kind": "raise",
+              "line": 338
+            },
+            {
+              "kind": "raise",
+              "line": 386
+            },
+            {
+              "kind": "raise",
+              "line": 397
+            },
+            {
+              "kind": "raise",
+              "line": 433
+            },
+            {
+              "kind": "raise",
+              "line": 459
+            },
+            {
+              "kind": "raise",
+              "line": 468
+            },
+            {
+              "kind": "raise",
+              "line": 474
+            },
+            {
+              "kind": "raise",
+              "line": 493
+            },
+            {
+              "kind": "raise",
+              "line": 499
+            }
           ],
           "hash": "bda131830596607e0ac6010fbb5e2b8b9952cdf73bdfc0e53cf8f05e3b449ade",
           "importsFiles": [
@@ -4747,6 +5684,33 @@
             "main",
             "mixed_depth_reject",
             "selftest"
+          ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 126
+            },
+            {
+              "in": "_selftest_facing",
+              "kind": "except",
+              "line": 519
+            },
+            {
+              "in": "_selftest_andon_can_fail",
+              "kind": "except",
+              "line": 529
+            },
+            {
+              "in": "_selftest_andon_can_fail",
+              "kind": "except",
+              "line": 535
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 581
+            }
           ],
           "hash": "b3fe9e1b40750c81eb984dfea5512975de8de8446c2d36a204836b7fc78b98ce",
           "path": "tools/callieri_border.py"
@@ -4770,6 +5734,38 @@
             "seed_boxes",
             "selftest",
             "validate"
+          ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 70
+            },
+            {
+              "in": "validate",
+              "kind": "except",
+              "line": 124
+            },
+            {
+              "in": "validate",
+              "kind": "except",
+              "line": 149
+            },
+            {
+              "in": "_selftest",
+              "kind": "except",
+              "line": 318
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 417
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 420
+            }
           ],
           "hash": "8228bd2b97bdfb01058c6016eb9bdce4af17c8764668160d833a2631b4b6e3b0",
           "importsFiles": [
@@ -4795,6 +5791,43 @@
             "resolve_view_scope",
             "selftest",
             "with_occupant_phrase"
+          ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 313
+            },
+            {
+              "in": "parse_view",
+              "kind": "except",
+              "line": 332
+            },
+            {
+              "in": "selftest",
+              "kind": "except",
+              "line": 988
+            },
+            {
+              "in": "selftest",
+              "kind": "except",
+              "line": 1010
+            },
+            {
+              "in": "selftest",
+              "kind": "except",
+              "line": 1041
+            },
+            {
+              "in": "selftest",
+              "kind": "except",
+              "line": 1055
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 1194
+            }
           ],
           "hash": "6668f24dfadc1e3fa96d3824b8045ad3ca147f4c807170204e112a5b3697bc7c",
           "importsFiles": [
@@ -4845,6 +5878,83 @@
             "verify_regions",
             "w3_named_phrases"
           ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 330
+            },
+            {
+              "in": "load_canon",
+              "kind": "except",
+              "line": 355
+            },
+            {
+              "in": "infer_subject_from_profile",
+              "kind": "except",
+              "line": 1088
+            },
+            {
+              "in": "_bind_census_cell",
+              "kind": "except",
+              "line": 1401
+            },
+            {
+              "in": "_selftest_router",
+              "kind": "except",
+              "line": 1569
+            },
+            {
+              "in": "_selftest_router",
+              "kind": "except",
+              "line": 1575
+            },
+            {
+              "in": "_selftest_router",
+              "kind": "except",
+              "line": 1585
+            },
+            {
+              "in": "_selftest_router",
+              "kind": "except",
+              "line": 1591
+            },
+            {
+              "in": "_selftest_router",
+              "kind": "except",
+              "line": 1601
+            },
+            {
+              "in": "_selftest_router",
+              "kind": "except",
+              "line": 1607
+            },
+            {
+              "in": "_selftest_required_clause",
+              "kind": "except",
+              "line": 1677
+            },
+            {
+              "in": "_selftest_collision",
+              "kind": "except",
+              "line": 1736
+            },
+            {
+              "in": "_selftest_collision",
+              "kind": "except",
+              "line": 1773
+            },
+            {
+              "in": "_selftest_out_of_scope",
+              "kind": "except",
+              "line": 1854
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 2003
+            }
+          ],
           "hash": "4109bc916bd853e5df07e8ac906cc1ea5f1dcacb0156ceb51b65d817ca173713",
           "importsFiles": [
             "tools/canon_bind.py"
@@ -4869,6 +5979,33 @@
             "to_surfaces",
             "token_count"
           ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 150
+            },
+            {
+              "in": "load_tokenizer",
+              "kind": "except",
+              "line": 648
+            },
+            {
+              "in": "density",
+              "kind": "except",
+              "line": 677
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 938
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 941
+            }
+          ],
           "hash": "2b5d42eef28a06936f00b1486cefae206eb839eef64ba23edc7973b9e9c78e13",
           "importsFiles": [
             "tools/canon_gate.py"
@@ -4884,6 +6021,20 @@
             "sphere_views",
             "visible_from"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 273
+            },
+            {
+              "kind": "raise",
+              "line": 277
+            },
+            {
+              "kind": "raise",
+              "line": 394
+            }
+          ],
           "hash": "49ddbd3b075925c54b4e8ae9387e36cd35bb1d35ada9cdb38c097557e1a6349e",
           "importsFiles": [
             "tools/subject_profile.py"
@@ -4897,6 +6048,12 @@
         {
           "exports": [
             "basis_cd"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 48
+            }
           ],
           "hash": "f55385944fc033982ce2b41e1c13333bbb8faf4d3b92b163e70e18a7bc28ac2b",
           "path": "tools/diagnostics/brush_reach.py"
@@ -4950,6 +6107,36 @@
             "lab",
             "ratios"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 141
+            },
+            {
+              "kind": "raise",
+              "line": 143
+            },
+            {
+              "kind": "raise",
+              "line": 145
+            },
+            {
+              "kind": "raise",
+              "line": 147
+            },
+            {
+              "kind": "raise",
+              "line": 149
+            },
+            {
+              "kind": "raise",
+              "line": 181
+            },
+            {
+              "kind": "raise",
+              "line": 247
+            }
+          ],
           "hash": "9f7ac08555b13f7145f3b1b081cd11872c38dfb94107fd283fd4d1ec6fdd441c",
           "path": "tools/diagnostics/e04_blotch.py"
         },
@@ -4992,6 +6179,28 @@
           "exports": [
             "key"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 28
+            },
+            {
+              "kind": "raise",
+              "line": 30
+            },
+            {
+              "kind": "raise",
+              "line": 37
+            },
+            {
+              "kind": "raise",
+              "line": 44
+            },
+            {
+              "kind": "raise",
+              "line": 58
+            }
+          ],
           "hash": "44087712743bd1d8ffb62f9a8786c45b767c985d13d0bf05dd3dd12dbb627925",
           "path": "tools/diagnostics/e04_make_brush_prompts.py"
         },
@@ -4999,12 +6208,29 @@
           "exports": [
             "defaults_of"
           ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 124
+            },
+            {
+              "kind": "except",
+              "line": 127
+            }
+          ],
           "hash": "1cc19f52a7cab39eadff670d8977b4c4622efda06b6fd4a0d725cfe25483b9c0",
           "path": "tools/diagnostics/e04_profile_check.py"
         },
         {
           "exports": [
             "defaults_of"
+          ],
+          "failurePaths": [
+            {
+              "in": "defaults_of",
+              "kind": "except",
+              "line": 210
+            }
           ],
           "hash": "53ae79d73f6da20cb25f9eeab44f358d49f8eebdbdafa470715d8ab533509e31",
           "path": "tools/diagnostics/e04_registry_sweep.py"
@@ -5054,6 +6280,24 @@
             "ring_from",
             "stroke_reach"
           ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 108
+            },
+            {
+              "kind": "raise",
+              "line": 129
+            },
+            {
+              "kind": "raise",
+              "line": 209
+            },
+            {
+              "kind": "raise",
+              "line": 211
+            }
+          ],
           "hash": "c4d8290ab9b81c1f884fffe580dccc894502280ff1c9804501932323c4c8b321",
           "path": "tools/diagnostics/e04_stroke_cameras.py"
         },
@@ -5101,6 +6345,30 @@
             "live_silhouette",
             "reachable"
           ],
+          "failurePaths": [
+            {
+              "in": "keyed_bbox_guard",
+              "kind": "raise",
+              "line": 142
+            },
+            {
+              "in": "keyed_bbox_guard",
+              "kind": "raise",
+              "line": 146
+            },
+            {
+              "kind": "raise",
+              "line": 205
+            },
+            {
+              "kind": "raise",
+              "line": 225
+            },
+            {
+              "kind": "raise",
+              "line": 327
+            }
+          ],
           "hash": "7428e54ae0dd908e515992daf8807659f16a4c1e16da505055df339a8e73cb8c",
           "path": "tools/diagnostics/e08_acceptance.py"
         },
@@ -5125,6 +6393,20 @@
             "reach",
             "yaws"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 102
+            },
+            {
+              "kind": "raise",
+              "line": 135
+            },
+            {
+              "kind": "raise",
+              "line": 137
+            }
+          ],
           "hash": "3816c0434d8453cdbe1d46e61c4ae7ceaeca3ee0a2534095edd5dd03c134a1fd",
           "path": "tools/diagnostics/e08_ceiling.py"
         },
@@ -5134,6 +6416,34 @@
             "draw_boxes",
             "load",
             "to_lab"
+          ],
+          "failurePaths": [
+            {
+              "in": "draw_boxes",
+              "kind": "except",
+              "line": 90
+            },
+            {
+              "kind": "raise",
+              "line": 111
+            },
+            {
+              "kind": "raise",
+              "line": 114
+            },
+            {
+              "kind": "raise",
+              "line": 117
+            },
+            {
+              "kind": "raise",
+              "line": 121
+            },
+            {
+              "in": "hc_panel",
+              "kind": "except",
+              "line": 239
+            }
           ],
           "hash": "4289d1c4267ecb007124696fadd607f90ad0dfc83ed471453469356ece8951ef",
           "path": "tools/diagnostics/e08_contradiction.py"
@@ -5147,6 +6457,32 @@
           "path": "tools/diagnostics/e08_deltaE.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 40
+            },
+            {
+              "kind": "raise",
+              "line": 42
+            },
+            {
+              "kind": "raise",
+              "line": 44
+            },
+            {
+              "kind": "raise",
+              "line": 84
+            },
+            {
+              "kind": "raise",
+              "line": 95
+            },
+            {
+              "kind": "raise",
+              "line": 97
+            }
+          ],
           "hash": "022d4d82800bcc6857fea0a14a73cbde2345108c5975af0a69734e734bd94c30",
           "path": "tools/diagnostics/e08_intersect_delta.py"
         },
@@ -5173,6 +6509,12 @@
             "bilin",
             "main"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 152
+            }
+          ],
           "hash": "61583f308964f5d5eaf2ff76b8bf0a6529ed0e5ab6288d60d1c233e47da01afc",
           "path": "tools/diagnostics/e10_claim_replay.py"
         },
@@ -5180,6 +6522,17 @@
           "exports": [
             "halt",
             "main"
+          ],
+          "failurePaths": [
+            {
+              "in": "halt",
+              "kind": "raise",
+              "line": 61
+            },
+            {
+              "kind": "raise",
+              "line": 326
+            }
           ],
           "hash": "295b585e6f63082db0d8121e438fc7553af41992c81ba853d55c31f3ad78a109",
           "path": "tools/diagnostics/e10_consumers_subject.py"
@@ -5189,6 +6542,12 @@
             "canonical",
             "main"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 119
+            }
+          ],
           "hash": "a661527575e0bab84519a0bb46a364b29b7872649f4ccf13e06575074c67256b",
           "path": "tools/diagnostics/e10_offsurface.py"
         },
@@ -5197,6 +6556,17 @@
             "halt",
             "main"
           ],
+          "failurePaths": [
+            {
+              "in": "halt",
+              "kind": "raise",
+              "line": 54
+            },
+            {
+              "kind": "raise",
+              "line": 280
+            }
+          ],
           "hash": "d9a53e02b2758e584cd6f8dca30969357159afe98e3a36854a0a1fbf76e4f6ab",
           "path": "tools/diagnostics/e10_offsurface_consumers.py"
         },
@@ -5204,10 +6574,32 @@
           "exports": [
             "main"
           ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 102
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 336
+            },
+            {
+              "kind": "raise",
+              "line": 383
+            }
+          ],
           "hash": "ac18d11901c555523abd9dc32bb1e7c32aa6046d63c8e1467941d75384c93693",
           "path": "tools/diagnostics/e10_offsurface_where.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 37
+            }
+          ],
           "hash": "395d50e21774758f6d5330c623e5bcd4c8424f5bae4246466bd3a7a74d2ff8eb",
           "path": "tools/diagnostics/e12_ab_sheet.py"
         },
@@ -5224,10 +6616,22 @@
             "load",
             "sobel_mag"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 175
+            }
+          ],
           "hash": "df1da2f954862cfaea6120cccb4324a839aeb9c57c0f5cebf2c6aef1b1e849c6",
           "path": "tools/diagnostics/e12_canny_derive.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 86
+            }
+          ],
           "hash": "8900a1a8860167bf94ef1b5bcdd9ea6f0df6ef9dc466502d491fd25147665ba4",
           "path": "tools/diagnostics/e12_crop_silhouette.py"
         },
@@ -5236,14 +6640,37 @@
             "basis",
             "reached"
           ],
+          "failurePaths": [
+            {
+              "in": "basis",
+              "kind": "raise",
+              "line": 169
+            }
+          ],
           "hash": "2aad6c43de689cf595740ab918245c71ac77638048a1275ae4f969a8bb0ebf5b",
           "path": "tools/diagnostics/e12_elevated.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 108
+            }
+          ],
           "hash": "ce5f91981ae49a7f0ebd5e6e686127112f82df2e70a1dbf9db3f17a7873f3c50",
           "path": "tools/diagnostics/e12_family_mass.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 97
+            },
+            {
+              "kind": "raise",
+              "line": 101
+            }
+          ],
           "hash": "98b3ae6b3fc064c39697fb949577610ff7f081f7452dea77725b7cf743ac5d05",
           "path": "tools/diagnostics/e12_frame.py"
         },
@@ -5252,14 +6679,61 @@
             "axis_of",
             "unproject"
           ],
+          "failurePaths": [
+            {
+              "in": "axis_of",
+              "kind": "raise",
+              "line": 126
+            },
+            {
+              "kind": "raise",
+              "line": 147
+            },
+            {
+              "kind": "raise",
+              "line": 153
+            },
+            {
+              "kind": "raise",
+              "line": 165
+            },
+            {
+              "kind": "raise",
+              "line": 232
+            }
+          ],
           "hash": "e5caffe69967a5962a323b051f58795eb59fddc4a5441c9a3c36357945a3eb24",
           "path": "tools/diagnostics/e12_head_evidence.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 63
+            },
+            {
+              "kind": "raise",
+              "line": 67
+            },
+            {
+              "kind": "raise",
+              "line": 75
+            }
+          ],
           "hash": "04905df899d7cc28c6cadd5d6ee251af472ab7178ff9c341d930d5c9fa9c4d5b",
           "path": "tools/diagnostics/e12_head_render.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 36
+            },
+            {
+              "kind": "raise",
+              "line": 41
+            }
+          ],
           "hash": "44c0ef7f91b21d1c27fc4cf9622a7aa24334bb1eb1dd14e7cc7e97e9926dcf9c",
           "path": "tools/diagnostics/e12_head_sheet.py"
         },
@@ -5268,12 +6742,61 @@
             "bad_percents",
             "literal"
           ],
+          "failurePaths": [
+            {
+              "in": "literal",
+              "kind": "except",
+              "line": 94
+            },
+            {
+              "kind": "except",
+              "line": 109
+            },
+            {
+              "kind": "except",
+              "line": 137
+            },
+            {
+              "kind": "except",
+              "line": 155
+            }
+          ],
           "hash": "d634590d753f5c43ac4aaed893153bcb7c86f77138fd3a1d761f43977be5e6ae",
           "path": "tools/diagnostics/e12_help_format_scan.py"
         },
         {
           "exports": [
             "subsequence"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 59
+            },
+            {
+              "kind": "raise",
+              "line": 64
+            },
+            {
+              "kind": "raise",
+              "line": 81
+            },
+            {
+              "kind": "raise",
+              "line": 118
+            },
+            {
+              "kind": "raise",
+              "line": 123
+            },
+            {
+              "kind": "raise",
+              "line": 135
+            },
+            {
+              "kind": "raise",
+              "line": 139
+            }
           ],
           "hash": "a2ccff5394b8bdddbb4b41fc7f94084d9535da15b846e10c206cb9427dc4a846",
           "path": "tools/diagnostics/e12_make_twin_prompts.py"
@@ -5282,14 +6805,48 @@
           "exports": [
             "px"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 61
+            },
+            {
+              "kind": "raise",
+              "line": 64
+            },
+            {
+              "kind": "raise",
+              "line": 89
+            },
+            {
+              "kind": "raise",
+              "line": 135
+            }
+          ],
           "hash": "899edc50dfd8953f51943c6a454e33d2b7e49ec02119e3185982e20be2ef492d",
           "path": "tools/diagnostics/e12_mouth_geometry.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 37
+            },
+            {
+              "kind": "raise",
+              "line": 41
+            }
+          ],
           "hash": "c5eed7049c0edbeed83df9e1c07a1824ded407185c198f694c3b12a6e04f54b0",
           "path": "tools/diagnostics/e12_n_sheet.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 94
+            }
+          ],
           "hash": "cde5af536be2b0dc9337f75e8cf5a06de1e7e6cbcea10d6bea37e8b683b0e0eb",
           "path": "tools/diagnostics/e12_nonmanifold.py"
         },
@@ -5300,6 +6857,33 @@
         {
           "exports": [
             "pv"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 83
+            },
+            {
+              "in": "pv",
+              "kind": "raise",
+              "line": 90
+            },
+            {
+              "kind": "raise",
+              "line": 97
+            },
+            {
+              "kind": "except",
+              "line": 108
+            },
+            {
+              "kind": "raise",
+              "line": 109
+            },
+            {
+              "kind": "raise",
+              "line": 248
+            }
           ],
           "hash": "a0ee08beab4841bfdf329040277d2c0e0e58672f31105a3866d7b064f5e5a401",
           "importsFiles": [
@@ -5316,10 +6900,40 @@
             "kv",
             "to_lab"
           ],
+          "failurePaths": [
+            {
+              "in": "kv",
+              "kind": "raise",
+              "line": 68
+            },
+            {
+              "in": "kv",
+              "kind": "raise",
+              "line": 70
+            },
+            {
+              "kind": "raise",
+              "line": 77
+            },
+            {
+              "kind": "raise",
+              "line": 87
+            },
+            {
+              "kind": "raise",
+              "line": 121
+            }
+          ],
           "hash": "d6ee40e0c5cb43cc6b51787cfcc6694de87cbafa2834fdefd1d2b963a8549ee9",
           "path": "tools/diagnostics/e12_region_colour.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 153
+            }
+          ],
           "hash": "656329ce434e13ad80cd0d27fbdc780d1cff9d3e82430a0b614feb89127eed5a",
           "path": "tools/diagnostics/e12_region_crops.py"
         },
@@ -5327,6 +6941,12 @@
           "exports": [
             "stems",
             "unsub"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 169
+            }
           ],
           "hash": "5f051e2f5b12a0e49cc31400f8f7f6505db7fcc5bc442c3ae517d4bb92fc506f",
           "path": "tools/diagnostics/e12_stem_delta.py"
@@ -5336,12 +6956,41 @@
             "basis",
             "cast"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 128
+            },
+            {
+              "in": "parse",
+              "kind": "raise",
+              "line": 137
+            },
+            {
+              "kind": "raise",
+              "line": 151
+            },
+            {
+              "kind": "raise",
+              "line": 155
+            }
+          ],
           "hash": "9f2dfe9ff154d896c3dea5233290acdb71e17b25007c388d70916b0ecb0d624c",
           "path": "tools/diagnostics/e12_thin_curve.py"
         },
         {
           "exports": [
             "to_lab"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 66
+            },
+            {
+              "kind": "raise",
+              "line": 112
+            }
           ],
           "hash": "e1db5676940458f17b964a9c030f4bed3b68d538ae7da80aaa2230735edd78ae",
           "path": "tools/diagnostics/e12_twin_gate.py"
@@ -5352,10 +7001,36 @@
             "ring_fit",
             "to_lab"
           ],
+          "failurePaths": [
+            {
+              "in": "kv",
+              "kind": "raise",
+              "line": 81
+            },
+            {
+              "in": "kv",
+              "kind": "raise",
+              "line": 83
+            },
+            {
+              "kind": "raise",
+              "line": 90
+            },
+            {
+              "kind": "raise",
+              "line": 137
+            }
+          ],
           "hash": "2b66f5f4f8484feb703cb32505261047cff7ac25a3fa13bc37d302fab1c2f0b0",
           "path": "tools/diagnostics/e12_twin_readout.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 125
+            }
+          ],
           "hash": "db8e39bb297ddc672755ff5ee071f75ba4cbcacabff2c34bacba91b0e9527735",
           "path": "tools/diagnostics/e12_view_visibility.py"
         },
@@ -5366,20 +7041,83 @@
             "hits_in_box",
             "visible"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 87
+            },
+            {
+              "kind": "raise",
+              "line": 94
+            }
+          ],
           "hash": "dbf8678ee389d98f248ff121cb59d3039d414de4dfbc9b112406ece4cf6ec5eb",
           "path": "tools/diagnostics/e13_a2_allocation.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 65
+            },
+            {
+              "kind": "raise",
+              "line": 73
+            },
+            {
+              "kind": "raise",
+              "line": 103
+            }
+          ],
           "hash": "9fb7b8110ba1b28c24f522d4a03373de85d6e44e843c90b8ee67dd1f37ad2cfc",
           "path": "tools/diagnostics/e13_anchor_check.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "_pairs",
+              "kind": "raise",
+              "line": 67
+            },
+            {
+              "in": "_pairs",
+              "kind": "raise",
+              "line": 69
+            },
+            {
+              "kind": "raise",
+              "line": 76
+            },
+            {
+              "kind": "raise",
+              "line": 93
+            },
+            {
+              "kind": "raise",
+              "line": 100
+            }
+          ],
           "hash": "562eab3fa97a4a7e321c5573ea5a23f857d280d3d22360dbd7f8798a4beaf2e1",
           "path": "tools/diagnostics/e13_crop_registration.py"
         },
         {
           "exports": [
             "load"
+          ],
+          "failurePaths": [
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 53
+            },
+            {
+              "kind": "raise",
+              "line": 61
+            },
+            {
+              "kind": "raise",
+              "line": 66
+            }
           ],
           "hash": "4d79afc59c2b195bf50c7435c164ff6ccdf8c0bbe3443a6d454b2c3a81cc2b8c",
           "path": "tools/diagnostics/e13_gate1_sheet.py"
@@ -5390,16 +7128,50 @@
             "dtc_of",
             "seen"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 90
+            },
+            {
+              "kind": "raise",
+              "line": 138
+            },
+            {
+              "kind": "raise",
+              "line": 142
+            },
+            {
+              "kind": "raise",
+              "line": 145
+            }
+          ],
           "hash": "d4c1460aef7e7097ca59d8aa380be711ef92f38679149c15c2ba958cf96a1a95",
           "path": "tools/diagnostics/e13_hole_map.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 85
+            },
+            {
+              "kind": "raise",
+              "line": 88
+            }
+          ],
           "hash": "d636f8ec1829ace6bddec54d90339fb149f6dc5588b99e0481f42ff1ca5bb6fa",
           "path": "tools/diagnostics/e13_payoff_sheet.py"
         },
         {
           "exports": [
             "axes"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 89
+            }
           ],
           "hash": "583d227dd6a1a357b85f842422da8401b53c37b5e172bf13f56161722ba07317",
           "path": "tools/diagnostics/e13_stroke_cameras.py"
@@ -5408,6 +7180,12 @@
           "exports": [
             "withheld"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 78
+            }
+          ],
           "hash": "ffd8b5296d972079db56c6641363f0c56e9801f716dbb970f66a3614be295cf1",
           "path": "tools/diagnostics/e13_thin_inputs.py"
         },
@@ -5415,6 +7193,24 @@
           "exports": [
             "dtc_of",
             "signed_volume"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 114
+            },
+            {
+              "kind": "raise",
+              "line": 175
+            },
+            {
+              "kind": "raise",
+              "line": 209
+            },
+            {
+              "kind": "raise",
+              "line": 215
+            }
           ],
           "hash": "8866374a6d9ad02e2dcc202ebe1e801479f201368e761dc776cdcd001f9a7d15",
           "path": "tools/diagnostics/e14_atlas_anatomy.py"
@@ -5425,6 +7221,12 @@
             "srgb_to_lab",
             "weighted_min"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 240
+            }
+          ],
           "hash": "5a9cc293e131bf2bc5ebc86cf91eb0366573d270d0462e14955491890ac9e9ab",
           "path": "tools/diagnostics/e14_backdrop_checks.py"
         },
@@ -5432,6 +7234,20 @@
           "exports": [
             "hue_density",
             "srgb_to_lab"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 76
+            },
+            {
+              "kind": "raise",
+              "line": 82
+            },
+            {
+              "kind": "raise",
+              "line": 94
+            }
           ],
           "hash": "5b58c70de5ab442d402ed6cb391d8f42bb00aba07884741ffe0c06f1ca1a1c45",
           "path": "tools/diagnostics/e14_band_density.py"
@@ -5458,6 +7274,40 @@
             "apply_undo",
             "sha"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 96
+            },
+            {
+              "kind": "raise",
+              "line": 101
+            },
+            {
+              "in": "apply_demotion",
+              "kind": "raise",
+              "line": 115
+            },
+            {
+              "in": "apply_demotion",
+              "kind": "raise",
+              "line": 125
+            },
+            {
+              "in": "apply_demotion",
+              "kind": "raise",
+              "line": 127
+            },
+            {
+              "in": "apply_demotion",
+              "kind": "raise",
+              "line": 132
+            },
+            {
+              "kind": "raise",
+              "line": 178
+            }
+          ],
           "hash": "45fa2298e9bbe3fe1851729a7f944804d90193db521377026fbf644032f49f6e",
           "path": "tools/diagnostics/e14_demote_garnet.py"
         },
@@ -5465,10 +7315,74 @@
           "exports": [
             "sha"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 65
+            },
+            {
+              "kind": "raise",
+              "line": 76
+            },
+            {
+              "kind": "raise",
+              "line": 86
+            },
+            {
+              "kind": "raise",
+              "line": 88
+            },
+            {
+              "kind": "raise",
+              "line": 93
+            },
+            {
+              "kind": "raise",
+              "line": 103
+            },
+            {
+              "kind": "raise",
+              "line": 106
+            }
+          ],
           "hash": "2fdf54d7c0038da616f7848b6a924f32a064a56c08683224c9112195ea9aa3fa",
           "path": "tools/diagnostics/e14_garnet_reproject.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 49
+            },
+            {
+              "kind": "raise",
+              "line": 56
+            },
+            {
+              "kind": "raise",
+              "line": 59
+            },
+            {
+              "kind": "raise",
+              "line": 61
+            },
+            {
+              "kind": "raise",
+              "line": 115
+            },
+            {
+              "kind": "raise",
+              "line": 119
+            },
+            {
+              "kind": "raise",
+              "line": 123
+            },
+            {
+              "kind": "raise",
+              "line": 125
+            }
+          ],
           "hash": "852cd99de61ad471e87db19cc12b2de8e74ffc5a2fefc30ac2144e94d52d3dc4",
           "path": "tools/diagnostics/e14_make_brush_prompts.py"
         },
@@ -5477,10 +7391,26 @@
             "band",
             "srgb_to_lab"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 79
+            },
+            {
+              "kind": "raise",
+              "line": 91
+            }
+          ],
           "hash": "59694271977d6ef8f952102ecad3b7fa56fa8413584297f9639778a1ef93fa9c",
           "path": "tools/diagnostics/e14_pair_readout.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 50
+            }
+          ],
           "hash": "236649a3305ef0ea2157143c11b73b80c0d14c03ae130bbb90e34cd47e6a9f92",
           "path": "tools/diagnostics/e14_pair_sheet.py"
         },
@@ -5492,6 +7422,70 @@
             "lch_of",
             "sha",
             "to_lab"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 134
+            },
+            {
+              "kind": "raise",
+              "line": 149
+            },
+            {
+              "kind": "raise",
+              "line": 168
+            },
+            {
+              "kind": "raise",
+              "line": 210
+            },
+            {
+              "kind": "raise",
+              "line": 215
+            },
+            {
+              "kind": "raise",
+              "line": 224
+            },
+            {
+              "in": "apply_repair",
+              "kind": "raise",
+              "line": 248
+            },
+            {
+              "in": "apply_repair",
+              "kind": "raise",
+              "line": 252
+            },
+            {
+              "in": "apply_repair",
+              "kind": "raise",
+              "line": 257
+            },
+            {
+              "in": "apply_repair",
+              "kind": "raise",
+              "line": 259
+            },
+            {
+              "in": "apply_undo",
+              "kind": "raise",
+              "line": 295
+            },
+            {
+              "in": "apply_undo",
+              "kind": "raise",
+              "line": 299
+            },
+            {
+              "kind": "raise",
+              "line": 311
+            },
+            {
+              "kind": "raise",
+              "line": 325
+            }
           ],
           "hash": "585cd1480bdf6ac59fe58f9a2e307f201b0fa1873275f29768705bed71248b42",
           "path": "tools/diagnostics/e14_repair_collar.py"
@@ -5507,6 +7501,16 @@
           "path": "tools/diagnostics/e14_stroke_watch.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 99
+            },
+            {
+              "kind": "except",
+              "line": 159
+            }
+          ],
           "hash": "6351135ef6891861875a94cbf7896c7f6112f7b845bf262e5c33aa07d8e23257",
           "path": "tools/diagnostics/e14_topology.py"
         },
@@ -5525,6 +7529,13 @@
             "measure",
             "openings"
           ],
+          "failurePaths": [
+            {
+              "in": "measure",
+              "kind": "raise",
+              "line": 176
+            }
+          ],
           "hash": "c48c465a65c8b316504787aa47c872f12b3ba469f1257c66b4c231112efada1b",
           "importsFiles": [
             "tools/mask_geometry.py"
@@ -5537,6 +7548,13 @@
             "preprocess",
             "sha256"
           ],
+          "failurePaths": [
+            {
+              "in": "preprocess",
+              "kind": "raise",
+              "line": 82
+            }
+          ],
           "hash": "5864137ca90bd1b146584e95b27a90cd09bc955c8500b15ca9d9b037b9b0fc7f",
           "path": "tools/diagnostics/e32_route_preprocess.py"
         },
@@ -5544,6 +7562,18 @@
           "exports": [
             "build",
             "main"
+          ],
+          "failurePaths": [
+            {
+              "in": "build",
+              "kind": "raise",
+              "line": 90
+            },
+            {
+              "in": "build",
+              "kind": "raise",
+              "line": 96
+            }
           ],
           "hash": "c1e27560674a60d6673158dab868b7ea9690eb19da59d670915771ce2e897ff3",
           "path": "tools/diagnostics/e33_register_sheet.py"
@@ -5560,14 +7590,105 @@
             "split_surfaces",
             "unique_first_seen"
           ],
+          "failurePaths": [
+            {
+              "in": "load_prompt",
+              "kind": "raise",
+              "line": 128
+            },
+            {
+              "in": "load_prompt",
+              "kind": "raise",
+              "line": 140
+            },
+            {
+              "in": "load_prompt",
+              "kind": "raise",
+              "line": 147
+            },
+            {
+              "in": "run",
+              "kind": "raise",
+              "line": 156
+            },
+            {
+              "in": "run",
+              "kind": "raise",
+              "line": 161
+            },
+            {
+              "in": "run",
+              "kind": "raise",
+              "line": 163
+            },
+            {
+              "in": "selftest",
+              "kind": "raise",
+              "line": 211
+            },
+            {
+              "in": "selftest",
+              "kind": "raise",
+              "line": 214
+            },
+            {
+              "in": "selftest",
+              "kind": "raise",
+              "line": 221
+            },
+            {
+              "in": "selftest",
+              "kind": "raise",
+              "line": 223
+            },
+            {
+              "in": "selftest",
+              "kind": "raise",
+              "line": 227
+            },
+            {
+              "in": "selftest",
+              "kind": "except",
+              "line": 231
+            },
+            {
+              "in": "selftest",
+              "kind": "raise",
+              "line": 234
+            },
+            {
+              "kind": "raise",
+              "line": 248
+            }
+          ],
           "hash": "f866a1eded0ff14872a2338bc8358d495198f15bf8e38e4e12f73142db85d7f6",
           "path": "tools/diagnostics/e55_prompt_elements.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 38
+            },
+            {
+              "kind": "raise",
+              "line": 43
+            }
+          ],
           "hash": "6444d0c7ecd348ddc08c62c2c66ae943ad1d20f5212501f485251524b2618adb",
           "path": "tools/diagnostics/facing_masks.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 49
+            },
+            {
+              "kind": "raise",
+              "line": 53
+            }
+          ],
           "hash": "4ef1023d0149923c43775fa70249bd9f685c5033d6c33e3a72b4e0b4c179b82e",
           "path": "tools/diagnostics/facing_silhouette_gap.py"
         },
@@ -5578,6 +7699,12 @@
             "fitted_field",
             "lch",
             "srgb_to_lab"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 149
+            }
           ],
           "hash": "0889329fdf4371352c75bb79b3c808743c4f303d32222219264a0a2355e77a99",
           "path": "tools/diagnostics/flagged_identity.py"
@@ -5594,6 +7721,20 @@
             "srgb_to_lab",
             "stats",
             "view_index"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 63
+            },
+            {
+              "kind": "raise",
+              "line": 65
+            },
+            {
+              "kind": "raise",
+              "line": 157
+            }
           ],
           "hash": "9ce770406eb8adfe70060605edb19e16958ba7bff77cbcdb0962dc39ad377ee0",
           "path": "tools/diagnostics/gained_bg_check.py"
@@ -5621,6 +7762,12 @@
             "cam_axes",
             "figure_mask"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 87
+            }
+          ],
           "hash": "3f4228f7ceec0b6ccfe323dd16ce4b91f72276d1d6a9ca102b0c70fa65b6c5ae",
           "path": "tools/diagnostics/keyed_outside.py"
         },
@@ -5632,6 +7779,20 @@
           "exports": [
             "cam_axes"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 98
+            },
+            {
+              "kind": "raise",
+              "line": 103
+            },
+            {
+              "kind": "raise",
+              "line": 108
+            }
+          ],
           "hash": "a5b029d479b4e4365624df9f6711af0834f64683d8b7ddc0c59c474e4e689b78",
           "path": "tools/diagnostics/silhouette_agree.py"
         },
@@ -5640,6 +7801,12 @@
             "basis",
             "bilin",
             "hist"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 202
+            }
           ],
           "hash": "070b1e2dc3966c7083903af8c5a98f586e219a3ace4d70d5be14854165bba778",
           "path": "tools/diagnostics/texel_provenance.py"
@@ -5696,6 +7863,18 @@
             "panel",
             "sha256"
           ],
+          "failurePaths": [
+            {
+              "in": "band_edges",
+              "kind": "raise",
+              "line": 114
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 323
+            }
+          ],
           "hash": "89b23d5901897af4cbda8a291f592dcf82019bdceab25e7bb4df9f75820d58a6",
           "path": "tools/e10_sea_composite.py"
         },
@@ -5703,6 +7882,13 @@
           "exports": [
             "main",
             "render"
+          ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 58
+            }
           ],
           "hash": "ca6aeb730f2e1cb0b9d96eeeac5580bfaf41b64bc94d49c7c1b96c2738c3ef01",
           "path": "tools/e10_toggle_sheet.py"
@@ -5720,6 +7906,13 @@
             "load_emit_frame",
             "main",
             "to_lab"
+          ],
+          "failurePaths": [
+            {
+              "in": "fonts",
+              "kind": "except",
+              "line": 270
+            }
           ],
           "hash": "c10714598bf18646e1604660980403db88f568a6b1a8c331ef45d4dbdc3f87b6",
           "path": "tools/e10_waterline_candidates.py"
@@ -5744,6 +7937,137 @@
             "w3_claim_from_colors",
             "write_indexed_png"
           ],
+          "failurePaths": [
+            {
+              "in": "run_emit",
+              "kind": "raise",
+              "line": 108
+            },
+            {
+              "in": "write_indexed_png",
+              "kind": "raise",
+              "line": 188
+            },
+            {
+              "in": "write_indexed_png",
+              "kind": "raise",
+              "line": 192
+            },
+            {
+              "in": "write_indexed_png",
+              "kind": "raise",
+              "line": 194
+            },
+            {
+              "in": "owner_atlas_vs_sidecar",
+              "kind": "raise",
+              "line": 281
+            },
+            {
+              "in": "owner_atlas_vs_sidecar",
+              "kind": "raise",
+              "line": 287
+            },
+            {
+              "in": "owner_atlas_vs_sidecar",
+              "kind": "raise",
+              "line": 296
+            },
+            {
+              "in": "owner_atlas_vs_sidecar",
+              "kind": "raise",
+              "line": 301
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 331
+            },
+            {
+              "in": "w3_claim_from_colors",
+              "kind": "raise",
+              "line": 368
+            },
+            {
+              "in": "arm_x2",
+              "kind": "raise",
+              "line": 392
+            },
+            {
+              "in": "dragon_claim_from_colors",
+              "kind": "raise",
+              "line": 513
+            },
+            {
+              "in": "dragon_claim_from_colors",
+              "kind": "raise",
+              "line": 518
+            },
+            {
+              "in": "arm_dragon",
+              "kind": "raise",
+              "line": 543
+            },
+            {
+              "in": "arm_dragon",
+              "kind": "raise",
+              "line": 548
+            },
+            {
+              "in": "arm_dragon",
+              "kind": "raise",
+              "line": 562
+            },
+            {
+              "in": "longsword_class_from_colors",
+              "kind": "raise",
+              "line": 700
+            },
+            {
+              "in": "longsword_class_from_colors",
+              "kind": "raise",
+              "line": 705
+            },
+            {
+              "in": "longsword_class_from_colors",
+              "kind": "raise",
+              "line": 710
+            },
+            {
+              "in": "arm_longsword",
+              "kind": "raise",
+              "line": 749
+            },
+            {
+              "in": "arm_longsword",
+              "kind": "raise",
+              "line": 754
+            },
+            {
+              "in": "arm_longsword",
+              "kind": "raise",
+              "line": 757
+            },
+            {
+              "in": "arm_longsword",
+              "kind": "raise",
+              "line": 768
+            },
+            {
+              "in": "arm_longsword",
+              "kind": "raise",
+              "line": 784
+            },
+            {
+              "in": "arm_longsword",
+              "kind": "raise",
+              "line": 822
+            },
+            {
+              "kind": "raise",
+              "line": 998
+            }
+          ],
           "hash": "935548ef920c067371ab126fbe2d12ff3658729044f5cf993503b51f980aaf26",
           "path": "tools/e11_export_turnaround.py"
         },
@@ -5758,6 +8082,192 @@
             "sha256",
             "verify_ref_view"
           ],
+          "failurePaths": [
+            {
+              "in": "dragon_palette",
+              "kind": "raise",
+              "line": 153
+            },
+            {
+              "in": "build_tone_operands",
+              "kind": "raise",
+              "line": 206
+            },
+            {
+              "in": "build_tone_operands",
+              "kind": "raise",
+              "line": 212
+            },
+            {
+              "in": "build_tone_operands",
+              "kind": "raise",
+              "line": 215
+            },
+            {
+              "in": "build_tone_operands",
+              "kind": "raise",
+              "line": 218
+            },
+            {
+              "in": "build_tone_operands",
+              "kind": "raise",
+              "line": 222
+            },
+            {
+              "in": "build_tone_operands",
+              "kind": "raise",
+              "line": 228
+            },
+            {
+              "in": "build_tone_operands",
+              "kind": "raise",
+              "line": 231
+            },
+            {
+              "in": "build_tone_operands",
+              "kind": "raise",
+              "line": 259
+            },
+            {
+              "in": "build_tone_operands",
+              "kind": "raise",
+              "line": 261
+            },
+            {
+              "in": "build_tone_operands",
+              "kind": "raise",
+              "line": 264
+            },
+            {
+              "in": "build_tone_operands",
+              "kind": "raise",
+              "line": 267
+            },
+            {
+              "in": "build_tone_operands",
+              "kind": "raise",
+              "line": 278
+            },
+            {
+              "in": "longsword_palette",
+              "kind": "raise",
+              "line": 421
+            },
+            {
+              "in": "longsword_palette",
+              "kind": "raise",
+              "line": 426
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 486
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 489
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 491
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 493
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 498
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 505
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 511
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 526
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 531
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 539
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 588
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 590
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 592
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 594
+            },
+            {
+              "in": "build_ls_tone_operands",
+              "kind": "raise",
+              "line": 602
+            },
+            {
+              "in": "verify_ref_view",
+              "kind": "raise",
+              "line": 749
+            },
+            {
+              "in": "verify_ref_view",
+              "kind": "raise",
+              "line": 752
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 789
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 793
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 801
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 887
+            },
+            {
+              "kind": "raise",
+              "line": 937
+            }
+          ],
           "hash": "0e37950286dbca70d22f2a62e4ea657d028dcfb5f895a9dbd8f8536968b28117",
           "path": "tools/e11_manifest.py"
         },
@@ -5768,6 +8278,42 @@
             "moments",
             "sha",
             "srgb_to_lab"
+          ],
+          "failurePaths": [
+            {
+              "in": "kv",
+              "kind": "raise",
+              "line": 86
+            },
+            {
+              "in": "kv",
+              "kind": "raise",
+              "line": 88
+            },
+            {
+              "kind": "raise",
+              "line": 95
+            },
+            {
+              "kind": "raise",
+              "line": 98
+            },
+            {
+              "kind": "raise",
+              "line": 143
+            },
+            {
+              "kind": "raise",
+              "line": 163
+            },
+            {
+              "kind": "raise",
+              "line": 194
+            },
+            {
+              "kind": "raise",
+              "line": 257
+            }
           ],
           "hash": "774f9013441116c21511d29e8b2e0f9579a5c369415f5c4f2bfecd42f5796372",
           "path": "tools/e13_harmonize.py"
@@ -5789,6 +8335,143 @@
             "main",
             "rgb_to_lab",
             "srgb_to_linear"
+          ],
+          "failurePaths": [
+            {
+              "in": "cmd_prep",
+              "kind": "raise",
+              "line": 120
+            },
+            {
+              "in": "cmd_prep",
+              "kind": "raise",
+              "line": 150
+            },
+            {
+              "in": "cmd_prep",
+              "kind": "raise",
+              "line": 163
+            },
+            {
+              "in": "cmd_payload",
+              "kind": "raise",
+              "line": 196
+            },
+            {
+              "in": "cmd_payload",
+              "kind": "raise",
+              "line": 198
+            },
+            {
+              "in": "cmd_payload",
+              "kind": "raise",
+              "line": 200
+            },
+            {
+              "in": "cmd_payload",
+              "kind": "raise",
+              "line": 202
+            },
+            {
+              "in": "cmd_payload",
+              "kind": "raise",
+              "line": 207
+            },
+            {
+              "in": "cmd_payload",
+              "kind": "raise",
+              "line": 221
+            },
+            {
+              "in": "cmd_payload",
+              "kind": "raise",
+              "line": 223
+            },
+            {
+              "in": "cmd_payload",
+              "kind": "raise",
+              "line": 226
+            },
+            {
+              "in": "cmd_payload",
+              "kind": "raise",
+              "line": 233
+            },
+            {
+              "in": "cmd_payload",
+              "kind": "raise",
+              "line": 235
+            },
+            {
+              "in": "cmd_composite",
+              "kind": "raise",
+              "line": 253
+            },
+            {
+              "in": "cmd_composite",
+              "kind": "raise",
+              "line": 255
+            },
+            {
+              "in": "cmd_composite",
+              "kind": "raise",
+              "line": 265
+            },
+            {
+              "in": "cmd_colormatch",
+              "kind": "raise",
+              "line": 338
+            },
+            {
+              "in": "cmd_colormatch",
+              "kind": "raise",
+              "line": 344
+            },
+            {
+              "in": "cmd_colormatch",
+              "kind": "raise",
+              "line": 359
+            },
+            {
+              "in": "cmd_harmonize",
+              "kind": "raise",
+              "line": 401
+            },
+            {
+              "in": "cmd_harmonize",
+              "kind": "raise",
+              "line": 412
+            },
+            {
+              "in": "cmd_liftmask",
+              "kind": "raise",
+              "line": 439
+            },
+            {
+              "in": "cmd_liftmask",
+              "kind": "raise",
+              "line": 449
+            },
+            {
+              "in": "cmd_liftmask",
+              "kind": "raise",
+              "line": 451
+            },
+            {
+              "in": "cmd_liftmask",
+              "kind": "raise",
+              "line": 453
+            },
+            {
+              "in": "cmd_lift",
+              "kind": "raise",
+              "line": 518
+            },
+            {
+              "in": "cmd_lift",
+              "kind": "raise",
+              "line": 537
+            }
           ],
           "hash": "f3c42073d1bcc7aa7bc17feaf1e881254506cc7e896b800fc44c0dbc5378c94d",
           "path": "tools/e37_fire_repaints.py"
@@ -5813,6 +8496,33 @@
             "selftest",
             "sha256_file",
             "silhouette_masks_axes"
+          ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 113
+            },
+            {
+              "in": "_selftest_gate_can_fire",
+              "kind": "except",
+              "line": 646
+            },
+            {
+              "in": "_versions",
+              "kind": "except",
+              "line": 685
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 740
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 762
+            }
           ],
           "hash": "4b623742424ae0ef5cb62d2afad3e7ec245e5b88dc15b17d8f622013d9121d4a",
           "importsFiles": [
@@ -5844,6 +8554,33 @@
             "share_ratios",
             "write_json"
           ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 118
+            },
+            {
+              "in": "cmd_flats",
+              "kind": "except",
+              "line": 555
+            },
+            {
+              "in": "selftest",
+              "kind": "except",
+              "line": 604
+            },
+            {
+              "in": "selftest",
+              "kind": "raise",
+              "line": 606
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 724
+            }
+          ],
           "hash": "465b71586a12ca2488e095170138db0e63c11081040fb236a6e3f37e6b794553",
           "importOrder": [
             "tools/s3_sheet.py",
@@ -5865,6 +8602,18 @@
             "sha256",
             "write_indexed_png"
           ],
+          "failurePaths": [
+            {
+              "in": "npy_header",
+              "kind": "raise",
+              "line": 91
+            },
+            {
+              "in": "png_chunks",
+              "kind": "raise",
+              "line": 97
+            }
+          ],
           "hash": "be466558dc0c8750fb67001d79ee3d4cf50be58aa860fdfdb8faca61350dd471",
           "path": "tools/export_asset_source.py"
         },
@@ -5878,6 +8627,13 @@
             "repo",
             "repo_candidates",
             "resolve_repo"
+          ],
+          "failurePaths": [
+            {
+              "in": "repo",
+              "kind": "raise",
+              "line": 121
+            }
           ],
           "hash": "1f099e3394096a8ec2583148dd49c31645e8c83067d14646b9e3e9297392f065",
           "path": "tools/facet_index.py",
@@ -5901,6 +8657,18 @@
             "trace_pixels",
             "write_sheet"
           ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 86
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 434
+            }
+          ],
           "hash": "0eab1d5eccad02345b007974a983ea56079fc104ba011aad0fd8932f808294b6",
           "importsFiles": [
             "tools/atlas_from_aovs.py",
@@ -5922,6 +8690,28 @@
             "to_edge",
             "to_gray"
           ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 108
+            },
+            {
+              "in": "_selftest_andon_can_fail",
+              "kind": "except",
+              "line": 421
+            },
+            {
+              "in": "_selftest_andon_can_fail",
+              "kind": "except",
+              "line": 427
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 479
+            }
+          ],
           "hash": "9e1c050d6781cfe5433e7b1207b6b957e21475dd215fc18472b11d43b3e97735",
           "path": "tools/flow_estimate.py"
         },
@@ -5941,12 +8731,66 @@
             "validate",
             "write_generation"
           ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 95
+            },
+            {
+              "in": "_canon_block",
+              "kind": "except",
+              "line": 153
+            },
+            {
+              "in": "validate",
+              "kind": "except",
+              "line": 237
+            },
+            {
+              "in": "write_generation",
+              "kind": "except",
+              "line": 311
+            },
+            {
+              "in": "write_generation",
+              "kind": "raise",
+              "line": 314
+            },
+            {
+              "in": "_selftest",
+              "kind": "except",
+              "line": 375
+            },
+            {
+              "in": "_selftest",
+              "kind": "except",
+              "line": 391
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 430
+            }
+          ],
           "hash": "ffe86ed4610b73f6dc322fb0cf53853aee6ba4b8f2555c8a363c1ae691ca89e4",
           "path": "tools/gen_record.py"
         },
         {
           "exports": [
             "preprocess_image"
+          ],
+          "failurePaths": [
+            {
+              "in": "__getattr__",
+              "kind": "raise",
+              "line": 24
+            },
+            {
+              "in": "__getattr__",
+              "kind": "raise",
+              "line": 27
+            }
           ],
           "hash": "55806654e22b48fb728503b7d14bd0db48a7ab226468b6af87a148432c680700",
           "path": "tools/ig2mv_licensefree.py"
@@ -5966,6 +8810,43 @@
             "test_files",
             "to_markdown",
             "totals"
+          ],
+          "failurePaths": [
+            {
+              "in": "members",
+              "kind": "raise",
+              "line": 266
+            },
+            {
+              "in": "source_axes",
+              "kind": "except",
+              "line": 337
+            },
+            {
+              "in": "naming_files",
+              "kind": "except",
+              "line": 477
+            },
+            {
+              "in": "help_probe",
+              "kind": "except",
+              "line": 511
+            },
+            {
+              "in": "help_probe",
+              "kind": "except",
+              "line": 514
+            },
+            {
+              "in": "build",
+              "kind": "raise",
+              "line": 579
+            },
+            {
+              "in": "build",
+              "kind": "raise",
+              "line": 605
+            }
           ],
           "hash": "c4cb9904dd9bdb579527ada502f6c4fa988825999935252f7cb8adcc3b5e3ba8",
           "importsFiles": [
@@ -5999,6 +8880,28 @@
             "under_sealed_root",
             "warning_lines"
           ],
+          "failurePaths": [
+            {
+              "in": "under_sealed_root",
+              "kind": "except",
+              "line": 194
+            },
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 226
+            },
+            {
+              "in": "_raise",
+              "kind": "raise",
+              "line": 250
+            },
+            {
+              "in": "run_instrument",
+              "kind": "except",
+              "line": 380
+            }
+          ],
           "hash": "b6285fecff4d65f0eef221b9b980f3fb4e8db9fccc4bfa2011c3c72aff53a7e8",
           "importsFiles": [
             "tools/facet_index.py"
@@ -6009,6 +8912,16 @@
           "exports": [
             "normal_spread"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 61
+            },
+            {
+              "kind": "raise",
+              "line": 93
+            }
+          ],
           "hash": "9530d533a3260e1dc3161467978e6a0d207c97b928cb3ddfdc30f9f87620d2c0",
           "path": "tools/normalize_mesh.py"
         },
@@ -6016,10 +8929,58 @@
           "exports": [
             "to_lab"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 70
+            },
+            {
+              "kind": "raise",
+              "line": 139
+            },
+            {
+              "kind": "except",
+              "line": 191
+            }
+          ],
           "hash": "6ecdb307ed23c47afa6f66533ef0cdb36e698d58cb518d8c052e43af7342c544",
           "path": "tools/palette_gate.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 31
+            },
+            {
+              "kind": "raise",
+              "line": 48
+            },
+            {
+              "kind": "raise",
+              "line": 51
+            },
+            {
+              "kind": "raise",
+              "line": 58
+            },
+            {
+              "kind": "raise",
+              "line": 75
+            },
+            {
+              "kind": "raise",
+              "line": 111
+            },
+            {
+              "kind": "raise",
+              "line": 143
+            },
+            {
+              "kind": "raise",
+              "line": 146
+            }
+          ],
           "hash": "623bf062df6812f3c6f5efec5f21de9c22cf5fd5f2c41c3bf3ac8e07abb70146",
           "path": "tools/pose_rig.py"
         },
@@ -6032,6 +8993,80 @@
             "scatter",
             "srgb_to_lab",
             "view_frame"
+          ],
+          "failurePaths": [
+            {
+              "in": "_per_view",
+              "kind": "raise",
+              "line": 305
+            },
+            {
+              "in": "_per_view",
+              "kind": "except",
+              "line": 308
+            },
+            {
+              "in": "_per_view",
+              "kind": "raise",
+              "line": 309
+            },
+            {
+              "in": "_per_view",
+              "kind": "raise",
+              "line": 311
+            },
+            {
+              "kind": "raise",
+              "line": 323
+            },
+            {
+              "kind": "raise",
+              "line": 326
+            },
+            {
+              "kind": "raise",
+              "line": 479
+            },
+            {
+              "kind": "raise",
+              "line": 481
+            },
+            {
+              "kind": "raise",
+              "line": 487
+            },
+            {
+              "kind": "raise",
+              "line": 492
+            },
+            {
+              "kind": "raise",
+              "line": 568
+            },
+            {
+              "kind": "raise",
+              "line": 621
+            },
+            {
+              "kind": "raise",
+              "line": 661
+            },
+            {
+              "kind": "raise",
+              "line": 925
+            },
+            {
+              "kind": "raise",
+              "line": 957
+            },
+            {
+              "kind": "raise",
+              "line": 959
+            },
+            {
+              "kind": "raise",
+              "line": 982
+            }
           ],
           "hash": "57e961c43bb1d405e18958500b5857586f798641b564c77e63dfa094d4662a02",
           "importOrder": [
@@ -6052,6 +9087,33 @@
             "sidecar_path",
             "verify"
           ],
+          "failurePaths": [
+            {
+              "in": "build",
+              "kind": "raise",
+              "line": 50
+            },
+            {
+              "in": "build",
+              "kind": "raise",
+              "line": 54
+            },
+            {
+              "in": "build",
+              "kind": "raise",
+              "line": 71
+            },
+            {
+              "in": "verify",
+              "kind": "raise",
+              "line": 105
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 152
+            }
+          ],
           "hash": "0e96529e1f44ec0bc9057bf18044e18b48d94927d05430c5c2366cac8aa2985a",
           "path": "tools/prop_scale.py"
         },
@@ -6067,6 +9129,63 @@
             "run_kwargs",
             "sha256",
             "sidecar"
+          ],
+          "failurePaths": [
+            {
+              "in": "check_vram_headroom",
+              "kind": "raise",
+              "line": 116
+            },
+            {
+              "in": "check_seed_is_honoured",
+              "kind": "except",
+              "line": 138
+            },
+            {
+              "in": "check_seed_is_honoured",
+              "kind": "raise",
+              "line": 139
+            },
+            {
+              "in": "check_seed_is_honoured",
+              "kind": "raise",
+              "line": 143
+            },
+            {
+              "in": "resolve_input",
+              "kind": "raise",
+              "line": 228
+            },
+            {
+              "in": "resolve_input",
+              "kind": "raise",
+              "line": 236
+            },
+            {
+              "in": "check_anchor_input",
+              "kind": "raise",
+              "line": 247
+            },
+            {
+              "in": "check_anchor_input",
+              "kind": "raise",
+              "line": 251
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 261
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 263
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 324
+            }
           ],
           "hash": "09a66d989ab48d139aa7d63d6a9aa3ee50f0896d0ed2f26a6dbf8bd326f48472",
           "path": "tools/reconstruct_mesh.py"
@@ -6089,6 +9208,138 @@
             "run_claims",
             "run_verify",
             "write_certificate"
+          ],
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 222
+            },
+            {
+              "in": "_raise",
+              "kind": "raise",
+              "line": 248
+            },
+            {
+              "in": "_corpus_manifest",
+              "kind": "raise",
+              "line": 311
+            },
+            {
+              "in": "_corpus_manifest",
+              "kind": "raise",
+              "line": 318
+            },
+            {
+              "in": "_corpus_manifest",
+              "kind": "except",
+              "line": 327
+            },
+            {
+              "in": "_corpus_manifest",
+              "kind": "raise",
+              "line": 328
+            },
+            {
+              "in": "_check_conventions",
+              "kind": "raise",
+              "line": 382
+            },
+            {
+              "in": "_check_conventions",
+              "kind": "raise",
+              "line": 389
+            },
+            {
+              "in": "_check_conventions",
+              "kind": "raise",
+              "line": 396
+            },
+            {
+              "in": "read_certificate",
+              "kind": "raise",
+              "line": 587
+            },
+            {
+              "in": "read_certificate",
+              "kind": "raise",
+              "line": 592
+            },
+            {
+              "in": "read_certificate",
+              "kind": "raise",
+              "line": 601
+            },
+            {
+              "in": "read_certificate",
+              "kind": "raise",
+              "line": 604
+            },
+            {
+              "in": "read_certificate",
+              "kind": "raise",
+              "line": 606
+            },
+            {
+              "in": "read_certificate",
+              "kind": "raise",
+              "line": 609
+            },
+            {
+              "in": "read_certificate",
+              "kind": "except",
+              "line": 610
+            },
+            {
+              "in": "read_certificate",
+              "kind": "raise",
+              "line": 611
+            },
+            {
+              "in": "read_certificate",
+              "kind": "raise",
+              "line": 620
+            },
+            {
+              "in": "read_certificate",
+              "kind": "raise",
+              "line": 629
+            },
+            {
+              "in": "health",
+              "kind": "except",
+              "line": 646
+            },
+            {
+              "in": "health",
+              "kind": "except",
+              "line": 651
+            },
+            {
+              "in": "record_get",
+              "kind": "except",
+              "line": 885
+            },
+            {
+              "in": "record_build",
+              "kind": "except",
+              "line": 940
+            },
+            {
+              "in": "record_build",
+              "kind": "except",
+              "line": 942
+            },
+            {
+              "in": "record_build",
+              "kind": "except",
+              "line": 954
+            },
+            {
+              "in": "record_verify",
+              "kind": "except",
+              "line": 990
+            }
           ],
           "hash": "6c4326f57a7c5dc8fc3988d5aa63475ee3a30e0397921e3aa6792f68e0ad5208",
           "importsFiles": [
@@ -6709,6 +9960,43 @@
             "write_json",
             "write_view_tree"
           ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 134
+            },
+            {
+              "in": "parse_views",
+              "kind": "except",
+              "line": 149
+            },
+            {
+              "in": "load_regions",
+              "kind": "except",
+              "line": 170
+            },
+            {
+              "in": "_selftest_andon_can_fail",
+              "kind": "except",
+              "line": 535
+            },
+            {
+              "in": "_selftest_andon_can_fail",
+              "kind": "except",
+              "line": 541
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 596
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 599
+            }
+          ],
           "hash": "0bbcd08eb453d798a48899cdb5e848323bbb0ebfed7db5439784c2bbaa23366c",
           "importsFiles": [
             "tools/s3_sheet.py"
@@ -6724,6 +10012,16 @@
           "path": "tools/replay_strokes.sh"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 48
+            },
+            {
+              "kind": "raise",
+              "line": 96
+            }
+          ],
           "hash": "162f4b8b18df2e4b0c70d54d1a8a2d682af5a8b24e217a0a18395441a689d88b",
           "path": "tools/resample_atlas.py"
         },
@@ -6733,6 +10031,24 @@
             "figure_mask",
             "graph",
             "upload"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 223
+            },
+            {
+              "kind": "raise",
+              "line": 251
+            },
+            {
+              "kind": "raise",
+              "line": 281
+            },
+            {
+              "kind": "raise",
+              "line": 322
+            }
           ],
           "hash": "8838b9f4e070565ca8d013e7b03a392a41bbf39dc3dbac4d120175ab2820f99c",
           "importOrder": [
@@ -6751,6 +10067,33 @@
           "exports": [
             "compose",
             "main"
+          ],
+          "failurePaths": [
+            {
+              "in": "compose",
+              "kind": "raise",
+              "line": 42
+            },
+            {
+              "in": "compose",
+              "kind": "raise",
+              "line": 49
+            },
+            {
+              "in": "compose",
+              "kind": "raise",
+              "line": 53
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 81
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 95
+            }
           ],
           "hash": "37836b9812e6a83354d0f10c1a1070d17b7188dbd321e588b974d2c403bab5c2",
           "path": "tools/rgba_turnaround.py"
@@ -6776,6 +10119,38 @@
             "selftest",
             "visibility_tau"
           ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 134
+            },
+            {
+              "in": "raster_plane",
+              "kind": "except",
+              "line": 661
+            },
+            {
+              "in": "fixture_occluder",
+              "kind": "except",
+              "line": 734
+            },
+            {
+              "in": "_selftest_andon_can_fail",
+              "kind": "except",
+              "line": 896
+            },
+            {
+              "in": "_selftest_andon_can_fail",
+              "kind": "except",
+              "line": 902
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 962
+            }
+          ],
           "hash": "c79f79998d9d4b78c4fc34dd54ca495e668e5927066a4e9659b460f41bc458f2",
           "importsFiles": [
             "tools/callieri_border.py"
@@ -6787,6 +10162,18 @@
             "load_bundle",
             "main",
             "run"
+          ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 42
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 182
+            }
           ],
           "hash": "971c6408e5aa055ba7bd0c5992b24529ddef930a5d8e8f87a06a7097dcf298bd",
           "importsFiles": [
@@ -6828,6 +10215,43 @@
             "write_png",
             "write_view"
           ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 151
+            },
+            {
+              "in": "_font",
+              "kind": "except",
+              "line": 292
+            },
+            {
+              "in": "load_regions",
+              "kind": "except",
+              "line": 481
+            },
+            {
+              "in": "_selftest_andon_can_fail",
+              "kind": "except",
+              "line": 833
+            },
+            {
+              "in": "_selftest_andon_can_fail",
+              "kind": "except",
+              "line": 842
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 948
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 964
+            }
+          ],
           "hash": "61172f284751fd89bbe66d07e746255792220a4d8bb4a2c3b4b6115493cb4efb",
           "path": "tools/s3_sheet.py"
         },
@@ -6836,6 +10260,28 @@
           "path": "tools/s3_sheet_regions.json"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 119
+            },
+            {
+              "kind": "raise",
+              "line": 148
+            },
+            {
+              "kind": "raise",
+              "line": 186
+            },
+            {
+              "kind": "raise",
+              "line": 211
+            },
+            {
+              "kind": "raise",
+              "line": 223
+            }
+          ],
           "hash": "fcca2eb5115d1a84410bd03cc30652fcc21f397b88f7c0708d77d609945b778f",
           "importsFiles": [
             "tools/subject_profile.py"
@@ -6864,6 +10310,38 @@
             "bind",
             "value"
           ],
+          "failurePaths": [
+            {
+              "in": "_read",
+              "kind": "raise",
+              "line": 61
+            },
+            {
+              "in": "bind",
+              "kind": "raise",
+              "line": 81
+            },
+            {
+              "in": "bind",
+              "kind": "raise",
+              "line": 116
+            },
+            {
+              "in": "bind",
+              "kind": "raise",
+              "line": 122
+            },
+            {
+              "in": "bind",
+              "kind": "raise",
+              "line": 125
+            },
+            {
+              "in": "bind",
+              "kind": "raise",
+              "line": 130
+            }
+          ],
           "hash": "e270a490b08cab82d5b8e313d0a26468cd3690dce3ebba07392db1a56997d86a",
           "path": "tools/subject_profile.py"
         },
@@ -6883,6 +10361,16 @@
           "path": "tools/superseded/prime_bake_glb.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 86
+            },
+            {
+              "kind": "raise",
+              "line": 184
+            }
+          ],
           "hash": "1d091a8e2b047c2f517fb4614075485b2599b9da0fd55d774e2b0f3ff1e76f8e",
           "path": "tools/superseded/project_multiview.py"
         },
@@ -6905,6 +10393,36 @@
             "dominant",
             "find",
             "union"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 78
+            },
+            {
+              "kind": "raise",
+              "line": 83
+            },
+            {
+              "kind": "raise",
+              "line": 141
+            },
+            {
+              "kind": "raise",
+              "line": 144
+            },
+            {
+              "kind": "raise",
+              "line": 173
+            },
+            {
+              "kind": "raise",
+              "line": 176
+            },
+            {
+              "kind": "raise",
+              "line": 180
+            }
           ],
           "hash": "e873943bd085e078e051cb41da98d660e7ba5d5058e7472f3fc3fc12a0a80c32",
           "path": "tools/superseded/rigid_plate_weights.py"
@@ -6932,6 +10450,16 @@
           "exports": [
             "upload"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 135
+            },
+            {
+              "kind": "raise",
+              "line": 152
+            }
+          ],
           "hash": "1afa2b7c069990ab7a8cba187c349af59ef692e37dd9f95f835bebaf3e8411a2",
           "importOrder": [
             "tools/subject_profile.py",
@@ -6944,6 +10472,24 @@
           "path": "tools/texpass_brush.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 79
+            },
+            {
+              "kind": "raise",
+              "line": 132
+            },
+            {
+              "kind": "raise",
+              "line": 136
+            },
+            {
+              "kind": "raise",
+              "line": 181
+            }
+          ],
           "hash": "aabe41f8be85a29500af965ab2b24f7d0bbec5de17a7bfa442b4ff52e94346ed",
           "path": "tools/texpass_finalize.py"
         },
@@ -6955,6 +10501,47 @@
             "commit",
             "emit",
             "load_scene"
+          ],
+          "failurePaths": [
+            {
+              "in": "assert_base_guards",
+              "kind": "raise",
+              "line": 283
+            },
+            {
+              "in": "assert_base_guards",
+              "kind": "raise",
+              "line": 291
+            },
+            {
+              "in": "commit",
+              "kind": "raise",
+              "line": 325
+            },
+            {
+              "in": "commit",
+              "kind": "raise",
+              "line": 369
+            },
+            {
+              "in": "commit",
+              "kind": "raise",
+              "line": 375
+            },
+            {
+              "in": "commit",
+              "kind": "raise",
+              "line": 493
+            },
+            {
+              "in": "commit",
+              "kind": "raise",
+              "line": 504
+            },
+            {
+              "kind": "raise",
+              "line": 531
+            }
           ],
           "hash": "0833ce2a0012d1be7972832e53e90c4bb1f334252c072c45ca18448f81f16626",
           "importOrder": [
@@ -6985,6 +10572,58 @@
             "ring_delta",
             "write_overlay"
           ],
+          "failurePaths": [
+            {
+              "in": "detect",
+              "kind": "raise",
+              "line": 249
+            },
+            {
+              "in": "detect",
+              "kind": "raise",
+              "line": 252
+            },
+            {
+              "in": "census_one",
+              "kind": "raise",
+              "line": 318
+            },
+            {
+              "in": "census_one",
+              "kind": "raise",
+              "line": 323
+            },
+            {
+              "in": "clean_one",
+              "kind": "raise",
+              "line": 472
+            },
+            {
+              "in": "clean_one",
+              "kind": "raise",
+              "line": 478
+            },
+            {
+              "in": "clean_one",
+              "kind": "raise",
+              "line": 482
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 587
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 590
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 595
+            }
+          ],
           "hash": "49b99bbc242c12e3509158a56b791ec0b6a5aff765732df72d3acd65e7c55842",
           "path": "tools/twin_despeckle.py"
         },
@@ -6993,6 +10632,33 @@
             "build_parser",
             "fuse",
             "main"
+          ],
+          "failurePaths": [
+            {
+              "in": "fuse",
+              "kind": "raise",
+              "line": 87
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 171
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 175
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 181
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 233
+            }
           ],
           "hash": "8000a1687157e798345e490912ce4057e969f007c9b7ab2eb44e28858b70aa9f",
           "path": "tools/twin_fuse.py"
@@ -7015,6 +10681,23 @@
             "subpixel_peak",
             "tile_origins",
             "twin_edge_field"
+          ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 137
+            },
+            {
+              "in": "_selftest_gate_c_fires_on_an_unrecoverable_field",
+              "kind": "except",
+              "line": 651
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 730
+            }
           ],
           "hash": "ad199456d6390ff75b6d43c0664c0c2110d777f3400aae08587b58fb48813d4d",
           "path": "tools/twin_mesh_warp.py"
@@ -7041,6 +10724,23 @@
             "selftest",
             "view_rim_dist"
           ],
+          "failurePaths": [
+            {
+              "in": "_andon",
+              "kind": "raise",
+              "line": 105
+            },
+            {
+              "in": "parse_views",
+              "kind": "except",
+              "line": 435
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 466
+            }
+          ],
           "hash": "92767c3ac9211fb13d0d052396c8b370fe9a29f5003b620cc7232b96f5f61535",
           "path": "tools/unmapped_readout.py"
         },
@@ -7049,10 +10749,38 @@
             "main",
             "sha256_file"
           ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 70
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 72
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 105
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 112
+            }
+          ],
           "hash": "7078695dc3c111f70e4669e1c81fd09e5f30e38743a13bff92acd0aada70ca1c",
           "path": "tools/verify/anchor_compare.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 53
+            }
+          ],
           "hash": "7072afeae2ba836f0d27e1f257ef7debc90fe643e53889112d5d664d863a349f",
           "path": "tools/verify/gate0_sheet.py"
         },
@@ -7082,6 +10810,12 @@
           "path": "tools/verify/gate_mesh.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 58
+            }
+          ],
           "hash": "4488c1c095828079e20040fc91826e62db15c31ec33b93634cdffbf4c1c69383",
           "path": "tools/verify/head_crop.py"
         },
@@ -7116,6 +10850,16 @@
             "node_mesh",
             "scene_of"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 98
+            },
+            {
+              "kind": "raise",
+              "line": 103
+            }
+          ],
           "hash": "9feb50b568d9a61320cbb421508bfe121f33e04656e7932fd64f85c59ec67ecb",
           "path": "tools/verify/prop_contact.py"
         },
@@ -7126,6 +10870,23 @@
             "mesh_summary",
             "read_gltf_json",
             "skeleton_summary"
+          ],
+          "failurePaths": [
+            {
+              "in": "read_gltf_json",
+              "kind": "raise",
+              "line": 61
+            },
+            {
+              "in": "read_gltf_json",
+              "kind": "raise",
+              "line": 63
+            },
+            {
+              "in": "read_gltf_json",
+              "kind": "raise",
+              "line": 67
+            }
           ],
           "hash": "cbb95d9db8141d88ab3cf07987753edca3e63a758d467a64630340fe4b72532d",
           "path": "tools/verify/rig_report.py"
@@ -7139,6 +10900,21 @@
             "verify",
             "walk"
           ],
+          "failurePaths": [
+            {
+              "in": "selftest",
+              "kind": "raise",
+              "line": 197
+            },
+            {
+              "kind": "raise",
+              "line": 216
+            },
+            {
+              "kind": "raise",
+              "line": 229
+            }
+          ],
           "hash": "1de0d880ccf6028404396351d490cef290351c8bd097a364f69d98ab1a91d1c1",
           "path": "tools/verify/tree_manifest.py"
         },
@@ -7149,6 +10925,9 @@
           ],
           "path": "tools/verify/turn_render.py"
         }
+      ],
+      "frameworks": [
+        "mcp"
       ],
       "globs": [
         "tools/**"
@@ -7254,6 +11033,9 @@
       "outsideReads": 148,
       "outsideWrites": 459,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 55,
       "unresolvedNamed": [
         {
@@ -7352,6 +11134,15 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "pytest.ini",
+          "files": 102,
+          "job": "hermetic",
+          "runner": "pytest",
+          "step": "hermetic set"
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -7660,6 +11451,13 @@
         "releases": true
       },
       "stages": [],
+      "tests": [
+        {
+          "job": "binaries",
+          "runner": null,
+          "step": "Smoke-test the binary before it can ever reach a user"
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -7816,7 +11614,7 @@
       "to": "tools"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "8d2fa3456e3412198ed38bbb069775efebe65d86",
     "tracked": 909

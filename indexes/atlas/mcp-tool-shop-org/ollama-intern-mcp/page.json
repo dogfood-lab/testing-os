@@ -49,13 +49,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 1,
+      "changed": 1,
       "moved": 0,
-      "parts": 0,
+      "parts": 2,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "Doc Drift now also runs tests/cli.test.ts, tests/cloudCheck.test.ts, tests/cloudClient.test.ts and 37 more.",
@@ -105,11 +119,8 @@
       },
       {
         "kind": "door",
-        "sentence": "Release now also runs src/index.ts.",
-        "subjects": [
-          ".github/workflows/release.yml",
-          "src/index.ts"
-        ]
+        "sentence": "And 1 more change to a door.",
+        "subjects": []
       },
       {
         "kind": "landing",
@@ -175,7 +186,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "1 file added and 1 changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -268,7 +279,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 15 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "1249f8307d15e578f101622a6ab257d340dab8ab",
+  "commit": "9606f5838012236c642ddac69d653302eff12847",
   "defaultBranch": "main",
   "derived": "11 parts, mostly TypeScript (196 files), JavaScript (10), CSS (2), Python (2) and Astro (1). Work enters through 8 doors; CI and Doc Drift each reach 4 parts, and CI is followed because it comes first by name. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run ollama-intern-mcp. People import ollama-intern-mcp.",
   "doors": [
@@ -373,11 +384,13 @@
       ],
       "runsCount": 43,
       "runsMore": 98,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 18 paths",
-        "on a push to main touching 18 paths",
+        "on a pull request touching 19 paths",
+        "on a push to main touching 19 paths",
         "or by hand"
       ]
     },
@@ -703,7 +716,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [
     {
       "block": true,
@@ -713,7 +726,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-26T14:44:15.435Z",
+  "generatedAt": "2026-09-28T13:19:09.022Z",
   "limits": [
     "1 import could not be resolved: `scripts/gen-tool-docs.mjs` imports a path built at run time.",
     "3 writes and 9 reads use paths built at run time and are not named here.",
@@ -722,7 +735,7 @@
     "8 writes and 13 reads go to a path their caller passes, not to this repository.",
     "1 write and 12 reads go to the directory the command is run in, not to this repository.",
     "1 write goes to a temporary directory, not to this repository.",
-    "3 commands are built at run time and not followed, 1 of them in tests.",
+    "2 commands are built at run time and not followed, 1 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",

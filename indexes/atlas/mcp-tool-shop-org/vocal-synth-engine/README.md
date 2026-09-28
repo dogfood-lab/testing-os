@@ -1,6 +1,6 @@
 # vocal-synth-engine: how it works
 
-Mapped at 2026-09-26 from commit a2738c5 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 984669a by Atlas 1.23.4.
 
 ## What this is
 
@@ -8,12 +8,14 @@ Mapped at 2026-09-26 from commit a2738c5 by Atlas 1.23.0.
 
 ## What changed since 2026-09-24 (f8fe895)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - assets was generated and is now authored.
-- 203 files changed content, across 9 parts.
+- 1 file added and 203 changed content, across 9 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 10 paths; on a push to main touching 10 paths; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. Runs scripts/bench-gate.mjs, tests/cross-domain-stage-c.test.ts, tests/curves.test.ts and 15 more; builds src/.
+1. **CI.** On a pull request to main touching 11 paths; on a push to main touching 11 paths; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. Runs scripts/bench-gate.mjs, tests/cross-domain-stage-c.test.ts, tests/curves.test.ts and 15 more; builds src/.
 2. **Release.** When a tag matching `v*` is pushed. Runs scripts/verify.sh, tests/cross-domain-stage-c.test.ts, tests/curves.test.ts and 15 more; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Dogfood.** On a push to main touching 3 paths; or by hand. On main, it runs src/server/index.prod.ts; builds src/.
@@ -32,6 +34,7 @@ Mapped at 2026-09-26 from commit a2738c5 by Atlas 1.23.0.
 ## What happens through CI
 
 1. The workflow runs scripts/bench-gate.mjs in scripts and 17 files in tests; it builds src/ in src.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -115,7 +118,6 @@ Read those in order to follow one pull request end to end.
 - 28 writes and 33 reads go to the directory the command is run in (.vscockpit/, assets/, calib/ and 2 more places) or a path their caller passes, not to this repository.
 - 7 writes and 21 reads go to a path their caller passes, not to this repository.
 - 4 writes and 1 read go to the directory the command is run in, not to this repository.
-- 1 command is built at run time and not followed, and it is in tests.
 - cockpit calls src over HTTP at 11 routes, a link no import shows: the map draws it, and no door's reach follows it.
 - scripts calls src over HTTP at 1 route, a link no import shows: the map draws it, and no door's reach follows it.
 - There is a Dockerfile, a fly.toml and a render.yaml that no workflow runs; what deploys from them does so from outside this repository, and is not on this page.

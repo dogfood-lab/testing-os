@@ -213,6 +213,57 @@
           "exports": [
             "main"
           ],
+          "failurePaths": [
+            {
+              "in": "_check_installed_version",
+              "kind": "raise",
+              "line": 96
+            },
+            {
+              "in": "_is_installed",
+              "kind": "except",
+              "line": 119
+            },
+            {
+              "in": "_audit",
+              "kind": "except",
+              "line": 202
+            },
+            {
+              "in": "_audit",
+              "kind": "raise",
+              "line": 208
+            },
+            {
+              "in": "_audit",
+              "kind": "raise",
+              "line": 222
+            },
+            {
+              "in": "_run",
+              "kind": "raise",
+              "line": 353
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 388
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 389
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 425
+            },
+            {
+              "kind": "raise",
+              "line": 486
+            }
+          ],
           "hash": "cb27ed42733fd34f75faee06a3638b9f804b3f6e2837163e4d4d5f891685c0ec",
           "path": "verify.py",
           "sequences": []
@@ -235,6 +286,9 @@
       ],
       "outsideReads": 1,
       "role": "config",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 1,
       "unresolvedSites": 0
     },
@@ -259,6 +313,17 @@
             "main",
             "run_suite"
           ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 378
+            },
+            {
+              "kind": "raise",
+              "line": 397
+            }
+          ],
           "hash": "77e0111a0dfa28e65282025948bf6147b6b7876dd3f0a8deb72d49bdc61f0abd",
           "path": "scripts/mutate_predicates.py"
         },
@@ -267,6 +332,22 @@
             "generate",
             "main"
           ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 32
+            },
+            {
+              "in": "_fail",
+              "kind": "raise",
+              "line": 59
+            },
+            {
+              "in": "_meta_updated",
+              "kind": "except",
+              "line": 108
+            }
+          ],
           "hash": "a217473ab236aceb66b075ff74b3cb0aab83371d22248a574f0de6728b44ce8e",
           "path": "scripts/sync_rules_from_readouts.py"
         },
@@ -274,9 +355,43 @@
           "exports": [
             "main"
           ],
+          "failurePaths": [
+            {
+              "in": "_git_tracked",
+              "kind": "except",
+              "line": 114
+            },
+            {
+              "in": "_provenance",
+              "kind": "except",
+              "line": 141
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 191
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 209
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 257
+            },
+            {
+              "kind": "raise",
+              "line": 311
+            }
+          ],
           "hash": "7fd869e99801d67d507e680a53f946b92a2eff83d9d480c9219743983abc02e4",
           "importsFiles": [
             "src/pcraft/__init__.py"
+          ],
+          "names": [
+            "verify.py"
           ],
           "path": "scripts/wheel_smoke.py"
         }
@@ -298,6 +413,9 @@
       ],
       "outsideWrites": 1,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 9,
       "unresolvedSites": 0
     },
@@ -413,6 +531,18 @@
             "package_version",
             "version_coherence"
           ],
+          "failurePaths": [
+            {
+              "in": "package_version",
+              "kind": "except",
+              "line": 23
+            },
+            {
+              "in": "version_coherence",
+              "kind": "except",
+              "line": 49
+            }
+          ],
           "hash": "19b02cfb807c891b6309cc22f02040ea9d57fba47232180613f168e7c7cbeec5",
           "path": "src/pcraft/__init__.py"
         },
@@ -444,6 +574,507 @@
             "synth",
             "validate"
           ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 53
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 117
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 120
+            },
+            {
+              "in": "_show_version",
+              "kind": "raise",
+              "line": 154
+            },
+            {
+              "in": "_configure_stdio",
+              "kind": "except",
+              "line": 208
+            },
+            {
+              "in": "_encodable",
+              "kind": "except",
+              "line": 231
+            },
+            {
+              "in": "_emit",
+              "kind": "raise",
+              "line": 246
+            },
+            {
+              "in": "synth",
+              "kind": "except",
+              "line": 551
+            },
+            {
+              "in": "synth",
+              "kind": "except",
+              "line": 553
+            },
+            {
+              "in": "synth",
+              "kind": "raise",
+              "line": 554
+            },
+            {
+              "in": "synth",
+              "kind": "except",
+              "line": 555
+            },
+            {
+              "in": "_gate_targets",
+              "kind": "raise",
+              "line": 619
+            },
+            {
+              "in": "_gate_targets",
+              "kind": "raise",
+              "line": 629
+            },
+            {
+              "in": "_gate_targets",
+              "kind": "raise",
+              "line": 638
+            },
+            {
+              "in": "gate",
+              "kind": "except",
+              "line": 869
+            },
+            {
+              "in": "gate",
+              "kind": "except",
+              "line": 893
+            },
+            {
+              "in": "gate",
+              "kind": "except",
+              "line": 895
+            },
+            {
+              "in": "gate",
+              "kind": "raise",
+              "line": 896
+            },
+            {
+              "in": "gate",
+              "kind": "except",
+              "line": 897
+            },
+            {
+              "in": "bind",
+              "kind": "except",
+              "line": 949
+            },
+            {
+              "in": "bind",
+              "kind": "except",
+              "line": 951
+            },
+            {
+              "in": "bind",
+              "kind": "raise",
+              "line": 952
+            },
+            {
+              "in": "bind",
+              "kind": "except",
+              "line": 953
+            },
+            {
+              "in": "list_contracts",
+              "kind": "except",
+              "line": 977
+            },
+            {
+              "in": "list_contracts",
+              "kind": "except",
+              "line": 979
+            },
+            {
+              "in": "list_contracts",
+              "kind": "raise",
+              "line": 980
+            },
+            {
+              "in": "list_contracts",
+              "kind": "except",
+              "line": 981
+            },
+            {
+              "in": "validate",
+              "kind": "except",
+              "line": 1019
+            },
+            {
+              "in": "validate",
+              "kind": "except",
+              "line": 1021
+            },
+            {
+              "in": "validate",
+              "kind": "raise",
+              "line": 1022
+            },
+            {
+              "in": "validate",
+              "kind": "except",
+              "line": 1023
+            },
+            {
+              "in": "_is_under",
+              "kind": "except",
+              "line": 1062
+            },
+            {
+              "in": "_scaffold_target",
+              "kind": "raise",
+              "line": 1087
+            },
+            {
+              "in": "_scaffold_target",
+              "kind": "raise",
+              "line": 1098
+            },
+            {
+              "in": "_refuse_reference_sheet",
+              "kind": "raise",
+              "line": 1128
+            },
+            {
+              "in": "_write_new_contract",
+              "kind": "except",
+              "line": 1144
+            },
+            {
+              "in": "_write_new_contract",
+              "kind": "raise",
+              "line": 1145
+            },
+            {
+              "in": "_write_new_contract",
+              "kind": "except",
+              "line": 1151
+            },
+            {
+              "in": "_write_new_contract",
+              "kind": "raise",
+              "line": 1152
+            },
+            {
+              "in": "new",
+              "kind": "raise",
+              "line": 1225
+            },
+            {
+              "in": "new",
+              "kind": "except",
+              "line": 1311
+            },
+            {
+              "in": "new",
+              "kind": "except",
+              "line": 1313
+            },
+            {
+              "in": "new",
+              "kind": "raise",
+              "line": 1314
+            },
+            {
+              "in": "new",
+              "kind": "except",
+              "line": 1315
+            },
+            {
+              "in": "demo",
+              "kind": "except",
+              "line": 1339
+            },
+            {
+              "in": "demo",
+              "kind": "except",
+              "line": 1341
+            },
+            {
+              "in": "demo",
+              "kind": "raise",
+              "line": 1342
+            },
+            {
+              "in": "demo",
+              "kind": "except",
+              "line": 1343
+            },
+            {
+              "in": "replay",
+              "kind": "except",
+              "line": 1395
+            },
+            {
+              "in": "replay",
+              "kind": "except",
+              "line": 1397
+            },
+            {
+              "in": "replay",
+              "kind": "raise",
+              "line": 1398
+            },
+            {
+              "in": "replay",
+              "kind": "except",
+              "line": 1399
+            },
+            {
+              "in": "resolve",
+              "kind": "raise",
+              "line": 1480
+            },
+            {
+              "in": "resolve",
+              "kind": "raise",
+              "line": 1489
+            },
+            {
+              "in": "resolve",
+              "kind": "raise",
+              "line": 1498
+            },
+            {
+              "in": "resolve",
+              "kind": "except",
+              "line": 1551
+            },
+            {
+              "in": "resolve",
+              "kind": "except",
+              "line": 1553
+            },
+            {
+              "in": "resolve",
+              "kind": "raise",
+              "line": 1554
+            },
+            {
+              "in": "resolve",
+              "kind": "except",
+              "line": 1555
+            },
+            {
+              "in": "regrade",
+              "kind": "raise",
+              "line": 1587
+            },
+            {
+              "in": "regrade",
+              "kind": "raise",
+              "line": 1604
+            },
+            {
+              "in": "regrade",
+              "kind": "except",
+              "line": 1629
+            },
+            {
+              "in": "regrade",
+              "kind": "except",
+              "line": 1631
+            },
+            {
+              "in": "regrade",
+              "kind": "raise",
+              "line": 1632
+            },
+            {
+              "in": "regrade",
+              "kind": "except",
+              "line": 1633
+            },
+            {
+              "in": "calibrate",
+              "kind": "except",
+              "line": 1699
+            },
+            {
+              "in": "calibrate",
+              "kind": "except",
+              "line": 1701
+            },
+            {
+              "in": "calibrate",
+              "kind": "raise",
+              "line": 1702
+            },
+            {
+              "in": "calibrate",
+              "kind": "except",
+              "line": 1703
+            },
+            {
+              "in": "doctor",
+              "kind": "raise",
+              "line": 1775
+            },
+            {
+              "in": "doctor",
+              "kind": "except",
+              "line": 1776
+            },
+            {
+              "in": "doctor",
+              "kind": "except",
+              "line": 1778
+            },
+            {
+              "in": "doctor",
+              "kind": "raise",
+              "line": 1779
+            },
+            {
+              "in": "doctor",
+              "kind": "except",
+              "line": 1780
+            },
+            {
+              "in": "_same_interpreter",
+              "kind": "except",
+              "line": 1801
+            },
+            {
+              "in": "_run_doctor",
+              "kind": "except",
+              "line": 1838
+            },
+            {
+              "in": "schema_cmd",
+              "kind": "except",
+              "line": 1857
+            },
+            {
+              "in": "schema_cmd",
+              "kind": "except",
+              "line": 1859
+            },
+            {
+              "in": "schema_cmd",
+              "kind": "raise",
+              "line": 1860
+            },
+            {
+              "in": "schema_cmd",
+              "kind": "except",
+              "line": 1861
+            },
+            {
+              "in": "_parse_image_names",
+              "kind": "raise",
+              "line": 1891
+            },
+            {
+              "in": "_parse_image_names",
+              "kind": "raise",
+              "line": 1899
+            },
+            {
+              "in": "_refuse_unmatched_image_names",
+              "kind": "raise",
+              "line": 1958
+            },
+            {
+              "in": "recipe",
+              "kind": "except",
+              "line": 2046
+            },
+            {
+              "in": "recipe",
+              "kind": "except",
+              "line": 2048
+            },
+            {
+              "in": "recipe",
+              "kind": "raise",
+              "line": 2049
+            },
+            {
+              "in": "recipe",
+              "kind": "except",
+              "line": 2050
+            },
+            {
+              "in": "compile",
+              "kind": "except",
+              "line": 2073
+            },
+            {
+              "in": "compile",
+              "kind": "raise",
+              "line": 2074
+            },
+            {
+              "in": "compile",
+              "kind": "raise",
+              "line": 2078
+            },
+            {
+              "in": "compile",
+              "kind": "except",
+              "line": 2084
+            },
+            {
+              "in": "compile",
+              "kind": "except",
+              "line": 2086
+            },
+            {
+              "in": "compile",
+              "kind": "raise",
+              "line": 2087
+            },
+            {
+              "in": "compile",
+              "kind": "except",
+              "line": 2088
+            },
+            {
+              "in": "sync_rules",
+              "kind": "except",
+              "line": 2117
+            },
+            {
+              "in": "sync_rules",
+              "kind": "raise",
+              "line": 2118
+            },
+            {
+              "in": "sync_rules",
+              "kind": "except",
+              "line": 2119
+            },
+            {
+              "in": "sync_rules",
+              "kind": "except",
+              "line": 2121
+            },
+            {
+              "in": "sync_rules",
+              "kind": "raise",
+              "line": 2122
+            },
+            {
+              "in": "sync_rules",
+              "kind": "except",
+              "line": 2123
+            }
+          ],
           "hash": "042a443d43ef7e7ca59f76ada502037e834b060d518663bcd2bd76aa1bb4ee3c",
           "importsFiles": [
             "scripts/sync_rules_from_readouts.py",
@@ -453,6 +1084,7 @@
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/core/gate/__init__.py",
             "src/pcraft/core/gate/exit_contract.py",
+            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/preflight.py",
             "src/pcraft/core/gate/regrade.py",
             "src/pcraft/core/gate/thresholds.py",
@@ -464,7 +1096,9 @@
             "src/pcraft/core/synth/signature.py",
             "src/pcraft/domains/image/__init__.py",
             "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/kontext_fill.py",
             "src/pcraft/domains/image/subdomains/sprite/__init__.py",
+            "src/pcraft/domains/image/subdomains/sprite/calibrate.py",
             "src/pcraft/errors.py",
             "src/pcraft/gate_report.py",
             "src/pcraft/sample.py",
@@ -2534,6 +3168,13 @@
           "exports": [
             "compile_questions"
           ],
+          "failurePaths": [
+            {
+              "in": "visit",
+              "kind": "raise",
+              "line": 82
+            }
+          ],
           "hash": "609c52daf590eb1e58687706cb3f31dc166f2fb62ae335313f4158142d857eca",
           "importOrder": [
             "src/pcraft/errors.py",
@@ -2549,6 +3190,13 @@
         {
           "exports": [
             "diff_contracts"
+          ],
+          "failurePaths": [
+            {
+              "in": "_render",
+              "kind": "except",
+              "line": 124
+            }
           ],
           "hash": "c573838377434061f84270825424fb5a907e30c3722912046c6488ec2ef7f66e",
           "importsFiles": [
@@ -2598,6 +3246,103 @@
             "describe_validation_error",
             "resolve"
           ],
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 38
+            },
+            {
+              "in": "get",
+              "kind": "raise",
+              "line": 55
+            },
+            {
+              "in": "_read_contract",
+              "kind": "except",
+              "line": 95
+            },
+            {
+              "in": "_read_contract",
+              "kind": "raise",
+              "line": 96
+            },
+            {
+              "in": "_read_contract",
+              "kind": "raise",
+              "line": 99
+            },
+            {
+              "in": "_read_contract",
+              "kind": "except",
+              "line": 106
+            },
+            {
+              "in": "_read_contract",
+              "kind": "raise",
+              "line": 110
+            },
+            {
+              "in": "_read_contract",
+              "kind": "except",
+              "line": 111
+            },
+            {
+              "in": "_read_contract",
+              "kind": "raise",
+              "line": 120
+            },
+            {
+              "in": "_walk_extends",
+              "kind": "raise",
+              "line": 293
+            },
+            {
+              "in": "_walk_extends",
+              "kind": "raise",
+              "line": 305
+            },
+            {
+              "in": "_walk_extends",
+              "kind": "raise",
+              "line": 314
+            },
+            {
+              "in": "_merge_identity_refs",
+              "kind": "raise",
+              "line": 344
+            },
+            {
+              "in": "_merge_identity_refs",
+              "kind": "raise",
+              "line": 352
+            },
+            {
+              "in": "_severity_rank",
+              "kind": "raise",
+              "line": 384
+            },
+            {
+              "in": "_merge_atoms_fail_closed",
+              "kind": "raise",
+              "line": 477
+            },
+            {
+              "in": "_merge_atoms_fail_closed",
+              "kind": "raise",
+              "line": 485
+            },
+            {
+              "in": "_merge_must_not",
+              "kind": "raise",
+              "line": 530
+            },
+            {
+              "in": "_merge_must_not",
+              "kind": "raise",
+              "line": 538
+            }
+          ],
           "hash": "503e6851785b1e009856c48d361082e3f9db1b856a8db731fe54b3b06cff019a",
           "importOrder": [
             "src/pcraft/errors.py",
@@ -2622,6 +3367,53 @@
             "scaffold_contract",
             "scaffold_json",
             "scaffold_must_not"
+          ],
+          "failurePaths": [
+            {
+              "in": "_coerce",
+              "kind": "raise",
+              "line": 109
+            },
+            {
+              "in": "_coerce",
+              "kind": "raise",
+              "line": 122
+            },
+            {
+              "in": "scaffold_contract",
+              "kind": "raise",
+              "line": 178
+            },
+            {
+              "in": "scaffold_contract",
+              "kind": "raise",
+              "line": 188
+            },
+            {
+              "in": "scaffold_contract",
+              "kind": "except",
+              "line": 229
+            },
+            {
+              "in": "scaffold_contract",
+              "kind": "raise",
+              "line": 233
+            },
+            {
+              "in": "scaffold_contract",
+              "kind": "except",
+              "line": 234
+            },
+            {
+              "in": "scaffold_contract",
+              "kind": "raise",
+              "line": 235
+            },
+            {
+              "in": "_reject_inherited_collisions",
+              "kind": "raise",
+              "line": 259
+            }
           ],
           "hash": "eca4dc9069aadc3f9f87951e5954f62b0373f3f0be1ec5d7b3e325dd5a5c02db",
           "importsFiles": [
@@ -2863,6 +3655,38 @@
           "exports": [
             "export_json_schema"
           ],
+          "failurePaths": [
+            {
+              "in": "_reject_blank_claim",
+              "kind": "raise",
+              "line": 130
+            },
+            {
+              "in": "_reject_blank_id",
+              "kind": "raise",
+              "line": 144
+            },
+            {
+              "in": "_reject_duplicate_ids",
+              "kind": "raise",
+              "line": 246
+            },
+            {
+              "in": "_reject_duplicates_in",
+              "kind": "raise",
+              "line": 263
+            },
+            {
+              "in": "_reject_unknown_depends_on",
+              "kind": "raise",
+              "line": 314
+            },
+            {
+              "in": "_reject_cyclic_depends_on",
+              "kind": "raise",
+              "line": 370
+            }
+          ],
           "hash": "0020693b97e55053aed2b8c2d78422a2ea851cf63f4409a4caf0229aed24cf56",
           "importsFiles": [
             "src/pcraft/errors.py"
@@ -2956,6 +3780,23 @@
           "exports": [
             "error_from_batch",
             "evaluate_batch"
+          ],
+          "failurePaths": [
+            {
+              "in": "evaluate_batch",
+              "kind": "raise",
+              "line": 209
+            },
+            {
+              "in": "_gate_one",
+              "kind": "except",
+              "line": 238
+            },
+            {
+              "in": "_gate_one",
+              "kind": "raise",
+              "line": 240
+            }
           ],
           "hash": "0ad6a7f20b84a0fb1a48c4a212e78888a09370ba2254708573212b12581ad65a",
           "importOrder": [
@@ -3109,6 +3950,18 @@
             "assert_distinct_families",
             "normalize_family"
           ],
+          "failurePaths": [
+            {
+              "in": "assert_distinct_families",
+              "kind": "raise",
+              "line": 53
+            },
+            {
+              "in": "assert_distinct_families",
+              "kind": "raise",
+              "line": 64
+            }
+          ],
           "hash": "d17a6f27bc3d144b079a2b0943cb978c05d0354cfc329097032c16aa1cf24027",
           "importsFiles": [
             "src/pcraft/errors.py"
@@ -3119,6 +3972,58 @@
           "exports": [
             "evaluate",
             "verdict_reason"
+          ],
+          "failurePaths": [
+            {
+              "in": "evaluate",
+              "kind": "except",
+              "line": 236
+            },
+            {
+              "in": "evaluate",
+              "kind": "raise",
+              "line": 237
+            },
+            {
+              "in": "evaluate",
+              "kind": "except",
+              "line": 238
+            },
+            {
+              "in": "evaluate",
+              "kind": "raise",
+              "line": 239
+            },
+            {
+              "in": "_safe_score",
+              "kind": "except",
+              "line": 372
+            },
+            {
+              "in": "_safe_score",
+              "kind": "raise",
+              "line": 373
+            },
+            {
+              "in": "_safe_score",
+              "kind": "except",
+              "line": 374
+            },
+            {
+              "in": "_safe_score",
+              "kind": "except",
+              "line": 380
+            },
+            {
+              "in": "_detail_for",
+              "kind": "except",
+              "line": 422
+            },
+            {
+              "in": "_detail_for",
+              "kind": "except",
+              "line": 424
+            }
           ],
           "hash": "801cb4f7b4b51f1502216714788ecc227630ac557af2fdbdf669b636d9d990d2",
           "importOrder": [
@@ -3149,6 +4054,48 @@
             "sweep",
             "write_scored"
           ],
+          "failurePaths": [
+            {
+              "in": "_read_rows",
+              "kind": "except",
+              "line": 124
+            },
+            {
+              "in": "_read_rows",
+              "kind": "raise",
+              "line": 125
+            },
+            {
+              "in": "_read_rows",
+              "kind": "except",
+              "line": 137
+            },
+            {
+              "in": "_read_rows",
+              "kind": "raise",
+              "line": 138
+            },
+            {
+              "in": "_read_rows",
+              "kind": "raise",
+              "line": 144
+            },
+            {
+              "in": "_read_rows",
+              "kind": "except",
+              "line": 151
+            },
+            {
+              "in": "_read_rows",
+              "kind": "raise",
+              "line": 152
+            },
+            {
+              "in": "_read_rows",
+              "kind": "raise",
+              "line": 158
+            }
+          ],
           "hash": "82e43a4f9d1237fa5def2bbb7ac9ef929303ac1fa18fb4efce57a0f1c404c2c8",
           "importOrder": [
             "src/pcraft/errors.py",
@@ -3171,6 +4118,28 @@
           "entryRule": 4,
           "exports": [
             "preflight_image"
+          ],
+          "failurePaths": [
+            {
+              "in": "preflight_image",
+              "kind": "raise",
+              "line": 21
+            },
+            {
+              "in": "preflight_image",
+              "kind": "raise",
+              "line": 27
+            },
+            {
+              "in": "preflight_image",
+              "kind": "except",
+              "line": 35
+            },
+            {
+              "in": "preflight_image",
+              "kind": "raise",
+              "line": 36
+            }
           ],
           "hash": "f4cc441b8f900e5e853f979e2e4c55a219bb7753243dd38fcc36e4cd61f816b9",
           "importsFiles": [
@@ -3557,6 +4526,13 @@
             "needed_band_keys",
             "reachable_band_keys"
           ],
+          "failurePaths": [
+            {
+              "in": "check",
+              "kind": "raise",
+              "line": 134
+            }
+          ],
           "hash": "75e947021f63675484e93260ec6649452b86c81f4383ee7481ed7ccd47635b0e",
           "importOrder": [
             "src/pcraft/errors.py",
@@ -3575,6 +4551,53 @@
           "entryRule": 4,
           "exports": [
             "load_thresholds"
+          ],
+          "failurePaths": [
+            {
+              "in": "high_at_least_low",
+              "kind": "raise",
+              "line": 75
+            },
+            {
+              "in": "load_thresholds",
+              "kind": "except",
+              "line": 161
+            },
+            {
+              "in": "load_thresholds",
+              "kind": "raise",
+              "line": 162
+            },
+            {
+              "in": "load_thresholds",
+              "kind": "except",
+              "line": 165
+            },
+            {
+              "in": "load_thresholds",
+              "kind": "raise",
+              "line": 169
+            },
+            {
+              "in": "load_thresholds",
+              "kind": "raise",
+              "line": 173
+            },
+            {
+              "in": "load_thresholds",
+              "kind": "raise",
+              "line": 182
+            },
+            {
+              "in": "_read_v1",
+              "kind": "except",
+              "line": 193
+            },
+            {
+              "in": "_read_v1",
+              "kind": "raise",
+              "line": 194
+            }
           ],
           "hash": "68b8dbb41e9f9d4854d1694350864bd03459ec51f552cf4b1f3adc53519b49f4",
           "importsFiles": [
@@ -3654,6 +4677,13 @@
           "exports": [
             "forbid_clipscore"
           ],
+          "failurePaths": [
+            {
+              "in": "forbid_clipscore",
+              "kind": "raise",
+              "line": 72
+            }
+          ],
           "hash": "d923f2e54c5f34dfe1cfa8edce4b5beafc6e6e99fe688bc32d8670647c2d4333",
           "importOrder": [
             "src/pcraft/errors.py",
@@ -3674,6 +4704,13 @@
           "exports": [
             "default_registry"
           ],
+          "failurePaths": [
+            {
+              "in": "get",
+              "kind": "raise",
+              "line": 33
+            }
+          ],
           "hash": "94858922a6d6a92bf040cf0815710ec497a9539c12a6b3a7dd1571869130a71f",
           "importsFiles": [
             "src/pcraft/errors.py"
@@ -3690,6 +4727,73 @@
           "exports": [
             "run"
           ],
+          "failurePaths": [
+            {
+              "in": "run",
+              "kind": "raise",
+              "line": 192
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 220
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 236
+            },
+            {
+              "in": "_synthesize_with_assert",
+              "kind": "except",
+              "line": 302
+            },
+            {
+              "in": "_resynth_reweight",
+              "kind": "except",
+              "line": 322
+            },
+            {
+              "in": "_resynth_reweight",
+              "kind": "except",
+              "line": 327
+            },
+            {
+              "in": "_safe_generate",
+              "kind": "except",
+              "line": 387
+            },
+            {
+              "in": "_safe_generate",
+              "kind": "raise",
+              "line": 390
+            },
+            {
+              "in": "_generate_and_record",
+              "kind": "except",
+              "line": 412
+            },
+            {
+              "in": "_generate_and_record",
+              "kind": "raise",
+              "line": 414
+            },
+            {
+              "in": "_gate",
+              "kind": "except",
+              "line": 440
+            },
+            {
+              "in": "_gate",
+              "kind": "raise",
+              "line": 444
+            },
+            {
+              "in": "_best_of_n",
+              "kind": "raise",
+              "line": 492
+            }
+          ],
           "hash": "5705e6247ee03589921777b73fa07ad2bb63234095b96caa8d3e0279607abbf6",
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
@@ -3698,6 +4802,7 @@
             "src/pcraft/core/gate/__init__.py",
             "src/pcraft/core/gate/checkpoint.py",
             "src/pcraft/core/gate/family_guard.py",
+            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/preflight.py",
             "src/pcraft/core/gate/thresholds.py",
             "src/pcraft/core/gate/verifier_iface.py",
@@ -4366,6 +5471,28 @@
             "load_pinned",
             "pin"
           ],
+          "failurePaths": [
+            {
+              "in": "load_pinned",
+              "kind": "except",
+              "line": 43
+            },
+            {
+              "in": "load_pinned",
+              "kind": "raise",
+              "line": 44
+            },
+            {
+              "in": "load_pinned",
+              "kind": "except",
+              "line": 47
+            },
+            {
+              "in": "load_pinned",
+              "kind": "raise",
+              "line": 63
+            }
+          ],
           "hash": "7e0be8a5c4f59e88e9354856e6bb8e795d2ad53e17d84dff1dc0f5ef3c16960d",
           "importOrder": [
             "src/pcraft/errors.py",
@@ -4383,6 +5510,53 @@
           "exports": [
             "compile_synthesizer",
             "write_seed_artifact"
+          ],
+          "failurePaths": [
+            {
+              "in": "compile_synthesizer",
+              "kind": "raise",
+              "line": 67
+            },
+            {
+              "in": "compile_synthesizer",
+              "kind": "raise",
+              "line": 74
+            },
+            {
+              "in": "compile_synthesizer",
+              "kind": "raise",
+              "line": 84
+            },
+            {
+              "in": "_default_runner",
+              "kind": "except",
+              "line": 171
+            },
+            {
+              "in": "_default_runner",
+              "kind": "raise",
+              "line": 172
+            },
+            {
+              "in": "compile",
+              "kind": "raise",
+              "line": 198
+            },
+            {
+              "in": "compile",
+              "kind": "raise",
+              "line": 237
+            },
+            {
+              "in": "compile",
+              "kind": "raise",
+              "line": 244
+            },
+            {
+              "in": "_require_lm",
+              "kind": "raise",
+              "line": 260
+            }
           ],
           "hash": "afe80a782ceba8b3cfbfa1086328dff50a9d96c71202f5b1ab455916425d8015",
           "importsFiles": [
@@ -4511,6 +5685,28 @@
             "register",
             "registered"
           ],
+          "failurePaths": [
+            {
+              "in": "register",
+              "kind": "raise",
+              "line": 55
+            },
+            {
+              "in": "register",
+              "kind": "raise",
+              "line": 63
+            },
+            {
+              "in": "get",
+              "kind": "raise",
+              "line": 75
+            },
+            {
+              "in": "detect",
+              "kind": "raise",
+              "line": 86
+            }
+          ],
           "hash": "06ee8a99d1f22f29176041082af4a391829452ee858e678f3451dd224405b5a1",
           "importsFiles": [
             "src/pcraft/core/gate/verifier_iface.py",
@@ -4599,6 +5795,88 @@
             "persist",
             "receipt_paths",
             "replay"
+          ],
+          "failurePaths": [
+            {
+              "in": "persist",
+              "kind": "except",
+              "line": 125
+            },
+            {
+              "in": "persist",
+              "kind": "raise",
+              "line": 126
+            },
+            {
+              "in": "persist",
+              "kind": "except",
+              "line": 132
+            },
+            {
+              "in": "persist",
+              "kind": "raise",
+              "line": 133
+            },
+            {
+              "in": "load",
+              "kind": "except",
+              "line": 172
+            },
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 176
+            },
+            {
+              "in": "load",
+              "kind": "except",
+              "line": 179
+            },
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 180
+            },
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 184
+            },
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 194
+            },
+            {
+              "in": "_read_v1",
+              "kind": "except",
+              "line": 205
+            },
+            {
+              "in": "_read_v1",
+              "kind": "raise",
+              "line": 206
+            },
+            {
+              "in": "replay",
+              "kind": "raise",
+              "line": 257
+            },
+            {
+              "in": "replay",
+              "kind": "raise",
+              "line": 276
+            },
+            {
+              "in": "replay",
+              "kind": "raise",
+              "line": 296
+            },
+            {
+              "in": "replay",
+              "kind": "raise",
+              "line": 309
+            }
           ],
           "hash": "739e6e9aec0aa3e8a54fa15aedbf5ff9d6b040cc6ff1cf12da4cb227f8343a26",
           "importsFiles": [
@@ -4751,6 +6029,83 @@
             "load_disposition",
             "record_disposition"
           ],
+          "failurePaths": [
+            {
+              "in": "record_disposition",
+              "kind": "raise",
+              "line": 195
+            },
+            {
+              "in": "record_disposition",
+              "kind": "raise",
+              "line": 201
+            },
+            {
+              "in": "record_disposition",
+              "kind": "raise",
+              "line": 206
+            },
+            {
+              "in": "record_disposition",
+              "kind": "except",
+              "line": 231
+            },
+            {
+              "in": "record_disposition",
+              "kind": "raise",
+              "line": 232
+            },
+            {
+              "in": "record_disposition",
+              "kind": "except",
+              "line": 238
+            },
+            {
+              "in": "record_disposition",
+              "kind": "raise",
+              "line": 239
+            },
+            {
+              "in": "load_disposition",
+              "kind": "except",
+              "line": 270
+            },
+            {
+              "in": "load_disposition",
+              "kind": "raise",
+              "line": 271
+            },
+            {
+              "in": "load_disposition",
+              "kind": "except",
+              "line": 275
+            },
+            {
+              "in": "load_disposition",
+              "kind": "raise",
+              "line": 276
+            },
+            {
+              "in": "load_disposition",
+              "kind": "raise",
+              "line": 281
+            },
+            {
+              "in": "load_disposition",
+              "kind": "raise",
+              "line": 287
+            },
+            {
+              "in": "load_disposition",
+              "kind": "except",
+              "line": 294
+            },
+            {
+              "in": "load_disposition",
+              "kind": "raise",
+              "line": 295
+            }
+          ],
           "hash": "a771fd5914389de1074cc9a9d0e7f5b9db7cc6b36e8d7109cb1352ac3c88188a",
           "importsFiles": [
             "src/pcraft/core/loop/compensators.py",
@@ -4892,6 +6247,23 @@
             "scan",
             "stale_against"
           ],
+          "failurePaths": [
+            {
+              "in": "scan",
+              "kind": "raise",
+              "line": 242
+            },
+            {
+              "in": "scan",
+              "kind": "except",
+              "line": 252
+            },
+            {
+              "in": "_row",
+              "kind": "except",
+              "line": 269
+            }
+          ],
           "hash": "2134490eba67b74c1fee832be631b22d2b0e5dbf15aa6864a40b8e71bbff5798",
           "importOrder": [
             "src/pcraft/errors.py",
@@ -4916,6 +6288,18 @@
           "exports": [
             "assert_coverage"
           ],
+          "failurePaths": [
+            {
+              "in": "assert_coverage",
+              "kind": "raise",
+              "line": 33
+            },
+            {
+              "in": "assert_coverage",
+              "kind": "raise",
+              "line": 44
+            }
+          ],
           "hash": "b10515c40a67dc2a8daa6207c7fe96596de8308e459f62b5e54b1589cf630e20",
           "importOrder": [
             "src/pcraft/errors.py",
@@ -4928,6 +6312,32 @@
           "path": "src/pcraft/core/synth/assert_.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 39
+            },
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 98
+            },
+            {
+              "in": "synthesize",
+              "kind": "raise",
+              "line": 145
+            },
+            {
+              "in": "_run_dspy",
+              "kind": "except",
+              "line": 164
+            },
+            {
+              "in": "_run_dspy",
+              "kind": "raise",
+              "line": 185
+            }
+          ],
           "hash": "f8f0bfbfd18b7f2e486ac8d54403c11aa86b785743b084b1213bed8de504d7d1",
           "importOrder": [
             "src/pcraft/errors.py",
@@ -4958,6 +6368,13 @@
             "assert_tokens_trace",
             "build_inventory",
             "parse_render_boilerplate"
+          ],
+          "failurePaths": [
+            {
+              "in": "assert_tokens_trace",
+              "kind": "raise",
+              "line": 152
+            }
           ],
           "hash": "d23acfcb07fa49004c6ff666acb7582af19ef86136738e952cdd6c224822e588",
           "importOrder": [
@@ -5034,6 +6451,83 @@
             "skipped_identity_refs",
             "unsupported_identity_methods"
           ],
+          "failurePaths": [
+            {
+              "in": "resolve_ref",
+              "kind": "raise",
+              "line": 161
+            },
+            {
+              "in": "is_packaged_ref",
+              "kind": "except",
+              "line": 177
+            },
+            {
+              "in": "bind_refs",
+              "kind": "except",
+              "line": 204
+            },
+            {
+              "in": "bind_refs",
+              "kind": "raise",
+              "line": 205
+            },
+            {
+              "in": "refuse_unimplemented_identity",
+              "kind": "raise",
+              "line": 233
+            },
+            {
+              "in": "refuse_reference_identity",
+              "kind": "raise",
+              "line": 246
+            },
+            {
+              "in": "refuse_unmeasured_identity_family",
+              "kind": "raise",
+              "line": 266
+            },
+            {
+              "in": "refuse_unmeasured_identity_family",
+              "kind": "raise",
+              "line": 273
+            },
+            {
+              "in": "refuse_unmeasured_identity_family",
+              "kind": "raise",
+              "line": 280
+            },
+            {
+              "in": "refuse_unmeasured_family",
+              "kind": "raise",
+              "line": 291
+            },
+            {
+              "in": "open_image",
+              "kind": "except",
+              "line": 303
+            },
+            {
+              "in": "open_image",
+              "kind": "raise",
+              "line": 304
+            },
+            {
+              "in": "region_box",
+              "kind": "raise",
+              "line": 344
+            },
+            {
+              "in": "mask_for_region",
+              "kind": "except",
+              "line": 369
+            },
+            {
+              "in": "mask_for_region",
+              "kind": "raise",
+              "line": 370
+            }
+          ],
           "hash": "7a9300c68d24937ccc937d120c6487ecd10252b5d06f2a5536c25b15a9841e31",
           "importsFiles": [
             "src/pcraft/errors.py"
@@ -5041,18 +6535,79 @@
           "path": "src/pcraft/domains/image/generator/conditioning.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "_load",
+              "kind": "except",
+              "line": 49
+            },
+            {
+              "in": "_load",
+              "kind": "raise",
+              "line": 50
+            },
+            {
+              "in": "_load",
+              "kind": "except",
+              "line": 68
+            },
+            {
+              "in": "_load",
+              "kind": "raise",
+              "line": 69
+            },
+            {
+              "in": "_load",
+              "kind": "except",
+              "line": 70
+            },
+            {
+              "in": "_load",
+              "kind": "raise",
+              "line": 71
+            },
+            {
+              "in": "generate",
+              "kind": "raise",
+              "line": 104
+            },
+            {
+              "in": "generate",
+              "kind": "except",
+              "line": 156
+            },
+            {
+              "in": "generate",
+              "kind": "raise",
+              "line": 157
+            },
+            {
+              "in": "generate",
+              "kind": "except",
+              "line": 158
+            },
+            {
+              "in": "generate",
+              "kind": "raise",
+              "line": 159
+            }
+          ],
           "hash": "d9dcac8b34cc7fbebc78cddf1c3934f2083bced7fddee2ead6ef8699c39ea7e9",
           "importOrder": [
             "src/pcraft/core/loop/generator_iface.py",
             "src/pcraft/errors.py",
             "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
             "src/pcraft/domains/image/generator/_device.py",
+            "src/pcraft/domains/image/generator/kontext_fill.py",
             "src/pcraft/domains/image/generator/reference_lock.py"
           ],
           "importsFiles": [
             "src/pcraft/core/loop/generator_iface.py",
             "src/pcraft/domains/image/generator/__init__.py",
             "src/pcraft/domains/image/generator/_device.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
+            "src/pcraft/domains/image/generator/kontext_fill.py",
             "src/pcraft/domains/image/generator/reference_lock.py",
             "src/pcraft/errors.py"
           ],
@@ -5068,14 +6623,48 @@
             "unknown_image_names",
             "upload_manifest"
           ],
+          "failurePaths": [
+            {
+              "in": "_resolved_mask",
+              "kind": "except",
+              "line": 101
+            },
+            {
+              "in": "_resolved_mask",
+              "kind": "raise",
+              "line": 102
+            },
+            {
+              "in": "resolve_mask_plan",
+              "kind": "raise",
+              "line": 120
+            },
+            {
+              "in": "resolve_mask_plan",
+              "kind": "raise",
+              "line": 127
+            },
+            {
+              "in": "build_graph",
+              "kind": "raise",
+              "line": 318
+            },
+            {
+              "in": "build_graph",
+              "kind": "raise",
+              "line": 324
+            }
+          ],
           "hash": "9d00b60dd7ffa79793957ac6e292b98d31ef88ba1e66b66bbbc48d7b284993cd",
           "importOrder": [
             "src/pcraft/errors.py",
             "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
             "src/pcraft/domains/image/generator/reference_lock.py"
           ],
           "importsFiles": [
             "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
             "src/pcraft/domains/image/generator/reference_lock.py",
             "src/pcraft/errors.py"
           ],
@@ -5086,13 +6675,22 @@
             "as_generate_refs",
             "assemble"
           ],
+          "failurePaths": [
+            {
+              "in": "assemble",
+              "kind": "raise",
+              "line": 89
+            }
+          ],
           "hash": "2a1f3e44a74269defe62bc42989d8d98835fb857b4154f986b2a8b9d7352c779",
           "importOrder": [
             "src/pcraft/errors.py",
-            "src/pcraft/domains/image/generator/__init__.py"
+            "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/conditioning.py"
           ],
           "importsFiles": [
             "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
             "src/pcraft/errors.py"
           ],
           "path": "src/pcraft/domains/image/generator/reference_lock.py"
@@ -5101,17 +6699,81 @@
           "exports": [
             "ip_adapter_scale"
           ],
+          "failurePaths": [
+            {
+              "in": "_load",
+              "kind": "except",
+              "line": 95
+            },
+            {
+              "in": "_load",
+              "kind": "raise",
+              "line": 96
+            },
+            {
+              "in": "_load",
+              "kind": "except",
+              "line": 126
+            },
+            {
+              "in": "_load",
+              "kind": "raise",
+              "line": 127
+            },
+            {
+              "in": "_load",
+              "kind": "except",
+              "line": 128
+            },
+            {
+              "in": "_load",
+              "kind": "raise",
+              "line": 129
+            },
+            {
+              "in": "_clear_lora_adapters",
+              "kind": "raise",
+              "line": 177
+            },
+            {
+              "in": "generate",
+              "kind": "raise",
+              "line": 234
+            },
+            {
+              "in": "generate",
+              "kind": "except",
+              "line": 357
+            },
+            {
+              "in": "generate",
+              "kind": "raise",
+              "line": 358
+            },
+            {
+              "in": "generate",
+              "kind": "except",
+              "line": 359
+            },
+            {
+              "in": "generate",
+              "kind": "raise",
+              "line": 363
+            }
+          ],
           "hash": "717b1b988a364521061c10251a25b2da4124cb38af2f927439dce1f6de614411",
           "importOrder": [
             "src/pcraft/core/loop/generator_iface.py",
             "src/pcraft/errors.py",
             "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
             "src/pcraft/domains/image/generator/_device.py"
           ],
           "importsFiles": [
             "src/pcraft/core/loop/generator_iface.py",
             "src/pcraft/domains/image/generator/__init__.py",
             "src/pcraft/domains/image/generator/_device.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
             "src/pcraft/errors.py"
           ],
           "path": "src/pcraft/domains/image/generator/sdxl_generator.py"
@@ -5126,6 +6788,98 @@
             "dominant_hex",
             "read_reference_sheet",
             "scaffold_from_reference_sheet"
+          ],
+          "failurePaths": [
+            {
+              "in": "core_scaffold_primitive",
+              "kind": "except",
+              "line": 194
+            },
+            {
+              "in": "_skeleton",
+              "kind": "except",
+              "line": 217
+            },
+            {
+              "in": "read_reference_sheet",
+              "kind": "raise",
+              "line": 232
+            },
+            {
+              "in": "read_reference_sheet",
+              "kind": "except",
+              "line": 241
+            },
+            {
+              "in": "read_reference_sheet",
+              "kind": "raise",
+              "line": 242
+            },
+            {
+              "in": "read_reference_sheet",
+              "kind": "raise",
+              "line": 250
+            },
+            {
+              "in": "_required_name",
+              "kind": "raise",
+              "line": 277
+            },
+            {
+              "in": "_required_list",
+              "kind": "raise",
+              "line": 289
+            },
+            {
+              "in": "_trait",
+              "kind": "raise",
+              "line": 300
+            },
+            {
+              "in": "_trait",
+              "kind": "raise",
+              "line": 307
+            },
+            {
+              "in": "_plate",
+              "kind": "raise",
+              "line": 326
+            },
+            {
+              "in": "_plate",
+              "kind": "raise",
+              "line": 334
+            },
+            {
+              "in": "_trait_defaults",
+              "kind": "raise",
+              "line": 346
+            },
+            {
+              "in": "_seed_atoms",
+              "kind": "raise",
+              "line": 520
+            },
+            {
+              "in": "_refuse_packaged_target",
+              "kind": "raise",
+              "line": 589
+            },
+            {
+              "in": "_refuse_existing",
+              "kind": "raise",
+              "line": 603
+            },
+            {
+              "in": "_refuse_unwired_identity",
+              "kind": "raise",
+              "line": 624
+            },
+            {
+              "in": "_prove_it_loads",
+              "kind": "raise",
+              "line": 698
+            }
           ],
           "hash": "0adb1d90ba03071901f48846a60f630ccca3d5ed1e353320b1d5d2d1a7f7ab7b",
           "importOrder": [
@@ -5169,6 +6923,68 @@
             "write_scored",
             "write_table"
           ],
+          "failurePaths": [
+            {
+              "in": "_require",
+              "kind": "raise",
+              "line": 196
+            },
+            {
+              "in": "load_manifest",
+              "kind": "except",
+              "line": 215
+            },
+            {
+              "in": "load_manifest",
+              "kind": "raise",
+              "line": 216
+            },
+            {
+              "in": "load_manifest",
+              "kind": "raise",
+              "line": 227
+            },
+            {
+              "in": "_guarded_score",
+              "kind": "except",
+              "line": 250
+            },
+            {
+              "in": "_guarded_score",
+              "kind": "raise",
+              "line": 251
+            },
+            {
+              "in": "_guarded_score",
+              "kind": "except",
+              "line": 252
+            },
+            {
+              "in": "score_rows",
+              "kind": "raise",
+              "line": 277
+            },
+            {
+              "in": "score_rows",
+              "kind": "raise",
+              "line": 290
+            },
+            {
+              "in": "score_rows",
+              "kind": "raise",
+              "line": 300
+            },
+            {
+              "in": "write_table",
+              "kind": "raise",
+              "line": 552
+            },
+            {
+              "in": "write_table",
+              "kind": "raise",
+              "line": 560
+            }
+          ],
           "hash": "c38c7f359bebc1913f2b87e3e22785d2abfb88de8ed81d32575b9f75ca9de3f1",
           "importOrder": [
             "src/pcraft/core/contract/compile_questions.py",
@@ -5207,6 +7023,13 @@
           "path": "src/pcraft/domains/image/subdomains/sprite/contracts/factions/example.faction.contract.json"
         },
         {
+          "failurePaths": [
+            {
+              "in": "_sim",
+              "kind": "except",
+              "line": 52
+            }
+          ],
           "hash": "ef5d853aeeb8da2259445152dbe6e0f767aca55e03bf3c17caa8917a66a90b93",
           "path": "src/pcraft/domains/image/subdomains/sprite/identity_subgate.py"
         },
@@ -5268,6 +7091,18 @@
             "claim_of",
             "template_expand"
           ],
+          "failurePaths": [
+            {
+              "in": "_reject_duplicate_probe_ids",
+              "kind": "raise",
+              "line": 63
+            },
+            {
+              "in": "visit",
+              "kind": "raise",
+              "line": 104
+            }
+          ],
           "hash": "5bdbe2e3a64fd6b0caf3d48438086dd243b47fa7fe5b6ac8de4a23ee5b8f26fe",
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
@@ -5276,6 +7111,53 @@
           "path": "src/pcraft/domains/image/verifier/dsg_expand.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "_get_answerer",
+              "kind": "except",
+              "line": 128
+            },
+            {
+              "in": "_get_answerer",
+              "kind": "except",
+              "line": 133
+            },
+            {
+              "in": "_get_answerer",
+              "kind": "raise",
+              "line": 140
+            },
+            {
+              "in": "_ask",
+              "kind": "except",
+              "line": 153
+            },
+            {
+              "in": "_ask",
+              "kind": "raise",
+              "line": 155
+            },
+            {
+              "in": "score",
+              "kind": "except",
+              "line": 182
+            },
+            {
+              "in": "score",
+              "kind": "raise",
+              "line": 183
+            },
+            {
+              "in": "score",
+              "kind": "except",
+              "line": 184
+            },
+            {
+              "in": "score",
+              "kind": "raise",
+              "line": 185
+            }
+          ],
           "hash": "84cea6f5fb313fe635e09b521391c6b7148eb986747efc8337ccde8b2140ed7e",
           "importOrder": [
             "src/pcraft/core/contract/compile_questions.py",
@@ -5298,6 +7180,118 @@
             "image_size",
             "load_rgb",
             "load_rgb_sized"
+          ],
+          "failurePaths": [
+            {
+              "in": "score",
+              "kind": "except",
+              "line": 98
+            },
+            {
+              "in": "score",
+              "kind": "raise",
+              "line": 99
+            },
+            {
+              "in": "score",
+              "kind": "except",
+              "line": 100
+            },
+            {
+              "in": "score",
+              "kind": "raise",
+              "line": 101
+            },
+            {
+              "in": "_parse_hex",
+              "kind": "except",
+              "line": 356
+            },
+            {
+              "in": "_colours_or_refuse",
+              "kind": "raise",
+              "line": 418
+            },
+            {
+              "in": "_colours_or_refuse",
+              "kind": "raise",
+              "line": 430
+            },
+            {
+              "in": "load_rgb",
+              "kind": "except",
+              "line": 489
+            },
+            {
+              "in": "image_size",
+              "kind": "except",
+              "line": 521
+            },
+            {
+              "in": "image_size",
+              "kind": "raise",
+              "line": 522
+            },
+            {
+              "in": "_png_declared_size",
+              "kind": "except",
+              "line": 540
+            },
+            {
+              "in": "_bomb_refusal_pixels",
+              "kind": "except",
+              "line": 579
+            },
+            {
+              "in": "_decompressed_length",
+              "kind": "except",
+              "line": 607
+            },
+            {
+              "in": "_assert_png_not_short",
+              "kind": "except",
+              "line": 699
+            },
+            {
+              "in": "_assert_png_not_short",
+              "kind": "raise",
+              "line": 706
+            },
+            {
+              "in": "_load_png_filter0",
+              "kind": "raise",
+              "line": 712
+            },
+            {
+              "in": "_load_png_filter0",
+              "kind": "raise",
+              "line": 731
+            },
+            {
+              "in": "_load_png_filter0",
+              "kind": "raise",
+              "line": 736
+            },
+            {
+              "in": "_load_png_filter0",
+              "kind": "raise",
+              "line": 742
+            },
+            {
+              "in": "_load_png_filter0",
+              "kind": "raise",
+              "line": 752
+            },
+            {
+              "in": "_load_png_filter0",
+              "kind": "raise",
+              "line": 761
+            },
+            {
+              "in": "_load_png_filter0",
+              "kind": "raise",
+              "line": 775
+            }
           ],
           "hash": "d2eb8a6e62923070f4f23a463b5fe84c5090cd84547badeff36c3eb6e010bd2b",
           "importOrder": [
@@ -5322,6 +7316,18 @@
             "full_frame_note",
             "region_window"
           ],
+          "failurePaths": [
+            {
+              "in": "region_window",
+              "kind": "raise",
+              "line": 55
+            },
+            {
+              "in": "crop_pixels",
+              "kind": "raise",
+              "line": 80
+            }
+          ],
           "hash": "78e5d76e8d6218305a6af7ce91f46c57e559806c7c15a84b6cdf3d3cf783c6b3",
           "importOrder": [
             "src/pcraft/core/contract/compile_questions.py",
@@ -5336,6 +7342,33 @@
           "path": "src/pcraft/domains/image/verifier/region.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "_get_engine",
+              "kind": "except",
+              "line": 44
+            },
+            {
+              "in": "_get_engine",
+              "kind": "except",
+              "line": 49
+            },
+            {
+              "in": "_get_engine",
+              "kind": "raise",
+              "line": 51
+            },
+            {
+              "in": "score",
+              "kind": "except",
+              "line": 78
+            },
+            {
+              "in": "score",
+              "kind": "raise",
+              "line": 80
+            }
+          ],
           "hash": "e7588aa14132540ea9d3c3d485de701a56c662d1fe5de0598ab89ac70d6e3562",
           "importOrder": [
             "src/pcraft/core/contract/compile_questions.py",
@@ -5350,6 +7383,33 @@
           "path": "src/pcraft/domains/image/verifier/siglip2_screen.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "_get_scorer",
+              "kind": "except",
+              "line": 45
+            },
+            {
+              "in": "_get_scorer",
+              "kind": "except",
+              "line": 50
+            },
+            {
+              "in": "_get_scorer",
+              "kind": "raise",
+              "line": 52
+            },
+            {
+              "in": "score",
+              "kind": "except",
+              "line": 82
+            },
+            {
+              "in": "score",
+              "kind": "raise",
+              "line": 84
+            }
+          ],
           "hash": "a9b44069b6bb99fde72ef6b463a830c1df813d1dcef04e96083548b795f9c34e",
           "importOrder": [
             "src/pcraft/core/contract/compile_questions.py",
@@ -5519,6 +7579,33 @@
             "missing_model_tier_modules",
             "run_live_loop",
             "run_mock_loop"
+          ],
+          "failurePaths": [
+            {
+              "in": "load_store",
+              "kind": "raise",
+              "line": 55
+            },
+            {
+              "in": "load_store",
+              "kind": "raise",
+              "line": 64
+            },
+            {
+              "in": "generate",
+              "kind": "except",
+              "line": 237
+            },
+            {
+              "in": "generate",
+              "kind": "raise",
+              "line": 239
+            },
+            {
+              "in": "run_live_loop",
+              "kind": "raise",
+              "line": 269
+            }
           ],
           "hash": "03602bb5a0c0362dd80b80ba762edfa30576ac0843e4c3a3b51d4937bac75324",
           "importsFiles": [
@@ -6026,6 +8113,9 @@
       "outsideReads": 22,
       "outsideWrites": 8,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 37,
       "unresolvedNamed": [
         {
@@ -6062,7 +8152,8 @@
           "importsFiles": [
             "src/pcraft/sample.py"
           ],
-          "path": "tests/conftest.py"
+          "path": "tests/conftest.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -6072,10 +8163,20 @@
             "test_partial_printout_leads_with_the_unconfirmed_atom"
           ],
           "hash": "49dca8b2fd7e8561a679a04e92bf3b9bbea8b040a6481e5ac227cad694585372",
+          "importOrder": [
+            "src/pcraft/core/contract/compile_questions.py",
+            "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/harness.py",
+            "src/pcraft/core/gate/exit_contract.py",
+            "src/pcraft/core/gate/thresholds.py",
+            "src/pcraft/gate_report.py",
+            "src/pcraft/testing.py"
+          ],
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/gate/__init__.py",
             "src/pcraft/core/gate/exit_contract.py",
+            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/thresholds.py",
             "src/pcraft/gate_report.py",
             "src/pcraft/testing.py"
@@ -6204,7 +8305,15 @@
             "src/pcraft/sample.py",
             "src/pcraft/testing.py"
           ],
-          "path": "tests/test_amend_cli.py"
+          "names": [
+            "npm/bin/pcraft.mjs",
+            "scripts/sync_rules_from_readouts.py"
+          ],
+          "path": "tests/test_amend_cli.py",
+          "spawns": [
+            "src/pcraft/__main__.py"
+          ],
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -6343,14 +8452,15 @@
             "src/pcraft/errors.py",
             "src/pcraft/sample.py",
             "src/pcraft/core/__init__.py",
-            "src/pcraft/domains/image/__init__.py",
             "src/pcraft/core/plugin.py",
+            "src/pcraft/domains/image/__init__.py",
             "src/pcraft/__init__.py",
             "src/pcraft/core/contract/scaffold.py",
             "src/pcraft/core/contract/diff.py",
             "src/pcraft/core/contract/hash.py",
             "src/pcraft/core/contract/lint.py",
-            "src/pcraft/core/contract/__init__.py"
+            "src/pcraft/core/contract/__init__.py",
+            "src/pcraft/core/contract/explain.py"
           ],
           "importsFiles": [
             "src/pcraft/__init__.py",
@@ -6359,6 +8469,7 @@
             "src/pcraft/core/contract/__init__.py",
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/contract/diff.py",
+            "src/pcraft/core/contract/explain.py",
             "src/pcraft/core/contract/hash.py",
             "src/pcraft/core/contract/lint.py",
             "src/pcraft/core/contract/loader.py",
@@ -6369,7 +8480,8 @@
             "src/pcraft/errors.py",
             "src/pcraft/sample.py"
           ],
-          "path": "tests/test_amend_contract.py"
+          "path": "tests/test_amend_contract.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -6413,9 +8525,9 @@
           "importOrder": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/checkpoint.py",
             "src/pcraft/core/gate/exit_contract.py",
-            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/thresholds.py",
             "src/pcraft/errors.py",
             "src/pcraft/testing.py",
@@ -6438,7 +8550,11 @@
             "src/pcraft/sample.py",
             "src/pcraft/testing.py"
           ],
-          "path": "tests/test_amend_gate.py"
+          "names": [
+            "src/pcraft/core/contract/schema.py"
+          ],
+          "path": "tests/test_amend_gate.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -6541,11 +8657,12 @@
             "src/pcraft/testing.py",
             "src/pcraft/domains/image/verifier/dsg_expand.py",
             "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
             "src/pcraft/domains/image/generator/reference_lock.py",
+            "src/pcraft/domains/image/generator/kontext_fill.py",
             "src/pcraft/__init__.py",
             "src/pcraft/domains/image/scaffold.py",
             "src/pcraft/core/contract/loader.py",
-            "src/pcraft/domains/image/generator/conditioning.py",
             "src/pcraft/domains/image/verifier/region.py"
           ],
           "importsFiles": [
@@ -6557,6 +8674,7 @@
             "src/pcraft/domains/image/generator/__init__.py",
             "src/pcraft/domains/image/generator/conditioning.py",
             "src/pcraft/domains/image/generator/flux_generator.py",
+            "src/pcraft/domains/image/generator/kontext_fill.py",
             "src/pcraft/domains/image/generator/reference_lock.py",
             "src/pcraft/domains/image/generator/sdxl_generator.py",
             "src/pcraft/domains/image/scaffold.py",
@@ -6570,7 +8688,8 @@
             "src/pcraft/errors.py",
             "src/pcraft/testing.py"
           ],
-          "path": "tests/test_amend_image.py"
+          "path": "tests/test_amend_image.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -6627,8 +8746,8 @@
             "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/thresholds.py",
             "src/pcraft/core/loop/__init__.py",
-            "src/pcraft/core/loop/compensators.py",
             "src/pcraft/core/loop/orchestrate.py",
+            "src/pcraft/core/loop/compensators.py",
             "src/pcraft/core/loop/retry_policy.py",
             "src/pcraft/core/synth/signature.py",
             "src/pcraft/errors.py",
@@ -6651,7 +8770,11 @@
             "src/pcraft/sample.py",
             "src/pcraft/testing.py"
           ],
-          "path": "tests/test_amend_loop.py"
+          "names": [
+            "src/pcraft/core/gate/exit_contract.py"
+          ],
+          "path": "tests/test_amend_loop.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -6664,7 +8787,8 @@
             "src/pcraft/core/loop/compensators.py",
             "src/pcraft/errors.py"
           ],
-          "path": "tests/test_compensators.py"
+          "path": "tests/test_compensators.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -6689,7 +8813,8 @@
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/errors.py"
           ],
-          "path": "tests/test_compile_questions.py"
+          "path": "tests/test_compile_questions.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -6733,7 +8858,8 @@
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/errors.py"
           ],
-          "path": "tests/test_contract_loader.py"
+          "path": "tests/test_contract_loader.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -6772,7 +8898,8 @@
             "src/pcraft/core/gate/verifier_iface.py",
             "src/pcraft/errors.py"
           ],
-          "path": "tests/test_family_guard.py"
+          "path": "tests/test_family_guard.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -6852,7 +8979,8 @@
             "src/pcraft/sample.py",
             "src/pcraft/testing.py"
           ],
-          "path": "tests/test_feat_checkpoint.py"
+          "path": "tests/test_feat_checkpoint.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -6941,25 +9069,33 @@
             "src/pcraft/__init__.py",
             "src/pcraft/cli/__init__.py",
             "src/pcraft/testing.py",
+            "src/pcraft/sample.py",
             "src/pcraft/core/loop/generator_iface.py",
             "src/pcraft/domains/image/__init__.py",
             "src/pcraft/domains/image/generator/sdxl_generator.py",
             "src/pcraft/domains/image/subdomains/sprite/__init__.py",
             "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/regrade.py",
+            "src/pcraft/domains/image/subdomains/sprite/calibrate.py",
             "src/pcraft/core/contract/__init__.py",
-            "src/pcraft/sample.py",
-            "src/pcraft/core/receipt/__init__.py"
+            "src/pcraft/core/contract/scaffold.py",
+            "src/pcraft/core/receipt/__init__.py",
+            "src/pcraft/core/receipt/disposition.py"
           ],
           "importsFiles": [
             "src/pcraft/__init__.py",
             "src/pcraft/cli/__init__.py",
             "src/pcraft/core/contract/__init__.py",
+            "src/pcraft/core/contract/scaffold.py",
             "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/regrade.py",
             "src/pcraft/core/loop/generator_iface.py",
             "src/pcraft/core/receipt/__init__.py",
+            "src/pcraft/core/receipt/disposition.py",
             "src/pcraft/domains/image/__init__.py",
             "src/pcraft/domains/image/generator/sdxl_generator.py",
             "src/pcraft/domains/image/subdomains/sprite/__init__.py",
+            "src/pcraft/domains/image/subdomains/sprite/calibrate.py",
             "src/pcraft/sample.py",
             "src/pcraft/testing.py"
           ],
@@ -6996,7 +9132,8 @@
             "src/pcraft/errors.py",
             "src/pcraft/sample.py"
           ],
-          "path": "tests/test_feat_dsg.py"
+          "path": "tests/test_feat_dsg.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7036,6 +9173,7 @@
           "hash": "faa83c4c3af4312cbbe27810d235db9fc4ab0bd8687f0c3782ab7edf59e5fddf",
           "importOrder": [
             "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
             "src/pcraft/domains/image/generator/flux_generator.py",
             "src/pcraft/domains/image/generator/sdxl_generator.py",
             "src/pcraft/errors.py",
@@ -7047,6 +9185,7 @@
           "importsFiles": [
             "src/pcraft/core/loop/orchestrate.py",
             "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
             "src/pcraft/domains/image/generator/flux_generator.py",
             "src/pcraft/domains/image/generator/sdxl_generator.py",
             "src/pcraft/domains/image/subdomains/sprite/__init__.py",
@@ -7054,7 +9193,8 @@
             "src/pcraft/sample.py",
             "src/pcraft/testing.py"
           ],
-          "path": "tests/test_feat_encoders.py"
+          "path": "tests/test_feat_encoders.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7113,7 +9253,11 @@
             "src/pcraft/errors.py",
             "src/pcraft/sample.py"
           ],
-          "path": "tests/test_feat_gepa.py"
+          "names": [
+            "src/pcraft/core/synth/assert_.py"
+          ],
+          "path": "tests/test_feat_gepa.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7185,6 +9329,7 @@
             "src/pcraft/errors.py",
             "src/pcraft/testing.py",
             "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/loop/orchestrate.py",
             "src/pcraft/sample.py",
             "src/pcraft/domains/image/verifier/siglip2_screen.py",
@@ -7196,6 +9341,7 @@
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/loop/orchestrate.py",
             "src/pcraft/core/plugin.py",
             "src/pcraft/domains/image/__init__.py",
@@ -7210,7 +9356,8 @@
             "src/pcraft/sample.py",
             "src/pcraft/testing.py"
           ],
-          "path": "tests/test_feat_palette.py"
+          "path": "tests/test_feat_palette.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7269,9 +9416,12 @@
           "importOrder": [
             "src/pcraft/cli/__init__.py",
             "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
+            "src/pcraft/domains/image/generator/kontext_fill.py",
             "src/pcraft/domains/image/generator/flux_generator.py",
             "src/pcraft/domains/image/generator/sdxl_generator.py",
             "src/pcraft/domains/image/subdomains/__init__.py",
+            "src/pcraft/domains/image/subdomains/sprite/__init__.py",
             "src/pcraft/errors.py",
             "src/pcraft/testing.py",
             "src/pcraft/domains/image/generator/reference_lock.py",
@@ -7282,15 +9432,19 @@
             "src/pcraft/cli/__init__.py",
             "src/pcraft/core/loop/orchestrate.py",
             "src/pcraft/domains/image/generator/__init__.py",
+            "src/pcraft/domains/image/generator/conditioning.py",
             "src/pcraft/domains/image/generator/flux_generator.py",
+            "src/pcraft/domains/image/generator/kontext_fill.py",
             "src/pcraft/domains/image/generator/reference_lock.py",
             "src/pcraft/domains/image/generator/sdxl_generator.py",
             "src/pcraft/domains/image/subdomains/__init__.py",
+            "src/pcraft/domains/image/subdomains/sprite/__init__.py",
             "src/pcraft/errors.py",
             "src/pcraft/sample.py",
             "src/pcraft/testing.py"
           ],
-          "path": "tests/test_feat_recipe.py"
+          "path": "tests/test_feat_recipe.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7316,6 +9470,7 @@
             "src/pcraft/cli/__init__.py",
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/exit_contract.py",
             "src/pcraft/core/gate/preflight.py",
             "src/pcraft/core/gate/thresholds.py",
@@ -7329,12 +9484,14 @@
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/core/gate/__init__.py",
             "src/pcraft/core/gate/exit_contract.py",
+            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/preflight.py",
             "src/pcraft/core/gate/thresholds.py",
             "src/pcraft/errors.py",
             "src/pcraft/testing.py"
           ],
-          "path": "tests/test_gate_exit.py"
+          "path": "tests/test_gate_exit.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7382,12 +9539,12 @@
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/batch.py",
             "src/pcraft/core/gate/thresholds.py",
             "src/pcraft/errors.py",
             "src/pcraft/testing.py",
             "src/pcraft/gate_report.py",
-            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/exit_contract.py",
             "src/pcraft/core/gate/regrade.py"
           ],
@@ -7404,7 +9561,8 @@
             "src/pcraft/gate_report.py",
             "src/pcraft/testing.py"
           ],
-          "path": "tests/test_gate_harness.py"
+          "path": "tests/test_gate_harness.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7448,6 +9606,7 @@
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/core/gate/thresholds.py",
             "src/pcraft/domains/image/subdomains/__init__.py",
+            "src/pcraft/domains/image/subdomains/sprite/calibrate.py",
             "src/pcraft/sample.py",
             "src/pcraft/core/gate/harness.py"
           ],
@@ -7459,11 +9618,13 @@
             "src/pcraft/core/gate/thresholds.py",
             "src/pcraft/domains/image/subdomains/__init__.py",
             "src/pcraft/domains/image/subdomains/sprite/__init__.py",
+            "src/pcraft/domains/image/subdomains/sprite/calibrate.py",
             "src/pcraft/domains/image/subdomains/sprite/identity_subgate.py",
             "src/pcraft/errors.py",
             "src/pcraft/sample.py"
           ],
-          "path": "tests/test_identity_subgate.py"
+          "path": "tests/test_identity_subgate.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7485,6 +9646,9 @@
             "src/pcraft/domains/image/__init__.py",
             "src/pcraft/sample.py"
           ],
+          "names": [
+            "scripts/sync_rules_from_readouts.py"
+          ],
           "path": "tests/test_image_plugin.py"
         },
         {
@@ -7504,6 +9668,7 @@
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/exit_contract.py",
             "src/pcraft/core/gate/thresholds.py",
             "src/pcraft/testing.py",
@@ -7516,11 +9681,13 @@
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/core/gate/__init__.py",
             "src/pcraft/core/gate/exit_contract.py",
+            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/thresholds.py",
             "src/pcraft/errors.py",
             "src/pcraft/testing.py"
           ],
-          "path": "tests/test_negation_severity.py"
+          "path": "tests/test_negation_severity.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7588,13 +9755,15 @@
             "src/pcraft/core/contract/loader.py",
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/thresholds.py",
             "src/pcraft/core/loop/retry_policy.py",
             "src/pcraft/core/synth/visual_inventory.py",
             "src/pcraft/errors.py",
             "src/pcraft/testing.py"
           ],
-          "path": "tests/test_predicate_fixtures.py"
+          "path": "tests/test_predicate_fixtures.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7666,7 +9835,8 @@
             "src/pcraft/sample.py",
             "src/pcraft/testing.py"
           ],
-          "path": "tests/test_receipt_replay.py"
+          "path": "tests/test_receipt_replay.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7678,6 +9848,7 @@
           "importsFiles": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/loop/retry_policy.py",
             "src/pcraft/testing.py"
           ],
@@ -7738,7 +9909,8 @@
             "src/pcraft/errors.py",
             "src/pcraft/sample.py"
           ],
-          "path": "tests/test_stability_surface.py"
+          "path": "tests/test_stability_surface.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7755,14 +9927,17 @@
           "importOrder": [
             "src/pcraft/cli/__init__.py",
             "src/pcraft/errors.py",
-            "src/pcraft/core/loop/__init__.py"
+            "src/pcraft/core/loop/__init__.py",
+            "src/pcraft/core/loop/orchestrate.py"
           ],
           "importsFiles": [
             "src/pcraft/cli/__init__.py",
             "src/pcraft/core/loop/__init__.py",
+            "src/pcraft/core/loop/orchestrate.py",
             "src/pcraft/errors.py"
           ],
-          "path": "tests/test_stability_surface_names_resolve.py"
+          "path": "tests/test_stability_surface_names_resolve.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7793,7 +9968,8 @@
             "src/pcraft/errors.py",
             "src/pcraft/sample.py"
           ],
-          "path": "tests/test_synth_guards.py"
+          "path": "tests/test_synth_guards.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7861,7 +10037,8 @@
             "src/pcraft/errors.py",
             "src/pcraft/sample.py"
           ],
-          "path": "tests/test_thresholds.py"
+          "path": "tests/test_thresholds.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7879,10 +10056,10 @@
           "importOrder": [
             "src/pcraft/core/contract/compile_questions.py",
             "src/pcraft/core/gate/__init__.py",
+            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/thresholds.py",
             "src/pcraft/testing.py",
             "src/pcraft/gate_report.py",
-            "src/pcraft/core/gate/harness.py",
             "src/pcraft/core/gate/checkpoint.py",
             "src/pcraft/core/contract/schema.py",
             "src/pcraft/core/gate/exit_contract.py"
@@ -7921,7 +10098,8 @@
             "src/pcraft/domains/image/__init__.py",
             "src/pcraft/errors.py"
           ],
-          "path": "tests/test_unreached.py"
+          "path": "tests/test_unreached.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -7991,7 +10169,8 @@
             "scripts/wheel_smoke.py",
             "verify.py"
           ],
-          "path": "tests/test_verify_legs.py"
+          "path": "tests/test_verify_legs.py",
+          "testFramework": "pytest"
         }
       ],
       "globs": [
@@ -8001,6 +10180,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 0,
       "unresolvedNamed": [
         {
@@ -8137,6 +10319,18 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "pyproject.toml",
+          "files": 38,
+          "job": "verify",
+          "runner": "pytest",
+          "step": "verify",
+          "through": [
+            "verify.py"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -8465,6 +10659,26 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "pyproject.toml",
+          "files": 38,
+          "job": "verify",
+          "runner": "pytest",
+          "step": "Verify",
+          "through": [
+            "verify.py"
+          ]
+        },
+        {
+          "job": "npm",
+          "ran": [
+            "npm/bin/pcraft.mjs"
+          ],
+          "runner": null,
+          "step": "Launcher self-test"
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -8543,7 +10757,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 48
+          "files": 51
         },
         {
           "boundary": "scripts",
@@ -8620,7 +10834,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "c800db5353d1f55a46d0f30ac96dda91dc341364",
     "tracked": 183

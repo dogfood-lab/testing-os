@@ -680,6 +680,23 @@
             "importState",
             "restoreBackup"
           ],
+          "failurePaths": [
+            {
+              "in": "backupRepo",
+              "kind": "throw",
+              "line": 37
+            },
+            {
+              "in": "backupPortfolio",
+              "kind": "throw",
+              "line": 83
+            },
+            {
+              "in": "restoreBackup",
+              "kind": "throw",
+              "line": 146
+            }
+          ],
           "hash": "430009a5ddfb2c0eb7af273eb9a865bd4901ecfa070bb2b0b2fc60955c3c9667",
           "importOrder": [
             "src/util/timestamps.ts",
@@ -831,6 +848,33 @@
             "importStateCommand",
             "restoreCommand"
           ],
+          "failurePaths": [
+            {
+              "in": "backupRepoCommand",
+              "kind": "catch",
+              "line": 17
+            },
+            {
+              "in": "backupPortfolioCommand",
+              "kind": "catch",
+              "line": 35
+            },
+            {
+              "in": "restoreCommand",
+              "kind": "catch",
+              "line": 61
+            },
+            {
+              "in": "exportStateCommand",
+              "kind": "catch",
+              "line": 80
+            },
+            {
+              "in": "importStateCommand",
+              "kind": "catch",
+              "line": 107
+            }
+          ],
           "hash": "5a413b20d286c2bb03a29628ed1b18a3ec4e5a9483de448bc7b01b26e19c9063",
           "importsFiles": [
             "src/backup/backup-engine.ts",
@@ -931,6 +975,13 @@
         {
           "exports": [
             "doctorCommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "doctorCommand",
+              "kind": "catch",
+              "line": 38
+            }
           ],
           "hash": "c2b0d57d7e2190396c1db3ca38a837f8bc6423a8bb2f3d64223598a2b85130ad",
           "importOrder": [
@@ -1264,6 +1315,13 @@
           "exports": [
             "statusCommand"
           ],
+          "failurePaths": [
+            {
+              "in": "statusCommand",
+              "kind": "catch",
+              "line": 59
+            }
+          ],
           "hash": "6425dc4ca0fdf3f2384069f8d08ae50e8b9ed2f30e5ceb3b70b3e25d49b0d374",
           "importOrder": [
             "src/org/org-engine.ts",
@@ -1437,6 +1495,13 @@
             "currentVersion",
             "migrate"
           ],
+          "failurePaths": [
+            {
+              "in": "currentVersion",
+              "kind": "catch",
+              "line": 50
+            }
+          ],
           "hash": "2eca51219460b5f8b255975160ecc5a3b3a82ad9d52c7b11a27ee9c444e30db0",
           "path": "src/db/migrate.ts"
         },
@@ -1449,6 +1514,13 @@
             "closeDb",
             "getDb",
             "openDb"
+          ],
+          "failurePaths": [
+            {
+              "in": "getDb",
+              "kind": "throw",
+              "line": 24
+            }
           ],
           "hash": "4d60a16a61331a9645c5b4adb02d0ec274371662ee2274473e13f7aade636b7e",
           "path": "src/db/sqlite.ts"
@@ -1585,6 +1657,18 @@
             "detectArtifacts",
             "getChangedFiles"
           ],
+          "failurePaths": [
+            {
+              "in": "detectPackageBlurb",
+              "kind": "catch",
+              "line": 53
+            },
+            {
+              "in": "getChangedFiles",
+              "kind": "catch",
+              "line": 116
+            }
+          ],
           "hash": "c37ede22868a058352691cf3943d15dfbdb62819275608688c39c1892c3fb207",
           "importsFiles": [
             "src/core/enums.ts",
@@ -1596,6 +1680,13 @@
           "exports": [
             "gateResultToJson",
             "runGate"
+          ],
+          "failurePaths": [
+            {
+              "in": "runGate",
+              "kind": "catch",
+              "line": 80
+            }
           ],
           "hash": "9256534af0e47ad15eeee122294224cad72fc81c03d0dbf3b40c5834fc1380fd",
           "importOrder": [
@@ -1648,6 +1739,18 @@
             "savePolicy",
             "shouldSkip"
           ],
+          "failurePaths": [
+            {
+              "in": "getOverrides",
+              "kind": "catch",
+              "line": 118
+            },
+            {
+              "in": "getOverrideCount",
+              "kind": "catch",
+              "line": 126
+            }
+          ],
           "hash": "8c8833e4b24eab89242d3671d83b4de9844aa1410d068f3ac49c9f1d87f9f4c9",
           "importOrder": [
             "src/gate/policy-types.ts",
@@ -1670,6 +1773,13 @@
         {
           "exports": [
             "computeRolloutReport"
+          ],
+          "failurePaths": [
+            {
+              "in": "computeRolloutReport",
+              "kind": "catch",
+              "line": 108
+            }
           ],
           "hash": "22e119e905ea3c8ee5061bfe540ec102c8d5d95531a1e96e0d371c93ad269969",
           "importsFiles": [
@@ -1740,6 +1850,23 @@
             "getSourceTiers",
             "scanForSources"
           ],
+          "failurePaths": [
+            {
+              "in": "estimateTokens",
+              "kind": "catch",
+              "line": 10
+            },
+            {
+              "in": "scanForSources",
+              "kind": "catch",
+              "line": 90
+            },
+            {
+              "in": "safeReaddir",
+              "kind": "catch",
+              "line": 144
+            }
+          ],
           "hash": "49ec47aa6e8f58031c0972d55e9e1c46ad7bc079f7705aed83df0ebff36e1405",
           "importsFiles": [
             "src/onboard/onboard-types.ts"
@@ -1798,6 +1925,28 @@
             "buildPromotionQueue",
             "generateOrgRecommendations"
           ],
+          "failurePaths": [
+            {
+              "in": "buildOrgStatus",
+              "kind": "catch",
+              "line": 57
+            },
+            {
+              "in": "buildOrgStatus",
+              "kind": "catch",
+              "line": 64
+            },
+            {
+              "in": "buildOrgStatus",
+              "kind": "catch",
+              "line": 91
+            },
+            {
+              "in": "buildOverrideHotspots",
+              "kind": "catch",
+              "line": 226
+            }
+          ],
           "hash": "078785add154250107cfee95ac924d80c2f5ea5805c0c85ec7e7360449890aaa",
           "importOrder": [
             "src/org/org-types.ts",
@@ -1824,6 +1973,18 @@
             "discoverRepos",
             "generatePortfolioFindings"
           ],
+          "failurePaths": [
+            {
+              "in": "discoverRepos",
+              "kind": "catch",
+              "line": 85
+            },
+            {
+              "in": "detectDriftFamilies",
+              "kind": "catch",
+              "line": 130
+            }
+          ],
           "hash": "79659318275c6f32071b7e78dbcab16e6b94ebdd10b85c6097a59558902d6257",
           "importOrder": [
             "src/portfolio/portfolio-types.ts",
@@ -1847,6 +2008,13 @@
           "exports": [
             "checkOllamaHealth"
           ],
+          "failurePaths": [
+            {
+              "in": "checkOllamaHealth",
+              "kind": "catch",
+              "line": 41
+            }
+          ],
           "hash": "e02c2fd3bba868b8b872f84a5ad198e72a37bd817c6d6b2635c84186ebbefb0b",
           "importsFiles": [
             "src/providers/ollama/ollama-types.ts"
@@ -1854,6 +2022,18 @@
           "path": "src/providers/ollama/ollama-health.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "completeJson",
+              "kind": "catch",
+              "line": 78
+            },
+            {
+              "in": "completeJson",
+              "kind": "catch",
+              "line": 93
+            }
+          ],
           "hash": "f36f5018bfe65782b38f6ce6cd877265791918c4e85a39eeaeb1eb0c99e38586",
           "importOrder": [
             "src/providers/provider.ts",
@@ -2053,6 +2233,13 @@
           "exports": [
             "runRevision"
           ],
+          "failurePaths": [
+            {
+              "in": "runRevision",
+              "kind": "catch",
+              "line": 232
+            }
+          ],
           "hash": "d60613281dfe67180f63a43663f8a6888a0d400d3345a72782b601df4e9e6207",
           "importOrder": [
             "src/providers/provider.ts",
@@ -2091,6 +2278,13 @@
         {
           "exports": [
             "runStructuralRepair"
+          ],
+          "failurePaths": [
+            {
+              "in": "runStructuralRepair",
+              "kind": "catch",
+              "line": 280
+            }
           ],
           "hash": "42a310436b51fd2f3129139d5c147e696fb57bc4bb7ad1c972f05de0d1c521d6",
           "importOrder": [
@@ -2308,6 +2502,9 @@
       "outsideReads": 86,
       "outsideWrites": 19,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 46,
       "unresolvedSites": 0
     },
@@ -2324,7 +2521,8 @@
           "importsFiles": [
             "src/backup/backup-engine.ts"
           ],
-          "path": "test/backup/backup-engine.test.ts"
+          "path": "test/backup/backup-engine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0c0d3029f8721079116303bf12fdc81912a7adc941cd2e8bdfb20955d44a0bd5",
@@ -2344,7 +2542,8 @@
             "src/db/migrate.ts",
             "src/review/review-store.ts"
           ],
-          "path": "test/calibration/calibration-store.test.ts"
+          "path": "test/calibration/calibration-store.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "21f83620989fea41db249d6788d62e891c2151c2cac0d3e85cc3cd669033a08b",
@@ -2366,21 +2565,24 @@
             "src/db/migrate.ts",
             "src/review/review-store.ts"
           ],
-          "path": "test/calibration/findings-engine.test.ts"
+          "path": "test/calibration/findings-engine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "57cb0a3d6a3deb6d851b77309396629a73f41edef18c0482e1427dc1f7ff6a73",
           "importsFiles": [
             "src/canon/canon-files.ts"
           ],
-          "path": "test/canon/canon-files.test.ts"
+          "path": "test/canon/canon-files.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2181f77afd1815628f3af54adcad24036777a86775a4b3e1735e8dfdafd22de4",
           "importsFiles": [
             "src/cli/config.ts"
           ],
-          "path": "test/cli/config.test.ts"
+          "path": "test/cli/config.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "83d149ecfd16b60d302bdda5c979d2a30c3a75d74a26c0f668435a5cdeb6dbef",
@@ -2398,7 +2600,8 @@
             "src/cli/commands/init.ts",
             "src/db/sqlite.ts"
           ],
-          "path": "test/cli/ingest.test.ts"
+          "path": "test/cli/ingest.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "db6d232960242d18534dfcf6b135e0e25522e7043f6c03e3865c713413c9f5df",
@@ -2406,7 +2609,8 @@
             "src/cli/commands/init.ts",
             "src/cli/config.ts"
           ],
-          "path": "test/cli/init.test.ts"
+          "path": "test/cli/init.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a8a1166c1ca48cac9426220f2a3bdcc974e36235f3aa17c0bc58f50abddfe07e",
@@ -2414,35 +2618,40 @@
             "src/cli/commands/init.ts",
             "src/cli/config.ts"
           ],
-          "path": "test/cli/startup.test.ts"
+          "path": "test/cli/startup.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "adbeddb95385d6bf1536d8e6373460f01c198e1a7ff286242c9a98b7f0fd755e",
           "importsFiles": [
             "src/cli/commands/status.ts"
           ],
-          "path": "test/cli/status.test.ts"
+          "path": "test/cli/status.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4e83e92379cbe89b381379a0ad75330092f25262c5029644065c2334920b8e78",
           "importsFiles": [
             "src/core/enums.ts"
           ],
-          "path": "test/core/enums.test.ts"
+          "path": "test/core/enums.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2e9bd3fea5f7de946ff17c35d1a0bef839fc11a9c1001f9a23ef515002fc1a00",
           "importsFiles": [
             "src/core/ids.ts"
           ],
-          "path": "test/core/ids.test.ts"
+          "path": "test/core/ids.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "33ffb86d0dc831246d2e3bb2d7250f078991d46a20e4197c8bcb60e3eeeba8f9",
           "importsFiles": [
             "src/core/validate.ts"
           ],
-          "path": "test/core/validate.test.ts"
+          "path": "test/core/validate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a6b2e64142307be8f4d217d1eea7fd2b5429f72cbe1f4f73d05eb14da1905744",
@@ -2462,7 +2671,8 @@
             "src/extraction/extraction-store.ts",
             "src/extraction/extraction-types.ts"
           ],
-          "path": "test/curation/curation-store.test.ts"
+          "path": "test/curation/curation-store.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a40b5e60e4aceb5d02a25be4eef63453313194e19956bade0e054045112da481",
@@ -2484,14 +2694,16 @@
             "src/extraction/extraction-store.ts",
             "src/extraction/extraction-types.ts"
           ],
-          "path": "test/curation/freeze-integration.test.ts"
+          "path": "test/curation/freeze-integration.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "daae9cb528843c73946a14ee8057976556409f9c95ed7813dd5149daf932676f",
           "importsFiles": [
             "src/db/migrate.ts"
           ],
-          "path": "test/db/migrate.test.ts"
+          "path": "test/db/migrate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0dff28e1ab0161314955c915789a0d81de8ea6778196c7c5db60f3cc6f632409",
@@ -2513,7 +2725,8 @@
             "src/db/migrate.ts",
             "src/util/hashing.ts"
           ],
-          "path": "test/db/roundtrip.test.ts"
+          "path": "test/db/roundtrip.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "203b5c9183e5ea7356e4c03cdd0afa2e3ed59b7268ea79ed1e71c057541885e0",
@@ -2529,7 +2742,8 @@
             "src/extraction/consolidation.ts",
             "src/extraction/extraction-store.ts"
           ],
-          "path": "test/extraction/consolidation.test.ts"
+          "path": "test/extraction/consolidation.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "949f75349dd89490b1665316462bb23dffc60c787cb51a47559a2e9ca59e4b66",
@@ -2549,7 +2763,8 @@
             "src/extraction/extraction-store.ts",
             "src/providers/provider.ts"
           ],
-          "path": "test/extraction/extract-integration.test.ts"
+          "path": "test/extraction/extract-integration.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a850f7a005c70b35304180244bf59a77964b25b44749bf320d70e5270d9aa825",
@@ -2565,21 +2780,24 @@
             "src/db/migrate.ts",
             "src/extraction/extraction-store.ts"
           ],
-          "path": "test/extraction/extraction-store.test.ts"
+          "path": "test/extraction/extraction-store.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b01bf06e460887381ae1ce8cd5d2cf2fc621581467ed66252dd65b6bde7f546b",
           "importsFiles": [
             "src/extraction/extraction-validate.ts"
           ],
-          "path": "test/extraction/extraction-validate.test.ts"
+          "path": "test/extraction/extraction-validate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f80fe3abc95ec99eb9f57cd9183d6e257b745d1a89e225383b0908241302131f",
           "importsFiles": [
             "src/extraction/pass-runner.ts"
           ],
-          "path": "test/extraction/pass-runner.test.ts"
+          "path": "test/extraction/pass-runner.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c1aa5f253041c0c749e283253c8f47df7c31740cd57ac7bae4b0d859d98df07a",
@@ -2591,14 +2809,16 @@
             "src/extraction/extraction-types.ts",
             "src/extraction/prompts.ts"
           ],
-          "path": "test/extraction/prompts.test.ts"
+          "path": "test/extraction/prompts.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6ae74448338d50fb35765e2df6a1dd40e0dd1b62cc32fe136a458addf1fee2bf",
           "importsFiles": [
             "src/gate/artifact-detector.ts"
           ],
-          "path": "test/gate/artifact-detector.test.ts"
+          "path": "test/gate/artifact-detector.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "607214691367c69698b2e8f910434dd5a719241f24772bf97ed0a307fba99aec",
@@ -2618,14 +2838,16 @@
             "src/gate/gate-types.ts",
             "src/providers/provider.ts"
           ],
-          "path": "test/gate/gate-engine.test.ts"
+          "path": "test/gate/gate-engine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1122352aef6bbfa6f94077cae90823fb2d4b6dba9800217ee511b4c853da19c0",
           "importsFiles": [
             "src/gate/gate-types.ts"
           ],
-          "path": "test/gate/gate-types.test.ts"
+          "path": "test/gate/gate-types.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0d1b68f4de21856d362106caf21dfc0075d3599b750a691162ba6b00483d381a",
@@ -2643,7 +2865,8 @@
             "src/gate/policy-types.ts",
             "src/gate/policy.ts"
           ],
-          "path": "test/gate/policy.test.ts"
+          "path": "test/gate/policy.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4d8cf155b08c0c55e9192088d08839a1fdd74c053e30484f0f0a00e648e2844b",
@@ -2665,7 +2888,8 @@
             "src/gate/rollout-report.ts",
             "src/review/review-store.ts"
           ],
-          "path": "test/gate/rollout-report.test.ts"
+          "path": "test/gate/rollout-report.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8a30416e4f99f70c9581a4d995749145adea01319d45a8ccb783b6a36652d569",
@@ -2679,14 +2903,16 @@
             "src/db/migrate.ts",
             "src/onboard/onboard-report.ts"
           ],
-          "path": "test/onboard/onboard-report.test.ts"
+          "path": "test/onboard/onboard-report.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "dc099a3c7eaab4fd190193360311b5c64c711dfef95d09be129bfaf26e65e097",
           "importsFiles": [
             "src/onboard/policy-presets.ts"
           ],
-          "path": "test/onboard/policy-presets.test.ts"
+          "path": "test/onboard/policy-presets.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4a7213c852c1b42fbc6a2e8c33678ce3743fac81fb693f2131a6f6c1f9ee4ca1",
@@ -2698,14 +2924,16 @@
             "src/onboard/onboard-types.ts",
             "src/onboard/recommend.ts"
           ],
-          "path": "test/onboard/recommend.test.ts"
+          "path": "test/onboard/recommend.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a37fca9a246f757800b727d8269e54583f7b3a6a5d20a1c55def74bd30bc9a26",
           "importsFiles": [
             "src/onboard/source-scanner.ts"
           ],
-          "path": "test/onboard/source-scanner.test.ts"
+          "path": "test/onboard/source-scanner.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7f0e05b9a5f5cf7ace02c06766dfbb88060c6616963ebcbca3271e8c1835de0f",
@@ -2721,7 +2949,8 @@
             "src/org/org-actions.ts",
             "src/util/json.ts"
           ],
-          "path": "test/org/org-actions.test.ts"
+          "path": "test/org/org-actions.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a9d1a88be80b25acfe3ab36346a1815295257a01e0367001f7365c85c7f6306e",
@@ -2729,7 +2958,8 @@
             "src/org/org-alerts.ts",
             "src/org/org-types.ts"
           ],
-          "path": "test/org/org-alerts.test.ts"
+          "path": "test/org/org-alerts.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b7a9d434f0fdb26eea582afb986296a46f806aa39e5afcdc537e2bb7e60828c3",
@@ -2737,7 +2967,8 @@
             "src/org/org-engine.ts",
             "src/org/org-types.ts"
           ],
-          "path": "test/org/org-engine.test.ts"
+          "path": "test/org/org-engine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b63fa84238db862ebd8149b380a4e09e0f40fccce11128249bf5a0c5ab6484f4",
@@ -2745,21 +2976,24 @@
             "src/portfolio/portfolio-engine.ts",
             "src/portfolio/portfolio-types.ts"
           ],
-          "path": "test/portfolio/portfolio-engine.test.ts"
+          "path": "test/portfolio/portfolio-engine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "48ac1eb9b249648d070ed5f19e719d0a279b7174b89246e35dc1aa8ccfe6b482",
           "importsFiles": [
             "src/providers/ollama/ollama-health.ts"
           ],
-          "path": "test/providers/ollama-health.test.ts"
+          "path": "test/providers/ollama-health.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4c8d8da68bd511590df5c17aa5ab96a9fb16e6f4e6061c73e7ec9935bbfe5aac",
           "importsFiles": [
             "src/providers/ollama/ollama-provider.ts"
           ],
-          "path": "test/providers/ollama-provider.test.ts"
+          "path": "test/providers/ollama-provider.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "954e60530144488d36c0d72dc96271793c852aff44a1efc502ed25c162fd7d1a",
@@ -2781,7 +3015,8 @@
             "src/redirect/redirect-engine.ts",
             "src/review/review-engine.ts"
           ],
-          "path": "test/redirect/redirect-engine.test.ts"
+          "path": "test/redirect/redirect-engine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "64e8addd8fbddfe04a82f4f784ec740c16306692808c19bbddcac1811c39d11d",
@@ -2799,7 +3034,8 @@
             "src/db/migrate.ts",
             "src/review/canon-packet.ts"
           ],
-          "path": "test/review/canon-packet.test.ts"
+          "path": "test/review/canon-packet.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "43dcbbc7029c6de5c1f65b27d120318e545dd5adc89c19b85a0fe787c72f94a3",
@@ -2807,7 +3043,8 @@
             "src/review/dimension-prompts.ts",
             "src/review/review-run-types.ts"
           ],
-          "path": "test/review/dimension-prompts.test.ts"
+          "path": "test/review/dimension-prompts.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6cbf151a399a23209256405b427f67868c99aa83bed00f93335c56ca6a782a13",
@@ -2829,7 +3066,8 @@
             "src/review/review-engine.ts",
             "src/review/review-store.ts"
           ],
-          "path": "test/review/review-engine.test.ts"
+          "path": "test/review/review-engine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a3acd1b9ab3ad5ac82ba36fd3d69d4816a6b0838a1a0b7e7cf89d6d95e129c81",
@@ -2845,7 +3083,8 @@
             "src/db/migrate.ts",
             "src/review/review-store.ts"
           ],
-          "path": "test/review/review-store.test.ts"
+          "path": "test/review/review-store.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a536e9e320c8e13da0a31a3aa2ea7af16b86d9090e9e8893c22f35476feb6849",
@@ -2857,7 +3096,8 @@
             "src/review/review-run-types.ts",
             "src/review/verdict-synthesis.ts"
           ],
-          "path": "test/review/verdict-synthesis.test.ts"
+          "path": "test/review/verdict-synthesis.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8d4fdc823faf404baef9766f0a58e7d67da2efadbbc9b09f61f072651face0f0",
@@ -2879,7 +3119,8 @@
             "src/review/review-engine.ts",
             "src/revision/revision-engine.ts"
           ],
-          "path": "test/revision/revision-engine.test.ts"
+          "path": "test/revision/revision-engine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8c6ca76f185b73d9d2c380b240f6ee337837e4945dfa11e0302d69fe731a947f",
@@ -2901,7 +3142,8 @@
             "src/review/review-engine.ts",
             "src/revision/structural-engine.ts"
           ],
-          "path": "test/revision/structural-engine.test.ts"
+          "path": "test/revision/structural-engine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d4e4258729149cef8ee64c4f56578e3c3b53b0edfd2ea6fb3c5e1b63529b8134",
@@ -2915,7 +3157,8 @@
             "src/watchtower/watchtower-engine.ts",
             "src/watchtower/watchtower-types.ts"
           ],
-          "path": "test/watchtower/watchtower-engine.test.ts"
+          "path": "test/watchtower/watchtower-engine.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -2925,6 +3168,9 @@
       "name": "test",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -3028,6 +3274,18 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 46,
+          "job": "ci",
+          "runner": "vitest",
+          "step": "Test",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -3218,7 +3476,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "c87c2843831a453a32bd9fc11c45984e6762e228",
     "tracked": 244

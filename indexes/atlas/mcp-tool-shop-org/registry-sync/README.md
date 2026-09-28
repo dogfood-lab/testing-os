@@ -1,6 +1,6 @@
 # registry-sync: how it works
 
-Mapped at 2026-09-26 from commit b7d57d3 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 779aa9a by Atlas 1.23.4.
 
 ## What this is
 
@@ -8,18 +8,18 @@ Mapped at 2026-09-26 from commit b7d57d3 by Atlas 1.23.0.
 
 ## What changed since 2026-09-23 (e78b5d0)
 
-- CI's pull request trigger now also names `atlas/**`.
-- CI's push trigger now also names `atlas/**`.
+- CI's pull request trigger now also names `atlas/**` and `codecov.yml`.
+- CI's push trigger now also names `atlas/**` and `codecov.yml`.
 - CI now also runs src/cli.ts.
 - And 2 more changes to doors.
 - CHANGELOG.md is now read by test/version.test.ts.
 - README.md is now read by test/providers/github.test.ts.
 - package.json is now also read by test/cli-commands.test.ts and test/version.test.ts.
-- 2 files added and 80 changed content, across 7 parts.
+- 3 files added and 80 changed content, across 7 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 7 paths; on a push to main touching 7 paths; or by hand. Runs src/cli.ts and test/; builds src/index.ts.
+1. **CI.** On a pull request to main touching 8 paths; on a push to main touching 8 paths; or by hand. Runs src/cli.ts and test/; builds src/index.ts.
 2. **Publish.** When a release is published; or by hand. Runs test/; builds src/index.ts.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/registry-sync** (the package people import). Loads src/index.ts.
@@ -45,7 +45,8 @@ Mapped at 2026-09-26 from commit b7d57d3 by Atlas 1.23.0.
    3. **`audit`** runs, in order: `listOrgRepos`, `pLimit`, `readPackageJson`, `hasDockerfile`, `getNpmPackageInfo`, `compareSemver` and `listGhcrPackages`.
    4. **`audit`** runs, in order: `listOrgRepos`, `pLimit`, `readPackageJson`, `hasDockerfile`, `getNpmPackageInfo`, `compareSemver` and `listGhcrPackages`.
 2. It runs gh.
-3. It changes other repositories through the GitHub API.
+3. It uploads coverage to Codecov.
+4. It changes other repositories through the GitHub API.
 
 ## Who reads the results
 

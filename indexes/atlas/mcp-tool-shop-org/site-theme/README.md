@@ -1,6 +1,6 @@
 # site-theme: how it works
 
-Mapped at 2026-09-26 from commit c073c90 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit c073c90 by Atlas 1.23.4.
 
 ## What this is
 

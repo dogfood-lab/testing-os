@@ -1,6 +1,6 @@
 # npm-launcher: how it works
 
-Mapped at 2026-09-26 from commit 07c7132 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 07c7132 by Atlas 1.23.4.
 
 ## What this is
 
@@ -108,7 +108,7 @@ Read those in order to follow one pull request end to end.
 - 3 reads use paths built at run time and are not named here.
 - 4 writes and 5 reads go to a path their caller passes, not to this repository.
 - 3 writes and 5 reads go to the home directory (.local/ and backpropagate/) or a path their caller passes, not to this repository.
-- 3 commands are built at run time and not followed.
+- 2 commands are built at run time and not followed.
 - 1 file belongs to no part: examples/ci/release-binaries.yml.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 

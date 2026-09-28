@@ -1,6 +1,6 @@
 # xrpl-lab: how it works
 
-Mapped at 2026-09-26 from commit 454f364 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 454f364 by Atlas 1.23.4.
 
 ## What this is
 
@@ -55,11 +55,9 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-No two source files, other than a file and its own test, changed together often enough to name.
+No two source files changed together often enough to name.
 
-1 file changed together with its own test, as expected.
-
-Window: 180 days; a pair counts from 3 shared commits, since 13 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -85,7 +83,7 @@ People write .github/, design/, docs/, modules/, presets/, the repository root a
 
 ## Where to start
 
-xrpl_lab/cli.py → xrpl_lab/actions/verify.py → xrpl_lab/transport/base.py
+xrpl_lab/cli.py → xrpl_lab/curriculum.py → xrpl_lab/modules.py
 
 Read those in order to follow one run of xrpl-lab end to end. This path follows xrpl-lab (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.
 

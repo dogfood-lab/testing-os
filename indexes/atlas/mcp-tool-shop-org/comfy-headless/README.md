@@ -1,6 +1,6 @@
 # comfy-headless: how it works
 
-Mapped at 2026-09-26 from commit a804d34 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit a804d34 by Atlas 1.23.4.
 
 ## What this is
 

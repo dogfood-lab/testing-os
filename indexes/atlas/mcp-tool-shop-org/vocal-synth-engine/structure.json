@@ -29,7 +29,7 @@
           "path": ".github/pull_request_template.md"
         },
         {
-          "hash": "ec64b6f6313041bc6521f4e7d5a53b3d834fb0845cceb005c6d9bc39e24e1ce7",
+          "hash": "0d641d95bbb7e856aef6244eb0c5fafdb282aac33553340fe1b5091307590eac",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -137,10 +137,128 @@
             "setToken",
             "wsTokenSuffix"
           ],
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 35
+            },
+            {
+              "in": "setToken",
+              "kind": "catch",
+              "line": 55
+            },
+            {
+              "in": "authFetch",
+              "kind": "catch",
+              "line": 88
+            }
+          ],
           "hash": "cb975cc0251284bb22258ab39ccaf334d5cf94af0b786edcf4fb4a2510c2402a",
           "path": "apps/cockpit/src/auth.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "subscribeRenderProgress",
+              "kind": "catch",
+              "line": 324
+            },
+            {
+              "in": "subscribeRenderProgress",
+              "kind": "catch",
+              "line": 334
+            },
+            {
+              "in": "doPhonemize",
+              "kind": "throw",
+              "line": 498
+            },
+            {
+              "in": "doPhonemize",
+              "kind": "catch",
+              "line": 511
+            },
+            {
+              "kind": "catch",
+              "line": 681
+            },
+            {
+              "in": "loadBank",
+              "kind": "catch",
+              "line": 845
+            },
+            {
+              "kind": "catch",
+              "line": 922
+            },
+            {
+              "in": "checkHealth",
+              "kind": "throw",
+              "line": 947
+            },
+            {
+              "in": "checkHealth",
+              "kind": "catch",
+              "line": 948
+            },
+            {
+              "in": "doRender",
+              "kind": "catch",
+              "line": 988
+            },
+            {
+              "in": "doRender",
+              "kind": "throw",
+              "line": 998
+            },
+            {
+              "in": "doRender",
+              "kind": "throw",
+              "line": 1006
+            },
+            {
+              "in": "doRender",
+              "kind": "throw",
+              "line": 1013
+            },
+            {
+              "in": "doSaveRender",
+              "kind": "throw",
+              "line": 1097
+            },
+            {
+              "kind": "catch",
+              "line": 1109
+            },
+            {
+              "kind": "catch",
+              "line": 1118
+            },
+            {
+              "kind": "catch",
+              "line": 1124
+            },
+            {
+              "in": "loadPresets",
+              "kind": "throw",
+              "line": 1153
+            },
+            {
+              "in": "loadPresets",
+              "kind": "catch",
+              "line": 1176
+            },
+            {
+              "in": "connectLive",
+              "kind": "catch",
+              "line": 1961
+            },
+            {
+              "in": "connectLive",
+              "kind": "catch",
+              "line": 2048
+            }
+          ],
           "hash": "30e51b8778e7e396efaca42267cc3a68137725ff700bd8d43cbfc3a09722a192",
           "importsFiles": [
             "apps/cockpit/src/auth.ts",
@@ -159,12 +277,25 @@
             "drawComparisonWaveforms",
             "drawStaticWaveform"
           ],
+          "failurePaths": [
+            {
+              "in": "decodeAudioFromUrl",
+              "kind": "catch",
+              "line": 64
+            },
+            {
+              "in": "detach",
+              "kind": "catch",
+              "line": 264
+            }
+          ],
           "hash": "8fc076edfa1b80699a2cf2147fa6db7f8ce69544657bfc2bf3559b439747776d",
           "path": "apps/cockpit/src/waveform.ts"
         },
         {
           "hash": "6a4422f832cf33ab1396f94d0223a535ea8ce689ef95cfffb006d387ea4cfb97",
-          "path": "apps/cockpit/tests/smoke.spec.ts"
+          "path": "apps/cockpit/tests/smoke.spec.ts",
+          "testFramework": "playwright test"
         },
         {
           "hash": "e8d7f38033cd1d1377e296661cc2beb09a7a412f3f10729558415e1d3daa99ad",
@@ -1060,6 +1191,10 @@
           "path": "SHIP_GATE.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "78d30de24ca4f268aa66ff01f095587f8639dc4949bbc93036767bdb386422cf",
           "path": "fly.toml"
         },
@@ -1162,6 +1297,13 @@
             "main",
             "yin_f0"
           ],
+          "failurePaths": [
+            {
+              "in": "generate_vowel",
+              "kind": "raise",
+              "line": 224
+            }
+          ],
           "hash": "16984e233b25c9aac73c2ce147481c6de0924ff879c47e4acd90d168a962f6a1",
           "path": "scripts/kokoro/generate_vowels.py"
         },
@@ -1181,14 +1323,70 @@
           "path": "scripts/test-g2p.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "assert",
+              "kind": "throw",
+              "line": 36
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 66
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 89
+            },
+            {
+              "in": "httpGet",
+              "kind": "catch",
+              "line": 109
+            }
+          ],
           "hash": "b389b04b9ac5db0cf034521269f879c57f71b325f8dc6944e07d54397c832397",
           "path": "scripts/test-jam-collaboration.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "assert",
+              "kind": "throw",
+              "line": 34
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 64
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 87
+            },
+            {
+              "in": "httpGet",
+              "kind": "catch",
+              "line": 107
+            }
+          ],
           "hash": "559fc24770fab4352ed75963c540c26a2002917deeb643764c543b3c4c445f0a",
           "path": "scripts/test-jam-recording.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "assert",
+              "kind": "throw",
+              "line": 35
+            },
+            {
+              "in": "handler",
+              "kind": "catch",
+              "line": 66
+            }
+          ],
           "hash": "e039e7e3ea4f7760f8ae585fdf04c1647d922d1d139ecb69c25df3d3c94f24a0",
           "path": "scripts/test-jam-session.ts"
         },
@@ -1400,10 +1598,34 @@
             "parseFiniteNumber",
             "runCli"
           ],
+          "failurePaths": [
+            {
+              "in": "parseFiniteNumber",
+              "kind": "throw",
+              "line": 59
+            },
+            {
+              "in": "parseFiniteNumber",
+              "kind": "throw",
+              "line": 67
+            }
+          ],
           "hash": "5cc55c0ff443b5a12324c333d1a737917c3e0d2c76ba971c7ab42427b097efe5",
           "path": "src/cli/_runner.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 50
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 81
+            }
+          ],
           "hash": "22914dc848e932911880b8161efc4528f6dc84cb8a191ffad9b0940d1e02bce8",
           "importOrder": [
             "src/dsp/fft.ts",
@@ -1465,6 +1687,38 @@
           ]
         },
         {
+          "failurePaths": [
+            {
+              "in": "analyzeWav",
+              "kind": "throw",
+              "line": 63
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 158
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 176
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 185
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 190
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 213
+            }
+          ],
           "hash": "a2694ef6edeb164776f48233bcf0fe9a4ca07be35adc2ce7e39d1663285f387c",
           "importOrder": [
             "src/dsp/fft.ts",
@@ -1551,6 +1805,23 @@
           ]
         },
         {
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 57
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 107
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 114
+            }
+          ],
           "hash": "af6c3f1681490d94976fe7135bd90600cbe25d4cadb2e74ab612b77265adc065",
           "importOrder": [
             "src/dsp/fft.ts",
@@ -1618,6 +1889,13 @@
           "path": "src/cli/gen-vowel-wav.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 44
+            }
+          ],
           "hash": "a779c09075be0015688f1d5ce75e96edc630640fe9d6092d9ded3fcf23a2e52e",
           "importOrder": [
             "src/preset/loader.ts",
@@ -1654,6 +1932,53 @@
           ]
         },
         {
+          "failurePaths": [
+            {
+              "in": "parseArgs",
+              "kind": "throw",
+              "line": 101
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 120
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 124
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 129
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 135
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 144
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 149
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 154
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 159
+            }
+          ],
           "hash": "9570ebd27f1c2ac6b2a5f8faeb70de04c90a5d797f296b63a2f14f311d6aa3c1",
           "importOrder": [
             "src/phonemize/index.ts",
@@ -1738,6 +2063,23 @@
           ]
         },
         {
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 52
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 65
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 68
+            }
+          ],
           "hash": "524cb6ac0a30dbbe11734fa99e8216d4afd55dae72e7c73f9edb498e148fad02",
           "importOrder": [
             "src/preset/loader.ts",
@@ -1793,6 +2135,17 @@
           ]
         },
         {
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 39
+            },
+            {
+              "kind": "throw",
+              "line": 168
+            }
+          ],
           "hash": "29be50a66f8be55c6bb4f52ba54d8e51c89321013dbf45923d26cd9c4e8a6bcb",
           "importOrder": [
             "src/cli/_runner.ts",
@@ -1807,6 +2160,28 @@
           "path": "src/cli/realtime-demo.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 67
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 77
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 81
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 91
+            }
+          ],
           "hash": "71c2a8bf318b7230e66a134e3f1840154a01d08192b5f6ac4b45ec6dc31fbe4e",
           "importOrder": [
             "src/preset/loader.ts",
@@ -1843,6 +2218,63 @@
           ]
         },
         {
+          "failurePaths": [
+            {
+              "in": "parseArgs",
+              "kind": "throw",
+              "line": 126
+            },
+            {
+              "in": "parseArgs",
+              "kind": "throw",
+              "line": 131
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 184
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 191
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 198
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 203
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 209
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 212
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 223
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 243
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 305
+            }
+          ],
           "hash": "02f14c01a8a0e1d3d150e375f65c98277b44f430fd789d9e549a070b60a5a119",
           "importOrder": [
             "src/types/score.ts",
@@ -1917,6 +2349,18 @@
             "fft",
             "ifft"
           ],
+          "failurePaths": [
+            {
+              "in": "fft",
+              "kind": "throw",
+              "line": 3
+            },
+            {
+              "in": "fft",
+              "kind": "throw",
+              "line": 6
+            }
+          ],
           "hash": "b7d96f891cc1851fc0c5343ac94bc0548a1c3ed4eb2c7c036d065daa5fd030d3",
           "path": "src/dsp/fft.ts",
           "sequences": []
@@ -1925,10 +2369,124 @@
           "exports": [
             "findPitchYin"
           ],
+          "failurePaths": [
+            {
+              "in": "findPitchYin",
+              "kind": "throw",
+              "line": 27
+            }
+          ],
           "hash": "58be7b350f3716473b9780306bcc64670c35cabf6ce0009d94d71ef009fe1d44",
           "path": "src/dsp/pitch.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "validateNoteOnParams",
+              "kind": "throw",
+              "line": 228
+            },
+            {
+              "in": "validateNoteOnParams",
+              "kind": "throw",
+              "line": 231
+            },
+            {
+              "in": "validateNoteOnParams",
+              "kind": "throw",
+              "line": 234
+            },
+            {
+              "in": "validateNoteOnParams",
+              "kind": "throw",
+              "line": 241
+            },
+            {
+              "in": "validateNoteOnParams",
+              "kind": "throw",
+              "line": 244
+            },
+            {
+              "in": "validateNoteOnParams",
+              "kind": "throw",
+              "line": 247
+            },
+            {
+              "in": "validateNoteOnParams",
+              "kind": "throw",
+              "line": 251
+            },
+            {
+              "in": "validateNoteOnParams",
+              "kind": "throw",
+              "line": 256
+            },
+            {
+              "in": "validateNoteOnParams",
+              "kind": "throw",
+              "line": 262
+            },
+            {
+              "in": "validateNoteOnParams",
+              "kind": "throw",
+              "line": 265
+            },
+            {
+              "in": "validateNoteOnParams",
+              "kind": "throw",
+              "line": 268
+            },
+            {
+              "in": "updateConfig",
+              "kind": "throw",
+              "line": 381
+            },
+            {
+              "in": "updateConfig",
+              "kind": "throw",
+              "line": 385
+            },
+            {
+              "in": "updateConfig",
+              "kind": "throw",
+              "line": 393
+            },
+            {
+              "in": "updateConfig",
+              "kind": "throw",
+              "line": 402
+            },
+            {
+              "in": "updateConfig",
+              "kind": "throw",
+              "line": 405
+            },
+            {
+              "in": "updateConfig",
+              "kind": "throw",
+              "line": 411
+            },
+            {
+              "in": "updateConfig",
+              "kind": "throw",
+              "line": 418
+            },
+            {
+              "in": "updateConfig",
+              "kind": "throw",
+              "line": 424
+            },
+            {
+              "in": "setTimbreWeights",
+              "kind": "throw",
+              "line": 491
+            },
+            {
+              "in": "setTimbreWeights",
+              "kind": "throw",
+              "line": 498
+            }
+          ],
           "hash": "29affc14f9fa57da6c81a1e8e9f66361261a6a53a90d6344ae8e615d83c2a99c",
           "importOrder": [
             "src/preset/schema.ts",
@@ -1943,6 +2501,68 @@
           "path": "src/engine/LiveSynthEngine.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "constructor",
+              "kind": "throw",
+              "line": 143
+            },
+            {
+              "in": "constructor",
+              "kind": "throw",
+              "line": 146
+            },
+            {
+              "in": "constructor",
+              "kind": "throw",
+              "line": 152
+            },
+            {
+              "in": "constructor",
+              "kind": "throw",
+              "line": 157
+            },
+            {
+              "in": "constructor",
+              "kind": "throw",
+              "line": 163
+            },
+            {
+              "in": "constructor",
+              "kind": "throw",
+              "line": 170
+            },
+            {
+              "in": "constructor",
+              "kind": "throw",
+              "line": 177
+            },
+            {
+              "in": "constructor",
+              "kind": "throw",
+              "line": 184
+            },
+            {
+              "in": "constructor",
+              "kind": "throw",
+              "line": 189
+            },
+            {
+              "in": "render",
+              "kind": "throw",
+              "line": 372
+            },
+            {
+              "in": "render",
+              "kind": "throw",
+              "line": 380
+            },
+            {
+              "in": "seek",
+              "kind": "throw",
+              "line": 749
+            }
+          ],
           "hash": "d8cf289c19dfa52f64ec78b58ee6be569f5d5251a4b307ead21596b870f8717e",
           "importOrder": [
             "src/types/score.ts",
@@ -2032,6 +2652,28 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 118
+            },
+            {
+              "kind": "catch",
+              "line": 217
+            },
+            {
+              "kind": "catch",
+              "line": 251
+            },
+            {
+              "kind": "catch",
+              "line": 300
+            },
+            {
+              "kind": "catch",
+              "line": 374
+            }
+          ],
           "hash": "6a162c081a921e86a42c6cde105772d3d56e239b341e8e682aafdc742cad7a30",
           "importOrder": [
             "src/preset/loader.ts",
@@ -2154,6 +2796,48 @@
             "computeAssetsHash",
             "loadVoicePreset"
           ],
+          "failurePaths": [
+            {
+              "in": "resolveAssetPathSafe",
+              "kind": "throw",
+              "line": 60
+            },
+            {
+              "in": "resolveAssetPathSafe",
+              "kind": "throw",
+              "line": 71
+            },
+            {
+              "in": "bytesToFloat32",
+              "kind": "throw",
+              "line": 94
+            },
+            {
+              "in": "loadVoicePreset",
+              "kind": "throw",
+              "line": 150
+            },
+            {
+              "in": "loadVoicePreset",
+              "kind": "throw",
+              "line": 179
+            },
+            {
+              "in": "loadVoicePreset",
+              "kind": "throw",
+              "line": 184
+            },
+            {
+              "in": "loadVoicePreset",
+              "kind": "throw",
+              "line": 211
+            },
+            {
+              "in": "loadVoicePreset",
+              "kind": "throw",
+              "line": 241
+            }
+          ],
           "hash": "7161afc002cf032e68bfc2c3a314781b4e07c7293914d7ab46aeaca32026d754",
           "importsFiles": [
             "src/preset/schema.ts"
@@ -2184,6 +2868,18 @@
         {
           "exports": [
             "createApp"
+          ],
+          "failurePaths": [
+            {
+              "in": "createApp",
+              "kind": "catch",
+              "line": 130
+            },
+            {
+              "in": "createApp",
+              "kind": "catch",
+              "line": 137
+            }
           ],
           "hash": "94058348663a0e474c06b0c054fc651bbd2e42c30ed565038c0c2410933cb216",
           "importOrder": [
@@ -2227,6 +2923,18 @@
           "path": "src/server/app.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "startDevServer",
+              "kind": "catch",
+              "line": 89
+            },
+            {
+              "in": "startDevServer",
+              "kind": "catch",
+              "line": 152
+            }
+          ],
           "hash": "2d092348a3930ea983477b85766b575dae58a07f0f23a90b3d6263adc9d39cdf",
           "importOrder": [
             "src/server/app.ts",
@@ -2259,6 +2967,16 @@
           "path": "src/server/index.dev.ts"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 102
+            },
+            {
+              "kind": "catch",
+              "line": 165
+            }
+          ],
           "hash": "b695a03dfc5ba98dddad28df003ba3286dccb514f9d51f744be116282ef69448",
           "importOrder": [
             "src/server/app.ts",
@@ -2298,6 +3016,33 @@
             "requireAuth",
             "requireWsAuth",
             "resolveWsPrincipal"
+          ],
+          "failurePaths": [
+            {
+              "in": "parseKeyArray",
+              "kind": "throw",
+              "line": 55
+            },
+            {
+              "in": "parseKeyArray",
+              "kind": "throw",
+              "line": 62
+            },
+            {
+              "in": "parseKeyArray",
+              "kind": "throw",
+              "line": 67
+            },
+            {
+              "in": "parseKeyArray",
+              "kind": "throw",
+              "line": 70
+            },
+            {
+              "in": "parseKeyArray",
+              "kind": "throw",
+              "line": 73
+            }
           ],
           "hash": "6988b3fb0dd45e20d3a9f1b37aea3a09b525b50e263ca4334173fa928d9440cb",
           "importsFiles": [
@@ -2379,6 +3124,18 @@
           "path": "src/server/routes/health.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "refreshSampledGauges",
+              "kind": "catch",
+              "line": 37
+            },
+            {
+              "in": "refreshSampledGauges",
+              "kind": "catch",
+              "line": 44
+            }
+          ],
           "hash": "84f8d89a89181a4e371e3d77b4a455043ec0cdfdf05e6780a9ebf7f2d6cc6836",
           "importOrder": [
             "src/server/middleware/auth.ts",
@@ -2398,6 +3155,12 @@
           "exports": [
             "_resetOpenApiCacheForTests"
           ],
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 364
+            }
+          ],
           "hash": "5b0d8323aa9622c78dbf8b5d0e43f5c138109a1fe483f8e161b2cb7a7cd35699",
           "importsFiles": [
             "src/server/routes/render.ts"
@@ -2405,6 +3168,12 @@
           "path": "src/server/routes/openapi.ts"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 44
+            }
+          ],
           "hash": "88c271bcd00f64fd53130298763b7bd4976222eba42173e74a80d40ab0c4cb70",
           "importsFiles": [
             "src/phonemize/index.ts",
@@ -2413,6 +3182,12 @@
           "path": "src/server/routes/phonemize.ts"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 24
+            }
+          ],
           "hash": "13e7ed41f6054016cda5103af9a301118f2e56f3af71cf3cd3e33577e5861307",
           "importOrder": [
             "src/server/services/renderScoreToWav.ts",
@@ -2428,6 +3203,20 @@
           "exports": [
             "markInitComplete"
           ],
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 64
+            },
+            {
+              "kind": "catch",
+              "line": 81
+            },
+            {
+              "kind": "catch",
+              "line": 90
+            }
+          ],
           "hash": "f87aa567fa6b96a705c49db1ddcc4b1ccf0c2531b3c791e7e4c633a0e71ac728",
           "importsFiles": [
             "src/server/services/renderQueue.ts"
@@ -2435,6 +3224,56 @@
           "path": "src/server/routes/probes.ts"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "throw",
+              "line": 123
+            },
+            {
+              "kind": "catch",
+              "line": 142
+            },
+            {
+              "kind": "throw",
+              "line": 144
+            },
+            {
+              "kind": "throw",
+              "line": 150
+            },
+            {
+              "kind": "throw",
+              "line": 152
+            },
+            {
+              "kind": "catch",
+              "line": 176
+            },
+            {
+              "kind": "throw",
+              "line": 240
+            },
+            {
+              "kind": "throw",
+              "line": 247
+            },
+            {
+              "kind": "catch",
+              "line": 252
+            },
+            {
+              "kind": "throw",
+              "line": 265
+            },
+            {
+              "kind": "throw",
+              "line": 272
+            },
+            {
+              "kind": "catch",
+              "line": 277
+            }
+          ],
           "hash": "6f32b26389f7c3d097db51f674dd70dfdfab1f9e07c5f1c699e5292a583f8e7c",
           "importOrder": [
             "src/server/services/renderQueue.ts",
@@ -2451,6 +3290,60 @@
           "path": "src/server/routes/render.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "resolveRenderDirOr400",
+              "kind": "catch",
+              "line": 40
+            },
+            {
+              "in": "authorizeRenderRead",
+              "kind": "catch",
+              "line": 88
+            },
+            {
+              "in": "streamJsonFile",
+              "kind": "catch",
+              "line": 119
+            },
+            {
+              "in": "streamJsonFile",
+              "kind": "catch",
+              "line": 126
+            },
+            {
+              "kind": "catch",
+              "line": 216
+            },
+            {
+              "kind": "catch",
+              "line": 234
+            },
+            {
+              "kind": "catch",
+              "line": 279
+            },
+            {
+              "kind": "catch",
+              "line": 305
+            },
+            {
+              "kind": "throw",
+              "line": 307
+            },
+            {
+              "kind": "throw",
+              "line": 313
+            },
+            {
+              "kind": "throw",
+              "line": 315
+            },
+            {
+              "kind": "catch",
+              "line": 334
+            }
+          ],
           "hash": "4668eb97e87feafb5ae13dd7a14ccd1805fb3a1548019a5d0085b300b02c4ffc",
           "importOrder": [
             "src/server/storage/renderStore.ts",
@@ -2469,6 +3362,13 @@
           "path": "src/server/routes/renders.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "exportRecording",
+              "kind": "catch",
+              "line": 340
+            }
+          ],
           "hash": "889a2522edd7ee5cf02a809b87f9de664495b258fd75e7e4093065069201401d",
           "importOrder": [
             "src/engine/LiveSynthEngine.ts",
@@ -2491,6 +3391,13 @@
           "path": "src/server/services/JamSession.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "handleTrack",
+              "kind": "catch",
+              "line": 400
+            }
+          ],
           "hash": "3f9394f8ecf265b6475429523759e2487cba31ed6c4b30949a01803b55e19131",
           "importsFiles": [
             "src/server/services/JamSession.ts",
@@ -2499,6 +3406,23 @@
           "path": "src/server/services/JamSessionManager.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "init",
+              "kind": "catch",
+              "line": 111
+            },
+            {
+              "in": "handleParamUpdate",
+              "kind": "catch",
+              "line": 350
+            },
+            {
+              "in": "handleRecordStop",
+              "kind": "catch",
+              "line": 499
+            }
+          ],
           "hash": "02bac1c816be94514d0f2346681586cd35589c4ad6b8ef844da93ad4a7928380",
           "importOrder": [
             "src/preset/loader.ts",
@@ -2545,6 +3469,28 @@
           "exports": [
             "getRenderQueue"
           ],
+          "failurePaths": [
+            {
+              "in": "submit",
+              "kind": "throw",
+              "line": 124
+            },
+            {
+              "in": "submit",
+              "kind": "throw",
+              "line": 133
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 237
+            },
+            {
+              "in": "executeJob",
+              "kind": "throw",
+              "line": 340
+            }
+          ],
           "hash": "f9cca98070353287605493764f2b65903ae070435d0a266ed959d4fd941cc894",
           "importOrder": [
             "src/preset/loader.ts",
@@ -2574,6 +3520,33 @@
             "listPresets",
             "renderScoreToWav",
             "resolvePresetPath"
+          ],
+          "failurePaths": [
+            {
+              "in": "resolvePresetPath",
+              "kind": "throw",
+              "line": 38
+            },
+            {
+              "in": "resolvePresetPath",
+              "kind": "throw",
+              "line": 53
+            },
+            {
+              "in": "resolvePresetPath",
+              "kind": "throw",
+              "line": 65
+            },
+            {
+              "in": "listPresets",
+              "kind": "catch",
+              "line": 96
+            },
+            {
+              "in": "listPresets",
+              "kind": "catch",
+              "line": 109
+            }
           ],
           "hash": "4378ecb6f9aa33c18fa6f9f01df05abf3a7d64fba81a827417d5011a4f8da6a6",
           "importOrder": [
@@ -2609,6 +3582,83 @@
             "saveRender",
             "updateRenderMeta"
           ],
+          "failurePaths": [
+            {
+              "in": "safeRenderDir",
+              "kind": "throw",
+              "line": 53
+            },
+            {
+              "in": "safeRenderDir",
+              "kind": "throw",
+              "line": 62
+            },
+            {
+              "in": "listRenders",
+              "kind": "catch",
+              "line": 84
+            },
+            {
+              "in": "listRenders",
+              "kind": "catch",
+              "line": 93
+            },
+            {
+              "in": "nextUntitledBaseNum",
+              "kind": "catch",
+              "line": 143
+            },
+            {
+              "in": "mkdirExclusive",
+              "kind": "catch",
+              "line": 152
+            },
+            {
+              "in": "mkdirExclusive",
+              "kind": "throw",
+              "line": 154
+            },
+            {
+              "in": "saveLastRender",
+              "kind": "catch",
+              "line": 352
+            },
+            {
+              "in": "saveLastRender",
+              "kind": "catch",
+              "line": 357
+            },
+            {
+              "in": "saveLastRender",
+              "kind": "throw",
+              "line": 359
+            },
+            {
+              "in": "saveLastRender",
+              "kind": "catch",
+              "line": 367
+            },
+            {
+              "in": "getRenderStoreSizeBytes",
+              "kind": "catch",
+              "line": 455
+            },
+            {
+              "in": "getRenderStoreSizeBytes",
+              "kind": "catch",
+              "line": 457
+            },
+            {
+              "in": "assertRenderBudget",
+              "kind": "throw",
+              "line": 489
+            },
+            {
+              "in": "assertRenderBudget",
+              "kind": "throw",
+              "line": 498
+            }
+          ],
           "hash": "0cc947521a88d6d95cb7776da31c5c9ad268fd6581e74eb3291f01e345158fcd",
           "importsFiles": [
             "src/server/util/logger.ts"
@@ -2619,12 +3669,46 @@
           "exports": [
             "getGitCommit"
           ],
+          "failurePaths": [
+            {
+              "in": "resolveCommit",
+              "kind": "catch",
+              "line": 26
+            }
+          ],
           "hash": "82fe4ccada3d136dd676ae08188cc95a042ed456c2f24becf9f020d333d4143c",
           "path": "src/server/util/gitCommit.ts"
         },
         {
           "exports": [
             "installGracefulShutdown"
+          ],
+          "failurePaths": [
+            {
+              "in": "runShutdown",
+              "kind": "catch",
+              "line": 106
+            },
+            {
+              "in": "runShutdown",
+              "kind": "catch",
+              "line": 119
+            },
+            {
+              "in": "runShutdown",
+              "kind": "catch",
+              "line": 120
+            },
+            {
+              "in": "runShutdown",
+              "kind": "catch",
+              "line": 125
+            },
+            {
+              "in": "runShutdown",
+              "kind": "catch",
+              "line": 134
+            }
           ],
           "hash": "3c6e6e9d563acd35aefae2622a48063b906d486983efb574636514d4b4b266af",
           "importsFiles": [
@@ -2636,6 +3720,13 @@
           "exports": [
             "getLogger"
           ],
+          "failurePaths": [
+            {
+              "in": "getLogger",
+              "kind": "catch",
+              "line": 103
+            }
+          ],
           "hash": "74a422eb40bc9ff32d0c7687e02be7e341810b3c2b2d8fe55e7318d055383e0e",
           "path": "src/server/util/logger.ts"
         },
@@ -2646,12 +3737,36 @@
             "startSamplers",
             "stopSamplers"
           ],
+          "failurePaths": [
+            {
+              "in": "startSamplers",
+              "kind": "catch",
+              "line": 145
+            }
+          ],
           "hash": "d1aafe44eb0f5bac22c443da803c941f02a01bda58a9585195188d083583be75",
           "path": "src/server/util/metrics.ts"
         },
         {
           "exports": [
             "attachHeartbeat"
+          ],
+          "failurePaths": [
+            {
+              "in": "attachHeartbeat",
+              "kind": "catch",
+              "line": 73
+            },
+            {
+              "in": "attachHeartbeat",
+              "kind": "catch",
+              "line": 74
+            },
+            {
+              "in": "attachHeartbeat",
+              "kind": "catch",
+              "line": 84
+            }
           ],
           "hash": "9b6e24b232562a640c3957163745ca94252cf947d8362577433ce5ebb1918345",
           "importsFiles": [
@@ -2681,9 +3796,19 @@
           "exports": [
             "parseVocalScore"
           ],
+          "failurePaths": [
+            {
+              "in": "parseVocalScore",
+              "kind": "throw",
+              "line": 132
+            }
+          ],
           "hash": "7fc70746b86196107eea8d1da33852a5f0e195cd2c348b5ec7e3616391ef1b2e",
           "path": "src/types/scoreSchema.ts"
         }
+      ],
+      "frameworks": [
+        "mcp"
       ],
       "globs": [
         "src/**"
@@ -2765,13 +3890,16 @@
       "outsideReads": 54,
       "outsideWrites": 34,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 17,
       "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 1,
-      "dynamicSpawnsInTests": 1,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -2793,14 +3921,19 @@
             "src/server/app.ts",
             "tests/helpers/index.ts"
           ],
-          "path": "tests/cross-domain-stage-c.test.ts"
+          "names": [
+            "src/cli/analyze.ts"
+          ],
+          "path": "tests/cross-domain-stage-c.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0a1bf0e01d06ccb8b575e2c33212fc57194c16b2f051859c792fccf9c3eb0495",
           "importsFiles": [
             "src/engine/curves.ts"
           ],
-          "path": "tests/curves.test.ts"
+          "path": "tests/curves.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ba680540fecede627e29acd6005151263cc824f9a0eed83f1b98e0be23a6b60a",
@@ -2820,7 +3953,8 @@
             "src/types/score.ts",
             "tests/helpers/index.ts"
           ],
-          "path": "tests/engine-determinism.test.ts"
+          "path": "tests/engine-determinism.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8dba1af137bbc57761ab3a3b41d09e7dd3e8ec2e59134a8ac913666c0a8eb305",
@@ -2840,7 +3974,8 @@
             "src/preset/schema.ts",
             "tests/helpers/index.ts"
           ],
-          "path": "tests/engine-medium.test.ts"
+          "path": "tests/engine-medium.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "baaa13bb2ebe29b05ad4f864cc1ff07e225d05e8a5f3cd5730a0b37be67a2c1b",
@@ -2856,14 +3991,16 @@
             "src/preset/schema.ts",
             "tests/helpers/index.ts"
           ],
-          "path": "tests/envelope.test.ts"
+          "path": "tests/envelope.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b166d513603deb159c4358873c7c181fac3da9ffd19d71eaedcd8e97ba5caf4c",
           "importsFiles": [
             "src/dsp/fft.ts"
           ],
-          "path": "tests/fft.test.ts"
+          "path": "tests/fft.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2881,21 +4018,24 @@
             "src/server/services/JamSessionManager.ts",
             "src/server/services/LiveSession.ts"
           ],
-          "path": "tests/jam-session.test.ts"
+          "path": "tests/jam-session.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a0a58d0423abfa92d205a3f1f1845131d494f8a532078d731ef934a178f56a01",
           "importsFiles": [
             "src/dsp/pitch.ts"
           ],
-          "path": "tests/pitch.test.ts"
+          "path": "tests/pitch.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2044f3965e69102e594ef4ebf09dd75f54631687203b4a0918c6c29a711cd6d6",
           "importsFiles": [
             "src/preset/loader.ts"
           ],
-          "path": "tests/preset-integrity.test.ts"
+          "path": "tests/preset-integrity.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b0cfeb4270edbed769d47da5a258492e685a676af9f479a1e46f7859ec53f10a",
@@ -2917,7 +4057,8 @@
             "src/types/score.ts",
             "tests/helpers/index.ts"
           ],
-          "path": "tests/property-based.test.ts"
+          "path": "tests/property-based.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3bcc0ec5af307394281b3fc6a57c5d1d4decda8f2c872233e6e69849e978e333",
@@ -2939,7 +4080,8 @@
             "src/types/score.ts",
             "tests/helpers/index.ts"
           ],
-          "path": "tests/render.bench.ts"
+          "path": "tests/render.bench.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8d673f89c4779b247ec050f317f67e87ee04e75c156e386abbab714134fd0e1b",
@@ -2957,46 +4099,53 @@
             "src/types/score.ts",
             "tests/helpers/index.ts"
           ],
-          "path": "tests/score-fixtures.test.ts"
+          "path": "tests/score-fixtures.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a1351ae0e144580bdb8fd2840989a3207802f97409c3e313637bc4757538e32b",
           "importsFiles": [
             "src/server/app.ts"
           ],
-          "path": "tests/server-auth.test.ts"
+          "path": "tests/server-auth.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7974cd09723f741729d13855c341adffd23588699e25bf5eab6722aaad964188",
           "importsFiles": [
             "src/server/app.ts"
           ],
-          "path": "tests/server-medium.test.ts"
+          "path": "tests/server-medium.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "245d82438f5d16614fe5e38e123694909ef996571881458c3d2c25187d26f724",
           "importsFiles": [
             "src/server/app.ts"
           ],
-          "path": "tests/server-pathtraversal.test.ts"
+          "path": "tests/server-pathtraversal.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a83f887a68ff364255d9a45fdc2470c4114ce7fa40cdee7b8bb411733d558b72",
           "importsFiles": [
             "src/server/app.ts"
           ],
-          "path": "tests/server-validation.test.ts"
+          "path": "tests/server-validation.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "22fef50bc28c053fef365ee9b1b404e18a7e7c08cac7fd42ea3d581b18e3bc77",
-          "path": "tests/version-alignment.test.ts"
+          "path": "tests/version-alignment.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "fe4974e529aa844405380f45fdd31587e108fb52a015b7f348c39cec26ed4de6",
           "importsFiles": [
             "src/server/services/wsSchemas.ts"
           ],
-          "path": "tests/ws-schema-fuzz.test.ts"
+          "path": "tests/ws-schema-fuzz.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -3006,6 +4155,9 @@
       "name": "tests",
       "origin": "mixed",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -3116,7 +4268,10 @@
         }
       ],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -3403,6 +4558,28 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "coverage": true,
+          "files": 17,
+          "job": "lint-and-test",
+          "junit": true,
+          "runner": "vitest",
+          "step": "Test",
+          "through": [
+            "npm test"
+          ]
+        },
+        {
+          "job": "cockpit-tests",
+          "runner": "playwright test",
+          "step": "Run cockpit smoke tests",
+          "through": [
+            "npm run test:cockpit"
+          ]
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -3412,6 +4589,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "lib/**",
             "package-lock.json",
             "package.json",
@@ -3430,6 +4608,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "lib/**",
             "package-lock.json",
             "package.json",
@@ -3450,8 +4629,10 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
-        "actions/upload-artifact"
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -4009,6 +5190,18 @@
         "releases": true
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 17,
+          "job": "verify",
+          "runner": "vitest",
+          "step": "Test",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -4555,10 +5748,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
-    "commit": "a2738c5c9f7afded9611a358288c880beafa3477",
-    "tracked": 365
+    "commit": "984669a4ca1a385a79400795325604f03fb6dd20",
+    "tracked": 366
   },
   "landings": [
     {

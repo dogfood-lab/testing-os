@@ -1,6 +1,6 @@
 # audiobooker: how it works
 
-Mapped at 2026-09-26 from commit 651511a by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 6fcd238 by Atlas 1.23.4.
 
 ## What this is
 
@@ -8,17 +8,18 @@ Mapped at 2026-09-26 from commit 651511a by Atlas 1.23.0.
 
 ## What changed since 2026-09-25 (d8ba5c2)
 
+- CI's push trigger now also names `codecov.yml`.
 - CI now also runs audiobooker/__init__.py, audiobooker/casting/voice_registry.py, audiobooker/casting/voice_suggester.py and 13 more.
 - Audiobooker (action.yml) is a new action other repositories use. It runs audiobooker/cli.py and tools/read_project_version.py.
-- audiobooker (npm/package.json) is a new command. It runs npm/bin/audiobooker.js.
+- And 1 more change to a door.
 - tools/pyright_baseline.txt is now written by tools/check_pyright_gate.py.
 - pyproject.toml is now also read by action.yml.
 - tools was authored and is now mixed.
-- No file changed.
+- 1 file added and 1 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main; on a push to main touching 5 paths; or by hand. Runs audiobooker/__init__.py, audiobooker/casting/voice_registry.py, audiobooker/casting/voice_suggester.py and 97 more; checks audiobooker/.
+1. **CI.** On a pull request to main; on a push to main touching 6 paths; or by hand. Runs audiobooker/__init__.py, audiobooker/casting/voice_registry.py, audiobooker/casting/voice_suggester.py and 97 more; checks audiobooker/.
 2. **Publish to GHCR.** When a release is published; or by hand. Runs audiobooker/cli.py; packs LICENSE, README.md, audiobooker/ and 1 more into an image. On a release event, it also runs tools/read_project_version.py.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Release.** When a release is published; or by hand. On a release event, it runs tools/read_project_version.py.
@@ -105,7 +106,7 @@ People write .github/, assets/, docs/, npm/, the repository root and site/; 5 wr
 
 ## Where to start
 
-.github/workflows/ci.yml → audiobooker/cli.py → audiobooker/renderer/engine.py → audiobooker/__init__.py → audiobooker/models.py → audiobooker/errors.py
+.github/workflows/ci.yml → audiobooker/cli.py → audiobooker/renderer/engine.py → audiobooker/__init__.py → audiobooker/models.py → audiobooker/formats.py
 
 Read those in order to follow one pull request end to end.
 
@@ -118,6 +119,7 @@ Read those in order to follow one pull request end to end.
 - 27 writes and 39 reads go to a path their caller passes, not to this repository.
 - 3 writes and 5 reads go to the home directory (.local/, AppData/ and audiobooker/) or a path their caller passes, not to this repository.
 - 1 write and 2 reads go to the home directory (.config/, AppData/ and audiobooker/), not to this repository.
+- 2 reads go to the directory the command is run in (audiobooker and pyproject.toml), not to this repository.
 - 1 read goes to the directory the command is run in (.audiobookerrc) or the home directory (.audiobookerrc), not to this repository.
 - 4 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.

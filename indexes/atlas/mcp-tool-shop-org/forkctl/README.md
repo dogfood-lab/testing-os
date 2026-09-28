@@ -1,10 +1,10 @@
 # forkctl: how it works
 
-Mapped at 2026-09-26 from commit 72e9d21 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 72e9d21 by Atlas 1.23.4.
 
 ## What this is
 
-7 parts, mostly TypeScript (128 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp.
+7 parts, mostly TypeScript (128 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI, forkctl and forkctl-mcp each reach 2 parts, and CI is followed because a pull request goes through it. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp.
 
 ## What changed since 2026-09-24 (31ad2f4)
 
@@ -14,9 +14,9 @@ Nothing structural changed since 2026-09-24; no file changed.
 
 1. **CI.** On a pull request touching 11 paths; on a push to main touching 11 paths; or by hand. Runs tests/assess.test.ts, tests/audit.test.ts, tests/backend-hardening.test.ts and 47 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-3. **@mcptoolshop/forkctl** (the package's entry, not published from here). Loads src/index.ts.
-4. **forkctl** (a command people run). Runs src/cli.ts.
-5. **forkctl-mcp** (a command people run). Runs src/server.ts.
+3. **forkctl** (a command people run). Runs src/cli.ts.
+4. **forkctl-mcp** (a command people run). Runs src/server.ts.
+5. **@mcptoolshop/forkctl** (the package's entry, not published from here). Loads src/index.ts.
 
 ## What happens through CI
 
@@ -30,14 +30,15 @@ CI writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
+**forkctl** (a command people run) runs src/cli.ts, reaches tests, runs git, and changes other repositories through the GitHub API.
+
+**forkctl-mcp** (a command people run) runs src/server.ts, reaches tests, runs git, and changes other repositories through the GitHub API.
+
 **@mcptoolshop/forkctl** (the package's entry, not published from here) loads src/index.ts.
-
-**forkctl** (a command people run) runs src/cli.ts and changes other repositories through the GitHub API.
-
-**forkctl-mcp** (a command people run) runs src/server.ts and changes other repositories through the GitHub API.
 
 ## What breaks what
 
+- **tests** is run as a child process by 1 part (src) and sits on the path of 3 doors.
 - **src** is imported only from tests, by 1 part (tests), and sits on the path of 4 doors.
 
 ## What tends to change together
@@ -74,11 +75,10 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 1 import could not be resolved: `src/lib/rename/symbols.ts` imports a path built at run time.
 - 8 writes and 8 reads use paths built at run time and are not named here.
 - 26 writes and 22 reads go to a path their caller passes, not to this repository.
 - 14 reads go to the directory the command is run in (.env.example, .github/, LICENSE and 4 more places), not to this repository.
-- 3 commands are built at run time and not followed.
+- 2 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

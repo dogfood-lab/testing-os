@@ -1,6 +1,6 @@
 # study-swarm: how it works
 
-Mapped at 2026-09-26 from commit ab907f0 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit ab907f0 by Atlas 1.23.4.
 
 ## What this is
 

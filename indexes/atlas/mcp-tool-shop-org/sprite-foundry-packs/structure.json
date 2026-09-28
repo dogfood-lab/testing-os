@@ -22870,6 +22870,18 @@
             "load_font",
             "main"
           ],
+          "failurePaths": [
+            {
+              "in": "load_font",
+              "kind": "except",
+              "line": 33
+            },
+            {
+              "in": "load_font",
+              "kind": "except",
+              "line": 36
+            }
+          ],
           "hash": "b4dbea321cbe2f24512596fa8e1f9bfd1957895b57ef0e6bc23a1a10460c8ad9",
           "path": "scripts/gen_previews.py"
         }
@@ -22978,6 +22990,12 @@
       "externals": 0,
       "files": [
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 23
+            }
+          ],
           "hash": "051e016bc478ef5adab8b1c6832ce76f6d44b0c84dd4a9a4180aec2873243974",
           "path": "tooling/verify-all.mjs"
         }
@@ -28919,7 +28937,7 @@
     }
   ],
   "edges": [],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "aae7ad56df7541559c02d929b94991a85085574c",
     "tracked": 7059
@@ -92833,5 +92851,21 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 0,
-  "unassigned": []
+  "unassigned": [],
+  "workspaces": [
+    "packages/fantasy-heroes-48",
+    "packages/fantasy-heroes-hd",
+    "packages/fantasy-villains-48",
+    "packages/fantasy-villains-hd",
+    "packages/goblin-warband-48",
+    "packages/goblin-warband-hd",
+    "packages/monster-pack-48",
+    "packages/pirate-raiders-3d",
+    "packages/pirate-raiders-3d-2",
+    "packages/pirate-raiders-48",
+    "packages/pirate-raiders-hd",
+    "packages/townsfolk-48",
+    "packages/townsfolk-hd",
+    "packages/undead-patrol-48"
+  ]
 }

@@ -1,6 +1,6 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-09-26 from commit 194e0bb by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 9696f52 by Atlas 1.23.4.
 
 ## What this is
 
@@ -8,19 +8,20 @@ Mapped at 2026-09-26 from commit 194e0bb by Atlas 1.23.0.
 
 ## What changed since 2026-09-25 (d92a167)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - CI now also runs files in apps/cockpit/.
-- CI runs 1 more file than before.
-- Deploy site to GitHub Pages now also runs apps/cockpit/src/ and apps/cockpit/vite.config.ts.
+- And 2 more changes to doors.
 - .eval-checkpoints is now written by scripts/run-jam-actions-corpus-eval.ts.
 - datasets/jam-actions-v0-public/ is now also written by scripts/run-jam-actions-corpus-eval.ts.
 - datasets/jam-actions-v0-public/evals/ is now written by scripts/run-jam-actions-corpus-eval.ts.
 - And 127 more new writers and readers of places.
 - songs was generated and is now mixed.
-- 6 files added and 1754 changed content, across 12 parts.
+- 7 files added and 1754 changed content, across 12 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 20 paths; on a push to main touching 20 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/ and 292 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 92 more; checks scripts/analysis-chords.ts, scripts/analysis-patterns.ts, scripts/analysis-sections.ts and 55 more; packs LICENSE, README.md, logo.png and 375 more into an image.
+1. **CI.** On a pull request touching 21 paths; on a push to main touching 21 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/ and 292 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 92 more; checks scripts/analysis-chords.ts, scripts/analysis-patterns.ts, scripts/analysis-sections.ts and 55 more; packs LICENSE, README.md, logo.png and 375 more into an image.
 2. **Release.** When a release is published; or by hand. Runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 299 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 93 more; packs LICENSE, README.md, logo.png and 375 more into an image.
 3. **Deploy site to GitHub Pages.** On a push to main touching 3 paths; or by hand. Runs apps/cockpit/src/, apps/cockpit/vite.config.ts, site/astro.config.mjs and 2 more.
 4. **Publish jam-actions-v0.** By hand. Runs scripts/check-release-gate.ts, scripts/verify-public-package-checksums.ts and src/dataset/published-evidence.test.ts.
@@ -64,7 +65,7 @@ CI writes nothing this map can see.
 
 ## What breaks what
 
-- **src** is imported by 4 parts (cockpit, docs, experiments, scripts) and sits on the path of 7 doors.
+- **src** is imported by 4 parts (cockpit, docs, experiments, scripts), is run as a child process by 2 parts (experiments, scripts), and sits on the path of 7 doors.
 - **scripts** is run as a child process by 1 part (experiments) and sits on the path of 3 doors.
 - **cockpit** is imported only from tests, by 1 part (src), and sits on the path of 3 doors.
 - **experiments** is imported only from tests, by 1 part (src), and sits on the path of 2 doors.
@@ -243,7 +244,7 @@ Read those in order to follow one pull request end to end.
 - 1 write and 1 read go to the home directory (.ai-jam-sessions/) or a path their caller passes, not to this repository.
 - 1 read goes to the directory the command is run in (tmp/) or a path its caller passes, not to this repository.
 - 1 write goes to a temporary directory or a path its caller passes, not to this repository.
-- 10 commands are built at run time and not followed, 1 of them in tests.
+- 15 commands are built at run time and not followed, 2 of them in tests.
 - There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
 - There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.
 - CI runs or checks 464 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.

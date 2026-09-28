@@ -502,6 +502,13 @@
         {
           "entry": "buildBundles",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "buildBundles",
+              "kind": "catch",
+              "line": 103
+            }
+          ],
           "hash": "69c76424248753d73703164a7636103e3449d5cfd9db910bde11a6a297083ec1",
           "path": "scripts/build-bundles.mjs",
           "sequences": []
@@ -509,6 +516,28 @@
         {
           "entry": "buildDerived",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "buildDerived",
+              "kind": "catch",
+              "line": 32
+            },
+            {
+              "in": "buildDerived",
+              "kind": "catch",
+              "line": 45
+            },
+            {
+              "in": "buildDerived",
+              "kind": "catch",
+              "line": 128
+            },
+            {
+              "in": "buildDerived",
+              "kind": "catch",
+              "line": 262
+            }
+          ],
           "hash": "930928f15058d1a755fcac2940ab0dfcf564f65284a2e6469e203c5de6726442",
           "path": "scripts/build-derived.mjs",
           "sequences": []
@@ -516,17 +545,53 @@
         {
           "entry": "buildSite",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "buildSite",
+              "kind": "catch",
+              "line": 42
+            },
+            {
+              "in": "buildSite",
+              "kind": "catch",
+              "line": 52
+            },
+            {
+              "in": "buildSite",
+              "kind": "catch",
+              "line": 67
+            },
+            {
+              "in": "buildSite",
+              "kind": "catch",
+              "line": 72
+            }
+          ],
           "hash": "7a6eb7233b89aad80074cc3071608cb2787bee9a3ba279c80fa0703a2287f69c",
           "path": "scripts/build-site.mjs",
           "sequences": []
         },
         {
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 67
+            }
+          ],
           "hash": "40f51967c2b5ca6c53fd74ac3348021c35d1b059f007bf2ee577220d531d7657",
           "path": "scripts/facets.mjs"
         },
         {
           "entry": "generateHealthReport",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "generateHealthReport",
+              "kind": "catch",
+              "line": 228
+            }
+          ],
           "hash": "3a2028ce9ac51268f06d69bf0f37883da2b0f4b0ea2d0ea7edbb16c7c3449041",
           "path": "scripts/health-report.mjs",
           "sequences": []
@@ -534,6 +599,38 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 20
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 28
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 31
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 55
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 56
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 103
+            }
+          ],
           "hash": "6e950a4d793a406c6c5958e1c3e7b8a0f0e4d89a6a216ea9dda464f264f2a0ab",
           "path": "scripts/patch-registry.mjs",
           "sequences": []
@@ -541,6 +638,13 @@
         {
           "entry": "checkPolicy",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "checkPolicy",
+              "kind": "catch",
+              "line": 132
+            }
+          ],
           "hash": "ba00bf3f038a7137460f403c5f8148c72f27109e833cc69145316f16f3d5585e",
           "path": "scripts/policy-check.mjs",
           "sequences": []
@@ -548,6 +652,13 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 185
+            }
+          ],
           "hash": "7d0e6b4f335d2b0d8ee07fc6fb6e7718fdbe06fdae16f1ed5f7ce0dfc33ac6d6",
           "path": "scripts/query.mjs",
           "sequences": []
@@ -555,17 +666,91 @@
         {
           "entry": "runGh",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "runGh",
+              "kind": "catch",
+              "line": 20
+            },
+            {
+              "in": "runGh",
+              "kind": "throw",
+              "line": 22
+            },
+            {
+              "kind": "catch",
+              "line": 77
+            }
+          ],
           "hash": "a7610fa31bd321a9f66f544ab080b92d58664b6550cd421f8b3e78dbbc86decf",
           "path": "scripts/submission-guard.mjs",
           "sequences": []
         },
         {
+          "failurePaths": [
+            {
+              "kind": "throw",
+              "line": 40
+            },
+            {
+              "kind": "throw",
+              "line": 50
+            },
+            {
+              "kind": "throw",
+              "line": 56
+            },
+            {
+              "kind": "throw",
+              "line": 59
+            },
+            {
+              "kind": "throw",
+              "line": 67
+            },
+            {
+              "kind": "catch",
+              "line": 72
+            }
+          ],
           "hash": "9237dbcbf5e2eb143fb5382df288a7eead10e84b46bc4e799f52a017deb1fe8d",
           "path": "scripts/test-compat.mjs"
         },
         {
           "entry": "validate",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "validate",
+              "kind": "catch",
+              "line": 56
+            },
+            {
+              "in": "validate",
+              "kind": "throw",
+              "line": 60
+            },
+            {
+              "in": "validate",
+              "kind": "catch",
+              "line": 122
+            },
+            {
+              "in": "validate",
+              "kind": "catch",
+              "line": 155
+            },
+            {
+              "in": "validate",
+              "kind": "catch",
+              "line": 176
+            },
+            {
+              "in": "validate",
+              "kind": "catch",
+              "line": 185
+            }
+          ],
           "hash": "7a4b34a82442d1ac9c8ad4bd4d0bfdfdb281462c2b2c70639fcf75c72b0be394",
           "path": "scripts/validate.mjs",
           "sequences": []
@@ -577,6 +762,18 @@
         {
           "entry": "verifyPack",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "verifyPack",
+              "kind": "throw",
+              "line": 20
+            },
+            {
+              "in": "verifyPack",
+              "kind": "catch",
+              "line": 52
+            }
+          ],
           "hash": "248d31c0e9c11aa1c2fba48f82b89ebf9f1c28eafdf9151294d9428db9977492",
           "path": "scripts/verify-pack.mjs",
           "sequences": []
@@ -599,6 +796,9 @@
       ],
       "outsideReads": 3,
       "role": "code",
+      "testRunners": [
+        "node"
+      ],
       "testedBy": 1,
       "testedThroughSpawn": true,
       "unresolvedSites": 0
@@ -702,14 +902,18 @@
       "files": [
         {
           "hash": "3a7530a486afb154c0540fc926035e50d661a83aed250c7f54b6015fa0f773d2",
-          "path": "tests/registry-integrity.test.mjs"
+          "path": "tests/registry-integrity.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "entry": "runQuery",
           "entryRule": 1,
           "hash": "ba77c1ced6e3edabe40b545dd671ee6dd300f8aaae6b6246f82a557ed2d2ae15",
           "path": "tests/search.test.mjs",
-          "sequences": []
+          "sequences": [],
+          "spawns": [
+            "scripts/query.mjs"
+          ]
         },
         {
           "entry": "runSmokeTests",
@@ -726,6 +930,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "node"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -1077,6 +1284,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 1,
+          "job": "validate",
+          "runner": "node",
+          "step": "8",
+          "through": [
+            "npm run test:search"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -1582,6 +1800,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 1,
+          "job": "verify",
+          "runner": "node",
+          "step": "Smoke Test Registry Artifacts",
+          "through": [
+            "npm run test:site"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "issues",
@@ -1938,7 +2167,7 @@
     }
   ],
   "edges": [],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "2bb195fa484d4e572d28ef756d371624b1efac32",
     "tracked": 105
@@ -2502,5 +2731,8 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 3,
+  "testsNotRun": [
+    "tests/registry-integrity.test.mjs"
+  ],
   "unassigned": []
 }

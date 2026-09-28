@@ -279,7 +279,7 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 1,
+      "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [
@@ -292,6 +292,28 @@
           "exports": [
             "catalogFromHuggingFace",
             "quantFromFilename"
+          ],
+          "failurePaths": [
+            {
+              "in": "readRemoteGgufHeader",
+              "kind": "throw",
+              "line": 47
+            },
+            {
+              "in": "readRemoteGgufHeader",
+              "kind": "throw",
+              "line": 50
+            },
+            {
+              "in": "readRemoteGgufHeader",
+              "kind": "catch",
+              "line": 56
+            },
+            {
+              "in": "readRemoteGgufHeader",
+              "kind": "throw",
+              "line": 62
+            }
           ],
           "hash": "b143c81fcbfce411972565b339ad2ab442b35c2dcb15a1e6e4ffba30b9bd22ca",
           "importOrder": [
@@ -353,6 +375,13 @@
             "catalogFromOllama",
             "ollamaManifestPath",
             "quantFromLabel"
+          ],
+          "failurePaths": [
+            {
+              "in": "ollamaFetch",
+              "kind": "catch",
+              "line": 75
+            }
           ],
           "hash": "cd584cca2ece60210d12837ee5fc873bbd81db07981b19c6007e60da6cc92879",
           "importOrder": [
@@ -633,6 +662,48 @@
           "exports": [
             "parseGguf"
           ],
+          "failurePaths": [
+            {
+              "in": "ensure",
+              "kind": "throw",
+              "line": 17
+            },
+            {
+              "in": "bounded",
+              "kind": "throw",
+              "line": 33
+            },
+            {
+              "in": "readValue",
+              "kind": "throw",
+              "line": 63
+            },
+            {
+              "in": "readValue",
+              "kind": "throw",
+              "line": 85
+            },
+            {
+              "in": "readValue",
+              "kind": "throw",
+              "line": 92
+            },
+            {
+              "in": "parseGguf",
+              "kind": "throw",
+              "line": 105
+            },
+            {
+              "in": "parseGguf",
+              "kind": "throw",
+              "line": 109
+            },
+            {
+              "in": "parseGguf",
+              "kind": "throw",
+              "line": 129
+            }
+          ],
           "hash": "109d127a1d330a19de0564aba4bb2ee5837ec93e74f19247dfb1289fe6e0c6f4",
           "importsFiles": [
             "src/gguf/types.ts"
@@ -642,6 +713,18 @@
         {
           "exports": [
             "readGgufMetadata"
+          ],
+          "failurePaths": [
+            {
+              "in": "readGgufMetadata",
+              "kind": "catch",
+              "line": 22
+            },
+            {
+              "in": "readGgufMetadata",
+              "kind": "throw",
+              "line": 27
+            }
           ],
           "hash": "f5530ae6ccc3d13595a30b17ed5a45e71234abbc2b5a59b48a9ad498c6413f8b",
           "importsFiles": [
@@ -779,6 +862,18 @@
             "probeGpu",
             "probeRam"
           ],
+          "failurePaths": [
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 31
+            },
+            {
+              "in": "probeNvme",
+              "kind": "catch",
+              "line": 173
+            }
+          ],
           "hash": "b461a17fa1e36da9b4b6e7ace41f13b8eec55505bf1a8c4d70b7663bb9a41f0f",
           "importOrder": [
             "src/types.ts",
@@ -846,15 +941,21 @@
             "src/index.ts",
             "src/tests/gguf-fixture.ts"
           ],
-          "path": "src/tests/catalog.test.ts"
+          "path": "src/tests/catalog.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "87bd84607a8892377a0cc85f46769262f169598991dc086e28a9b10c8f8227c5",
-          "path": "src/tests/cli.test.ts"
+          "path": "src/tests/cli.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "a5aa037e18530de0dcd703e601ce0b93432873e09d267f99484809204eb8183e",
-          "path": "src/tests/docs-drift.test.ts"
+          "path": "src/tests/docs-drift.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "aa29d56974ddbdc0aae5e979cf51bcfc58615cf37ef46102dc9e4ed937ddfcf6",
@@ -862,7 +963,8 @@
             "src/index.ts",
             "src/tests/fixtures.ts"
           ],
-          "path": "src/tests/emit.test.ts"
+          "path": "src/tests/emit.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "79d770ca2e7ec91762f988a8b954c12166e4cc4ead0dcaf8e281dcdb7add8266",
@@ -878,7 +980,8 @@
             "src/index.ts",
             "src/tests/fixtures.ts"
           ],
-          "path": "src/tests/footprint.test.ts"
+          "path": "src/tests/footprint.test.ts",
+          "testFramework": "node --test"
         },
         {
           "exports": [
@@ -900,7 +1003,8 @@
             "src/gguf/index.ts",
             "src/gguf/parse.ts"
           ],
-          "path": "src/tests/gguf-safety.test.ts"
+          "path": "src/tests/gguf-safety.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "40f1b9655fb6e142675deada629a88cb5c4b432ad41c23d5e48f1c30097cd7cd",
@@ -908,7 +1012,8 @@
             "src/index.ts",
             "src/tests/gguf-fixture.ts"
           ],
-          "path": "src/tests/gguf.test.ts"
+          "path": "src/tests/gguf.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "b58e699a8781777dfa36f30188345f400f623b41c1451c320a35eccea2662aec",
@@ -924,14 +1029,16 @@
             "src/gguf/types.ts",
             "src/index.ts"
           ],
-          "path": "src/tests/gqa.test.ts"
+          "path": "src/tests/gqa.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "7a521fe234ebc29240637e46e3526e5fbf90e636c71f534868f15fa1d7ee8c22",
           "importsFiles": [
             "src/index.ts"
           ],
-          "path": "src/tests/headroom.test.ts"
+          "path": "src/tests/headroom.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "e8b76bff1aff79bfd9444044f192ef4cbe746606332ac5f99a44b60770ecf8f5",
@@ -939,7 +1046,8 @@
             "src/index.ts",
             "src/tests/gguf-fixture.ts"
           ],
-          "path": "src/tests/hf.test.ts"
+          "path": "src/tests/hf.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "ae74148b37faa6aedd5f8cc32ef0d41d753f1402bd62685c7915bec2a52434d6",
@@ -947,7 +1055,8 @@
             "src/index.ts",
             "src/tests/fixtures.ts"
           ],
-          "path": "src/tests/placement.test.ts"
+          "path": "src/tests/placement.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "0443e885699865d46e5510f9e627988d5392a3a20e8bb17e082e951e196508a5",
@@ -955,21 +1064,24 @@
             "src/index.ts",
             "src/tests/fixtures.ts"
           ],
-          "path": "src/tests/plan.test.ts"
+          "path": "src/tests/plan.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "448ceaa48e9c7d466a98c3e58d76ea923d9cacc7f8184d978399f6ae44ab9db7",
           "importsFiles": [
             "src/index.ts"
           ],
-          "path": "src/tests/probe.test.ts"
+          "path": "src/tests/probe.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "9917e024d237f5062001efc8593d034d91f0d9f86de677d2fb98f273a3597e19",
           "importsFiles": [
             "src/index.ts"
           ],
-          "path": "src/tests/quant-risk.test.ts"
+          "path": "src/tests/quant-risk.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "d645b08be19cdd8d76c351066bd63cc40ee46a4eda78a7d9b82040b9c1b59a22",
@@ -977,14 +1089,16 @@
             "src/index.ts",
             "src/tests/fixtures.ts"
           ],
-          "path": "src/tests/quant.test.ts"
+          "path": "src/tests/quant.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "a6c5b23007091c2682284000a7f64fab24cdf307f7dc9738cb64678bd6931375",
           "importsFiles": [
             "src/index.ts"
           ],
-          "path": "src/tests/roofline.test.ts"
+          "path": "src/tests/roofline.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "e6884578525ed5e50a7a2a5490f9b7dba7f5bb32a58dc8254466f0c1254f38b3",
@@ -1025,6 +1139,9 @@
       "outsideReads": 5,
       "outsideWrites": 1,
       "role": "code",
+      "testRunners": [
+        "node --test"
+      ],
       "testedBy": 17,
       "unresolvedSites": 0
     }
@@ -1190,6 +1307,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 16,
+          "job": "build-test",
+          "runner": "node --test",
+          "step": "4",
+          "through": [
+            "npm run verify"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -1542,6 +1670,17 @@
         "releases": true
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 16,
+          "job": "release",
+          "runner": "node --test",
+          "step": "Build + typecheck + test",
+          "through": [
+            "npm run verify"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -1643,7 +1782,7 @@
     }
   ],
   "edges": [],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "0f920ecd9b8ffb02f94c9e064759dc09a08c7ae4",
     "tracked": 90

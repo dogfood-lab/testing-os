@@ -1,6 +1,6 @@
 # backprop-trace: how it works
 
-Mapped at 2026-09-26 from commit 8b16ae0 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 8b16ae0 by Atlas 1.23.4.
 
 ## What this is
 
@@ -154,7 +154,7 @@ Read those in order to follow one pull request end to end.
 - 13 reads go to a path their caller passes, not to this repository.
 - 10 reads go to the directory the command is run in (fixtures/ and scripts/), not to this repository.
 - 2 writes and 3 reads go to a temporary directory, not to this repository.
-- 7 commands are built at run time and not followed, 6 of them in tests.
+- 21 commands are built at run time and not followed, 20 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

@@ -34,13 +34,20 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 1,
+      "changed": 1,
       "moved": 0,
-      "parts": 0,
+      "parts": 2,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "CI now also runs audiobooker/__init__.py, audiobooker/casting/voice_registry.py, audiobooker/casting/voice_suggester.py and 13 more.",
@@ -75,11 +82,8 @@
       },
       {
         "kind": "door",
-        "sentence": "audiobooker (npm/package.json) is a new command. It runs npm/bin/audiobooker.js.",
-        "subjects": [
-          "npm/package.json",
-          "npm/bin/audiobooker.js"
-        ]
+        "sentence": "And 1 more change to a door.",
+        "subjects": []
       },
       {
         "kind": "landing",
@@ -106,7 +110,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "1 file added and 1 changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -198,7 +202,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 4 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "651511a388bc27568f2985b3960d09e7e7ef8d15",
+  "commit": "6fcd238d2aafd234b4c5de59d4f88c3b2c46e8b9",
   "defaultBranch": "main",
   "derived": "10 parts, mostly Python (131 files), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 7 doors; CI and Publish to GHCR each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to PyPI, @mcptoolshop/audiobooker to npm, and a container image. It deploys a site to GitHub Pages. People run audiobooker. Other repositories use the Audiobooker action.",
   "doors": [
@@ -262,7 +266,7 @@
       "stages": [],
       "triggers": [
         "on a pull request to main",
-        "on a push to main touching 5 paths",
+        "on a push to main touching 6 paths",
         "or by hand"
       ]
     },
@@ -410,7 +414,7 @@
         {
           "boundary": "audiobooker",
           "depth": 0,
-          "files": 34
+          "files": 37
         },
         {
           "boundary": "tools",
@@ -468,7 +472,7 @@
         {
           "boundary": "audiobooker",
           "depth": 0,
-          "files": 34
+          "files": 37
         }
       ],
       "runs": [
@@ -485,7 +489,7 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [
     {
       "block": true,
@@ -495,7 +499,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-26T14:40:28.999Z",
+  "generatedAt": "2026-09-28T13:14:25.638Z",
   "limits": [
     "14 import sites name a declared dependency that shares its name with a local module (docx); they are read as the dependency, which is not in this repository.",
     "7 imports could not be resolved: `audiobooker/cli.py` imports a path built at run time, twice; `audiobooker/language/profile.py` imports a path built at run time; `tests/test_feat_f5_cli.py` imports a path built at run time; and 3 more.",
@@ -504,6 +508,7 @@
     "27 writes and 39 reads go to a path their caller passes, not to this repository.",
     "3 writes and 5 reads go to the home directory (.local/, AppData/ and audiobooker/) or a path their caller passes, not to this repository.",
     "1 write and 2 reads go to the home directory (.config/, AppData/ and audiobooker/), not to this repository.",
+    "2 reads go to the directory the command is run in (audiobooker and pyproject.toml), not to this repository.",
     "1 read goes to the directory the command is run in (.audiobookerrc) or the home directory (.audiobookerrc), not to this repository.",
     "4 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
@@ -680,7 +685,7 @@
     "audiobooker/renderer/engine.py",
     "audiobooker/__init__.py",
     "audiobooker/models.py",
-    "audiobooker/errors.py"
+    "audiobooker/formats.py"
   ],
   "summary": null,
   "summaryFrom": null,

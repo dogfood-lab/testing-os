@@ -1,14 +1,14 @@
 # roll: how it works
 
-Mapped at 2026-09-26 from commit 936fb0a by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit fbec7b5 by Atlas 1.23.4.
 
 ## What this is
 
-5 parts, mostly TypeScript (57 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 7 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run roll, roll-bridge and roll-mcp. People import @mcptoolshop/roll.
+5 parts, mostly TypeScript (58 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 7 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run roll, roll-bridge and roll-mcp. People import @mcptoolshop/roll.
 
 ## What changed since 2026-09-24 (97f0f4f)
 
-Nothing structural changed since 2026-09-24; 92 files changed content.
+Nothing structural changed since 2026-09-24; 1 file added and 92 changed content.
 
 ## What comes in
 

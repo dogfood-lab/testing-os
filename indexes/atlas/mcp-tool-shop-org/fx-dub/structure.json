@@ -794,11 +794,13 @@
           "importsFiles": [
             "tests/graph_lint.py"
           ],
-          "path": "tests/test_api_detectors.py"
+          "path": "tests/test_api_detectors.py",
+          "testFramework": "unittest"
         },
         {
           "hash": "806e0683f76dd1301c43f94054efd0177240a770e551e89d41eb245b2bc12a16",
-          "path": "tests/test_assets.py"
+          "path": "tests/test_assets.py",
+          "testFramework": "unittest"
         },
         {
           "exports": [
@@ -818,7 +820,8 @@
             "tools/audition_receipt.py",
             "tools/media_probe.py"
           ],
-          "path": "tests/test_audition_receipt.py"
+          "path": "tests/test_audition_receipt.py",
+          "testFramework": "unittest"
         },
         {
           "exports": [
@@ -830,25 +833,29 @@
           "importsFiles": [
             "tools/dialogue_receipt.py"
           ],
-          "path": "tests/test_dialogue_receipt.py"
+          "path": "tests/test_dialogue_receipt.py",
+          "testFramework": "unittest"
         },
         {
           "hash": "3ba5b3540d5afaedcdfe48dbd122226ac21aad83e619f2d60b3c3e4cf1fde6cd",
-          "path": "tests/test_docs.py"
+          "path": "tests/test_docs.py",
+          "testFramework": "unittest"
         },
         {
           "hash": "b838f286c0118dfed0fd3df5d0c770df17db0d587875e3a5a87d6f7fb7d05266",
           "importsFiles": [
             "tests/flac_info.py"
           ],
-          "path": "tests/test_flac_info.py"
+          "path": "tests/test_flac_info.py",
+          "testFramework": "unittest"
         },
         {
           "hash": "2736f284b9a5a58219691c65b185ae3d4d5f3b0fc876697691c015b57792c56e",
           "importsFiles": [
             "tests/graph_lint.py"
           ],
-          "path": "tests/test_graphs.py"
+          "path": "tests/test_graphs.py",
+          "testFramework": "unittest"
         },
         {
           "exports": [
@@ -856,7 +863,11 @@
             "tearDownModule"
           ],
           "hash": "72ba27b88ffff29f495ce39e5aa7aaa921c1a6f6cf10f5be680b7c2b0f7275bd",
-          "path": "tests/test_kb.py"
+          "names": [
+            "kb/build_db.py"
+          ],
+          "path": "tests/test_kb.py",
+          "testFramework": "unittest"
         },
         {
           "exports": [
@@ -867,7 +878,11 @@
           "importsFiles": [
             "tools/audition_receipt.py"
           ],
-          "path": "tests/test_no_local_paths.py"
+          "names": [
+            "tools/verify.py"
+          ],
+          "path": "tests/test_no_local_paths.py",
+          "testFramework": "unittest"
         },
         {
           "exports": [
@@ -879,7 +894,8 @@
             "tools/dialogue_receipt.py",
             "tools/verify.py"
           ],
-          "path": "tests/test_verify.py"
+          "path": "tests/test_verify.py",
+          "testFramework": "unittest"
         },
         {
           "exports": [
@@ -890,7 +906,11 @@
             "tests/graph_lint.py",
             "tools/vo_graphs.py"
           ],
-          "path": "tests/test_vo_graphs.py"
+          "names": [
+            "tools/__init__.py"
+          ],
+          "path": "tests/test_vo_graphs.py",
+          "testFramework": "unittest"
         },
         {
           "exports": [
@@ -898,7 +918,8 @@
             "parse_triggers"
           ],
           "hash": "c91bdb4afbdb2db6031f25e8ac29cdf1e121677973a71c843c630df14e7412a5",
-          "path": "tests/test_workflows.py"
+          "path": "tests/test_workflows.py",
+          "testFramework": "unittest"
         }
       ],
       "globs": [
@@ -908,6 +929,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "unittest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     },
@@ -936,6 +960,52 @@
             "main",
             "render",
             "scene_on_frame_count"
+          ],
+          "failurePaths": [
+            {
+              "in": "_run_label",
+              "kind": "except",
+              "line": 100
+            },
+            {
+              "in": "check_run",
+              "kind": "except",
+              "line": 245
+            },
+            {
+              "in": "check_run",
+              "kind": "except",
+              "line": 293
+            },
+            {
+              "in": "check_run",
+              "kind": "except",
+              "line": 335
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 435
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 437
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 452
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 454
+            },
+            {
+              "kind": "raise",
+              "line": 465
+            }
           ],
           "hash": "2ff09727a822cd1249c7b3ff9ca9800553551cd7b7b5bfac95051a539792ca34",
           "importsFiles": [
@@ -1016,9 +1086,66 @@
             "main",
             "render"
           ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 58
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 288
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 290
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 293
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 295
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 301
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 303
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 307
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 309
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 335
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 337
+            }
+          ],
           "hash": "919e4b9223bc0d304b6673622e9bdaffcabfd5f4c6612fd8c002fb5f6faefffe",
           "importsFiles": [
-            "tools/__init__.py"
+            "tools/__init__.py",
+            "tools/verify.py"
           ],
           "path": "tools/dialogue_receipt.py",
           "sequences": [
@@ -1118,6 +1245,53 @@
             "parse_streaminfo",
             "probe_mp4"
           ],
+          "failurePaths": [
+            {
+              "in": "parse_streaminfo",
+              "kind": "raise",
+              "line": 24
+            },
+            {
+              "in": "parse_streaminfo",
+              "kind": "raise",
+              "line": 26
+            },
+            {
+              "in": "parse_streaminfo",
+              "kind": "raise",
+              "line": 28
+            },
+            {
+              "in": "parse_streaminfo",
+              "kind": "raise",
+              "line": 32
+            },
+            {
+              "in": "parse_streaminfo",
+              "kind": "raise",
+              "line": 42
+            },
+            {
+              "in": "probe_mp4",
+              "kind": "raise",
+              "line": 60
+            },
+            {
+              "in": "probe_mp4",
+              "kind": "raise",
+              "line": 62
+            },
+            {
+              "in": "probe_mp4",
+              "kind": "raise",
+              "line": 74
+            },
+            {
+              "in": "parse_lufs",
+              "kind": "raise",
+              "line": 132
+            }
+          ],
           "hash": "b22f62ea0ef3ba2ae1aba5454aa59363e0446f5407f8e6c6bc1c3d042e449751",
           "path": "tools/media_probe.py"
         },
@@ -1134,6 +1308,13 @@
             "check_one_voice_per_line",
             "normalize_text",
             "normalize_words"
+          ],
+          "failurePaths": [
+            {
+              "in": "normalize_words",
+              "kind": "raise",
+              "line": 275
+            }
           ],
           "hash": "778af721c7b170cbcc755626a8b13b7d6ba7c7507d5eb51d89b486e49fbebb26",
           "path": "tools/verify.py"
@@ -1155,6 +1336,28 @@
             "place_exact",
             "splice",
             "transcribe"
+          ],
+          "failurePaths": [
+            {
+              "in": "splice",
+              "kind": "raise",
+              "line": 140
+            },
+            {
+              "in": "gap_closing_spans",
+              "kind": "raise",
+              "line": 221
+            },
+            {
+              "in": "place_exact",
+              "kind": "raise",
+              "line": 279
+            },
+            {
+              "in": "mix_dialogue_anchored",
+              "kind": "raise",
+              "line": 403
+            }
           ],
           "hash": "9d4d9f5396e25740c8cc5b93eea69e7ad7c5dd9b419a46e14e1d45b822fff993",
           "path": "tools/vo_graphs.py"
@@ -1178,6 +1381,9 @@
       "outsideReads": 6,
       "outsideWrites": 2,
       "role": "code",
+      "testRunners": [
+        "unittest"
+      ],
       "testedBy": 5,
       "unresolvedNamed": [
         {
@@ -1369,6 +1575,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 15,
+          "job": "verify",
+          "runner": "unittest",
+          "step": "Verify",
+          "through": [
+            "verify.sh"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -1654,6 +1871,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 15,
+          "job": "build",
+          "runner": "unittest",
+          "step": "Verify before building",
+          "through": [
+            "verify.sh"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -1689,7 +1917,7 @@
         {
           "boundary": "tools",
           "depth": 0,
-          "files": 2
+          "files": 3
         }
       ],
       "readers": [],
@@ -1767,7 +1995,7 @@
       "to": "tools"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "8bb7ee7a8362d980f7286d7cdfe0d859be859a97",
     "tracked": 178

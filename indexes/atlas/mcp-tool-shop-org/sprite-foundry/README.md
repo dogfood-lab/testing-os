@@ -1,6 +1,6 @@
 # sprite-foundry: how it works
 
-Mapped at 2026-09-26 from commit 45a5555 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 45a5555 by Atlas 1.23.4.
 
 ## What this is
 
@@ -78,7 +78,7 @@ People write .github/, pipeline/chars/, the repository root and site/; 15 writes
 
 ## Where to start
 
-.github/workflows/ci.yml → foundry/cli.py
+.github/workflows/ci.yml → foundry/cli.py → foundry/mechanical.py → foundry/db.py
 
 Read those in order to follow one pull request end to end.
 

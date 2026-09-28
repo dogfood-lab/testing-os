@@ -117,13 +117,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 1,
+      "changed": 1,
       "moved": 0,
-      "parts": 0,
+      "parts": 2,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "CI now also runs apps/studio/next.config.js, apps/studio/src/app/, apps/studio/test/asset-files.test.ts and 32 more.",
@@ -168,39 +182,7 @@
       },
       {
         "kind": "door",
-        "sentence": "CI now also builds packages/asset-index/src/, packages/audio-engine/src/, packages/automation/src/ and 13 more.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "packages/asset-index/src/",
-          "packages/audio-engine/src/",
-          "packages/automation/src/",
-          "packages/clip-engine/src/",
-          "packages/instrument-rack/src/",
-          "packages/library/src/",
-          "packages/music-theory/src/",
-          "packages/playback-engine/src/",
-          "packages/review/src/",
-          "packages/runtime-pack/src/",
-          "packages/sample-lab/src/",
-          "packages/scene-mapper/src/",
-          "packages/schema/src/",
-          "packages/score-map/src/",
-          "packages/test-kit/src/",
-          "packages/ui/src/"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "CI now also checks apps/studio/next-env.d.ts and apps/studio/src/.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "apps/studio/next-env.d.ts",
-          "apps/studio/src/"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 19 more changes to doors.",
+        "sentence": "And 21 more changes to doors.",
         "subjects": []
       },
       {
@@ -214,7 +196,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "1 file added and 1 changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -276,7 +258,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "83531a1a4f7899819d34e822196a717ddc37cccb",
+  "commit": "2b08099d4bf9339c0760bfec90594ca5ae0cf417",
   "defaultBranch": "main",
   "derived": "23 parts, mostly TypeScript (277 files), CSS (3), JavaScript (3) and Astro (1). Work enters through 19 doors; CI and Release each reach 17 parts, and CI is followed because a pull request goes through it. It publishes @motif-studio/asset-index (packages/asset-index), @motif-studio/audio-engine (packages/audio-engine), @motif-studio/automation (packages/automation), @motif-studio/clip-engine (packages/clip-engine), @motif-studio/instrument-rack (packages/instrument-rack), @motif-studio/library (packages/library), @motif-studio/music-theory (packages/music-theory), @motif-studio/playback-engine (packages/playback-engine), @motif-studio/review (packages/review), @motif-studio/runtime-pack (packages/runtime-pack), @motif-studio/sample-lab (packages/sample-lab), @motif-studio/scene-mapper (packages/scene-mapper), @motif-studio/schema (packages/schema), @motif-studio/score-map (packages/score-map), @motif-studio/test-kit (packages/test-kit) and @motif-studio/ui (packages/ui) to npm. It deploys a site to GitHub Pages. People import @motif-studio/asset-index, @motif-studio/audio-engine, @motif-studio/automation, @motif-studio/clip-engine, @motif-studio/instrument-rack, @motif-studio/library, @motif-studio/music-theory, @motif-studio/playback-engine, @motif-studio/review, @motif-studio/runtime-pack and 6 more.",
   "doors": [
@@ -441,8 +423,8 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 9 paths",
-        "on a push to main touching 9 paths",
+        "on a pull request touching 10 paths",
+        "on a push to main touching 10 paths",
         "or by hand"
       ]
     },
@@ -1257,7 +1239,7 @@
       "to": "schema"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [
     {
       "place": "apps/studio/src/app/grounded-folded.json",
@@ -1273,7 +1255,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-26T14:44:01.347Z",
+  "generatedAt": "2026-09-28T13:18:53.734Z",
   "limits": [
     "1 import could not be resolved: `apps/studio/next-env.d.ts` imports `./.next/types/routes.d.ts`, which a build generates.",
     "8 reads use paths built at run time and are not named here.",

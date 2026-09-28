@@ -1,6 +1,6 @@
 # claude-guardian: how it works
 
-Mapped at 2026-09-26 from commit 65dce69 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit b484cb2 by Atlas 1.23.4.
 
 ## What this is
 
@@ -9,15 +9,15 @@ Mapped at 2026-09-26 from commit 65dce69 by Atlas 1.23.0.
 ## What changed since 2026-09-23 (628c46f)
 
 - src no longer imports the repository root.
-- CI's pull request trigger now also names `atlas/**`.
-- CI's push trigger now also names `atlas/**`.
+- CI's pull request trigger now also names `atlas/**` and `codecov.yml`.
+- CI's push trigger now also names `atlas/**` and `codecov.yml`.
 - Dogfood now also runs src/cli.ts.
 - package.json is now also read by src/cli.ts.
-- 130 files changed content, across 7 parts.
+- 1 file added and 130 changed content, across 7 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 10 paths; on a push to main touching 10 paths; or by hand. Runs tests/; builds src/.
+1. **CI.** On a pull request touching 11 paths; on a push to main touching 11 paths; or by hand. Runs tests/; builds src/.
 2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Dogfood.** On a push to main touching 3 paths; or by hand. On main, it runs src/cli.ts; builds src/.
@@ -69,14 +69,13 @@ No two parts export a helper that looks alike.
 
 - **.claude/** is written by dependabot[bot], which added every file in it.
 - **docs/** is written by dependabot[bot], which added every file in it.
-- **the repository root** is written by dependabot[bot], which added every file in it.
 - **site/** is written by dependabot[bot], which added every file in it.
 - **src/** is written by dependabot[bot], which added every file in it.
 - **tests/** is written by dependabot[bot], which added every file in it.
 
 ## Hand-authored
 
-People write .github/; 1 write with a path built at run time may land here.
+People write .github/ and the repository root; 1 write with a path built at run time may land here.
 
 ## Where to start
 
@@ -92,7 +91,7 @@ Read those in order to follow one pull request end to end.
 - 2 writes and 9 reads go to a path their caller passes, not to this repository.
 - 1 write and 3 reads go to the home directory (.claude-guardian/ and .claude/) or a path their caller passes, not to this repository.
 - 1 read goes to the directory the command is run in (package.json), not to this repository.
-- 1 command is built at run time and not followed.
+- 6 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

@@ -144,6 +144,103 @@
             "render_with_profile_guarded",
             "triage_cmd"
           ],
+          "failurePaths": [
+            {
+              "in": "_handle_guard_violation",
+              "kind": "raise",
+              "line": 184
+            },
+            {
+              "in": "explain_cmd",
+              "kind": "except",
+              "line": 238
+            },
+            {
+              "in": "explain_cmd",
+              "kind": "except",
+              "line": 241
+            },
+            {
+              "in": "explain_cmd",
+              "kind": "except",
+              "line": 264
+            },
+            {
+              "in": "explain_cmd",
+              "kind": "raise",
+              "line": 266
+            },
+            {
+              "in": "triage_cmd",
+              "kind": "raise",
+              "line": 298
+            },
+            {
+              "in": "triage_cmd",
+              "kind": "except",
+              "line": 356
+            },
+            {
+              "in": "last_cmd",
+              "kind": "except",
+              "line": 398
+            },
+            {
+              "in": "last_cmd",
+              "kind": "raise",
+              "line": 400
+            },
+            {
+              "in": "last_cmd",
+              "kind": "except",
+              "line": 444
+            },
+            {
+              "in": "assist_run",
+              "kind": "raise",
+              "line": 455
+            },
+            {
+              "in": "assist_run",
+              "kind": "raise",
+              "line": 472
+            },
+            {
+              "in": "ingest_cmd",
+              "kind": "except",
+              "line": 553
+            },
+            {
+              "in": "ingest_cmd",
+              "kind": "raise",
+              "line": 555
+            },
+            {
+              "in": "ingest_cmd",
+              "kind": "raise",
+              "line": 563
+            },
+            {
+              "in": "ingest_cmd",
+              "kind": "raise",
+              "line": 589
+            },
+            {
+              "in": "ingest_cmd",
+              "kind": "raise",
+              "line": 595
+            },
+            {
+              "in": "ingest_cmd",
+              "kind": "raise",
+              "line": 597
+            },
+            {
+              "in": "ingest_cmd",
+              "kind": "raise",
+              "line": 599
+            }
+          ],
           "hash": "16ecd61dbdc7cb9de4ace2d6f749620ef17de6747ec7af4e29147eb0f322f412",
           "importOrder": [
             "src/a11y-assist/a11y_assist/__init__.py",
@@ -1187,6 +1284,13 @@
             "assist_from_cli_error",
             "load_cli_error"
           ],
+          "failurePaths": [
+            {
+              "in": "load_cli_error",
+              "kind": "raise",
+              "line": 45
+            }
+          ],
           "hash": "d36f48eb0c3015bc7ccf71e73b6e82951cd6ec7d58df8ce8ad89288defde68b6",
           "importsFiles": [
             "src/a11y-assist/a11y_assist/methods.py",
@@ -1237,6 +1341,13 @@
             "get_guard_context",
             "validate_profile_transform"
           ],
+          "failurePaths": [
+            {
+              "in": "validate_profile_transform",
+              "kind": "raise",
+              "line": 388
+            }
+          ],
           "hash": "81ffe43da4afc77d917d59cc95071e66f25cd0872f3dff115f5430dd54eb32c1",
           "importsFiles": [
             "src/a11y-assist/a11y_assist/render.py"
@@ -1257,6 +1368,48 @@
             "verify_provenance",
             "write_advisories",
             "write_ingest_summary"
+          ],
+          "failurePaths": [
+            {
+              "in": "load_findings",
+              "kind": "raise",
+              "line": 59
+            },
+            {
+              "in": "load_findings",
+              "kind": "except",
+              "line": 64
+            },
+            {
+              "in": "load_findings",
+              "kind": "raise",
+              "line": 65
+            },
+            {
+              "in": "load_findings",
+              "kind": "raise",
+              "line": 71
+            },
+            {
+              "in": "load_findings",
+              "kind": "raise",
+              "line": 74
+            },
+            {
+              "in": "verify_provenance",
+              "kind": "except",
+              "line": 144
+            },
+            {
+              "in": "canonicalize",
+              "kind": "raise",
+              "line": 164
+            },
+            {
+              "in": "canonicalize",
+              "kind": "raise",
+              "line": 175
+            }
           ],
           "hash": "389da114289dbcb6f11818f7ea9edb18947ba7705f3bab3fe9a65fc5104196ae",
           "importsFiles": [
@@ -1663,7 +1816,8 @@
             "src/a11y-assist/a11y_assist/profiles/cognitive_load_render.py",
             "src/a11y-assist/a11y_assist/render.py"
           ],
-          "path": "src/a11y-assist/tests/test_cognitive_load.py"
+          "path": "src/a11y-assist/tests/test_cognitive_load.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1699,14 +1853,16 @@
             "src/a11y-assist/a11y_assist/profiles/dyslexia_render.py",
             "src/a11y-assist/a11y_assist/render.py"
           ],
-          "path": "src/a11y-assist/tests/test_dyslexia.py"
+          "path": "src/a11y-assist/tests/test_dyslexia.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "704a1a9d0105c1998a76f5a1afba051114731f919890640d6c05585fd052a224",
           "importsFiles": [
             "src/a11y-assist/a11y_assist/from_cli_error.py"
           ],
-          "path": "src/a11y-assist/tests/test_explain.py"
+          "path": "src/a11y-assist/tests/test_explain.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1719,7 +1875,8 @@
             "src/a11y-assist/a11y_assist/profiles/__init__.py",
             "src/a11y-assist/a11y_assist/render.py"
           ],
-          "path": "src/a11y-assist/tests/test_golden.py"
+          "path": "src/a11y-assist/tests/test_golden.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1759,7 +1916,8 @@
             "src/a11y-assist/a11y_assist/guard.py",
             "src/a11y-assist/a11y_assist/render.py"
           ],
-          "path": "src/a11y-assist/tests/test_guard.py"
+          "path": "src/a11y-assist/tests/test_guard.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1792,7 +1950,8 @@
           "importsFiles": [
             "src/a11y-assist/a11y_assist/cli.py"
           ],
-          "path": "src/a11y-assist/tests/test_guard_integration.py"
+          "path": "src/a11y-assist/tests/test_guard_integration.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1803,7 +1962,8 @@
           "importsFiles": [
             "src/a11y-assist/a11y_assist/ingest.py"
           ],
-          "path": "src/a11y-assist/tests/test_ingest.py"
+          "path": "src/a11y-assist/tests/test_ingest.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "83f612c1fe85f8d525aff36cefcea9e1f10e963940774f8cc806853187d70759",
@@ -1813,7 +1973,8 @@
             "src/a11y-assist/a11y_assist/profiles/__init__.py",
             "src/a11y-assist/a11y_assist/render.py"
           ],
-          "path": "src/a11y-assist/tests/test_methods_metadata.py"
+          "path": "src/a11y-assist/tests/test_methods_metadata.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1851,7 +2012,8 @@
             "src/a11y-assist/a11y_assist/profiles/plain_language_render.py",
             "src/a11y-assist/a11y_assist/render.py"
           ],
-          "path": "src/a11y-assist/tests/test_plain_language.py"
+          "path": "src/a11y-assist/tests/test_plain_language.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "dae621f035f3bb5eb2ac26a02bac4c700e204e67c3231e375422e7be67867235",
@@ -1876,21 +2038,24 @@
             "src/a11y-assist/a11y_assist/profiles/screen_reader_render.py",
             "src/a11y-assist/a11y_assist/render.py"
           ],
-          "path": "src/a11y-assist/tests/test_screen_reader.py"
+          "path": "src/a11y-assist/tests/test_screen_reader.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "7f52383c7b6d090a907e5ea370b99a6fab65e0f77b1e3e7e55249d3943f77951",
           "importsFiles": [
             "src/a11y-assist/a11y_assist/storage.py"
           ],
-          "path": "src/a11y-assist/tests/test_storage_last.py"
+          "path": "src/a11y-assist/tests/test_storage_last.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "fbdcf3bd858bd1f36b14591fb8533f323d62c3fa3c14ffad318b61f9325e8e5c",
           "importsFiles": [
             "src/a11y-assist/a11y_assist/parse_raw.py"
           ],
-          "path": "src/a11y-assist/tests/test_triage.py"
+          "path": "src/a11y-assist/tests/test_triage.py",
+          "testFramework": "pytest"
         }
       ],
       "globs": [
@@ -1918,6 +2083,9 @@
       "outsideReads": 7,
       "outsideWrites": 4,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 15,
       "unresolvedSites": 0
     },
@@ -1987,6 +2155,18 @@
         {
           "entry": "_load_schema",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 58
+            },
+            {
+              "in": "expired_entries",
+              "kind": "except",
+              "line": 116
+            }
+          ],
           "hash": "3f4072addc1ae5f75ea20e38292be6618f7af46670084892f633a68a1f2594aa",
           "path": "src/a11y-ci/a11y_ci/allowlist.py",
           "sequences": []
@@ -1998,6 +2178,58 @@
             "comment_cmd",
             "gate_cmd",
             "main"
+          ],
+          "failurePaths": [
+            {
+              "in": "gate_cmd",
+              "kind": "raise",
+              "line": 106
+            },
+            {
+              "in": "gate_cmd",
+              "kind": "raise",
+              "line": 138
+            },
+            {
+              "in": "gate_cmd",
+              "kind": "except",
+              "line": 144
+            },
+            {
+              "in": "gate_cmd",
+              "kind": "raise",
+              "line": 157
+            },
+            {
+              "in": "gate_cmd",
+              "kind": "except",
+              "line": 158
+            },
+            {
+              "in": "gate_cmd",
+              "kind": "raise",
+              "line": 173
+            },
+            {
+              "in": "gate_cmd",
+              "kind": "except",
+              "line": 174
+            },
+            {
+              "in": "gate_cmd",
+              "kind": "raise",
+              "line": 187
+            },
+            {
+              "in": "gate_cmd",
+              "kind": "raise",
+              "line": 232
+            },
+            {
+              "in": "gate_cmd",
+              "kind": "raise",
+              "line": 242
+            }
           ],
           "hash": "cb21eef2cea44d16eb52493ea7ca9732bf314317567d5a49e85b333b21274934",
           "importOrder": [
@@ -2270,6 +2502,13 @@
             "build_mcp_payload",
             "sha256_file"
           ],
+          "failurePaths": [
+            {
+              "in": "sha256_file",
+              "kind": "except",
+              "line": 28
+            }
+          ],
           "hash": "2a13d85800704819a164b0a4156e6d5bd326a30e18a846717a98e1014c160a88",
           "importsFiles": [
             "src/a11y-ci/a11y_ci/__init__.py",
@@ -2525,6 +2764,13 @@
             "compute_fingerprint",
             "finding_id"
           ],
+          "failurePaths": [
+            {
+              "in": "load",
+              "kind": "except",
+              "line": 70
+            }
+          ],
           "hash": "a2c1a65033ffc58358d4ea3c5f48163c857fd5f0b4c64b24e405f4637c8ba81a",
           "importsFiles": [
             "src/a11y-ci/a11y_ci/severity.py"
@@ -2595,7 +2841,8 @@
           "importsFiles": [
             "src/a11y-ci/a11y_ci/allowlist.py"
           ],
-          "path": "src/a11y-ci/tests/test_allowlist_v2.py"
+          "path": "src/a11y-ci/tests/test_allowlist_v2.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "6fe0a712b8ac7d460349a9084a0461af8d21e1b70c42c6541aa55d4c9bbf55d6",
@@ -2604,7 +2851,8 @@
             "src/a11y-ci/a11y_ci/gate.py",
             "src/a11y-ci/a11y_ci/scorecard.py"
           ],
-          "path": "src/a11y-ci/tests/test_gate.py"
+          "path": "src/a11y-ci/tests/test_gate.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2636,7 +2884,8 @@
             "src/a11y-ci/a11y_ci/mcp_payload.py",
             "src/a11y-ci/a11y_ci/scorecard.py"
           ],
-          "path": "src/a11y-ci/tests/test_mcp_payload.py"
+          "path": "src/a11y-ci/tests/test_mcp_payload.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2650,7 +2899,8 @@
             "src/a11y-ci/a11y_ci/cli.py",
             "src/a11y-ci/a11y_ci/pr_comment.py"
           ],
-          "path": "src/a11y-ci/tests/test_polish.py"
+          "path": "src/a11y-ci/tests/test_polish.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2664,7 +2914,8 @@
           "importsFiles": [
             "src/a11y-ci/a11y_ci/pr_comment.py"
           ],
-          "path": "src/a11y-ci/tests/test_pr_comment.py"
+          "path": "src/a11y-ci/tests/test_pr_comment.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2683,7 +2934,8 @@
             "src/a11y-ci/a11y_ci/help.py",
             "src/a11y-ci/a11y_ci/report.py"
           ],
-          "path": "src/a11y-ci/tests/test_rule_help.py"
+          "path": "src/a11y-ci/tests/test_rule_help.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2696,7 +2948,8 @@
             "src/a11y-ci/a11y_ci/cli.py",
             "src/a11y-ci/a11y_ci/scorecard.py"
           ],
-          "path": "src/a11y-ci/tests/test_schema_validation.py"
+          "path": "src/a11y-ci/tests/test_schema_validation.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2710,7 +2963,8 @@
           "importsFiles": [
             "src/a11y-ci/a11y_ci/scorecard.py"
           ],
-          "path": "src/a11y-ci/tests/test_scorecard_canonical.py"
+          "path": "src/a11y-ci/tests/test_scorecard_canonical.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -2743,6 +2997,9 @@
       "outsideReads": 5,
       "outsideWrites": 4,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 14,
       "unresolvedSites": 0
     },
@@ -2820,6 +3077,13 @@
           "exports": [
             "run"
           ],
+          "failurePaths": [
+            {
+              "in": "runScan",
+              "kind": "catch",
+              "line": 68
+            }
+          ],
           "hash": "6d8fa9227a5c903dec09f7004a36b5bfe0e77741a33f91e02514a60046f7046e",
           "importsFiles": [
             "src/a11y-evidence-engine/src/scan.js"
@@ -2829,6 +3093,18 @@
         {
           "exports": [
             "canonicalize"
+          ],
+          "failurePaths": [
+            {
+              "in": "canonicalize",
+              "kind": "throw",
+              "line": 31
+            },
+            {
+              "in": "canonicalize",
+              "kind": "throw",
+              "line": 49
+            }
           ],
           "hash": "e8870e69adadca20178f7b1a1fa04b67454d16f271bd23411a96c1c043506a34",
           "path": "src/a11y-evidence-engine/src/evidence/canonicalize.js"
@@ -2856,6 +3132,23 @@
         {
           "exports": [
             "walkHtmlFiles"
+          ],
+          "failurePaths": [
+            {
+              "in": "walkHtmlFiles",
+              "kind": "throw",
+              "line": 18
+            },
+            {
+              "in": "walkHtmlFiles",
+              "kind": "throw",
+              "line": 27
+            },
+            {
+              "in": "walkHtmlFiles",
+              "kind": "throw",
+              "line": 37
+            }
           ],
           "hash": "e8c4c97744f8ceab51047c706774490508f61c09e888721a89d297f80ec27a7e",
           "path": "src/a11y-evidence-engine/src/fswalk.js"
@@ -2941,6 +3234,13 @@
           "exports": [
             "scan"
           ],
+          "failurePaths": [
+            {
+              "in": "scan",
+              "kind": "throw",
+              "line": 29
+            }
+          ],
           "hash": "715bceea490b739b659ec9a0aeb481afe361ad99954f80df207a7fff4febe1dc",
           "importOrder": [
             "src/a11y-evidence-engine/src/fswalk.js",
@@ -2963,7 +3263,8 @@
           "importsFiles": [
             "src/a11y-evidence-engine/src/scan.js"
           ],
-          "path": "src/a11y-evidence-engine/test/scan.test.js"
+          "path": "src/a11y-evidence-engine/test/scan.test.js",
+          "testFramework": "node --test"
         },
         {
           "hash": "db9ce4ceee71d008e2f402f0cff4f5e8ca291b0bcd9c5afd0d7554ceb53f330b",
@@ -2975,7 +3276,8 @@
             "src/a11y-evidence-engine/src/evidence/canonicalize.js",
             "src/a11y-evidence-engine/src/scan.js"
           ],
-          "path": "src/a11y-evidence-engine/test/vectors.test.js"
+          "path": "src/a11y-evidence-engine/test/vectors.test.js",
+          "testFramework": "node --test"
         }
       ],
       "globs": [
@@ -2996,6 +3298,9 @@
       "outsideReads": 4,
       "outsideWrites": 6,
       "role": "code",
+      "testRunners": [
+        "node --test"
+      ],
       "testedBy": 2,
       "unresolvedSites": 0
     },
@@ -3084,6 +3389,13 @@
             "schema",
             "scorecard",
             "validate"
+          ],
+          "failurePaths": [
+            {
+              "in": "scan",
+              "kind": "except",
+              "line": 106
+            }
           ],
           "hash": "bde28dbbaa99204543ad6f79aad5ff42d4096467a1db3efcb0a2b225b7675565",
           "importOrder": [
@@ -3276,6 +3588,28 @@
           ]
         },
         {
+          "failurePaths": [
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 92
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 98
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 107
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 109
+            }
+          ],
           "hash": "fe5af4cf8c0ec1385d8db99db216f574146f575203685b807b32296a1f12dd5a",
           "path": "src/a11y-lint/a11y_lint/errors.py"
         },
@@ -3597,6 +3931,23 @@
             "validate_json_file",
             "validate_message"
           ],
+          "failurePaths": [
+            {
+              "in": "validate_json_file",
+              "kind": "except",
+              "line": 104
+            },
+            {
+              "in": "validate_json_file",
+              "kind": "except",
+              "line": 106
+            },
+            {
+              "in": "validate_and_convert",
+              "kind": "except",
+              "line": 148
+            }
+          ],
           "hash": "12099247682f63753c74902390e12cb32f8e736850fcdf06dd6a088dbd000e01",
           "importsFiles": [
             "src/a11y-lint/a11y_lint/errors.py"
@@ -3674,14 +4025,16 @@
           "importsFiles": [
             "src/a11y-lint/a11y_lint/cli.py"
           ],
-          "path": "src/a11y-lint/tests/test_cli.py"
+          "path": "src/a11y-lint/tests/test_cli.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "d083dadebd4cd8d0c6899614068f533ed7e185e739f26e45b332c347f9d61a3f",
           "importsFiles": [
             "src/a11y-lint/a11y_lint/errors.py"
           ],
-          "path": "src/a11y-lint/tests/test_errors.py"
+          "path": "src/a11y-lint/tests/test_errors.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "28c05c6ef9e92a4496689f4650e2ea4083a020c5980a3947f9d4282f1ff58143",
@@ -3693,7 +4046,8 @@
             "src/a11y-lint/a11y_lint/errors.py",
             "src/a11y-lint/a11y_lint/render.py"
           ],
-          "path": "src/a11y-lint/tests/test_render.py"
+          "path": "src/a11y-lint/tests/test_render.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "e3cf6f4f98250d4599901aee646dc53fdb2f8f8c5bc25dc40e00f4d24fe0862c",
@@ -3707,7 +4061,8 @@
             "src/a11y-lint/a11y_lint/report_md.py",
             "src/a11y-lint/a11y_lint/scorecard.py"
           ],
-          "path": "src/a11y-lint/tests/test_report_md.py"
+          "path": "src/a11y-lint/tests/test_report_md.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "b43aaf70b803e31fcc0101baacbeea88bd7748f3a3a165192ee4caa8fd65f7d5",
@@ -3719,7 +4074,8 @@
             "src/a11y-lint/a11y_lint/errors.py",
             "src/a11y-lint/a11y_lint/scan_cli_text.py"
           ],
-          "path": "src/a11y-lint/tests/test_scan_cli_text.py"
+          "path": "src/a11y-lint/tests/test_scan_cli_text.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "9a660e88067c7763bbe1b742db01e5c76fa3c8788f9d925ba73a1bc6f6634671",
@@ -3731,7 +4087,8 @@
             "src/a11y-lint/a11y_lint/errors.py",
             "src/a11y-lint/a11y_lint/scorecard.py"
           ],
-          "path": "src/a11y-lint/tests/test_scorecard.py"
+          "path": "src/a11y-lint/tests/test_scorecard.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "3c01fcf95abe9b9475113683fa1e598f22e4a0815337335c978e0a3f302c4049",
@@ -3743,7 +4100,8 @@
             "src/a11y-lint/a11y_lint/errors.py",
             "src/a11y-lint/a11y_lint/validate.py"
           ],
-          "path": "src/a11y-lint/tests/test_validate.py"
+          "path": "src/a11y-lint/tests/test_validate.py",
+          "testFramework": "pytest"
         }
       ],
       "globs": [
@@ -3764,6 +4122,9 @@
       "outsideReads": 6,
       "outsideWrites": 4,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 8,
       "unresolvedSites": 0
     },
@@ -3810,6 +4171,23 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "handleDiagnose",
+              "kind": "catch",
+              "line": 272
+            },
+            {
+              "in": "handleDiagnose",
+              "kind": "catch",
+              "line": 285
+            },
+            {
+              "in": "handleDiagnose",
+              "kind": "catch",
+              "line": 294
+            }
+          ],
           "hash": "aefb6dbaf0f621ff98e323c8f132d0705e8a9e3b220fce6476d97a11cb69d188",
           "importsFiles": [
             "src/a11y-mcp-tools/src/envelope.js",
@@ -3936,6 +4314,23 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "handleRequest",
+              "kind": "catch",
+              "line": 78
+            },
+            {
+              "in": "handleToolCall",
+              "kind": "catch",
+              "line": 183
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 225
+            }
+          ],
           "hash": "cf755334f84b80332622eb6acd5842b8cdd61749f8744d42eeeaf9884b0a4002",
           "importsFiles": [
             "src/a11y-mcp-tools/src/envelope.js",
@@ -4205,6 +4600,13 @@
             "normalizeRequest",
             "withEnvelope"
           ],
+          "failurePaths": [
+            {
+              "in": "withEnvelope",
+              "kind": "catch",
+              "line": 152
+            }
+          ],
           "hash": "fd0dc373dae616ff9e88efcea01a4f36b1857e3346d6e1f13a13943b19aedca8",
           "path": "src/a11y-mcp-tools/src/envelope.js"
         },
@@ -4290,6 +4692,23 @@
             "diagnose",
             "execute"
           ],
+          "failurePaths": [
+            {
+              "in": "execute",
+              "kind": "catch",
+              "line": 78
+            },
+            {
+              "in": "diagnose",
+              "kind": "throw",
+              "line": 106
+            },
+            {
+              "in": "parseDomArtifact",
+              "kind": "catch",
+              "line": 211
+            }
+          ],
           "hash": "6cf587523a1e3004f7df3483d7f39a6d9796ba9ef58fd6caa01154cb9fa7ee9f",
           "importsFiles": [
             "src/a11y-mcp-tools/src/schemas/index.js"
@@ -4302,6 +4721,28 @@
             "captureEvidence",
             "createDomSnapshot",
             "execute"
+          ],
+          "failurePaths": [
+            {
+              "in": "execute",
+              "kind": "catch",
+              "line": 34
+            },
+            {
+              "in": "captureEvidence",
+              "kind": "throw",
+              "line": 71
+            },
+            {
+              "in": "captureFile",
+              "kind": "throw",
+              "line": 119
+            },
+            {
+              "in": "captureCliLog",
+              "kind": "throw",
+              "line": 182
+            }
           ],
           "hash": "4daaa1fd3bc45eb8215e4de5c6ff1b0bfedaafa4bb3ed829b79a00737ad3e2e9",
           "importsFiles": [
@@ -4323,25 +4764,29 @@
         },
         {
           "hash": "dc4dfeca5b1fade22c4cc7ec9d73c4f6e32bb0a02c688428305b22c3bf7a3e45",
-          "path": "src/a11y-mcp-tools/test/contract.test.mjs"
+          "path": "src/a11y-mcp-tools/test/contract.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "6807b36e35eacccf6c0af44f96aacb9e23a8e2221f6592c14bf4892e7fd701de",
           "importsFiles": [
             "src/a11y-mcp-tools/src/tools/diagnose.js"
           ],
-          "path": "src/a11y-mcp-tools/test/diagnose.test.js"
+          "path": "src/a11y-mcp-tools/test/diagnose.test.js",
+          "testFramework": "node --test"
         },
         {
           "hash": "a932fdbb317971e8d2521541fd8c08a9ff8932a522b5601cef436d435728050b",
           "importsFiles": [
             "src/a11y-mcp-tools/src/tools/evidence.js"
           ],
-          "path": "src/a11y-mcp-tools/test/evidence.test.js"
+          "path": "src/a11y-mcp-tools/test/evidence.test.js",
+          "testFramework": "node --test"
         },
         {
           "hash": "74593243e3fdc37cad3462a199398bb68221ce5ffc648d698214699b573a2062",
-          "path": "src/a11y-mcp-tools/test/schema.test.js"
+          "path": "src/a11y-mcp-tools/test/schema.test.js",
+          "testFramework": "node --test"
         }
       ],
       "globs": [
@@ -4362,6 +4807,9 @@
       "outsideReads": 6,
       "outsideWrites": 2,
       "role": "code",
+      "testRunners": [
+        "node --test"
+      ],
       "testedBy": 2,
       "unresolvedSites": 0
     },
@@ -5441,6 +5889,52 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "src/a11y-assist/pyproject.toml",
+          "dir": "src/a11y-assist",
+          "files": 14,
+          "job": "python",
+          "runner": "pytest",
+          "step": "Run tests"
+        },
+        {
+          "config": "src/a11y-ci/pyproject.toml",
+          "dir": "src/a11y-ci",
+          "files": 11,
+          "job": "python",
+          "runner": "pytest",
+          "step": "Run tests"
+        },
+        {
+          "config": "src/a11y-lint/pyproject.toml",
+          "dir": "src/a11y-lint",
+          "files": 8,
+          "job": "python",
+          "runner": "pytest",
+          "step": "Run tests"
+        },
+        {
+          "dir": "src/a11y-evidence-engine",
+          "files": 2,
+          "job": "nodejs",
+          "runner": "node --test",
+          "step": "Run tests",
+          "through": [
+            "npm test (src/a11y-evidence-engine)"
+          ]
+        },
+        {
+          "dir": "src/a11y-mcp-tools",
+          "files": 4,
+          "job": "nodejs",
+          "runner": "node --test",
+          "step": "Run tests",
+          "through": [
+            "npm test (src/a11y-mcp-tools)"
+          ]
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -5669,6 +6163,21 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "job": "publish",
+          "ran": [
+            "scripts/verify.sh",
+            "scripts/verify_handbooks.py"
+          ],
+          "runner": null,
+          "step": "4",
+          "through": [
+            "npm test",
+            "scripts/verify.sh"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "workflow_dispatch"
@@ -5976,7 +6485,7 @@
     }
   ],
   "edges": [],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "f18e2462ddce2c0d07a47f210bdf44d8119353ee",
     "tracked": 331

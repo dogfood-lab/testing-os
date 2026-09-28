@@ -120,22 +120,22 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 1,
-      "changed": 3,
+      "added": 3,
+      "changed": 5,
       "moved": 0,
-      "parts": 2,
+      "parts": 3,
       "removed": 0
     },
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-26; 1 file added and 3 changed content.",
+        "sentence": "Nothing structural changed since 2026-09-26; 3 files added and 5 changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "f9d887fc351abdc13547f76db4360de53a8e7234",
-      "generatedAt": "2026-09-26T13:56:52.073Z"
+      "commit": "bb0da47e72e2d9e470c41a18ccbde88a47162c9d",
+      "generatedAt": "2026-09-26T23:27:18.354Z"
     },
     "unchanged": true
   },
@@ -158,12 +158,12 @@
   ],
   "changesTogetherNote": [
     "1 file changed together with its own test, as expected.",
-    "Window: 180 days; a pair counts from 10 shared commits, since 37 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
+    "Window: 180 days; a pair counts from 10 shared commits, since 38 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 1,
-  "commit": "73d302957fcfbf0e31ca6614894358230ce56339",
+  "commit": "f4235bffb496fa784c719b35a30d1149d21e63fe",
   "defaultBranch": "main",
-  "derived": "23 parts, mostly JavaScript (1433 files), Python (161), TypeScript (158), Rust (88), GDScript (32), HTML (14), shell (14), Astro (8), CSS (5), C# (3) and PowerShell (1). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
+  "derived": "23 parts, mostly JavaScript (1530 files), TypeScript (213), Python (195), Rust (93), GDScript (33), shell (18), HTML (14), Astro (8), CSS (5), C# (3) and PowerShell (1). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
   "doors": [
     {
       "checks": [
@@ -196,7 +196,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 104
+          "files": 116
         },
         {
           "boundary": "docker",
@@ -251,7 +251,7 @@
         {
           "boundary": "verify",
           "depth": 0,
-          "files": 36
+          "files": 35
         }
       ],
       "runs": [
@@ -274,7 +274,7 @@
         "packages/atlas/adapter/explain.test.js",
         "packages/atlas/adapter/fleet-index.test.js",
         "packages/atlas/adapter/fleet.test.js",
-        "packages/atlas/adapter/init-data-roles.test.js",
+        "packages/atlas/adapter/gaps.test.js",
         "packages/atlas/core/action-inputs.test.js",
         "packages/atlas/core/artifact-builds.test.js",
         "packages/atlas/core/astro-frontmatter.test.js",
@@ -299,6 +299,7 @@
         "packages/atlas/sidecar/server.test.js",
         "packages/atlas/sidecar/size.test.js",
         "packages/atlas/sidecar/static.test.js",
+        "packages/atlas/sidecar/test-gaps-tool.test.js",
         "packages/atlas/sidecar/tools.test.js",
         "packages/dogfood-swarm/a3-roadmap-envelope-conformance.test.js",
         "packages/dogfood-swarm/adjudicate-explicit-wave.test.js",
@@ -428,7 +429,6 @@
         "packages/verify/f-65d4d6dd-cli-torn-policy.test.js",
         "packages/verify/f-70338558-malformed-step-dedupe.test.js",
         "packages/verify/f-88fb37ff-reverse-verdict-consistency.test.js",
-        "packages/verify/f-a0a4d806-reasons-fail-floor.test.js",
         "packages/verify/validators/f-2a5ddafa-provenance-retry-warn.test.js",
         "packages/verify/validators/f-5fd3f832-retry-after-clamp.test.js",
         "packages/verify/validators/f-ad98b5ac-required-steps-map-guard.test.js",
@@ -452,8 +452,8 @@
         "scripts/check-handbook-imagery.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 724,
-      "runsMore": 738,
+      "runsCount": 740,
+      "runsMore": 754,
       "sends": [
         "publishes workspace packages to npm and a container image",
         "creates a GitHub release"
@@ -491,7 +491,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 106
+          "files": 117
         },
         {
           "boundary": "dogfood",
@@ -564,8 +564,8 @@
         "packages/atlas/adapter/explain.test.js",
         "packages/atlas/adapter/fleet-index.test.js",
         "packages/atlas/adapter/fleet.test.js",
+        "packages/atlas/adapter/gaps.test.js",
         "packages/atlas/adapter/init-data-roles.test.js",
-        "packages/atlas/adapter/init-fixture-manifest.test.js",
         "packages/atlas/core/action-inputs.test.js",
         "packages/atlas/core/artifact-builds.test.js",
         "packages/atlas/core/astro-frontmatter.test.js",
@@ -579,7 +579,6 @@
         "packages/atlas/core/checkout-path.test.js",
         "packages/atlas/core/closure-roots.test.js",
         "packages/atlas/core/command-doors.test.js",
-        "packages/atlas/core/command-files.test.js",
         "packages/atlas/sidecar/check-change.test.js",
         "packages/atlas/sidecar/conformance.test.js",
         "packages/atlas/sidecar/data.test.js",
@@ -591,6 +590,7 @@
         "packages/atlas/sidecar/server.test.js",
         "packages/atlas/sidecar/size.test.js",
         "packages/atlas/sidecar/static.test.js",
+        "packages/atlas/sidecar/test-gaps-tool.test.js",
         "packages/atlas/sidecar/tools.test.js",
         "packages/dogfood-swarm/a3-roadmap-envelope-conformance.test.js",
         "packages/dogfood-swarm/adjudicate-explicit-wave.test.js",
@@ -745,8 +745,8 @@
         "scripts/check-lockfile-drift-ci.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 723,
-      "runsMore": 737,
+      "runsCount": 739,
+      "runsMore": 753,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -1198,7 +1198,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 61
+          "files": 72
         }
       ],
       "runs": [
@@ -1353,7 +1353,7 @@
       "to": "schemas"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [
     {
       "block": true,
@@ -1409,24 +1409,24 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-26T14:37:53.161Z",
+  "generatedAt": "2026-09-28T13:12:06.438Z",
   "limits": [
     "4 import sites name declared dependencies that share their names with local modules (datasets, docx and xrpl); they are read as the dependencies, which are not in this repository.",
-    "158 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 155 more.",
+    "168 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 165 more.",
     "3 import sites name a path outside this repository, so what they load is not followed.",
     "13 files in fixtures use syntax the parser cannot read (fixtures/atlas/grammar-shapes/src/broken.ts, fixtures/atlas/grammars-rust-gdscript/scripts/broken.gd, fixtures/atlas/grammars-rust-gdscript/src/broken.rs and 10 more), so what they import is not known: a bare `&` in JSX text (1) and other syntax (12).",
-    "9 writes and 34 reads use paths built at run time and are not named here.",
+    "10 writes and 34 reads use paths built at run time and are not named here.",
     "6 writes go to places this repository does not track, so they are not listed as generated.",
-    "74 writes and 588 reads go to a path their caller passes, not to this repository.",
-    "48 reads go to the directory the command is run in, not to this repository.",
+    "74 writes and 615 reads go to a path their caller passes, not to this repository.",
+    "50 reads go to the directory the command is run in, not to this repository.",
     "2 writes and 8 reads go to the directory the command is run in (.github/, dogfood/, policy.example.yaml and 2 more places) or a path their caller passes, not to this repository.",
     "7 writes and 3 reads go to a temporary directory, not to this repository.",
     "2 writes and 3 reads go to a temporary directory or a path their caller passes, not to this repository.",
-    "31 commands are built at run time and not followed, 22 of them in tests.",
+    "28 commands are built at run time and not followed, 20 of them in tests.",
     "1 file belongs to no part: packages/.gitkeep.",
     "Readers marked (found by text) come from scanning unparsed files.",
-    "Release runs or checks 728 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "CI runs or checks 724 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
+    "Release runs or checks 744 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "CI runs or checks 740 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
   ],
   "mainDoor": ".github/workflows/ingest.yml",
   "partLabels": {
@@ -1462,7 +1462,7 @@
         "scripts/doc-drift-patterns.json (found by text)"
       ],
       "target": "README.md",
-      "tests": 21
+      "tests": 23
     },
     {
       "readers": [
@@ -1720,20 +1720,20 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 878,
+  "testFiles": 960,
   "testedBy": {
-    "atlas": 248,
-    "dogfood-swarm": 300,
-    "findings": 139,
-    "ingest": 80,
+    "atlas": 266,
+    "dogfood-swarm": 306,
+    "findings": 144,
+    "ingest": 85,
     "portfolio": 23,
-    "report": 33,
-    "schemas": 114,
-    "scripts": 16,
+    "report": 38,
+    "schemas": 115,
+    "scripts": 22,
     "site": 1,
-    "verify": 88
+    "verify": 92
   },
-  "unnamedWrites": 9,
+  "unnamedWrites": 10,
   "unread": [],
   "unreadFiles": 13,
   "unreadNote": [],

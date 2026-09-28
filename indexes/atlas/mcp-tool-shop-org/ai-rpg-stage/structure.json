@@ -1835,6 +1835,17 @@
             "gate",
             "main"
           ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 38
+            },
+            {
+              "in": "gate",
+              "kind": "except",
+              "line": 130
+            }
+          ],
           "hash": "b94f2234de038743dec29e8719f4ce493ef81d69640359b60ac7b3d295522a3e",
           "path": "assets/dimetric/andon/iso_andon.py"
         },
@@ -1859,6 +1870,12 @@
             "diamond_alpha",
             "main"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 52
+            }
+          ],
           "hash": "92ca5584d853cdd243f63f2a4956f1faff5d83bd3f15bda2778e8e626cb4167c",
           "path": "assets/dimetric/camera/diamond_clip.py"
         },
@@ -1879,6 +1896,13 @@
             "parse_args",
             "place_foot_at_bottom",
             "screen_extent"
+          ],
+          "failurePaths": [
+            {
+              "in": "fresh_scene",
+              "kind": "except",
+              "line": 67
+            }
           ],
           "hash": "aa15b41361f32a5938d991caf949f597f5d04ae26536166f574216bdc0ed0cfc",
           "path": "assets/dimetric/camera/dimetric_60_45.py"
@@ -4796,6 +4820,27 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "job": "headless",
+          "ran": [
+            "tests/test_diorama.gd",
+            "tests/test_felt_juice.gd",
+            "tests/test_felt_mixer.gd",
+            "tests/test_felt_voice.gd",
+            "tests/test_framing.gd",
+            "tests/test_iso_math.gd",
+            "tests/test_iso_world.gd",
+            "tests/test_live_session.gd",
+            "tests/test_scene_join.gd",
+            "tests/test_tick_queue.gd",
+            "tests/test_wire_session.gd",
+            "tools/headless.gd"
+          ],
+          "runner": null,
+          "step": "Headless suite"
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -5035,7 +5080,7 @@
       "to": "stage"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "5e9e75f945d6fed8b119d8709e20e12a72d11a34",
     "tracked": 679

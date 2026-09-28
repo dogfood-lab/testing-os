@@ -286,20 +286,136 @@
       "files": [
         {
           "hash": "0f5ee4659cb40bf5038ae389ea156204eb8b74c913e8cb296679329c9b5eeebd",
-          "path": "src/cli-e2e.test.ts"
+          "path": "src/cli-e2e.test.ts",
+          "spawns": [
+            "src/cli-e2e.test.ts",
+            "src/cli.test.ts",
+            "src/cli.ts",
+            "src/commands/close.test.ts",
+            "src/commands/close.ts",
+            "src/commands/init.test.ts",
+            "src/commands/init.ts",
+            "src/commands/new.test.ts",
+            "src/commands/new.ts",
+            "src/commands/relay.test.ts",
+            "src/commands/relay.ts",
+            "src/commands/send.test.ts",
+            "src/commands/send.ts",
+            "src/commands/status.test.ts",
+            "src/commands/status.ts",
+            "src/commands/sync.test.ts",
+            "src/commands/sync.ts",
+            "src/commands/thread.test.ts",
+            "src/commands/thread.ts",
+            "src/cross-rig.test.ts",
+            "src/engine/body-hash.test.ts",
+            "src/engine/body-hash.ts",
+            "src/engine/config.test.ts",
+            "src/engine/config.ts",
+            "src/engine/envelope.test.ts",
+            "src/engine/envelope.ts",
+            "src/engine/git-diff.test.ts",
+            "src/engine/git-diff.ts",
+            "src/engine/git.test.ts",
+            "src/engine/git.ts",
+            "src/engine/index.ts",
+            "src/engine/peer-rigs.test.ts",
+            "src/engine/peer-rigs.ts",
+            "src/engine/rig-id.test.ts",
+            "src/engine/rig-id.ts",
+            "src/engine/schema-validator.test.ts",
+            "src/engine/schema-validator.ts",
+            "src/engine/status.test.ts",
+            "src/engine/status.ts",
+            "src/engine/threads.test.ts",
+            "src/engine/threads.ts",
+            "src/engine/validate-file.test.ts",
+            "src/engine/validate-file.ts",
+            "src/engine/verify-hash.test.ts",
+            "src/engine/verify-hash.ts",
+            "src/smoke.test.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "d325a85749c844292089c22c2ea1bcbb1f53dacac5197181698c73772c1305cf",
           "importsFiles": [
             "src/cli.ts"
           ],
-          "path": "src/cli.test.ts"
+          "path": "src/cli.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "main",
           "entryRule": 1,
           "exports": [
             "parseArgs"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadPackageVersion",
+              "kind": "catch",
+              "line": 34
+            },
+            {
+              "in": "loadPackageVersion",
+              "kind": "throw",
+              "line": 35
+            },
+            {
+              "in": "loadPackageVersion",
+              "kind": "catch",
+              "line": 44
+            },
+            {
+              "in": "loadPackageVersion",
+              "kind": "throw",
+              "line": 45
+            },
+            {
+              "in": "loadPackageVersion",
+              "kind": "throw",
+              "line": 51
+            },
+            {
+              "in": "loadPackageVersion",
+              "kind": "throw",
+              "line": 58
+            },
+            {
+              "in": "emitStartupTrace",
+              "kind": "catch",
+              "line": 99
+            },
+            {
+              "in": "parseArgs",
+              "kind": "throw",
+              "line": 214
+            },
+            {
+              "in": "fail",
+              "kind": "throw",
+              "line": 264
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 359
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 507
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 512
+            },
+            {
+              "kind": "catch",
+              "line": 531
+            }
           ],
           "hash": "d0eec6680239ef954ac716225092edaecb502d0cb3d42e53cddefc7c13bcd78d",
           "importsFiles": [
@@ -756,13 +872,61 @@
             "src/commands/new.ts",
             "src/commands/send.ts"
           ],
-          "path": "src/commands/close.test.ts"
+          "path": "src/commands/close.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "runClose",
           "entryRule": 4,
           "exports": [
             "runClose"
+          ],
+          "failurePaths": [
+            {
+              "in": "runClose",
+              "kind": "throw",
+              "line": 68
+            },
+            {
+              "in": "runClose",
+              "kind": "throw",
+              "line": 80
+            },
+            {
+              "in": "runClose",
+              "kind": "throw",
+              "line": 87
+            },
+            {
+              "in": "runClose",
+              "kind": "throw",
+              "line": 135
+            },
+            {
+              "in": "runClose",
+              "kind": "catch",
+              "line": 156
+            },
+            {
+              "in": "runClose",
+              "kind": "catch",
+              "line": 159
+            },
+            {
+              "in": "runClose",
+              "kind": "throw",
+              "line": 165
+            },
+            {
+              "in": "runClose",
+              "kind": "catch",
+              "line": 177
+            },
+            {
+              "in": "runClose",
+              "kind": "throw",
+              "line": 183
+            }
           ],
           "hash": "4060403914bbec5b764b14e4a37e7d43fc78c81da7b1e7236defd05400a6643d",
           "importsFiles": [
@@ -855,7 +1019,8 @@
             "src/commands/init.ts",
             "src/engine/config.ts"
           ],
-          "path": "src/commands/init.test.ts"
+          "path": "src/commands/init.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "runInit",
@@ -863,6 +1028,33 @@
           "exports": [
             "runInit",
             "shouldPrintBridgeIgnoreHint"
+          ],
+          "failurePaths": [
+            {
+              "in": "runInit",
+              "kind": "throw",
+              "line": 91
+            },
+            {
+              "in": "runInit",
+              "kind": "throw",
+              "line": 94
+            },
+            {
+              "in": "runInit",
+              "kind": "throw",
+              "line": 98
+            },
+            {
+              "in": "runInit",
+              "kind": "throw",
+              "line": 123
+            },
+            {
+              "in": "runInit",
+              "kind": "catch",
+              "line": 130
+            }
           ],
           "hash": "8e554bf0339f18e50eebc3a525b3369b96083f0814a2d100bf6d2fb0474c09cc",
           "importsFiles": [
@@ -930,13 +1122,26 @@
             "src/commands/init.ts",
             "src/commands/new.ts"
           ],
-          "path": "src/commands/new.test.ts"
+          "path": "src/commands/new.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "runNew",
           "entryRule": 4,
           "exports": [
             "runNew"
+          ],
+          "failurePaths": [
+            {
+              "in": "runNew",
+              "kind": "throw",
+              "line": 48
+            },
+            {
+              "in": "runNew",
+              "kind": "throw",
+              "line": 61
+            }
           ],
           "hash": "8f6485b3a64311dc2082bea193ad8ebe72558f732cf8c4b230dfbebd5a74c233",
           "importsFiles": [
@@ -993,13 +1198,136 @@
             "src/engine/body-hash.ts",
             "src/engine/envelope.ts"
           ],
-          "path": "src/commands/relay.test.ts"
+          "path": "src/commands/relay.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "runRelay",
           "entryRule": 4,
           "exports": [
             "runRelay"
+          ],
+          "failurePaths": [
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 189
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 202
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 215
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 229
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 241
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 248
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 257
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 273
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 287
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 321
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 326
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 372
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 392
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 398
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 420
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 424
+            },
+            {
+              "in": "runRelay",
+              "kind": "catch",
+              "line": 427
+            },
+            {
+              "in": "runRelay",
+              "kind": "catch",
+              "line": 434
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 439
+            },
+            {
+              "in": "runRelay",
+              "kind": "catch",
+              "line": 449
+            },
+            {
+              "in": "runRelay",
+              "kind": "throw",
+              "line": 455
+            },
+            {
+              "in": "inferRelayRecipient",
+              "kind": "catch",
+              "line": 524
+            },
+            {
+              "in": "inferRelayRecipient",
+              "kind": "catch",
+              "line": 533
+            },
+            {
+              "in": "inferRelayRecipient",
+              "kind": "catch",
+              "line": 539
+            }
           ],
           "hash": "55363839f803fbbfba1b88f23c6cf666e203ad64140594b27b390f77b0aa8b07",
           "importsFiles": [
@@ -1171,13 +1499,76 @@
             "src/engine/body-hash.ts",
             "src/engine/envelope.ts"
           ],
-          "path": "src/commands/send.test.ts"
+          "path": "src/commands/send.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "runSend",
           "entryRule": 4,
           "exports": [
             "runSend"
+          ],
+          "failurePaths": [
+            {
+              "in": "chooseFilename",
+              "kind": "throw",
+              "line": 120
+            },
+            {
+              "in": "runSend",
+              "kind": "throw",
+              "line": 129
+            },
+            {
+              "in": "runSend",
+              "kind": "throw",
+              "line": 139
+            },
+            {
+              "in": "runSend",
+              "kind": "throw",
+              "line": 144
+            },
+            {
+              "in": "runSend",
+              "kind": "throw",
+              "line": 153
+            },
+            {
+              "in": "runSend",
+              "kind": "throw",
+              "line": 172
+            },
+            {
+              "in": "runSend",
+              "kind": "throw",
+              "line": 211
+            },
+            {
+              "in": "runSend",
+              "kind": "catch",
+              "line": 234
+            },
+            {
+              "in": "runSend",
+              "kind": "catch",
+              "line": 237
+            },
+            {
+              "in": "runSend",
+              "kind": "throw",
+              "line": 243
+            },
+            {
+              "in": "runSend",
+              "kind": "catch",
+              "line": 255
+            },
+            {
+              "in": "runSend",
+              "kind": "throw",
+              "line": 261
+            }
           ],
           "hash": "a7af8b3dba8d9d50afdb643438a7b67075f9b810795a64633cd3003a44b242da",
           "importsFiles": [
@@ -1288,7 +1679,8 @@
             "src/commands/send.ts",
             "src/commands/status.ts"
           ],
-          "path": "src/commands/status.test.ts"
+          "path": "src/commands/status.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "runStatus",
@@ -1377,7 +1769,8 @@
             "src/commands/sync.ts",
             "src/engine/git.ts"
           ],
-          "path": "src/commands/sync.test.ts"
+          "path": "src/commands/sync.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "runSync",
@@ -1440,13 +1833,36 @@
             "src/commands/send.ts",
             "src/commands/thread.ts"
           ],
-          "path": "src/commands/thread.test.ts"
+          "path": "src/commands/thread.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "runThread",
           "entryRule": 4,
           "exports": [
             "runThread"
+          ],
+          "failurePaths": [
+            {
+              "in": "readThreadEnvelopes",
+              "kind": "catch",
+              "line": 129
+            },
+            {
+              "in": "readThreadEnvelopes",
+              "kind": "catch",
+              "line": 136
+            },
+            {
+              "in": "readThreadEnvelopes",
+              "kind": "catch",
+              "line": 146
+            },
+            {
+              "in": "runThread",
+              "kind": "throw",
+              "line": 236
+            }
           ],
           "hash": "88b9fdf6e2f02336f97ca091529d8c0898dcd6a80471043febfa50277527653d",
           "importsFiles": [
@@ -1512,19 +1928,28 @@
             "src/engine/body-hash.ts",
             "src/engine/envelope.ts"
           ],
-          "path": "src/cross-rig.test.ts"
+          "path": "src/cross-rig.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "329fa1550faf440de114dc0faef7e836a9912e0f3bf5cce36378ef01e2a879e5",
           "importsFiles": [
             "src/engine/body-hash.ts"
           ],
-          "path": "src/engine/body-hash.test.ts"
+          "path": "src/engine/body-hash.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "bodyHash",
             "normalizeBody"
+          ],
+          "failurePaths": [
+            {
+              "in": "bodyHash",
+              "kind": "throw",
+              "line": 39
+            }
           ],
           "hash": "2980f31a77cce561f4caad3d728b0a3e5a57d589369430cfce663309c37a280d",
           "path": "src/engine/body-hash.ts"
@@ -1534,13 +1959,76 @@
           "importsFiles": [
             "src/engine/config.ts"
           ],
-          "path": "src/engine/config.test.ts"
+          "path": "src/engine/config.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "configPath",
             "readConfig",
             "writeConfig"
+          ],
+          "failurePaths": [
+            {
+              "in": "readConfig",
+              "kind": "throw",
+              "line": 31
+            },
+            {
+              "in": "readConfig",
+              "kind": "catch",
+              "line": 46
+            },
+            {
+              "in": "readConfig",
+              "kind": "throw",
+              "line": 47
+            },
+            {
+              "in": "readConfig",
+              "kind": "throw",
+              "line": 52
+            },
+            {
+              "in": "readConfig",
+              "kind": "throw",
+              "line": 56
+            },
+            {
+              "in": "readConfig",
+              "kind": "throw",
+              "line": 60
+            },
+            {
+              "in": "readConfig",
+              "kind": "throw",
+              "line": 65
+            },
+            {
+              "in": "readConfig",
+              "kind": "throw",
+              "line": 68
+            },
+            {
+              "in": "readConfig",
+              "kind": "throw",
+              "line": 78
+            },
+            {
+              "in": "writeConfig",
+              "kind": "throw",
+              "line": 91
+            },
+            {
+              "in": "writeConfig",
+              "kind": "throw",
+              "line": 94
+            },
+            {
+              "in": "writeConfig",
+              "kind": "throw",
+              "line": 98
+            }
           ],
           "hash": "8ee0ad86488aabb7407589e9031cacb8a481202113dd1fe473c967ec55485ef6",
           "importsFiles": [
@@ -1554,12 +2042,50 @@
             "src/engine/envelope.ts",
             "src/engine/schema-validator.ts"
           ],
-          "path": "src/engine/envelope.test.ts"
+          "path": "src/engine/envelope.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "parseEnvelope",
             "renderEnvelope"
+          ],
+          "failurePaths": [
+            {
+              "in": "parseEnvelope",
+              "kind": "throw",
+              "line": 39
+            },
+            {
+              "in": "parseEnvelope",
+              "kind": "throw",
+              "line": 55
+            },
+            {
+              "in": "parseEnvelope",
+              "kind": "throw",
+              "line": 68
+            },
+            {
+              "in": "parseEnvelope",
+              "kind": "catch",
+              "line": 77
+            },
+            {
+              "in": "parseEnvelope",
+              "kind": "throw",
+              "line": 78
+            },
+            {
+              "in": "parseEnvelope",
+              "kind": "throw",
+              "line": 83
+            },
+            {
+              "in": "parseEnvelope",
+              "kind": "throw",
+              "line": 86
+            }
           ],
           "hash": "298348738a45b97872f9d337c238fd45ab045ca0f8e3c492a30a2782c183b8c0",
           "importsFiles": [
@@ -1573,11 +2099,49 @@
             "src/engine/git-diff.ts",
             "src/engine/git.ts"
           ],
-          "path": "src/engine/git-diff.test.ts"
+          "path": "src/engine/git-diff.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "gitDiffSinceLastSync"
+          ],
+          "failurePaths": [
+            {
+              "in": "gitDiffSinceLastSync",
+              "kind": "throw",
+              "line": 81
+            },
+            {
+              "in": "gitDiffSinceLastSync",
+              "kind": "throw",
+              "line": 85
+            },
+            {
+              "in": "gitDiffSinceLastSync",
+              "kind": "throw",
+              "line": 97
+            },
+            {
+              "in": "gitDiffSinceLastSync",
+              "kind": "throw",
+              "line": 108
+            },
+            {
+              "in": "gitDiffSinceLastSync",
+              "kind": "throw",
+              "line": 147
+            },
+            {
+              "in": "gitDiffSinceLastSync",
+              "kind": "throw",
+              "line": 191
+            },
+            {
+              "in": "gitDiffSinceLastSync",
+              "kind": "throw",
+              "line": 203
+            }
           ],
           "hash": "4e86ebca3740a095fd3c64984447c09625169426bf6366602e763c1aac206750",
           "importsFiles": [
@@ -1590,7 +2154,8 @@
           "importsFiles": [
             "src/engine/git.ts"
           ],
-          "path": "src/engine/git.test.ts"
+          "path": "src/engine/git.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1600,6 +2165,93 @@
             "safeCommit",
             "safePull",
             "safePush"
+          ],
+          "failurePaths": [
+            {
+              "in": "runGit",
+              "kind": "throw",
+              "line": 62
+            },
+            {
+              "in": "runGit",
+              "kind": "throw",
+              "line": 66
+            },
+            {
+              "in": "repoRoot",
+              "kind": "throw",
+              "line": 83
+            },
+            {
+              "in": "isGitlinkPath",
+              "kind": "catch",
+              "line": 103
+            },
+            {
+              "in": "safeCommit",
+              "kind": "throw",
+              "line": 131
+            },
+            {
+              "in": "safeCommit",
+              "kind": "catch",
+              "line": 140
+            },
+            {
+              "in": "safeCommit",
+              "kind": "catch",
+              "line": 153
+            },
+            {
+              "in": "safeCommit",
+              "kind": "throw",
+              "line": 159
+            },
+            {
+              "in": "safeCommit",
+              "kind": "throw",
+              "line": 162
+            },
+            {
+              "in": "safeCommit",
+              "kind": "throw",
+              "line": 167
+            },
+            {
+              "in": "safeCommit",
+              "kind": "catch",
+              "line": 180
+            },
+            {
+              "in": "safeCommit",
+              "kind": "throw",
+              "line": 189
+            },
+            {
+              "in": "safeCommit",
+              "kind": "throw",
+              "line": 194
+            },
+            {
+              "in": "safeCommit",
+              "kind": "throw",
+              "line": 199
+            },
+            {
+              "in": "safePush",
+              "kind": "throw",
+              "line": 217
+            },
+            {
+              "in": "safePull",
+              "kind": "throw",
+              "line": 225
+            },
+            {
+              "in": "safePull",
+              "kind": "throw",
+              "line": 229
+            }
           ],
           "hash": "760a275943bf2dd7f79ee2dec6fcb051829d0885bc7d77efa4fc7acafd3ec7d9",
           "path": "src/engine/git.ts"
@@ -1640,11 +2292,39 @@
           "importsFiles": [
             "src/engine/peer-rigs.ts"
           ],
-          "path": "src/engine/peer-rigs.test.ts"
+          "path": "src/engine/peer-rigs.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "findPeerRigs"
+          ],
+          "failurePaths": [
+            {
+              "in": "tallyThread",
+              "kind": "catch",
+              "line": 50
+            },
+            {
+              "in": "tallyThread",
+              "kind": "catch",
+              "line": 59
+            },
+            {
+              "in": "tallyThread",
+              "kind": "catch",
+              "line": 65
+            },
+            {
+              "in": "findPeerRigs",
+              "kind": "catch",
+              "line": 99
+            },
+            {
+              "in": "findPeerRigs",
+              "kind": "catch",
+              "line": 113
+            }
           ],
           "hash": "3e6853cffd23e54968cb4a9bf70bad77cdaca5bd67483aab4631aab3f9ff150e",
           "importsFiles": [
@@ -1658,13 +2338,21 @@
           "importsFiles": [
             "src/engine/rig-id.ts"
           ],
-          "path": "src/engine/rig-id.test.ts"
+          "path": "src/engine/rig-id.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "assertRigId",
             "normalizeRigId",
             "validateRigId"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertRigId",
+              "kind": "throw",
+              "line": 59
+            }
           ],
           "hash": "bfb0c7ef228d7f8321a966ad6fd6dabf23a63203df26592241563dda2ca459fe",
           "path": "src/engine/rig-id.ts"
@@ -1674,11 +2362,22 @@
           "importsFiles": [
             "src/engine/schema-validator.ts"
           ],
-          "path": "src/engine/schema-validator.test.ts"
+          "path": "src/engine/schema-validator.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "validateFrontmatter"
+          ],
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 41
+            },
+            {
+              "kind": "catch",
+              "line": 47
+            }
           ],
           "hash": "0e20eb7d59068fa86ca3b87a7086bc46ac8e27be8b9de0e0bc1a34aedcfb1787",
           "path": "src/engine/schema-validator.ts"
@@ -1688,12 +2387,25 @@
           "importsFiles": [
             "src/engine/status.ts"
           ],
-          "path": "src/engine/status.test.ts"
+          "path": "src/engine/status.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "isSupportedMarker",
             "markerToStatusClass"
+          ],
+          "failurePaths": [
+            {
+              "in": "markerToStatusClass",
+              "kind": "throw",
+              "line": 57
+            },
+            {
+              "in": "markerToStatusClass",
+              "kind": "throw",
+              "line": 62
+            }
           ],
           "hash": "cb0ea9f5d51de639d51ed34ddd02d4d3d63cddfd5fa3b7f8c40707c10044f235",
           "path": "src/engine/status.ts"
@@ -1703,11 +2415,49 @@
           "importsFiles": [
             "src/engine/threads.ts"
           ],
-          "path": "src/engine/threads.test.ts"
+          "path": "src/engine/threads.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "listThreads"
+          ],
+          "failurePaths": [
+            {
+              "in": "tryReadEnvelope",
+              "kind": "catch",
+              "line": 72
+            },
+            {
+              "in": "tryReadEnvelope",
+              "kind": "catch",
+              "line": 79
+            },
+            {
+              "in": "tryReadEnvelope",
+              "kind": "catch",
+              "line": 85
+            },
+            {
+              "in": "listThreads",
+              "kind": "catch",
+              "line": 141
+            },
+            {
+              "in": "listThreads",
+              "kind": "catch",
+              "line": 163
+            },
+            {
+              "in": "listThreads",
+              "kind": "catch",
+              "line": 171
+            },
+            {
+              "in": "listThreads",
+              "kind": "catch",
+              "line": 194
+            }
           ],
           "hash": "78840fa76bea2af7b16fe9b95d59160de72dfd8770b556c2d37a43db1bc23807",
           "importsFiles": [
@@ -1723,11 +2473,19 @@
             "src/engine/envelope.ts",
             "src/engine/validate-file.ts"
           ],
-          "path": "src/engine/validate-file.test.ts"
+          "path": "src/engine/validate-file.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "validateEnvelopeFile"
+          ],
+          "failurePaths": [
+            {
+              "in": "validateEnvelopeFile",
+              "kind": "catch",
+              "line": 86
+            }
           ],
           "hash": "7dae50cabec138e82999ebb300f841dd903dd74e955b7468412f8cbd9159cb16",
           "importsFiles": [
@@ -1745,7 +2503,8 @@
             "src/engine/envelope.ts",
             "src/engine/verify-hash.ts"
           ],
-          "path": "src/engine/verify-hash.test.ts"
+          "path": "src/engine/verify-hash.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1778,7 +2537,8 @@
             "src/engine/envelope.ts",
             "src/engine/schema-validator.ts"
           ],
-          "path": "src/smoke.test.ts"
+          "path": "src/smoke.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -1799,6 +2559,9 @@
       "outsideReads": 46,
       "outsideWrites": 9,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 24,
       "unresolvedSites": 0
     }
@@ -2097,6 +2860,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 24,
+          "job": "build-and-test",
+          "runner": "vitest",
+          "step": "Tests",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -2525,6 +3299,18 @@
         "releases": true
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 24,
+          "job": "release",
+          "runner": "vitest",
+          "step": "Verify (typecheck + build + tests)",
+          "through": [
+            "npm run verify",
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -2587,7 +3373,7 @@
     }
   ],
   "edges": [],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "204828b76b942cb4bc89f2baccfe96564090f241",
     "tracked": 88

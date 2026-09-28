@@ -1,6 +1,6 @@
 # shipcheck: how it works
 
-Mapped at 2026-09-26 from commit 838720f by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 838720f by Atlas 1.23.4.
 
 ## What this is
 

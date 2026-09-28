@@ -241,6 +241,33 @@
             "build_parser",
             "main"
           ],
+          "failurePaths": [
+            {
+              "in": "_cmd_batch",
+              "kind": "except",
+              "line": 301
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 382
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 385
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 388
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 395
+            }
+          ],
           "hash": "af1119a2c9190ddd7711d22b3f37ecdcd07947fddd552d364402d814a782e940",
           "importsFiles": [
             "src/plain_sight/__init__.py",
@@ -615,6 +642,86 @@
           "exports": [
             "configure_logging"
           ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 98
+            },
+            {
+              "kind": "except",
+              "line": 107
+            },
+            {
+              "in": "_ensure_loaded",
+              "kind": "except",
+              "line": 197
+            },
+            {
+              "in": "_ensure_loaded",
+              "kind": "except",
+              "line": 202
+            },
+            {
+              "in": "_ensure_loaded",
+              "kind": "raise",
+              "line": 203
+            },
+            {
+              "in": "_ensure_loaded",
+              "kind": "except",
+              "line": 220
+            },
+            {
+              "in": "_ensure_loaded",
+              "kind": "raise",
+              "line": 235
+            },
+            {
+              "in": "_validate_detail",
+              "kind": "raise",
+              "line": 251
+            },
+            {
+              "in": "_validate_max_new_tokens",
+              "kind": "raise",
+              "line": 262
+            },
+            {
+              "in": "_validate_max_new_tokens",
+              "kind": "raise",
+              "line": 264
+            },
+            {
+              "in": "_validate_image_path",
+              "kind": "raise",
+              "line": 274
+            },
+            {
+              "in": "_validate_image_path",
+              "kind": "raise",
+              "line": 276
+            },
+            {
+              "in": "_open_image",
+              "kind": "except",
+              "line": 284
+            },
+            {
+              "in": "_open_image",
+              "kind": "raise",
+              "line": 285
+            },
+            {
+              "in": "_open_image",
+              "kind": "except",
+              "line": 286
+            },
+            {
+              "in": "_open_image",
+              "kind": "raise",
+              "line": 287
+            }
+          ],
           "hash": "844e262d4811511be03649d4abb87fb788cec3ec26064d75f15d485625083df1",
           "importsFiles": [
             "src/plain_sight/__init__.py"
@@ -631,6 +738,127 @@
             "read_text",
             "sight_selftest",
             "sight_status"
+          ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 83
+            },
+            {
+              "in": "_ensure_model",
+              "kind": "raise",
+              "line": 121
+            },
+            {
+              "in": "_ensure_model",
+              "kind": "except",
+              "line": 128
+            },
+            {
+              "in": "_ensure_model",
+              "kind": "raise",
+              "line": 129
+            },
+            {
+              "in": "describe_image",
+              "kind": "except",
+              "line": 159
+            },
+            {
+              "in": "describe_image",
+              "kind": "raise",
+              "line": 160
+            },
+            {
+              "in": "describe_image",
+              "kind": "except",
+              "line": 164
+            },
+            {
+              "in": "describe_image",
+              "kind": "raise",
+              "line": 165
+            },
+            {
+              "in": "describe_batch",
+              "kind": "raise",
+              "line": 201
+            },
+            {
+              "in": "describe_batch",
+              "kind": "raise",
+              "line": 203
+            },
+            {
+              "in": "describe_batch",
+              "kind": "except",
+              "line": 208
+            },
+            {
+              "in": "describe_batch",
+              "kind": "raise",
+              "line": 209
+            },
+            {
+              "in": "describe_batch",
+              "kind": "raise",
+              "line": 234
+            },
+            {
+              "in": "describe_batch",
+              "kind": "raise",
+              "line": 240
+            },
+            {
+              "in": "describe_batch",
+              "kind": "except",
+              "line": 273
+            },
+            {
+              "in": "describe_batch",
+              "kind": "except",
+              "line": 276
+            },
+            {
+              "in": "describe_batch",
+              "kind": "except",
+              "line": 280
+            },
+            {
+              "in": "describe_batch",
+              "kind": "except",
+              "line": 288
+            },
+            {
+              "in": "read_text",
+              "kind": "except",
+              "line": 349
+            },
+            {
+              "in": "read_text",
+              "kind": "raise",
+              "line": 350
+            },
+            {
+              "in": "read_text",
+              "kind": "except",
+              "line": 354
+            },
+            {
+              "in": "read_text",
+              "kind": "raise",
+              "line": 355
+            },
+            {
+              "in": "sight_selftest",
+              "kind": "except",
+              "line": 404
+            },
+            {
+              "in": "sight_selftest",
+              "kind": "raise",
+              "line": 405
+            }
           ],
           "hash": "52ce0f9f1a8e3752fd38a9c6e81995ea60875401cda9564ba1a44df21d8bb635",
           "importsFiles": [
@@ -912,9 +1140,44 @@
             "write_batch_manifest",
             "write_sidecar_atomic"
           ],
+          "failurePaths": [
+            {
+              "in": "sidecar_is_complete",
+              "kind": "except",
+              "line": 51
+            },
+            {
+              "in": "write_sidecar_atomic",
+              "kind": "except",
+              "line": 67
+            },
+            {
+              "in": "write_sidecar_atomic",
+              "kind": "except",
+              "line": 70
+            },
+            {
+              "in": "write_sidecar_atomic",
+              "kind": "raise",
+              "line": 72
+            },
+            {
+              "in": "iter_image_files",
+              "kind": "raise",
+              "line": 127
+            },
+            {
+              "in": "iter_image_files",
+              "kind": "raise",
+              "line": 140
+            }
+          ],
           "hash": "e633e1bcadf88f6cf1c1a54cd95607871292122d4e950fda76f76f892362bb0a",
           "path": "src/plain_sight/sidecars.py"
         }
+      ],
+      "frameworks": [
+        "mcp"
       ],
       "globs": [
         "src/**"
@@ -934,6 +1197,9 @@
       "outsideReads": 2,
       "outsideWrites": 2,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 3,
       "unresolvedSites": 0
     },
@@ -958,14 +1224,16 @@
           "importsFiles": [
             "src/plain_sight/engine.py"
           ],
-          "path": "tests/conftest.py"
+          "path": "tests/conftest.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "2f318c42450044326f2d9eecae6d4c9c6099cc21d1fe9db63880c2be337d69c5",
           "importsFiles": [
             "src/plain_sight/sidecars.py"
           ],
-          "path": "tests/test_dogfood.py"
+          "path": "tests/test_dogfood.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -986,7 +1254,8 @@
             "src/plain_sight/sidecars.py",
             "tests/conftest.py"
           ],
-          "path": "tests/test_edge_cases.py"
+          "path": "tests/test_edge_cases.py",
+          "testFramework": "pytest"
         }
       ],
       "globs": [
@@ -996,6 +1265,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -1095,6 +1367,15 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "pyproject.toml",
+          "files": 3,
+          "job": "test",
+          "runner": "pytest",
+          "step": "Run edge-case tests"
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -1316,7 +1597,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "8042d12eb1a3174c84b3d46346957f2f4f2c4088",
     "tracked": 45

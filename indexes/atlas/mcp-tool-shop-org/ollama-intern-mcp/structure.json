@@ -29,7 +29,7 @@
           "path": ".github/pull_request_template.md"
         },
         {
-          "hash": "cb4af5ce5b80057b7e6ff63cf669e5e11da372f4506a2fd64cccbcf593f412f4",
+          "hash": "d883a3242186aa2f1d7ac070b8a318c3a1b46aae1de54cfd5030045a51eb12c2",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -92,6 +92,27 @@
             "main",
             "run_cell",
             "run_concurrency_test"
+          ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 24
+            },
+            {
+              "in": "run_cell",
+              "kind": "raise",
+              "line": 73
+            },
+            {
+              "in": "run_concurrency_test",
+              "kind": "raise",
+              "line": 81
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 96
+            }
           ],
           "hash": "131ecec9d188b8f966b07c676fd565df88bc99cbd4ed48206a1654da53612737",
           "path": "bench/run.py"
@@ -412,6 +433,10 @@
           "path": "SHIP_GATE.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "528e336bee19e733d4050ae097335292c4f499a7b8401ca0daec7e5daae6b5b1",
           "path": "hermes.config.example.yaml"
         },
@@ -452,6 +477,12 @@
       "externals": 0,
       "files": [
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 80
+            }
+          ],
           "hash": "47cacf379a626628ab35a0cead00019ac701a78ba4c15fa7a550a6543a75cb78",
           "importOrder": [
             "src/ollama.ts",
@@ -475,6 +506,63 @@
             "renderPage",
             "slugFor"
           ],
+          "failurePaths": [
+            {
+              "in": "evalStringLiteral",
+              "kind": "throw",
+              "line": 195
+            },
+            {
+              "in": "parseRegistrations",
+              "kind": "throw",
+              "line": 213
+            },
+            {
+              "in": "parseRegistrations",
+              "kind": "throw",
+              "line": 223
+            },
+            {
+              "in": "parseRegistrations",
+              "kind": "throw",
+              "line": 227
+            },
+            {
+              "in": "buildPlan",
+              "kind": "throw",
+              "line": 360
+            },
+            {
+              "in": "buildPlan",
+              "kind": "throw",
+              "line": 384
+            },
+            {
+              "in": "buildPlan",
+              "kind": "throw",
+              "line": 388
+            },
+            {
+              "in": "buildPlan",
+              "kind": "throw",
+              "line": 392
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 435
+            },
+            {
+              "in": "run",
+              "kind": "throw",
+              "line": 436
+            },
+            {
+              "in": "run",
+              "kind": "throw",
+              "line": 453
+            }
+          ],
           "hash": "8517c60c68afc3ab3c7548bd7d7c61d81062f335791bc682248f66f3ab0aba72",
           "path": "scripts/gen-tool-docs.mjs",
           "sequences": []
@@ -482,6 +570,57 @@
         {
           "entry": "run",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "readVersion",
+              "kind": "throw",
+              "line": 52
+            },
+            {
+              "in": "readToolCount",
+              "kind": "throw",
+              "line": 62
+            },
+            {
+              "in": "parseCountValue",
+              "kind": "throw",
+              "line": 72
+            },
+            {
+              "in": "readTestCount",
+              "kind": "throw",
+              "line": 101
+            },
+            {
+              "in": "readTestCountFromSuite",
+              "kind": "catch",
+              "line": 120
+            },
+            {
+              "in": "readTestCountFromSuite",
+              "kind": "throw",
+              "line": 121
+            },
+            {
+              "in": "readTestCountFromSuite",
+              "kind": "throw",
+              "line": 127
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 375
+            },
+            {
+              "in": "run",
+              "kind": "throw",
+              "line": 380
+            },
+            {
+              "kind": "catch",
+              "line": 452
+            }
+          ],
           "hash": "86215e121863fb9fa5b7868c340096c7085c1bf4af9cec8c9acd831764bc9515",
           "path": "scripts/sync-doc-versions.mjs",
           "sequences": []
@@ -494,6 +633,9 @@
       "name": "scripts",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 1,
       "testedThroughSpawn": true,
       "unresolvedNamed": [
@@ -823,6 +965,18 @@
           "path": "smoke/README.md"
         },
         {
+          "failurePaths": [
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 68
+            },
+            {
+              "in": "run",
+              "kind": "throw",
+              "line": 70
+            }
+          ],
           "hash": "9f17328f2d7cbf2d1b51cf76db3fb00179816217c3fd928d4133d121cc23ba43",
           "importOrder": [
             "src/profiles.ts",
@@ -859,6 +1013,13 @@
           "path": "smoke/coverage.mjs"
         },
         {
+          "failurePaths": [
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 72
+            }
+          ],
           "hash": "26ced40c582521708fd86b930416494c5ef6b1a4a809f172aca47159c8ecbb63",
           "importOrder": [
             "src/profiles.ts",
@@ -891,6 +1052,13 @@
           "path": "smoke/live.mjs"
         },
         {
+          "failurePaths": [
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 50
+            }
+          ],
           "hash": "d1afbf9e7d4531bcb8de56a1df61db759cc08ae80f0e40ce180c75060a6b340f",
           "importOrder": [
             "src/profiles.ts",
@@ -909,6 +1077,13 @@
           "path": "smoke/seams.mjs"
         },
         {
+          "failurePaths": [
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 61
+            }
+          ],
           "hash": "e899e5275fd7af0b25395b59c7a1e2e87e076215928905adb62d9da45ee61c7d",
           "importOrder": [
             "src/profiles.ts",
@@ -954,7 +1129,7 @@
     },
     {
       "dynamicReads": 6,
-      "dynamicSpawns": 2,
+      "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 1,
       "entryPoints": [
@@ -971,6 +1146,23 @@
             "nearestModelId",
             "runCloudCheck",
             "shouldGate"
+          ],
+          "failurePaths": [
+            {
+              "in": "runCloudCheck",
+              "kind": "catch",
+              "line": 302
+            },
+            {
+              "in": "runCloudCheck",
+              "kind": "catch",
+              "line": 356
+            },
+            {
+              "in": "writeEgressReceipt",
+              "kind": "catch",
+              "line": 421
+            }
           ],
           "hash": "dfc072416a7964ea6423e818f6ebbed63839c5ba351a5222333ee43589403beb",
           "importsFiles": [
@@ -1029,6 +1221,43 @@
             "atomicWriteFile",
             "buildAtomicWriteOrphanEvent"
           ],
+          "failurePaths": [
+            {
+              "in": "atomicWriteFile",
+              "kind": "catch",
+              "line": 159
+            },
+            {
+              "in": "atomicWriteFile",
+              "kind": "throw",
+              "line": 161
+            },
+            {
+              "in": "atomicWriteFile",
+              "kind": "catch",
+              "line": 168
+            },
+            {
+              "in": "atomicWriteFile",
+              "kind": "throw",
+              "line": 170
+            },
+            {
+              "in": "atomicWriteFile",
+              "kind": "catch",
+              "line": 191
+            },
+            {
+              "in": "cleanupTmp",
+              "kind": "catch",
+              "line": 213
+            },
+            {
+              "in": "cleanupTmp",
+              "kind": "catch",
+              "line": 222
+            }
+          ],
           "hash": "a78a58875dcf28047dd43914cf35ecefc1ac6587fcf07fcf73303a54eda7e11d",
           "path": "src/corpus/atomicWrite.ts"
         },
@@ -1058,6 +1287,13 @@
             "canonicalFsPath",
             "parentDirMissing"
           ],
+          "failurePaths": [
+            {
+              "in": "parentDirMissing",
+              "kind": "catch",
+              "line": 29
+            }
+          ],
           "hash": "1b0314daf39b2e6b4d454191cbe07903b3ac9ab5270adc7f4fb6699c69d651ce",
           "path": "src/corpus/identity.ts"
         },
@@ -1067,6 +1303,98 @@
             "indexCorpus",
             "mintChunkId",
             "sha256File"
+          ],
+          "failurePaths": [
+            {
+              "in": "sha256File",
+              "kind": "throw",
+              "line": 168
+            },
+            {
+              "in": "sha256File",
+              "kind": "throw",
+              "line": 187
+            },
+            {
+              "in": "sha256File",
+              "kind": "throw",
+              "line": 206
+            },
+            {
+              "in": "sha256File",
+              "kind": "throw",
+              "line": 214
+            },
+            {
+              "in": "sha256File",
+              "kind": "throw",
+              "line": 225
+            },
+            {
+              "in": "assertChunkGeometry",
+              "kind": "throw",
+              "line": 249
+            },
+            {
+              "in": "openPinnedRead",
+              "kind": "catch",
+              "line": 269
+            },
+            {
+              "in": "openPinnedRead",
+              "kind": "throw",
+              "line": 272
+            },
+            {
+              "in": "openPinnedRead",
+              "kind": "throw",
+              "line": 280
+            },
+            {
+              "in": "indexCorpusBody",
+              "kind": "catch",
+              "line": 339
+            },
+            {
+              "in": "indexCorpusBody",
+              "kind": "throw",
+              "line": 343
+            },
+            {
+              "in": "indexCorpusBody",
+              "kind": "throw",
+              "line": 349
+            },
+            {
+              "in": "indexCorpusBody",
+              "kind": "catch",
+              "line": 422
+            },
+            {
+              "in": "indexCorpusBody",
+              "kind": "catch",
+              "line": 439
+            },
+            {
+              "in": "indexCorpusBody",
+              "kind": "throw",
+              "line": 522
+            },
+            {
+              "in": "indexCorpusBody",
+              "kind": "catch",
+              "line": 603
+            },
+            {
+              "in": "indexCorpusBody",
+              "kind": "catch",
+              "line": 610
+            },
+            {
+              "in": "indexCorpusBody",
+              "kind": "throw",
+              "line": 614
+            }
           ],
           "hash": "1f9f9e9ee9dc57b35623c8b2f3943c5fa2cd9f4ac70d261b6b44e4340c1d5582",
           "importOrder": [
@@ -1125,6 +1453,97 @@
             "manifestPath",
             "saveManifest"
           ],
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 37
+            },
+            {
+              "in": "allowedRoots",
+              "kind": "catch",
+              "line": 91
+            },
+            {
+              "in": "assertSafePath",
+              "kind": "throw",
+              "line": 102
+            },
+            {
+              "in": "assertSafePath",
+              "kind": "throw",
+              "line": 114
+            },
+            {
+              "in": "assertSafePath",
+              "kind": "catch",
+              "line": 134
+            },
+            {
+              "in": "assertSafePath",
+              "kind": "throw",
+              "line": 137
+            },
+            {
+              "in": "assertSafePath",
+              "kind": "throw",
+              "line": 149
+            },
+            {
+              "in": "loadManifest",
+              "kind": "catch",
+              "line": 307
+            },
+            {
+              "in": "loadManifest",
+              "kind": "throw",
+              "line": 308
+            },
+            {
+              "in": "loadManifest",
+              "kind": "throw",
+              "line": 337
+            },
+            {
+              "in": "loadManifest",
+              "kind": "throw",
+              "line": 350
+            },
+            {
+              "in": "validateManifestShape",
+              "kind": "throw",
+              "line": 367
+            },
+            {
+              "in": "validateManifestShape",
+              "kind": "throw",
+              "line": 370
+            },
+            {
+              "in": "validateManifestShape",
+              "kind": "throw",
+              "line": 385
+            },
+            {
+              "in": "validateManifestShape",
+              "kind": "throw",
+              "line": 393
+            },
+            {
+              "in": "validateManifestShape",
+              "kind": "throw",
+              "line": 401
+            },
+            {
+              "in": "validateManifestShape",
+              "kind": "throw",
+              "line": 409
+            },
+            {
+              "in": "validateManifestShape",
+              "kind": "throw",
+              "line": 421
+            }
+          ],
           "hash": "5fc252ace576555eb56a864d40526448facbfaf838f1d6a4ae0dfc0322ef9f6e",
           "importOrder": [
             "src/errors.ts",
@@ -1146,6 +1565,53 @@
           "exports": [
             "buildCorpusRefreshStepEvent",
             "refreshCorpus"
+          ],
+          "failurePaths": [
+            {
+              "in": "sha256FileWithEnoentRetry",
+              "kind": "catch",
+              "line": 125
+            },
+            {
+              "in": "sha256FileWithEnoentRetry",
+              "kind": "throw",
+              "line": 127
+            },
+            {
+              "in": "sha256FileWithEnoentRetry",
+              "kind": "throw",
+              "line": 131
+            },
+            {
+              "in": "refreshCorpusUnlocked",
+              "kind": "throw",
+              "line": 151
+            },
+            {
+              "in": "refreshCorpusUnlocked",
+              "kind": "throw",
+              "line": 159
+            },
+            {
+              "in": "refreshCorpusUnlocked",
+              "kind": "catch",
+              "line": 172
+            },
+            {
+              "in": "refreshCorpusUnlocked",
+              "kind": "throw",
+              "line": 174
+            },
+            {
+              "in": "refreshCorpusUnlocked",
+              "kind": "catch",
+              "line": 197
+            },
+            {
+              "in": "refreshCorpusUnlocked",
+              "kind": "throw",
+              "line": 297
+            }
           ],
           "hash": "3c53f18e91ee1d3726721af6c3e0f547e85afb55e976cbc8ad388d5b651ba22b",
           "importOrder": [
@@ -1174,6 +1640,18 @@
             "hasNoLexicalTerms",
             "isEmptyQuery",
             "searchCorpus"
+          ],
+          "failurePaths": [
+            {
+              "in": "scoreDense",
+              "kind": "throw",
+              "line": 222
+            },
+            {
+              "in": "searchCorpus",
+              "kind": "throw",
+              "line": 329
+            }
           ],
           "hash": "da140a9b30193baa54fed3b34fd8402bcef1f64e8c357e91f333904b0bfc0fd9",
           "importOrder": [
@@ -1210,6 +1688,117 @@
             "rejectWin32NameAlias",
             "saveCorpus"
           ],
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 39
+            },
+            {
+              "in": "assertValidCorpusName",
+              "kind": "throw",
+              "line": 111
+            },
+            {
+              "in": "loadCorpus",
+              "kind": "catch",
+              "line": 128
+            },
+            {
+              "in": "loadCorpus",
+              "kind": "throw",
+              "line": 129
+            },
+            {
+              "in": "loadCorpus",
+              "kind": "throw",
+              "line": 138
+            },
+            {
+              "in": "loadCorpus",
+              "kind": "throw",
+              "line": 150
+            },
+            {
+              "in": "validateCorpusShape",
+              "kind": "throw",
+              "line": 167
+            },
+            {
+              "in": "validateCorpusShape",
+              "kind": "throw",
+              "line": 175
+            },
+            {
+              "in": "validateCorpusShape",
+              "kind": "throw",
+              "line": 183
+            },
+            {
+              "in": "validateCorpusShape",
+              "kind": "throw",
+              "line": 199
+            },
+            {
+              "in": "validateCorpusShape",
+              "kind": "throw",
+              "line": 207
+            },
+            {
+              "in": "validateCorpusShape",
+              "kind": "throw",
+              "line": 215
+            },
+            {
+              "in": "validateCorpusShape",
+              "kind": "throw",
+              "line": 231
+            },
+            {
+              "in": "rejectWin32NameAlias",
+              "kind": "throw",
+              "line": 256
+            },
+            {
+              "in": "rejectWin32NameAlias",
+              "kind": "catch",
+              "line": 263
+            },
+            {
+              "in": "rejectWin32NameAlias",
+              "kind": "throw",
+              "line": 264
+            },
+            {
+              "in": "saveCorpusUnlocked",
+              "kind": "throw",
+              "line": 279
+            },
+            {
+              "in": "listCorporaDetailed",
+              "kind": "catch",
+              "line": 387
+            },
+            {
+              "in": "listCorporaDetailed",
+              "kind": "throw",
+              "line": 397
+            },
+            {
+              "in": "listCorporaDetailed",
+              "kind": "catch",
+              "line": 422
+            },
+            {
+              "in": "isCorpusStale",
+              "kind": "catch",
+              "line": 476
+            },
+            {
+              "in": "isCorpusStale",
+              "kind": "catch",
+              "line": 507
+            }
+          ],
           "hash": "068732d5a14193c4f9f73645a27d313d5866f40b589fdb663e20d3da38f2f41b",
           "importOrder": [
             "src/errors.ts",
@@ -1241,6 +1830,13 @@
           "exports": [
             "cosine",
             "rankByCosine"
+          ],
+          "failurePaths": [
+            {
+              "in": "cosine",
+              "kind": "throw",
+              "line": 18
+            }
           ],
           "hash": "9376fad2f39320dae1561ed0319d30f66abc04c422a061e6d162b5d5c1e6d34a",
           "importsFiles": [
@@ -1279,6 +1875,13 @@
             "loadGold",
             "runRetrievalEval",
             "summarizeEval"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadGold",
+              "kind": "throw",
+              "line": 50
+            }
           ],
           "hash": "797e7d073353b6063b669d0ba98dd9000173c1e9b14eb3185a310a3e2c96c248",
           "importOrder": [
@@ -1326,6 +1929,13 @@
             "buildCompileCheckEvent",
             "compileCheck"
           ],
+          "failurePaths": [
+            {
+              "in": "runChecker",
+              "kind": "catch",
+              "line": 89
+            }
+          ],
           "hash": "c1917c07937b839490d8f679d8af4084eab78e75aa2820cf500e5212c812518d",
           "path": "src/guardrails/compileCheck.ts"
         },
@@ -1340,6 +1950,23 @@
         {
           "exports": [
             "embedWithTimeout"
+          ],
+          "failurePaths": [
+            {
+              "in": "embedWithTimeout",
+              "kind": "catch",
+              "line": 57
+            },
+            {
+              "in": "embedWithTimeout",
+              "kind": "throw",
+              "line": 68
+            },
+            {
+              "in": "embedWithTimeout",
+              "kind": "throw",
+              "line": 75
+            }
           ],
           "hash": "e8f3e80246e184e26008b461caa8cb47bf1a5b4b4da75690d34567f277b29a81",
           "importOrder": [
@@ -1368,6 +1995,23 @@
           "exports": [
             "runWithTimeoutAndFallback"
           ],
+          "failurePaths": [
+            {
+              "in": "attempt",
+              "kind": "catch",
+              "line": 71
+            },
+            {
+              "in": "attempt",
+              "kind": "throw",
+              "line": 72
+            },
+            {
+              "in": "attempt",
+              "kind": "throw",
+              "line": 114
+            }
+          ],
           "hash": "e16f1e2fca0ab903c11f4c283f7ec24859a7366b0848fbcdaeda35496bca041a",
           "importOrder": [
             "src/errors.ts",
@@ -1387,6 +2031,13 @@
             "buildWriteConfirmEvent",
             "checkWriteConfirm"
           ],
+          "failurePaths": [
+            {
+              "in": "assertWriteAllowed",
+              "kind": "throw",
+              "line": 51
+            }
+          ],
           "hash": "4ec36d4e107a171253ef892964fab0b2ceafb7906782a2446ce00ef3d80ace77",
           "importsFiles": [
             "src/errors.ts",
@@ -1399,6 +2050,63 @@
           "entryRule": 1,
           "exports": [
             "createServer"
+          ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 590
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 596
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 608
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 614
+            },
+            {
+              "in": "shutdown",
+              "kind": "catch",
+              "line": 811
+            },
+            {
+              "in": "runCliDoctor",
+              "kind": "catch",
+              "line": 1067
+            },
+            {
+              "in": "runCliDoctor",
+              "kind": "throw",
+              "line": 1073
+            },
+            {
+              "in": "runCliDoctor",
+              "kind": "catch",
+              "line": 1087
+            },
+            {
+              "in": "runCliDoctor",
+              "kind": "throw",
+              "line": 1093
+            },
+            {
+              "in": "runCliInit",
+              "kind": "catch",
+              "line": 1379
+            },
+            {
+              "in": "isInvokedAsScript",
+              "kind": "catch",
+              "line": 1411
+            }
           ],
           "hash": "8e89f8eccecc5a58fab9f462389833849028b2a932f2ce30593c6a763aab0a38",
           "importsFiles": [
@@ -1699,6 +2407,28 @@
             "packStepEvent",
             "timestamp"
           ],
+          "failurePaths": [
+            {
+              "in": "rotateIfNeeded",
+              "kind": "catch",
+              "line": 285
+            },
+            {
+              "in": "rotateIfNeeded",
+              "kind": "throw",
+              "line": 287
+            },
+            {
+              "in": "log",
+              "kind": "catch",
+              "line": 306
+            },
+            {
+              "in": "log",
+              "kind": "catch",
+              "line": 332
+            }
+          ],
           "hash": "af460ad9e32a6404c417055ead96eab067334d3802b49c9bc38b86f0894f1c25",
           "importOrder": [
             "src/envelope.ts",
@@ -1741,6 +2471,148 @@
             "setClientLogger",
             "setClientProfileName",
             "setTestBackoff"
+          ],
+          "failurePaths": [
+            {
+              "in": "normalizeOllamaHost",
+              "kind": "throw",
+              "line": 368
+            },
+            {
+              "in": "normalizeOllamaHost",
+              "kind": "catch",
+              "line": 376
+            },
+            {
+              "in": "normalizeOllamaHost",
+              "kind": "throw",
+              "line": 377
+            },
+            {
+              "in": "normalizeOllamaHost",
+              "kind": "throw",
+              "line": 378
+            },
+            {
+              "in": "isLoopbackHost",
+              "kind": "catch",
+              "line": 405
+            },
+            {
+              "in": "residency",
+              "kind": "catch",
+              "line": 487
+            },
+            {
+              "in": "post",
+              "kind": "catch",
+              "line": 552
+            },
+            {
+              "in": "post",
+              "kind": "throw",
+              "line": 558
+            },
+            {
+              "in": "post",
+              "kind": "throw",
+              "line": 565
+            },
+            {
+              "in": "postWithRetry",
+              "kind": "catch",
+              "line": 591
+            },
+            {
+              "in": "postWithRetry",
+              "kind": "throw",
+              "line": 594
+            },
+            {
+              "in": "postWithRetry",
+              "kind": "throw",
+              "line": 596
+            },
+            {
+              "in": "postWithRetry",
+              "kind": "throw",
+              "line": 604
+            },
+            {
+              "in": "postWithRetry",
+              "kind": "catch",
+              "line": 607
+            },
+            {
+              "in": "postWithRetry",
+              "kind": "throw",
+              "line": 609
+            },
+            {
+              "in": "postWithRetry",
+              "kind": "throw",
+              "line": 611
+            },
+            {
+              "in": "postWithRetry",
+              "kind": "throw",
+              "line": 618
+            },
+            {
+              "in": "postWithRetry",
+              "kind": "throw",
+              "line": 626
+            },
+            {
+              "in": "postOnce",
+              "kind": "throw",
+              "line": 668
+            },
+            {
+              "in": "postOnce",
+              "kind": "throw",
+              "line": 692
+            },
+            {
+              "in": "postOnce",
+              "kind": "throw",
+              "line": 699
+            },
+            {
+              "in": "postOnce",
+              "kind": "throw",
+              "line": 709
+            },
+            {
+              "in": "postOnce",
+              "kind": "throw",
+              "line": 716
+            },
+            {
+              "in": "postOnce",
+              "kind": "throw",
+              "line": 727
+            },
+            {
+              "in": "postOnce",
+              "kind": "catch",
+              "line": 744
+            },
+            {
+              "in": "postOnce",
+              "kind": "throw",
+              "line": 746
+            },
+            {
+              "in": "probe",
+              "kind": "catch",
+              "line": 775
+            },
+            {
+              "in": "get",
+              "kind": "throw",
+              "line": 816
+            }
           ],
           "hash": "7cb42e2cc96548092174bf359e7d4e1098c949b29c38c9bde96360b722703caa",
           "importOrder": [
@@ -1787,6 +2659,13 @@
             "notePrewarmInProgressRequest",
             "prewarmTimeoutForTier",
             "runPrewarm"
+          ],
+          "failurePaths": [
+            {
+              "in": "runPrewarm",
+              "kind": "catch",
+              "line": 131
+            }
           ],
           "hash": "873b48ce39ced63a2cea258cd6c7c7e56c106d169c5430952b327538e4016601",
           "importsFiles": [
@@ -1851,6 +2730,48 @@
             "standbyPolicyEscalates",
             "validateNumCtx"
           ],
+          "failurePaths": [
+            {
+              "in": "loadProfile",
+              "kind": "throw",
+              "line": 171
+            },
+            {
+              "in": "resolvePrewarm",
+              "kind": "throw",
+              "line": 239
+            },
+            {
+              "in": "validateEnvModel",
+              "kind": "throw",
+              "line": 345
+            },
+            {
+              "in": "validateNumCtx",
+              "kind": "throw",
+              "line": 363
+            },
+            {
+              "in": "positiveIntEnv",
+              "kind": "throw",
+              "line": 525
+            },
+            {
+              "in": "resolveStandbyEscalateTiers",
+              "kind": "throw",
+              "line": 583
+            },
+            {
+              "in": "resolveStandbyEscalateTiers",
+              "kind": "throw",
+              "line": 591
+            },
+            {
+              "in": "loadCloudConfig",
+              "kind": "throw",
+              "line": 644
+            }
+          ],
           "hash": "2fdcf165bd27772711251d7ecef9c4df8e81b30b0873eb546a00b6f123e69bc2",
           "importOrder": [
             "src/tiers.ts",
@@ -1875,6 +2796,23 @@
             "getRouteDirective",
             "getRoutingInfo",
             "setRouteDirective"
+          ],
+          "failurePaths": [
+            {
+              "in": "route",
+              "kind": "catch",
+              "line": 600
+            },
+            {
+              "in": "route",
+              "kind": "throw",
+              "line": 608
+            },
+            {
+              "in": "route",
+              "kind": "throw",
+              "line": 644
+            }
           ],
           "hash": "064be65623dd86c0dafa7af41170d60c521f6dc5adba1ba25bdc970945a806be",
           "importOrder": [
@@ -1920,6 +2858,18 @@
           "exports": [
             "parseConcurrency"
           ],
+          "failurePaths": [
+            {
+              "in": "acquire",
+              "kind": "throw",
+              "line": 48
+            },
+            {
+              "in": "parseConcurrency",
+              "kind": "throw",
+              "line": 136
+            }
+          ],
           "hash": "06a4c8d7328b2701f84ed20830de2a8c3aade83a43becea6cdc6695fa3901740",
           "importsFiles": [
             "src/errors.ts"
@@ -1930,6 +2880,33 @@
           "exports": [
             "formatSourcesBlock",
             "loadSources"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadSources",
+              "kind": "throw",
+              "line": 55
+            },
+            {
+              "in": "loadSources",
+              "kind": "throw",
+              "line": 65
+            },
+            {
+              "in": "loadSources",
+              "kind": "catch",
+              "line": 74
+            },
+            {
+              "in": "loadSources",
+              "kind": "throw",
+              "line": 75
+            },
+            {
+              "in": "loadSources",
+              "kind": "throw",
+              "line": 76
+            }
           ],
           "hash": "81c5fe6c139ee9de8fb7ba566511c3bc070188039ccbeba3081900125a503b7b",
           "importsFiles": [
@@ -1956,6 +2933,23 @@
             "posixNormPath",
             "sanitizePromptField",
             "stripInjectionVectors"
+          ],
+          "failurePaths": [
+            {
+              "in": "sanitizePromptField",
+              "kind": "throw",
+              "line": 64
+            },
+            {
+              "in": "normalizeCorpusQuery",
+              "kind": "throw",
+              "line": 84
+            },
+            {
+              "in": "assertCloudEscalationConfigured",
+              "kind": "throw",
+              "line": 259
+            }
           ],
           "hash": "2fae544e31a4de413ce666f2f71cf6237e9aac61b7c985c64093fa4376df3f05",
           "importsFiles": [
@@ -1986,6 +2980,13 @@
         {
           "exports": [
             "handleArtifactDiff"
+          ],
+          "failurePaths": [
+            {
+              "in": "handleArtifactDiff",
+              "kind": "throw",
+              "line": 56
+            }
           ],
           "hash": "f9ef20b7c313352ff87ba2d750e9a9d16ace739f18081452db92a1349c768031",
           "importOrder": [
@@ -2031,6 +3032,18 @@
           "exports": [
             "handleArtifactList"
           ],
+          "failurePaths": [
+            {
+              "in": "parseIso",
+              "kind": "throw",
+              "line": 62
+            },
+            {
+              "in": "assertMutex",
+              "kind": "throw",
+              "line": 74
+            }
+          ],
           "hash": "1ffda29734ac39c77b2b0dd5f653507cdde316f2ce66b83fb0b7accc3db21889",
           "importOrder": [
             "src/envelope.ts",
@@ -2052,6 +3065,63 @@
           "exports": [
             "handleArtifactPrune"
           ],
+          "failurePaths": [
+            {
+              "in": "listJsonFiles",
+              "kind": "catch",
+              "line": 119
+            },
+            {
+              "in": "listJsonFiles",
+              "kind": "throw",
+              "line": 120
+            },
+            {
+              "in": "handleArtifactPrune",
+              "kind": "catch",
+              "line": 156
+            },
+            {
+              "in": "handleArtifactPrune",
+              "kind": "throw",
+              "line": 161
+            },
+            {
+              "in": "handleArtifactPrune",
+              "kind": "catch",
+              "line": 167
+            },
+            {
+              "in": "handleArtifactPrune",
+              "kind": "catch",
+              "line": 179
+            },
+            {
+              "in": "handleArtifactPrune",
+              "kind": "catch",
+              "line": 198
+            },
+            {
+              "in": "handleArtifactPrune",
+              "kind": "catch",
+              "line": 225
+            },
+            {
+              "in": "handleArtifactPrune",
+              "kind": "throw",
+              "line": 228
+            },
+            {
+              "in": "handleArtifactPrune",
+              "kind": "catch",
+              "line": 239
+            },
+            {
+              "in": "handleArtifactPrune",
+              "kind": "throw",
+              "line": 241
+            }
+          ],
           "hash": "890193ddeb73bdd752fbd9a3cd985054d17d52bfcff36667d537df42bcbf2392",
           "importOrder": [
             "src/envelope.ts",
@@ -2072,6 +3142,23 @@
         {
           "exports": [
             "handleArtifactRead"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertExactlyOneEntry",
+              "kind": "throw",
+              "line": 63
+            },
+            {
+              "in": "assertExactlyOneEntry",
+              "kind": "throw",
+              "line": 72
+            },
+            {
+              "in": "handleArtifactRead",
+              "kind": "throw",
+              "line": 101
+            }
           ],
           "hash": "9519cb6cec90fff27a6248b78f818fbc067538bae9335816ed4fb570cdc5b098",
           "importOrder": [
@@ -2095,6 +3182,23 @@
             "handleArtifactIncidentNoteSnippet",
             "handleArtifactOnboardingSectionSnippet",
             "handleArtifactReleaseNoteSnippet"
+          ],
+          "failurePaths": [
+            {
+              "in": "handleArtifactIncidentNoteSnippet",
+              "kind": "throw",
+              "line": 62
+            },
+            {
+              "in": "handleArtifactOnboardingSectionSnippet",
+              "kind": "throw",
+              "line": 98
+            },
+            {
+              "in": "handleArtifactReleaseNoteSnippet",
+              "kind": "throw",
+              "line": 134
+            }
           ],
           "hash": "ee6c3e305af5ed5c4248e4d995f66d8cad0fdef815fd2ec240556ea4e1a14ede",
           "importOrder": [
@@ -2126,6 +3230,23 @@
             "diffArtifacts",
             "lineDiff"
           ],
+          "failurePaths": [
+            {
+              "in": "diffArtifacts",
+              "kind": "throw",
+              "line": 402
+            },
+            {
+              "in": "diffArtifacts",
+              "kind": "throw",
+              "line": 415
+            },
+            {
+              "in": "diffArtifacts",
+              "kind": "throw",
+              "line": 423
+            }
+          ],
           "hash": "b37c2992a90a1636696908f9a944b51422b17926a85ebfe00008f6cf246e9a31",
           "importOrder": [
             "src/errors.ts",
@@ -2147,6 +3268,98 @@
           "exports": [
             "exportArtifactMarkdown"
           ],
+          "failurePaths": [
+            {
+              "in": "safeNormalize",
+              "kind": "throw",
+              "line": 50
+            },
+            {
+              "in": "safeNormalize",
+              "kind": "throw",
+              "line": 59
+            },
+            {
+              "in": "assertUnderAllowedRoots",
+              "kind": "throw",
+              "line": 71
+            },
+            {
+              "in": "assertUnderAllowedRoots",
+              "kind": "throw",
+              "line": 93
+            },
+            {
+              "in": "isExistingDirectory",
+              "kind": "catch",
+              "line": 136
+            },
+            {
+              "in": "exportArtifactMarkdown",
+              "kind": "throw",
+              "line": 153
+            },
+            {
+              "in": "exportArtifactMarkdown",
+              "kind": "throw",
+              "line": 177
+            },
+            {
+              "in": "exportArtifactMarkdown",
+              "kind": "throw",
+              "line": 187
+            },
+            {
+              "in": "exportArtifactMarkdown",
+              "kind": "catch",
+              "line": 198
+            },
+            {
+              "in": "exportArtifactMarkdown",
+              "kind": "throw",
+              "line": 199
+            },
+            {
+              "in": "exportArtifactMarkdown",
+              "kind": "catch",
+              "line": 221
+            },
+            {
+              "in": "exportArtifactMarkdown",
+              "kind": "throw",
+              "line": 226
+            },
+            {
+              "in": "exportArtifactMarkdown",
+              "kind": "throw",
+              "line": 228
+            },
+            {
+              "in": "exportArtifactMarkdown",
+              "kind": "throw",
+              "line": 233
+            },
+            {
+              "in": "exportArtifactMarkdown",
+              "kind": "throw",
+              "line": 235
+            },
+            {
+              "in": "exportArtifactMarkdown",
+              "kind": "catch",
+              "line": 246
+            },
+            {
+              "in": "exportArtifactMarkdown",
+              "kind": "throw",
+              "line": 248
+            },
+            {
+              "in": "exportArtifactMarkdown",
+              "kind": "throw",
+              "line": 250
+            }
+          ],
           "hash": "d2acd297f558fade163d75ffa476f504da167d957b2860c1d57bbb441a43df70",
           "importsFiles": [
             "src/errors.ts",
@@ -2163,6 +3376,78 @@
             "readArtifactAtPath",
             "resolveArtifactByIdentity",
             "scanAllArtifacts"
+          ],
+          "failurePaths": [
+            {
+              "in": "safeNormalizePath",
+              "kind": "throw",
+              "line": 77
+            },
+            {
+              "in": "safeNormalizePath",
+              "kind": "throw",
+              "line": 90
+            },
+            {
+              "in": "assertPathUnderAllowedDir",
+              "kind": "throw",
+              "line": 118
+            },
+            {
+              "in": "safeListDir",
+              "kind": "catch",
+              "line": 203
+            },
+            {
+              "in": "safeListDir",
+              "kind": "catch",
+              "line": 219
+            },
+            {
+              "in": "scanAllArtifacts",
+              "kind": "catch",
+              "line": 254
+            },
+            {
+              "in": "scanAllArtifacts",
+              "kind": "catch",
+              "line": 260
+            },
+            {
+              "in": "resolveArtifactByIdentity",
+              "kind": "throw",
+              "line": 301
+            },
+            {
+              "in": "resolveArtifactByIdentity",
+              "kind": "throw",
+              "line": 309
+            },
+            {
+              "in": "readArtifactAtPath",
+              "kind": "throw",
+              "line": 330
+            },
+            {
+              "in": "readArtifactAtPath",
+              "kind": "throw",
+              "line": 339
+            },
+            {
+              "in": "readArtifactAtPath",
+              "kind": "catch",
+              "line": 350
+            },
+            {
+              "in": "readArtifactAtPath",
+              "kind": "throw",
+              "line": 351
+            },
+            {
+              "in": "readArtifactAtPath",
+              "kind": "throw",
+              "line": 359
+            }
           ],
           "hash": "590d8f611af1846c7c1a4211992922de06250b6c3ce158fdfbc56d9efa7362b2",
           "importOrder": [
@@ -2202,6 +3487,18 @@
           "exports": [
             "runBatch"
           ],
+          "failurePaths": [
+            {
+              "in": "assertUniqueIds",
+              "kind": "throw",
+              "line": 118
+            },
+            {
+              "in": "runBatchInner",
+              "kind": "catch",
+              "line": 273
+            }
+          ],
           "hash": "368db8ff9d3da0a463acf5a6e907520ef6132568dbc52fe60c7b3de657531b45",
           "importOrder": [
             "src/ollama.ts",
@@ -2235,6 +3532,53 @@
             "assertSafeFilePath",
             "handleBatchProofCheck"
           ],
+          "failurePaths": [
+            {
+              "in": "assertSafeFilePath",
+              "kind": "throw",
+              "line": 61
+            },
+            {
+              "in": "assertSafeFilePath",
+              "kind": "throw",
+              "line": 70
+            },
+            {
+              "in": "assertCwdContained",
+              "kind": "throw",
+              "line": 120
+            },
+            {
+              "in": "assertCwdContained",
+              "kind": "throw",
+              "line": 128
+            },
+            {
+              "in": "assertCwdWithinOperatorCap",
+              "kind": "throw",
+              "line": 149
+            },
+            {
+              "in": "assertFileContained",
+              "kind": "throw",
+              "line": 169
+            },
+            {
+              "in": "defaultSpawner",
+              "kind": "catch",
+              "line": 272
+            },
+            {
+              "in": "defaultSpawner",
+              "kind": "catch",
+              "line": 288
+            },
+            {
+              "in": "specFor",
+              "kind": "throw",
+              "line": 362
+            }
+          ],
           "hash": "139c1e84aab568febd31100e89e25032dc109142390c3695a4a4eca598fb8184",
           "importOrder": [
             "src/envelope.ts",
@@ -2263,6 +3607,43 @@
             "readArray",
             "readObjectArray",
             "readString"
+          ],
+          "failurePaths": [
+            {
+              "in": "assembleEvidence",
+              "kind": "throw",
+              "line": 106
+            },
+            {
+              "in": "parseJsonObject",
+              "kind": "catch",
+              "line": 192
+            },
+            {
+              "in": "parseModelJson",
+              "kind": "catch",
+              "line": 218
+            },
+            {
+              "in": "parseModelJson",
+              "kind": "catch",
+              "line": 223
+            },
+            {
+              "in": "parseModelJson",
+              "kind": "throw",
+              "line": 224
+            },
+            {
+              "in": "parseModelJson",
+              "kind": "throw",
+              "line": 227
+            },
+            {
+              "in": "parseModelJsonObject",
+              "kind": "catch",
+              "line": 240
+            }
           ],
           "hash": "023dfb974f84c873cfe7eecece99a0bf8854fcf5aa1ebbe8dbf4a8aa13c2b3a9",
           "importOrder": [
@@ -2306,6 +3687,13 @@
             "handleChangeBrief",
             "synthesizeChangeBrief"
           ],
+          "failurePaths": [
+            {
+              "in": "assertAtLeastOnePrimary",
+              "kind": "throw",
+              "line": 113
+            }
+          ],
           "hash": "53da6ac05918f9e589c67b9fc86fcb82b171c04ec87baa1ab7459c15d88e82fc",
           "importOrder": [
             "src/envelope.ts",
@@ -2334,6 +3722,13 @@
         {
           "exports": [
             "handleChat"
+          ],
+          "failurePaths": [
+            {
+              "in": "handleChat",
+              "kind": "throw",
+              "line": 69
+            }
           ],
           "hash": "a36cd0d3f1301e3ab45c1240e84e85a64fb4e454a022a81c5ee2b6c5451d585e",
           "importOrder": [
@@ -2365,6 +3760,18 @@
         {
           "exports": [
             "handleClassify"
+          ],
+          "failurePaths": [
+            {
+              "in": "parseClassify",
+              "kind": "catch",
+              "line": 142
+            },
+            {
+              "in": "assertExactlyOneInput",
+              "kind": "throw",
+              "line": 211
+            }
           ],
           "hash": "5aac471c9870eb3516d3d46f4e0052f46ef72b28015b3da67abceba86ad2f732",
           "importOrder": [
@@ -2430,6 +3837,38 @@
           "exports": [
             "handleCodeMap"
           ],
+          "failurePaths": [
+            {
+              "in": "walkPaths",
+              "kind": "catch",
+              "line": 106
+            },
+            {
+              "in": "walkPaths",
+              "kind": "throw",
+              "line": 107
+            },
+            {
+              "in": "walkPaths",
+              "kind": "catch",
+              "line": 130
+            },
+            {
+              "in": "walkPaths",
+              "kind": "catch",
+              "line": 150
+            },
+            {
+              "in": "tryReadText",
+              "kind": "catch",
+              "line": 173
+            },
+            {
+              "in": "tryReadJson",
+              "kind": "catch",
+              "line": 184
+            }
+          ],
           "hash": "7707f4f7fccb57f1994fb8d030d9f0a0d01a671ae32948c53182119d187fc5f7",
           "importOrder": [
             "src/envelope.ts",
@@ -2474,6 +3913,48 @@
           "exports": [
             "handleCorpusAmend"
           ],
+          "failurePaths": [
+            {
+              "in": "handleCorpusAmend",
+              "kind": "throw",
+              "line": 111
+            },
+            {
+              "in": "handleCorpusAmend",
+              "kind": "catch",
+              "line": 132
+            },
+            {
+              "in": "handleCorpusAmend",
+              "kind": "throw",
+              "line": 137
+            },
+            {
+              "in": "handleCorpusAmend",
+              "kind": "throw",
+              "line": 144
+            },
+            {
+              "in": "handleCorpusAmend",
+              "kind": "throw",
+              "line": 149
+            },
+            {
+              "in": "handleCorpusAmend",
+              "kind": "throw",
+              "line": 158
+            },
+            {
+              "in": "handleCorpusAmend",
+              "kind": "throw",
+              "line": 171
+            },
+            {
+              "in": "handleCorpusAmend",
+              "kind": "throw",
+              "line": 234
+            }
+          ],
           "hash": "f2c939c78f2766095b3d0174fdcc66f0517c047cc94892a6be86a5f66b265eff",
           "importOrder": [
             "src/envelope.ts",
@@ -2509,6 +3990,13 @@
           "exports": [
             "handleCorpusAmendHistory"
           ],
+          "failurePaths": [
+            {
+              "in": "handleCorpusAmendHistory",
+              "kind": "throw",
+              "line": 55
+            }
+          ],
           "hash": "1bd0403e6b5ddbafc2012221c568a76288b4fb0a1d426ed6d897953688d42d81",
           "importOrder": [
             "src/corpus/manifest.ts",
@@ -2531,6 +4019,18 @@
             "computeCoverage",
             "handleCorpusAnswer",
             "validateAndMapCitations"
+          ],
+          "failurePaths": [
+            {
+              "in": "parseModelOutput",
+              "kind": "catch",
+              "line": 193
+            },
+            {
+              "in": "handleCorpusAnswer",
+              "kind": "throw",
+              "line": 282
+            }
           ],
           "hash": "8f4dc056dc81f5e7b641042320be747bf81a931ac839d93a62a8cdc7bf7d6146",
           "importOrder": [
@@ -2563,6 +4063,23 @@
           "exports": [
             "handleCorpusHealth"
           ],
+          "failurePaths": [
+            {
+              "in": "buildEntry",
+              "kind": "catch",
+              "line": 154
+            },
+            {
+              "in": "buildEntry",
+              "kind": "catch",
+              "line": 196
+            },
+            {
+              "in": "handleCorpusHealth",
+              "kind": "throw",
+              "line": 223
+            }
+          ],
           "hash": "59b2a3aec69b6cb58e8d8f1ba381ffece65c9fee1abc7e2a0f04e84f6ad5cfa9",
           "importOrder": [
             "src/envelope.ts",
@@ -2585,6 +4102,13 @@
         {
           "exports": [
             "handleCorpusIndex"
+          ],
+          "failurePaths": [
+            {
+              "in": "handleCorpusIndex",
+              "kind": "throw",
+              "line": 70
+            }
           ],
           "hash": "737b89ae395f14872eb2eca60f0f7129e340fd43144a5ba6770823b816e5be3c",
           "importOrder": [
@@ -2651,6 +4175,23 @@
           "exports": [
             "handleCorpusRerank"
           ],
+          "failurePaths": [
+            {
+              "in": "containsTermWordBounded",
+              "kind": "catch",
+              "line": 107
+            },
+            {
+              "in": "scoreRecency",
+              "kind": "catch",
+              "line": 132
+            },
+            {
+              "in": "handleCorpusRerank",
+              "kind": "throw",
+              "line": 153
+            }
+          ],
           "hash": "49b1fe56ceafb2a5e4dff6c258ba6726ed1bbca69dd076d68947f082ab78898a",
           "importOrder": [
             "src/envelope.ts",
@@ -2671,6 +4212,33 @@
             "applyFilter",
             "globToRegex",
             "handleCorpusSearch"
+          ],
+          "failurePaths": [
+            {
+              "in": "applyFilter",
+              "kind": "throw",
+              "line": 188
+            },
+            {
+              "in": "applyFilter",
+              "kind": "catch",
+              "line": 201
+            },
+            {
+              "in": "applyFilter",
+              "kind": "throw",
+              "line": 202
+            },
+            {
+              "in": "handleCorpusSearch",
+              "kind": "throw",
+              "line": 246
+            },
+            {
+              "in": "handleCorpusSearch",
+              "kind": "catch",
+              "line": 346
+            }
           ],
           "hash": "e5d25a831b8fd7f0cf2894252aace791d5ec492657eba99dc5bc462b62e6a6f6",
           "importOrder": [
@@ -2700,6 +4268,43 @@
           "entryRule": 4,
           "exports": [
             "handleDoctor"
+          ],
+          "failurePaths": [
+            {
+              "in": "fetchJson",
+              "kind": "throw",
+              "line": 140
+            },
+            {
+              "in": "fetchModelState",
+              "kind": "catch",
+              "line": 159
+            },
+            {
+              "in": "fetchCloudRoster",
+              "kind": "catch",
+              "line": 220
+            },
+            {
+              "in": "readRecentErrors",
+              "kind": "catch",
+              "line": 259
+            },
+            {
+              "in": "readRecentErrors",
+              "kind": "catch",
+              "line": 270
+            },
+            {
+              "in": "handleDoctor",
+              "kind": "catch",
+              "line": 313
+            },
+            {
+              "in": "handleDoctor",
+              "kind": "catch",
+              "line": 418
+            }
           ],
           "hash": "961baf8dcdf2a254df02bc972a98b4903f86ae477f40a2cf29610933cc26e4ae",
           "importsFiles": [
@@ -2770,6 +4375,23 @@
           "exports": [
             "handleDraft"
           ],
+          "failurePaths": [
+            {
+              "in": "handleDraft",
+              "kind": "catch",
+              "line": 64
+            },
+            {
+              "in": "handleDraft",
+              "kind": "throw",
+              "line": 73
+            },
+            {
+              "in": "handleDraft",
+              "kind": "throw",
+              "line": 130
+            }
+          ],
           "hash": "c86533797699fa1166e58b116476bc5dde363a9c24c2bb4614777de5b49b8723",
           "importOrder": [
             "src/envelope.ts",
@@ -2821,6 +4443,13 @@
           "exports": [
             "handleEmbedSearch"
           ],
+          "failurePaths": [
+            {
+              "in": "handleEmbedSearch",
+              "kind": "throw",
+              "line": 78
+            }
+          ],
           "hash": "8ec9a93b5a792f9c75cbb6abaf4a5f1ed27e0dd54f0b88f6971c1ee711748a84",
           "importOrder": [
             "src/envelope.ts",
@@ -2845,6 +4474,18 @@
         {
           "exports": [
             "handleExtract"
+          ],
+          "failurePaths": [
+            {
+              "in": "parse",
+              "kind": "catch",
+              "line": 246
+            },
+            {
+              "in": "assertExactlyOneInput",
+              "kind": "throw",
+              "line": 258
+            }
           ],
           "hash": "790c0d95a585893d69ae035e865909ab81f87ad13ea6da6d3ee53490e1209178",
           "importOrder": [
@@ -2872,6 +4513,33 @@
         {
           "exports": [
             "handleHypothesisDrill"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadIncidentArtifact",
+              "kind": "catch",
+              "line": 85
+            },
+            {
+              "in": "loadIncidentArtifact",
+              "kind": "throw",
+              "line": 88
+            },
+            {
+              "in": "loadIncidentArtifact",
+              "kind": "throw",
+              "line": 95
+            },
+            {
+              "in": "loadIncidentArtifact",
+              "kind": "throw",
+              "line": 99
+            },
+            {
+              "in": "handleHypothesisDrill",
+              "kind": "throw",
+              "line": 154
+            }
           ],
           "hash": "b55cc897bc6d04a7ecad0dbda0956f87d7e259819bc9ba36111e6d8cb04edcc9",
           "importOrder": [
@@ -2905,6 +4573,13 @@
             "handleIncidentBrief",
             "synthesizeIncidentBrief"
           ],
+          "failurePaths": [
+            {
+              "in": "assertAtLeastOnePrimary",
+              "kind": "throw",
+              "line": 178
+            }
+          ],
           "hash": "add5feb910a19cc0f627abe28b01886ea1578b43068d3de79f7ef20344ebfd1a",
           "importOrder": [
             "src/envelope.ts",
@@ -2935,6 +4610,43 @@
             "iterateLogLines",
             "readLogSuffix"
           ],
+          "failurePaths": [
+            {
+              "in": "iterateLogLines",
+              "kind": "catch",
+              "line": 67
+            },
+            {
+              "in": "iterateLogLines",
+              "kind": "throw",
+              "line": 68
+            },
+            {
+              "in": "iterateLogLines",
+              "kind": "throw",
+              "line": 69
+            },
+            {
+              "in": "iterateLogLines",
+              "kind": "throw",
+              "line": 72
+            },
+            {
+              "in": "iterateLogLines",
+              "kind": "catch",
+              "line": 85
+            },
+            {
+              "in": "iterateLogLines",
+              "kind": "throw",
+              "line": 86
+            },
+            {
+              "in": "iterateLogLines",
+              "kind": "throw",
+              "line": 87
+            }
+          ],
           "hash": "69970533ad03791b33beae28c9a818c8bf496254a490c830efed03c9c49dea7c",
           "importsFiles": [
             "src/errors.ts"
@@ -2944,6 +4656,33 @@
         {
           "exports": [
             "handleLogStats"
+          ],
+          "failurePaths": [
+            {
+              "in": "parseSince",
+              "kind": "throw",
+              "line": 116
+            },
+            {
+              "in": "handleLogStats",
+              "kind": "catch",
+              "line": 195
+            },
+            {
+              "in": "handleLogStats",
+              "kind": "catch",
+              "line": 212
+            },
+            {
+              "in": "handleLogStats",
+              "kind": "catch",
+              "line": 295
+            },
+            {
+              "in": "handleLogStats",
+              "kind": "throw",
+              "line": 299
+            }
           ],
           "hash": "098165b54f61cb0e960b99fa7610cc2da391787dde11078b7a14e3540cf04431",
           "importOrder": [
@@ -2965,6 +4704,28 @@
         {
           "exports": [
             "handleLogTail"
+          ],
+          "failurePaths": [
+            {
+              "in": "parseSince",
+              "kind": "throw",
+              "line": 64
+            },
+            {
+              "in": "handleLogTail",
+              "kind": "catch",
+              "line": 107
+            },
+            {
+              "in": "handleLogTail",
+              "kind": "throw",
+              "line": 128
+            },
+            {
+              "in": "handleLogTail",
+              "kind": "catch",
+              "line": 146
+            }
           ],
           "hash": "bab119f0de4846a84c66144f044c187197820297e8602caabfc98c46009a095d",
           "importOrder": [
@@ -3018,6 +4779,48 @@
             "resolveUniqueArtifactPaths",
             "writeArtifactPair"
           ],
+          "failurePaths": [
+            {
+              "in": "safeAbsDir",
+              "kind": "throw",
+              "line": 57
+            },
+            {
+              "in": "safeAbsDir",
+              "kind": "throw",
+              "line": 65
+            },
+            {
+              "in": "resolvePackArtifactDir",
+              "kind": "throw",
+              "line": 99
+            },
+            {
+              "in": "resolvePackArtifactDir",
+              "kind": "throw",
+              "line": 108
+            },
+            {
+              "in": "pathExists",
+              "kind": "catch",
+              "line": 132
+            },
+            {
+              "in": "tryReserve",
+              "kind": "catch",
+              "line": 168
+            },
+            {
+              "in": "tryReserve",
+              "kind": "throw",
+              "line": 170
+            },
+            {
+              "in": "resolveUniqueArtifactPaths",
+              "kind": "throw",
+              "line": 191
+            }
+          ],
           "hash": "493f22d59bcd392031a8df780eaded5968f698a58f9352d270d7495841168aba",
           "importsFiles": [
             "src/corpus/atomicWrite.ts",
@@ -3030,6 +4833,28 @@
           "exports": [
             "coerceChangeFacts",
             "handleChangePack"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertAtLeastOnePrimary",
+              "kind": "throw",
+              "line": 294
+            },
+            {
+              "in": "handleChangePackInner",
+              "kind": "catch",
+              "line": 578
+            },
+            {
+              "in": "handleChangePackInner",
+              "kind": "catch",
+              "line": 662
+            },
+            {
+              "in": "handleChangePackInner",
+              "kind": "catch",
+              "line": 733
+            }
           ],
           "hash": "d36c530fe63e9b51ff31ff13b75e02fad4c43ca2e0bb25a28192d60c7bfac612",
           "importOrder": [
@@ -3070,6 +4895,23 @@
           "exports": [
             "handleIncidentPack"
           ],
+          "failurePaths": [
+            {
+              "in": "assertAtLeastOnePrimary",
+              "kind": "throw",
+              "line": 317
+            },
+            {
+              "in": "handleIncidentPackInner",
+              "kind": "catch",
+              "line": 384
+            },
+            {
+              "in": "handleIncidentPackInner",
+              "kind": "catch",
+              "line": 504
+            }
+          ],
           "hash": "8fc1fb70b628495cbc8b638d62bc688d0f51d3ef0d688d3a2ada5e04baefb68d",
           "importOrder": [
             "src/tools/packs/artifactWrite.ts",
@@ -3105,6 +4947,23 @@
           "exports": [
             "coerceOnboardingFacts",
             "handleRepoPack"
+          ],
+          "failurePaths": [
+            {
+              "in": "onboardingPathVerified",
+              "kind": "catch",
+              "line": 266
+            },
+            {
+              "in": "handleRepoPackInner",
+              "kind": "catch",
+              "line": 694
+            },
+            {
+              "in": "handleRepoPackInner",
+              "kind": "catch",
+              "line": 762
+            }
           ],
           "hash": "b883a808582eafd620de5522732e8448c76b73785e38da7bc080d91772b5cfb2",
           "importOrder": [
@@ -3227,6 +5086,13 @@
           "exports": [
             "runTool"
           ],
+          "failurePaths": [
+            {
+              "in": "runToolInner",
+              "kind": "throw",
+              "line": 166
+            }
+          ],
           "hash": "4e365ba6aa5c18bb2938c77b48fda48bd490b3469c60a54df0a37590db275ead",
           "importOrder": [
             "src/ollama.ts",
@@ -3257,6 +5123,18 @@
         {
           "exports": [
             "handleSummarizeDeep"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertExactlyOneSource",
+              "kind": "throw",
+              "line": 80
+            },
+            {
+              "in": "parseFrameDigest",
+              "kind": "catch",
+              "line": 142
+            }
           ],
           "hash": "32ee08aa8966bfd599051044743f9e9a9de629770a9eb8018d4dcb2062472e18",
           "importOrder": [
@@ -3291,6 +5169,13 @@
           "exports": [
             "handleSummarizeFast"
           ],
+          "failurePaths": [
+            {
+              "in": "parseFrameSummary",
+              "kind": "catch",
+              "line": 78
+            }
+          ],
           "hash": "47c089fdec56f80fd0dfabccc4b109b5887307fbfb321485b5aa053d7a34cb14",
           "importOrder": [
             "src/envelope.ts",
@@ -3311,6 +5196,38 @@
         {
           "exports": [
             "handleTriageLogs"
+          ],
+          "failurePaths": [
+            {
+              "in": "sanitizePatterns",
+              "kind": "throw",
+              "line": 70
+            },
+            {
+              "in": "sanitizePatterns",
+              "kind": "throw",
+              "line": 78
+            },
+            {
+              "in": "parse",
+              "kind": "catch",
+              "line": 110
+            },
+            {
+              "in": "assertExactlyOneInput",
+              "kind": "throw",
+              "line": 134
+            },
+            {
+              "in": "assertLogSizeWithinCap",
+              "kind": "throw",
+              "line": 155
+            },
+            {
+              "in": "assertLogSizeWithinCap",
+              "kind": "throw",
+              "line": 165
+            }
           ],
           "hash": "c4cc9497d50e54a3f2ef533ea7ab3018467c97fbdbb1e83b674604be2cf4c91b",
           "importOrder": [
@@ -3338,6 +5255,18 @@
         {
           "exports": [
             "handleVerifyClaims"
+          ],
+          "failurePaths": [
+            {
+              "in": "handleVerifyClaims",
+              "kind": "throw",
+              "line": 461
+            },
+            {
+              "in": "handleVerifyClaims",
+              "kind": "catch",
+              "line": 535
+            }
           ],
           "hash": "f6d70497f5b3b85eabb8525f5cbeaaa121f6ef286ef13d7e4fb56b60ed3d2311",
           "importOrder": [
@@ -3368,6 +5297,9 @@
           "hash": "6319a77a3468a2f5809030dc5333e97eacc5fb7879806a0886aa29219822e9b9",
           "path": "src/version.ts"
         }
+      ],
+      "frameworks": [
+        "mcp"
       ],
       "globs": [
         "src/**"
@@ -3472,6 +5404,9 @@
       "outsideReads": 42,
       "outsideWrites": 19,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 97,
       "unresolvedSites": 0
     },
@@ -3533,14 +5468,19 @@
         },
         {
           "hash": "b4d4b0607cedc5b13f2e88b07657faa25c07b82d29ec81b7708c3affc532ffab",
-          "path": "tests/cli.test.ts"
+          "path": "tests/cli.test.ts",
+          "spawns": [
+            "src/index.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "bdb038df472598acda30a7c867c8c728bb7d0f9ade2af3eaa4cacbdfa85dda51",
           "importsFiles": [
             "src/cloudCheck.ts"
           ],
-          "path": "tests/cloudCheck.test.ts"
+          "path": "tests/cloudCheck.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "812a8eef1f5a60118333cc11e5861e5f1161130070c1d0bf020adef1bc74430c",
@@ -3552,7 +5492,8 @@
             "src/errors.ts",
             "src/ollama.ts"
           ],
-          "path": "tests/cloudClient.test.ts"
+          "path": "tests/cloudClient.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "929dad26b7dcf4ae5eaa7fb882e9f461cd41fc2b369782dc18d49cf4cc70492c",
@@ -3564,7 +5505,8 @@
             "src/errors.ts",
             "src/profiles.ts"
           ],
-          "path": "tests/cloudConfig.test.ts"
+          "path": "tests/cloudConfig.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "22b7451d53d99457772b6b5420ccb96e1bcbb1780b04657714eb0f16a970a74c",
@@ -3590,21 +5532,24 @@
             "src/tools/runner.ts",
             "tests/_helpers/index.ts"
           ],
-          "path": "tests/cloudEscalation.test.ts"
+          "path": "tests/cloudEscalation.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "521c36fce9360f23ffef0dfbfaf7c017c83f03ef38abec61e440a2da1ff768f7",
           "importsFiles": [
             "src/corpus/atomicWrite.ts"
           ],
-          "path": "tests/corpus/atomicWrite.test.ts"
+          "path": "tests/corpus/atomicWrite.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e9e069a44ed2a01c996b978bbcf3232566bd0dc2e6b85915d0e6aa0c265cc37b",
           "importsFiles": [
             "src/corpus/chunker.ts"
           ],
-          "path": "tests/corpus/chunker.test.ts"
+          "path": "tests/corpus/chunker.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "81648c22de49c67049afde1464458ab6ec0e08a00ac6b063dae7c04de1f59990",
@@ -3628,7 +5573,8 @@
             "src/ollama.ts",
             "src/tools/corpusIndex.ts"
           ],
-          "path": "tests/corpus/indexerSearcher.test.ts"
+          "path": "tests/corpus/indexerSearcher.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6c942214434b3d4c6a0c8e355b90bc57a9266559845104dbb85a85979a632bc4",
@@ -3636,7 +5582,8 @@
             "src/corpus/lexical.ts",
             "src/corpus/storage.ts"
           ],
-          "path": "tests/corpus/lexical.test.ts"
+          "path": "tests/corpus/lexical.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "354d21632011483501dc8a15d535d8c9cf6cd5476c0de0a8cbf2bc5d64887630",
@@ -3648,7 +5595,8 @@
             "src/corpus/identity.ts",
             "src/corpus/lock.ts"
           ],
-          "path": "tests/corpus/lock.test.ts"
+          "path": "tests/corpus/lock.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "82515bf417b9980f6eb5255fd2657bc04d8458de7638b51ac6e1fc561f3e61de",
@@ -3668,7 +5616,8 @@
             "src/envelope.ts",
             "src/ollama.ts"
           ],
-          "path": "tests/corpus/refresh.test.ts"
+          "path": "tests/corpus/refresh.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "423e56c1b8478dc0e59321f09e06f5786da9ef02bbbdcc09cae65f1315eea084",
@@ -3684,7 +5633,8 @@
             "src/envelope.ts",
             "src/ollama.ts"
           ],
-          "path": "tests/corpus/searchModes.test.ts"
+          "path": "tests/corpus/searchModes.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ca0fa800a5d10ade21eb3a90e3afdecc8a7c6fa7e3f0dced1c41c764e9a75e73",
@@ -3714,7 +5664,8 @@
             "src/tools/corpusRefresh.ts",
             "src/tools/corpusSearch.ts"
           ],
-          "path": "tests/corpus/stageBCFixes.test.ts"
+          "path": "tests/corpus/stageBCFixes.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b5da2c14360b050db872da550e8f8deb15f8d1a441b107a6475d89f1e223cd8c",
@@ -3722,7 +5673,8 @@
             "src/coverage.ts",
             "src/sources.ts"
           ],
-          "path": "tests/coverage.test.ts"
+          "path": "tests/coverage.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0fba12a2161dc83ec9d4ac2e44532e4ef5df32826a852d5c850dcf5cb4533ba1",
@@ -3742,7 +5694,8 @@
             "src/tools/doctor.ts",
             "tests/_helpers/fakeOllama.ts"
           ],
-          "path": "tests/doctorCloud.test.ts"
+          "path": "tests/doctorCloud.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d48e2055f6dd6a4fb757eddbfdccc27c1275d340484bdede554c96fcacaef8e0",
@@ -3750,21 +5703,30 @@
             "src/embedMath.ts",
             "src/errors.ts"
           ],
-          "path": "tests/embedMath.test.ts"
+          "path": "tests/embedMath.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9fc687aa201187c4132b110ede7aafece81d42b7300929983e7f34d5f4ea8ae7",
           "importsFiles": [
             "src/envelope.ts"
           ],
-          "path": "tests/envelope.test.ts"
+          "path": "tests/envelope.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "isActionableHint"
           ],
           "hash": "b91d4d32c2c7f1d748c1dceffffd91e7fbf35a257dc987fca96857cc87c23d12",
-          "path": "tests/errorHintQuality.test.ts"
+          "names": [
+            "src/corpus/manifest.ts",
+            "src/corpus/storage.ts",
+            "src/tools/corpusAmend.ts",
+            "src/tools/triageLogs.ts"
+          ],
+          "path": "tests/errorHintQuality.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "cad0e4fcbcf53b6c09b6d63ea87ca6e506cb4cd4238147ef1ac38def55b7ee61",
@@ -3782,35 +5744,40 @@
             "src/evals/retrieval.ts",
             "src/ollama.ts"
           ],
-          "path": "tests/evals/retrieval.test.ts"
+          "path": "tests/evals/retrieval.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0170a7b5bfb640a9f53171600812e1eb9f47a04646fff9c73588a1e8a089e253",
           "importsFiles": [
             "src/guardrails/bannedPhrases.ts"
           ],
-          "path": "tests/guardrails/bannedPhrases.test.ts"
+          "path": "tests/guardrails/bannedPhrases.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3b98e7c263e3b3393b6a60619fa0de5f09661b0d4a4adf54d39ad334c71c7f81",
           "importsFiles": [
             "src/guardrails/citations.ts"
           ],
-          "path": "tests/guardrails/citations.test.ts"
+          "path": "tests/guardrails/citations.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0758b4fb373d20fda9e91fa07220cec2cdd750b8fc33f35c3963f7e4a277797c",
           "importsFiles": [
             "src/guardrails/confidence.ts"
           ],
-          "path": "tests/guardrails/confidence.test.ts"
+          "path": "tests/guardrails/confidence.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "bffa02342fa0de1c9123745987901b016314e7b42670310e7a22a89d5b281367",
           "importsFiles": [
             "src/guardrails/stringifiedArrayGuard.ts"
           ],
-          "path": "tests/guardrails/stringifiedArrayGuard.test.ts"
+          "path": "tests/guardrails/stringifiedArrayGuard.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "76ea912021aae33ccd8a69af0b38d568d9d06c2205f9d1aa4a484cca29db5a67",
@@ -3818,7 +5785,8 @@
             "src/guardrails/timeouts.ts",
             "src/observability.ts"
           ],
-          "path": "tests/guardrails/timeouts.test.ts"
+          "path": "tests/guardrails/timeouts.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "020d127c4a4bf3bbe5dd15942b4585d8346a9116ee5d4d4e4368e1ef14a9d03a",
@@ -3832,22 +5800,35 @@
             "src/guardrails/writeConfirm.ts",
             "src/protectedPaths.ts"
           ],
-          "path": "tests/guardrails/writeConfirm.test.ts"
+          "path": "tests/guardrails/writeConfirm.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e2516d5e1a5e574ec3d6020a6a5b42c6cbe549f7cc56cb31633411ae42173242",
-          "path": "tests/integration/mcp.integration.test.ts"
+          "path": "tests/integration/mcp.integration.test.ts",
+          "spawns": [
+            "src/index.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "c10e5de431d32d965ee5c6957ee35f210e433c7f69483b3aa637c7aae2d53a17",
           "importsFiles": [
             "src/observability.ts"
           ],
-          "path": "tests/logTailRoster.test.ts"
+          "names": [
+            "src/index.ts"
+          ],
+          "path": "tests/logTailRoster.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9122a306f5ce344a7ce298155ddc1a4936dd85428d69b2f2ffe41f5ed58939f2",
-          "path": "tests/mcpGolden.test.ts"
+          "path": "tests/mcpGolden.test.ts",
+          "spawns": [
+            "src/index.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "504c440fbba0dfa81bd1c781a11f44fb973fd1c0adfaa2f0c10c9961d23a20b4",
@@ -3885,7 +5866,8 @@
             "src/tools/summarizeDeep.ts",
             "src/tools/summarizeFast.ts"
           ],
-          "path": "tests/numCtx.test.ts"
+          "path": "tests/numCtx.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6c5537c4cafb243880b325dc68753aa0051d456fa9027dd3aa71a78988358c8b",
@@ -3897,7 +5879,11 @@
             "src/envelope.ts",
             "src/observability.ts"
           ],
-          "path": "tests/observability.test.ts"
+          "names": [
+            "src/index.ts"
+          ],
+          "path": "tests/observability.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "40faa1eaa4b9e8e51beaed51fa99099fd91035aef279d1bf94980e95f3285731",
@@ -3909,7 +5895,8 @@
             "src/errors.ts",
             "src/ollama.ts"
           ],
-          "path": "tests/ollama.test.ts"
+          "path": "tests/ollama.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2984f9560ed1bfa0012bc1a0b9614057341c3942082474fc39b37cba37dada3c",
@@ -3921,11 +5908,13 @@
             "src/errors.ts",
             "src/ollama.ts"
           ],
-          "path": "tests/ollamaRetry.test.ts"
+          "path": "tests/ollamaRetry.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "29ad7b0e824b5a31625a5cf21c51377a36de9e5f2e7d1f6d4845e5d62358a877",
-          "path": "tests/pack.test.ts"
+          "path": "tests/pack.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0280748349235861ffe2eb1ad53af143632a2fd3a45b35709e4a16943fef4259",
@@ -3945,7 +5934,8 @@
             "src/profiles.ts",
             "src/runContext.ts"
           ],
-          "path": "tests/prewarm.test.ts"
+          "path": "tests/prewarm.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "11fd2e396544fbb766637fa50f9113eca8864d579275b66dfca8cbfcc3f469f3",
@@ -3965,7 +5955,8 @@
             "src/profiles.ts",
             "src/runContext.ts"
           ],
-          "path": "tests/prewarmInvariants.test.ts"
+          "path": "tests/prewarmInvariants.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5e551f842e78335c6fd19551acea3528c92fb1b0d8119bf6b888a0dffa6edf63",
@@ -3977,7 +5968,8 @@
             "src/errors.ts",
             "src/profiles.ts"
           ],
-          "path": "tests/profiles.test.ts"
+          "path": "tests/profiles.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d9ddd0384b7ffff0f8bf45350575bf022f7e7116825a748e247a028222ad255b",
@@ -3989,7 +5981,8 @@
             "src/guardrails/writeConfirm.ts",
             "src/protectedPaths.ts"
           ],
-          "path": "tests/protectedPaths.test.ts"
+          "path": "tests/protectedPaths.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4c16270440ffda461c5dae07aba1f86f34abf520a42cbeb508d9a12de2ef7a27",
@@ -4029,11 +6022,13 @@
             "src/tools/summarizeDeep.ts",
             "src/tools/summarizeFast.ts"
           ],
-          "path": "tests/regressions.test.ts"
+          "path": "tests/regressions.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "cf2a31ca12db629f710efe162a5eb7ba41c8c0814e035761e809852d79cb4972",
-          "path": "tests/releaseWorkflowGate.test.ts"
+          "path": "tests/releaseWorkflowGate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "20529473653e53be19b72e359327507a799012d30aa807c46ed971c023a13d98",
@@ -4051,7 +6046,8 @@
             "src/tiers.ts",
             "tests/_helpers/fakeOllama.ts"
           ],
-          "path": "tests/routing.test.ts"
+          "path": "tests/routing.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "050dd4d84f064f2e6d9551b1818f9c5cc755c3c962e30414c0c242747b5ea9f9",
@@ -4077,7 +6073,8 @@
             "src/tools/runner.ts",
             "tests/_helpers/fakeOllama.ts"
           ],
-          "path": "tests/routingIntegration.test.ts"
+          "path": "tests/routingIntegration.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "47334f687e1a77e9351c0bb61959e581c311d0bf1985963fc49802516aab09ab",
@@ -4097,7 +6094,8 @@
             "src/tiers.ts",
             "tests/_helpers/fakeOllama.ts"
           ],
-          "path": "tests/routingStandby.test.ts"
+          "path": "tests/routingStandby.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c736faf81d6f8f4054185605b50147451016ad6acafc1f53b12599da3afe9e1b",
@@ -4109,7 +6107,8 @@
             "src/envelope.ts",
             "src/runContext.ts"
           ],
-          "path": "tests/runContext.test.ts"
+          "path": "tests/runContext.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1a3e3ee5bd503143bc93774020501b78a865ba00eb6c9d317051340521ad645f",
@@ -4121,7 +6120,8 @@
             "src/errors.ts",
             "src/semaphore.ts"
           ],
-          "path": "tests/semaphore.test.ts"
+          "path": "tests/semaphore.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a0297b8d4317c0a7f413602a65437aed30c1f7caca5c2ad7fc38e12ea3e7ef00",
@@ -4145,7 +6145,8 @@
             "src/tiers.ts",
             "src/tools/runner.ts"
           ],
-          "path": "tests/signalChainE2E.test.ts"
+          "path": "tests/signalChainE2E.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "bc0616bbf578f62b279e61a065e4ac1e401b0e696e13d97988331a3396469208",
@@ -4157,21 +6158,27 @@
             "src/errors.ts",
             "src/sources.ts"
           ],
-          "path": "tests/sources.test.ts"
+          "path": "tests/sources.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6a42e7aae4b9b54e6e6f462a5406d81a2a65faa898a10598bd7d22258f6d3ed7",
           "importsFiles": [
             "src/ollama.ts"
           ],
-          "path": "tests/startupProbe.test.ts"
+          "names": [
+            "src/index.ts"
+          ],
+          "path": "tests/startupProbe.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7be1ea520361709e07eee7841a601b8dccacea048a2af62f8982aeb8dd678ae4",
           "importsFiles": [
             "src/tiers.ts"
           ],
-          "path": "tests/tiers.test.ts"
+          "path": "tests/tiers.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "01bf5a11733d7642ad183740a1f7a5cb0b210739224226d907d2e3f702a99e60",
@@ -4179,11 +6186,19 @@
             "src/guardrails/timeouts.ts",
             "src/observability.ts"
           ],
-          "path": "tests/timeoutLogEnrichment.test.ts"
+          "path": "tests/timeoutLogEnrichment.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9545ef857269ecbd901ec0451c2cb62674337df297d540ec1053a143a9c6be42",
-          "path": "tests/toolDocsGen.test.ts"
+          "names": [
+            "src/index.ts"
+          ],
+          "path": "tests/toolDocsGen.test.ts",
+          "spawns": [
+            "scripts/gen-tool-docs.mjs"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "9e3f40814a4f99878427110de6b6841fa3c83d721d69a01fa8fe080f9d4bf518",
@@ -4205,7 +6220,11 @@
             "src/tools/artifactDiff.ts",
             "src/tools/artifacts/diff.ts"
           ],
-          "path": "tests/tools/artifactDiff.test.ts"
+          "names": [
+            "src/index.ts"
+          ],
+          "path": "tests/tools/artifactDiff.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ffc649b65a815dd50d7bb1f97221c70b8c286ef243a472e56ebf24445a7765d2",
@@ -4227,7 +6246,11 @@
             "src/tools/artifactExportToPath.ts",
             "src/tools/artifactSnippets.ts"
           ],
-          "path": "tests/tools/artifactHandoff.test.ts"
+          "names": [
+            "src/index.ts"
+          ],
+          "path": "tests/tools/artifactHandoff.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "796f54e929de4c6e7165280b4364cee2d179d827a1307e73a9a7844b88ae552e",
@@ -4247,14 +6270,16 @@
             "src/runContext.ts",
             "src/tools/artifactPrune.ts"
           ],
-          "path": "tests/tools/artifactPrune.test.ts"
+          "path": "tests/tools/artifactPrune.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "10e46afb0d38a3d3f54fa573640b3a22d6760fb8ebe2491bd2985a22df8187cd",
           "importsFiles": [
             "src/tools/packs/artifactWrite.ts"
           ],
-          "path": "tests/tools/artifactWrite.test.ts"
+          "path": "tests/tools/artifactWrite.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "052026f7cdc17ee0b4f048de97bcc0b9ea8257bd3270693653c5c17a4dcac48b",
@@ -4276,7 +6301,8 @@
             "src/tools/artifactList.ts",
             "src/tools/artifactRead.ts"
           ],
-          "path": "tests/tools/artifacts.test.ts"
+          "path": "tests/tools/artifacts.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "27b935f38f46b4922fbf7845ea8c7679572e15ec8ae26b45000aad4558ed4456",
@@ -4304,7 +6330,8 @@
             "src/tools/extract.ts",
             "src/tools/triageLogs.ts"
           ],
-          "path": "tests/tools/batch.test.ts"
+          "path": "tests/tools/batch.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "94d3938e5e5e42a8c7756c3188df56b5068aff94461a3ddd29d3ced24bd94894",
@@ -4326,7 +6353,8 @@
             "src/runContext.ts",
             "src/tools/batchProofCheck.ts"
           ],
-          "path": "tests/tools/batchProofCheck.test.ts"
+          "path": "tests/tools/batchProofCheck.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "41eb702667dd7a8fd5a4e4628bfd2e566adcf0559fe18f4bb2728882b4607c61",
@@ -4348,7 +6376,8 @@
             "src/tiers.ts",
             "src/tools/batch.ts"
           ],
-          "path": "tests/tools/batchTierLabel.test.ts"
+          "path": "tests/tools/batchTierLabel.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8d34c92564e434d6aade7cdc04d447ee3a46637117a4e9fa4c4e0e9febe42f54",
@@ -4370,7 +6399,8 @@
             "src/runContext.ts",
             "src/tools/packs/changePack.ts"
           ],
-          "path": "tests/tools/changePack.test.ts"
+          "path": "tests/tools/changePack.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d123fe36c367143d60dde6ff427bc0b35ce2e7d73050b868efebb83a62d56896",
@@ -4388,7 +6418,8 @@
             "src/tools/chat.ts",
             "tests/_helpers/index.ts"
           ],
-          "path": "tests/tools/chat.test.ts"
+          "path": "tests/tools/chat.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "30ae6fac884866dea45c4cbcc72d960b2a0e5faf9082a1e81df0097b73733429",
@@ -4402,7 +6433,8 @@
             "src/tools/classify.ts",
             "tests/_helpers/index.ts"
           ],
-          "path": "tests/tools/classify.test.ts"
+          "path": "tests/tools/classify.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f0f3338e00e5cab9403acd894eea06e3b1bfcfa8c09ab5eb79977a7ba3e93ca8",
@@ -4422,7 +6454,8 @@
             "src/runContext.ts",
             "src/tools/codeCitation.ts"
           ],
-          "path": "tests/tools/codeCitation.test.ts"
+          "path": "tests/tools/codeCitation.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "aa7494f94f00369c2d3b239891e6d200dfca5eb8ea0cd746d38a98f849807116",
@@ -4442,7 +6475,11 @@
             "src/runContext.ts",
             "src/tools/codeMap.ts"
           ],
-          "path": "tests/tools/codeMap.test.ts"
+          "names": [
+            "src/index.ts"
+          ],
+          "path": "tests/tools/codeMap.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "18839c48bcaf9f65f8964d7f3c168122febb03c9e1b7babb388b445f7565d351",
@@ -4454,7 +6491,8 @@
             "src/tools/codeReview.ts",
             "tests/_helpers/index.ts"
           ],
-          "path": "tests/tools/codeReview.test.ts"
+          "path": "tests/tools/codeReview.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "eae04f2a4e24e3c9b6acb98dcb1197b60b67fe9a9f74005a06fde5dc739c37f8",
@@ -4480,7 +6518,8 @@
             "src/runContext.ts",
             "src/tools/corpusAmend.ts"
           ],
-          "path": "tests/tools/corpusAmend.test.ts"
+          "path": "tests/tools/corpusAmend.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d9592759ea42968bfbce257eca0b1f0fbb9172a4033c7838e46179c697d3879b",
@@ -4494,7 +6533,8 @@
             "src/runContext.ts",
             "src/tools/corpusAmendHistory.ts"
           ],
-          "path": "tests/tools/corpusAmendHistory.test.ts"
+          "path": "tests/tools/corpusAmendHistory.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "346f63bbe4424c2d47b2f14c9ed71969bf5626702715393d245a6c2846135916",
@@ -4516,7 +6556,8 @@
             "src/runContext.ts",
             "src/tools/corpusAnswer.ts"
           ],
-          "path": "tests/tools/corpusAnswer.test.ts"
+          "path": "tests/tools/corpusAnswer.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1e29560dfad22300bc4fcfa822393dc5f224b632923f65d22322e20284a6e33a",
@@ -4540,7 +6581,8 @@
             "src/tools/corpusAnswer.ts",
             "src/tools/corpusSearch.ts"
           ],
-          "path": "tests/tools/corpusEmptyQuery.test.ts"
+          "path": "tests/tools/corpusEmptyQuery.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8be8ad86dc1d8f5d46b3bc6211bccf7074ef90fcfc8a34cd99c16f49ce5e4635",
@@ -4564,14 +6606,16 @@
             "src/runContext.ts",
             "src/tools/corpusHealth.ts"
           ],
-          "path": "tests/tools/corpusHealth.test.ts"
+          "path": "tests/tools/corpusHealth.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9ef593f4d44497f98d17ecd6ff112e6815f91f701664f4d297a7d939fbe7026b",
           "importsFiles": [
             "src/tools/_helpers.ts"
           ],
-          "path": "tests/tools/corpusQueryCap.test.ts"
+          "path": "tests/tools/corpusQueryCap.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1d8500b281e14c84c6d3d98b2c15e241cedf21ce3e55d4f0043d21161d983fc1",
@@ -4591,7 +6635,8 @@
             "src/runContext.ts",
             "src/tools/corpusRerank.ts"
           ],
-          "path": "tests/tools/corpusRerank.test.ts"
+          "path": "tests/tools/corpusRerank.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0e842d7fbe4d81b5c77090c333e706986988528aa990621d2f8750db2d167254",
@@ -4617,7 +6662,8 @@
             "src/tools/corpusAmend.ts",
             "src/tools/corpusIndex.ts"
           ],
-          "path": "tests/tools/corpusSchemaRefine.test.ts"
+          "path": "tests/tools/corpusSchemaRefine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0a6a188a5c38141fc744ec0e7797ab3f51a65d4ab86cb5dd39d2b7087f5652af",
@@ -4641,7 +6687,8 @@
             "src/runContext.ts",
             "src/tools/corpusSearch.ts"
           ],
-          "path": "tests/tools/corpusSearchFilterExplain.test.ts"
+          "path": "tests/tools/corpusSearchFilterExplain.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9d9e59b7ba11ec998d1a1633e4c74353840acf59abb0d4c6a16bd198589bdf9f",
@@ -4661,7 +6708,8 @@
             "src/runContext.ts",
             "src/tools/doctor.ts"
           ],
-          "path": "tests/tools/doctor.test.ts"
+          "path": "tests/tools/doctor.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "258ded011bfcc1e348091ab31469e4426dfe12055b10bf5d6155760e5a797ba8",
@@ -4675,7 +6723,8 @@
             "src/tools/draft.ts",
             "tests/_helpers/index.ts"
           ],
-          "path": "tests/tools/draft.test.ts"
+          "path": "tests/tools/draft.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f10c6723d6ed69900c84cf49b4710b0c790a281b6ebcf77b6134c9b2fff1a2e9",
@@ -4697,7 +6746,8 @@
             "src/runContext.ts",
             "src/tools/embedSearch.ts"
           ],
-          "path": "tests/tools/embedSearch.test.ts"
+          "path": "tests/tools/embedSearch.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8112e0b78be16b8f307d2411fbe16efc1327ed6c6fe5df02a18e62e458658577",
@@ -4719,7 +6769,8 @@
             "src/runContext.ts",
             "src/tools/embed.ts"
           ],
-          "path": "tests/tools/embedTimeout.test.ts"
+          "path": "tests/tools/embedTimeout.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "66448ac63cfd06300d6ee0b9bf089cd0165becffa7910de59c6561edb060e5fc",
@@ -4739,7 +6790,8 @@
             "src/runContext.ts",
             "src/tools/embed.ts"
           ],
-          "path": "tests/tools/embedWarning.test.ts"
+          "path": "tests/tools/embedWarning.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "cc2bb9bd31bf3e9f1cc232e3f67ee2f8c7268ade4948789d7c00ca9ff14c0186",
@@ -4753,7 +6805,8 @@
             "src/tools/extract.ts",
             "tests/_helpers/index.ts"
           ],
-          "path": "tests/tools/extract.test.ts"
+          "path": "tests/tools/extract.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e99b4c6ea7f84a17eb4cbe291dc9c102058a406de8d1fc050ab2d34089cc68aa",
@@ -4775,7 +6828,8 @@
             "src/tools/triageLogs.ts",
             "tests/_helpers/index.ts"
           ],
-          "path": "tests/tools/fenceTolerance.test.ts"
+          "path": "tests/tools/fenceTolerance.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "94b311f653bc23cfaeead3237a6b9f872dc30dfe03354a629febdc3bdfbfad8e",
@@ -4797,7 +6851,8 @@
             "src/tools/hypothesisDrill.ts",
             "src/tools/packs/incidentPack.ts"
           ],
-          "path": "tests/tools/hypothesisDrill.test.ts"
+          "path": "tests/tools/hypothesisDrill.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f4e9fbc886804ef5cd81f27927ae5209031cde8826631411aa29c0abe135a425",
@@ -4819,7 +6874,8 @@
             "src/runContext.ts",
             "src/tools/incidentBrief.ts"
           ],
-          "path": "tests/tools/incidentBrief.test.ts"
+          "path": "tests/tools/incidentBrief.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7e4f0607b0e121619513e0fa8ae6769c2359f368d40267f5ad7c02758cab2dc3",
@@ -4839,7 +6895,8 @@
             "src/runContext.ts",
             "src/tools/packs/incidentPack.ts"
           ],
-          "path": "tests/tools/incidentPack.test.ts"
+          "path": "tests/tools/incidentPack.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2e2a65df1d37d759160b5d8da44bbb09bd8cbfd1ccc1333690edafb622c739a5",
@@ -4847,7 +6904,8 @@
             "src/tools/logStats.ts",
             "tests/_helpers/index.ts"
           ],
-          "path": "tests/tools/logStats.test.ts"
+          "path": "tests/tools/logStats.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "eafef577ee618c1c73bf2b954e99aaa1ce083605c709e82b1ee7565be76645cd",
@@ -4867,7 +6925,8 @@
             "src/runContext.ts",
             "src/tools/logTail.ts"
           ],
-          "path": "tests/tools/logTail.test.ts"
+          "path": "tests/tools/logTail.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7a28da48d0436f8402d509c341b498a59cd34e12aa91e87825d987f9b2caef50",
@@ -4887,7 +6946,8 @@
             "src/runContext.ts",
             "src/tools/multiFileRefactorPropose.ts"
           ],
-          "path": "tests/tools/multiFileRefactorPropose.test.ts"
+          "path": "tests/tools/multiFileRefactorPropose.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0fd237b575158ba88108002e0bb9fc093fed56b74383270c1bf01ccc3d2afc83",
@@ -4911,7 +6971,8 @@
             "src/tools/extract.ts",
             "src/tools/runner.ts"
           ],
-          "path": "tests/tools/r019TierBudgetOverride.test.ts"
+          "path": "tests/tools/r019TierBudgetOverride.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7054b23112812a083fccbc755961ccb8445fe91015f1b25e8b0b0e6e753749c1",
@@ -4931,7 +6992,8 @@
             "src/runContext.ts",
             "src/tools/refactorPlan.ts"
           ],
-          "path": "tests/tools/refactorPlan.test.ts"
+          "path": "tests/tools/refactorPlan.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5d30d5b78dfef65c4ef3ba4b3db14654b6c9c75967ca5fd02e73941d09ce2fe4",
@@ -4955,7 +7017,8 @@
             "src/tools/changeBrief.ts",
             "src/tools/repoBrief.ts"
           ],
-          "path": "tests/tools/repoAndChangeBrief.test.ts"
+          "path": "tests/tools/repoAndChangeBrief.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4e91a3025e5274fa9afdbbf1cbd485e35fed39084fba4b43f88cea58729e5996",
@@ -4977,7 +7040,11 @@
             "src/runContext.ts",
             "src/tools/packs/repoPack.ts"
           ],
-          "path": "tests/tools/repoPack.test.ts"
+          "names": [
+            "src/index.ts"
+          ],
+          "path": "tests/tools/repoPack.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0ba3ac8f80565db9f4ed4719c1c25cf7942e34ee54d73e41f52a553b670f0f9b",
@@ -4997,7 +7064,8 @@
             "src/runContext.ts",
             "src/tools/research.ts"
           ],
-          "path": "tests/tools/research.test.ts"
+          "path": "tests/tools/research.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b256274f637b7ccfd572c5aa571fa64f6db1e41458e0216cc8b789d009208cfe",
@@ -5019,7 +7087,8 @@
             "src/tiers.ts",
             "src/tools/runner.ts"
           ],
-          "path": "tests/tools/runner.test.ts"
+          "path": "tests/tools/runner.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "47347fd8f20d284fd9e8856c5523d67880030974ffa462958afd82f8ca980c94",
@@ -5035,7 +7104,8 @@
             "src/tools/packs/incidentPack.ts",
             "src/tools/packs/repoPack.ts"
           ],
-          "path": "tests/tools/snippetNullSafety.test.ts"
+          "path": "tests/tools/snippetNullSafety.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1b77ebdae27296e23e597f48131ecdef3bf9201a49ae5b17982a946e671ee82c",
@@ -5055,7 +7125,8 @@
             "src/runContext.ts",
             "src/tools/summarizeDeep.ts"
           ],
-          "path": "tests/tools/summarizeDeep.test.ts"
+          "path": "tests/tools/summarizeDeep.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c22598bba1eceac5ce644dfe7f53ca78e9c1025e986b1ae5add5f4795ad0d8b4",
@@ -5075,7 +7146,8 @@
             "src/runContext.ts",
             "src/tools/summarizeFast.ts"
           ],
-          "path": "tests/tools/summarizeFast.test.ts"
+          "path": "tests/tools/summarizeFast.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b1eb908a57d11ca3315589a3f2081a0e41b698fd1610c71504ab5caced824adf",
@@ -5083,7 +7155,8 @@
             "src/tools/triageLogs.ts",
             "tests/_helpers/index.ts"
           ],
-          "path": "tests/tools/triageLogs.test.ts"
+          "path": "tests/tools/triageLogs.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "616a9e43659a5e119aaf6ca1fb051b9b56cdb951388adce1fcd2378d79b6fd5e",
@@ -5107,14 +7180,16 @@
             "src/tools/verifyClaims.ts",
             "tests/_helpers/index.ts"
           ],
-          "path": "tests/tools/verifyClaims.test.ts"
+          "path": "tests/tools/verifyClaims.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "cb55ae17dfc18f0e01e96abf27b6b5939f67e7d5d6a66d928d223894c670f456",
           "importsFiles": [
             "src/version.ts"
           ],
-          "path": "tests/version.test.ts"
+          "path": "tests/version.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -5124,6 +7199,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -5318,7 +7396,10 @@
         }
       ],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -5765,6 +7846,41 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 98,
+          "job": "verify",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "npm test"
+          ]
+        },
+        {
+          "config": "vitest.config.ts",
+          "coverage": true,
+          "files": 0,
+          "job": "verify",
+          "junit": true,
+          "runner": "vitest",
+          "step": "Run tests (ubuntu/20 — records the pass count)",
+          "through": [
+            "npm run test:coverage"
+          ]
+        },
+        {
+          "config": "vitest.config.ts",
+          "files": 98,
+          "job": "verify",
+          "runner": "vitest",
+          "step": "Doc markers in sync (sync-docs:check)",
+          "through": [
+            "scripts/sync-doc-versions.mjs",
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -5774,6 +7890,7 @@
             ".npmignore",
             "Dockerfile",
             "atlas/**",
+            "codecov.yml",
             "hermes.config.example.yaml",
             "package-lock.json",
             "package.json",
@@ -5800,6 +7917,7 @@
             ".npmignore",
             "Dockerfile",
             "atlas/**",
+            "codecov.yml",
             "hermes.config.example.yaml",
             "package-lock.json",
             "package.json",
@@ -5821,7 +7939,10 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
+        "actions/upload-artifact",
+        "codecov/codecov-action",
         "docker/build-push-action"
       ],
       "usesWorkflowToken": false
@@ -6339,6 +8460,19 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 98,
+          "job": "drift",
+          "runner": "vitest",
+          "step": "Check doc version/count markers (sync-docs:check)",
+          "through": [
+            "scripts/sync-doc-versions.mjs",
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -6989,6 +9123,19 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 98,
+          "job": "npm",
+          "runner": "vitest",
+          "step": "Verify (typecheck + build + test)",
+          "through": [
+            "npm run verify",
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -7118,10 +9265,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
-    "commit": "1249f8307d15e578f101622a6ab257d340dab8ab",
-    "tracked": 351
+    "commit": "9606f5838012236c642ddac69d653302eff12847",
+    "tracked": 352
   },
   "landings": [
     {

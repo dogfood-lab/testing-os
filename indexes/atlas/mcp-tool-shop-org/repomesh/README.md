@@ -1,6 +1,6 @@
 # repomesh: how it works
 
-Mapped at 2026-09-26 from commit 8843b88 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 8843b88 by Atlas 1.23.4.
 
 ## What this is
 
@@ -149,7 +149,7 @@ Read those in order to follow one pull request end to end.
 - 7 writes and 13 reads go to the directory the command is run in (.repomesh-tmp/, anchor/ and ledger/) or a path their caller passes, not to this repository.
 - 12 reads go to the directory the command is run in (anchor/, ledger/ and verifiers/), not to this repository.
 - 1 read goes to a temporary directory, not to this repository.
-- 10 commands are built at run time and not followed, 9 of them in tests.
+- 9 commands are built at run time and not followed, all of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

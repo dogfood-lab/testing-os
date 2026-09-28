@@ -1,6 +1,6 @@
 # multi-claude: how it works
 
-Mapped at 2026-09-26 from commit 7e09d24 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit bed1180 by Atlas 1.23.4.
 
 ## What this is
 
@@ -8,14 +8,16 @@ Mapped at 2026-09-26 from commit 7e09d24 by Atlas 1.23.0.
 
 ## What changed since 2026-09-24 (9d36a21)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - .multi-claude/drill/drill-report.json is now written by test/drill/stop-drill.ts.
 - .multi-claude/workers is now written by src/commands/auto.ts and src/runtime/sdk-runtime.ts.
 - .multi-claude was authored and is now mixed.
-- 472 files changed content, across 11 parts.
+- 1 file added and 472 changed content, across 11 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 12 paths; on a push touching 12 paths; or by hand. Runs test/claim.test.ts, test/commands/, test/console/ and 53 more; builds bin/ and src/.
+1. **CI.** On a pull request touching 13 paths; on a push touching 13 paths; or by hand. Runs test/claim.test.ts, test/commands/, test/console/ and 53 more; builds bin/ and src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **multi-claude** (a command people run). Runs bin/multi-claude.ts.
 

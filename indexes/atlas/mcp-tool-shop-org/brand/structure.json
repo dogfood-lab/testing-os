@@ -87,7 +87,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "c81402ea7288a38becfb9f065e9f129bcaa5443953802332a77bf6c18849c35d",
+          "hash": "b8a724e6bdff634ff0cb3e18bacc2e0915fff8dd149826741fce53d24f6b898e",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -992,6 +992,10 @@
           "path": "logos/shipcheck/readme.jpg"
         },
         {
+          "hash": "8eee404aaca0ad8280fbdb7fe3b5768e39ac758dd2d931656881a5ca2310f8ca",
+          "path": "logos/si-jam-sessions/readme.png"
+        },
+        {
           "hash": "e74bb939891dc933e5d149ae798091b1914b385846d4e5d34154f2205db02122",
           "path": "logos/si-rpg-engine/readme.png"
         },
@@ -1251,7 +1255,11 @@
           "path": "SHIP_GATE.md"
         },
         {
-          "hash": "1752b3450d023013cc1a5dbd820e4a519afa746b347f911ccd1b0ff68cd6481a",
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
+          "hash": "b666e977121e006bc507bf26d2276d3ea5e2dea86700b618bc56795df31fc4c5",
           "path": "manifest.json"
         },
         {
@@ -1291,10 +1299,34 @@
       "externals": 0,
       "files": [
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 48
+            },
+            {
+              "kind": "catch",
+              "line": 57
+            },
+            {
+              "kind": "catch",
+              "line": 92
+            }
+          ],
           "hash": "2bd0073b22bcdb2bf742c096ef30ee732a6b74ec72a2003afd4ba68f05af94fd",
           "path": "scripts/check-audit-allowlist.mjs"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 47
+            },
+            {
+              "kind": "catch",
+              "line": 53
+            }
+          ],
           "hash": "7be9a55ccb509c51e0676d03dedf195f9c9fb54bd9ca3a720fd60fe55c90f816",
           "path": "scripts/install-hooks.mjs"
         },
@@ -1338,6 +1370,13 @@
             "modelPassthrough",
             "verifyModelPassthrough"
           ],
+          "failurePaths": [
+            {
+              "in": "modelPassthrough",
+              "kind": "throw",
+              "line": 213
+            }
+          ],
           "hash": "9c64f54123d751084bf29c40b15280a7ef2fe66e3455db39e061293a904282bf",
           "path": "site/integrations/model-passthrough.mjs"
         },
@@ -1354,6 +1393,17 @@
           "path": "site/public/favicon.svg"
         },
         {
+          "failurePaths": [
+            {
+              "in": "categoricalTextures",
+              "kind": "catch",
+              "line": 66
+            },
+            {
+              "kind": "catch",
+              "line": 100
+            }
+          ],
           "hash": "9221e2112ed19ae9ea2a6467c7a010334c1dd8f1ea8c45dbca4b86fa8677bed5",
           "path": "site/scripts/check-deployed-bytes.mjs"
         },
@@ -1389,6 +1439,13 @@
         {
           "exports": [
             "loadModelViews"
+          ],
+          "failurePaths": [
+            {
+              "in": "findRepoRoot",
+              "kind": "throw",
+              "line": 45
+            }
           ],
           "hash": "cd72aa49995fe4cf6e2366d08990a980d364c52adc4b130848b316bfa76dd9c9",
           "importsFiles": [
@@ -1481,6 +1538,9 @@
       "outsideReads": 18,
       "outsideWrites": 1,
       "role": "site",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 1,
       "unresolvedSites": 0
     },
@@ -1497,6 +1557,17 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 34
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 260
+            }
+          ],
           "hash": "45b2c184d6005d40e31ca06aed29aab472a79cffe48ac9c5f9ffd2f0a15312dd",
           "importOrder": [
             "src/commands/verify.ts",
@@ -1546,6 +1617,98 @@
             "stagingDirFor",
             "validateSlug"
           ],
+          "failurePaths": [
+            {
+              "in": "validateSlug",
+              "kind": "throw",
+              "line": 123
+            },
+            {
+              "in": "validateSlug",
+              "kind": "throw",
+              "line": 126
+            },
+            {
+              "in": "validateGalleryName",
+              "kind": "throw",
+              "line": 135
+            },
+            {
+              "in": "validateGalleryName",
+              "kind": "throw",
+              "line": 138
+            },
+            {
+              "in": "validateOrder",
+              "kind": "throw",
+              "line": 220
+            },
+            {
+              "in": "validateOrder",
+              "kind": "throw",
+              "line": 227
+            },
+            {
+              "in": "validateOrder",
+              "kind": "throw",
+              "line": 234
+            },
+            {
+              "in": "isProcessAlive",
+              "kind": "catch",
+              "line": 310
+            },
+            {
+              "in": "cleanupStaleSiblings",
+              "kind": "catch",
+              "line": 383
+            },
+            {
+              "in": "cleanupStaleSiblings",
+              "kind": "catch",
+              "line": 395
+            },
+            {
+              "in": "reconcile",
+              "kind": "catch",
+              "line": 509
+            },
+            {
+              "in": "reconcile",
+              "kind": "catch",
+              "line": 524
+            },
+            {
+              "in": "reconcile",
+              "kind": "catch",
+              "line": 531
+            },
+            {
+              "in": "reconcile",
+              "kind": "catch",
+              "line": 539
+            },
+            {
+              "in": "reconcile",
+              "kind": "throw",
+              "line": 542
+            },
+            {
+              "in": "runAddGallery",
+              "kind": "throw",
+              "line": 569
+            },
+            {
+              "in": "runAddGallery",
+              "kind": "throw",
+              "line": 572
+            },
+            {
+              "in": "runAddGallery",
+              "kind": "catch",
+              "line": 675
+            }
+          ],
           "hash": "cbd2c668a0908b12d3c8bc3f760134270dd8deafcc854ff326370cec1e149b49",
           "importsFiles": [
             "src/manifest.ts"
@@ -1555,6 +1718,53 @@
         {
           "exports": [
             "runAddModel"
+          ],
+          "failurePaths": [
+            {
+              "in": "refuse",
+              "kind": "throw",
+              "line": 99
+            },
+            {
+              "in": "planAddModel",
+              "kind": "catch",
+              "line": 145
+            },
+            {
+              "in": "planAddModel",
+              "kind": "catch",
+              "line": 187
+            },
+            {
+              "in": "planAddModel",
+              "kind": "catch",
+              "line": 230
+            },
+            {
+              "in": "planAddModel",
+              "kind": "throw",
+              "line": 234
+            },
+            {
+              "in": "runAddModel",
+              "kind": "catch",
+              "line": 287
+            },
+            {
+              "in": "runAddModel",
+              "kind": "catch",
+              "line": 294
+            },
+            {
+              "in": "runAddModel",
+              "kind": "catch",
+              "line": 339
+            },
+            {
+              "in": "runAddModel",
+              "kind": "catch",
+              "line": 345
+            }
           ],
           "hash": "271762b79036b5af4cb3908eb34be825b75a9e694d9678b859cc6287be771259",
           "importOrder": [
@@ -1575,6 +1785,33 @@
           "exports": [
             "runAudit"
           ],
+          "failurePaths": [
+            {
+              "in": "checkRepoAcrossOrgs",
+              "kind": "catch",
+              "line": 283
+            },
+            {
+              "in": "fetchRemoteReadme",
+              "kind": "catch",
+              "line": 346
+            },
+            {
+              "in": "fetchRemoteReadme",
+              "kind": "catch",
+              "line": 371
+            },
+            {
+              "in": "runAudit",
+              "kind": "catch",
+              "line": 727
+            },
+            {
+              "in": "runAudit",
+              "kind": "catch",
+              "line": 891
+            }
+          ],
           "hash": "b99cbea153096b7f6abe1c31ea5d1e031762c558ef01bd7e58e886990f45eb01",
           "importOrder": [
             "src/utils/readme-parser.ts",
@@ -1590,6 +1827,73 @@
           "exports": [
             "runHistory"
           ],
+          "failurePaths": [
+            {
+              "in": "assertSafeSegment",
+              "kind": "throw",
+              "line": 123
+            },
+            {
+              "in": "assertSafeSegment",
+              "kind": "throw",
+              "line": 126
+            },
+            {
+              "in": "assertGitAvailable",
+              "kind": "catch",
+              "line": 175
+            },
+            {
+              "in": "assertGitAvailable",
+              "kind": "throw",
+              "line": 178
+            },
+            {
+              "in": "assertGitAvailable",
+              "kind": "throw",
+              "line": 183
+            },
+            {
+              "in": "hasAnyCommits",
+              "kind": "catch",
+              "line": 247
+            },
+            {
+              "in": "walkHistory",
+              "kind": "catch",
+              "line": 274
+            },
+            {
+              "in": "walkHistory",
+              "kind": "throw",
+              "line": 276
+            },
+            {
+              "in": "hashAtRef",
+              "kind": "catch",
+              "line": 302
+            },
+            {
+              "in": "runHistory",
+              "kind": "throw",
+              "line": 341
+            },
+            {
+              "in": "runHistory",
+              "kind": "throw",
+              "line": 346
+            },
+            {
+              "in": "runHistory",
+              "kind": "throw",
+              "line": 374
+            },
+            {
+              "in": "runHistory",
+              "kind": "catch",
+              "line": 441
+            }
+          ],
           "hash": "44858afb8e0e3b5f6f7e6c49d12c5f58ccfab9567df1c3b0103a0e71fefb7ba8",
           "importsFiles": [
             "src/commands/add-gallery.ts"
@@ -1600,6 +1904,18 @@
           "exports": [
             "runManifest"
           ],
+          "failurePaths": [
+            {
+              "in": "runManifest",
+              "kind": "catch",
+              "line": 89
+            },
+            {
+              "in": "runManifest",
+              "kind": "catch",
+              "line": 237
+            }
+          ],
           "hash": "5049d20eaa17d4ca44161dfda5e302cd2060d56963b7437c33eff38f984d2d94",
           "importsFiles": [
             "src/manifest.ts"
@@ -1609,6 +1925,83 @@
         {
           "exports": [
             "runMigrate"
+          ],
+          "failurePaths": [
+            {
+              "in": "readJournal",
+              "kind": "catch",
+              "line": 89
+            },
+            {
+              "in": "preserveCorruptJournal",
+              "kind": "catch",
+              "line": 115
+            },
+            {
+              "in": "writeJournal",
+              "kind": "catch",
+              "line": 124
+            },
+            {
+              "in": "readMigrateLockInfo",
+              "kind": "catch",
+              "line": 213
+            },
+            {
+              "in": "isMigrateLockHolderAlive",
+              "kind": "catch",
+              "line": 228
+            },
+            {
+              "in": "failMigrateLocked",
+              "kind": "throw",
+              "line": 251
+            },
+            {
+              "in": "acquireMigrateLock",
+              "kind": "catch",
+              "line": 272
+            },
+            {
+              "in": "acquireMigrateLock",
+              "kind": "throw",
+              "line": 274
+            },
+            {
+              "in": "acquireMigrateLock",
+              "kind": "catch",
+              "line": 283
+            },
+            {
+              "in": "acquireMigrateLock",
+              "kind": "throw",
+              "line": 297
+            },
+            {
+              "in": "releaseMigrateLock",
+              "kind": "catch",
+              "line": 303
+            },
+            {
+              "in": "runMigrate",
+              "kind": "catch",
+              "line": 406
+            },
+            {
+              "in": "runMigrate",
+              "kind": "catch",
+              "line": 486
+            },
+            {
+              "in": "runMigrate",
+              "kind": "catch",
+              "line": 557
+            },
+            {
+              "in": "runMigrate",
+              "kind": "catch",
+              "line": 597
+            }
           ],
           "hash": "c8f4be282ae37e06896e4e161759730a8802eca8b669b506a294017eb3dc7a89",
           "importOrder": [
@@ -1625,6 +2018,63 @@
           "exports": [
             "runRemove"
           ],
+          "failurePaths": [
+            {
+              "in": "refuse",
+              "kind": "throw",
+              "line": 131
+            },
+            {
+              "in": "findNearMatches",
+              "kind": "catch",
+              "line": 204
+            },
+            {
+              "in": "walkFiles",
+              "kind": "catch",
+              "line": 233
+            },
+            {
+              "in": "walkFiles",
+              "kind": "catch",
+              "line": 241
+            },
+            {
+              "in": "runRemove",
+              "kind": "catch",
+              "line": 298
+            },
+            {
+              "in": "runRemove",
+              "kind": "catch",
+              "line": 328
+            },
+            {
+              "in": "runRemove",
+              "kind": "catch",
+              "line": 359
+            },
+            {
+              "in": "runRemove",
+              "kind": "catch",
+              "line": 433
+            },
+            {
+              "in": "runRemove",
+              "kind": "catch",
+              "line": 445
+            },
+            {
+              "in": "runRemove",
+              "kind": "catch",
+              "line": 461
+            },
+            {
+              "in": "runRemove",
+              "kind": "catch",
+              "line": 491
+            }
+          ],
           "hash": "33e35f1908e4417fadc42c2e58b24458b1e4feb35e481f2dd4533bb5ea168305",
           "importOrder": [
             "src/manifest.ts",
@@ -1640,6 +2090,13 @@
           "exports": [
             "runStats"
           ],
+          "failurePaths": [
+            {
+              "in": "runStats",
+              "kind": "catch",
+              "line": 100
+            }
+          ],
           "hash": "e8811286f8246ae1dcdcb5642b7e8d19131591e98832888afa2dbeb818a2fe59",
           "importsFiles": [
             "src/manifest.ts"
@@ -1649,6 +2106,78 @@
         {
           "exports": [
             "runSync"
+          ],
+          "failurePaths": [
+            {
+              "in": "readSyncLockInfo",
+              "kind": "catch",
+              "line": 126
+            },
+            {
+              "in": "isSyncLockHolderAlive",
+              "kind": "catch",
+              "line": 148
+            },
+            {
+              "in": "acquireSyncLock",
+              "kind": "catch",
+              "line": 172
+            },
+            {
+              "in": "acquireSyncLock",
+              "kind": "throw",
+              "line": 174
+            },
+            {
+              "in": "acquireSyncLock",
+              "kind": "catch",
+              "line": 183
+            },
+            {
+              "in": "acquireSyncLock",
+              "kind": "throw",
+              "line": 203
+            },
+            {
+              "in": "releaseSyncLock",
+              "kind": "catch",
+              "line": 209
+            },
+            {
+              "in": "fail",
+              "kind": "throw",
+              "line": 239
+            },
+            {
+              "in": "runSync",
+              "kind": "catch",
+              "line": 255
+            },
+            {
+              "in": "runSync",
+              "kind": "catch",
+              "line": 263
+            },
+            {
+              "in": "runSync",
+              "kind": "catch",
+              "line": 346
+            },
+            {
+              "in": "runSync",
+              "kind": "catch",
+              "line": 355
+            },
+            {
+              "in": "runSync",
+              "kind": "catch",
+              "line": 380
+            },
+            {
+              "in": "runSync",
+              "kind": "catch",
+              "line": 448
+            }
           ],
           "hash": "322d817e1e0e862ab09ffaf227f7b29c032525e2c23b7372ef02141b02323540",
           "importOrder": [
@@ -1666,6 +2195,18 @@
         {
           "exports": [
             "runVerify"
+          ],
+          "failurePaths": [
+            {
+              "in": "peekAssetCount",
+              "kind": "catch",
+              "line": 33
+            },
+            {
+              "in": "runVerify",
+              "kind": "catch",
+              "line": 107
+            }
           ],
           "hash": "98ebdf2c7b61ebebb0121beabedf6e99b50b899b1795527c6b4e7e9a074cf9c7",
           "importsFiles": [
@@ -1685,12 +2226,91 @@
             "verifyManifest",
             "writeManifest"
           ],
+          "failurePaths": [
+            {
+              "in": "hashFile",
+              "kind": "catch",
+              "line": 146
+            },
+            {
+              "in": "hashFile",
+              "kind": "throw",
+              "line": 148
+            },
+            {
+              "in": "safeRealpath",
+              "kind": "catch",
+              "line": 194
+            },
+            {
+              "in": "isContained",
+              "kind": "catch",
+              "line": 211
+            },
+            {
+              "in": "isContained",
+              "kind": "catch",
+              "line": 219
+            },
+            {
+              "in": "findLogoFile",
+              "kind": "catch",
+              "line": 257
+            },
+            {
+              "in": "generateManifest",
+              "kind": "catch",
+              "line": 552
+            },
+            {
+              "in": "generateManifest",
+              "kind": "throw",
+              "line": 554
+            },
+            {
+              "in": "readManifest",
+              "kind": "throw",
+              "line": 615
+            },
+            {
+              "in": "readManifest",
+              "kind": "catch",
+              "line": 625
+            },
+            {
+              "in": "readManifest",
+              "kind": "throw",
+              "line": 626
+            },
+            {
+              "in": "readManifest",
+              "kind": "throw",
+              "line": 632
+            },
+            {
+              "in": "readManifest",
+              "kind": "throw",
+              "line": 646
+            }
+          ],
           "hash": "c341ee489d104f441d1330a095cad9e5d517f486a50f7c36a9b7a2e00feaa967",
           "path": "src/manifest.ts"
         },
         {
           "exports": [
             "parseModelView"
+          ],
+          "failurePaths": [
+            {
+              "in": "fail",
+              "kind": "throw",
+              "line": 90
+            },
+            {
+              "in": "parseModelView",
+              "kind": "catch",
+              "line": 110
+            }
           ],
           "hash": "c9508764dc7151275c94d1edc656725761fc3c8ced6394ae7f4dddd1409ae31d",
           "path": "src/model-view.ts"
@@ -1699,6 +2319,43 @@
           "exports": [
             "checkCategoricalPalette",
             "readPngInfo"
+          ],
+          "failurePaths": [
+            {
+              "in": "readPngInfo",
+              "kind": "throw",
+              "line": 72
+            },
+            {
+              "in": "readPngInfo",
+              "kind": "throw",
+              "line": 87
+            },
+            {
+              "in": "readPngInfo",
+              "kind": "throw",
+              "line": 91
+            },
+            {
+              "in": "readPngInfo",
+              "kind": "throw",
+              "line": 100
+            },
+            {
+              "in": "readPngInfo",
+              "kind": "throw",
+              "line": 114
+            },
+            {
+              "in": "checkCategoricalPalette",
+              "kind": "throw",
+              "line": 145
+            },
+            {
+              "in": "checkCategoricalPalette",
+              "kind": "throw",
+              "line": 153
+            }
           ],
           "hash": "d1ffb816eb8c3f42a8ed1b951b58cdc479f69f024e1425591de1be59b20163a7",
           "path": "src/png-palette.ts"
@@ -1719,6 +2376,53 @@
             "renderGalleryBlock",
             "syncMarkerBlock"
           ],
+          "failurePaths": [
+            {
+              "in": "parseAttrs",
+              "kind": "throw",
+              "line": 214
+            },
+            {
+              "in": "parseAttrs",
+              "kind": "throw",
+              "line": 234
+            },
+            {
+              "in": "scanRawMarkers",
+              "kind": "catch",
+              "line": 361
+            },
+            {
+              "in": "findMarkerBlocksInternal",
+              "kind": "throw",
+              "line": 411
+            },
+            {
+              "in": "findMarkerBlocksInternal",
+              "kind": "throw",
+              "line": 426
+            },
+            {
+              "in": "findMarkerBlocksInternal",
+              "kind": "throw",
+              "line": 438
+            },
+            {
+              "in": "findMarkerBlocksInternal",
+              "kind": "throw",
+              "line": 465
+            },
+            {
+              "in": "findMarkerBlocksInternal",
+              "kind": "throw",
+              "line": 491
+            },
+            {
+              "in": "syncMarkerBlock",
+              "kind": "throw",
+              "line": 723
+            }
+          ],
           "hash": "e3a7dd3d6656b446a2ab7583f6840fcefafd59b0574e19b951b97c8d81a4b9b1",
           "importsFiles": [
             "src/utils/code-context.ts"
@@ -1730,6 +2434,13 @@
             "findAllImgTags",
             "findLogoImgTags",
             "rewriteLogoSrc"
+          ],
+          "failurePaths": [
+            {
+              "in": "forEachLogoImg",
+              "kind": "throw",
+              "line": 253
+            }
           ],
           "hash": "3401a940aa071bd43912023ec1f7648bbb127918df97b9b617873a95148124d9",
           "importsFiles": [
@@ -1763,6 +2474,9 @@
       "outsideReads": 56,
       "outsideWrites": 23,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 18,
       "unresolvedSites": 0
     },
@@ -1803,7 +2517,8 @@
             "src/commands/add-gallery.ts",
             "src/manifest.ts"
           ],
-          "path": "tests/add-gallery.test.ts"
+          "path": "tests/add-gallery.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b8555074244bd2119205270a8714b0a450640f40a57bdab4ee4241869c6dc3a2",
@@ -1813,7 +2528,8 @@
             "src/png-palette.ts",
             "tests/_helpers/png-builder.mjs"
           ],
-          "path": "tests/add-model.test.ts"
+          "path": "tests/add-model.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b47cea6417f51291ba9739206f9b9e7e7634b32ed4bd4819538a2966af493dab",
@@ -1821,11 +2537,16 @@
             "src/commands/audit.ts",
             "src/manifest.ts"
           ],
-          "path": "tests/audit.test.ts"
+          "path": "tests/audit.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "628b73540bda7db124a7d2a5425f2ab8611ce2723e22c9a1c66b2d5b7a5a8733",
-          "path": "tests/exit-codes.test.ts"
+          "path": "tests/exit-codes.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "805fa5e2d02cd6134b131cdb12fea9bfc468f73d48fa85d129eb6763d9adabb4",
@@ -1980,43 +2701,59 @@
           "importsFiles": [
             "src/commands/history.ts"
           ],
-          "path": "tests/history.test.ts"
+          "path": "tests/history.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "62017ad33bc8282b84aef4c02a8132053d4d242ea270d59291c018e8f1fc27c6",
-          "path": "tests/json-output.test.ts"
+          "path": "tests/json-output.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "e3f0d14fdd7871cee667a3e11e26004fa77c84214af147858cc0485f5bfbf236",
-          "path": "tests/manifest-cmd.test.ts"
+          "path": "tests/manifest-cmd.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "5c1957b9b674f989d964ed7deaae46c628d6e54d03570954bd42fdfe73157f09",
           "importsFiles": [
             "src/manifest.ts"
           ],
-          "path": "tests/manifest.test.ts"
+          "path": "tests/manifest.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "4555c21d9d9a14d8c17a20fd0c08bb2123e855a07b8a6950d6f69c365498e87e",
           "importsFiles": [
             "src/utils/marker-parser.ts"
           ],
-          "path": "tests/marker-parser.test.ts"
+          "path": "tests/marker-parser.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c137ac1450b46010489f4d6ebf60fe9e9d8e4689069d1bcac1c23e2d20600cd0",
           "importsFiles": [
             "src/commands/migrate.ts"
           ],
-          "path": "tests/migrate-journal.test.ts"
+          "path": "tests/migrate-journal.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b88c899612534a680d696e07186a00e654d25bab4239a9229c5ce1c68c4a269c",
           "importsFiles": [
             "src/commands/migrate.ts"
           ],
-          "path": "tests/migrate.test.ts"
+          "path": "tests/migrate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "01b1c81e3f9e87ad66c2d4cd4d0237dd1bb5e63a5e992db45fbdbaa373341405",
@@ -2030,21 +2767,24 @@
             "src/manifest.ts",
             "src/model-view.ts"
           ],
-          "path": "tests/model-channels.test.ts"
+          "path": "tests/model-channels.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "15dad4d76aa7a2ec2df375b30d94ef049fbb35b96935c65930c5387056260685",
           "importsFiles": [
             "site/integrations/model-passthrough.mjs"
           ],
-          "path": "tests/model-passthrough.test.ts"
+          "path": "tests/model-passthrough.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "22d6668333ad157680c5f3dde190206aa06d7d501db9bbe6d77a6cd0974430a2",
           "importsFiles": [
             "src/utils/readme-parser.ts"
           ],
-          "path": "tests/readme-parser.test.ts"
+          "path": "tests/readme-parser.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0983aeda2a25e5620cb5fdcfa569f585adc482658c0902a66467606e8092bc69",
@@ -2052,7 +2792,8 @@
             "src/commands/remove.ts",
             "src/manifest.ts"
           ],
-          "path": "tests/remove-swap-failure.test.ts"
+          "path": "tests/remove-swap-failure.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c1ff916bb4b09aaeaf75df73afac5e6e7b1862b918ae6766dc2f97f6385fec96",
@@ -2060,7 +2801,8 @@
             "src/commands/remove.ts",
             "src/manifest.ts"
           ],
-          "path": "tests/remove.test.ts"
+          "path": "tests/remove.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "45635f466189d43cd60ebe7799c9bd76c07d245c5a74e99f87833193ca252efd",
@@ -2068,7 +2810,8 @@
             "src/commands/stats.ts",
             "src/manifest.ts"
           ],
-          "path": "tests/stats.test.ts"
+          "path": "tests/stats.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7d18c62d2e33303df3923b715f86aa809c059b90b4ac1af79ee7fdcb5e70ace7",
@@ -2076,11 +2819,16 @@
             "src/commands/sync.ts",
             "src/manifest.ts"
           ],
-          "path": "tests/sync.test.ts"
+          "path": "tests/sync.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c2f3fea0b17339f9eb83f217df501908440119aa224d2e1425b2b8efd86a21de",
-          "path": "tests/verify.test.ts"
+          "path": "tests/verify.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -2090,6 +2838,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -2199,7 +2950,8 @@
       ],
       "name": "CI",
       "permissions": [
-        "contents:read"
+        "contents:read",
+        "id-token:write"
       ],
       "programs": [
         "git"
@@ -2408,6 +3160,30 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "coverage": true,
+          "files": 19,
+          "job": "lint-test-build",
+          "junit": true,
+          "runner": "vitest",
+          "step": "Test (with coverage)",
+          "through": [
+            "npm run test:ci"
+          ]
+        },
+        {
+          "config": "vitest.config.ts",
+          "files": 19,
+          "job": "lint-test-build",
+          "runner": "vitest",
+          "step": "Test",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -2416,6 +3192,7 @@
             ".github/audit-allowlist.json",
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "logos/**",
             "manifest.json",
             "package-lock.json",
@@ -2437,6 +3214,7 @@
             ".github/audit-allowlist.json",
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "logos/**",
             "manifest.json",
             "package-lock.json",
@@ -2457,7 +3235,10 @@
       ],
       "uses": [
         "actions/checkout",
-        "actions/setup-node"
+        "actions/download-artifact",
+        "actions/setup-node",
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -2907,6 +3688,18 @@
         "releases": true
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 19,
+          "job": "release",
+          "runner": "vitest",
+          "step": "Verify (typecheck + build + test)",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -3209,10 +4002,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
-    "commit": "5657ed46b83528aa6cb884a87e3af22722002cfb",
-    "tracked": 387
+    "commit": "0c8dcb488f8849ac2663c7ea9f68bec2d57f2e2d",
+    "tracked": 389
   },
   "landings": [
     {
@@ -5507,6 +6300,17 @@
         }
       ],
       "target": "logos/shipcheck/readme.jpg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "logos/si-jam-sessions/readme.png",
       "writers": []
     },
     {

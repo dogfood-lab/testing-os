@@ -7612,6 +7612,21 @@
           "exports": [
             "generateReadme"
           ],
+          "failurePaths": [
+            {
+              "in": "generateReadme",
+              "kind": "throw",
+              "line": 35
+            },
+            {
+              "kind": "catch",
+              "line": 118
+            },
+            {
+              "kind": "catch",
+              "line": 126
+            }
+          ],
           "hash": "539e8a1ecad9a8e0ba957be88997c5ea323c966b28066debaf36219e58eab677",
           "importsFiles": [
             "scripts/manifest-schema.mjs"
@@ -7621,6 +7636,22 @@
         {
           "entry": "verifyPack",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "verifyPack",
+              "kind": "catch",
+              "line": 49
+            },
+            {
+              "in": "verifyPack",
+              "kind": "catch",
+              "line": 75
+            },
+            {
+              "kind": "catch",
+              "line": 141
+            }
+          ],
           "hash": "9f2c98f3d4e4986c9f822d7cb96d07adece84f131c113ca63ef2cc3f1fe3d15f",
           "importsFiles": [
             "scripts/manifest-schema.mjs"
@@ -7663,6 +7694,9 @@
       "outsideReads": 9,
       "outsideWrites": 1,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 3,
       "unresolvedSites": 0
     },
@@ -7787,21 +7821,27 @@
           "importsFiles": [
             "scripts/manifest-schema.mjs"
           ],
-          "path": "tests/manifest-schema.test.mjs"
+          "path": "tests/manifest-schema.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "adecd7c272947d32bee0852966d6c5ccb3e8a2d132987d37fa9916d29cdb8f9f",
           "importsFiles": [
             "scripts/summarize-pack.mjs"
           ],
-          "path": "tests/summarize-pack.test.mjs"
+          "path": "tests/summarize-pack.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "e260da6b9f7b3c63dd3036e2f0b6b34825353cee93517de70d835b28aa42a61a",
           "importsFiles": [
             "tests/helpers/setup-mock-pack.mjs"
           ],
-          "path": "tests/verify-pack.test.mjs"
+          "path": "tests/verify-pack.test.mjs",
+          "spawns": [
+            "scripts/verify-pack.mjs"
+          ],
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -7811,6 +7851,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -8006,6 +8049,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 3,
+          "job": "verify",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -8035,7 +8089,7 @@
       "to": "scripts"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "923a79252e455ddb1b310e2b01938f7bca211d7c",
     "tracked": 1904

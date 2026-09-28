@@ -1,6 +1,6 @@
 # .github: how it works
 
-Mapped at 2026-09-26 from commit 8d8d1d2 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit d05c730 by Atlas 1.23.4.
 
 ## What this is
 
@@ -13,7 +13,7 @@ This is the organization's profile page and the community-health files its repos
 - brand/previews/_tmp_ConsensusOS.svg is now written by brand/generate-previews.py.
 - brand/previews/_tmp_InControl-Desktop.svg is now written by brand/generate-previews.py.
 - And 21 more new writers and readers of places.
-- No file changed.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 

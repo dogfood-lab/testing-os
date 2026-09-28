@@ -187,6 +187,13 @@
       "externals": 0,
       "files": [
         {
+          "failurePaths": [
+            {
+              "in": "runScorecard",
+              "kind": "catch",
+              "line": 193
+            }
+          ],
           "hash": "bd62ca4d4bdee06f3c5b3d6de3bc7db8ed499627a76102fcbf371b3286fac4c5",
           "importsFiles": [
             "src/prompts/base.ts",
@@ -225,6 +232,16 @@
           "sequences": []
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 67
+            },
+            {
+              "kind": "catch",
+              "line": 79
+            }
+          ],
           "hash": "380ed92e2438bca88332d8e6d70bb58ca3b482f0e9454a644d203758595da4ec",
           "importsFiles": [
             "src/dataset/enrich.ts",
@@ -233,6 +250,16 @@
           "path": "scripts/enrich-comedic-moods.ts"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 61
+            },
+            {
+              "kind": "catch",
+              "line": 71
+            }
+          ],
           "hash": "89f89ab98c3eb85c71055b3d4adbe7d7febf82738c746a3cd47bb15e8af11c1b",
           "importOrder": [
             "src/types.ts",
@@ -251,6 +278,16 @@
           "path": "scripts/eval-comedic-moods.ts"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 92
+            },
+            {
+              "kind": "catch",
+              "line": 103
+            }
+          ],
           "hash": "aa77fb9f51fd7c67869420c4853b6103f5640b369fa4e1751aeae7cbdaee8d93",
           "importOrder": [
             "src/types.ts",
@@ -269,6 +306,12 @@
           "path": "scripts/label-comedic-moods.ts"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 56
+            }
+          ],
           "hash": "046b0d7512f079f68060f0b4779212b8d37177c772923158d891f58165b90937",
           "importOrder": [
             "src/session.ts",
@@ -315,6 +358,18 @@
           "path": "scripts/regression-scorecard.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 32
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 49
+            }
+          ],
           "hash": "0abfd42f5242c569ba375668b9f2b104b716bb1c99f159b6f4197522366b83aa",
           "importsFiles": [
             "src/session.ts",
@@ -325,6 +380,13 @@
           "path": "scripts/simile-smoke.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 36
+            }
+          ],
           "hash": "b4453ad126b0fe7181459e89132f15e15a530e76e1dc670143aff1478c3931e2",
           "importsFiles": [
             "src/prompts/base.ts",
@@ -334,6 +396,12 @@
           "path": "scripts/smoke.ts"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 19
+            }
+          ],
           "hash": "5e15f5ad7c6d96bd40a7fec832681f44acae706fb2e2b29ba3dd5a240d838fe1",
           "importsFiles": [
             "src/dataset/label/validate.ts"
@@ -341,6 +409,12 @@
           "path": "scripts/validate-bws-anchor.ts"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 19
+            }
+          ],
           "hash": "8a074f51dd8eca5c2c11bf83702051975e1089160dbee1b48a9e8a0b9f3a741f",
           "importsFiles": [
             "src/dataset/validate.ts"
@@ -348,6 +422,12 @@
           "path": "scripts/validate-comedic-moods.ts"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 20
+            }
+          ],
           "hash": "db09180352a83e0fd718f8eeb49d5548bd514e25b2bab8a6f74a89721e743787",
           "importsFiles": [
             "src/character/voice-schema.ts"
@@ -359,6 +439,12 @@
           "path": "scripts/voice-demo.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 55
+            }
+          ],
           "hash": "d3c4e63fdef143a816e3b81b3c6803f070d2d9432962ae2902a3550da31c42da",
           "importOrder": [
             "src/session.ts",
@@ -391,6 +477,9 @@
       "outsideReads": 11,
       "outsideWrites": 5,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 1,
       "testedThroughSpawn": true,
       "unresolvedSites": 0
@@ -507,6 +596,13 @@
             "captureStatus",
             "captureTarget"
           ],
+          "failurePaths": [
+            {
+              "in": "captureRow",
+              "kind": "catch",
+              "line": 160
+            }
+          ],
           "hash": "496f3c9bfcfb9d0ad25b1753113b8b427844de7a1d1a7cc808b35119431542c0",
           "importOrder": [
             "src/ollama.ts",
@@ -557,6 +653,13 @@
           "exports": [
             "enrichCaptureJsonl"
           ],
+          "failurePaths": [
+            {
+              "in": "enrichCaptureJsonl",
+              "kind": "catch",
+              "line": 100
+            }
+          ],
           "hash": "e4e631af28548aa728457de382d1c6d59a7014262737de428d84101b16719052",
           "importOrder": [
             "src/dataset/schema.ts",
@@ -591,6 +694,18 @@
             "majorityMood",
             "runPool",
             "shuffledMood"
+          ],
+          "failurePaths": [
+            {
+              "in": "evaluate",
+              "kind": "catch",
+              "line": 331
+            },
+            {
+              "in": "evaluate",
+              "kind": "throw",
+              "line": 342
+            }
           ],
           "hash": "765e0306015766c2e174d803696196071ee50040dc509ac79dbbdf4c08a24b37",
           "importOrder": [
@@ -636,6 +751,18 @@
             "ollamaJudge",
             "probeJudgeModels"
           ],
+          "failurePaths": [
+            {
+              "in": "probeJudgeModels",
+              "kind": "catch",
+              "line": 94
+            },
+            {
+              "in": "ask",
+              "kind": "catch",
+              "line": 126
+            }
+          ],
           "hash": "fb40ee1fc138dd8edc1b64b835a83ca138aca570b6305d64aee1020fc9ab3495",
           "importOrder": [
             "src/ollama.ts",
@@ -675,6 +802,13 @@
             "selectNextTuple",
             "strengthMap"
           ],
+          "failurePaths": [
+            {
+              "in": "selectNextTuple",
+              "kind": "throw",
+              "line": 114
+            }
+          ],
           "hash": "0d2f067c1e05b567c480ba243ea844cf34d73fdb842ea5d15e80966949e71eb7",
           "importsFiles": [
             "src/dataset/label/bws.ts"
@@ -690,6 +824,13 @@
             "judgmentsToPairs",
             "makeBwsTuples",
             "tupleKey"
+          ],
+          "failurePaths": [
+            {
+              "in": "makeBwsTuples",
+              "kind": "throw",
+              "line": 60
+            }
           ],
           "hash": "7b55a9d061c73b1161f08eaf58762ce527a769926c2b7aac79ea0810a49f0a76",
           "path": "src/dataset/label/bws.ts"
@@ -715,6 +856,13 @@
         {
           "exports": [
             "validateBwsJudgmentsJsonl"
+          ],
+          "failurePaths": [
+            {
+              "in": "validateBwsJudgmentsJsonl",
+              "kind": "catch",
+              "line": 42
+            }
           ],
           "hash": "76b46ccede89b4a8f1344666b8793e8215a9fec0d04f7ce6a1f5e80c9fa3d10c",
           "importOrder": [
@@ -775,6 +923,13 @@
           "exports": [
             "validateCaptureJsonl"
           ],
+          "failurePaths": [
+            {
+              "in": "validateCaptureJsonl",
+              "kind": "catch",
+              "line": 43
+            }
+          ],
           "hash": "0c95dad5c1084248d10b1c112dbb597ddd26642def45d094d0c2c6720a463aff",
           "importsFiles": [
             "src/dataset/schema.ts"
@@ -784,6 +939,57 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 91
+            },
+            {
+              "kind": "catch",
+              "line": 108
+            },
+            {
+              "kind": "catch",
+              "line": 133
+            },
+            {
+              "kind": "catch",
+              "line": 162
+            },
+            {
+              "kind": "catch",
+              "line": 187
+            },
+            {
+              "kind": "catch",
+              "line": 206
+            },
+            {
+              "kind": "catch",
+              "line": 228
+            },
+            {
+              "kind": "catch",
+              "line": 253
+            },
+            {
+              "kind": "catch",
+              "line": 321
+            },
+            {
+              "kind": "catch",
+              "line": 353
+            },
+            {
+              "kind": "catch",
+              "line": 370
+            },
+            {
+              "in": "shutdown",
+              "kind": "catch",
+              "line": 425
+            }
+          ],
           "hash": "241ea0f3b4774c8d7496dfd6b9590c1f83aa7915c605ff54e9dd724222d520d5",
           "importsFiles": [
             "src/ollama.ts",
@@ -888,6 +1094,28 @@
             "recordSafetyFilterFire",
             "resetOllamaStats"
           ],
+          "failurePaths": [
+            {
+              "in": "getOllamaHost",
+              "kind": "catch",
+              "line": 145
+            },
+            {
+              "in": "probeOllama",
+              "kind": "catch",
+              "line": 404
+            },
+            {
+              "in": "generateComedy",
+              "kind": "throw",
+              "line": 578
+            },
+            {
+              "in": "generateComedy",
+              "kind": "catch",
+              "line": 613
+            }
+          ],
           "hash": "eae2cabee6e4e11fee85001a5fd42d9fda9d540e44b8b0ce83ea2caa38b6d855",
           "importsFiles": [
             "src/types.ts"
@@ -924,6 +1152,17 @@
             "getPromptVersion",
             "getRegisteredPromptKeys",
             "loadMoodPrompt"
+          ],
+          "failurePaths": [
+            {
+              "kind": "throw",
+              "line": 51
+            },
+            {
+              "in": "loadMoodPrompt",
+              "kind": "throw",
+              "line": 113
+            }
           ],
           "hash": "3b01d2c24034f7498f7ac94e2ad4e79f7133c898fa186639dce270f1a46d6d10",
           "importOrder": [
@@ -1018,6 +1257,28 @@
             "threeValuedVerdict",
             "wilsonInterval"
           ],
+          "failurePaths": [
+            {
+              "in": "sprt",
+              "kind": "throw",
+              "line": 162
+            },
+            {
+              "in": "sprt",
+              "kind": "throw",
+              "line": 165
+            },
+            {
+              "in": "sprt",
+              "kind": "throw",
+              "line": 168
+            },
+            {
+              "in": "recommendedSampleSize",
+              "kind": "throw",
+              "line": 210
+            }
+          ],
           "hash": "d6a4c9769fff7af5446f83832abba20d96f71f4da3fe20f03db4f7d7b2590d2b",
           "path": "src/scorecard/stats.ts"
         },
@@ -1031,6 +1292,23 @@
             "resetSession",
             "sessionFilePath",
             "snapshotIsFresh"
+          ],
+          "failurePaths": [
+            {
+              "in": "fromSnapshot",
+              "kind": "catch",
+              "line": 510
+            },
+            {
+              "in": "save",
+              "kind": "catch",
+              "line": 532
+            },
+            {
+              "in": "loadPersisted",
+              "kind": "catch",
+              "line": 555
+            }
           ],
           "hash": "3fbb2671ba5120306910f6207a703a875aab53cce1768b4d1b2cfce37b9e40ac",
           "importOrder": [
@@ -1128,6 +1406,13 @@
             "moodGet",
             "moodSet"
           ],
+          "failurePaths": [
+            {
+              "in": "moodSet",
+              "kind": "throw",
+              "line": 30
+            }
+          ],
           "hash": "fc0565452ae172274dba8042a010c7e09801015a01a34d5318e6f931097ae5d9",
           "importOrder": [
             "src/session.ts",
@@ -1174,6 +1459,23 @@
           "exports": [
             "runningGag"
           ],
+          "failurePaths": [
+            {
+              "in": "runningGag",
+              "kind": "throw",
+              "line": 59
+            },
+            {
+              "in": "runningGag",
+              "kind": "throw",
+              "line": 73
+            },
+            {
+              "in": "runningGag",
+              "kind": "throw",
+              "line": 78
+            }
+          ],
           "hash": "cdafe196152887d5db508b08a92c7bc6631e72089e6911b4494324abaddbab29",
           "importsFiles": [
             "src/session.ts",
@@ -1192,6 +1494,18 @@
             "normalizeCallbackText",
             "resolveOverlayTechnique",
             "techniquesForMood"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertMoodTechnique",
+              "kind": "throw",
+              "line": 92
+            },
+            {
+              "in": "assertMoodTechnique",
+              "kind": "throw",
+              "line": 96
+            }
           ],
           "hash": "e06306322570f350638e64271e0c0170fbb4cbae61bc70f8f9c7f6fa6ee817a3",
           "importsFiles": [
@@ -1222,6 +1536,9 @@
           "path": "src/validators.ts"
         }
       ],
+      "frameworks": [
+        "mcp"
+      ],
       "globs": [
         "src/**"
       ],
@@ -1248,6 +1565,9 @@
       "outsideReads": 10,
       "outsideWrites": 3,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 25,
       "unresolvedSites": 0
     },
@@ -1357,14 +1677,16 @@
             "src/types.ts",
             "tests/setup.ts"
           ],
-          "path": "tests/capture.test.ts"
+          "path": "tests/capture.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1c1c08a9d3ced47ca8fb0499331aaa19a9e34c2a28d783c2ecddd50159869669",
           "importsFiles": [
             "src/character/voice-schema.ts"
           ],
-          "path": "tests/character-voice-schema.test.ts"
+          "path": "tests/character-voice-schema.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "217573f1c470809878531bee5f10b77d4518322e9658fe1e1192578d43f1b574",
@@ -1378,7 +1700,8 @@
             "src/dataset/enrich.ts",
             "src/dataset/provenance-schema.ts"
           ],
-          "path": "tests/dataset-enrich.test.ts"
+          "path": "tests/dataset-enrich.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4cc083082560e26612267745f4f88e47dde0c8118756a54a9be66fa3f3f7a05b",
@@ -1386,7 +1709,8 @@
             "src/dataset/eval/caricature.ts",
             "src/dataset/eval/rubric.ts"
           ],
-          "path": "tests/dataset-eval-caricature.test.ts"
+          "path": "tests/dataset-eval-caricature.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f3c7e6cf9517e7434ccc05698c7c9a398c2adff13fb7a97934ce0ae1c69b7712",
@@ -1398,7 +1722,8 @@
             "src/dataset/eval/gates.ts",
             "src/dataset/eval/rubric.ts"
           ],
-          "path": "tests/dataset-eval-core.test.ts"
+          "path": "tests/dataset-eval-core.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a9d00bfa2b3ffcc5294c1dc44cfc1cebc3be1f34faa50ea001aca3673bc0ff2c",
@@ -1412,7 +1737,8 @@
             "src/dataset/eval/judge.ts",
             "src/types.ts"
           ],
-          "path": "tests/dataset-eval-judge.test.ts"
+          "path": "tests/dataset-eval-judge.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d81df8e95957cc8762bfae365d80d8af5290352225fdd5959e74d2ff6a720245",
@@ -1424,21 +1750,24 @@
             "src/dataset/label/bws-active.ts",
             "src/dataset/label/bws.ts"
           ],
-          "path": "tests/dataset-label-active.test.ts"
+          "path": "tests/dataset-label-active.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "88e3e33eebe106fce6b60265c091f7ea75259d79c235fe1d3a0d8211bb74191e",
           "importsFiles": [
             "src/dataset/label/bws.ts"
           ],
-          "path": "tests/dataset-label-bws.test.ts"
+          "path": "tests/dataset-label-bws.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "449ba29a812ae62f8907b6919b87a88011e0004f278a4af2653b4ae1c7694cbd",
           "importsFiles": [
             "src/dataset/label/schema.ts"
           ],
-          "path": "tests/dataset-label-schema.test.ts"
+          "path": "tests/dataset-label-schema.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1bede4d07927b51aa093de5795ea3731fa4382fd62294d0afafaf49a3a382559",
@@ -1452,7 +1781,8 @@
             "src/dataset/enrich.ts",
             "src/dataset/pii-scrub.ts"
           ],
-          "path": "tests/dataset-pii-scrub.test.ts"
+          "path": "tests/dataset-pii-scrub.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2136544b15e39d96bd5d6c5e87863f484f0d305a8482b0d6e6d6f85be9d946fc",
@@ -1460,7 +1790,8 @@
             "src/capture.ts",
             "src/dataset/provenance.ts"
           ],
-          "path": "tests/dataset-provenance.test.ts"
+          "path": "tests/dataset-provenance.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a7c0625178fae412f78a64c55719ea1721f9da6cf346631f7a16b1a218c6731f",
@@ -1469,7 +1800,8 @@
             "src/dataset/schema.ts",
             "src/dataset/validate.ts"
           ],
-          "path": "tests/dataset-schema.test.ts"
+          "path": "tests/dataset-schema.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "bf80be6b13c380edce11681e89e80b403918e993c87d8c28b8dfa93d5f039196",
@@ -1485,7 +1817,8 @@
             "src/session.ts",
             "tests/setup.ts"
           ],
-          "path": "tests/index.test.ts"
+          "path": "tests/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "95bf47b48d583792d256ccba4e89d216baa277e6ecd7c1515fcc16ac9d397ed6",
@@ -1497,7 +1830,11 @@
             "src/dataset/label/schema.ts",
             "src/dataset/label/validate.ts"
           ],
-          "path": "tests/label-cli-smoke.test.ts"
+          "path": "tests/label-cli-smoke.test.ts",
+          "spawns": [
+            "scripts/label-comedic-moods.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "f88c4e60a50b8956b813b32d814e17f80b938abbe7fad73ef8f3fe3bc18bc77c",
@@ -1511,14 +1848,16 @@
             "src/prompts/loader.ts",
             "src/types.ts"
           ],
-          "path": "tests/loader.test.ts"
+          "path": "tests/loader.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "85fbeaa09181a7ae95c3ca1d710c915121943c0db23baa01c6e3c5e34ff6106b",
           "importsFiles": [
             "src/ollama.ts"
           ],
-          "path": "tests/ollama.test.ts"
+          "path": "tests/ollama.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c1e6cc7dd8a72d1ceb53c9b331534e520e1e547c163d0216e8695cc8cf711521",
@@ -1528,14 +1867,16 @@
             "src/validators.ts",
             "tests/setup.ts"
           ],
-          "path": "tests/running_gag.test.ts"
+          "path": "tests/running_gag.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0f402b6e71b4df2a1c56c7d473bbb9a051f2998bea2c97a3b3e15681db6a110c",
           "importsFiles": [
             "src/scorecard/cli.ts"
           ],
-          "path": "tests/scorecard-cli.test.ts"
+          "path": "tests/scorecard-cli.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "673133d570f88fbb710908c6c8043888062d726e9e1f9bb1db8455fcb45bb046",
@@ -1557,7 +1898,8 @@
             "src/prompts/moods/zoomer.v1.prompt.ts",
             "src/types.ts"
           ],
-          "path": "tests/scorecard-frozen-prompts.test.ts"
+          "path": "tests/scorecard-frozen-prompts.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "507a9421bfab65681e36c59134566ad80b8fe407c2c433286b108b41c33804ea",
@@ -1565,14 +1907,16 @@
             "src/scorecard/rules.ts",
             "src/types.ts"
           ],
-          "path": "tests/scorecard-rules.test.ts"
+          "path": "tests/scorecard-rules.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "910090a67a726cfba188b6c6a6bf563f3c25123b63e9d52fae2f9f64c070fe64",
           "importsFiles": [
             "src/scorecard/stats.ts"
           ],
-          "path": "tests/scorecard-stats.test.ts"
+          "path": "tests/scorecard-stats.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "653e71744078fb9377bad9a2db5b8408a3e116ab9aa20f8208dc140576d2cfd9",
@@ -1581,7 +1925,8 @@
             "src/types.ts",
             "tests/setup.ts"
           ],
-          "path": "tests/session.test.ts"
+          "path": "tests/session.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1599,7 +1944,8 @@
             "src/tools/techniques.ts",
             "src/types.ts"
           ],
-          "path": "tests/techniques.test.ts"
+          "path": "tests/techniques.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b029e1e8c0f68a6c22073532c46e05096f8d1a816ecb753ba6bf30e0158b0f05",
@@ -1631,18 +1977,24 @@
             "src/validators.ts",
             "tests/setup.ts"
           ],
-          "path": "tests/tools.test.ts"
+          "path": "tests/tools.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0b047e834d5cf2f4f6ca33b64fff0b996e66d9b4947a81c40b519fb7caaf1399",
           "importsFiles": [
             "src/validators.ts"
           ],
-          "path": "tests/validators.test.ts"
+          "path": "tests/validators.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5ddcce43743650f29c0bda34d22308c5245ac80895024ed1d1ab8b91f1eeff15",
-          "path": "tests/version-alignment.test.ts"
+          "names": [
+            "src/index.ts"
+          ],
+          "path": "tests/version-alignment.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -1652,6 +2004,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -1951,6 +2306,18 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 26,
+          "job": "build-and-test",
+          "runner": "vitest",
+          "step": "5",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -2528,6 +2895,18 @@
         "releases": true
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 26,
+          "job": "verify",
+          "runner": "vitest",
+          "step": "Test",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -2645,7 +3024,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "53be69f8bd3e3aca26a8cde1aa9e8f0b36f0cd84",
     "tracked": 153

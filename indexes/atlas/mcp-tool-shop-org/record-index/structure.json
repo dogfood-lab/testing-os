@@ -80,11 +80,21 @@
             "is_record_root",
             "resolve_root"
           ],
+          "failurePaths": [
+            {
+              "in": "__getattr__",
+              "kind": "raise",
+              "line": 239
+            }
+          ],
           "hash": "31975f7550440072adcab7fb897c838aff40bc4539552e278c307f1e248a98f8",
           "importsFiles": [
+            "record_index/claims.py",
             "record_index/conventions.py",
+            "record_index/index.py",
             "record_index/mechanism.py",
-            "record_index/parse.py"
+            "record_index/parse.py",
+            "record_index/text.py"
           ],
           "path": "record_index/__init__.py",
           "sequences": [
@@ -113,6 +123,28 @@
             "corpus_manifest",
             "health"
           ],
+          "failurePaths": [
+            {
+              "in": "health",
+              "kind": "raise",
+              "line": 149
+            },
+            {
+              "in": "health",
+              "kind": "raise",
+              "line": 152
+            },
+            {
+              "in": "health",
+              "kind": "raise",
+              "line": 154
+            },
+            {
+              "in": "health",
+              "kind": "except",
+              "line": 155
+            }
+          ],
           "hash": "6635e94204daa9cf5c8a5c5029bd1a2a02242047f98def0e35b3258633780761",
           "importsFiles": [
             "record_index/index.py"
@@ -127,7 +159,8 @@
           ],
           "hash": "01578bbd6d84e079756e824f744e99b9dbb52e3cec43b8d3f832abe032380575",
           "importsFiles": [
-            "record_index/__init__.py"
+            "record_index/__init__.py",
+            "record_index/text.py"
           ],
           "path": "record_index/claims.py"
         },
@@ -138,6 +171,48 @@
             "prog_name",
             "run_contract",
             "user_error"
+          ],
+          "failurePaths": [
+            {
+              "in": "error",
+              "kind": "raise",
+              "line": 59
+            },
+            {
+              "in": "run_contract",
+              "kind": "except",
+              "line": 95
+            },
+            {
+              "in": "run_contract",
+              "kind": "raise",
+              "line": 96
+            },
+            {
+              "in": "run_contract",
+              "kind": "except",
+              "line": 97
+            },
+            {
+              "in": "run_contract",
+              "kind": "except",
+              "line": 100
+            },
+            {
+              "in": "run_contract",
+              "kind": "except",
+              "line": 108
+            },
+            {
+              "in": "run_contract",
+              "kind": "except",
+              "line": 115
+            },
+            {
+              "in": "run_contract",
+              "kind": "except",
+              "line": 121
+            }
           ],
           "hash": "3a35a08cd8259767510446e6e7d5489664fa1788f8d95f0d13b93ec4ef3af2f3",
           "importsFiles": [
@@ -152,6 +227,63 @@
           "exports": [
             "load"
           ],
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 200
+            },
+            {
+              "in": "_validate",
+              "kind": "raise",
+              "line": 210
+            },
+            {
+              "in": "_validate",
+              "kind": "raise",
+              "line": 215
+            },
+            {
+              "in": "_validate",
+              "kind": "raise",
+              "line": 228
+            },
+            {
+              "in": "_validate",
+              "kind": "raise",
+              "line": 234
+            },
+            {
+              "in": "_validate",
+              "kind": "raise",
+              "line": 238
+            },
+            {
+              "in": "arc_of_ruling_doc",
+              "kind": "raise",
+              "line": 262
+            },
+            {
+              "in": "arc_of_kickoff_doc",
+              "kind": "raise",
+              "line": 280
+            },
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 296
+            },
+            {
+              "in": "load",
+              "kind": "except",
+              "line": 302
+            },
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 303
+            }
+          ],
           "hash": "dc6ba14b62839435305f6a00c01ee7e3f03c56f9e2d2ce1d9d319c12237ec3ff",
           "path": "record_index/conventions.py"
         },
@@ -162,23 +294,68 @@
             "survivable_stdout",
             "verify"
           ],
+          "failurePaths": [
+            {
+              "in": "query",
+              "kind": "except",
+              "line": 253
+            },
+            {
+              "in": "query",
+              "kind": "except",
+              "line": 261
+            },
+            {
+              "in": "survivable_stdout",
+              "kind": "except",
+              "line": 538
+            }
+          ],
           "hash": "5a4a778637bc18146c226369c87079b0848998044975a40125fb5963238d4584",
+          "importOrder": [
+            "record_index/__init__.py",
+            "record_index/text.py",
+            "record_index/mechanism.py",
+            "record_index/parse.py"
+          ],
           "importsFiles": [
             "record_index/__init__.py",
             "record_index/mechanism.py",
-            "record_index/parse.py"
+            "record_index/parse.py",
+            "record_index/text.py"
           ],
           "path": "record_index/index.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 84
+            }
+          ],
           "hash": "a7135f73a6760b0fb99a0c1e3b0d393cb40a9ebe1635e244fb7b58b684c7776f",
           "path": "record_index/mechanism.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "assert_no_undiscovered_handoffs",
+              "kind": "raise",
+              "line": 132
+            }
+          ],
           "hash": "38a1fee1dbaef6f31c4f2d704672912b7f1026f1b72c5c5b98d179144162fc4d",
+          "importOrder": [
+            "record_index/__init__.py",
+            "record_index/text.py",
+            "record_index/mechanism.py",
+            "record_index/vocab.py"
+          ],
           "importsFiles": [
             "record_index/__init__.py",
             "record_index/mechanism.py",
+            "record_index/text.py",
             "record_index/vocab.py"
           ],
           "path": "record_index/parse.py"
@@ -226,6 +403,9 @@
       "outsideReads": 3,
       "outsideWrites": 7,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 16,
       "unresolvedSites": 0
     },
@@ -414,7 +594,8 @@
             "record_index/__init__.py",
             "record_index/conventions.py"
           ],
-          "path": "tests/conftest.py"
+          "path": "tests/conftest.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "668fbf0d565d8fe0e087f3641b687b811025e28a2a7f422508046333542fb5a2",
@@ -538,7 +719,8 @@
             "record_index/conventions.py",
             "record_index/mechanism.py"
           ],
-          "path": "tests/test_binding.py"
+          "path": "tests/test_binding.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -569,11 +751,20 @@
             "test_there_is_no_path_that_writes_a_db_without_a_certificate_for_it"
           ],
           "hash": "2b10ac5992034a8b0bbbd6e3e50cd2c459c33683760e14adaf4d9608a0593275",
-          "importsFiles": [
+          "importOrder": [
             "record_index/__init__.py",
+            "record_index/certificate.py",
+            "record_index/index.py",
             "record_index/conventions.py"
           ],
-          "path": "tests/test_certificate.py"
+          "importsFiles": [
+            "record_index/__init__.py",
+            "record_index/certificate.py",
+            "record_index/conventions.py",
+            "record_index/index.py"
+          ],
+          "path": "tests/test_certificate.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -605,10 +796,12 @@
           "hash": "33dfb81cfd8763f6dbbfebaf16313985775dd8edd700d4ca5278579cea442ef2",
           "importsFiles": [
             "record_index/__init__.py",
+            "record_index/claims.py",
             "record_index/conventions.py",
             "record_index/parse.py"
           ],
-          "path": "tests/test_claims.py"
+          "path": "tests/test_claims.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -652,11 +845,13 @@
           "hash": "24ed57aaf2d4a85726d2d0ed1e852efca2ce1e46c19fc27b853f73bfc3d76b11",
           "importsFiles": [
             "record_index/__init__.py",
+            "record_index/cli.py",
             "record_index/conventions.py",
             "record_index/index.py",
             "tests/conftest.py"
           ],
-          "path": "tests/test_cli.py"
+          "path": "tests/test_cli.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -697,7 +892,8 @@
             "record_index/conventions.py",
             "tests/conftest.py"
           ],
-          "path": "tests/test_conventions.py"
+          "path": "tests/test_conventions.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -714,7 +910,8 @@
           ],
           "hash": "2e8fd746fbac35873688d794b04e1a4303db71527873097e5e1185ef90e3ca33",
           "importsFiles": [
-            "record_index/__init__.py"
+            "record_index/__init__.py",
+            "record_index/certificate.py"
           ],
           "path": "tests/test_determinism.py"
         },
@@ -752,7 +949,18 @@
             "record_index/index.py",
             "tests/conftest.py"
           ],
-          "path": "tests/test_gates_and_writes.py"
+          "names": [
+            "record_index/__init__.py",
+            "record_index/claims.py",
+            "record_index/cli.py",
+            "record_index/conventions.py",
+            "record_index/mechanism.py",
+            "record_index/parse.py",
+            "record_index/text.py",
+            "record_index/vocab.py"
+          ],
+          "path": "tests/test_gates_and_writes.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -779,9 +987,11 @@
           ],
           "hash": "9671041c013cb7ebd5ff26204bcf68a9337e1920726a411baf7c538b87753ec6",
           "importsFiles": [
-            "record_index/__init__.py"
+            "record_index/__init__.py",
+            "record_index/index.py"
           ],
-          "path": "tests/test_index_build.py"
+          "path": "tests/test_index_build.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -799,7 +1009,8 @@
           "importsFiles": [
             "record_index/mechanism.py"
           ],
-          "path": "tests/test_mechanism.py"
+          "path": "tests/test_mechanism.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -821,7 +1032,19 @@
             "record_index/__init__.py",
             "tests/conftest.py"
           ],
-          "path": "tests/test_packaging.py"
+          "names": [
+            "record_index/certificate.py",
+            "record_index/claims.py",
+            "record_index/cli.py",
+            "record_index/conventions.py",
+            "record_index/index.py",
+            "record_index/mechanism.py",
+            "record_index/parse.py",
+            "record_index/text.py",
+            "record_index/vocab.py"
+          ],
+          "path": "tests/test_packaging.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -880,12 +1103,20 @@
             "test_the_verdict_counter_names_the_shouted_verbs_nobody_declared"
           ],
           "hash": "433ed1af3af99038043eb9309288292f02aaee14a4ab834fbcb41f16dcfedb89",
-          "importsFiles": [
+          "importOrder": [
             "record_index/__init__.py",
+            "record_index/index.py",
             "record_index/conventions.py",
             "record_index/parse.py"
           ],
-          "path": "tests/test_parse.py"
+          "importsFiles": [
+            "record_index/__init__.py",
+            "record_index/conventions.py",
+            "record_index/index.py",
+            "record_index/parse.py"
+          ],
+          "path": "tests/test_parse.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -910,9 +1141,11 @@
           "hash": "4a75c73d2bc27e9cbe2d5921ffb1d82aab8d4e8a2a35d4584b6a6f10e3f36b00",
           "importsFiles": [
             "record_index/__init__.py",
+            "record_index/index.py",
             "record_index/mechanism.py"
           ],
-          "path": "tests/test_query.py"
+          "path": "tests/test_query.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -948,11 +1181,18 @@
             "test_the_title_form_requires_adjacency"
           ],
           "hash": "55967ae2cbf34b2ef3e5f3b66ecc0ddfe8275f3780eeb4336ab7cba3051ddf66",
-          "importsFiles": [
+          "importOrder": [
             "record_index/__init__.py",
+            "record_index/text.py",
             "record_index/mechanism.py"
           ],
-          "path": "tests/test_text.py"
+          "importsFiles": [
+            "record_index/__init__.py",
+            "record_index/mechanism.py",
+            "record_index/text.py"
+          ],
+          "path": "tests/test_text.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -986,12 +1226,20 @@
             "test_verify_closes_its_handle_so_a_build_can_follow_it"
           ],
           "hash": "0edfb2565e49f97dd71a88c75cdd685a29de4d5f9021aeb163d2bba46ddb5197",
-          "importsFiles": [
+          "importOrder": [
             "record_index/__init__.py",
+            "record_index/index.py",
             "record_index/conventions.py",
             "record_index/parse.py"
           ],
-          "path": "tests/test_verify.py"
+          "importsFiles": [
+            "record_index/__init__.py",
+            "record_index/conventions.py",
+            "record_index/index.py",
+            "record_index/parse.py"
+          ],
+          "path": "tests/test_verify.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1019,7 +1267,8 @@
           "importsFiles": [
             "record_index/vocab.py"
           ],
-          "path": "tests/test_vocab.py"
+          "path": "tests/test_vocab.py",
+          "testFramework": "pytest"
         }
       ],
       "globs": [
@@ -1029,6 +1278,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 0,
       "unresolvedNamed": [
         {
@@ -1093,7 +1345,7 @@
             "file": "record_index/__init__.py",
             "from": "tests/conftest.py"
           },
-          "files": 6
+          "files": 10
         }
       ],
       "readers": [],
@@ -1118,6 +1370,14 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 16,
+          "job": "test",
+          "runner": "pytest",
+          "step": "Run the suite"
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -1331,7 +1591,7 @@
         {
           "boundary": "record_index",
           "depth": 0,
-          "files": 5
+          "files": 8
         }
       ],
       "readers": [],
@@ -1367,7 +1627,7 @@
       "to": "record_index"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "b48f7b65034c0543d7c549545c392b88bd63e59e",
     "tracked": 81

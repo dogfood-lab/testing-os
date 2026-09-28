@@ -1,6 +1,6 @@
 # mcp-stress-test: how it works
 
-Mapped at 2026-09-26 from commit a8a79e8 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit b6c6103 by Atlas 1.23.4.
 
 ## What this is
 
@@ -8,20 +8,20 @@ Mapped at 2026-09-26 from commit a8a79e8 by Atlas 1.23.0.
 
 ## What changed since 2026-09-23 (be7da06)
 
+- CI's push trigger now also names `codecov.yml`.
 - CI now also runs src/mcp_stress_test/cli/__init__.py.
 - Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
-- Publish now also runs src/mcp_stress_test/cli/__init__.py.
-- And 2 more changes to doors.
+- And 3 more changes to doors.
 - README.md is now also read by pyproject.toml.
 - site/src/content/docs/ is now read by site/astro.config.mjs.
 - site/src/content/docs/handbook/ is now read by site/astro.config.mjs.
 - And 8 more new writers and readers of places.
-- 134 files changed content, across 6 parts.
+- 1 file added and 134 changed content, across 6 parts.
 
 ## What comes in
 
 1. **Publish.** When a release is published; or by hand. Runs src/mcp_stress_test/cli/__init__.py and tests/; checks src/mcp_stress_test/. On a run by hand with publish_docker true, it also packs README.md, pyproject.toml and src/ into an image.
-2. **CI.** On a pull request to main; on a push to main touching 8 paths; or by hand. Runs src/mcp_stress_test/cli/__init__.py and tests/; checks src/.
+2. **CI.** On a pull request to main; on a push to main touching 9 paths; or by hand. Runs src/mcp_stress_test/cli/__init__.py and tests/; checks src/.
 3. **Deploy site to GitHub Pages.** On a pull request to main touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **mcp-stress** (a command people run). Runs src/mcp_stress_test/cli/__init__.py.
 
@@ -39,7 +39,7 @@ Publish writes nothing this map can see.
 
 ## The other doors
 
-**CI** runs src/mcp_stress_test/cli/__init__.py and tests/, and checks src/.
+**CI** runs src/mcp_stress_test/cli/__init__.py and tests/, checks src/, and uploads coverage to Codecov.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on a push to main.
 
@@ -72,12 +72,11 @@ No two parts export a helper that looks alike.
 
 - **.github/** is written by dependabot[bot], which added every file in it.
 - **docs/** is written by dependabot[bot], which added every file in it.
-- **the repository root** is written by dependabot[bot], which added every file in it.
 - **site/** is written by dependabot[bot], which added every file in it.
 
 ## Hand-authored
 
-No configuration or documentation part is left to people alone.
+People write the repository root; 3 writes with paths built at run time may land here.
 
 ## Where to start
 

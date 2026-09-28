@@ -1147,6 +1147,33 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "process_result",
+              "kind": "match-err",
+              "line": 438
+            },
+            {
+              "in": "process_result",
+              "kind": "match-err",
+              "line": 478
+            },
+            {
+              "in": "handle_save_load",
+              "kind": "match-err",
+              "line": 499
+            },
+            {
+              "in": "handle_save_load",
+              "kind": "match-err",
+              "line": 516
+            },
+            {
+              "in": "discover_save_slots",
+              "kind": "match-err",
+              "line": 557
+            }
+          ],
           "hash": "63b78e4684fc022b8714f8968de33a5836de7ba76cf92ec142dfcf8be14450a2",
           "importsFiles": [
             "src/combat/engine.rs",
@@ -2204,6 +2231,18 @@
           "path": "src/state/reassembly.rs"
         },
         {
+          "failurePaths": [
+            {
+              "in": "load",
+              "kind": "match-err",
+              "line": 55
+            },
+            {
+              "in": "load",
+              "kind": "match-err",
+              "line": 58
+            }
+          ],
           "hash": "1c4e147aa6ff0ea0d91c5977f9b57ac650c2289085c8233950470427d00bae8e",
           "path": "src/state/settings.rs",
           "testsInside": true
@@ -2211,6 +2250,18 @@
         {
           "exports": [
             "auto_save"
+          ],
+          "failurePaths": [
+            {
+              "in": "delete_save",
+              "kind": "err",
+              "line": 158
+            },
+            {
+              "in": "delete_save",
+              "kind": "err",
+              "line": 166
+            }
           ],
           "hash": "adca357338e8ca1c20ad5d868d26fb1cc7e3cda38965922d196b4902f4b15066",
           "importOrder": [
@@ -3810,7 +3861,10 @@
       "outsideReads": 3,
       "outsideWrites": 10,
       "role": "code",
-      "testedBy": 46,
+      "testRunners": [
+        "cargo test"
+      ],
+      "testedBy": 47,
       "unresolvedSites": 0
     },
     {
@@ -4599,6 +4653,12 @@
         {
           "hash": "a4f5dcd8f7a1ebea98acc3cd018ba090731bd3b9a6b52fcf75cbcc91fe53a1c6",
           "path": "tests/version.rs",
+          "spawns": [
+            "src/main.rs"
+          ],
+          "spawnsInstalled": [
+            "src/main.rs"
+          ],
           "testsInside": true
         }
       ],
@@ -4609,6 +4669,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "cargo test"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -5010,6 +5073,14 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 46,
+          "job": "check-test",
+          "runner": "cargo test",
+          "step": "5"
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -5437,7 +5508,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "18fa475285a51f90912f11e2984e018e2cb66167",
     "tracked": 168

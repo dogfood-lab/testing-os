@@ -214,6 +214,13 @@
       "externals": 0,
       "files": [
         {
+          "failurePaths": [
+            {
+              "in": "tryPayload",
+              "kind": "catch",
+              "line": 583
+            }
+          ],
           "hash": "ed5b22e58edd8c1f13ae1beec2451f616f275d308a71cd7affb812b892deecc5",
           "path": "dashboard/ClusterTruthInspector.jsx"
         },
@@ -280,6 +287,9 @@
       "name": "dashboard",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 3,
       "unresolvedNamed": [
         {
@@ -930,6 +940,18 @@
           "exports": [
             "runSqlSafetyScan"
           ],
+          "failurePaths": [
+            {
+              "in": "runSqlSafetyScan",
+              "kind": "catch",
+              "line": 461
+            },
+            {
+              "in": "runSqlSafetyScan",
+              "kind": "catch",
+              "line": 493
+            }
+          ],
           "hash": "796de910db4556c6df484296d058f3fe5a939e325759a83c9e4155ae3c052846",
           "path": "scripts/checks/sqlite-sql-safety.mjs",
           "sequences": []
@@ -937,6 +959,13 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "runRule",
+              "kind": "catch",
+              "line": 198
+            }
+          ],
           "hash": "fa519ddbf733b0937ad701ff06e48e99e2cb52b79e6a99534e17a570d5855cfd",
           "importsFiles": [
             "scripts/checks/sqlite-sql-safety.mjs"
@@ -964,6 +993,23 @@
           "exports": [
             "generateSnapshot"
           ],
+          "failurePaths": [
+            {
+              "in": "generateSnapshot",
+              "kind": "catch",
+              "line": 41
+            },
+            {
+              "in": "generateSnapshot",
+              "kind": "catch",
+              "line": 52
+            },
+            {
+              "in": "generateSnapshot",
+              "kind": "catch",
+              "line": 65
+            }
+          ],
           "hash": "f1072e31860ebf47048907fda947705e910ceab0b27be14789215c90fdc2976e",
           "importOrder": [
             "src/adapters/local/index.ts",
@@ -986,6 +1032,28 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "runLayer1Typecheck",
+              "kind": "catch",
+              "line": 427
+            },
+            {
+              "in": "runLayer1Typecheck",
+              "kind": "catch",
+              "line": 469
+            },
+            {
+              "in": "runLayer1Typecheck",
+              "kind": "catch",
+              "line": 516
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 717
+            }
+          ],
           "hash": "f3e913eacfd790a9e412006a8ce73a2ad559ff9d5d20a787d622b707a6ad32ed",
           "path": "scripts/doc-drift.mjs",
           "sequences": []
@@ -1022,6 +1090,23 @@
           "path": "scripts/dogfood-ops.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 97
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 120
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 133
+            }
+          ],
           "hash": "575dc707595af945211719c88a0027eb879be41774f54c32b6b4ecea74a291c8",
           "importOrder": [
             "scripts/dogfood-ingest.ts",
@@ -1093,6 +1178,18 @@
         {
           "entry": "run",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "writeStageLog",
+              "kind": "catch",
+              "line": 74
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 96
+            }
+          ],
           "hash": "ae1432742e5b95a67c448710c802e1538af04fcb0c476dc7bdc0995a9987e096",
           "path": "scripts/release-gate.mjs",
           "sequences": []
@@ -1100,6 +1197,18 @@
         {
           "exports": [
             "generateRepoKnowledgeSnapshot"
+          ],
+          "failurePaths": [
+            {
+              "in": "generateRepoKnowledgeSnapshot",
+              "kind": "catch",
+              "line": 39
+            },
+            {
+              "in": "generateRepoKnowledgeSnapshot",
+              "kind": "catch",
+              "line": 50
+            }
           ],
           "hash": "f6c96c7f805f2d5749528bc73805995a2d67bc62b0d677cbaf2aff3fd9d855a1",
           "importOrder": [
@@ -1159,6 +1268,22 @@
         {
           "entry": "run",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "test",
+              "kind": "catch",
+              "line": 55
+            },
+            {
+              "in": "assert",
+              "kind": "throw",
+              "line": 62
+            },
+            {
+              "kind": "catch",
+              "line": 102
+            }
+          ],
           "hash": "90dd2d0657e3fb0ebb2d9ebd27ac663d10b2326356bcdcb6a76d5f5eafb15110",
           "path": "scripts/smoke-install.mjs",
           "sequences": []
@@ -1203,6 +1328,9 @@
       "outsideReads": 9,
       "outsideWrites": 9,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 16,
       "unresolvedSites": 0
     },
@@ -1323,6 +1451,28 @@
             "createCluster",
             "createClusterFromEnv",
             "createSafeCluster"
+          ],
+          "failurePaths": [
+            {
+              "in": "check",
+              "kind": "throw",
+              "line": 118
+            },
+            {
+              "in": "backendConfigFromEnv",
+              "kind": "throw",
+              "line": 148
+            },
+            {
+              "in": "backendConfigFromEnv",
+              "kind": "throw",
+              "line": 155
+            },
+            {
+              "in": "createCluster",
+              "kind": "throw",
+              "line": 219
+            }
           ],
           "hash": "1e3dd8c6720f6676cfc42686fb0bb413beb6251dee7ec493cbde1c3513150840",
           "importsFiles": [
@@ -1460,6 +1610,13 @@
             "assertContentMatch",
             "isValidContentHash"
           ],
+          "failurePaths": [
+            {
+              "in": "assertContentMatch",
+              "kind": "throw",
+              "line": 192
+            }
+          ],
           "hash": "2c153cdca9f3e7d2a11071415e94801ed44182695094c586afcc0223a96d290b",
           "path": "src/adapters/local/errors.ts"
         },
@@ -1485,6 +1642,78 @@
           "path": "src/adapters/local/index.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "getContent",
+              "kind": "throw",
+              "line": 68
+            },
+            {
+              "in": "getContent",
+              "kind": "throw",
+              "line": 85
+            },
+            {
+              "in": "ingest",
+              "kind": "catch",
+              "line": 159
+            },
+            {
+              "in": "ingest",
+              "kind": "catch",
+              "line": 166
+            },
+            {
+              "in": "ingest",
+              "kind": "throw",
+              "line": 169
+            },
+            {
+              "in": "importSnapshot",
+              "kind": "throw",
+              "line": 208
+            },
+            {
+              "in": "importSnapshot",
+              "kind": "catch",
+              "line": 252
+            },
+            {
+              "in": "importSnapshot",
+              "kind": "catch",
+              "line": 259
+            },
+            {
+              "in": "importSnapshot",
+              "kind": "throw",
+              "line": 262
+            },
+            {
+              "in": "load",
+              "kind": "catch",
+              "line": 286
+            },
+            {
+              "in": "load",
+              "kind": "throw",
+              "line": 287
+            },
+            {
+              "in": "load",
+              "kind": "throw",
+              "line": 292
+            },
+            {
+              "in": "load",
+              "kind": "catch",
+              "line": 295
+            },
+            {
+              "in": "load",
+              "kind": "throw",
+              "line": 296
+            }
+          ],
           "hash": "9c163b0aaa3e4b813aeaed2ea3c0e341b3a508c2ca9ce02c7ed23ed65f91996d",
           "importOrder": [
             "src/types/artifact.ts",
@@ -1501,6 +1730,38 @@
           "path": "src/adapters/local/local-artifact-store.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "update",
+              "kind": "throw",
+              "line": 114
+            },
+            {
+              "in": "load",
+              "kind": "catch",
+              "line": 209
+            },
+            {
+              "in": "load",
+              "kind": "throw",
+              "line": 210
+            },
+            {
+              "in": "load",
+              "kind": "throw",
+              "line": 215
+            },
+            {
+              "in": "load",
+              "kind": "catch",
+              "line": 237
+            },
+            {
+              "in": "load",
+              "kind": "throw",
+              "line": 238
+            }
+          ],
           "hash": "f5367d468033f73489a7534c3382dfefbb910746aa7183ef78ec736a29032d6d",
           "importOrder": [
             "src/types/entity.ts",
@@ -1517,6 +1778,33 @@
           "path": "src/adapters/local/local-canonical-store.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "load",
+              "kind": "catch",
+              "line": 124
+            },
+            {
+              "in": "load",
+              "kind": "throw",
+              "line": 125
+            },
+            {
+              "in": "load",
+              "kind": "throw",
+              "line": 130
+            },
+            {
+              "in": "load",
+              "kind": "catch",
+              "line": 133
+            },
+            {
+              "in": "load",
+              "kind": "throw",
+              "line": 134
+            }
+          ],
           "hash": "24ad6edd2e9c95e4a8bb80a0b3053a9077e202c6c367d386a9cbfdc62a905f6c",
           "importOrder": [
             "src/types/index-record.ts",
@@ -1533,6 +1821,148 @@
           "path": "src/adapters/local/local-index-store.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "constructor",
+              "kind": "catch",
+              "line": 124
+            },
+            {
+              "in": "constructor",
+              "kind": "catch",
+              "line": 128
+            },
+            {
+              "in": "recordTailCorruption",
+              "kind": "catch",
+              "line": 184
+            },
+            {
+              "in": "recordTailCorruption",
+              "kind": "catch",
+              "line": 213
+            },
+            {
+              "in": "trace",
+              "kind": "throw",
+              "line": 314
+            },
+            {
+              "in": "rotate",
+              "kind": "throw",
+              "line": 495
+            },
+            {
+              "in": "rotate",
+              "kind": "throw",
+              "line": 506
+            },
+            {
+              "in": "rotate",
+              "kind": "catch",
+              "line": 602
+            },
+            {
+              "in": "rotate",
+              "kind": "throw",
+              "line": 614
+            },
+            {
+              "in": "loadArray",
+              "kind": "catch",
+              "line": 640
+            },
+            {
+              "in": "loadArray",
+              "kind": "throw",
+              "line": 641
+            },
+            {
+              "in": "loadArray",
+              "kind": "throw",
+              "line": 657
+            },
+            {
+              "in": "loadArray",
+              "kind": "catch",
+              "line": 660
+            },
+            {
+              "in": "loadArray",
+              "kind": "throw",
+              "line": 661
+            },
+            {
+              "in": "loadArray",
+              "kind": "throw",
+              "line": 692
+            },
+            {
+              "in": "loadArray",
+              "kind": "throw",
+              "line": 707
+            },
+            {
+              "in": "loadArray",
+              "kind": "catch",
+              "line": 712
+            },
+            {
+              "in": "loadArray",
+              "kind": "throw",
+              "line": 727
+            },
+            {
+              "in": "loadArray",
+              "kind": "throw",
+              "line": 733
+            },
+            {
+              "in": "recoverInterruptedRotation",
+              "kind": "throw",
+              "line": 788
+            },
+            {
+              "in": "recoverInterruptedRotation",
+              "kind": "catch",
+              "line": 791
+            },
+            {
+              "in": "dedupActiveAgainstArchive",
+              "kind": "catch",
+              "line": 822
+            },
+            {
+              "in": "readNdjsonIds",
+              "kind": "catch",
+              "line": 845
+            },
+            {
+              "in": "removeFileBestEffort",
+              "kind": "catch",
+              "line": 863
+            },
+            {
+              "in": "verifyEventIntegrity",
+              "kind": "throw",
+              "line": 937
+            },
+            {
+              "in": "verifyReceiptIntegrity",
+              "kind": "throw",
+              "line": 951
+            },
+            {
+              "in": "fsyncBestEffort",
+              "kind": "catch",
+              "line": 1050
+            },
+            {
+              "in": "fsyncBestEffort",
+              "kind": "catch",
+              "line": 1056
+            }
+          ],
           "hash": "9668e56178e413759ae0e2bba7ed408dd08353b607c5d7d5a8d43fc38be7c172",
           "importOrder": [
             "src/types/provenance-event.ts",
@@ -1596,6 +2026,23 @@
           "path": "src/adapters/postgres/migrations/002_add_entity_version.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "update",
+              "kind": "throw",
+              "line": 117
+            },
+            {
+              "in": "update",
+              "kind": "throw",
+              "line": 151
+            },
+            {
+              "in": "importSnapshot",
+              "kind": "throw",
+              "line": 211
+            }
+          ],
           "hash": "cc6c701380b82f7e08a16a74b3bde8e8672bdb5a7e6ecdd74666e732751962e2",
           "importOrder": [
             "src/types/entity.ts",
@@ -1675,6 +2122,23 @@
           "path": "src/adapters/sqlite/schema.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "getContent",
+              "kind": "throw",
+              "line": 80
+            },
+            {
+              "in": "getContent",
+              "kind": "throw",
+              "line": 98
+            },
+            {
+              "in": "importSnapshot",
+              "kind": "throw",
+              "line": 219
+            }
+          ],
           "hash": "322497c7fbc3db886f4c476e96b42f352cbec119febec77da738f7b368b106d5",
           "importOrder": [
             "src/types/artifact.ts",
@@ -1693,6 +2157,13 @@
           "path": "src/adapters/sqlite/sqlite-artifact-store.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "update",
+              "kind": "throw",
+              "line": 164
+            }
+          ],
           "hash": "475a76a789f25ac413992cafbefbf6af10d49bc5c8ae51d8c962c6ec82b09fd3",
           "importOrder": [
             "src/types/entity.ts",
@@ -1711,6 +2182,23 @@
           "path": "src/adapters/sqlite/sqlite-canonical-store.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "close",
+              "kind": "catch",
+              "line": 116
+            },
+            {
+              "in": "loadDriver",
+              "kind": "catch",
+              "line": 167
+            },
+            {
+              "in": "loadDriver",
+              "kind": "throw",
+              "line": 168
+            }
+          ],
           "hash": "1993a0cc09910d1bacda8db2239a58ab4c385f9cb98af928b45c5865ed517f49",
           "importsFiles": [
             "src/adapters/sqlite/errors.ts",
@@ -1736,6 +2224,33 @@
           "path": "src/adapters/sqlite/sqlite-index-store.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "trace",
+              "kind": "throw",
+              "line": 176
+            },
+            {
+              "in": "rotate",
+              "kind": "throw",
+              "line": 318
+            },
+            {
+              "in": "rotate",
+              "kind": "throw",
+              "line": 322
+            },
+            {
+              "in": "verifyEventIntegrity",
+              "kind": "throw",
+              "line": 472
+            },
+            {
+              "in": "verifyReceiptIntegrity",
+              "kind": "throw",
+              "line": 486
+            }
+          ],
           "hash": "944d4f8a6af0651c913447eac1d0fe8781ea618ee04d3d687aa5c125aefe0aa1",
           "importOrder": [
             "src/types/provenance-event.ts",
@@ -1766,6 +2281,80 @@
             "renderClusterErrorForCli",
             "resolveClusterDir",
             "typedErrorToExitCode"
+          ],
+          "failurePaths": [
+            {
+              "in": "resolveClusterDir",
+              "kind": "catch",
+              "line": 129
+            },
+            {
+              "in": "realpathExisting",
+              "kind": "catch",
+              "line": 175
+            },
+            {
+              "kind": "catch",
+              "line": 196
+            },
+            {
+              "in": "resolveOperator",
+              "kind": "catch",
+              "line": 237
+            },
+            {
+              "in": "loadPolicyConfig",
+              "kind": "catch",
+              "line": 268
+            },
+            {
+              "in": "loadPolicyConfig",
+              "kind": "throw",
+              "line": 269
+            },
+            {
+              "in": "loadPolicyConfig",
+              "kind": "catch",
+              "line": 274
+            },
+            {
+              "in": "loadPolicyConfig",
+              "kind": "throw",
+              "line": 275
+            },
+            {
+              "in": "safeJsonParse",
+              "kind": "catch",
+              "line": 395
+            },
+            {
+              "in": "cliCommand",
+              "kind": "catch",
+              "line": 658
+            },
+            {
+              "in": "destructiveCommand",
+              "kind": "catch",
+              "line": 987
+            },
+            {
+              "in": "destructiveCommand",
+              "kind": "throw",
+              "line": 1002
+            },
+            {
+              "kind": "catch",
+              "line": 2191
+            },
+            {
+              "kind": "catch",
+              "line": 2204
+            },
+            {
+              "in": "isCliEntryPoint",
+              "kind": "catch",
+              "line": 2795
+            }
           ],
           "hash": "24cf466f14bc2ffe13c00213c805ec22f6190fe36db7805c4139382466a607dc",
           "importsFiles": [
@@ -2077,6 +2666,23 @@
             "inspectEntity",
             "inspectIndexRecord"
           ],
+          "failurePaths": [
+            {
+              "in": "getEntityFreshness",
+              "kind": "catch",
+              "line": 287
+            },
+            {
+              "in": "getEntityRelationships",
+              "kind": "catch",
+              "line": 316
+            },
+            {
+              "in": "getEntityWarnings",
+              "kind": "catch",
+              "line": 337
+            }
+          ],
           "hash": "fe4a9901df15067eb7674d7b0389c71925981ad69f285fdc8bdd87b18fbd6376",
           "importOrder": [
             "src/kernel/cluster-kernel.ts",
@@ -2097,6 +2703,18 @@
         {
           "exports": [
             "buildOpsModel"
+          ],
+          "failurePaths": [
+            {
+              "in": "buildOpsModel",
+              "kind": "catch",
+              "line": 159
+            },
+            {
+              "in": "buildOpsModel",
+              "kind": "catch",
+              "line": 174
+            }
           ],
           "hash": "568f66a90c640097bd1194ac945716cf58b0737cd8304fd42b7fe8889e5b071c",
           "importOrder": [
@@ -2177,6 +2795,18 @@
             "buildArtifactIndexText",
             "indexArtifactContent"
           ],
+          "failurePaths": [
+            {
+              "in": "indexArtifactContent",
+              "kind": "throw",
+              "line": 93
+            },
+            {
+              "in": "indexArtifactContent",
+              "kind": "catch",
+              "line": 117
+            }
+          ],
           "hash": "e03688459e854b804eb9fd881c2e73b15c79eefa1ca300eda3b73d531f5bfc66",
           "importOrder": [
             "src/contracts/index.ts",
@@ -2216,6 +2846,23 @@
             "extractFacts",
             "ingestRepoKnowledge"
           ],
+          "failurePaths": [
+            {
+              "in": "ingestRepoKnowledge",
+              "kind": "throw",
+              "line": 211
+            },
+            {
+              "in": "ingestRepoKnowledge",
+              "kind": "throw",
+              "line": 235
+            },
+            {
+              "in": "ingestRepoKnowledge",
+              "kind": "throw",
+              "line": 295
+            }
+          ],
           "hash": "927f82eab0b8a2436849ad77394bf79bf5c666c28f7443479b6419a88ab5de1a",
           "importOrder": [
             "src/kernel/cluster-kernel.ts",
@@ -2246,6 +2893,13 @@
             "generateWritebackPayload",
             "proposeFactUpdate"
           ],
+          "failurePaths": [
+            {
+              "in": "proposeFactUpdate",
+              "kind": "throw",
+              "line": 47
+            }
+          ],
           "hash": "325bf886b7a94a4632b5a47407dbb6935ad366913392c496e95a616ed119dd48",
           "importsFiles": [
             "src/kernel/cluster-kernel.ts",
@@ -2261,6 +2915,238 @@
           "path": "src/kernel/cluster-kernel-interface.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "getStagingDir",
+              "kind": "catch",
+              "line": 289
+            },
+            {
+              "in": "sweepStagingOrphans",
+              "kind": "catch",
+              "line": 311
+            },
+            {
+              "in": "sweepStagingOrphans",
+              "kind": "catch",
+              "line": 320
+            },
+            {
+              "in": "sweepStagingOrphans",
+              "kind": "catch",
+              "line": 326
+            },
+            {
+              "in": "deleteStagingFile",
+              "kind": "catch",
+              "line": 344
+            },
+            {
+              "in": "recordOrphanMutation",
+              "kind": "catch",
+              "line": 407
+            },
+            {
+              "in": "recordOrphanMutation",
+              "kind": "catch",
+              "line": 434
+            },
+            {
+              "in": "ingestArtifact",
+              "kind": "catch",
+              "line": 541
+            },
+            {
+              "in": "ingestArtifact",
+              "kind": "throw",
+              "line": 548
+            },
+            {
+              "in": "createEntity",
+              "kind": "catch",
+              "line": 633
+            },
+            {
+              "in": "createEntity",
+              "kind": "throw",
+              "line": 641
+            },
+            {
+              "in": "linkEvidence",
+              "kind": "throw",
+              "line": 676
+            },
+            {
+              "in": "linkEvidence",
+              "kind": "throw",
+              "line": 679
+            },
+            {
+              "in": "linkEvidence",
+              "kind": "catch",
+              "line": 732
+            },
+            {
+              "in": "linkEvidence",
+              "kind": "throw",
+              "line": 740
+            },
+            {
+              "in": "inspectEntity",
+              "kind": "throw",
+              "line": 832
+            },
+            {
+              "in": "proposeMutation",
+              "kind": "throw",
+              "line": 953
+            },
+            {
+              "in": "commitMutation",
+              "kind": "throw",
+              "line": 1034
+            },
+            {
+              "in": "commitMutation",
+              "kind": "throw",
+              "line": 1048
+            },
+            {
+              "in": "commitMutation",
+              "kind": "throw",
+              "line": 1051
+            },
+            {
+              "in": "commitMutation",
+              "kind": "throw",
+              "line": 1055
+            },
+            {
+              "in": "commitMutation",
+              "kind": "throw",
+              "line": 1059
+            },
+            {
+              "in": "commitMutation",
+              "kind": "throw",
+              "line": 1186
+            },
+            {
+              "in": "commitMutation",
+              "kind": "throw",
+              "line": 1193
+            },
+            {
+              "in": "commitMutation",
+              "kind": "throw",
+              "line": 1205
+            },
+            {
+              "in": "commitMutation",
+              "kind": "catch",
+              "line": 1240
+            },
+            {
+              "in": "commitMutation",
+              "kind": "throw",
+              "line": 1259
+            },
+            {
+              "in": "commitMutation",
+              "kind": "throw",
+              "line": 1262
+            },
+            {
+              "in": "commitMutation",
+              "kind": "throw",
+              "line": 1296
+            },
+            {
+              "in": "commitMutation",
+              "kind": "throw",
+              "line": 1345
+            },
+            {
+              "in": "commitMutation",
+              "kind": "catch",
+              "line": 1354
+            },
+            {
+              "in": "commitMutation",
+              "kind": "throw",
+              "line": 1363
+            },
+            {
+              "in": "validateMutation",
+              "kind": "throw",
+              "line": 1425
+            },
+            {
+              "in": "validateMutation",
+              "kind": "throw",
+              "line": 1427
+            },
+            {
+              "in": "validateMutation",
+              "kind": "catch",
+              "line": 1434
+            },
+            {
+              "in": "validateMutation",
+              "kind": "throw",
+              "line": 1438
+            },
+            {
+              "in": "approveMutation",
+              "kind": "throw",
+              "line": 1461
+            },
+            {
+              "in": "rejectMutation",
+              "kind": "throw",
+              "line": 1500
+            },
+            {
+              "in": "compensateMutation",
+              "kind": "throw",
+              "line": 1562
+            },
+            {
+              "in": "compensateMutation",
+              "kind": "throw",
+              "line": 1565
+            },
+            {
+              "in": "compensateMutation",
+              "kind": "catch",
+              "line": 1626
+            },
+            {
+              "in": "compensateMutation",
+              "kind": "throw",
+              "line": 1641
+            },
+            {
+              "in": "inspectCommand",
+              "kind": "throw",
+              "line": 1658
+            },
+            {
+              "in": "rebuildIndex",
+              "kind": "catch",
+              "line": 1772
+            },
+            {
+              "in": "rebuildIndex",
+              "kind": "throw",
+              "line": 1779
+            },
+            {
+              "in": "explainIndex",
+              "kind": "throw",
+              "line": 1835
+            }
+          ],
           "hash": "ed8ac04c448340a8d99bfb39383418da4fb6d4e70bc1efb529405c419271f273",
           "importOrder": [
             "src/contracts/index.ts",
@@ -2305,6 +3191,63 @@
           "path": "src/kernel/cluster-kernel.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "cleanupOrphanTmpFiles",
+              "kind": "catch",
+              "line": 43
+            },
+            {
+              "in": "cleanupOrphanTmpFiles",
+              "kind": "catch",
+              "line": 54
+            },
+            {
+              "in": "cleanupOrphanTmpFiles",
+              "kind": "catch",
+              "line": 60
+            },
+            {
+              "in": "constructor",
+              "kind": "catch",
+              "line": 112
+            },
+            {
+              "in": "load",
+              "kind": "throw",
+              "line": 166
+            },
+            {
+              "in": "load",
+              "kind": "catch",
+              "line": 174
+            },
+            {
+              "in": "load",
+              "kind": "catch",
+              "line": 183
+            },
+            {
+              "in": "load",
+              "kind": "throw",
+              "line": 184
+            },
+            {
+              "in": "load",
+              "kind": "throw",
+              "line": 189
+            },
+            {
+              "in": "load",
+              "kind": "catch",
+              "line": 192
+            },
+            {
+              "in": "load",
+              "kind": "throw",
+              "line": 193
+            }
+          ],
           "hash": "4a382112b857ff8db132855d87eece3271f4aa1e984f240e1d8fdd78ba859f18",
           "importOrder": [
             "src/types/command.ts",
@@ -2329,6 +3272,38 @@
             "validTransitions",
             "validateCommand"
           ],
+          "failurePaths": [
+            {
+              "in": "validateCommand",
+              "kind": "throw",
+              "line": 107
+            },
+            {
+              "in": "approveCommand",
+              "kind": "throw",
+              "line": 139
+            },
+            {
+              "in": "rejectCommand",
+              "kind": "throw",
+              "line": 159
+            },
+            {
+              "in": "markCommitted",
+              "kind": "throw",
+              "line": 175
+            },
+            {
+              "in": "markCompensated",
+              "kind": "throw",
+              "line": 210
+            },
+            {
+              "in": "validatePayloadForVerb",
+              "kind": "throw",
+              "line": 297
+            }
+          ],
           "hash": "d64a2c9f2bd2c0228a8c929cdf45bdd08e4443291b108b4ee7fda78332adf7bd",
           "importOrder": [
             "src/types/command.ts",
@@ -2343,6 +3318,13 @@
         {
           "exports": [
             "assertActor"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertActor",
+              "kind": "throw",
+              "line": 587
+            }
           ],
           "hash": "5786727b7d1ec6166e0ee08a0cec75a89f4c31bbe03b7537590036a798b078b5",
           "path": "src/kernel/errors.ts"
@@ -2373,6 +3355,73 @@
           "reexportsOnly": true
         },
         {
+          "failurePaths": [
+            {
+              "in": "enforce",
+              "kind": "throw",
+              "line": 199
+            },
+            {
+              "in": "assertOwnerStore",
+              "kind": "throw",
+              "line": 222
+            },
+            {
+              "in": "inspectEntity",
+              "kind": "catch",
+              "line": 345
+            },
+            {
+              "in": "inspectEntity",
+              "kind": "throw",
+              "line": 351
+            },
+            {
+              "in": "inspectEntity",
+              "kind": "throw",
+              "line": 363
+            },
+            {
+              "in": "getEntityVersion",
+              "kind": "throw",
+              "line": 422
+            },
+            {
+              "in": "commitMutation",
+              "kind": "catch",
+              "line": 907
+            },
+            {
+              "in": "commitMutation",
+              "kind": "throw",
+              "line": 915
+            },
+            {
+              "in": "compensateMutation",
+              "kind": "catch",
+              "line": 957
+            },
+            {
+              "in": "compensateMutation",
+              "kind": "throw",
+              "line": 962
+            },
+            {
+              "in": "inspectCommand",
+              "kind": "catch",
+              "line": 1006
+            },
+            {
+              "in": "inspectCommand",
+              "kind": "throw",
+              "line": 1008
+            },
+            {
+              "in": "inspectCommand",
+              "kind": "throw",
+              "line": 1020
+            }
+          ],
           "hash": "da97f28dcb2c276aceab57d828a45115d4268aa53d2c4a9b2403b79d8108c578",
           "importOrder": [
             "src/contracts/index.ts",
@@ -2417,6 +3466,13 @@
             "recordProvenance",
             "traceSubjectProvenance"
           ],
+          "failurePaths": [
+            {
+              "in": "traceSubjectProvenance",
+              "kind": "throw",
+              "line": 36
+            }
+          ],
           "hash": "9f04b31909f780f50a26bd86e148f2cf3501b102a8d7cbf214dffacce4ccfd62",
           "importOrder": [
             "src/contracts/index.ts",
@@ -2452,6 +3508,63 @@
             "assertPrincipal",
             "validatePolicyConfig",
             "validatePrincipal"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertPrincipal",
+              "kind": "throw",
+              "line": 79
+            },
+            {
+              "in": "validatePolicyConfig",
+              "kind": "throw",
+              "line": 117
+            },
+            {
+              "in": "validatePolicyConfig",
+              "kind": "throw",
+              "line": 123
+            },
+            {
+              "in": "validatePolicyConfig",
+              "kind": "throw",
+              "line": 128
+            },
+            {
+              "in": "validatePolicyConfig",
+              "kind": "throw",
+              "line": 132
+            },
+            {
+              "in": "validatePolicyConfig",
+              "kind": "throw",
+              "line": 135
+            },
+            {
+              "in": "validatePolicyConfig",
+              "kind": "throw",
+              "line": 145
+            },
+            {
+              "in": "validatePolicyConfig",
+              "kind": "throw",
+              "line": 150
+            },
+            {
+              "in": "validatePolicyConfig",
+              "kind": "throw",
+              "line": 154
+            },
+            {
+              "in": "validatePolicyConfig",
+              "kind": "throw",
+              "line": 161
+            },
+            {
+              "in": "validatePolicyConfig",
+              "kind": "throw",
+              "line": 166
+            }
           ],
           "hash": "faab190f716c6f89ed6fbb87f30a00773cf20afb77c4a02a1a7ecea323261d91",
           "importsFiles": [
@@ -2540,6 +3653,111 @@
             "buildSDKOptions",
             "handleTool",
             "mcpCommitGateActive"
+          ],
+          "failurePaths": [
+            {
+              "in": "enforceMcpTrustZone",
+              "kind": "throw",
+              "line": 124
+            },
+            {
+              "kind": "catch",
+              "line": 145
+            },
+            {
+              "in": "buildSDKOptions",
+              "kind": "catch",
+              "line": 208
+            },
+            {
+              "in": "buildSDKOptions",
+              "kind": "throw",
+              "line": 237
+            },
+            {
+              "in": "buildSDKOptions",
+              "kind": "throw",
+              "line": 242
+            },
+            {
+              "in": "buildSDKOptions",
+              "kind": "catch",
+              "line": 250
+            },
+            {
+              "in": "buildSDKOptions",
+              "kind": "throw",
+              "line": 251
+            },
+            {
+              "in": "buildSDKOptions",
+              "kind": "throw",
+              "line": 256
+            },
+            {
+              "in": "buildSDKOptions",
+              "kind": "catch",
+              "line": 263
+            },
+            {
+              "in": "buildSDKOptions",
+              "kind": "throw",
+              "line": 264
+            },
+            {
+              "in": "buildSDKOptions",
+              "kind": "throw",
+              "line": 274
+            },
+            {
+              "in": "getSDK",
+              "kind": "throw",
+              "line": 342
+            },
+            {
+              "in": "handleTool",
+              "kind": "throw",
+              "line": 723
+            },
+            {
+              "in": "handleTool",
+              "kind": "catch",
+              "line": 757
+            },
+            {
+              "in": "handleTool",
+              "kind": "catch",
+              "line": 1070
+            },
+            {
+              "in": "handleTool",
+              "kind": "throw",
+              "line": 1077
+            },
+            {
+              "in": "handleTool",
+              "kind": "throw",
+              "line": 1124
+            },
+            {
+              "in": "handleTool",
+              "kind": "catch",
+              "line": 1181
+            },
+            {
+              "in": "handleTool",
+              "kind": "throw",
+              "line": 1245
+            },
+            {
+              "kind": "catch",
+              "line": 1450
+            },
+            {
+              "in": "isDirectEntry",
+              "kind": "catch",
+              "line": 1510
+            }
           ],
           "hash": "6b4e5eb084e7e2b411898d3bdddbda2fd3a7ee9c0a849300b4259dc84864e8c4",
           "importOrder": [
@@ -2822,6 +4040,93 @@
             "backup",
             "restore"
           ],
+          "failurePaths": [
+            {
+              "in": "backup",
+              "kind": "throw",
+              "line": 214
+            },
+            {
+              "in": "tick",
+              "kind": "catch",
+              "line": 232
+            },
+            {
+              "in": "backup",
+              "kind": "catch",
+              "line": 282
+            },
+            {
+              "in": "backup",
+              "kind": "catch",
+              "line": 293
+            },
+            {
+              "in": "backup",
+              "kind": "catch",
+              "line": 320
+            },
+            {
+              "in": "restore",
+              "kind": "throw",
+              "line": 365
+            },
+            {
+              "in": "tick",
+              "kind": "catch",
+              "line": 392
+            },
+            {
+              "in": "restore",
+              "kind": "throw",
+              "line": 404
+            },
+            {
+              "in": "restore",
+              "kind": "catch",
+              "line": 429
+            },
+            {
+              "in": "restore",
+              "kind": "throw",
+              "line": 445
+            },
+            {
+              "in": "restore",
+              "kind": "catch",
+              "line": 493
+            },
+            {
+              "in": "restore",
+              "kind": "throw",
+              "line": 507
+            },
+            {
+              "in": "restore",
+              "kind": "catch",
+              "line": 527
+            },
+            {
+              "in": "restore",
+              "kind": "throw",
+              "line": 538
+            },
+            {
+              "in": "restore",
+              "kind": "catch",
+              "line": 555
+            },
+            {
+              "in": "restore",
+              "kind": "catch",
+              "line": 590
+            },
+            {
+              "in": "restore",
+              "kind": "catch",
+              "line": 620
+            }
+          ],
           "hash": "54556daaeadc5c4c60edbe140871853d6901ea5d3ebc6edc40ba089a0e42cc02",
           "importOrder": [
             "src/contracts/index.ts",
@@ -2875,6 +4180,73 @@
           "exports": [
             "doctor"
           ],
+          "failurePaths": [
+            {
+              "in": "tick",
+              "kind": "catch",
+              "line": 135
+            },
+            {
+              "in": "doctor",
+              "kind": "catch",
+              "line": 152
+            },
+            {
+              "in": "doctor",
+              "kind": "catch",
+              "line": 180
+            },
+            {
+              "in": "doctor",
+              "kind": "catch",
+              "line": 207
+            },
+            {
+              "in": "doctor",
+              "kind": "catch",
+              "line": 235
+            },
+            {
+              "in": "doctor",
+              "kind": "catch",
+              "line": 291
+            },
+            {
+              "in": "doctor",
+              "kind": "catch",
+              "line": 355
+            },
+            {
+              "in": "doctor",
+              "kind": "catch",
+              "line": 391
+            },
+            {
+              "in": "doctor",
+              "kind": "catch",
+              "line": 473
+            },
+            {
+              "in": "doctor",
+              "kind": "catch",
+              "line": 528
+            },
+            {
+              "in": "doctor",
+              "kind": "catch",
+              "line": 540
+            },
+            {
+              "in": "doctor",
+              "kind": "catch",
+              "line": 553
+            },
+            {
+              "in": "doctor",
+              "kind": "catch",
+              "line": 596
+            }
+          ],
           "hash": "303ba26486097d95bd48cdf2c527d61f645bdbd43d1731505a309b8e952e8c1f",
           "importOrder": [
             "src/contracts/index.ts",
@@ -2923,6 +4295,48 @@
             "checkReceiptsProvenanceValid",
             "sha256Hex"
           ],
+          "failurePaths": [
+            {
+              "in": "checkArtifactContentIntegrity",
+              "kind": "catch",
+              "line": 178
+            },
+            {
+              "in": "checkArtifactContentIntegrity",
+              "kind": "catch",
+              "line": 231
+            },
+            {
+              "in": "checkLedgerIntegrityChain",
+              "kind": "catch",
+              "line": 329
+            },
+            {
+              "in": "checkCommandReceiptBijection",
+              "kind": "catch",
+              "line": 370
+            },
+            {
+              "in": "checkCommandReceiptBijection",
+              "kind": "throw",
+              "line": 373
+            },
+            {
+              "in": "checkCommandReceiptBijection",
+              "kind": "catch",
+              "line": 446
+            },
+            {
+              "in": "checkProvenanceReferencesValid",
+              "kind": "catch",
+              "line": 554
+            },
+            {
+              "in": "checkReceiptsProvenanceValid",
+              "kind": "catch",
+              "line": 633
+            }
+          ],
           "hash": "e67154158b5ea51f35bde76510da356fcd45a65ee6ae8d4f556d8a64e4cc0f7f",
           "importOrder": [
             "src/contracts/index.ts",
@@ -2942,6 +4356,18 @@
           "exports": [
             "checkMigrationStatus",
             "verifySchema"
+          ],
+          "failurePaths": [
+            {
+              "in": "checkMigrationStatus",
+              "kind": "catch",
+              "line": 70
+            },
+            {
+              "in": "verifySchema",
+              "kind": "catch",
+              "line": 113
+            }
           ],
           "hash": "888473409ed3ded1b86fb61dfde24926a4cd31cc1a817fcfb48035704384cec9",
           "importsFiles": [
@@ -2973,6 +4399,38 @@
           "exports": [
             "checkStale",
             "rebuildIndex"
+          ],
+          "failurePaths": [
+            {
+              "in": "tick",
+              "kind": "catch",
+              "line": 122
+            },
+            {
+              "in": "rebuildIndex",
+              "kind": "catch",
+              "line": 137
+            },
+            {
+              "in": "rebuildIndex",
+              "kind": "throw",
+              "line": 173
+            },
+            {
+              "in": "rebuildIndex",
+              "kind": "catch",
+              "line": 199
+            },
+            {
+              "in": "rebuildIndex",
+              "kind": "catch",
+              "line": 224
+            },
+            {
+              "in": "checkStale",
+              "kind": "catch",
+              "line": 292
+            }
           ],
           "hash": "0f0e25437559fbe590dfc6242220aed3c6cbe91e41f5172aeacc0da9718cf765",
           "importOrder": [
@@ -3009,6 +4467,33 @@
         {
           "exports": [
             "verify"
+          ],
+          "failurePaths": [
+            {
+              "in": "tick",
+              "kind": "catch",
+              "line": 125
+            },
+            {
+              "in": "verify",
+              "kind": "catch",
+              "line": 158
+            },
+            {
+              "in": "verify",
+              "kind": "catch",
+              "line": 217
+            },
+            {
+              "in": "verify",
+              "kind": "catch",
+              "line": 297
+            },
+            {
+              "in": "verify",
+              "kind": "catch",
+              "line": 490
+            }
           ],
           "hash": "a1fe6cf4e12e8b2e632d602eed8ac73d7880b33137af8dcb12087993d14d9304",
           "importOrder": [
@@ -3078,6 +4563,13 @@
             "explainPolicyDecision",
             "matchPolicy",
             "sortPoliciesByPriority"
+          ],
+          "failurePaths": [
+            {
+              "in": "evaluatePolicy",
+              "kind": "catch",
+              "line": 191
+            }
           ],
           "hash": "55e0ce443a16f199be3bfc6b3e683de817908cc7b349e1e191db3d94a03907fe",
           "importsFiles": [
@@ -3291,6 +4783,43 @@
           "path": "src/provenance/trace-builder.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "tryResolve",
+              "kind": "catch",
+              "line": 77
+            },
+            {
+              "in": "tryResolve",
+              "kind": "throw",
+              "line": 79
+            },
+            {
+              "in": "resolveFromParsed",
+              "kind": "throw",
+              "line": 87
+            },
+            {
+              "in": "resolveFromParsed",
+              "kind": "throw",
+              "line": 92
+            },
+            {
+              "in": "resolveFromParsed",
+              "kind": "throw",
+              "line": 97
+            },
+            {
+              "in": "resolveFromParsed",
+              "kind": "throw",
+              "line": 102
+            },
+            {
+              "in": "resolveFromParsed",
+              "kind": "throw",
+              "line": 107
+            }
+          ],
           "hash": "8641f4df0511f924aa2908d9bc021025b615aa7b6735abd431c4008af45173f5",
           "importOrder": [
             "src/contracts/index.ts",
@@ -3329,6 +4858,13 @@
           "reexportsOnly": true
         },
         {
+          "failurePaths": [
+            {
+              "in": "buildSnippet",
+              "kind": "catch",
+              "line": 209
+            }
+          ],
           "hash": "a9cf5dab141dd125bc5b692230d9c5ad9e85dcabc710a4471cfc7c6fbe94af50",
           "importOrder": [
             "src/contracts/index.ts",
@@ -3355,6 +4891,13 @@
           "path": "src/retrieval/retrieval-planner.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "getReceipt",
+              "kind": "catch",
+              "line": 788
+            }
+          ],
           "hash": "a47837c3a155891a84c0ddc49df81ad47d4a53b12f421a16989a112151faac54",
           "importOrder": [
             "src/kernel/cluster-kernel.ts",
@@ -3506,6 +5049,13 @@
             "decodeCursor",
             "encodeCursor"
           ],
+          "failurePaths": [
+            {
+              "in": "decodeCursor",
+              "kind": "catch",
+              "line": 37
+            }
+          ],
           "hash": "0dbc3b481368c12bc9f83d39a7af4e941e54e357a7fe8ecdc632a0d38d85a3d7",
           "path": "src/types/page.ts"
         },
@@ -3548,6 +5098,38 @@
             "parseClusterUri",
             "uriForObject"
           ],
+          "failurePaths": [
+            {
+              "in": "parseClusterUri",
+              "kind": "throw",
+              "line": 59
+            },
+            {
+              "in": "parseClusterUri",
+              "kind": "throw",
+              "line": 63
+            },
+            {
+              "in": "parseClusterUri",
+              "kind": "throw",
+              "line": 66
+            },
+            {
+              "in": "formatClusterUri",
+              "kind": "throw",
+              "line": 76
+            },
+            {
+              "in": "formatClusterUri",
+              "kind": "throw",
+              "line": 79
+            },
+            {
+              "in": "uriForObject",
+              "kind": "throw",
+              "line": 105
+            }
+          ],
           "hash": "a044edba49da3f9c5d638be9854ed5ad9d9969353d7fa31167d41c491d7f27c6",
           "path": "src/uri/cluster-uri.ts"
         },
@@ -3565,9 +5147,44 @@
             "cleanupOrphanTmpFiles",
             "sweepContentDirOrphans"
           ],
+          "failurePaths": [
+            {
+              "in": "cleanupOrphanTmpFiles",
+              "kind": "catch",
+              "line": 105
+            },
+            {
+              "in": "cleanupOrphanTmpFiles",
+              "kind": "catch",
+              "line": 124
+            },
+            {
+              "in": "cleanupOrphanTmpFiles",
+              "kind": "catch",
+              "line": 131
+            },
+            {
+              "in": "sweepContentDirOrphans",
+              "kind": "catch",
+              "line": 157
+            },
+            {
+              "in": "sweepContentDirOrphans",
+              "kind": "catch",
+              "line": 171
+            },
+            {
+              "in": "sweepContentDirOrphans",
+              "kind": "catch",
+              "line": 178
+            }
+          ],
           "hash": "9125159d4d6154aa82957908efa7b5db9e0e277e588698fa69eb1dad8875add0",
           "path": "src/util/tmp-paths.ts"
         }
+      ],
+      "frameworks": [
+        "mcp"
       ],
       "globs": [
         "src/**"
@@ -3610,6 +5227,9 @@
       "outsideReads": 98,
       "outsideWrites": 45,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 122,
       "unresolvedSites": 0
     },
@@ -3647,7 +5267,8 @@
             "src/ops/verify.ts",
             "src/sdk/cluster-sdk.ts"
           ],
-          "path": "test/actor-required-regression.test.ts"
+          "path": "test/actor-required-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "504c445e6f46af50558411f14de41fc16e5b4298bcabb67ac7c9a1ad75f11e88",
@@ -3655,14 +5276,20 @@
             "src/adapters/local/index.ts",
             "src/contracts/index.ts"
           ],
-          "path": "test/adapters.test.ts"
+          "path": "test/adapters.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "50d80fb93cf0204744586fdd2c7536a22bbba471c9d92da4521fe431d03437f1",
           "importsFiles": [
             "src/adapters/factory.ts"
           ],
-          "path": "test/backend-env-surfaces.test.ts"
+          "path": "test/backend-env-surfaces.test.ts",
+          "spawns": [
+            "src/cli.ts",
+            "src/mcp/server.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "64766d2be8e4ad57d89ef276550543a65e154b0d0790b45b3fa7cbd2d3b854a4",
@@ -3694,15 +5321,24 @@
             "src/types/entity.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/backend-parity.test.ts"
+          "path": "test/backend-parity.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "796f1f1520bd81909c44f2d741f9205bf89b969c838ac7499f258d1a2d4571ba",
-          "path": "test/cli-docs.test.ts"
+          "names": [
+            "src/cli.ts"
+          ],
+          "path": "test/cli-docs.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "80f301d8bfe2d671bd5ab5466fdc90336e836cbc17b743d2e0de8a3abdd99196",
-          "path": "test/cli.test.ts"
+          "path": "test/cli.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "6ebdb1bee59cab47f4b99521154b0303031421510aa0c5fd437f7f5c521b7774",
@@ -3711,7 +5347,8 @@
             "src/kernel/cluster-kernel.ts",
             "src/ops/rebuild.ts"
           ],
-          "path": "test/command-index-consistency.test.ts"
+          "path": "test/command-index-consistency.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "94d2807e38cedaa6f95dbb26b3a5023965b87be19eccd21347e50ea373c02873",
@@ -3721,7 +5358,8 @@
             "src/kernel/command-queue.ts",
             "src/ops/backup.ts"
           ],
-          "path": "test/command-persistence.test.ts"
+          "path": "test/command-persistence.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9a793054f861bc5ad43423ca7189ef431375dc5bbb1239880cdc69bc9369d342",
@@ -3739,14 +5377,16 @@
             "src/kernel/cluster-kernel.ts",
             "src/ops/rebuild.ts"
           ],
-          "path": "test/content-index.test.ts"
+          "path": "test/content-index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "cc37b1e89c1ebcd894ad08b2d5b1408a9ea3b4cff0e11a86c592175cc9075cdf",
           "importsFiles": [
             "src/contracts/index.ts"
           ],
-          "path": "test/contracts.test.ts"
+          "path": "test/contracts.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0b55883699f79857d951b3453ed20ab4c235645b463e9a451910ab0400962062",
@@ -3760,7 +5400,8 @@
             "src/dashboard/inspector-data.ts",
             "src/kernel/cluster-kernel.ts"
           ],
-          "path": "test/dashboard-command-preview.test.ts"
+          "path": "test/dashboard-command-preview.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ce98f10409e1807f386b87c2aefd84ecbae23f99414168cd710259c8fd282d38",
@@ -3778,7 +5419,8 @@
             "src/dashboard/inspector-data.ts",
             "src/kernel/cluster-kernel.ts"
           ],
-          "path": "test/dashboard-model.test.ts"
+          "path": "test/dashboard-model.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "70b903e7e6bfd671419f2cb07adc53c6876656480f9f577c3c3031875298d250",
@@ -3792,7 +5434,8 @@
             "src/dashboard/ops-model.ts",
             "src/kernel/cluster-kernel.ts"
           ],
-          "path": "test/dashboard-ops.test.ts"
+          "path": "test/dashboard-ops.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1365e6129a7575008387821932d70ba54426a73a22d661344e4629ba3b39ec07",
@@ -3804,7 +5447,8 @@
             "dashboard/lib/apply-redaction.js",
             "src/dashboard/dashboard-model.ts"
           ],
-          "path": "test/dashboard-policy-view.test.ts"
+          "path": "test/dashboard-policy-view.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d4df3931e2344d6438107c2eaf17afc3a8b2d32de12140df91ce3d79d99bbdf6",
@@ -3818,7 +5462,8 @@
             "src/adapters/local/index.ts",
             "src/kernel/cluster-kernel.ts"
           ],
-          "path": "test/dashboard-snapshot.test.ts"
+          "path": "test/dashboard-snapshot.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "bb1f9dd4bb7ec94a2899d6127c56a850e4c121a833c13a00ddfa4e34577f728a",
@@ -3842,14 +5487,16 @@
             "src/types/health.ts",
             "src/types/provenance-event.ts"
           ],
-          "path": "test/doctor-head-truncation-regression.test.ts"
+          "path": "test/doctor-head-truncation-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9a78cea5b345af58c82d7c11ed73a803ed0e6e21caae16e44e204130925c2337",
           "importsFiles": [
             "scripts/dogfood-ingest.ts"
           ],
-          "path": "test/dogfood-mutation.test.ts"
+          "path": "test/dogfood-mutation.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0e2f675395538ff3cb2c5ea7901715a571060b2ffa76f8e464b628bcbcbc3468",
@@ -3873,7 +5520,8 @@
             "src/policy/default-policies.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/dogfood-ops.test.ts"
+          "path": "test/dogfood-ops.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "02923471278e5f7e42b17a7e6c797210d66b6e3f7b52ed37f9c2b8a348ab7511",
@@ -3891,32 +5539,40 @@
             "src/policy/default-policies.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/dogfood-policy.test.ts"
+          "path": "test/dogfood-policy.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "14dec7d67edcef71585394ee48d2c33c31ec35cf06e9946727456032e2ebc97d",
           "importsFiles": [
             "scripts/dogfood-replay.ts"
           ],
-          "path": "test/dogfood-replay.test.ts"
+          "path": "test/dogfood-replay.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f9a5435cd6167e4893f49f0104c997c496a8809e48e00cdcadddc6f7f1b16655",
           "importsFiles": [
             "scripts/dogfood-ingest.ts"
           ],
-          "path": "test/dogfood-retrieval.test.ts"
+          "path": "test/dogfood-retrieval.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8936f7713ebf5b6f3bddff93c85d2c890de6aec2a256f6e91ba108a33b8932cc",
           "importsFiles": [
             "scripts/dogfood-ingest.ts"
           ],
-          "path": "test/dogfood-trace.test.ts"
+          "path": "test/dogfood-trace.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ba9002745aff771534b5bedba3ae58e2de3a04bbc510fead90fa62e0821978bb",
-          "path": "test/exit-code-tables-regression.test.ts"
+          "names": [
+            "src/cli.ts"
+          ],
+          "path": "test/exit-code-tables-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1b75425320c4f7093b22e2e071fa716aa78cdc5fd39fbdabdee9e1557b2db9b3",
@@ -3932,7 +5588,8 @@
             "src/kernel/cluster-kernel.ts",
             "src/kernel/errors.ts"
           ],
-          "path": "test/explain.test.ts"
+          "path": "test/explain.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c6e300682720556cdb1267cb28f76674d632107edd5e67b64c136ea4b82cfa78",
@@ -4012,7 +5669,11 @@
             "src/kernel/cluster-kernel.ts",
             "src/mcp/server.ts"
           ],
-          "path": "test/install-smoke.test.ts"
+          "names": [
+            "src/cli.ts"
+          ],
+          "path": "test/install-smoke.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a27acead5c60084d892d052e94615ab31d7f312aaab71dd28c20e45802fd1109",
@@ -4026,7 +5687,8 @@
             "src/kernel/errors.ts",
             "src/policy/error-formatter.ts"
           ],
-          "path": "test/kernel-errors-contract.test.ts"
+          "path": "test/kernel-errors-contract.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ef4a327266f817e3be6130fe20fcb1690e5cd93683e1a0e92f28ce061317f5fb",
@@ -4042,7 +5704,8 @@
             "src/kernel/cluster-kernel.ts",
             "src/kernel/errors.ts"
           ],
-          "path": "test/kernel.test.ts"
+          "path": "test/kernel.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "33d88f2fe4a59bc5c4861a028d4212155059b358359bf5b614d4739519c690e5",
@@ -4062,7 +5725,8 @@
             "src/ops/backup.ts",
             "src/types/artifact.ts"
           ],
-          "path": "test/path-traversal.test.ts"
+          "path": "test/path-traversal.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e85af6f58b68a9fbdcb40a824aef66f45969bf2496d5c5e5b21fe835c707229e",
@@ -4074,7 +5738,13 @@
             "src/adapters/factory.ts",
             "src/mcp/index.ts"
           ],
-          "path": "test/phase10-proof.test.ts"
+          "names": [
+            "examples/agent-safe-app-db/index.ts",
+            "examples/sdk/policy-redaction.ts",
+            "src/cli.ts"
+          ],
+          "path": "test/phase10-proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "29c4493d4f265dc58525422840be0eb0f22684d5c36742f4bb5cfab98f6841b7",
@@ -4098,7 +5768,8 @@
             "src/policy/default-policies.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/phase11-proof.test.ts"
+          "path": "test/phase11-proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "dd5744368d0f134b2f10d429eb64c10a0cd31be9dc62899748dfdf40e23e39bc",
@@ -4130,7 +5801,8 @@
             "src/sdk/cluster-sdk.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/phase12-proof.test.ts"
+          "path": "test/phase12-proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4408303da22d853502b7d6aa1f0dbfcc8452e7d218438f3141b46e804bf1d51f",
@@ -4150,7 +5822,14 @@
             "src/dashboard/ops-model.ts",
             "src/kernel/cluster-kernel.ts"
           ],
-          "path": "test/phase13-proof.test.ts"
+          "names": [
+            "dashboard/ClusterTruthInspector.jsx",
+            "dashboard/components/CommandPreviewPanel.jsx",
+            "dashboard/components/OperationsPanel.jsx",
+            "dashboard/components/PolicyViewToggle.jsx"
+          ],
+          "path": "test/phase13-proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6be91be6c5bd25d3335ccaea1516eb5de7c66e14471e99a47244eca7eec40a86",
@@ -4178,7 +5857,8 @@
             "src/ops/doctor.ts",
             "src/ops/verify.ts"
           ],
-          "path": "test/phase14-proof.test.ts"
+          "path": "test/phase14-proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f5a74ab6f53ff7c56ad93d35e06e1cfff660614b8347c2eeeca700cea04bd254",
@@ -4198,7 +5878,11 @@
             "src/types/index.ts",
             "src/unsafe.ts"
           ],
-          "path": "test/phase15-proof.test.ts"
+          "names": [
+            "scripts/release-gate.mjs"
+          ],
+          "path": "test/phase15-proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6f9917c21ae9b3831d9c2f25bcd42e7537a71f2c7c44a6fd57493e37e2ce5611",
@@ -4216,7 +5900,8 @@
             "src/resolver/index.ts",
             "src/uri/index.ts"
           ],
-          "path": "test/phase2-proof.test.ts"
+          "path": "test/phase2-proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0de3e5e0f7a4887cfdf66ca4c2975795c04023897cace962a26be9bd539190d4",
@@ -4232,7 +5917,8 @@
             "src/kernel/cluster-kernel.ts",
             "src/resolver/index.ts"
           ],
-          "path": "test/phase3-proof.test.ts"
+          "path": "test/phase3-proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3f83a8241b3067d3ed0d4325f3f4264e4761b1fea83dfbc717313f2abbefa6da",
@@ -4250,7 +5936,8 @@
             "src/provenance/trace-builder.ts",
             "src/types/provenance-graph.ts"
           ],
-          "path": "test/phase4-proof.test.ts"
+          "path": "test/phase4-proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "df4374ef1310586b123655fe4743b1ca251d8d83b4a3c387f7d79ae346cdb4a9",
@@ -4264,7 +5951,8 @@
             "src/contracts/index.ts",
             "src/kernel/cluster-kernel.ts"
           ],
-          "path": "test/phase5-proof.test.ts"
+          "path": "test/phase5-proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "393f4ece989cbce822c9f5a178759b14a17ee01ae497da9e1cb0cf3b84f40295",
@@ -4296,7 +5984,8 @@
             "src/sdk/cluster-sdk.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/phase8-proof.test.ts"
+          "path": "test/phase8-proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "975861b2c95232f61b70f0b477b20703f546c285550c9e72b07836f59ec20cfc",
@@ -4324,7 +6013,8 @@
             "src/ops/receipt-check.ts",
             "src/ops/verify.ts"
           ],
-          "path": "test/phase9-proof.test.ts"
+          "path": "test/phase9-proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2ad291a313ce20d9721109e3e1b364e50a4f7a2065bbc77c241e98495b48f879",
@@ -4332,7 +6022,8 @@
             "src/policy/index.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/policy-engine.test.ts"
+          "path": "test/policy-engine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ac36bf59bded3d21478c67fbce5476419d1ee97da87b557d201e82ea012ba8d6",
@@ -4362,7 +6053,8 @@
             "src/types/entity.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/policy-kernel-scoping.test.ts"
+          "path": "test/policy-kernel-scoping.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1c1507f59eec25b5d33263fd2503cbaea08b73ef27091c60c8d83c84f7216cad",
@@ -4376,7 +6068,8 @@
             "src/kernel/policy-enforced-kernel.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/policy-kernel.test.ts"
+          "path": "test/policy-kernel.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5b3c82b752b61bf8804502233941ae7adceed8dce00129ffae210696317dffd5",
@@ -4394,14 +6087,19 @@
             "src/sdk/cluster-sdk.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/policy-surface.test.ts"
+          "path": "test/policy-surface.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "a77678f039b296199706923826dd7f640a0fa2058d7a7ed73f68106f27e7bb0f",
           "importsFiles": [
             "src/adapters/postgres/postgres-canonical-store.ts"
           ],
-          "path": "test/postgres-canonical-store.test.ts"
+          "path": "test/postgres-canonical-store.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e8cf6b90d2ff6e239c53115afd338ab6b0baa683ba6f1112c84b5cad13c29b42",
@@ -4427,7 +6125,8 @@
             "src/policy/default-policies.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/postgres-kernel-regression.test.ts"
+          "path": "test/postgres-kernel-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2abaa186cf7554dd0b943405f21d792e7f74740bf4025ad0af209e66f39959c9",
@@ -4445,7 +6144,8 @@
             "src/kernel/errors.ts",
             "src/ops/verify.ts"
           ],
-          "path": "test/proof.test.ts"
+          "path": "test/proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "120ef2ac872238cb4a2f71bfa0677df1378f837bcfc7b5e732b457053e7a3e67",
@@ -4459,7 +6159,8 @@
             "src/contracts/index.ts",
             "src/kernel/cluster-kernel.ts"
           ],
-          "path": "test/rebuild.test.ts"
+          "path": "test/rebuild.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e56eb2f80fe80df163ff6640f37a5d28d9807c06e9cfc1264625afc13e91e149",
@@ -4477,7 +6178,8 @@
             "src/integrations/repo-knowledge/ingest.ts",
             "src/kernel/cluster-kernel.ts"
           ],
-          "path": "test/repo-knowledge-dashboard.test.ts"
+          "path": "test/repo-knowledge-dashboard.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5339690df8f97d7e50d3393667da272e48d1a54ada2eb986395c4443a6dcab2b",
@@ -4491,14 +6193,19 @@
             "src/integrations/repo-knowledge/ingest.ts",
             "src/kernel/cluster-kernel.ts"
           ],
-          "path": "test/repo-knowledge-ingest.test.ts"
+          "path": "test/repo-knowledge-ingest.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b5547809c56c80ffa0fe8392ab585dd2c4ad1baf92bb555996acb1a112aa657e",
           "importsFiles": [
             "src/integrations/repo-knowledge/mapping.ts"
           ],
-          "path": "test/repo-knowledge-mapping.test.ts"
+          "names": [
+            "src/kernel/cluster-kernel.ts"
+          ],
+          "path": "test/repo-knowledge-mapping.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0fbdbc74c1cf00f5ccb7260bdc15bbd61d34390b1a271c2c2301dc8961a88b3a",
@@ -4514,7 +6221,8 @@
             "src/integrations/repo-knowledge/update-workflow.ts",
             "src/kernel/cluster-kernel.ts"
           ],
-          "path": "test/repo-knowledge-mutation.test.ts"
+          "path": "test/repo-knowledge-mutation.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4e945051b760a63ff93232a2762e071f3c101f1911852bbfa914a193a5e45b9a",
@@ -4536,7 +6244,8 @@
             "src/ops/doctor.ts",
             "src/ops/verify.ts"
           ],
-          "path": "test/repo-knowledge-ops.test.ts"
+          "path": "test/repo-knowledge-ops.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3dba4e33656835a16c31ed11f7e51539b87616b9cba8462150ac06f03ae23579",
@@ -4552,7 +6261,8 @@
             "src/integrations/repo-knowledge/ingest.ts",
             "src/kernel/cluster-kernel.ts"
           ],
-          "path": "test/repo-knowledge-retrieval.test.ts"
+          "path": "test/repo-knowledge-retrieval.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "08385dd4d84a93e9e76ddc15d5e2877b3ca5f6d91d4dd7bfd48af8cc8bffdd6e",
@@ -4570,7 +6280,8 @@
             "src/resolver/index.ts",
             "src/uri/index.ts"
           ],
-          "path": "test/resolver.test.ts"
+          "path": "test/resolver.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "17098408f922c4f7f07b739375217bb41e69a621dd285b62e0936759dad95048",
@@ -4584,7 +6295,8 @@
             "src/kernel/cluster-kernel.ts",
             "src/ops/backup.ts"
           ],
-          "path": "test/restore-artifacts.test.ts"
+          "path": "test/restore-artifacts.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "294cc71953e19266117d2131fdb3c7b8cbc47d27d8b4887c472a024d1f7c0d34",
@@ -4598,7 +6310,8 @@
             "src/contracts/index.ts",
             "src/kernel/cluster-kernel.ts"
           ],
-          "path": "test/retrieval.test.ts"
+          "path": "test/retrieval.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "fe5d1c52989ec057e017d4aa46e2d1e9d348a3d21d3d9c9ad1aabe908c1fd1a3",
@@ -4606,28 +6319,35 @@
             "src/adapters/postgres/postgres-canonical-store.ts",
             "src/adapters/postgres/schema.ts"
           ],
-          "path": "test/sql-injection.test.ts"
+          "path": "test/sql-injection.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "fb86d3d29615165e28ba8ad1db511365e730fc9074f639d05e1fd4dc79d45421",
           "importsFiles": [
             "src/adapters/sqlite/sqlite-db.ts"
           ],
-          "path": "test/sqlite-driver-presence.test.ts"
+          "path": "test/sqlite-driver-presence.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9f76fc0d6337509cdc8ded7ee24703a1541d39f7198f9cc0f57657db5e4478f4",
           "importsFiles": [
             "scripts/stryker-exclusions.mjs"
           ],
-          "path": "test/stryker-exclusions.test.ts"
+          "names": [
+            "vitest.stryker.config.ts"
+          ],
+          "path": "test/stryker-exclusions.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c3163af2ad1635d0330fa38571faf55fcce3ba0f669657fb3042e000249daf45",
           "importsFiles": [
             "scripts/stryker-trust-check.mjs"
           ],
-          "path": "test/stryker-trust-check.test.ts"
+          "path": "test/stryker-trust-check.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -4664,7 +6384,8 @@
             "src/types/provenance-event.ts",
             "src/types/receipt.ts"
           ],
-          "path": "test/typed-error-regression.test.ts"
+          "path": "test/typed-error-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b7ee05fe3a0724539279881d73cb82ca555091a78ce305b2f2f755b26ce92887",
@@ -4674,14 +6395,16 @@
             "src/resolver/index.ts",
             "src/uri/cluster-uri.ts"
           ],
-          "path": "test/uri-errors-typed-regression.test.ts"
+          "path": "test/uri-errors-typed-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "69cb239f01e94390324347c246cb2f06c6bbca62aa85212b789a60dc9d85c93c",
           "importsFiles": [
             "src/uri/index.ts"
           ],
-          "path": "test/uri.test.ts"
+          "path": "test/uri.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "47d5f48b049a56210beb8b169e8acaf79aa9b718c1f8a3e823410ba9d33bd27f",
@@ -4692,7 +6415,8 @@
             "src/kernel/cluster-kernel.ts",
             "src/ops/verify.ts"
           ],
-          "path": "test/validate-before-write-regression.test.ts"
+          "path": "test/validate-before-write-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7376b7f39893bf42fd425d0d9265bfe4b48737fc36d7ce35ae0ba1b009bb3817",
@@ -4700,7 +6424,8 @@
             "src/kernel/cluster-kernel.ts",
             "src/kernel/policy-enforced-kernel.ts"
           ],
-          "path": "test/verb-parity.test.ts"
+          "path": "test/verb-parity.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "667de979d7fb4391f85050d1dbe061570f546fffb7ace7c6d0635f544a57c8cc",
@@ -4724,7 +6449,8 @@
             "src/types/policy.ts",
             "src/types/provenance-event.ts"
           ],
-          "path": "test/wave-a3-kernel-regression.test.ts"
+          "path": "test/wave-a3-kernel-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "35d036c9ed48b9ed92ee090c0157f18626db9f51e2fe0f9fbd8a8c2d5abb3374",
@@ -4744,7 +6470,8 @@
             "src/ops/verify.ts",
             "src/provenance/trace-builder.ts"
           ],
-          "path": "test/wave-a3-stores-regression.test.ts"
+          "path": "test/wave-a3-stores-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ee295120c5d904aa017626c80c95231e5141804b3f10573305da4b586f596d92",
@@ -4760,7 +6487,11 @@
             "src/sdk/cluster-sdk.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/wave-a3-surface-regression.test.ts"
+          "path": "test/wave-a3-surface-regression.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "3cf89e078909d9d55a574608b509fc063e99592d0398c0e1cd3ca08a335bad0d",
@@ -4794,7 +6525,14 @@
             "src/types/entity.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/wave-a3-tests-regression.test.ts"
+          "names": [
+            "dashboard/components/PolicyViewToggle.jsx"
+          ],
+          "path": "test/wave-a3-tests-regression.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "a91e68cec1f00a4beba03593f28fda6565e6af84f82b3e0517aee6aa2961b682",
@@ -4826,7 +6564,12 @@
             "src/uri/cluster-uri.ts",
             "test/support/source-text.ts"
           ],
-          "path": "test/wave-a4-fixup-regression.test.ts"
+          "names": [
+            "examples/sdk/local-cluster.ts",
+            "examples/sdk/retrieval-bundle.ts"
+          ],
+          "path": "test/wave-a4-fixup-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8a06ab38dd84be5d8c973ffb2b70ec752d5367129e9a413682d2c3463fe8e7cf",
@@ -4836,7 +6579,8 @@
             "src/kernel/command-queue.ts",
             "src/kernel/errors.ts"
           ],
-          "path": "test/wave-a4-kernel-regression.test.ts"
+          "path": "test/wave-a4-kernel-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c20a6c8e0529ad431ca6d6a9d527f1285c19daa570f94ecd6de4ccb7d9cc45d3",
@@ -4858,7 +6602,8 @@
             "src/types/provenance-event.ts",
             "test/support/source-text.ts"
           ],
-          "path": "test/wave-a4-stores-regression.test.ts"
+          "path": "test/wave-a4-stores-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a454a9c6b69a649a7ce236bd4896bc934a53f975b301cc28cca32d49c2e77807",
@@ -4878,18 +6623,30 @@
             "src/mcp/server.ts",
             "src/sdk/cluster-sdk.ts"
           ],
-          "path": "test/wave-a4-surface-regression.test.ts"
+          "path": "test/wave-a4-surface-regression.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "62cf589a9f42e4cff95d8f6dea8a3cfa4cc1633e688fc18c8edaf9a9c3153ee9",
-          "path": "test/wave-a4-tests-regression.test.ts"
+          "path": "test/wave-a4-tests-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "df5599dfd5d788d5361831c35ce8e6940d390cd164dc9263a15560779d0965f7",
           "importsFiles": [
             "src/util/tmp-paths.ts"
           ],
-          "path": "test/wave-b1-cidocs-regression.test.ts"
+          "names": [
+            "scripts/release-gate.mjs"
+          ],
+          "path": "test/wave-b1-cidocs-regression.test.ts",
+          "spawns": [
+            "scripts/doc-drift.mjs"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "12b76c49ac0ba798b6376c732e55e6c1bf7c6026c00a128e6e692a65ca4bd90a",
@@ -4913,7 +6670,16 @@
             "src/util/tmp-paths.ts",
             "test/support/source-text.ts"
           ],
-          "path": "test/wave-b1-fixup-regression.test.ts"
+          "names": [
+            "dashboard/components/OperationsPanel.jsx",
+            "scripts/release-gate.mjs",
+            "src/cli.ts",
+            "src/dashboard/ops-model.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/provenance/trace-builder.ts"
+          ],
+          "path": "test/wave-b1-fixup-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3f29fd8171e0d7f76e446594e4443425df6a7dff38463095b24a461ea1be4a0a",
@@ -4949,7 +6715,8 @@
             "src/types/receipt.ts",
             "src/types/redaction.ts"
           ],
-          "path": "test/wave-b1-kernel-regression.test.ts"
+          "path": "test/wave-b1-kernel-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "dd3323e47bd213cdc1e1921d8d667ffaf38e428e197fd2e5f70ecc03425c2e76",
@@ -4981,7 +6748,8 @@
             "src/types/provenance-event.ts",
             "src/types/receipt.ts"
           ],
-          "path": "test/wave-b1-stores-regression.test.ts"
+          "path": "test/wave-b1-stores-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b180a45f61289bd0c2cbdb9786eaf75e083ab15cff67539f860db092e93e0ef3",
@@ -4997,11 +6765,27 @@
             "src/kernel/cluster-kernel.ts",
             "src/sdk/cluster-sdk.ts"
           ],
-          "path": "test/wave-b1-surface-regression.test.ts"
+          "names": [
+            "dashboard/ClusterTruthInspector.jsx",
+            "dashboard/components/OperationsPanel.jsx",
+            "src/mcp/server.ts"
+          ],
+          "path": "test/wave-b1-surface-regression.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "6f4a972060fac7c7d8150d51e7b50ceb64c5b198260a1eeec328586ca14d902e",
-          "path": "test/wave-c1-cidocs-regression.test.ts"
+          "names": [
+            "scripts/release-gate.mjs"
+          ],
+          "path": "test/wave-c1-cidocs-regression.test.ts",
+          "spawns": [
+            "scripts/jsdoc-gate.mjs"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "27043828be48cdb470001b06e7e3a3785d26db5b8f340600a575f5abf5f9e548",
@@ -5019,7 +6803,23 @@
             "src/policy/error-formatter.ts",
             "src/types/ai-envelope.ts"
           ],
-          "path": "test/wave-c1-fixup-regression.test.ts"
+          "names": [
+            "dashboard/ClusterTruthInspector.jsx",
+            "dashboard/components/CommandPreviewPanel.jsx",
+            "dashboard/lib/state-boundary.jsx",
+            "src/dashboard/ops-model.ts",
+            "src/kernel/cluster-kernel.ts",
+            "src/mcp/server.ts",
+            "src/ops/provenance-check.ts",
+            "src/ops/receipt-check.ts",
+            "src/ops/verify.ts",
+            "src/types/component-state.ts"
+          ],
+          "path": "test/wave-c1-fixup-regression.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "b2aa0e9829da80c8ecfebd7f7dedfa4012484fada4d70510260424d252d64238",
@@ -5043,7 +6843,8 @@
             "src/types/policy.ts",
             "src/types/redaction.ts"
           ],
-          "path": "test/wave-c1-kernel-regression.test.ts"
+          "path": "test/wave-c1-kernel-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3e860f1a35489b8290f85ec3555f67c36bf080b9ab588b469c264ee331d781fd",
@@ -5069,7 +6870,17 @@
             "src/ops/verify.ts",
             "test/support/source-text.ts"
           ],
-          "path": "test/wave-c1-stores-regression.test.ts"
+          "names": [
+            "src/contracts/artifact-store.ts",
+            "src/contracts/canonical-store.ts",
+            "src/contracts/index-store.ts",
+            "src/contracts/ledger-store.ts",
+            "src/ops/migrations.ts",
+            "src/ops/provenance-check.ts",
+            "src/ops/receipt-check.ts"
+          ],
+          "path": "test/wave-c1-stores-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2295b56a95afcf33783a598f733a475665ee878ddd3cbd7658f9e7f75e52ece2",
@@ -5093,7 +6904,18 @@
             "src/mcp/server.ts",
             "src/sdk/cluster-sdk.ts"
           ],
-          "path": "test/wave-c1-surface-regression.test.ts"
+          "names": [
+            "dashboard/ClusterTruthInspector.jsx",
+            "dashboard/components/CommandPreviewPanel.jsx",
+            "dashboard/components/OperationsPanel.jsx",
+            "dashboard/components/PolicyViewToggle.jsx",
+            "dashboard/lib/state-boundary.jsx"
+          ],
+          "path": "test/wave-c1-surface-regression.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "82977db91b8be322ac4662a97d9e240556d0f34d7249a0126693907fa76e2946",
@@ -5107,7 +6929,11 @@
             "src/kernel/cluster-kernel.ts",
             "src/sdk/cluster-sdk.ts"
           ],
-          "path": "test/wave-c1-tests-cli-snapshots.test.ts"
+          "path": "test/wave-c1-tests-cli-snapshots.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "b9665b8d44c8abf5bc741688b69ef81a37709f998599af62f8bf1988f37c0bd3",
@@ -5125,7 +6951,17 @@
             "src/kernel/cluster-kernel.ts",
             "src/kernel/errors.ts"
           ],
-          "path": "test/wave-c1-tests-dashboard-render.test.ts"
+          "names": [
+            "dashboard/components/CommandPreviewPanel.jsx",
+            "dashboard/components/OperationsPanel.jsx",
+            "dashboard/components/PolicyViewToggle.jsx",
+            "dashboard/lib/state-boundary.jsx"
+          ],
+          "path": "test/wave-c1-tests-dashboard-render.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "7d798981fe53c95e4fae75b43b6a64b63a50e4a436513a0dcdcf33c61557cdca",
@@ -5139,14 +6975,23 @@
             "src/kernel/cluster-kernel.ts",
             "src/sdk/cluster-sdk.ts"
           ],
-          "path": "test/wave-c1-tests-exit-codes.test.ts"
+          "path": "test/wave-c1-tests-exit-codes.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "00e488b46356a2afc5a801d5a77ca409c27c43e2a45d51db423afc92ddec1294",
           "importsFiles": [
             "test/support/source-text.ts"
           ],
-          "path": "test/wave-c1-tests-jsdoc-examples.test.ts"
+          "names": [
+            "scripts/doc-drift.mjs",
+            "src/sdk/cluster-sdk.ts"
+          ],
+          "path": "test/wave-c1-tests-jsdoc-examples.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9988d1b3f273b26dd35a4fa59305db977945cea11eb33106b0aa387b14dd46f6",
@@ -5164,14 +7009,19 @@
             "src/mcp/server.ts",
             "src/sdk/cluster-sdk.ts"
           ],
-          "path": "test/wave-c1-tests-mcp-envelope.test.ts"
+          "path": "test/wave-c1-tests-mcp-envelope.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "beefba797c5ab395acfc35524f7b89c1319108604e98e6f6a24dd3a329ce24a7",
           "importsFiles": [
             "src/cli/color-output.ts"
           ],
-          "path": "test/wave-phase-10-cli-color.test.ts"
+          "path": "test/wave-phase-10-cli-color.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "fc45c89e2a9621f5e3c3bb04b01df68146723fe2eed96a2364cc33b800bb4529",
@@ -5189,7 +7039,8 @@
             "src/types/provenance-event.ts",
             "src/types/receipt.ts"
           ],
-          "path": "test/wave-s2a1-contracts-regression.test.ts"
+          "path": "test/wave-s2a1-contracts-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "96d4060e9d42eb30c1ee08d201968833c777706fe56d979421c93d48c235d39a",
@@ -5219,7 +7070,8 @@
             "src/types/provenance-event.ts",
             "src/types/receipt.ts"
           ],
-          "path": "test/wave-s2a1-fixup-ops-regression.test.ts"
+          "path": "test/wave-s2a1-fixup-ops-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "595ec08130ddd9c3dc86ddcf3d2ec6debcca15f78685365982b312cf7061d263",
@@ -5233,7 +7085,12 @@
             "src/index.ts",
             "src/unsafe.ts"
           ],
-          "path": "test/wave-s2a1-fixup-wiring-regression.test.ts"
+          "names": [
+            "src/cli.ts",
+            "src/types/integrity.ts"
+          ],
+          "path": "test/wave-s2a1-fixup-wiring-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3d1fc5c4a4556d0c29a1dc0d044d1e94e804f515c46688437b17ee9ab96bdfc8",
@@ -5244,7 +7101,8 @@
             "src/types/integrity.ts",
             "src/types/provenance-event.ts"
           ],
-          "path": "test/wave-s2a1-kernel-regression.test.ts"
+          "path": "test/wave-s2a1-kernel-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ffb4efdd64f907ba7105968862be2f280cbebb7990e4ecfd294ad9d34324ac31",
@@ -5262,7 +7120,8 @@
             "src/adapters/local/local-ledger-store.ts",
             "src/types/integrity.ts"
           ],
-          "path": "test/wave-s2a1-local-adapters-regression.test.ts"
+          "path": "test/wave-s2a1-local-adapters-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9e2fc244071abab9ab966cdf20dcea053a75e0261f20ed84b5264c7f8fc2480d",
@@ -5296,7 +7155,8 @@
             "src/types/provenance-event.ts",
             "src/types/receipt.ts"
           ],
-          "path": "test/wave-s2a1-ops-regression.test.ts"
+          "path": "test/wave-s2a1-ops-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e69e03ed252a8b6f264f2c096e9d6d415e2242cc1ab5aa5e7e7f6e0c3eefb871",
@@ -5314,7 +7174,11 @@
             "src/kernel/policy-enforced-kernel.ts",
             "src/unsafe.ts"
           ],
-          "path": "test/wave-s2a1-surface-regression.test.ts"
+          "names": [
+            "src/adapters/factory.ts"
+          ],
+          "path": "test/wave-s2a1-surface-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "813135ab804db5aefee3c21767d57f28862abbd1993ccdab44a10b8355fd8280",
@@ -5332,11 +7196,16 @@
             "src/ops/doctor.ts",
             "src/ops/migrations.ts"
           ],
-          "path": "test/wave-s2a2-cli-ops-regression.test.ts"
+          "path": "test/wave-s2a2-cli-ops-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "43b3fb38ac0ff56fd835c86aec63460c204a8e6fa743e99e1f2ff7a82514e89f",
-          "path": "test/wave-s2a2-docs-regression.test.ts"
+          "names": [
+            "site/src/site-config.ts"
+          ],
+          "path": "test/wave-s2a2-docs-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8aab009cc0663ee8709a5bd13736c72f1a3d6b80bb7d3218b43a79c19f3da504",
@@ -5360,11 +7229,20 @@
             "src/sdk/cluster-sdk.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/wave-s2a2-fixup-regression.test.ts"
+          "path": "test/wave-s2a2-fixup-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "47184338047f27b32ab8e7f8cce2841d8c689bd2e2a1b21b397eaaee220a66e0",
-          "path": "test/wave-s2a2-gating-regression.test.ts"
+          "names": [
+            "src/mcp/sanitize.ts",
+            "src/policy/redactor.ts"
+          ],
+          "path": "test/wave-s2a2-gating-regression.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "3469b67f9966cd5b30f83088d59e4a0cc43cdcc264c931423bba434058bc90f1",
@@ -5390,7 +7268,11 @@
             "src/uri/cluster-uri.ts",
             "test/support/source-text.ts"
           ],
-          "path": "test/wave-s2a2-policy-regression.test.ts"
+          "names": [
+            "src/mcp/sanitize.ts"
+          ],
+          "path": "test/wave-s2a2-policy-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "01ab60b1b0ec3332937b74aa74a7dd15306d4971eeceb61a24965a5c679072a1",
@@ -5408,7 +7290,8 @@
             "src/sdk/cluster-sdk.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/wave-s2a2-surfaces-regression.test.ts"
+          "path": "test/wave-s2a2-surfaces-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "36a23fdfdc7e2ff4a6a2b299af7c5bb971b2338e01e10fd0ce28ce95fbe56027",
@@ -5426,14 +7309,16 @@
             "src/ops/rebuild.ts",
             "src/ops/verify.ts"
           ],
-          "path": "test/wave-v1-callsite-regression.test.ts"
+          "path": "test/wave-v1-callsite-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7faccbd0cac3c433c4ed8a0d1ce5afa1ad3bf2ef87e1c96190772f72d785983a",
           "importsFiles": [
             "src/indexing/bm25.ts"
           ],
-          "path": "test/wave-v1-ranker-regression.test.ts"
+          "path": "test/wave-v1-ranker-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "15beefbae857b8192ee0e5d0b6824eb92ef8571347d5bf66bbaba3173eddfc91",
@@ -5449,18 +7334,27 @@
             "src/kernel/cluster-kernel.ts",
             "src/retrieval/retrieval-planner.ts"
           ],
-          "path": "test/wave-v1-retrieval-regression.test.ts"
+          "path": "test/wave-v1-retrieval-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "24cc8554f77a0001b5b45f0dfaa7bfdd66cc8cae88d2a5e12d7637e9b7e0a688",
           "importsFiles": [
             "src/adapters/local/local-index-store.ts"
           ],
-          "path": "test/wave-v1-store-regression.test.ts"
+          "path": "test/wave-v1-store-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5507ce32ae1d0637948d67c1c170cb9313463aa5524460f38fff39bb64bc7079",
-          "path": "test/wave-v1-tests-regression.test.ts"
+          "names": [
+            "scripts/completeness-checks.mjs",
+            "src/contracts/index-store.ts",
+            "src/retrieval/retrieval-planner.ts",
+            "src/types/index-record.ts"
+          ],
+          "path": "test/wave-v1-tests-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a9bebfb9da5bee2152fcfa35b31d7664c94d4c0941669d30246e1015a965ead3",
@@ -5474,7 +7368,8 @@
             "src/contracts/index.ts",
             "src/kernel/cluster-kernel.ts"
           ],
-          "path": "test/wave-v2-kernel-reads.test.ts"
+          "path": "test/wave-v2-kernel-reads.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "08ebb881f9518e44884fbeb8e8ca61952d57099d384cf9e54e08796bd9a6052c",
@@ -5492,7 +7387,11 @@
             "src/sdk/cluster-sdk.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/wave-v2-mcp-cli.test.ts"
+          "path": "test/wave-v2-mcp-cli.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "012007f9807e6840cce8004f88c4206e1c21112d7c7bbb40c0daa611d14b1719",
@@ -5508,7 +7407,8 @@
             "src/kernel/policy-enforced-kernel.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/wave-v2-policy-versions.test.ts"
+          "path": "test/wave-v2-policy-versions.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d609b81925b547a3f2fde29e630f78421a617a3d2c0cba25a5c87ba480c79a8c",
@@ -5517,14 +7417,19 @@
             "src/kernel/cluster-kernel.ts",
             "src/sdk/cluster-sdk.ts"
           ],
-          "path": "test/wave-v2-sdk.test.ts"
+          "path": "test/wave-v2-sdk.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5b2ceb1010c18ba67e2da09dff8ac11f7f6e4ed320eb07cd4f5ca6891e6d20ec",
           "importsFiles": [
             "src/types/page.ts"
           ],
-          "path": "test/wave-v2-tests-regression.test.ts"
+          "names": [
+            "scripts/completeness-checks.mjs"
+          ],
+          "path": "test/wave-v2-tests-regression.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8828083d2681f708292d2e04e7670240c178690c80714573703b92a2b3779016",
@@ -5544,7 +7449,8 @@
             "src/types/provenance-event.ts",
             "src/types/receipt.ts"
           ],
-          "path": "test/wave-v3-cross-adapter-integrity.test.ts"
+          "path": "test/wave-v3-cross-adapter-integrity.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "895bdf2f740d5c49b9c2b315d26e2e68ccdf574449cf7479efd1c86ae3633faf",
@@ -5566,7 +7472,8 @@
             "src/types/artifact.ts",
             "src/types/entity.ts"
           ],
-          "path": "test/wave-v3-sqlite-canonical-artifact.test.ts"
+          "path": "test/wave-v3-sqlite-canonical-artifact.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "fcda922f96b338f290e8ec57cf893d1c1f551a1432d37624244e8bd8889905f9",
@@ -5580,7 +7487,8 @@
             "src/adapters/sqlite/schema.ts",
             "src/adapters/sqlite/sqlite-db.ts"
           ],
-          "path": "test/wave-v3-sqlite-foundation.test.ts"
+          "path": "test/wave-v3-sqlite-foundation.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6743041be72e4cb58cceba4d11cceeeacd06711c1af6de96ca7db47ea6fc4d38",
@@ -5594,7 +7502,8 @@
             "src/adapters/sqlite/index.ts",
             "src/types/entity.ts"
           ],
-          "path": "test/wave-v3-sqlite-hardening.test.ts"
+          "path": "test/wave-v3-sqlite-hardening.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "bb7d33eddba78a26999cbf5370297ec682c91755efc0d8c98c17abf5c87120b5",
@@ -5616,7 +7525,8 @@
             "src/types/integrity.ts",
             "src/types/provenance-event.ts"
           ],
-          "path": "test/wave-v3-sqlite-index-ledger.test.ts"
+          "path": "test/wave-v3-sqlite-index-ledger.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8c9b9ca0cd0d843748c9ecd373dc33671c9e476282d7718156aa2e0789ee702b",
@@ -5646,7 +7556,8 @@
             "src/types/integrity.ts",
             "src/types/provenance-event.ts"
           ],
-          "path": "test/wave-v3-sqlite-parity.test.ts"
+          "path": "test/wave-v3-sqlite-parity.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ae6f08b7ebd1d9bb624b0379944e888f01c365a3e7fef02d359ec023d0e00323",
@@ -5654,7 +7565,11 @@
             "src/cli.ts",
             "src/kernel/errors.ts"
           ],
-          "path": "test/wave-v4-cli-exit-codes.test.ts"
+          "path": "test/wave-v4-cli-exit-codes.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "885b7a22b71e1e039bd174c9956f0c470bbdb750264b35a07fabde153c96262e",
@@ -5666,7 +7581,8 @@
             "src/mcp/server.ts",
             "src/sdk/cluster-sdk.ts"
           ],
-          "path": "test/wave-v4-mcp-gate-iserror.test.ts"
+          "path": "test/wave-v4-mcp-gate-iserror.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7d509640f07008210f95d3fcc189049bc1c3eb1214a3f26f454f180298ba0840",
@@ -5686,7 +7602,8 @@
             "src/sdk/cluster-sdk.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/wave-v5-snippet-redaction.test.ts"
+          "path": "test/wave-v5-snippet-redaction.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "94e014d3a892035fc8c841db1623b13039f692bf4a5a0af49a141e4e40132fbb",
@@ -5698,7 +7615,8 @@
             "src/mcp/index.ts",
             "src/sdk/cluster-sdk.ts"
           ],
-          "path": "test/wave5-parity.test.ts"
+          "path": "test/wave5-parity.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d0137e7dd079931f49188edf06ab46d5edebbe651493367b6fbf897fc9637212",
@@ -5718,7 +7636,8 @@
             "src/sdk/cluster-sdk.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/wave5-redaction.test.ts"
+          "path": "test/wave5-redaction.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2652a48227aaa914e061849bcb80eb58e9fed943d39459fe55430f28c301ea28",
@@ -5742,7 +7661,8 @@
             "src/sdk/cluster-sdk.ts",
             "src/types/policy.ts"
           ],
-          "path": "test/wave6-policy-proof.test.ts"
+          "path": "test/wave6-policy-proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "25498291b4919d5daca4c0008c622d891e805e661a76baeb6b6499a02d06a82e",
@@ -5756,7 +7676,11 @@
             "src/mcp/index.ts",
             "src/sdk/cluster-sdk.ts"
           ],
-          "path": "test/wave6-proof.test.ts"
+          "path": "test/wave6-proof.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -5766,6 +7690,9 @@
       "name": "test",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedNamed": [
         {
@@ -6799,6 +8726,18 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 127,
+          "job": "test",
+          "runner": "vitest",
+          "step": "7",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request"
@@ -8083,6 +10022,18 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 127,
+          "job": "gate",
+          "runner": "vitest",
+          "step": "4",
+          "through": [
+            "scripts/release-gate.mjs"
+          ]
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -9171,6 +11122,18 @@
         "releases": true
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 127,
+          "job": "release",
+          "runner": "vitest",
+          "step": "Test",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -9491,7 +11454,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "fe9bf666d4daa3f214126dd3b29d711e718995e8",
     "tracked": 452

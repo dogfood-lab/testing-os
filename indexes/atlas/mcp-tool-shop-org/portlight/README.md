@@ -1,6 +1,6 @@
 # portlight: how it works
 
-Mapped at 2026-09-26 from commit 3b13579 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 9b02494 by Atlas 1.23.4.
 
 ## What this is
 
@@ -8,18 +8,20 @@ Mapped at 2026-09-26 from commit 3b13579 by Atlas 1.23.0.
 
 ## What changed since 2026-09-25 (7c76f54)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - Release Binaries now also runs src/portlight/app/cli.py, src/portlight/balance/runner.py and src/portlight/stress/invariants.py.
-- Release now also runs src/portlight/app/cli.py, src/portlight/balance/runner.py and src/portlight/stress/invariants.py.
+- And 1 more change to a door.
 - artifacts/balance/balance-report.json is now written by src/portlight/balance/reporting.py.
 - artifacts/balance/balance-report.md is now written by src/portlight/balance/reporting.py.
 - artifacts/stress/stress-report.json is now written by src/portlight/stress/reporting.py.
 - And 1 more new writer or reader of a place.
 - artifacts was authored and is now generated.
-- No file changed.
+- 1 file added and 1 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 8 paths; on a push to main touching 8 paths; or by hand. Runs tests/; checks src/.
+1. **CI.** On a pull request to main touching 9 paths; on a push to main touching 9 paths; or by hand. Runs tests/; checks src/.
 2. **Release.** When a release is published; or by hand. Runs src/portlight/app/cli.py, src/portlight/balance/runner.py, src/portlight/stress/invariants.py and 77 more; checks src/.
 3. **Release Binaries.** When a release is published; or by hand. Runs src/portlight/app/cli.py, src/portlight/balance/runner.py, src/portlight/stress/invariants.py and 77 more; builds src/portlight/__main__.py; checks src/.
 4. **Deploy Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
@@ -30,6 +32,7 @@ Mapped at 2026-09-26 from commit 3b13579 by Atlas 1.23.0.
 
 1. The workflow runs tests/ in tests; it checks src/ in src.
 2. It writes to artifacts/balance/balance-report.json and artifacts/balance/balance-report.md.
+3. It uploads coverage to Codecov.
 
 ## Who reads the results
 

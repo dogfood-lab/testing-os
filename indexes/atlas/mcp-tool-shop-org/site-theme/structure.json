@@ -336,6 +336,18 @@
             "lookupAgent",
             "makeCommandAgent"
           ],
+          "failurePaths": [
+            {
+              "in": "makeCommandAgent",
+              "kind": "throw",
+              "line": 111
+            },
+            {
+              "in": "makeCommandAgent",
+              "kind": "throw",
+              "line": 127
+            }
+          ],
           "hash": "6e72f59ecc1a3c5f8200df6a5fabc61ca57d2fdfcdf384c642c1ddee2f30c961",
           "importsFiles": [
             "cli/front-door/ablation/execute.mjs"
@@ -356,6 +368,18 @@
             "parseSweBenchVerified",
             "syntheticCorpus"
           ],
+          "failurePaths": [
+            {
+              "in": "makeInstance",
+              "kind": "throw",
+              "line": 100
+            },
+            {
+              "in": "asArray",
+              "kind": "catch",
+              "line": 147
+            }
+          ],
           "hash": "fe35a9294353eaa0df6d4dd53ffed00cc772886e14b8aaf6e4b7a4f42dd37383",
           "path": "cli/front-door/ablation/corpus.mjs"
         },
@@ -366,6 +390,13 @@
             "materialize",
             "parseMarkers",
             "readWorkspace"
+          ],
+          "failurePaths": [
+            {
+              "in": "makeCommandExecutor",
+              "kind": "throw",
+              "line": 109
+            }
           ],
           "hash": "ca2ecf176d8e7c2579dec4925b60059ca77b3efbd1a5e52708f7ae367b118126",
           "path": "cli/front-door/ablation/execute.mjs"
@@ -437,12 +468,36 @@
             "definePin",
             "pinHash"
           ],
+          "failurePaths": [
+            {
+              "in": "definePin",
+              "kind": "throw",
+              "line": 86
+            },
+            {
+              "in": "definePin",
+              "kind": "throw",
+              "line": 91
+            },
+            {
+              "in": "assertArmsSharePin",
+              "kind": "throw",
+              "line": 114
+            }
+          ],
           "hash": "77eb00853baeac3e557b1d7a12c6507af2f4e47cc418de7e2ddb2b01d87fc593",
           "path": "cli/front-door/ablation/pin.mjs"
         },
         {
           "exports": [
             "runAblation"
+          ],
+          "failurePaths": [
+            {
+              "in": "runAblation",
+              "kind": "throw",
+              "line": 116
+            }
           ],
           "hash": "40f5ac1cda7f59d8cf9efe0287c4bedf3529ad812a975d2747dfab317a31c9d4",
           "importsFiles": [
@@ -465,12 +520,36 @@
             "probit",
             "wilsonInterval"
           ],
+          "failurePaths": [
+            {
+              "in": "probit",
+              "kind": "throw",
+              "line": 33
+            },
+            {
+              "in": "mcnemarSampleSize",
+              "kind": "throw",
+              "line": 153
+            }
+          ],
           "hash": "25969f935c32a69969c1242adc7717b21727646da19eb68c3ef129cf812dee83",
           "path": "cli/front-door/ablation/stats.mjs"
         },
         {
           "exports": [
             "checkAttestation"
+          ],
+          "failurePaths": [
+            {
+              "in": "gatherEvidence",
+              "kind": "catch",
+              "line": 32
+            },
+            {
+              "in": "gatherEvidence",
+              "kind": "catch",
+              "line": 41
+            }
           ],
           "hash": "ef2859686cdc5ad45469183aab6917c6f8ede1bf53be79b44836915b38ed7b1c",
           "importsFiles": [
@@ -481,6 +560,13 @@
         {
           "exports": [
             "checkDoctest"
+          ],
+          "failurePaths": [
+            {
+              "in": "compileCheck",
+              "kind": "catch",
+              "line": 184
+            }
           ],
           "hash": "006bc94693a2890c288f929191a9289f4df34f6db191d33028b385a6bd79a46e",
           "importsFiles": [
@@ -539,6 +625,13 @@
             "generate",
             "planScaffold"
           ],
+          "failurePaths": [
+            {
+              "in": "readName",
+              "kind": "catch",
+              "line": 23
+            }
+          ],
           "hash": "7208fa15340d49baf59cfba9268f9687ec02a4cf7749e0d028a816792021a316",
           "importsFiles": [
             "cli/front-door/standard.mjs"
@@ -582,6 +675,18 @@
           "exports": [
             "analyzeFeature",
             "checkGherkin"
+          ],
+          "failurePaths": [
+            {
+              "in": "walkFeatures",
+              "kind": "catch",
+              "line": 26
+            },
+            {
+              "in": "checkGherkin",
+              "kind": "catch",
+              "line": 85
+            }
           ],
           "hash": "c260d498bee06a59f5923a7dc38f4daa4ba0017a538933c868f9878e49cd6532",
           "importsFiles": [
@@ -844,6 +949,27 @@
             "handleRequest",
             "startServer"
           ],
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 38
+            },
+            {
+              "in": "handleToolCall",
+              "kind": "catch",
+              "line": 96
+            },
+            {
+              "in": "startServer",
+              "kind": "catch",
+              "line": 161
+            },
+            {
+              "in": "startServer",
+              "kind": "catch",
+              "line": 169
+            }
+          ],
           "hash": "2cf1b8c5f75480a5cbac023818d6884fb80296dedefef7b5cbfb4cb7b6e33512",
           "importsFiles": [
             "cli/front-door/standard.mjs",
@@ -986,6 +1112,18 @@
           "exports": [
             "verify"
           ],
+          "failurePaths": [
+            {
+              "in": "loadFile",
+              "kind": "catch",
+              "line": 26
+            },
+            {
+              "in": "readPkg",
+              "kind": "catch",
+              "line": 36
+            }
+          ],
           "hash": "aada9b90d9dd3c06836785b04f94fd27237e591a900cedb4158e6c094adcd1bc",
           "importsFiles": [
             "cli/front-door/attestation.mjs",
@@ -1060,6 +1198,38 @@
         {
           "entry": "die",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "extractRepoNameFromGit",
+              "kind": "catch",
+              "line": 50
+            },
+            {
+              "in": "shouldTokenReplace",
+              "kind": "catch",
+              "line": 108
+            },
+            {
+              "in": "getAvailableTemplates",
+              "kind": "catch",
+              "line": 178
+            },
+            {
+              "in": "runInit",
+              "kind": "catch",
+              "line": 241
+            },
+            {
+              "in": "readRepoVars",
+              "kind": "catch",
+              "line": 409
+            },
+            {
+              "in": "runHandbook",
+              "kind": "catch",
+              "line": 645
+            }
+          ],
           "hash": "435d126da28a5d345546e53825e2b9dba6325474818cd653f42a9f8af28ff0e0",
           "importsFiles": [
             "cli/front-door/index.mjs"
@@ -1249,6 +1419,9 @@
       "outsideReads": 59,
       "outsideWrites": 21,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 20,
       "unresolvedSites": 0
     },
@@ -1399,6 +1572,13 @@
             "labelForPackageHost",
             "resolvePackageLink"
           ],
+          "failurePaths": [
+            {
+              "in": "resolvePackageLink",
+              "kind": "catch",
+              "line": 48
+            }
+          ],
           "hash": "7f8eddc7899a725b5c9dfaaa6ef4103918e7229fd57e29c526dc4dbdf532074d",
           "path": "lib/package-link.mjs"
         }
@@ -1410,6 +1590,9 @@
       "name": "lib",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 1,
       "unresolvedSites": 0
     },
@@ -2270,15 +2453,28 @@
       "files": [
         {
           "hash": "0cfdeb394e1778112b6b0da3eb6eb4e2928ffeeafa410b654ab450085e5810c8",
-          "path": "tests/base-layout.test.mjs"
+          "names": [
+            "lib/package-link.mjs"
+          ],
+          "path": "tests/base-layout.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "1609bd297041a58ab571ad00a99ae5f7bbfed4b6799b1ecedb1eb9a05ea0dde0",
-          "path": "tests/cli.test.mjs"
+          "names": [
+            "site/src/content.config.ts",
+            "site/src/site-config.ts"
+          ],
+          "path": "tests/cli.test.mjs",
+          "spawns": [
+            "cli/init.mjs"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "21b49b374903c240e3bfaacaa53bf45b1d28e6ab6decfd35639935d2da447334",
-          "path": "tests/features.test.ts"
+          "path": "tests/features.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "51becc02aff08b2d7d2e5a92e62f743a3f02ff8590b44a2d79c56f1e514585ff",
@@ -2287,18 +2483,24 @@
             "cli/front-door/ablation/arms.mjs",
             "cli/front-door/ablation/corpus.mjs"
           ],
-          "path": "tests/front-door/ablation/agent.test.mjs"
+          "path": "tests/front-door/ablation/agent.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "59a0add9fe3862dd25c1c62cfbb19a0b99ba93bc70b03a11877e71971b4dfef0",
           "importsFiles": [
             "cli/front-door/ablation/arms.mjs"
           ],
-          "path": "tests/front-door/ablation/arms.test.mjs"
+          "path": "tests/front-door/ablation/arms.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "996c6d153fc725ea773678a54de48bce60aca796519b02a550a9255c11353cef",
-          "path": "tests/front-door/ablation/cli.test.mjs"
+          "path": "tests/front-door/ablation/cli.test.mjs",
+          "spawns": [
+            "cli/init.mjs"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "bc8879207ec79f87a94c35fdf9903f770e5522914a7eec96e2dc1d64b8934499",
@@ -2306,28 +2508,32 @@
             "cli/front-door/ablation/arms.mjs",
             "cli/front-door/ablation/corpus.mjs"
           ],
-          "path": "tests/front-door/ablation/corpus.test.mjs"
+          "path": "tests/front-door/ablation/corpus.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "aba2f2eb53299eb3ec9bf9fa28d1008102c5c039556fb83e629826af9f333698",
           "importsFiles": [
             "cli/front-door/ablation/execute.mjs"
           ],
-          "path": "tests/front-door/ablation/execute.test.mjs"
+          "path": "tests/front-door/ablation/execute.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "a35b90f59c2c2180c72cdc57947dc73f45cf29f48e3d28791ce7fd83337a7358",
           "importsFiles": [
             "cli/front-door/ablation/grade.mjs"
           ],
-          "path": "tests/front-door/ablation/grade.test.mjs"
+          "path": "tests/front-door/ablation/grade.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "cd59f47fa8a39d9cf2bfc00ba3d0df4eb5db648588d8a01bd2c01648d5197021",
           "importsFiles": [
             "cli/front-door/ablation/pin.mjs"
           ],
-          "path": "tests/front-door/ablation/pin.test.mjs"
+          "path": "tests/front-door/ablation/pin.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "ded90be7289850e97cff9702fb346ff55f28990b72bbf52394870880b1b74f9b",
@@ -2337,46 +2543,59 @@
             "cli/front-door/ablation/pin.mjs",
             "cli/front-door/ablation/runner.mjs"
           ],
-          "path": "tests/front-door/ablation/runner.test.mjs"
+          "path": "tests/front-door/ablation/runner.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "e7976cb48efe76ec916bc026ca201882333aa3798e50f18269ff091f9066c70c",
           "importsFiles": [
             "cli/front-door/ablation/stats.mjs"
           ],
-          "path": "tests/front-door/ablation/stats.test.mjs"
+          "path": "tests/front-door/ablation/stats.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "c90a98d6dbb346b47ad645fd76691fbc5ec8f8e4c3223d74d67e56d787b317ba",
           "importsFiles": [
             "cli/front-door/attestation.mjs"
           ],
-          "path": "tests/front-door/attestation.test.mjs"
+          "path": "tests/front-door/attestation.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "a30871685293a2f62d41b31d1e140e778817f02df1d191f9b1c2e4c48f982a8c",
-          "path": "tests/front-door/cli.test.mjs"
+          "path": "tests/front-door/cli.test.mjs",
+          "spawns": [
+            "cli/init.mjs"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "f834eecb6c2e97b955b016c5aef2ba086b9704a2bfc63228b4b0de9565068202",
           "importsFiles": [
             "cli/front-door/doctest.mjs"
           ],
-          "path": "tests/front-door/doctest.test.mjs"
+          "path": "tests/front-door/doctest.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "394a3f542aac3e21b111b27d60538c6b2af315c212130701707da1e82c654188",
           "importsFiles": [
             "cli/front-door/eval.mjs"
           ],
-          "path": "tests/front-door/eval.test.mjs"
+          "path": "tests/front-door/eval.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "da35d55f503fbdca4cac170e3232ced18cbe969682b39e66c7c1ded9ca6895c3",
           "importsFiles": [
             "cli/front-door/extract.mjs"
           ],
-          "path": "tests/front-door/extract.test.mjs"
+          "names": [
+            "cli/init.mjs"
+          ],
+          "path": "tests/front-door/extract.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "3322d7a20a9696404580e1ce2bf34d69228cc44511945f10b98071cf3743d6bd",
@@ -2384,58 +2603,71 @@
             "cli/front-door/generate.mjs",
             "cli/front-door/index.mjs"
           ],
-          "path": "tests/front-door/generate.test.mjs"
+          "path": "tests/front-door/generate.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "322403745d904576355d5bb0f0ad29e3a89cead406be374230369d36cb985c10",
           "importsFiles": [
             "cli/front-door/gherkin.mjs"
           ],
-          "path": "tests/front-door/gherkin.test.mjs"
+          "path": "tests/front-door/gherkin.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "ed5f41b98abd3a86b7820a2df6195d8054d87db3b6fc6b6d40c8663a5a88d867",
           "importsFiles": [
             "cli/front-door/mcp.mjs"
           ],
-          "path": "tests/front-door/mcp.test.mjs"
+          "path": "tests/front-door/mcp.test.mjs",
+          "spawns": [
+            "cli/init.mjs"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "a86bf4e0455cef2a42ed35de72522210950103312680d81f41a4dec8a0e6e0ca",
           "importsFiles": [
             "cli/front-door/minimality.mjs"
           ],
-          "path": "tests/front-door/minimality.test.mjs"
+          "path": "tests/front-door/minimality.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "8ad6a4fc77cca084897709dfc78fdab43215d7ba7a667edb474f0a99a6805bf7",
           "importsFiles": [
             "cli/front-door/references.mjs"
           ],
-          "path": "tests/front-door/references.test.mjs"
+          "path": "tests/front-door/references.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "77cea1c1d84ddbe070cb51633487808f4e39f2a340163707d14129f5c2f304ce",
-          "path": "tests/helpers.test.mjs"
+          "path": "tests/helpers.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "4dae9ac48ec8621d6e5a97d48916724c1ab6abfcda7489bfbeb3a8a699cccd50",
           "importsFiles": [
             "lib/package-link.mjs"
           ],
-          "path": "tests/package-link.test.mjs"
+          "path": "tests/package-link.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "hash": "29eee2dc99c0c2e4d59586764f378af1bcc192e1a65ee53baa77a0728adbb78e",
-          "path": "tests/policy.test.ts"
+          "path": "tests/policy.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "cfe6f91c3a4df3725f6dd53ec9e97079ee61deb8f876b77a0df1314a967e42b4",
-          "path": "tests/version-alignment.test.ts"
+          "path": "tests/version-alignment.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "895d0c13010824a29c2149be5436745fa22f05cea69ef9c67ccc145b116cabdc",
-          "path": "tests/workspaces.test.ts"
+          "path": "tests/workspaces.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -2445,6 +2677,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     },
@@ -2743,6 +2978,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 27,
+          "job": "lint-and-test",
+          "runner": "vitest",
+          "step": "Test",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -3203,6 +3449,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 27,
+          "job": "publish",
+          "runner": "vitest",
+          "step": "Test",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -3454,7 +3711,7 @@
       "to": "lib"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "c073c90832782d0bc818ab9a322b1f9e9df4932e",
     "tracked": 269

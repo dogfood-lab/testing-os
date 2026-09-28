@@ -1,6 +1,6 @@
 # escape-the-valley: how it works
 
-Mapped at 2026-09-26 from commit 25c0ecc by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit ab1e227 by Atlas 1.23.4.
 
 ## What this is
 
@@ -8,14 +8,15 @@ Mapped at 2026-09-26 from commit 25c0ecc by Atlas 1.23.0.
 
 ## What changed since 2026-09-25 (fa2660c)
 
-- Release now also runs tests/.
-- Release now also checks src/.
-- No file changed.
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
+- Release now also checks src/ and tests/.
+- 1 file added and 1 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 8 paths; on a push touching 8 paths; on a `workflow_call` event; or by hand. Runs tests/; checks src/.
-2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/; checks src/.
+1. **CI.** On a pull request touching 9 paths; on a push touching 9 paths; on a `workflow_call` event; or by hand. Checks src/ and tests/.
+2. **Release.** When a tag matching `v*` is pushed; or by hand. Checks src/ and tests/.
 3. **Release Binaries.** When a release is published; when the workflow Release completes; or by hand. Runs scripts/smoke_test_binary.py; builds src/escape_the_valley/__main__.py.
 4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 5. **Publish to PyPI.** When a release is published; when the workflow Release completes; or by hand. Checks src/escape_the_valley/.
@@ -25,8 +26,9 @@ Mapped at 2026-09-26 from commit 25c0ecc by Atlas 1.23.0.
 
 ## What happens through CI
 
-1. The workflow runs tests/ in tests; it checks src/ in src.
+1. The workflow checks src/ in src and tests/ in tests.
 2. That reaches agents (1 file).
+3. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -34,7 +36,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs tests/, checks src/, reaches agents, publishes to npm, and creates a GitHub release.
+**Release** checks src/ and tests/, reaches agents, uploads coverage to Codecov, publishes to npm, and creates a GitHub release.
 
 **Release Binaries** runs scripts/smoke_test_binary.py, creates a GitHub release, and builds src/escape_the_valley/__main__.py into binaries for darwin-arm64, linux-x64 and win-x64 and uploads them to the release.
 
@@ -95,7 +97,7 @@ People write .github/, assets/, docs/, the repository root and site/; 1 write wi
 
 src/escape_the_valley/cli.py → src/escape_the_valley/save.py → src/escape_the_valley/models.py → src/escape_the_valley/worldgen.py → src/escape_the_valley/gm.py → src/escape_the_valley/voice.py → src/escape_the_valley/step_engine.py
 
-Read those in order to follow one run of trail end to end. This path follows trail (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.
+Read those in order to follow one run of trail end to end. This path follows trail (a command people run, from pyproject.toml) from its entry, since CI only checks code.
 
 ## What this map cannot see
 

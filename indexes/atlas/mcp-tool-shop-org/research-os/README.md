@@ -1,6 +1,6 @@
 # research-os: how it works
 
-Mapped at 2026-09-26 from commit 23a0bc2 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 4bc808e by Atlas 1.23.4.
 
 ## What this is
 
@@ -10,7 +10,7 @@ Mapped at 2026-09-26 from commit 23a0bc2 by Atlas 1.23.0.
 
 - CI now also builds src/calibration/aggregate-receipt-schema.ts, src/calibration/aggregate.ts, src/calibration/receipt-schema.ts and 3 more.
 - Release now also builds src/calibration/aggregate-receipt-schema.ts, src/calibration/aggregate.ts, src/calibration/receipt-schema.ts and 3 more.
-- No file changed.
+- 1 file added and 1 changed content, across 2 parts.
 
 ## What comes in
 
@@ -23,6 +23,7 @@ Mapped at 2026-09-26 from commit 23a0bc2 by Atlas 1.23.0.
 ## What happens through CI
 
 1. The workflow runs 218 files in test; it builds 6 files in src; it checks src/ in src.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -88,7 +89,7 @@ Read those in order to follow one pull request end to end.
 - 101 writes and 223 reads go to the directory the command is run in or a path their caller passes, not to this repository.
 - 47 writes and 142 reads go to a path their caller passes, not to this repository.
 - 2 reads go to the directory the command is run in (README.md), not to this repository.
-- 1 command is built at run time and not followed, and it is in tests.
+- 2 commands are built at run time and not followed, 1 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

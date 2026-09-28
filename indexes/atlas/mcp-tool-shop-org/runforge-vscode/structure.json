@@ -37,7 +37,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "2af8ee11572654a00486d75ea63e3f1c77b07232c721a92711b1aa3cd59f965e",
+          "hash": "033a265d2cc5f87106305494f35905144cc2b6976e4007ea944e80fdc6defeb8",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -315,6 +315,38 @@
             "validate_is_pipeline",
             "write_inspection_json"
           ],
+          "failurePaths": [
+            {
+              "in": "load_artifact",
+              "kind": "raise",
+              "line": 82
+            },
+            {
+              "in": "load_artifact",
+              "kind": "except",
+              "line": 87
+            },
+            {
+              "in": "load_artifact",
+              "kind": "raise",
+              "line": 88
+            },
+            {
+              "in": "validate_is_pipeline",
+              "kind": "raise",
+              "line": 106
+            },
+            {
+              "in": "validate_is_pipeline",
+              "kind": "raise",
+              "line": 112
+            },
+            {
+              "in": "inspect_artifact",
+              "kind": "except",
+              "line": 191
+            }
+          ],
           "hash": "cc1ab8483fad806d26f1e340b900654b3828f8448900b1125c56356d55ae34f1",
           "path": "python/ml_runner/artifact_inspect.py"
         },
@@ -322,6 +354,38 @@
           "exports": [
             "main",
             "run_inspect_artifact_command"
+          ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 161
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 176
+            },
+            {
+              "in": "run_inspect_artifact_command",
+              "kind": "except",
+              "line": 221
+            },
+            {
+              "in": "run_inspect_artifact_command",
+              "kind": "except",
+              "line": 225
+            },
+            {
+              "in": "run_inspect_artifact_command",
+              "kind": "except",
+              "line": 229
+            },
+            {
+              "in": "run_inspect_artifact_command",
+              "kind": "except",
+              "line": 233
+            }
           ],
           "hash": "9628a0511f69bfecafe536bf3465a7aee2f6ab9d6fd2aeafa54eb6b2776ab978",
           "importOrder": [
@@ -348,6 +412,13 @@
             "get_linear_coefficients_schema",
             "get_run_schema",
             "load_schema"
+          ],
+          "failurePaths": [
+            {
+              "in": "load_schema",
+              "kind": "raise",
+              "line": 18
+            }
           ],
           "hash": "33cd33a2f4fd071e440b972b5fab46921775c0b05505bf2089548c315a611b25",
           "path": "python/ml_runner/contracts/__init__.py"
@@ -453,6 +524,63 @@
             "get_valid_params",
             "validate_and_convert"
           ],
+          "failurePaths": [
+            {
+              "in": "_parse_int",
+              "kind": "except",
+              "line": 72
+            },
+            {
+              "in": "_parse_int",
+              "kind": "raise",
+              "line": 73
+            },
+            {
+              "in": "_parse_float",
+              "kind": "except",
+              "line": 80
+            },
+            {
+              "in": "_parse_float",
+              "kind": "raise",
+              "line": 81
+            },
+            {
+              "in": "_parse_bool",
+              "kind": "raise",
+              "line": 92
+            },
+            {
+              "in": "get_valid_params",
+              "kind": "raise",
+              "line": 179
+            },
+            {
+              "in": "validate_and_convert",
+              "kind": "raise",
+              "line": 209
+            },
+            {
+              "in": "validate_and_convert",
+              "kind": "raise",
+              "line": 217
+            },
+            {
+              "in": "validate_and_convert",
+              "kind": "except",
+              "line": 224
+            },
+            {
+              "in": "validate_and_convert",
+              "kind": "raise",
+              "line": 225
+            },
+            {
+              "in": "validate_and_convert",
+              "kind": "raise",
+              "line": 231
+            }
+          ],
           "hash": "b31fe425083ff26fcf00cfc3d14cbd4924d95e818ba099d3520c44d620bb7f71",
           "path": "python/ml_runner/hyperparams.py"
         },
@@ -464,6 +592,28 @@
             "parse_csv_header",
             "run_inspect_command"
           ],
+          "failurePaths": [
+            {
+              "in": "parse_csv_header",
+              "kind": "raise",
+              "line": 52
+            },
+            {
+              "in": "inspect_dataset",
+              "kind": "raise",
+              "line": 87
+            },
+            {
+              "in": "run_inspect_command",
+              "kind": "except",
+              "line": 168
+            },
+            {
+              "in": "run_inspect_command",
+              "kind": "except",
+              "line": 171
+            }
+          ],
           "hash": "cc5edd208d38b58b69c7f78213b900d807dd553695df3bbe17c660c85fdc3b11",
           "path": "python/ml_runner/inspect.py"
         },
@@ -471,6 +621,18 @@
           "exports": [
             "build_interpretability_index",
             "write_interpretability_index"
+          ],
+          "failurePaths": [
+            {
+              "in": "_build_feature_importance_entry",
+              "kind": "except",
+              "line": 136
+            },
+            {
+              "in": "_build_linear_coefficients_entry",
+              "kind": "except",
+              "line": 178
+            }
           ],
           "hash": "b0f68d85a8a737f1d3723b4cb5ab2548d5d2bd7bdf67e25eeb713d9c24709325",
           "importsFiles": [
@@ -497,6 +659,33 @@
             "run_metadata_command",
             "write_run_metadata"
           ],
+          "failurePaths": [
+            {
+              "in": "create_run_metadata",
+              "kind": "raise",
+              "line": 142
+            },
+            {
+              "in": "create_run_metadata",
+              "kind": "raise",
+              "line": 147
+            },
+            {
+              "in": "create_run_metadata",
+              "kind": "raise",
+              "line": 152
+            },
+            {
+              "in": "read_run_metadata",
+              "kind": "raise",
+              "line": 256
+            },
+            {
+              "in": "run_metadata_command",
+              "kind": "except",
+              "line": 328
+            }
+          ],
           "hash": "a7b31e9b4df93a570d2170938fd722f882117df5fe0013bc209ba3117c2835c9",
           "importsFiles": [
             "python/ml_runner/provenance.py"
@@ -517,6 +706,13 @@
             "select_metrics_profile",
             "write_metrics_v1"
           ],
+          "failurePaths": [
+            {
+              "in": "compute_metrics_v1",
+              "kind": "except",
+              "line": 261
+            }
+          ],
           "hash": "c8106cb5d185189b033e658041aebdc4cc051a749a15a3175a84bb4af6c1ea40",
           "path": "python/ml_runner/metrics_v1.py"
         },
@@ -524,6 +720,18 @@
           "exports": [
             "create_estimator",
             "get_model_display_name"
+          ],
+          "failurePaths": [
+            {
+              "in": "create_estimator",
+              "kind": "raise",
+              "line": 62
+            },
+            {
+              "in": "create_estimator",
+              "kind": "raise",
+              "line": 72
+            }
           ],
           "hash": "0d02c66919224593c896206e49a9cace3041105039bb18fcc5dd0203dfdae1a2",
           "path": "python/ml_runner/model_factory.py"
@@ -533,6 +741,28 @@
             "parse_param",
             "parse_params"
           ],
+          "failurePaths": [
+            {
+              "in": "parse_param",
+              "kind": "raise",
+              "line": 37
+            },
+            {
+              "in": "parse_param",
+              "kind": "raise",
+              "line": 45
+            },
+            {
+              "in": "parse_param",
+              "kind": "raise",
+              "line": 48
+            },
+            {
+              "in": "parse_param",
+              "kind": "raise",
+              "line": 52
+            }
+          ],
           "hash": "fb0105bd0b8488e9b97100785908b05315b45de188acbea448becadda7c2dbc9",
           "path": "python/ml_runner/params.py"
         },
@@ -540,6 +770,13 @@
           "exports": [
             "get_all_presets",
             "get_preset"
+          ],
+          "failurePaths": [
+            {
+              "in": "get_preset",
+              "kind": "raise",
+              "line": 61
+            }
           ],
           "hash": "26dd3cf50887cb62134cea2bbe58388a8997f187ea3e66a873f75e1e158800e5",
           "path": "python/ml_runner/presets.py"
@@ -550,6 +787,13 @@
             "get_profile",
             "get_profile_info",
             "list_profiles"
+          ],
+          "failurePaths": [
+            {
+              "in": "get_profile",
+              "kind": "raise",
+              "line": 93
+            }
           ],
           "hash": "225f4b2d7d97a63d1f0eccd47fee06f89e7e93fc23d0d5b537b7e70dd0194267",
           "path": "python/ml_runner/profiles.py"
@@ -566,6 +810,33 @@
             "save_index",
             "write_cancelled_marker",
             "write_index_orphan_marker"
+          ],
+          "failurePaths": [
+            {
+              "in": "_to_workspace_relative",
+              "kind": "except",
+              "line": 91
+            },
+            {
+              "in": "write_index_orphan_marker",
+              "kind": "except",
+              "line": 168
+            },
+            {
+              "in": "write_cancelled_marker",
+              "kind": "except",
+              "line": 271
+            },
+            {
+              "in": "load_index",
+              "kind": "raise",
+              "line": 335
+            },
+            {
+              "in": "load_index",
+              "kind": "except",
+              "line": 336
+            }
           ],
           "hash": "5c6362a4952c07826c06a154dcb32b2ab7d013dd0b0cc1f62a60362da2886939",
           "path": "python/ml_runner/provenance.py"
@@ -587,6 +858,175 @@
             "load_csv",
             "run_training",
             "train_model"
+          ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 49
+            },
+            {
+              "kind": "raise",
+              "line": 90
+            },
+            {
+              "kind": "except",
+              "line": 93
+            },
+            {
+              "in": "emit_event",
+              "kind": "except",
+              "line": 159
+            },
+            {
+              "in": "_cancelling_ticker",
+              "kind": "except",
+              "line": 353
+            },
+            {
+              "in": "_sigterm_handler",
+              "kind": "except",
+              "line": 395
+            },
+            {
+              "in": "_sigterm_handler",
+              "kind": "except",
+              "line": 411
+            },
+            {
+              "in": "_sigterm_handler",
+              "kind": "except",
+              "line": 415
+            },
+            {
+              "in": "_sigterm_handler",
+              "kind": "except",
+              "line": 444
+            },
+            {
+              "in": "_sigterm_handler",
+              "kind": "except",
+              "line": 457
+            },
+            {
+              "in": "_sigterm_handler",
+              "kind": "raise",
+              "line": 458
+            },
+            {
+              "in": "_sigterm_handler",
+              "kind": "except",
+              "line": 459
+            },
+            {
+              "in": "_register_sigterm_handler",
+              "kind": "except",
+              "line": 478
+            },
+            {
+              "in": "_unregister_sigterm_handler",
+              "kind": "except",
+              "line": 497
+            },
+            {
+              "in": "run_training",
+              "kind": "raise",
+              "line": 569
+            },
+            {
+              "in": "run_training",
+              "kind": "raise",
+              "line": 576
+            },
+            {
+              "in": "run_training",
+              "kind": "except",
+              "line": 928
+            },
+            {
+              "in": "run_training",
+              "kind": "except",
+              "line": 970
+            },
+            {
+              "in": "load_csv",
+              "kind": "except",
+              "line": 1031
+            },
+            {
+              "in": "load_csv",
+              "kind": "raise",
+              "line": 1032
+            },
+            {
+              "in": "load_csv",
+              "kind": "raise",
+              "line": 1041
+            },
+            {
+              "in": "load_csv",
+              "kind": "raise",
+              "line": 1056
+            },
+            {
+              "in": "load_csv",
+              "kind": "raise",
+              "line": 1067
+            },
+            {
+              "in": "load_csv",
+              "kind": "raise",
+              "line": 1077
+            },
+            {
+              "in": "load_csv",
+              "kind": "raise",
+              "line": 1105
+            },
+            {
+              "in": "load_csv",
+              "kind": "except",
+              "line": 1131
+            },
+            {
+              "in": "load_csv",
+              "kind": "except",
+              "line": 1136
+            },
+            {
+              "in": "load_csv",
+              "kind": "raise",
+              "line": 1144
+            },
+            {
+              "in": "load_csv",
+              "kind": "raise",
+              "line": 1152
+            },
+            {
+              "in": "load_csv",
+              "kind": "raise",
+              "line": 1161
+            },
+            {
+              "in": "load_csv",
+              "kind": "raise",
+              "line": 1170
+            },
+            {
+              "in": "load_csv",
+              "kind": "raise",
+              "line": 1176
+            },
+            {
+              "in": "_safe_progress",
+              "kind": "except",
+              "line": 1237
+            },
+            {
+              "in": "train_model",
+              "kind": "except",
+              "line": 1250
+            }
           ],
           "hash": "be71e49f521b7a9faf8c7e5fb55679ff9fd498ed5e54e6ef04b91ff1b294f163",
           "importOrder": [
@@ -629,7 +1069,8 @@
             "python/ml_runner/artifact_inspect.py",
             "python/ml_runner/cli.py"
           ],
-          "path": "python/ml_runner/test_artifact_inspect.py"
+          "path": "python/ml_runner/test_artifact_inspect.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -639,22 +1080,29 @@
             "workspace"
           ],
           "hash": "7005f06c69b566d0326986398bcdaa7e7aa8f4723cd75622bc94cd0d5ee182c6",
-          "path": "python/ml_runner/test_cancellation_marker.py"
+          "path": "python/ml_runner/test_cancellation_marker.py",
+          "spawns": [
+            "python/ml_runner/__main__.py"
+          ],
+          "testFramework": "pytest"
         },
         {
           "hash": "4cde78b8b27636c34ba5c8cee0b695f1f6c5e68a6f0b1ea5c5d63d4340d1cf2c",
-          "path": "python/ml_runner/test_csv_actionability.py"
+          "path": "python/ml_runner/test_csv_actionability.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "229045d3dec422fefb99021219c056309e687860fd6db92739235341770aeb23",
-          "path": "python/ml_runner/test_determinism_phase32.py"
+          "path": "python/ml_runner/test_determinism_phase32.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "b2463b0d8e5528807c7901efcba6b77b13a6246b4848506e6d98c0c721919603",
           "importsFiles": [
             "python/ml_runner/diagnostics.py"
           ],
-          "path": "python/ml_runner/test_diagnostics.py"
+          "path": "python/ml_runner/test_diagnostics.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -662,15 +1110,18 @@
             "workspace_run_dir"
           ],
           "hash": "fc1cf783e5409043ab09141d3806f0bcb13713029390963cc7b5e46aa00d191f",
-          "path": "python/ml_runner/test_event_stream.py"
+          "path": "python/ml_runner/test_event_stream.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "e071e5872c1a74dcb1aaff6c03fa25978ca9e93eb8bef2cd918230b90b3b854f",
-          "path": "python/ml_runner/test_feature_importance.py"
+          "path": "python/ml_runner/test_feature_importance.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "b88200db0b9052dfec862567414f29595d0d9f022c189b18ebb28aa6ccf5fbe8",
-          "path": "python/ml_runner/test_hyperparams.py"
+          "path": "python/ml_runner/test_hyperparams.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -678,43 +1129,53 @@
             "workspace"
           ],
           "hash": "b71467d6a679eceba35d6d29baa271af6e9e4e2a46788432f953306bada42fae",
-          "path": "python/ml_runner/test_index_orphan_marker.py"
+          "path": "python/ml_runner/test_index_orphan_marker.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "05f4e2529748d259b444a612ff9c3ed68ee111f2b7b5c5662d1dd8eeadae85d4",
-          "path": "python/ml_runner/test_integration_phase32.py"
+          "path": "python/ml_runner/test_integration_phase32.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "2b8dc3edc3f984dbd465457d7c5f20d7e197bdf8d95b601babc46f80cd0ceb9f",
-          "path": "python/ml_runner/test_interpretability_index.py"
+          "path": "python/ml_runner/test_interpretability_index.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "f4e7272bcb44128d95ef6359925a33422231443fa9ad1e30df65c3bb8920474c",
-          "path": "python/ml_runner/test_linear_coefficients.py"
+          "path": "python/ml_runner/test_linear_coefficients.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "fd4b9141b7bdbbb6e3dd8d506830bc8d297af621cdfe8e7c638d16f7b0431a49",
-          "path": "python/ml_runner/test_metadata_metrics_v1_required.py"
+          "path": "python/ml_runner/test_metadata_metrics_v1_required.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "c6646b28f3b6458c01f8243361cc3979f900c80a2dffaa4f159757d6dbf4b783",
-          "path": "python/ml_runner/test_metadata_phase32.py"
+          "path": "python/ml_runner/test_metadata_phase32.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "aae9ab9cb03b9fddc07fb4c697631e28c2fad74d669ba2f280058c1bfa4479e3",
-          "path": "python/ml_runner/test_metadata_phase33.py"
+          "path": "python/ml_runner/test_metadata_phase33.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "0f545cdd7f6abce80bd3cb22bf78be99fadfe586fa12e911c1b3ab2187599a09",
-          "path": "python/ml_runner/test_metadata_phase35.py"
+          "path": "python/ml_runner/test_metadata_phase35.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "f6e2c2a46ca0ab5c437076f54e7a73f7f42028bfe2638494b45530e777b39e52",
-          "path": "python/ml_runner/test_metrics_v1.py"
+          "path": "python/ml_runner/test_metrics_v1.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "c2687b11c14ccbd56e1eb5c9e8cf26ab938c4919c510b4babb7c35bf3091f93d",
-          "path": "python/ml_runner/test_model_selection.py"
+          "path": "python/ml_runner/test_model_selection.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -734,19 +1195,23 @@
             "python/ml_runner/provenance.py",
             "python/ml_runner/runner.py"
           ],
-          "path": "python/ml_runner/test_observability.py"
+          "path": "python/ml_runner/test_observability.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "914d0fe2f1298365d134174de7293a7fab77d3bfb2447cd885c3a4d638543013",
-          "path": "python/ml_runner/test_params.py"
+          "path": "python/ml_runner/test_params.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "a7f7d88d9ee89467726e732b9f81ac344068236ffacd42cc63867bc0c89be790",
-          "path": "python/ml_runner/test_profiles.py"
+          "path": "python/ml_runner/test_profiles.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "c3fa9f49152248f1e74ca77d9f540f99b2b08003694125f1cd2eee4b56d5f1ac",
-          "path": "python/ml_runner/test_resolver.py"
+          "path": "python/ml_runner/test_resolver.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -762,7 +1227,8 @@
             "python/ml_runner/presets.py",
             "python/ml_runner/runner.py"
           ],
-          "path": "python/ml_runner/test_runner.py"
+          "path": "python/ml_runner/test_runner.py",
+          "testFramework": "pytest"
         }
       ],
       "globs": [
@@ -783,6 +1249,9 @@
       "outsideReads": 11,
       "outsideWrites": 12,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 14,
       "unresolvedSites": 0
     },
@@ -902,6 +1371,10 @@
           "path": "SHIP_GATE.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "f2faf71487ce3e916abcb26e155d6c866111543610c194e65d2fcf0964114ee7",
           "path": "package-lock.json"
         },
@@ -1016,7 +1489,7 @@
     },
     {
       "dynamicReads": 9,
-      "dynamicSpawns": 3,
+      "dynamicSpawns": 2,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [
@@ -1030,6 +1503,18 @@
           "exports": [
             "activate",
             "deactivate"
+          ],
+          "failurePaths": [
+            {
+              "in": "runInspectDataset",
+              "kind": "catch",
+              "line": 249
+            },
+            {
+              "in": "runInspectArtifact",
+              "kind": "catch",
+              "line": 334
+            }
           ],
           "hash": "02a34c1f2e55cb799179fd18a960df030d3a88e8e508915f48a5711753da948f",
           "importsFiles": [
@@ -1252,6 +1737,13 @@
             "openInspectionInEditor",
             "surfaceArtifactInspectOrphanBanner"
           ],
+          "failurePaths": [
+            {
+              "in": "inspectArtifact",
+              "kind": "catch",
+              "line": 120
+            }
+          ],
           "hash": "c0dfcc8a5e00cc62899c0a0a364136344387f34b08b697821f1f6f6f49b9e9e9",
           "importsFiles": [
             "src/observability/orphan-markers.ts",
@@ -1304,6 +1796,23 @@
           "entryRule": 4,
           "exports": [
             "browseRuns"
+          ],
+          "failurePaths": [
+            {
+              "in": "formatRunItem",
+              "kind": "catch",
+              "line": 77
+            },
+            {
+              "in": "formatOrphanItem",
+              "kind": "catch",
+              "line": 106
+            },
+            {
+              "in": "inspectArtifact",
+              "kind": "catch",
+              "line": 265
+            }
           ],
           "hash": "c7def231cd84e20459b3e3fd575f39a66cd45d83931771404872356d6f3a4787",
           "importsFiles": [
@@ -1747,6 +2256,13 @@
             "listCancelledRuns",
             "readCancelledMarker"
           ],
+          "failurePaths": [
+            {
+              "in": "listCancelledRuns",
+              "kind": "catch",
+              "line": 146
+            }
+          ],
           "hash": "2ccfed88b5b0460aa47d875e9293a3215233c31971c01de7ed6a32fedd958f1d",
           "importOrder": [
             "src/types.ts",
@@ -1762,12 +2278,36 @@
           "exports": [
             "parseEventLine"
           ],
+          "failurePaths": [
+            {
+              "in": "parseEventLine",
+              "kind": "catch",
+              "line": 339
+            },
+            {
+              "in": "push",
+              "kind": "catch",
+              "line": 382
+            }
+          ],
           "hash": "6e24ddb3a673e463a65851522b48cdf466305c72f7ee1e75e9d1f43e15909be3",
           "path": "src/observability/event-stream-consumer.ts"
         },
         {
           "exports": [
             "exportLatestRunAsMarkdown"
+          ],
+          "failurePaths": [
+            {
+              "in": "readJsonSafe",
+              "kind": "catch",
+              "line": 38
+            },
+            {
+              "in": "buildMarkdown",
+              "kind": "catch",
+              "line": 197
+            }
           ],
           "hash": "3264bbdcb5d544a309325196fc7a3507bd02f3df19b70bfd72b5939e290e12d4",
           "importOrder": [
@@ -1808,6 +2348,28 @@
             "safeReadIndex",
             "safeReadRunJson"
           ],
+          "failurePaths": [
+            {
+              "in": "exists",
+              "kind": "catch",
+              "line": 72
+            },
+            {
+              "in": "readJsonFile",
+              "kind": "catch",
+              "line": 88
+            },
+            {
+              "in": "readJsonFile",
+              "kind": "catch",
+              "line": 101
+            },
+            {
+              "in": "safeReadIndex",
+              "kind": "catch",
+              "line": 176
+            }
+          ],
           "hash": "d90bd2e40e9a8ad100acf8bc5a4d430131fe3f158cdfe48865894bfafb270419",
           "importsFiles": [
             "src/types.ts"
@@ -1820,6 +2382,13 @@
           "exports": [
             "formatInspectResult",
             "inspectDataset"
+          ],
+          "failurePaths": [
+            {
+              "in": "inspectDataset",
+              "kind": "catch",
+              "line": 58
+            }
           ],
           "hash": "97a9b916d0dbeedded76dd734542153be81a06c3e86a26b802c1b972dcac067b",
           "importsFiles": [
@@ -1885,6 +2454,18 @@
             "loadRunMetadata",
             "openMetadataInEditor",
             "surfaceOrphanBannerIfAny"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadProvenanceIndex",
+              "kind": "catch",
+              "line": 35
+            },
+            {
+              "in": "loadRunMetadata",
+              "kind": "catch",
+              "line": 60
+            }
           ],
           "hash": "3d5a732683d28c19dda93fbfa8c37f714c86c2c909d4731dc820148a97b982cd",
           "importsFiles": [
@@ -2005,6 +2586,13 @@
             "humanizeOrphanRecovery",
             "listOrphanedRuns"
           ],
+          "failurePaths": [
+            {
+              "in": "listOrphanedRuns",
+              "kind": "catch",
+              "line": 108
+            }
+          ],
           "hash": "ca17fa2be061df08c8dd777bf6e5eff02d13af25c48924cf0341eaea56462945",
           "importOrder": [
             "src/types.ts",
@@ -2020,6 +2608,28 @@
           "exports": [
             "recoverIndex",
             "recoverIndexForWorkspace"
+          ],
+          "failurePaths": [
+            {
+              "in": "recoverIndexForWorkspace",
+              "kind": "catch",
+              "line": 98
+            },
+            {
+              "in": "recoverIndexForWorkspace",
+              "kind": "catch",
+              "line": 246
+            },
+            {
+              "in": "recoverIndex",
+              "kind": "catch",
+              "line": 413
+            },
+            {
+              "in": "recoverIndex",
+              "kind": "catch",
+              "line": 459
+            }
           ],
           "hash": "98b3bc9dfb215f0ef8be17b54aac46f15ee158d6876cf568cf8404bd817db9e0",
           "importOrder": [
@@ -2079,6 +2689,13 @@
           "exports": [
             "renderRunSummary"
           ],
+          "failurePaths": [
+            {
+              "in": "formatDate",
+              "kind": "catch",
+              "line": 103
+            }
+          ],
           "hash": "6bf388d73a3b38f4c0e452a6047c883afe829aafeac870b1b5ac922adca5cb52",
           "importOrder": [
             "src/types.ts",
@@ -2100,6 +2717,33 @@
             "getPreset",
             "hasPreset",
             "validateRegistry"
+          ],
+          "failurePaths": [
+            {
+              "in": "getPreset",
+              "kind": "throw",
+              "line": 26
+            },
+            {
+              "in": "validateRegistry",
+              "kind": "throw",
+              "line": 52
+            },
+            {
+              "in": "validateRegistry",
+              "kind": "throw",
+              "line": 56
+            },
+            {
+              "in": "validateRegistry",
+              "kind": "throw",
+              "line": 59
+            },
+            {
+              "in": "validateRegistry",
+              "kind": "throw",
+              "line": 62
+            }
           ],
           "hash": "4569952b2fcc8e257b7eb7fc171a276e7cf9d895b04f3f487cf9cd4348c9981d",
           "importOrder": [
@@ -2124,6 +2768,18 @@
             "formatBytes",
             "getCpuFallbackMessage",
             "selectDevice"
+          ],
+          "failurePaths": [
+            {
+              "in": "probeTorch",
+              "kind": "catch",
+              "line": 103
+            },
+            {
+              "in": "probeNvidiaSmi",
+              "kind": "catch",
+              "line": 166
+            }
           ],
           "hash": "17a2c17250105979eacc10235bebfe7c940eaa67ee232340f32111146f43c4fb",
           "importsFiles": [
@@ -2156,6 +2812,68 @@
             "isRunning",
             "killActiveRun",
             "setExtensionPath"
+          ],
+          "failurePaths": [
+            {
+              "in": "fileExists",
+              "kind": "catch",
+              "line": 290
+            },
+            {
+              "in": "executeRun",
+              "kind": "catch",
+              "line": 481
+            },
+            {
+              "in": "onExit",
+              "kind": "catch",
+              "line": 747
+            },
+            {
+              "in": "executeRun",
+              "kind": "catch",
+              "line": 804
+            },
+            {
+              "in": "cancelActiveRun",
+              "kind": "catch",
+              "line": 853
+            },
+            {
+              "in": "cancelActiveRun",
+              "kind": "catch",
+              "line": 869
+            },
+            {
+              "in": "killActiveRun",
+              "kind": "catch",
+              "line": 903
+            },
+            {
+              "in": "killActiveRun",
+              "kind": "catch",
+              "line": 912
+            },
+            {
+              "in": "killRunOnOom",
+              "kind": "catch",
+              "line": 944
+            },
+            {
+              "in": "handleRunComplete",
+              "kind": "catch",
+              "line": 1009
+            },
+            {
+              "in": "handleRunComplete",
+              "kind": "catch",
+              "line": 1021
+            },
+            {
+              "in": "handleRunComplete",
+              "kind": "catch",
+              "line": 1030
+            }
           ],
           "hash": "ac7600877a21a651649d2e50a6590a39c1a9824107093a95c8bb986d35a49fda",
           "importsFiles": [
@@ -2438,6 +3156,23 @@
             "getRecentRuns",
             "readIndex"
           ],
+          "failurePaths": [
+            {
+              "in": "readIndex",
+              "kind": "throw",
+              "line": 42
+            },
+            {
+              "in": "readIndex",
+              "kind": "catch",
+              "line": 46
+            },
+            {
+              "in": "readIndex",
+              "kind": "throw",
+              "line": 51
+            }
+          ],
           "hash": "6b773673ecba8a611551a2e86adbe6c71ac83cb778df0f7f356bfdc33f9517a9",
           "importsFiles": [
             "src/types.ts"
@@ -2457,12 +3192,22 @@
             "writeRequest",
             "writeResult"
           ],
+          "failurePaths": [
+            {
+              "in": "readMetrics",
+              "kind": "catch",
+              "line": 147
+            }
+          ],
           "hash": "b13cd69d013d0877e570760bf2f8c7d49aebd97509285635c58537f29bedf8b8",
           "importsFiles": [
             "src/types.ts"
           ],
           "path": "src/workspace/run-folder.ts"
         }
+      ],
+      "frameworks": [
+        "vscode"
       ],
       "globs": [
         "src/**"
@@ -2482,13 +3227,16 @@
       "outsideReads": 20,
       "outsideWrites": 9,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 32,
       "unresolvedSites": 0
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 5,
-      "dynamicSpawnsInTests": 5,
+      "dynamicSpawns": 2,
+      "dynamicSpawnsInTests": 2,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
@@ -2498,7 +3246,8 @@
           "importsFiles": [
             "src/observability/browse-runs-command.ts"
           ],
-          "path": "test/browse-runs.test.ts"
+          "path": "test/browse-runs.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ce314e8b7647ddab666a077c2ebce0f737a24ea8cb28b42cd80456b1801ef2c4",
@@ -2512,7 +3261,8 @@
             "src/runner/run-manager.ts",
             "src/types.ts"
           ],
-          "path": "test/cancel-state-machine.test.ts"
+          "path": "test/cancel-state-machine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "429f199a4592e3dbe1688d97153e0f10e9be616f13e9df21c69cc11368ee3e96",
@@ -2520,7 +3270,8 @@
             "src/observability/cancelled-marker-reader.ts",
             "src/types.ts"
           ],
-          "path": "test/cancelled-marker-reader.test.ts"
+          "path": "test/cancelled-marker-reader.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "cce92b52cabd267e377394cdffe08addfc9218d24ca7774b8648a80edcfad4c2",
@@ -2528,21 +3279,24 @@
             "src/runner/python-runner.ts",
             "src/types.ts"
           ],
-          "path": "test/csv-edge-cases.test.ts"
+          "path": "test/csv-edge-cases.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "39ad361df8b3209624288fe6e1f4df2302fc75f8031b18682dcbefb9024a1e2f",
           "importsFiles": [
             "src/runner/run-manager.ts"
           ],
-          "path": "test/dataset-path-setting.test.ts"
+          "path": "test/dataset-path-setting.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "356f45da49b52c074381cf9c9957fa8b85ce4c8871ff7d3f34a2b138a06a74ff",
           "importsFiles": [
             "src/observability/event-stream-consumer.ts"
           ],
-          "path": "test/event-stream-consumer.test.ts"
+          "path": "test/event-stream-consumer.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3a8aaff12bd75453008a278cd231452e181c05069dc99e460911519c02533b84",
@@ -2554,7 +3308,8 @@
             "src/observability/export-markdown-command.ts",
             "src/observability/render/escape.ts"
           ],
-          "path": "test/export-markdown.test.ts"
+          "path": "test/export-markdown.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2618,21 +3373,24 @@
             "src/observability/linear-coefficients-command.ts",
             "src/observability/metrics-v1-command.ts"
           ],
-          "path": "test/formatters.test.ts"
+          "path": "test/formatters.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c64957a5c216a514f90a24342edbcdecb2d72ee8672f4033bd63ca72cf58acae",
           "importsFiles": [
             "src/observability/fs-safe.ts"
           ],
-          "path": "test/fs-safe.test.ts"
+          "path": "test/fs-safe.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6a6af71923d3ee68fd80a6ba3db6c558ec3159242095f1549afbe023848511f3",
           "importsFiles": [
             "src/runner/gpu-probe.ts"
           ],
-          "path": "test/gpu-gating.test.ts"
+          "path": "test/gpu-gating.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "392f69b556a1a95617ca2607a8b4cdd68ad5f4fbb42787e0f35e9cbe529698c3",
@@ -2644,7 +3402,8 @@
             "src/types.ts",
             "src/workspace/index-manager.ts"
           ],
-          "path": "test/index.test.ts"
+          "path": "test/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2426f3a099f47c74589fad443921c391e03650e5f28e570fe3d320a2691dec15",
@@ -2672,21 +3431,24 @@
             "src/observability/render/run-summary.ts",
             "src/types.ts"
           ],
-          "path": "test/markdown-snapshots.test.ts"
+          "path": "test/markdown-snapshots.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "903d914961b5d038790e0ccfba875fe31102e265bdcd9504976d551c7682b22b",
           "importsFiles": [
             "src/observability/metadata-command.ts"
           ],
-          "path": "test/metadata.test.ts"
+          "path": "test/metadata.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "470ecb544eb110052445e0126457a5491a3c332d3f269e0a7a52805524975eb4",
           "importsFiles": [
             "src/notifications.ts"
           ],
-          "path": "test/notifications.test.ts"
+          "path": "test/notifications.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "edaf28a7db09cd1dab024ad9f8bf646fcb4fe91754f5c5c66cfc6e064d4306fc",
@@ -2712,7 +3474,8 @@
             "src/observability/orphan-markers.ts",
             "src/types.ts"
           ],
-          "path": "test/observability-orphan-banner.test.ts"
+          "path": "test/observability-orphan-banner.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b7d4942da58f3852664ac8bf965014a161fae809a96ca278d5412eb7228de1f7",
@@ -2720,14 +3483,16 @@
             "src/observability/orphan-markers.ts",
             "src/types.ts"
           ],
-          "path": "test/orphan-markers.test.ts"
+          "path": "test/orphan-markers.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "59249b53d7cc1df4b85ca067499a35e9e62128c33d921dee3be4d9945f1fcb1c",
           "importsFiles": [
             "src/presets/registry.ts"
           ],
-          "path": "test/presets.test.ts"
+          "path": "test/presets.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "bd40e2837896c87718ce976dec655c51b9cb0f3d28868b0bbabd05cecfac76b2",
@@ -2735,7 +3500,8 @@
             "src/runner/python-runner.ts",
             "src/types.ts"
           ],
-          "path": "test/python-runner.boundary.test.ts"
+          "path": "test/python-runner.boundary.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1a17af9af23425df228cf51f84e33bfb9a0a4fe321bb94cc40f41d25c019c11a",
@@ -2743,7 +3509,8 @@
             "src/observability/recover-index-command.ts",
             "src/types.ts"
           ],
-          "path": "test/recover-index-command.test.ts"
+          "path": "test/recover-index-command.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b608dafc36140499d2dd6fff8999e05be2727c3d16cb61640ee0d3943bf13ed8",
@@ -2751,7 +3518,8 @@
             "src/observability/render/recovery-report-summary.ts",
             "src/types.ts"
           ],
-          "path": "test/recovery-report-render.test.ts"
+          "path": "test/recovery-report-render.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7caa1929a88c0ebf9d5dd6584bccba490baec9c88c633d1ccbac046e61243632",
@@ -2763,7 +3531,8 @@
             "src/runner/python-runner.ts",
             "src/types.ts"
           ],
-          "path": "test/regression-coord-003.test.ts"
+          "path": "test/regression-coord-003.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f8b8ff9a627be7f6afcd6c93016579b88f44e641ff0326b1fc9a6be3471a326e",
@@ -2779,7 +3548,8 @@
             "src/workspace/index-manager.ts",
             "src/workspace/run-folder.ts"
           ],
-          "path": "test/regression-coord-008.test.ts"
+          "path": "test/regression-coord-008.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1a3fdeb8e2ae476148133f146b3677e9c94b098745ed4a4db10208fe57273119",
@@ -2793,7 +3563,8 @@
             "src/types.ts",
             "src/workspace/index-manager.ts"
           ],
-          "path": "test/regression-coord-010.test.ts"
+          "path": "test/regression-coord-010.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5e33eacbeac4bb85dddf684e5ce01549b2b21bbadeff0c5ec95b30a6e36c946f",
@@ -2807,7 +3578,8 @@
             "src/runner/python-runner.ts",
             "src/types.ts"
           ],
-          "path": "test/regression-iter-5a.test.ts"
+          "path": "test/regression-iter-5a.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "05863f2843e32e139be610db5b4a5b5d62695c061e98bba511b163fe15d13760",
@@ -2815,7 +3587,11 @@
             "src/runner/python-runner.ts",
             "src/types.ts"
           ],
-          "path": "test/regression-iter-5b.test.ts"
+          "names": [
+            "src/runner/gpu-probe.ts"
+          ],
+          "path": "test/regression-iter-5b.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "870b53c69fac950f4fb75e50a5e56fb12916928c068707fa08fa64b9b2c6ebd3",
@@ -2833,32 +3609,37 @@
             "src/observability/render/run-summary.ts",
             "src/types.ts"
           ],
-          "path": "test/renderers.test.ts"
+          "path": "test/renderers.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8ac97f912b09ee00ce9491a99005c775ca45414c50bb02ccb8292a0baa524c8c",
           "importsFiles": [
             "src/workspace/run-folder.ts"
           ],
-          "path": "test/run-id.test.ts"
+          "path": "test/run-id.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "dfaf7138c45fb5a982aec5fd9eb08d5f06fcd7b7fe17cbab9f13559fdf1b15bd",
           "importsFiles": [
             "src/runner/run-manager.ts"
           ],
-          "path": "test/run-manager-pure.test.ts"
+          "path": "test/run-manager-pure.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7899ad7d925ddc85d4c5a85bda2d8daa7b547903056788fbb0176856ba4d972f",
-          "path": "test/schema-validation.test.ts"
+          "path": "test/schema-validation.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b778ba613844e9eaafc86baba63dd62f7f4998d1fc3f7418ece8308c8c0281d2",
           "importsFiles": [
             "src/types.ts"
           ],
-          "path": "test/schema.test.ts"
+          "path": "test/schema.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9c05f894869df4914cc163f4559945c800208951367c75de43d106e4f0c7b833",
@@ -2870,7 +3651,8 @@
             "src/observability/event-stream-consumer.ts",
             "src/status-bar.ts"
           ],
-          "path": "test/status-bar.test.ts"
+          "path": "test/status-bar.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c61a777cb50cee7732cafd9089af9131d52023072ab0e488823ac95e7d08b2bf",
@@ -2886,18 +3668,24 @@
             "src/runner/run-manager.ts",
             "src/types.ts"
           ],
-          "path": "test/subprocess-boundary.integration.test.ts"
+          "path": "test/subprocess-boundary.integration.test.ts",
+          "spawns": [
+            "python/ml_runner/__main__.py"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "51e57ed7245d682f824bcb578d67d414665a2794266d8d0469e0b674bbbee705",
-          "path": "test/version.test.ts"
+          "path": "test/version.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9d347d100ba768dc716035271f0d8acb493c734ae84c671a943a9f84a2fe084d",
           "importsFiles": [
             "src/runner/run-manager.ts"
           ],
-          "path": "test/workspace-trust-guard.test.ts"
+          "path": "test/workspace-trust-guard.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -2907,6 +3695,9 @@
       "name": "test",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -3013,7 +3804,8 @@
       "mentions": [],
       "name": "CI",
       "permissions": [
-        "contents:read"
+        "contents:read",
+        "id-token:write"
       ],
       "pushes": false,
       "reach": [
@@ -3310,6 +4102,35 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 34,
+          "job": "quality-gates",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "npm test"
+          ]
+        },
+        {
+          "config": "vitest.config.ts",
+          "coverage": true,
+          "files": 34,
+          "job": "quality-gates",
+          "junit": true,
+          "runner": "vitest",
+          "step": "Run tests with coverage"
+        },
+        {
+          "job": "extension-host-smoke",
+          "runner": "vscode-test",
+          "step": "Run Extension Host smoke tests",
+          "through": [
+            "npm run test:smoke"
+          ]
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -3319,6 +4140,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "python/**",
@@ -3339,6 +4161,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "python/**",
@@ -3357,8 +4180,10 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
         "actions/setup-python",
+        "actions/upload-artifact",
         "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
@@ -3858,6 +4683,18 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 34,
+          "job": "build",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -3946,10 +4783,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
-    "commit": "da77f7a248e0f423f301ca3889d98de40845ee2f",
-    "tracked": 229
+    "commit": "c9c6406333bdc9b45df57da437115dce4aba0f2e",
+    "tracked": 230
   },
   "landings": [
     {
@@ -4241,5 +5078,30 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 64,
+  "testsNotRun": [
+    "python/ml_runner/test_artifact_inspect.py",
+    "python/ml_runner/test_cancellation_marker.py",
+    "python/ml_runner/test_csv_actionability.py",
+    "python/ml_runner/test_determinism_phase32.py",
+    "python/ml_runner/test_diagnostics.py",
+    "python/ml_runner/test_event_stream.py",
+    "python/ml_runner/test_feature_importance.py",
+    "python/ml_runner/test_hyperparams.py",
+    "python/ml_runner/test_index_orphan_marker.py",
+    "python/ml_runner/test_integration_phase32.py",
+    "python/ml_runner/test_interpretability_index.py",
+    "python/ml_runner/test_linear_coefficients.py",
+    "python/ml_runner/test_metadata_metrics_v1_required.py",
+    "python/ml_runner/test_metadata_phase32.py",
+    "python/ml_runner/test_metadata_phase33.py",
+    "python/ml_runner/test_metadata_phase35.py",
+    "python/ml_runner/test_metrics_v1.py",
+    "python/ml_runner/test_model_selection.py",
+    "python/ml_runner/test_observability.py",
+    "python/ml_runner/test_params.py",
+    "python/ml_runner/test_profiles.py",
+    "python/ml_runner/test_resolver.py",
+    "python/ml_runner/test_runner.py"
+  ],
   "unassigned": []
 }

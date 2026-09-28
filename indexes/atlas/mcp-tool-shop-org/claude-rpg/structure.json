@@ -1092,6 +1092,12 @@
         {
           "entry": "bold",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 56
+            }
+          ],
           "hash": "7c7ffc3c4f895df07a080b2750a96688c67465c18c32b134168d32d01e78489f",
           "importsFiles": [
             "scripts/check-coverage-utils.mjs"
@@ -1107,6 +1113,9 @@
       "name": "scripts",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 1,
       "unresolvedSites": 0
     },
@@ -1250,12 +1259,20 @@
             "src/game/debug-logger.ts",
             "src/llm/claude-errors.ts"
           ],
-          "path": "src/action-interpreter.test.ts"
+          "path": "src/action-interpreter.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "findEntityByName",
             "interpretAction"
+          ],
+          "failurePaths": [
+            {
+              "in": "interpretAction",
+              "kind": "catch",
+              "line": 94
+            }
           ],
           "hash": "0033930ee68962e41dbb83ced9df0bf1c0368c9d52a63a6f22ae46c26c3de231",
           "importOrder": [
@@ -1278,11 +1295,74 @@
             "src/cli/engine-state-validator.ts",
             "src/cli/exit-autosave.ts"
           ],
-          "path": "src/bin-defenses.test.ts"
+          "path": "src/bin-defenses.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "main",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "restoreEngineStateFromSave",
+              "kind": "throw",
+              "line": 426
+            },
+            {
+              "in": "runLoad",
+              "kind": "catch",
+              "line": 540
+            },
+            {
+              "in": "runLoad",
+              "kind": "throw",
+              "line": 549
+            },
+            {
+              "in": "runLoad",
+              "kind": "catch",
+              "line": 574
+            },
+            {
+              "in": "runLoad",
+              "kind": "catch",
+              "line": 604
+            },
+            {
+              "in": "runLoad",
+              "kind": "catch",
+              "line": 628
+            },
+            {
+              "in": "onNarrationChunk",
+              "kind": "catch",
+              "line": 1010
+            },
+            {
+              "in": "runGameLoop",
+              "kind": "catch",
+              "line": 1122
+            },
+            {
+              "in": "runGameLoop",
+              "kind": "catch",
+              "line": 1179
+            },
+            {
+              "in": "runGameLoop",
+              "kind": "throw",
+              "line": 1208
+            },
+            {
+              "in": "runGameLoop",
+              "kind": "catch",
+              "line": 1245
+            },
+            {
+              "in": "runGameLoop",
+              "kind": "catch",
+              "line": 1359
+            }
+          ],
           "hash": "e6f4d796216b73bfaf4007ddac86b2ce338cb6b8ee201205f655d4553930e9fc",
           "importsFiles": [
             "src/character/builder.ts",
@@ -2827,7 +2907,8 @@
             "src/character/packs.ts",
             "src/character/prompts.ts"
           ],
-          "path": "src/character/builder.test.ts"
+          "path": "src/character/builder.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "buildCharacter",
@@ -2835,6 +2916,28 @@
           "exports": [
             "buildCharacter",
             "buildDifficultyGroups"
+          ],
+          "failurePaths": [
+            {
+              "in": "buildCharacter",
+              "kind": "catch",
+              "line": 249
+            },
+            {
+              "in": "buildCharacter",
+              "kind": "throw",
+              "line": 250
+            },
+            {
+              "in": "buildCharacter",
+              "kind": "catch",
+              "line": 323
+            },
+            {
+              "in": "buildCharacter",
+              "kind": "throw",
+              "line": 332
+            }
           ],
           "hash": "1835be9afce1692705599c36259930a0223675df310563e8aa9cf22347abfd92",
           "importsFiles": [
@@ -2972,7 +3075,8 @@
             "src/character/chronicle-renderer.ts",
             "src/session/chronicle.ts"
           ],
-          "path": "src/character/chronicle-renderer.test.ts"
+          "path": "src/character/chronicle-renderer.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2999,7 +3103,8 @@
             "src/character/packs.ts",
             "src/prompts/finale-prompt.ts"
           ],
-          "path": "src/character/packs.test.ts"
+          "path": "src/character/packs.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3014,7 +3119,8 @@
           "importsFiles": [
             "src/character/presence.ts"
           ],
-          "path": "src/character/presence.test.ts"
+          "path": "src/character/presence.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3033,7 +3139,8 @@
           "importsFiles": [
             "src/character/prompts.ts"
           ],
-          "path": "src/character/prompts.test.ts"
+          "path": "src/character/prompts.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3060,7 +3167,8 @@
           "importsFiles": [
             "src/character/recap-delta.ts"
           ],
-          "path": "src/character/recap-delta.test.ts"
+          "path": "src/character/recap-delta.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "renderSessionDelta",
@@ -3137,7 +3245,11 @@
             "src/narrator/narrator.ts",
             "src/session/history.ts"
           ],
-          "path": "src/character/recap.test.ts"
+          "names": [
+            "src/turn-loop.ts"
+          ],
+          "path": "src/character/recap.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3172,7 +3284,8 @@
             "src/character/session-recap.ts",
             "src/character/world-delta.ts"
           ],
-          "path": "src/character/session-recap.test.ts"
+          "path": "src/character/session-recap.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "renderFullRecap",
@@ -3303,7 +3416,8 @@
           "importsFiles": [
             "src/character/sheet.ts"
           ],
-          "path": "src/character/sheet.test.ts"
+          "path": "src/character/sheet.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3327,7 +3441,8 @@
           "importsFiles": [
             "src/character/world-delta.ts"
           ],
-          "path": "src/character/world-delta.test.ts"
+          "path": "src/character/world-delta.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "renderWorldDelta",
@@ -3397,11 +3512,34 @@
           "importsFiles": [
             "src/claude-client.ts"
           ],
-          "path": "src/claude-client.test.ts"
+          "path": "src/claude-client.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "createClaudeClient"
+          ],
+          "failurePaths": [
+            {
+              "in": "generateStructured",
+              "kind": "catch",
+              "line": 170
+            },
+            {
+              "in": "generateStructured",
+              "kind": "catch",
+              "line": 180
+            },
+            {
+              "in": "generateStructured",
+              "kind": "catch",
+              "line": 192
+            },
+            {
+              "in": "generateStructured",
+              "kind": "catch",
+              "line": 206
+            }
           ],
           "hash": "7da8fcf6e918db267dd1bec36b2e0b63b9f6843fcb13822403f5e8dd826be412",
           "importsFiles": [
@@ -3414,7 +3552,8 @@
           "importsFiles": [
             "src/cli/boot-zone-entry.ts"
           ],
-          "path": "src/cli/boot-zone-entry.test.ts"
+          "path": "src/cli/boot-zone-entry.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3425,14 +3564,19 @@
         },
         {
           "hash": "f6cd28c01e972c6667eabbcdcfa0401f8048f767044ad9153d83bf3b7caffae5",
-          "path": "src/cli/claude-client-deprecated.test.ts"
+          "names": [
+            "src/claude-client.ts"
+          ],
+          "path": "src/cli/claude-client-deprecated.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a91009debb297952342722657c1fefd0a94b0e73c112dca25fbc83b73af0fa53",
           "importsFiles": [
             "src/cli/colors.ts"
           ],
-          "path": "src/cli/colors.test.ts"
+          "path": "src/cli/colors.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3459,6 +3603,13 @@
           "exports": [
             "validateEngineState"
           ],
+          "failurePaths": [
+            {
+              "in": "validateEngineState",
+              "kind": "catch",
+              "line": 22
+            }
+          ],
           "hash": "efd05cfb848c213707875cb53786a4005c3049c7cc803ec18dec29d750672930",
           "path": "src/cli/engine-state-validator.ts"
         },
@@ -3469,7 +3620,8 @@
             "src/llm/claude-errors.ts",
             "src/session/session.ts"
           ],
-          "path": "src/cli/error-presenter.test.ts"
+          "path": "src/cli/error-presenter.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "renderError",
@@ -3585,7 +3737,8 @@
           "importsFiles": [
             "src/cli/exit-autosave.ts"
           ],
-          "path": "src/cli/exit-autosave.test.ts"
+          "path": "src/cli/exit-autosave.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "attemptExitAutosave",
@@ -3593,6 +3746,13 @@
           "exports": [
             "attemptExitAutosave",
             "displayPath"
+          ],
+          "failurePaths": [
+            {
+              "in": "attemptExitAutosave",
+              "kind": "catch",
+              "line": 59
+            }
           ],
           "hash": "a37aafe9d23f6a02dedb1d387acb3ce0babc0c2d00ba69a2ae1c92c5620c3dd1",
           "importsFiles": [
@@ -3622,7 +3782,8 @@
           "importsFiles": [
             "src/cli/path-guard.ts"
           ],
-          "path": "src/cli/path-guard.test.ts"
+          "path": "src/cli/path-guard.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3643,7 +3804,11 @@
             "src/prompts/narrate-scene.ts",
             "src/runtime/audio-bridge.ts"
           ],
-          "path": "src/cli/presentation-renderer.test.ts"
+          "names": [
+            "src/display/play-renderer.ts"
+          ],
+          "path": "src/cli/presentation-renderer.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "renderPresentationCues",
@@ -3805,7 +3970,8 @@
           "importsFiles": [
             "src/cli/resume-path.ts"
           ],
-          "path": "src/cli/resume-path.test.ts"
+          "path": "src/cli/resume-path.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3820,7 +3986,8 @@
             "src/cli/save-input-builder.ts",
             "test/helpers/game-harness.ts"
           ],
-          "path": "src/cli/save-input-builder.test.ts"
+          "path": "src/cli/save-input-builder.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "buildSaveInput",
@@ -3875,7 +4042,8 @@
             "src/cli/save-listing.ts",
             "src/session/session.ts"
           ],
-          "path": "src/cli/save-listing.test.ts"
+          "path": "src/cli/save-listing.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "formatSaveDetails",
@@ -3915,7 +4083,8 @@
           "importsFiles": [
             "src/cli/save-selection.ts"
           ],
-          "path": "src/cli/save-selection.test.ts"
+          "path": "src/cli/save-selection.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3931,7 +4100,11 @@
           "importsFiles": [
             "src/cli/slash-completer.ts"
           ],
-          "path": "src/cli/slash-completer.test.ts"
+          "names": [
+            "src/cli/usage.ts"
+          ],
+          "path": "src/cli/slash-completer.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3945,7 +4118,8 @@
           "importsFiles": [
             "src/cli/spinner.ts"
           ],
-          "path": "src/cli/spinner.test.ts"
+          "path": "src/cli/spinner.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3963,7 +4137,8 @@
           "importsFiles": [
             "src/cli/stream-presenter.ts"
           ],
-          "path": "src/cli/stream-presenter.test.ts"
+          "path": "src/cli/stream-presenter.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "renderStreamInterruption",
@@ -3999,14 +4174,19 @@
         },
         {
           "hash": "9500d8e0b7a5c68c8e413af43545386432d81361aa952b69b878760956eed52a",
-          "path": "src/cli/terminal-ui-audit.test.ts"
+          "path": "src/cli/terminal-ui-audit.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d6009099e462cd2e628933586c47cd09423d0f88f4d806ed3c8fa3731be983cf",
           "importsFiles": [
             "src/cli/error-presenter.ts"
           ],
-          "path": "src/cli/unhandled-rejection.test.ts"
+          "names": [
+            "src/bin.ts"
+          ],
+          "path": "src/cli/unhandled-rejection.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "80f66a22e1b152a636ee0590a07623c44f19d8b51390b94a46e539071fb467b6",
@@ -4018,7 +4198,8 @@
             "src/character/packs.ts",
             "src/cli/usage.ts"
           ],
-          "path": "src/cli/usage.test.ts"
+          "path": "src/cli/usage.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "renderUsage",
@@ -4208,7 +4389,8 @@
             "src/character/packs.ts",
             "src/cli/world-flag.ts"
           ],
-          "path": "src/cli/world-flag.test.ts"
+          "path": "src/cli/world-flag.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "parseWorldFlag",
@@ -4279,11 +4461,19 @@
             "src/cli/world-truth-seed-runner.ts",
             "src/game/debug-logger.ts"
           ],
-          "path": "src/cli/world-truth-seed-runner.test.ts"
+          "path": "src/cli/world-truth-seed-runner.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "runWorldTruthSeed"
+          ],
+          "failurePaths": [
+            {
+              "in": "runWorldTruthSeed",
+              "kind": "catch",
+              "line": 48
+            }
           ],
           "hash": "40d264cd92cb600c6d11ce7efe00485767cde810a68bf6c827a5bdc217d14a7d",
           "importsFiles": [
@@ -4296,7 +4486,8 @@
           "importsFiles": [
             "src/companion/companion-bridge.ts"
           ],
-          "path": "src/companion/companion-bridge.test.ts"
+          "path": "src/companion/companion-bridge.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -4326,11 +4517,24 @@
             "src/game/debug-logger.ts",
             "src/llm/claude-errors.ts"
           ],
-          "path": "src/dialogue/dialogue-mind.test.ts"
+          "path": "src/dialogue/dialogue-mind.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "generateDialogue"
+          ],
+          "failurePaths": [
+            {
+              "in": "generateDialogue",
+              "kind": "catch",
+              "line": 239
+            },
+            {
+              "in": "generateDialogue",
+              "kind": "throw",
+              "line": 248
+            }
           ],
           "hash": "64d920da929180136a06c76a05799061521d9c0ec04fcbc48b6c07ce534559ed",
           "importOrder": [
@@ -4356,7 +4560,8 @@
           "importsFiles": [
             "src/dialogue/npc-context.ts"
           ],
-          "path": "src/dialogue/npc-context.test.ts"
+          "path": "src/dialogue/npc-context.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -4379,14 +4584,16 @@
           "importsFiles": [
             "test/helpers/game-harness.ts"
           ],
-          "path": "src/display/announcement-channel.test.ts"
+          "path": "src/display/announcement-channel.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d3a9b9cf5baa1f3293430c0440aed56f388d89c58785c874eb6ac28e035181df",
           "importsFiles": [
             "src/display/archive-browser.ts"
           ],
-          "path": "src/display/archive-browser.test.ts"
+          "path": "src/display/archive-browser.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "renderArchiveBrowser",
@@ -4456,7 +4663,8 @@
           "importsFiles": [
             "src/display/contextual-suggestions.ts"
           ],
-          "path": "src/display/contextual-suggestions.test.ts"
+          "path": "src/display/contextual-suggestions.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -4472,7 +4680,8 @@
             "src/display/director-renderer.ts",
             "src/game/tuning.ts"
           ],
-          "path": "src/display/director-renderer.test.ts"
+          "path": "src/display/director-renderer.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -4517,7 +4726,11 @@
             "src/display/archive-browser.ts",
             "src/display/help-system.ts"
           ],
-          "path": "src/display/help-system.test.ts"
+          "names": [
+            "src/cli/colors.ts"
+          ],
+          "path": "src/display/help-system.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -4553,14 +4766,19 @@
           "importsFiles": [
             "src/display/play-renderer.ts"
           ],
-          "path": "src/display/play-renderer-divider.test.ts"
+          "path": "src/display/play-renderer-divider.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9e845f07f871d4a7d9d57f1f6b92bd368488c31100bd7c4d7d9b73b1a67a8448",
           "importsFiles": [
             "src/display/play-renderer.ts"
           ],
-          "path": "src/display/play-renderer.test.ts"
+          "names": [
+            "src/bin.ts"
+          ],
+          "path": "src/display/play-renderer.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "renderPlayScreen",
@@ -4877,7 +5095,8 @@
             "src/character/presence.ts",
             "src/display/status-compact.ts"
           ],
-          "path": "src/display/status-compact.test.ts"
+          "path": "src/display/status-compact.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -4897,7 +5116,8 @@
             "src/display/play-renderer.ts",
             "src/game/game-presenter.ts"
           ],
-          "path": "src/display/turn-divider.test.ts"
+          "path": "src/display/turn-divider.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "82013456b5131021b9e229d608d205c083352423df881072e75f9a7ed08debbd",
@@ -4911,7 +5131,8 @@
             "src/foundry/world-gen.ts",
             "src/game/debug-logger.ts"
           ],
-          "path": "src/foundry/world-gen.test.ts"
+          "path": "src/foundry/world-gen.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "proposeWorld",
@@ -4921,6 +5142,18 @@
             "instantiateWorld",
             "proposeWorld",
             "validateWorldGenProposal"
+          ],
+          "failurePaths": [
+            {
+              "in": "instantiateWorld",
+              "kind": "catch",
+              "line": 1282
+            },
+            {
+              "in": "instantiateWorld",
+              "kind": "catch",
+              "line": 1345
+            }
           ],
           "hash": "91bb89bb2f748174b8c12dbdd5402f15f2354de8ebe84be74b3d5be3e9f0f46b",
           "importsFiles": [
@@ -4995,9 +5228,70 @@
             "test/helpers/fake-claude-client.ts",
             "test/helpers/game-harness.ts"
           ],
-          "path": "src/game.test.ts"
+          "names": [
+            "src/bin.ts"
+          ],
+          "path": "src/game.test.ts",
+          "testFramework": "vitest"
         },
         {
+          "failurePaths": [
+            {
+              "in": "constructor",
+              "kind": "catch",
+              "line": 925
+            },
+            {
+              "in": "emitPresentation",
+              "kind": "catch",
+              "line": 1437
+            },
+            {
+              "in": "emitNarrationChunk",
+              "kind": "catch",
+              "line": 1457
+            },
+            {
+              "in": "runWorldRound",
+              "kind": "catch",
+              "line": 2032
+            },
+            {
+              "in": "processInput",
+              "kind": "catch",
+              "line": 2527
+            },
+            {
+              "in": "processInput",
+              "kind": "catch",
+              "line": 2568
+            },
+            {
+              "in": "processInput",
+              "kind": "catch",
+              "line": 2612
+            },
+            {
+              "in": "processInput",
+              "kind": "throw",
+              "line": 2618
+            },
+            {
+              "in": "processInput",
+              "kind": "catch",
+              "line": 2777
+            },
+            {
+              "in": "processInput",
+              "kind": "catch",
+              "line": 2810
+            },
+            {
+              "in": "checkAutosave",
+              "kind": "catch",
+              "line": 3070
+            }
+          ],
           "hash": "a64af4be741e7d2376a9fd991548fe29acd7acc03ba0e9dfdecd86b8812a7498",
           "importOrder": [
             "src/game/world-truth-seed.ts",
@@ -5099,7 +5393,8 @@
             "src/game/asks.ts",
             "src/game/tuning.ts"
           ],
-          "path": "src/game/asks.test.ts"
+          "path": "src/game/asks.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5121,6 +5416,13 @@
             "planAskCues",
             "resolveAskConsequence"
           ],
+          "failurePaths": [
+            {
+              "in": "readLedger",
+              "kind": "catch",
+              "line": 82
+            }
+          ],
           "hash": "d0d2797ce4e5fddaef832c63ee2cef4540b987565eeb6ec816b4a787eda00bbb",
           "importsFiles": [
             "src/game/game-state.ts",
@@ -5133,7 +5435,8 @@
           "importsFiles": [
             "src/game/condition.ts"
           ],
-          "path": "src/game/condition.test.ts"
+          "path": "src/game/condition.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5149,7 +5452,8 @@
           "importsFiles": [
             "src/game/debug-logger.ts"
           ],
-          "path": "src/game/debug-logger.test.ts"
+          "path": "src/game/debug-logger.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5165,7 +5469,8 @@
           "importsFiles": [
             "src/game/game-state.ts"
           ],
-          "path": "src/game/faction-cognition-guards.test.ts"
+          "path": "src/game/faction-cognition-guards.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b84461433af6602d10dd11c4b78d29a601d7428e15aeac9772790a5e511d3143",
@@ -5181,7 +5486,8 @@
             "src/narrator/finale-narrator.ts",
             "src/narrator/narrator.ts"
           ],
-          "path": "src/game/game-narration.test.ts"
+          "path": "src/game/game-narration.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5207,7 +5513,8 @@
             "src/display/play-renderer.ts",
             "src/game/game-presenter.ts"
           ],
-          "path": "src/game/game-presenter.test.ts"
+          "path": "src/game/game-presenter.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5248,7 +5555,8 @@
             "src/game/game-state.ts",
             "src/turn-loop.ts"
           ],
-          "path": "src/game/game-state.test.ts"
+          "path": "src/game/game-state.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5302,13 +5610,21 @@
           "importsFiles": [
             "src/game/hint-ledger.ts"
           ],
-          "path": "src/game/hint-ledger.test.ts"
+          "path": "src/game/hint-ledger.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "filterHints",
             "readHintLedger",
             "writeHintLedger"
+          ],
+          "failurePaths": [
+            {
+              "in": "readHintLedger",
+              "kind": "catch",
+              "line": 39
+            }
           ],
           "hash": "8bb6d9f470a5dab7b2702b3aa6fda38204eb177928b1893281dc555d1a8162b1",
           "path": "src/game/hint-ledger.ts"
@@ -5319,7 +5635,8 @@
             "src/game/hostile-turn.ts",
             "src/game/tuning.ts"
           ],
-          "path": "src/game/hostile-turn.test.ts"
+          "path": "src/game/hostile-turn.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5329,6 +5646,13 @@
             "markAwarenessFromEvents",
             "markEntitiesAware",
             "runHostileTurn"
+          ],
+          "failurePaths": [
+            {
+              "in": "runHostileTurn",
+              "kind": "catch",
+              "line": 222
+            }
           ],
           "hash": "3f9094be3887c69de351c076a554bd0f39de8a1525f044faf487d33f7df732b9",
           "importsFiles": [
@@ -5341,7 +5665,8 @@
           "importsFiles": [
             "src/game/leverage-view.ts"
           ],
-          "path": "src/game/leverage-view.test.ts"
+          "path": "src/game/leverage-view.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5366,6 +5691,13 @@
             "recognitionReputationDelta",
             "recognitionRumorClaim"
           ],
+          "failurePaths": [
+            {
+              "in": "readGratitudeLedger",
+              "kind": "catch",
+              "line": 39
+            }
+          ],
           "hash": "2b0dd95665a0292777bd0768138c8a6df8bee612fe890482703a59959f13dad7",
           "importsFiles": [
             "src/game/asks.ts"
@@ -5377,7 +5709,8 @@
           "importsFiles": [
             "src/game/reputation-view.ts"
           ],
-          "path": "src/game/reputation-view.test.ts"
+          "path": "src/game/reputation-view.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5397,7 +5730,8 @@
           "importsFiles": [
             "src/game/rumor-mirror.ts"
           ],
-          "path": "src/game/rumor-mirror.test.ts"
+          "path": "src/game/rumor-mirror.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5419,7 +5753,8 @@
             "src/display/play-renderer.ts",
             "src/game/token-tracker.ts"
           ],
-          "path": "src/game/token-tracker.test.ts"
+          "path": "src/game/token-tracker.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5455,7 +5790,8 @@
           "importsFiles": [
             "src/game/unknown-command.ts"
           ],
-          "path": "src/game/unknown-command.test.ts"
+          "path": "src/game/unknown-command.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5585,7 +5921,8 @@
             "src/llm/claude-adapter.ts",
             "src/llm/claude-errors.ts"
           ],
-          "path": "src/llm/claude-adapter.test.ts"
+          "path": "src/llm/claude-adapter.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "withRetry",
@@ -5594,6 +5931,53 @@
             "classifyError",
             "createAdaptedClient",
             "withRetry"
+          ],
+          "failurePaths": [
+            {
+              "in": "withRetry",
+              "kind": "catch",
+              "line": 67
+            },
+            {
+              "in": "withRetry",
+              "kind": "throw",
+              "line": 70
+            },
+            {
+              "in": "withRetry",
+              "kind": "throw",
+              "line": 84
+            },
+            {
+              "in": "callApi",
+              "kind": "catch",
+              "line": 132
+            },
+            {
+              "in": "callApi",
+              "kind": "throw",
+              "line": 133
+            },
+            {
+              "in": "generateStream",
+              "kind": "catch",
+              "line": 208
+            },
+            {
+              "in": "generateStream",
+              "kind": "throw",
+              "line": 209
+            },
+            {
+              "in": "generateStructured",
+              "kind": "catch",
+              "line": 231
+            },
+            {
+              "in": "generateStructured",
+              "kind": "catch",
+              "line": 240
+            }
           ],
           "hash": "e008142296d8e77612d5a355ed03ea869058e39e7e26f9c6bc123e7315539163",
           "importsFiles": [
@@ -5638,11 +6022,24 @@
             "src/llm/claude-errors.ts",
             "src/narrator/finale-narrator.ts"
           ],
-          "path": "src/narrator/finale-narrator.test.ts"
+          "path": "src/narrator/finale-narrator.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "narrateFinale"
+          ],
+          "failurePaths": [
+            {
+              "in": "attemptEpilogue",
+              "kind": "catch",
+              "line": 51
+            },
+            {
+              "in": "attemptEpilogue",
+              "kind": "throw",
+              "line": 59
+            }
           ],
           "hash": "425583e79d1a45b01d66de11cd177a1d2b911e5b53c91a46537ac7e658c1bfdb",
           "importOrder": [
@@ -5677,12 +6074,43 @@
             "src/narrator/narrator.ts",
             "src/prompts/narrate-scene.ts"
           ],
-          "path": "src/narrator/narrator.test.ts"
+          "names": [
+            "src/turn-loop.ts"
+          ],
+          "path": "src/narrator/narrator.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "narrateScene",
             "narrateSceneLegacy"
+          ],
+          "failurePaths": [
+            {
+              "in": "narrateScene",
+              "kind": "catch",
+              "line": 344
+            },
+            {
+              "in": "narrateScene",
+              "kind": "throw",
+              "line": 353
+            },
+            {
+              "in": "narrateSceneLegacy",
+              "kind": "catch",
+              "line": 424
+            },
+            {
+              "in": "narrateSceneLegacy",
+              "kind": "throw",
+              "line": 427
+            },
+            {
+              "in": "parseNarrationPlan",
+              "kind": "catch",
+              "line": 539
+            }
           ],
           "hash": "544ec51fdd0d4124e338dc15882c1dd1fa77fe23f015589245656d17fefdda26",
           "importOrder": [
@@ -5708,14 +6136,16 @@
           "importsFiles": [
             "src/narrator/scene-context.ts"
           ],
-          "path": "src/narrator/scene-context-perf.test.ts"
+          "path": "src/narrator/scene-context-perf.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "424fd6f6842cccb30c3c38da4e215a797d4557addcca396627ab8eb0c0e00c7b",
           "importsFiles": [
             "src/narrator/scene-context.ts"
           ],
-          "path": "src/narrator/scene-context.test.ts"
+          "path": "src/narrator/scene-context.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5723,6 +6153,13 @@
             "describeAskHelped",
             "describeAskReveal",
             "describeEvent"
+          ],
+          "failurePaths": [
+            {
+              "in": "buildSceneContext",
+              "kind": "catch",
+              "line": 85
+            }
           ],
           "hash": "a3f09f11f008e1778685dd8ef270b3c4b639ad2fa2ec2baf186a45f0575b8311",
           "importsFiles": [
@@ -5735,7 +6172,8 @@
           "importsFiles": [
             "src/npc/agency.ts"
           ],
-          "path": "src/npc/agency.test.ts"
+          "path": "src/npc/agency.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5750,7 +6188,8 @@
             "src/npc/ambient-dialogue.ts",
             "src/prompts/dialogue-npc.ts"
           ],
-          "path": "src/npc/ambient-dialogue.test.ts"
+          "path": "src/npc/ambient-dialogue.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5765,7 +6204,8 @@
           "importsFiles": [
             "src/npc/presence.ts"
           ],
-          "path": "src/npc/presence.test.ts"
+          "path": "src/npc/presence.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5781,7 +6221,8 @@
           "importsFiles": [
             "src/prompts/dialogue-npc.ts"
           ],
-          "path": "src/prompts/dialogue-npc.test.ts"
+          "path": "src/prompts/dialogue-npc.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5798,7 +6239,8 @@
           "importsFiles": [
             "src/prompts/finale-prompt.ts"
           ],
-          "path": "src/prompts/finale-prompt.test.ts"
+          "path": "src/prompts/finale-prompt.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5815,7 +6257,8 @@
           "importsFiles": [
             "src/prompts/interpret-action.ts"
           ],
-          "path": "src/prompts/interpret-action.test.ts"
+          "path": "src/prompts/interpret-action.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5832,7 +6275,8 @@
           "importsFiles": [
             "src/prompts/narrate-scene.ts"
           ],
-          "path": "src/prompts/narrate-scene.test.ts"
+          "path": "src/prompts/narrate-scene.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5848,7 +6292,8 @@
           "importsFiles": [
             "src/prompts/world-gen.ts"
           ],
-          "path": "src/prompts/world-gen.test.ts"
+          "path": "src/prompts/world-gen.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5865,7 +6310,8 @@
           "importsFiles": [
             "src/runtime/audio-bridge.ts"
           ],
-          "path": "src/runtime/audio-bridge.test.ts"
+          "path": "src/runtime/audio-bridge.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5fb431fe3aeb33b5b6bfedaec9137f06dab6e1bf2b135a6ab2314f20520901d2",
@@ -5876,7 +6322,8 @@
           "importsFiles": [
             "src/runtime/hooks.ts"
           ],
-          "path": "src/runtime/hooks.test.ts"
+          "path": "src/runtime/hooks.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5893,6 +6340,13 @@
             "npcSpeakingHook",
             "registerBuiltinHooks"
           ],
+          "failurePaths": [
+            {
+              "in": "fire",
+              "kind": "catch",
+              "line": 170
+            }
+          ],
           "hash": "4aaaee349c097f21c04e0266f5aeabebcf5767537080fbb43cf8e165213f6e85",
           "path": "src/runtime/hooks.ts"
         },
@@ -5901,9 +6355,32 @@
           "importsFiles": [
             "src/runtime/immersion-runtime.ts"
           ],
-          "path": "src/runtime/immersion-runtime.test.ts"
+          "path": "src/runtime/immersion-runtime.test.ts",
+          "testFramework": "vitest"
         },
         {
+          "failurePaths": [
+            {
+              "in": "processPresentation",
+              "kind": "catch",
+              "line": 453
+            },
+            {
+              "in": "processPresentation",
+              "kind": "catch",
+              "line": 475
+            },
+            {
+              "in": "processPresentation",
+              "kind": "catch",
+              "line": 537
+            },
+            {
+              "in": "processPresentation",
+              "kind": "catch",
+              "line": 568
+            }
+          ],
           "hash": "4adb99326490832c487df04ab24cc8bb742df2c773390059e0f394fec463b9d9",
           "importOrder": [
             "src/runtime/presentation-state.ts",
@@ -5924,7 +6401,8 @@
           "importsFiles": [
             "src/runtime/presentation-state.ts"
           ],
-          "path": "src/runtime/presentation-state.test.ts"
+          "path": "src/runtime/presentation-state.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0bbb169a6c900b3f54269119025ae300cb5a84a00237afb1c3b2fbeef5a8ad4b",
@@ -5938,7 +6416,8 @@
           "importsFiles": [
             "src/runtime/voice-caster.ts"
           ],
-          "path": "src/runtime/voice-caster.test.ts"
+          "path": "src/runtime/voice-caster.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "03671899ebbc8924f851af65b9ce2aca809c5e52e963f74ab503874a0c716dae",
@@ -5950,7 +6429,8 @@
             "src/session/chronicle-export.ts",
             "src/session/session.ts"
           ],
-          "path": "src/session/chronicle-export.test.ts"
+          "path": "src/session/chronicle-export.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -5978,7 +6458,11 @@
             "src/session/session.ts",
             "src/turn-loop.ts"
           ],
-          "path": "src/session/chronicle.test.ts"
+          "names": [
+            "src/session/chronicle-export.ts"
+          ],
+          "path": "src/session/chronicle.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6005,7 +6489,8 @@
             "src/session/history.ts",
             "src/turn-loop.ts"
           ],
-          "path": "src/session/history.test.ts"
+          "path": "src/session/history.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5bbbb186f6fafc91093162f78a740e4ce594b483f9d1e3d07c4ccb2221ce6454",
@@ -6019,7 +6504,8 @@
           "importsFiles": [
             "src/session/migrate.ts"
           ],
-          "path": "src/session/migrate.test.ts"
+          "path": "src/session/migrate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6028,6 +6514,33 @@
             "isValidWorldPressure",
             "migrateSave",
             "validateVersion"
+          ],
+          "failurePaths": [
+            {
+              "in": "detectSchemaVersion",
+              "kind": "throw",
+              "line": 34
+            },
+            {
+              "in": "validateVersion",
+              "kind": "throw",
+              "line": 45
+            },
+            {
+              "in": "validateVersion",
+              "kind": "throw",
+              "line": 51
+            },
+            {
+              "in": "normalizeLegacyJsonArrayField",
+              "kind": "catch",
+              "line": 200
+            },
+            {
+              "in": "migrateSave",
+              "kind": "throw",
+              "line": 298
+            }
           ],
           "hash": "ea7096b14983a8cb4f2e1e696433b7bb5c1d06a56da24d16f0eed7a7ffb8f03a",
           "importOrder": [
@@ -6054,7 +6567,8 @@
             "src/session/migrate.ts",
             "src/session/session.ts"
           ],
-          "path": "src/session/save-atomic.test.ts"
+          "path": "src/session/save-atomic.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e81420ab99e1cbe6f9bc350ce44ebd579db8d2cea0eea8fe01503c11305b30fa",
@@ -6066,7 +6580,8 @@
             "src/session/history.ts",
             "src/session/session.ts"
           ],
-          "path": "src/session/session-backup-integrity.test.ts"
+          "path": "src/session/session-backup-integrity.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c6472b5cda907dd026468ac57e9c54c02eec6ed63cfe8320bf5f07d398363735",
@@ -6080,7 +6595,13 @@
             "src/game/world-truth-seed.ts",
             "src/session/session.ts"
           ],
-          "path": "src/session/session.test.ts"
+          "names": [
+            "src/character/session-recap.ts",
+            "src/game.ts",
+            "src/narrator/finale-narrator.ts"
+          ],
+          "path": "src/session/session.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "saveSession",
@@ -6111,6 +6632,233 @@
             "loadWorldMovedFromSession",
             "saveSession",
             "validateSaveShape"
+          ],
+          "failurePaths": [
+            {
+              "in": "saveSession",
+              "kind": "catch",
+              "line": 339
+            },
+            {
+              "in": "saveSession",
+              "kind": "throw",
+              "line": 340
+            },
+            {
+              "in": "saveSession",
+              "kind": "catch",
+              "line": 344
+            },
+            {
+              "in": "saveSession",
+              "kind": "catch",
+              "line": 352
+            },
+            {
+              "in": "saveSession",
+              "kind": "catch",
+              "line": 355
+            },
+            {
+              "in": "saveSession",
+              "kind": "throw",
+              "line": 357
+            },
+            {
+              "in": "saveSession",
+              "kind": "catch",
+              "line": 359
+            },
+            {
+              "in": "saveSession",
+              "kind": "catch",
+              "line": 361
+            },
+            {
+              "in": "saveSession",
+              "kind": "throw",
+              "line": 362
+            },
+            {
+              "in": "loadSession",
+              "kind": "throw",
+              "line": 387
+            },
+            {
+              "in": "loadSession",
+              "kind": "catch",
+              "line": 397
+            },
+            {
+              "in": "loadSession",
+              "kind": "throw",
+              "line": 398
+            },
+            {
+              "in": "loadSession",
+              "kind": "throw",
+              "line": 404
+            },
+            {
+              "in": "validateSaveShape",
+              "kind": "throw",
+              "line": 422
+            },
+            {
+              "in": "validateSaveShape",
+              "kind": "throw",
+              "line": 428
+            },
+            {
+              "in": "validateSaveShape",
+              "kind": "throw",
+              "line": 431
+            },
+            {
+              "in": "validateSaveShape",
+              "kind": "throw",
+              "line": 434
+            },
+            {
+              "in": "validateSaveShape",
+              "kind": "throw",
+              "line": 437
+            },
+            {
+              "in": "validateSaveShape",
+              "kind": "throw",
+              "line": 440
+            },
+            {
+              "in": "loadRumorsFromSession",
+              "kind": "catch",
+              "line": 499
+            },
+            {
+              "in": "loadPressuresFromSession",
+              "kind": "catch",
+              "line": 528
+            },
+            {
+              "in": "loadResolvedPressuresFromSession",
+              "kind": "catch",
+              "line": 591
+            },
+            {
+              "in": "loadChronicleFromSession",
+              "kind": "catch",
+              "line": 602
+            },
+            {
+              "in": "loadNpcAgencyFromSession",
+              "kind": "catch",
+              "line": 724
+            },
+            {
+              "in": "loadObligationsFromSession",
+              "kind": "catch",
+              "line": 800
+            },
+            {
+              "in": "loadConsequenceChainsFromSession",
+              "kind": "catch",
+              "line": 884
+            },
+            {
+              "in": "loadPartyFromSession",
+              "kind": "catch",
+              "line": 947
+            },
+            {
+              "in": "loadEconomiesFromSession",
+              "kind": "catch",
+              "line": 1023
+            },
+            {
+              "in": "loadOpportunitiesFromSession",
+              "kind": "catch",
+              "line": 1077
+            },
+            {
+              "in": "loadResolvedOpportunitiesFromSession",
+              "kind": "catch",
+              "line": 1138
+            },
+            {
+              "in": "loadWorldMovedFromSession",
+              "kind": "catch",
+              "line": 1180
+            },
+            {
+              "in": "loadArcSnapshotFromSession",
+              "kind": "catch",
+              "line": 1246
+            },
+            {
+              "in": "loadEndgameTriggersFromSession",
+              "kind": "catch",
+              "line": 1296
+            },
+            {
+              "in": "loadFinaleFromSession",
+              "kind": "catch",
+              "line": 1346
+            },
+            {
+              "in": "loadNpcConversationsFromSession",
+              "kind": "catch",
+              "line": 1393
+            },
+            {
+              "in": "listArchivedCampaigns",
+              "kind": "catch",
+              "line": 1419
+            },
+            {
+              "in": "listArchivedCampaigns",
+              "kind": "catch",
+              "line": 1457
+            },
+            {
+              "in": "listArchivedCampaigns",
+              "kind": "catch",
+              "line": 1473
+            },
+            {
+              "in": "listSaves",
+              "kind": "catch",
+              "line": 1531
+            },
+            {
+              "in": "listSaves",
+              "kind": "catch",
+              "line": 1551
+            },
+            {
+              "in": "listSaves",
+              "kind": "catch",
+              "line": 1562
+            },
+            {
+              "in": "listSaves",
+              "kind": "catch",
+              "line": 1576
+            },
+            {
+              "in": "listSaves",
+              "kind": "catch",
+              "line": 1592
+            },
+            {
+              "in": "listSaves",
+              "kind": "catch",
+              "line": 1607
+            },
+            {
+              "in": "listSaves",
+              "kind": "catch",
+              "line": 1626
+            }
           ],
           "hash": "760feb41d2290546f9df22952b54b5fd4218ee39d41a8ff7bf08b5bffca7f2f7",
           "importOrder": [
@@ -6446,7 +7194,8 @@
             "src/turn-loop.ts",
             "test/helpers/game-harness.ts"
           ],
-          "path": "src/turn-loop.test.ts"
+          "path": "src/turn-loop.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6454,6 +7203,43 @@
             "extractProfileHints",
             "filterSupportedVerbs",
             "getFatalTurnBookkeeping"
+          ],
+          "failurePaths": [
+            {
+              "in": "executeTurn",
+              "kind": "catch",
+              "line": 622
+            },
+            {
+              "in": "executeTurn",
+              "kind": "catch",
+              "line": 709
+            },
+            {
+              "in": "executeTurn",
+              "kind": "catch",
+              "line": 729
+            },
+            {
+              "in": "executeTurn",
+              "kind": "catch",
+              "line": 795
+            },
+            {
+              "in": "executeTurn",
+              "kind": "throw",
+              "line": 824
+            },
+            {
+              "in": "executeTurn",
+              "kind": "catch",
+              "line": 935
+            },
+            {
+              "in": "executeTurn",
+              "kind": "throw",
+              "line": 967
+            }
           ],
           "hash": "48a964b92a00c9b483c1deda5da59adf5a91dd6e640b6c2a283e9125a510088c",
           "importOrder": [
@@ -6527,6 +7313,9 @@
       "outsideReads": 18,
       "outsideWrites": 7,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 124,
       "unresolvedNamed": [
         {
@@ -6555,7 +7344,15 @@
           "importsFiles": [
             "scripts/check-coverage-utils.mjs"
           ],
-          "path": "test/check-critical-coverage.test.ts"
+          "names": [
+            "src/display/help-system.ts",
+            "src/display/play-renderer.ts",
+            "src/game.ts",
+            "src/game/game-state.ts",
+            "vitest.config.ts"
+          ],
+          "path": "test/check-critical-coverage.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "863c7e5ee2de3cb142b749cce37b30105cde4390f7f4dad5747ca086eb2468ba",
@@ -6602,7 +7399,8 @@
           "importsFiles": [
             "test/helpers/bin-cli-harness.ts"
           ],
-          "path": "test/helpers/bin-cli-harness.test.ts"
+          "path": "test/helpers/bin-cli-harness.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6624,6 +7422,9 @@
             "src/session/history.ts",
             "src/session/session.ts"
           ],
+          "names": [
+            "src/bin.ts"
+          ],
           "path": "test/helpers/bin-cli-harness.ts"
         },
         {
@@ -6631,7 +7432,8 @@
             "expectNoRawCatalogIds"
           ],
           "hash": "3db1877b188410b9818a73afb07355b7968914b14e003d13181bc78675434324",
-          "path": "test/helpers/catalog-assertions.ts"
+          "path": "test/helpers/catalog-assertions.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6659,7 +7461,8 @@
           "importsFiles": [
             "test/helpers/fake-claude-client.ts"
           ],
-          "path": "test/helpers/fake-claude-client.test.ts"
+          "path": "test/helpers/fake-claude-client.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6692,7 +7495,11 @@
             "src/session/session.ts",
             "test/helpers/game-harness.ts"
           ],
-          "path": "test/helpers/game-harness.test.ts"
+          "names": [
+            "src/bin.ts"
+          ],
+          "path": "test/helpers/game-harness.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6766,7 +7573,11 @@
           "importsFiles": [
             "test/helpers/game-harness.ts"
           ],
-          "path": "test/integration/ambient-zone-dialogue.test.ts"
+          "names": [
+            "src/runtime/hooks.ts"
+          ],
+          "path": "test/integration/ambient-zone-dialogue.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9a6205adca9fe96136e0ca8c79fc634764312edb4fe9e33c347f23427b9789f5",
@@ -6782,7 +7593,8 @@
             "src/session/session.ts",
             "test/helpers/chronicle-fixtures.ts"
           ],
-          "path": "test/integration/archive-export.test.ts"
+          "path": "test/integration/archive-export.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5fe0317921169d2b1e31dc3b27852eb3e38fe523e5b2436b451e9bc59f1be5f0",
@@ -6798,7 +7610,12 @@
             "test/helpers/living-world-matrix.ts",
             "test/helpers/world-gen-fixtures.ts"
           ],
-          "path": "test/integration/b1-followups.test.ts"
+          "names": [
+            "src/action-interpreter.ts",
+            "src/game.ts"
+          ],
+          "path": "test/integration/b1-followups.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7c1439991fad4aa2b3fd0ac6de24a87a53460768c563983c28e3432d9357bcc3",
@@ -6810,7 +7627,11 @@
             "src/session/session.ts",
             "test/helpers/bin-cli-harness.ts"
           ],
-          "path": "test/integration/bin-cli-turn-loop.test.ts"
+          "names": [
+            "src/bin.ts"
+          ],
+          "path": "test/integration/bin-cli-turn-loop.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "959db1c724a026e4ac295c0e96002a5ffcb2d1c32cd1a6a47efeb8076196788e",
@@ -6830,7 +7651,11 @@
             "test/helpers/catalog-assertions.ts",
             "test/helpers/game-harness.ts"
           ],
-          "path": "test/integration/catalog-display-names.test.ts"
+          "names": [
+            "src/character/catalog-names.ts"
+          ],
+          "path": "test/integration/catalog-display-names.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a278ac525518ef5f360a9205a24af72bb0c4c907cbc5d4479c7b2c0d666738dc",
@@ -6846,7 +7671,8 @@
             "src/character/prompts.ts",
             "test/helpers/fake-readline.ts"
           ],
-          "path": "test/integration/character-builder-menu.test.ts"
+          "path": "test/integration/character-builder-menu.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2da79b0a0a6a9937f0d3995f07d0ad6dcc93ad341a563d6636722296fd99a4af",
@@ -6855,7 +7681,8 @@
             "src/session/session.ts",
             "test/helpers/chronicle-fixtures.ts"
           ],
-          "path": "test/integration/chronicle.test.ts"
+          "path": "test/integration/chronicle.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d29dbc5f08f161bea5d6dbfae0e88171de0c3d106f3a70e7245d251fad0dcba1",
@@ -6869,7 +7696,8 @@
             "src/session/session.ts",
             "test/helpers/game-harness.ts"
           ],
-          "path": "test/integration/consecutive-fallbacks.test.ts"
+          "path": "test/integration/consecutive-fallbacks.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "cc6b246662796b2f7e24df9500c6a45611019c61796946e8930eddb60e444b48",
@@ -6883,7 +7711,11 @@
             "src/session/session.ts",
             "test/helpers/game-harness.ts"
           ],
-          "path": "test/integration/conversation-memory.test.ts"
+          "names": [
+            "src/session/migrate.ts"
+          ],
+          "path": "test/integration/conversation-memory.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "95ba99203985e0e8337f6307384c31105fdc0bf17001636ad79c8a34f0504c6c",
@@ -6901,7 +7733,8 @@
             "test/helpers/game-harness.ts",
             "test/helpers/world-gen-fixtures.ts"
           ],
-          "path": "test/integration/engine-composition.test.ts"
+          "path": "test/integration/engine-composition.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ac8989d7081d66008a50a6f0573e4aa5896e291559fc2f4faa68fe77abb0ba87",
@@ -6921,7 +7754,8 @@
             "src/runtime/audio-bridge.ts",
             "test/helpers/game-harness.ts"
           ],
-          "path": "test/integration/game-turn-loop.test.ts"
+          "path": "test/integration/game-turn-loop.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "dbafd95b7046f5e5e72bc0930eae90a845d932085d4507fd283b9d0e4d557d89",
@@ -6935,7 +7769,8 @@
             "test/helpers/game-harness.ts",
             "test/helpers/world-gen-fixtures.ts"
           ],
-          "path": "test/integration/generated-world-resume.test.ts"
+          "path": "test/integration/generated-world-resume.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "73f15e999cfedff011e411e5e1274f80af2388c0ecb3bd50829c662e68345ce3",
@@ -6947,14 +7782,16 @@
             "src/game/debug-logger.ts",
             "test/helpers/game-harness.ts"
           ],
-          "path": "test/integration/interpreted-reasoning-debug.test.ts"
+          "path": "test/integration/interpreted-reasoning-debug.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9421523d8406fb6318cdbf8a817ef3b1e3c35073a19db832494b7d5ee312770e",
           "importsFiles": [
             "test/helpers/game-harness.ts"
           ],
-          "path": "test/integration/living-world-driver.test.ts"
+          "path": "test/integration/living-world-driver.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8c380fbf47a7ff603bc39dc28eb9dc3246ee33c136b3a7203cf7f36123dc56a3",
@@ -6962,7 +7799,8 @@
             "test/helpers/game-harness.ts",
             "test/helpers/world-gen-fixtures.ts"
           ],
-          "path": "test/integration/living-world-readback.test.ts"
+          "path": "test/integration/living-world-readback.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e7d36aa0ee06fc0dabe6461d1857f3ce0be865dd65d32a9570dd35ed678cbae5",
@@ -6980,14 +7818,19 @@
             "test/helpers/game-harness.ts",
             "test/helpers/world-gen-fixtures.ts"
           ],
-          "path": "test/integration/living-world-surfaces.test.ts"
+          "path": "test/integration/living-world-surfaces.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b14f2e89050420e4a167e435f521fa8f8a48cd66acda3395f26091ffb2bcac07",
           "importsFiles": [
             "test/helpers/bin-cli-harness.ts"
           ],
-          "path": "test/integration/load-archive-edge-cli.test.ts"
+          "names": [
+            "src/bin.ts"
+          ],
+          "path": "test/integration/load-archive-edge-cli.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8d4f49e1ea70b00cbaf6e8c2ea886145a960343927ab90d7f446c29927fa70a2",
@@ -6995,7 +7838,8 @@
             "src/session/migrate.ts",
             "src/session/session.ts"
           ],
-          "path": "test/integration/migration.test.ts"
+          "path": "test/integration/migration.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "60505b1b130ba0f46e7703d69384475b547aac8c17815fd11480ba21ad6314c4",
@@ -7004,7 +7848,8 @@
             "src/game.ts",
             "test/helpers/fake-claude-client.ts"
           ],
-          "path": "test/integration/phase9-composed-proof.test.ts"
+          "path": "test/integration/phase9-composed-proof.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9a23a7311ace4b50c66439a8985577f7f4abaf61866ca95498730eea587d85b0",
@@ -7018,7 +7863,8 @@
             "test/helpers/living-world-matrix.ts",
             "test/helpers/world-gen-fixtures.ts"
           ],
-          "path": "test/integration/phase9-living-world.test.ts"
+          "path": "test/integration/phase9-living-world.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3967dbe9a08dbede199d41953012dc366d3347ea530fb0313bdfcac09caf9f83",
@@ -7030,7 +7876,8 @@
             "src/runtime/audio-bridge.ts",
             "test/helpers/game-harness.ts"
           ],
-          "path": "test/integration/post-death-setback.test.ts"
+          "path": "test/integration/post-death-setback.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "55e4be5fbf3af3ae17e9bb0eee980a196b3a246fe33d6972b133c117a23d2435",
@@ -7048,7 +7895,13 @@
             "src/game/tuning.ts",
             "test/helpers/game-harness.ts"
           ],
-          "path": "test/integration/reactive-street.test.ts"
+          "names": [
+            "src/game.ts",
+            "src/game/round-metrics.ts",
+            "src/turn-loop.ts"
+          ],
+          "path": "test/integration/reactive-street.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5ff36537e41e966ccac72deeb2894a6a1f614e02442213b1ffe96947d9895f01",
@@ -7056,7 +7909,8 @@
             "src/character/recap-delta.ts",
             "src/character/session-recap.ts"
           ],
-          "path": "test/integration/recap-delta.test.ts"
+          "path": "test/integration/recap-delta.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "eecb7799aec5de2b4455542110cd7599d55420d8474ec38e25f6467004b478ff",
@@ -7068,7 +7922,11 @@
             "src/foundry/world-gen.ts",
             "test/helpers/bin-cli-harness.ts"
           ],
-          "path": "test/integration/retry-spinner-cli.test.ts"
+          "names": [
+            "src/llm/claude-adapter.ts"
+          ],
+          "path": "test/integration/retry-spinner-cli.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8d48aa44c281bc8169dd985899fbcadb0fde0fc4b5923bfc2df0ceff2c9a1055",
@@ -7092,7 +7950,8 @@
             "test/helpers/game-harness.ts",
             "test/helpers/world-gen-fixtures.ts"
           ],
-          "path": "test/integration/save-schema-v3.test.ts"
+          "path": "test/integration/save-schema-v3.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3235ea8d622a0886ce8fcc66ae2b1dc98af21ebcb08a44c8c2e43002aa80b84c",
@@ -7100,14 +7959,16 @@
             "src/session/history.ts",
             "src/session/session.ts"
           ],
-          "path": "test/integration/session-persistence.test.ts"
+          "path": "test/integration/session-persistence.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e408818d757e5c96b057fcbfe8319ff6ef5a045266ce1e58feb11e0a917d98fc",
           "importsFiles": [
             "test/helpers/bin-cli-harness.ts"
           ],
-          "path": "test/integration/sfx-humanization-cli.test.ts"
+          "path": "test/integration/sfx-humanization-cli.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "fb44f7652244f5ae3c4cc2a1298a9d584a9df29d090ea838fb9c030725fe4cb7",
@@ -7123,7 +7984,8 @@
             "src/turn-loop.ts",
             "test/helpers/fake-claude-client.ts"
           ],
-          "path": "test/integration/streaming.test.ts"
+          "path": "test/integration/streaming.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3d58b78b5fb6f7eda17723c15f63722e5c20472a174c1c28e7bfecda70fa0b2a",
@@ -7135,7 +7997,11 @@
             "src/character/packs.ts",
             "test/helpers/bin-cli-harness.ts"
           ],
-          "path": "test/integration/world-flag-cli.test.ts"
+          "names": [
+            "src/bin.ts"
+          ],
+          "path": "test/integration/world-flag-cli.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4678b283dba407b837746fd99a3124fe7a9bb59608c6af0886f22fb5d45404c7",
@@ -7151,7 +8017,8 @@
             "test/helpers/fake-claude-client.ts",
             "test/helpers/world-gen-fixtures.ts"
           ],
-          "path": "test/integration/world-source-parity.test.ts"
+          "path": "test/integration/world-source-parity.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "69c45cfcdfc1ecf4d60f8c5df7dd02c7461cca770d8206bfae0c9d22a9f6582e",
@@ -7175,7 +8042,8 @@
             "test/helpers/game-harness.ts",
             "test/helpers/world-gen-fixtures.ts"
           ],
-          "path": "test/integration/world-truth-seed.test.ts"
+          "path": "test/integration/world-truth-seed.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -7185,6 +8053,9 @@
       "name": "test",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -7936,6 +8807,20 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "coverage": true,
+          "files": 121,
+          "job": "build-and-test",
+          "runner": "vitest",
+          "step": "4",
+          "through": [
+            "npm run verify",
+            "npm run test:coverage"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -8861,6 +9746,18 @@
         "releases": true
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 121,
+          "job": "release",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -8981,7 +9878,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "55ff274cb62e0ae50b50bab77bb06e68426de98c",
     "tracked": 496

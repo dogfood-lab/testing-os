@@ -1,6 +1,6 @@
 # repo-knowledge: how it works
 
-Mapped at 2026-09-26 from commit 4435870 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit f0654a0 by Atlas 1.23.4.
 
 ## What this is
 
@@ -9,8 +9,8 @@ Mapped at 2026-09-26 from commit 4435870 by Atlas 1.23.0.
 ## What changed since 2026-09-23 (8236017)
 
 - src no longer imports the repository root.
-- CI's pull request trigger now also names `eslint.config.js`, `scripts/postbuild.js`, `tsup.config.ts` and `vitest.config.ts`.
-- CI's push trigger now also names `eslint.config.js`, `scripts/postbuild.js`, `tsup.config.ts` and `vitest.config.ts`.
+- CI's pull request trigger now also names `codecov.yml`, `eslint.config.js`, `scripts/postbuild.js`, `tsup.config.ts` and `vitest.config.ts`.
+- CI's push trigger now also names `codecov.yml`, `eslint.config.js`, `scripts/postbuild.js`, `tsup.config.ts` and `vitest.config.ts`.
 - CI now also builds src/cli.ts, src/index.ts and src/mcp/server.ts.
 - And 4 more changes to doors.
 - dist is now written by scripts/postbuild.js.
@@ -18,11 +18,11 @@ Mapped at 2026-09-26 from commit 4435870 by Atlas 1.23.0.
 - .github/workflows/release.yml is now read by test/build-health.test.ts.
 - And 12 more new writers and readers of places.
 - data was generated and is now authored.
-- 775 files changed content, across 10 parts.
+- 1 file added and 775 changed content, across 10 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 14 paths; on a push to main touching 14 paths; or by hand. Runs scripts/postbuild.js and test/; builds src/cli.ts, src/index.ts and src/mcp/server.ts; checks src/.
+1. **CI.** On a pull request touching 15 paths; on a push to main touching 15 paths; or by hand. Runs scripts/postbuild.js and test/; builds src/cli.ts, src/index.ts and src/mcp/server.ts; checks src/.
 2. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs scripts/gen-audit-report.mjs, scripts/gen-worklist.mjs, scripts/postbuild.js and 48 more; builds src/cli.ts, src/index.ts and src/mcp/server.ts; checks src/.
 3. **Deploy site to GitHub Pages.** On a pull request to main touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/repo-knowledge** (the package people import). Loads src/index.ts and src/mcp/server.ts.
@@ -32,6 +32,7 @@ Mapped at 2026-09-26 from commit 4435870 by Atlas 1.23.0.
 
 1. The workflow runs scripts/postbuild.js in scripts and test/ in test; it builds src/cli.ts, src/index.ts and src/mcp/server.ts in src; it checks src/ in src.
 2. It writes to dist/, which is not tracked.
+3. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -106,7 +107,7 @@ Read those in order to follow one pull request end to end.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
 - 2 writes and 77 reads go to a path their caller passes, not to this repository.
 - 4 writes and 13 reads go to the directory the command is run in (CHANGELOG.md, LICENSE, README.md and 5 more places), not to this repository.
-- 2 commands are built at run time and not followed.
+- 1 command is built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

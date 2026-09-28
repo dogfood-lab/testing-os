@@ -269,6 +269,9 @@
           "path": "apps/desktop/src-tauri/tauri.conf.json"
         }
       ],
+      "frameworks": [
+        "tauri"
+      ],
       "globs": [
         "apps/desktop/**"
       ],
@@ -444,11 +447,19 @@
             "packages/server/src/engine-manager.ts",
             "packages/server/src/state.ts"
           ],
-          "path": "packages/server/src/engine-manager.test.ts"
+          "path": "packages/server/src/engine-manager.test.ts",
+          "testFramework": "node --test"
         },
         {
           "exports": [
             "createEngineManager"
+          ],
+          "failurePaths": [
+            {
+              "in": "createEngineManager",
+              "kind": "catch",
+              "line": 73
+            }
           ],
           "hash": "e812e24375d8c1dd28bd1285f6886b9adb22cff77610db5f83148898c2a708ec",
           "importsFiles": [
@@ -480,6 +491,23 @@
             "remove",
             "save"
           ],
+          "failurePaths": [
+            {
+              "in": "readAll",
+              "kind": "catch",
+              "line": 37
+            },
+            {
+              "in": "writeAll",
+              "kind": "catch",
+              "line": 51
+            },
+            {
+              "in": "writeAll",
+              "kind": "throw",
+              "line": 53
+            }
+          ],
           "hash": "c21b29f0d610a70083b9300d7aded285294da6bc39faea168a60961accf4c87f",
           "importOrder": [
             "packages/server/src/state.ts",
@@ -496,7 +524,8 @@
           "importsFiles": [
             "packages/server/src/presets.ts"
           ],
-          "path": "packages/server/src/presets.test.ts"
+          "path": "packages/server/src/presets.test.ts",
+          "testFramework": "node --test"
         },
         {
           "exports": [
@@ -507,6 +536,23 @@
             "invalidateCatalog",
             "scanCustomSounds",
             "soundAssetRef"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadCustomMeta",
+              "kind": "catch",
+              "line": 146
+            },
+            {
+              "in": "scanCustomSounds",
+              "kind": "catch",
+              "line": 181
+            },
+            {
+              "in": "soundAssetRef",
+              "kind": "throw",
+              "line": 192
+            }
           ],
           "hash": "4dd63e5ca564b8db0284468af3f7fbe50ec11d19d18ae162ba6e1c9559402d91",
           "path": "packages/server/src/presets.ts"
@@ -552,11 +598,69 @@
               "isDefaultExport": false,
               "name": "startServer"
             }
-          ]
+          ],
+          "testFramework": "node --test"
         },
         {
           "exports": [
             "apiRouter"
+          ],
+          "failurePaths": [
+            {
+              "in": "apiRouter",
+              "kind": "catch",
+              "line": 64
+            },
+            {
+              "in": "apiRouter",
+              "kind": "catch",
+              "line": 105
+            },
+            {
+              "in": "apiRouter",
+              "kind": "catch",
+              "line": 195
+            },
+            {
+              "in": "apiRouter",
+              "kind": "catch",
+              "line": 239
+            },
+            {
+              "in": "apiRouter",
+              "kind": "catch",
+              "line": 246
+            },
+            {
+              "in": "apiRouter",
+              "kind": "catch",
+              "line": 255
+            },
+            {
+              "in": "apiRouter",
+              "kind": "catch",
+              "line": 300
+            },
+            {
+              "in": "apiRouter",
+              "kind": "catch",
+              "line": 397
+            },
+            {
+              "in": "apiRouter",
+              "kind": "catch",
+              "line": 414
+            },
+            {
+              "in": "apiRouter",
+              "kind": "catch",
+              "line": 448
+            },
+            {
+              "in": "apiRouter",
+              "kind": "catch",
+              "line": 468
+            }
           ],
           "hash": "7e3ed7f44438fe49d3893f0789fa933d8b0df79df26f02f3fa910921d715c303",
           "importOrder": [
@@ -612,11 +716,19 @@
               "isDefaultExport": false,
               "name": "startServer"
             }
-          ]
+          ],
+          "testFramework": "node --test"
         },
         {
           "exports": [
             "eventsRouter"
+          ],
+          "failurePaths": [
+            {
+              "in": "onChange",
+              "kind": "catch",
+              "line": 30
+            }
           ],
           "hash": "dbb0b4849df3cff44fda2ead45923474574d2306d9da6430ab0620eebb31d61f",
           "importsFiles": [
@@ -667,7 +779,8 @@
           "importsFiles": [
             "packages/server/src/state.ts"
           ],
-          "path": "packages/server/src/state.test.ts"
+          "path": "packages/server/src/state.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "36fe7924b151dcff10982dccfc7c5a6a08b7508c15ee12ccfe36add5ce732626",
@@ -675,7 +788,8 @@
         },
         {
           "hash": "ae7218a8a690b52aa7556843d676d2dd86ebc9976c9f1087898fd3584eee5b24",
-          "path": "packages/server/src/version-alignment.test.ts"
+          "path": "packages/server/src/version-alignment.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "596bad4ac43d2846d46b97c32e27ca7f13e0f94848916880b98e822446b4a263",
@@ -700,6 +814,9 @@
       "outsideReads": 9,
       "outsideWrites": 2,
       "role": "code",
+      "testRunners": [
+        "node --test"
+      ],
       "testedBy": 5,
       "unresolvedSites": 0
     },
@@ -916,6 +1033,58 @@
           "exports": [
             "useRegulator"
           ],
+          "failurePaths": [
+            {
+              "in": "es.onmessage",
+              "kind": "catch",
+              "line": 49
+            },
+            {
+              "in": "useRegulator",
+              "kind": "catch",
+              "line": 111
+            },
+            {
+              "in": "useRegulator",
+              "kind": "catch",
+              "line": 119
+            },
+            {
+              "in": "useRegulator",
+              "kind": "catch",
+              "line": 165
+            },
+            {
+              "in": "useRegulator",
+              "kind": "catch",
+              "line": 175
+            },
+            {
+              "in": "useRegulator",
+              "kind": "catch",
+              "line": 220
+            },
+            {
+              "in": "useRegulator",
+              "kind": "catch",
+              "line": 228
+            },
+            {
+              "in": "useRegulator",
+              "kind": "catch",
+              "line": 237
+            },
+            {
+              "in": "useRegulator",
+              "kind": "catch",
+              "line": 245
+            },
+            {
+              "in": "useRegulator",
+              "kind": "catch",
+              "line": 253
+            }
+          ],
           "hash": "67c3bb9f4b8a4685a754f6e4ec5e25d3b86d6faba5c881a62a83ad627d0a5c38",
           "importsFiles": [
             "packages/ui/src/lib/api.ts"
@@ -923,10 +1092,38 @@
           "path": "packages/ui/src/hooks/useRegulator.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "post",
+              "kind": "throw",
+              "line": 55
+            },
+            {
+              "in": "get",
+              "kind": "throw",
+              "line": 62
+            },
+            {
+              "in": "getSounds",
+              "kind": "throw",
+              "line": 69
+            },
+            {
+              "in": "getDevices",
+              "kind": "throw",
+              "line": 74
+            }
+          ],
           "hash": "f1c6c4e4b51dee0b92291084340ed9b2064bda4de5881ef8df865548d756538f",
           "path": "packages/ui/src/lib/api.ts"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "throw",
+              "line": 41
+            }
+          ],
           "hash": "7bc1e57b4fe2f142409dcbd0f553ecc562720985c561385897bbd2bedd5b5ed1",
           "importsFiles": [
             "packages/ui/src/App.tsx"
@@ -1084,6 +1281,19 @@
         }
       ],
       "stages": [],
+      "tests": [
+        {
+          "dir": "packages/server",
+          "files": 2,
+          "job": "build",
+          "runner": "node --test",
+          "step": "6",
+          "through": [
+            "npm test",
+            "npm test (packages/server)"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -1294,7 +1504,7 @@
       "to": "server"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "c7fbc277057214aea33336843166518ea69f7d9d",
     "tracked": 136
@@ -1678,5 +1888,16 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 6,
-  "unassigned": []
+  "testsNotRun": [
+    "packages/server/src/engine-manager.test.ts",
+    "packages/server/src/presets.test.ts",
+    "packages/server/src/state.test.ts",
+    "packages/server/src/version-alignment.test.ts"
+  ],
+  "unassigned": [],
+  "workspaces": [
+    "apps/desktop",
+    "packages/server",
+    "packages/ui"
+  ]
 }

@@ -1,6 +1,6 @@
 # style-dataset-lab: how it works
 
-Mapped at 2026-09-26 from commit f4d2210 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit f7b4973 by Atlas 1.23.4.
 
 ## What this is
 
@@ -9,15 +9,17 @@ Mapped at 2026-09-26 from commit f4d2210 by Atlas 1.23.0.
 ## What changed since 2026-09-25 (b0426ac)
 
 - projects now imports lib.
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - projects/ai-eye-test/outputs/synthetic/phase1/ is now written by projects/ai-eye-test/compositor/compositor.py.
 - projects/salt-road/inbox/generated/set-v2-2026-07-30/*.png is now written by projects/salt-road/inputs/prompts/wave-runner.py.
 - projects/salt-road/inbox/generated/set-v2-2026-07-30/receipts.jsonl is now written by projects/salt-road/inputs/prompts/wave-runner.py.
 - And 3 more new writers and readers of places.
-- No file changed.
+- 1 file added and 1 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 13 paths; on a push touching 13 paths; or by hand. Runs bin/sdlab.js, tests/canon-star-freight/, tests/cli-scripts/ and 70 more.
+1. **CI.** On a pull request touching 14 paths; on a push touching 14 paths; or by hand. Runs bin/sdlab.js, tests/canon-star-freight/, tests/cli-scripts/ and 70 more.
 2. **Publish.** When a release is published; or by hand. Runs bin/sdlab.js, tests/canon-star-freight/, tests/cli-scripts/ and 70 more.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **sdlab** (a command people run). Runs bin/sdlab.js.
@@ -41,7 +43,7 @@ Mapped at 2026-09-26 from commit f4d2210 by Atlas 1.23.0.
       8. `info`
    7. **`run`** (scripts) runs, in order: `parseArgs` (lib), `getProjectName`, `getProjectRoot`, `loadCritique`, `getRunsDir`, `refine-briefs.js` (3 steps) and `info`.
    8. **`run`** (scripts) runs, in order: `parseArgs` (lib), `getProjectName`, `getProjectRoot`, `selections.js` (3 steps) and `info`.
-2. That reaches lib (74 files) and scripts (33 files).
+2. That reaches lib (74 files) and scripts (39 files).
 3. It uploads coverage to Codecov.
 
 ## Who reads the results
@@ -118,14 +120,14 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 5 imports could not be resolved: `bin/sdlab.js` imports a path built at run time; `lib/training-adapters.js` imports a path built at run time; `projects/salt-road/inputs/prompts/wave-runner.py` imports a path built at run time; and 2 more.
+- 4 imports could not be resolved: `bin/sdlab.js` imports a path built at run time; `lib/training-adapters.js` imports a path built at run time; `projects/salt-road/inputs/prompts/wave-runner.py` imports a path built at run time; and 1 more.
 - 38 writes and 72 reads use paths built at run time and are not named here.
 - 3 writes go to places this repository does not track, so they are not listed as generated.
 - 112 writes and 220 reads go to a path their caller passes, not to this repository.
 - 12 writes and 3 reads go to the directory the command is run in or a path their caller passes, not to this repository.
 - 7 reads go to the directory the command is run in, not to this repository.
 - 1 write and 2 reads go to a temporary directory, not to this repository.
-- 11 commands are built at run time and not followed, 8 of them in tests.
+- 11 commands are built at run time and not followed, 9 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

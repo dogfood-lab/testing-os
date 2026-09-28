@@ -233,6 +233,13 @@
           "exports": [
             "export_glb"
           ],
+          "failurePaths": [
+            {
+              "in": "export_glb",
+              "kind": "err",
+              "line": 17
+            }
+          ],
           "hash": "267e39cf1b5b8c217fdac3a64c93c3f0d81deb2d296ca0c31fc4134710e0974a",
           "importOrder": [
             "crates/ship-hull/src/generate.rs",
@@ -286,6 +293,9 @@
       "name": "ship-export",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "cargo test"
+      ],
       "testedBy": 2,
       "unresolvedSites": 0
     },
@@ -329,6 +339,23 @@
           "testsInside": true
         },
         {
+          "failurePaths": [
+            {
+              "in": "new",
+              "kind": "err",
+              "line": 51
+            },
+            {
+              "in": "new",
+              "kind": "err",
+              "line": 56
+            },
+            {
+              "in": "new",
+              "kind": "err",
+              "line": 59
+            }
+          ],
           "hash": "61a090e0ba473510f2547c7b08a1337c1ef3e795901260ee35223d0c8f03f1e3",
           "path": "crates/ship-hull/src/curves.rs",
           "testsInside": true
@@ -364,6 +391,13 @@
           "exports": [
             "generate_hull",
             "generate_ship"
+          ],
+          "failurePaths": [
+            {
+              "in": "generate_ship",
+              "kind": "err",
+              "line": 48
+            }
           ],
           "hash": "e2de23662cef15f31360e8142a942f8b48c2e540cd78df0b07362554e2237819",
           "importsFiles": [
@@ -1008,6 +1042,9 @@
       "name": "ship-hull",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "cargo test"
+      ],
       "testedBy": 13,
       "unresolvedSites": 0
     },
@@ -1117,6 +1154,9 @@
       "name": "ship-schema",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "cargo test"
+      ],
       "testedBy": 5,
       "unresolvedSites": 0
     },
@@ -1208,6 +1248,9 @@
       "name": "ship-testkit",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "cargo test"
+      ],
       "testedBy": 1,
       "unresolvedSites": 0
     },
@@ -1522,6 +1565,14 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 18,
+          "job": "build-and-test",
+          "runner": "cargo test",
+          "step": "Test"
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -1665,7 +1716,7 @@
       "to": "ship-schema"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "2de16f4047c997265d57ffd59c02e3725a8a472f",
     "tracked": 56

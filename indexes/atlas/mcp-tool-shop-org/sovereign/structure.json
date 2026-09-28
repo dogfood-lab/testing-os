@@ -48,6 +48,18 @@
         {
           "entry": "fail",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "readVersion",
+              "kind": "catch",
+              "line": 62
+            },
+            {
+              "in": "openInBrowser",
+              "kind": "catch",
+              "line": 114
+            }
+          ],
           "hash": "e4d2df3e91d20c65b41da58b19af15f96249afbf038b19057060ec2a1e0bd6ab",
           "path": "bin/sovereign.js",
           "sequences": []
@@ -70,6 +82,9 @@
       ],
       "outsideReads": 1,
       "role": "code",
+      "testRunners": [
+        "node"
+      ],
       "testedBy": 1,
       "testedThroughSpawn": true,
       "unresolvedSites": 0
@@ -631,7 +646,10 @@
           "entryRule": 1,
           "hash": "d041b6a724ade22d13c2be30e51f97f3fc53541977268e95ce852a9a32c46b49",
           "path": "test/smoke.test.mjs",
-          "sequences": []
+          "sequences": [],
+          "spawns": [
+            "bin/sovereign.js"
+          ]
         }
       ],
       "globs": [
@@ -641,6 +659,9 @@
       "name": "test",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "node"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     },
@@ -824,6 +845,13 @@
             "runDiagnosisBatch",
             "runDiagnosisGame",
             "setTotalRounds"
+          ],
+          "failurePaths": [
+            {
+              "in": "setTotalRounds",
+              "kind": "throw",
+              "line": 33
+            }
           ],
           "hash": "1e158d533a6620a78d62c5d0afe4c14e658d1d179ec5dc2665ef931f2fdf56be",
           "path": "tools/diagnosis/sim-pacing-diag.mjs"
@@ -1020,6 +1048,9 @@
       "name": "tools",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "node"
+      ],
       "testedBy": 1,
       "unresolvedSites": 0
     }
@@ -1137,6 +1168,27 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 3,
+          "job": "test",
+          "runner": "node",
+          "step": "Smoke tests",
+          "through": [
+            "npm test"
+          ]
+        },
+        {
+          "coverage": true,
+          "files": 1,
+          "job": "test",
+          "runner": "node",
+          "step": "Coverage (Node 20 only)",
+          "through": [
+            "npm run coverage"
+          ]
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -1433,6 +1485,17 @@
         "releases": true
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 3,
+          "job": "release",
+          "runner": "node",
+          "step": "Smoke tests",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -1541,7 +1604,7 @@
       "to": "tools"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "b5f1ba51730de2346327de4981d7bc860ad195d5",
     "tracked": 159

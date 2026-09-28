@@ -54,6 +54,13 @@
           "path": "examples/backpropagate/README.md"
         },
         {
+          "failurePaths": [
+            {
+              "in": "readMeta",
+              "kind": "catch",
+              "line": 58
+            }
+          ],
           "hash": "18ee47f63d7fffa098e649c28b1aa2fe04ef08b284b8768d2760c62212335402",
           "path": "examples/backpropagate/bin/backpropagate.js"
         },
@@ -100,6 +107,12 @@
       "externals": 0,
       "files": [
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 58
+            }
+          ],
           "hash": "8367157d4790f114511eee57cac641179d7b06ab8ccd2efc39ef12a7d1a78a9f",
           "importsFiles": [
             "src/index.js"
@@ -114,6 +127,9 @@
       "name": "bin",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "node --test"
+      ],
       "testedBy": 1,
       "testedThroughSpawn": true,
       "unresolvedSites": 0
@@ -326,7 +342,7 @@
     },
     {
       "dynamicReads": 3,
-      "dynamicSpawns": 1,
+      "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [
@@ -349,6 +365,23 @@
             "get",
             "releaseAssetUrl"
           ],
+          "failurePaths": [
+            {
+              "in": "downloadToFile",
+              "kind": "catch",
+              "line": 96
+            },
+            {
+              "in": "downloadToFile",
+              "kind": "catch",
+              "line": 102
+            },
+            {
+              "in": "downloadToFile",
+              "kind": "catch",
+              "line": 106
+            }
+          ],
           "hash": "399a3fd0bf883da4897ddfb260a2f8d017a54fd87260bffa0a1b0d9d694cf491",
           "path": "src/github.js"
         },
@@ -362,6 +395,33 @@
             "ensureBinary",
             "launch",
             "printCachePath"
+          ],
+          "failurePaths": [
+            {
+              "in": "ensureBinary",
+              "kind": "throw",
+              "line": 72
+            },
+            {
+              "in": "ensureBinary",
+              "kind": "throw",
+              "line": 87
+            },
+            {
+              "in": "ensureBinary",
+              "kind": "catch",
+              "line": 104
+            },
+            {
+              "in": "ensureBinary",
+              "kind": "catch",
+              "line": 105
+            },
+            {
+              "in": "ensureBinary",
+              "kind": "throw",
+              "line": 106
+            }
           ],
           "hash": "66f34c5c48d862d9fbb46fac869f21a9374130ef02854e9d73f69056e047ae4e",
           "importsFiles": [
@@ -673,6 +733,38 @@
           "exports": [
             "acquireLock"
           ],
+          "failurePaths": [
+            {
+              "in": "acquireLock",
+              "kind": "catch",
+              "line": 28
+            },
+            {
+              "in": "acquireLock",
+              "kind": "catch",
+              "line": 30
+            },
+            {
+              "in": "acquireLock",
+              "kind": "throw",
+              "line": 31
+            },
+            {
+              "in": "acquireLock",
+              "kind": "catch",
+              "line": 38
+            },
+            {
+              "in": "acquireLock",
+              "kind": "catch",
+              "line": 41
+            },
+            {
+              "in": "acquireLock",
+              "kind": "throw",
+              "line": 48
+            }
+          ],
           "hash": "b93e37e6bd6d5056458f3e37019afefc5245474c828e26afc697deb3751e656e",
           "path": "src/lock.js"
         },
@@ -690,12 +782,26 @@
           "exports": [
             "resolveTarget"
           ],
+          "failurePaths": [
+            {
+              "in": "resolveTarget",
+              "kind": "throw",
+              "line": 24
+            }
+          ],
           "hash": "4ce7fc686278f2d33948bf4909e2ee19fab8d69092c10467a79fad734c25f4bc",
           "path": "src/platform.js"
         },
         {
           "exports": [
             "runBinary"
+          ],
+          "failurePaths": [
+            {
+              "in": "runBinary",
+              "kind": "throw",
+              "line": 11
+            }
           ],
           "hash": "2be956919479814989d11ca39fd87216e8a64a42fdaa9afd0144daefa368c5e7",
           "path": "src/run.js"
@@ -705,6 +811,13 @@
             "parseChecksumsTxt",
             "sha256File",
             "verifySha256"
+          ],
+          "failurePaths": [
+            {
+              "in": "verifySha256",
+              "kind": "throw",
+              "line": 42
+            }
           ],
           "hash": "939b2bc6ea4a3f97e22c256cf1dddfe88db1582cdff8f4cb5800dfbad4bc7aaa",
           "path": "src/verify.js"
@@ -728,6 +841,9 @@
       "outsideReads": 5,
       "outsideWrites": 4,
       "role": "code",
+      "testRunners": [
+        "node --test"
+      ],
       "testedBy": 1,
       "unresolvedSites": 0
     },
@@ -755,7 +871,11 @@
             "src/platform.js",
             "src/verify.js"
           ],
-          "path": "test/launcher.test.js"
+          "path": "test/launcher.test.js",
+          "spawns": [
+            "bin/mcptoolshop-launch.js"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "f11d599ad978220c3a1baa8029bad71d38cdfb3afcfecb71da864b8339e21b24",
@@ -769,6 +889,9 @@
       "name": "test",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "node --test"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     },
@@ -936,6 +1059,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 1,
+          "job": "test",
+          "runner": "node --test",
+          "step": "3",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -1347,6 +1481,17 @@
         "releases": true
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 1,
+          "job": "release",
+          "runner": "node --test",
+          "step": "Verify (repo's own contract — test suite)",
+          "through": [
+            "npm run verify"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -1640,7 +1785,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "07c7132c09eb143dfc0cbe1bbdedd3668eb4e8f0",
     "tracked": 63

@@ -1,5 +1,7 @@
 {
-  "authored": [],
+  "authored": [
+    "root"
+  ],
   "breaks": [
     {
       "doors": 3,
@@ -22,13 +24,20 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "changed": 134,
       "moved": 0,
       "parts": 6,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "CI now also runs src/mcp_stress_test/cli/__init__.py.",
@@ -48,15 +57,7 @@
       },
       {
         "kind": "door",
-        "sentence": "Publish now also runs src/mcp_stress_test/cli/__init__.py.",
-        "subjects": [
-          ".github/workflows/publish.yml",
-          "src/mcp_stress_test/cli/__init__.py"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 2 more changes to doors.",
+        "sentence": "And 3 more changes to doors.",
         "subjects": []
       },
       {
@@ -90,7 +91,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "134 files changed content, across 6 parts.",
+        "sentence": "1 file added and 134 changed content, across 6 parts.",
         "subjects": []
       }
     ],
@@ -105,7 +106,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "a8a79e8ac1f94d79173271b443e304d501a8bf24",
+  "commit": "b6c6103d12166ac95a1ef0b4f81c991ba351d8dc",
   "defaultBranch": "main",
   "derived": "6 parts, mostly Python (76 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is Publish, which reaches 3 parts. It publishes to PyPI and a container image. It deploys a site to GitHub Pages. People run mcp-stress.",
   "doors": [
@@ -198,11 +199,13 @@
       ],
       "runsCount": 2,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request to main",
-        "on a push to main touching 8 paths",
+        "on a push to main touching 9 paths",
         "or by hand"
       ]
     },
@@ -275,7 +278,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [
     {
       "addedBy": "dependabot[bot]",
@@ -289,16 +292,11 @@
     },
     {
       "addedBy": "dependabot[bot]",
-      "place": "root",
-      "writers": []
-    },
-    {
-      "addedBy": "dependabot[bot]",
       "place": "site/",
       "writers": []
     }
   ],
-  "generatedAt": "2026-09-26T14:43:54.417Z",
+  "generatedAt": "2026-09-28T13:18:43.891Z",
   "limits": [
     "2 imports could not be resolved: `tests/test_operator_contract.py` imports a path built at run time, twice.",
     "3 writes and 8 reads use paths built at run time and are not named here.",

@@ -1,6 +1,6 @@
 # world-forge: how it works
 
-Mapped at 2026-09-26 from commit 333532b by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 2512ab0 by Atlas 1.23.4.
 
 ## What this is
 
@@ -18,7 +18,7 @@ Mapped at 2026-09-26 from commit 333532b by Atlas 1.23.0.
 - docs/c0-alignment/fixture-manifest.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
 - And 99 more new writers and readers of places.
 - docs was authored and is now mixed.
-- 633 files changed content, across 14 parts.
+- 1 file added and 633 changed content, across 14 parts.
 
 ## What comes in
 
@@ -39,6 +39,7 @@ Mapped at 2026-09-26 from commit 333532b by Atlas 1.23.0.
 1. The workflow runs scripts/check-pack.mjs and scripts/sync-version.mjs in scripts, dogfood/__tests__/ in dogfood, 112 files in editor, 22 files in export-ai-rpg, packages/export-godot/src/__tests__/ in export-godot, and 50 files in 4 more parts; it checks 11 files in dogfood, e2e/ in e2e, packages/editor/src/ in editor, packages/export-ai-rpg/src/ in export-ai-rpg, packages/export-godot/src/ in export-godot, and 108 files in 3 more parts.
 2. That reaches the repository root (1 file).
 3. It writes to docs/c0-alignment/export-table.json, docs/c0-alignment/export-table.md, docs/c0-alignment/fixture-manifest.json and docs/c0-alignment/fixture-pack.json.
+4. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -142,7 +143,7 @@ Read those in order to follow one run of world-forge-export end to end. This pat
 - 2 writes and 56 reads go to a path their caller passes, not to this repository.
 - 26 writes go to the directory the command is run in (GodotPack/ and UnrealPack/) or a path their caller passes, not to this repository.
 - 2 writes go to the directory the command is run in (export/), not to this repository.
-- 3 commands are built at run time and not followed.
+- 4 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

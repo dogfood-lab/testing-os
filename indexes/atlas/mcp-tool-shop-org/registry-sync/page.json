@@ -28,7 +28,7 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 2,
+      "added": 3,
       "changed": 80,
       "moved": 0,
       "parts": 7,
@@ -37,14 +37,14 @@
     "items": [
       {
         "kind": "door",
-        "sentence": "CI's pull request trigger now also names `atlas/**`.",
+        "sentence": "CI's pull request trigger now also names `atlas/**` and `codecov.yml`.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
       },
       {
         "kind": "door",
-        "sentence": "CI's push trigger now also names `atlas/**`.",
+        "sentence": "CI's push trigger now also names `atlas/**` and `codecov.yml`.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
@@ -89,7 +89,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "2 files added and 80 changed content, across 7 parts.",
+        "sentence": "3 files added and 80 changed content, across 7 parts.",
         "subjects": []
       }
     ],
@@ -104,7 +104,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "b7d57d35f9141242642e60ff20069ab04e443ac4",
+  "commit": "779aa9a2e955b49fb0fc2ddcc046d88b31dcab17",
   "defaultBranch": "main",
   "derived": "7 parts, mostly TypeScript (40 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run registry-sync. People import @mcptoolshop/registry-sync.",
   "doors": [
@@ -142,12 +142,13 @@
       "runsCount": 2,
       "runsMore": 0,
       "sends": [
+        "uploads coverage to Codecov",
         "changes other repositories through the GitHub API"
       ],
       "stages": [],
       "triggers": [
-        "on a pull request to main touching 7 paths",
-        "on a push to main touching 7 paths",
+        "on a pull request to main touching 8 paths",
+        "on a push to main touching 8 paths",
         "or by hand"
       ]
     },
@@ -288,9 +289,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [],
-  "generatedAt": "2026-09-26T14:44:59.879Z",
+  "generatedAt": "2026-09-28T13:20:01.586Z",
   "limits": [
     "4 writes and 4 reads go to a path their caller passes, not to this repository.",
     "2 reads go to the directory the command is run in (package.json and registry-sync.config.json), not to this repository.",

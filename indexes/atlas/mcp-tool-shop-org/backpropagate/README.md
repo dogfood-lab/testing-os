@@ -1,6 +1,6 @@
 # backpropagate: how it works
 
-Mapped at 2026-09-26 from commit fd35beb by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 822ec5d by Atlas 1.23.4.
 
 ## What this is
 
@@ -8,20 +8,20 @@ Mapped at 2026-09-26 from commit fd35beb by Atlas 1.23.0.
 
 ## What changed since 2026-09-23 (34a7862)
 
+- CI's push trigger now also names `codecov.yml`.
 - Pages deploy now also runs site/astro.config.mjs and site/src/.
 - Post-Publish Smoke now also runs backpropagate/cli.py.
-- Publish now also runs backpropagate/cli.py.
-- And 4 more changes to doors.
+- And 5 more changes to doors.
 - .github/workflows/ci.yml is now read by docs/ci-gates-triage-plan.md.
 - README.md is now also read by pyproject.toml and tests/test_model_card.py.
 - backpropagate/ is now also read by CONTRIBUTING.md, pyproject.toml, scripts/check_doc_drift.py and tests/test_error_codes_catalog.py.
 - And 15 more new writers and readers of places.
 - .github was generated and is now authored.
-- 247 files changed content, across 10 parts.
+- 1 file added and 247 changed content, across 10 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main; on a push to main touching 8 paths; or by hand. Runs tests/ and verify.sh; checks backpropagate/.
+1. **CI.** On a pull request to main; on a push to main touching 9 paths; or by hand. Runs tests/ and verify.sh; checks backpropagate/.
 2. **Publish.** When a release is published; when the workflow Release completes; or by hand. Runs backpropagate/cli.py; checks backpropagate/; packs LICENSE, README.md and pyproject.toml into an image.
 3. **Nightly Train Smoke.** On a schedule (`0 4 * * 1`), Monday at 04:00 UTC; or by hand. Runs scripts/nightly_train_smoke.py.
 4. **Doc Drift Check.** On a pull request to main; on a push to main touching 7 paths; or by hand. Runs scripts/check_doc_drift.py.

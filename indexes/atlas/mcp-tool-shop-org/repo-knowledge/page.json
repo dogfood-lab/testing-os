@@ -38,7 +38,7 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "changed": 775,
       "moved": 0,
       "parts": 10,
@@ -55,14 +55,14 @@
       },
       {
         "kind": "door",
-        "sentence": "CI's pull request trigger now also names `eslint.config.js`, `scripts/postbuild.js`, `tsup.config.ts` and `vitest.config.ts`.",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`, `eslint.config.js`, `scripts/postbuild.js`, `tsup.config.ts` and `vitest.config.ts`.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
       },
       {
         "kind": "door",
-        "sentence": "CI's push trigger now also names `eslint.config.js`, `scripts/postbuild.js`, `tsup.config.ts` and `vitest.config.ts`.",
+        "sentence": "CI's push trigger now also names `codecov.yml`, `eslint.config.js`, `scripts/postbuild.js`, `tsup.config.ts` and `vitest.config.ts`.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
@@ -125,7 +125,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "775 files changed content, across 10 parts.",
+        "sentence": "1 file added and 775 changed content, across 10 parts.",
         "subjects": []
       }
     ],
@@ -217,7 +217,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 3 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "4435870bbfdf3726b9faa07e235fe5ce501c027d",
+  "commit": "f0654a0dc611fa59020f2fcd4e19f510691e7a25",
   "defaultBranch": "main",
   "derived": "11 parts, mostly Markdown (646 files); code in TypeScript (84), JavaScript (10), CSS (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run rk. People import @mcptoolshop/repo-knowledge.",
   "doors": [
@@ -260,11 +260,13 @@
       ],
       "runsCount": 2,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 14 paths",
-        "on a push to main touching 14 paths",
+        "on a pull request touching 15 paths",
+        "on a push to main touching 15 paths",
         "or by hand"
       ],
       "untracked": "dist/, which is not tracked"
@@ -366,7 +368,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 29
+          "files": 32
         }
       ],
       "runs": [
@@ -397,7 +399,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 30
+          "files": 32
         }
       ],
       "runs": [
@@ -420,7 +422,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [
     {
       "place": "AUDIT-WORKLIST.md",
@@ -453,14 +455,14 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-26T14:45:06.462Z",
+  "generatedAt": "2026-09-28T13:20:09.612Z",
   "limits": [
     "1 import could not be resolved: `src/mcp/server.ts` imports `zod`, which is not declared.",
     "3 writes and 15 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
     "2 writes and 77 reads go to a path their caller passes, not to this repository.",
     "4 writes and 13 reads go to the directory the command is run in (CHANGELOG.md, LICENSE, README.md and 5 more places), not to this repository.",
-    "2 commands are built at run time and not followed.",
+    "1 command is built at run time and not followed.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",

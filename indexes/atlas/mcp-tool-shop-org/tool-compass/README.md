@@ -1,6 +1,6 @@
 # tool-compass: how it works
 
-Mapped at 2026-09-26 from commit 3af3760 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 9bf87fd by Atlas 1.23.4.
 
 ## What this is
 
@@ -8,15 +8,16 @@ Mapped at 2026-09-26 from commit 3af3760 by Atlas 1.23.0.
 
 ## What changed since 2026-09-25 (6f5a233)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - Release Binaries now also runs ui.py.
-- Release now also runs ui.py.
-- tool-compass (npm/package.json) is a new command. It runs npm/bin/tool-compass.js.
+- And 2 more changes to doors.
 - cli.py is now also read by .github/workflows/release.yml.
-- No file changed.
+- 1 file added and 1 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 15 paths; on a push to main touching 15 paths; on a schedule (`0 9 * * 1,3,5`); or by hand. Runs docker-entrypoint.sh, gateway.py, scripts/check-org-urls.sh and 35 more; checks requirements.txt; packs LICENSE, README.md, _version.py and 15 more into an image. On a push to main, it also runs site/astro.config.mjs and site/src/.
+1. **CI.** On a pull request to main touching 16 paths; on a push to main touching 16 paths; on a schedule (`0 9 * * 1,3,5`); or by hand. Runs docker-entrypoint.sh, gateway.py, scripts/check-org-urls.sh and 35 more; checks requirements.txt; packs LICENSE, README.md, _version.py and 15 more into an image. On a push to main, it also runs site/astro.config.mjs and site/src/.
 2. **Publish.** When a release is published; when the workflow Release completes; or by hand. Runs cli.py, docker-entrypoint.sh and gateway.py; packs LICENSE, README.md, _version.py and 15 more into an image.
 3. **Release.** When a tag matching `v*` is pushed; or by hand. Runs ui.py.
 4. **Release Binaries.** When a release is published; on a `workflow_call` event; or by hand. Runs ui.py; builds cli.py.

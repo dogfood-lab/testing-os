@@ -36,7 +36,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "853e3319290b6d5e877971ada2c2dedbb66fd823236c55ee1c355c5455502c80",
+          "hash": "6bb97170f482497e53f7f4e16ec3d5830ea86ab5794cc14b1eb77c2a75466ea9",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -206,7 +206,8 @@
             "packages/schema/src/index.ts",
             "packages/test-kit/src/index.ts"
           ],
-          "path": "packages/asset-index/test/index.test.ts"
+          "path": "packages/asset-index/test/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "07cf970893a82f70d0901499aefe264dadeb808f9129f07fc560ccd77671130e",
@@ -224,6 +225,9 @@
       "name": "asset-index",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 13,
       "unresolvedSites": 0
     },
@@ -383,7 +387,8 @@
             "packages/schema/src/index.ts",
             "packages/test-kit/src/index.ts"
           ],
-          "path": "packages/audio-engine/test/index.test.ts"
+          "path": "packages/audio-engine/test/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0991eaeb6692786cc6d9bc991b174b70871da4bf6ada1cd545c3f0de2b72d7ac",
@@ -395,7 +400,8 @@
             "packages/audio-engine/src/sample-player.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/audio-engine/test/sample-player.test.ts"
+          "path": "packages/audio-engine/test/sample-player.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9bec0b3614013967981fcdcae17987a475444124d18541009ecfba78ed17e51e",
@@ -413,6 +419,9 @@
       "name": "audio-engine",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 19,
       "unresolvedSites": 0
     },
@@ -525,6 +534,13 @@
             "interpolate",
             "sampleLane"
           ],
+          "failurePaths": [
+            {
+              "in": "sampleLane",
+              "kind": "throw",
+              "line": 65
+            }
+          ],
           "hash": "0026f6750728566c5b92c9287c7968095f1c57710efdd2326016744708f6168e",
           "importsFiles": [
             "packages/schema/src/index.ts"
@@ -571,14 +587,16 @@
             "packages/automation/src/interpolate.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/automation/test/edge-cases.test.ts"
+          "path": "packages/automation/test/edge-cases.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "642694f2d7b04dc95382463db6dc9acc7f8d808d2415188c599c54e03b851256",
           "importsFiles": [
             "packages/automation/src/index.ts"
           ],
-          "path": "packages/automation/test/index.test.ts"
+          "path": "packages/automation/test/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ce4657ec902b33007dff965151b559bae1a8dda0f63e92fcc9db0ec00d58c571",
@@ -596,6 +614,9 @@
       "name": "automation",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 15,
       "unresolvedSites": 0
     },
@@ -648,6 +669,13 @@
         {
           "exports": [
             "resolveClipNotes"
+          ],
+          "failurePaths": [
+            {
+              "in": "stop",
+              "kind": "catch",
+              "line": 71
+            }
           ],
           "hash": "6adedf761fc2060f444f167b9c298ae7dd2a355bc294963a6c080a33b3ad1fd4",
           "importOrder": [
@@ -748,6 +776,13 @@
             "planGeneratedCuePlayback",
             "planGeneratedSectionTransitions"
           ],
+          "failurePaths": [
+            {
+              "in": "planGeneratedCuePlayback",
+              "kind": "throw",
+              "line": 55
+            }
+          ],
           "hash": "90c26dda2a5e02408c14828c34e268d0399020899a54dc02e76e56ac6c6f0213",
           "importOrder": [
             "packages/schema/src/index.ts",
@@ -816,6 +851,38 @@
             "readVLQ",
             "writeVLQ"
           ],
+          "failurePaths": [
+            {
+              "in": "readVLQ",
+              "kind": "throw",
+              "line": 21
+            },
+            {
+              "in": "readVLQ",
+              "kind": "throw",
+              "line": 28
+            },
+            {
+              "in": "writeVLQ",
+              "kind": "throw",
+              "line": 36
+            },
+            {
+              "in": "parseMidi",
+              "kind": "throw",
+              "line": 73
+            },
+            {
+              "in": "parseMidi",
+              "kind": "throw",
+              "line": 92
+            },
+            {
+              "in": "parseMidi",
+              "kind": "throw",
+              "line": 109
+            }
+          ],
           "hash": "a00935c0a1095172040ed9db6a56d121e3bfc3663eddafb5f469bd3fb663c293",
           "importOrder": [
             "packages/schema/src/index.ts",
@@ -882,7 +949,8 @@
             "packages/instrument-rack/src/index.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/clip-engine/test/clip-player.test.ts"
+          "path": "packages/clip-engine/test/clip-player.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3bed3a48438a31a9223ea5cc09eaa1e650f4f0946e1173f139d08d073c2067e5",
@@ -896,7 +964,8 @@
             "packages/music-theory/src/index.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/clip-engine/test/clip-transforms.test.ts"
+          "path": "packages/clip-engine/test/clip-transforms.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3f651dc73907cec1d5afd4e2a7dfce6683de3cc5f8b135e58faaaa3c7d058a43",
@@ -908,14 +977,16 @@
             "packages/clip-engine/src/index.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/clip-engine/test/cue-scheduler.test.ts"
+          "path": "packages/clip-engine/test/cue-scheduler.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d8bbdb5ef857780fbfe70a9ac827234f9655e232ccc0cb2027fd35fc5ee0b8b4",
           "importsFiles": [
             "packages/clip-engine/src/drum-patterns.ts"
           ],
-          "path": "packages/clip-engine/test/drum-patterns.test.ts"
+          "path": "packages/clip-engine/test/drum-patterns.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0d7327bfb6cc4da3d7eda611668e1af1814fafde6c380d5bc9653070f938525a",
@@ -927,7 +998,8 @@
             "packages/clip-engine/src/generated-playback.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/clip-engine/test/generated-playback.test.ts"
+          "path": "packages/clip-engine/test/generated-playback.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5feff7e9f9a23d1a16c88c3e7df1dbc57e73af85dc5c21ce3b8cfff92a087151",
@@ -939,7 +1011,8 @@
             "packages/clip-engine/src/loop-region.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/clip-engine/test/loop-region.test.ts"
+          "path": "packages/clip-engine/test/loop-region.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f437706ff7468bf23c73807dfb5cc60c0ff2a4fd898ff66a2f8fd81af94600ff",
@@ -955,7 +1028,8 @@
             "packages/clip-engine/src/types.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/clip-engine/test/midi.test.ts"
+          "path": "packages/clip-engine/test/midi.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e73bdc2ec9c4bbd9652856a90b89c5da9afd275e62e75b0b30d5d1f4ad844d01",
@@ -963,7 +1037,8 @@
             "packages/clip-engine/src/scene-clip-player.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/clip-engine/test/scene-clip-player.test.ts"
+          "path": "packages/clip-engine/test/scene-clip-player.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "696e86353fadb988265b81c7ce953b8a0ce70ba685ae5c34507eb394ecb2c116",
@@ -971,7 +1046,8 @@
             "packages/clip-engine/src/scheduler.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/clip-engine/test/scheduler.test.ts"
+          "path": "packages/clip-engine/test/scheduler.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2f05fac36b589d09b65e6b83f2b9ca497fcf75797225ab1bf275c2642907f4a4",
@@ -989,6 +1065,9 @@
       "name": "clip-engine",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 30,
       "unresolvedSites": 0
     },
@@ -1272,6 +1351,13 @@
           "exports": [
             "pitchToDrum"
           ],
+          "failurePaths": [
+            {
+              "in": "stop",
+              "kind": "catch",
+              "line": 231
+            }
+          ],
           "hash": "7c224cfad8dac0adb11b2fbe41f822dfa9506f10bd471ef2e4016a5ab31052c1",
           "importsFiles": [
             "packages/instrument-rack/src/types.ts"
@@ -1338,6 +1424,13 @@
           "path": "packages/instrument-rack/src/rack.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "stop",
+              "kind": "catch",
+              "line": 113
+            }
+          ],
           "hash": "03a82395bf96fb486972e43a0ba4ec80e7dcd7a71ff877864cac2f9580d5cb84",
           "importOrder": [
             "packages/schema/src/index.ts",
@@ -1357,6 +1450,13 @@
           "path": "packages/instrument-rack/src/scifi-presets.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "stop",
+              "kind": "catch",
+              "line": 229
+            }
+          ],
           "hash": "86c142db00c20859cb6115f3700f0244453380f57d7d2365340091083583e026",
           "importOrder": [
             "packages/schema/src/index.ts",
@@ -1383,7 +1483,8 @@
           "importsFiles": [
             "packages/instrument-rack/src/presets.ts"
           ],
-          "path": "packages/instrument-rack/test/presets.test.ts"
+          "path": "packages/instrument-rack/test/presets.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "185efa0f30139272dd0ebd6eab7ed9e71d2456d090ffb732cf584c3ec34afea9",
@@ -1395,7 +1496,8 @@
             "packages/instrument-rack/src/presets.ts",
             "packages/instrument-rack/src/rack.ts"
           ],
-          "path": "packages/instrument-rack/test/rack.test.ts"
+          "path": "packages/instrument-rack/test/rack.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ab024f756635796c44480bde089b1dc3bcda56e1a825ead8f7bc7d7b28d02a94",
@@ -1409,21 +1511,24 @@
             "packages/instrument-rack/src/sample-voice.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/instrument-rack/test/sample-voice.test.ts"
+          "path": "packages/instrument-rack/test/sample-voice.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c1e1718c50a4c25c318486d3e69e367b4990cd22d525c13a264fa24b0761beeb",
           "importsFiles": [
             "packages/instrument-rack/src/index.ts"
           ],
-          "path": "packages/instrument-rack/test/scifi-presets.test.ts"
+          "path": "packages/instrument-rack/test/scifi-presets.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "53d6b51fc2b115ce39edc33227071ebe362b6bcf7778e105576dfe37c61311e1",
           "importsFiles": [
             "packages/instrument-rack/src/synth-voice.ts"
           ],
-          "path": "packages/instrument-rack/test/synth-voice.test.ts"
+          "path": "packages/instrument-rack/test/synth-voice.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "77ecb91d6b791e0f8ce5cd0fb79e30d5630db0a691d18bee00d7f852ff9737af",
@@ -1451,6 +1556,9 @@
       ],
       "outsideReads": 2,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 30,
       "unresolvedSites": 0
     },
@@ -1610,7 +1718,8 @@
             "packages/library/src/index.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/library/test/index.test.ts"
+          "path": "packages/library/test/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ce4657ec902b33007dff965151b559bae1a8dda0f63e92fcc9db0ec00d58c571",
@@ -1628,6 +1737,9 @@
       "name": "library",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 13,
       "unresolvedSites": 0
     },
@@ -1816,14 +1928,16 @@
           "importsFiles": [
             "packages/music-theory/src/scales.ts"
           ],
-          "path": "packages/music-theory/test/edge-cases.test.ts"
+          "path": "packages/music-theory/test/edge-cases.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a73fbcbc6adcfc9ec71c639f23f0eb8f02666d43556598c666ad4176593e754b",
           "importsFiles": [
             "packages/music-theory/src/index.ts"
           ],
-          "path": "packages/music-theory/test/music-theory.test.ts"
+          "path": "packages/music-theory/test/music-theory.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "07cf970893a82f70d0901499aefe264dadeb808f9129f07fc560ccd77671130e",
@@ -1841,6 +1955,9 @@
       "name": "music-theory",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 16,
       "unresolvedSites": 0
     },
@@ -1911,6 +2028,18 @@
             "createFxNodes",
             "disposeFxNodes"
           ],
+          "failurePaths": [
+            {
+              "in": "createFxNodes",
+              "kind": "throw",
+              "line": 445
+            },
+            {
+              "in": "disposeFxNodes",
+              "kind": "catch",
+              "line": 455
+            }
+          ],
           "hash": "493ee230830b6e750bbff1e4581ea1ef86981d46c8910814271cb279e34f5c80",
           "importsFiles": [
             "packages/playback-engine/src/mixer-types.ts"
@@ -1951,6 +2080,48 @@
           "reexportsOnly": true
         },
         {
+          "failurePaths": [
+            {
+              "in": "processAsset",
+              "kind": "catch",
+              "line": 64
+            },
+            {
+              "in": "loadStingerAsset",
+              "kind": "catch",
+              "line": 100
+            },
+            {
+              "in": "loadAsset",
+              "kind": "catch",
+              "line": 127
+            },
+            {
+              "in": "loadAsset",
+              "kind": "throw",
+              "line": 131
+            },
+            {
+              "in": "loadAsset",
+              "kind": "throw",
+              "line": 135
+            },
+            {
+              "in": "loadAsset",
+              "kind": "throw",
+              "line": 141
+            },
+            {
+              "in": "loadAsset",
+              "kind": "throw",
+              "line": 154
+            },
+            {
+              "in": "loadAsset",
+              "kind": "throw",
+              "line": 161
+            }
+          ],
           "hash": "5b442c6680d922f54ce5597583975b75d432bcb02d93e391919512ead3381ad1",
           "importOrder": [
             "packages/schema/src/index.ts",
@@ -1970,6 +2141,58 @@
           "path": "packages/playback-engine/src/mixer-types.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "disconnectStem",
+              "kind": "catch",
+              "line": 126
+            },
+            {
+              "in": "disconnectStem",
+              "kind": "catch",
+              "line": 133
+            },
+            {
+              "in": "disconnectStem",
+              "kind": "catch",
+              "line": 138
+            },
+            {
+              "in": "setStemBus",
+              "kind": "catch",
+              "line": 172
+            },
+            {
+              "in": "dispose",
+              "kind": "catch",
+              "line": 377
+            },
+            {
+              "in": "dispose",
+              "kind": "catch",
+              "line": 383
+            },
+            {
+              "in": "rebuildStemFxChain",
+              "kind": "catch",
+              "line": 398
+            },
+            {
+              "in": "rebuildStemFxChain",
+              "kind": "catch",
+              "line": 411
+            },
+            {
+              "in": "rebuildBusFxChain",
+              "kind": "catch",
+              "line": 430
+            },
+            {
+              "in": "rebuildBusFxChain",
+              "kind": "catch",
+              "line": 436
+            }
+          ],
           "hash": "3bdde9478b283aebbff06fcbc5cbcc8725faf7719b623d960f9773377bfed7d2",
           "importOrder": [
             "packages/playback-engine/src/mixer-types.ts",
@@ -1986,6 +2209,13 @@
         {
           "exports": [
             "encodeWav"
+          ],
+          "failurePaths": [
+            {
+              "in": "render",
+              "kind": "throw",
+              "line": 47
+            }
           ],
           "hash": "c91c1307767528e7be42edf4dc95a034e8db51270c86addd3c10dbe2711d9430",
           "importOrder": [
@@ -2013,6 +2243,18 @@
         {
           "exports": [
             "dbToGain"
+          ],
+          "failurePaths": [
+            {
+              "in": "setMixer",
+              "kind": "catch",
+              "line": 65
+            },
+            {
+              "in": "stopAll",
+              "kind": "catch",
+              "line": 299
+            }
           ],
           "hash": "fa2ea0d2eef61ee408ed9a6658cdb0d57c3e3ddc5c63f6bf84ea9349f6661208",
           "importOrder": [
@@ -2062,6 +2304,13 @@
             "stemExportPath",
             "stemRoleToExportRole"
           ],
+          "failurePaths": [
+            {
+              "in": "buildStemExportManifest",
+              "kind": "throw",
+              "line": 67
+            }
+          ],
           "hash": "94893d1d486c17880ff32509f20fec6202b21b2f3849d3c3b300587f1da83a33",
           "importOrder": [
             "packages/schema/src/index.ts",
@@ -2076,6 +2325,28 @@
           "path": "packages/playback-engine/src/stem-export.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "cancel",
+              "kind": "catch",
+              "line": 86
+            },
+            {
+              "in": "cancel",
+              "kind": "catch",
+              "line": 94
+            },
+            {
+              "in": "cancel",
+              "kind": "catch",
+              "line": 99
+            },
+            {
+              "in": "stingerThenSwitch",
+              "kind": "catch",
+              "line": 315
+            }
+          ],
           "hash": "bacdc1b23063a81a4d53cff6d454b4dbd924c911cbb1460906b4cf0aa2955354",
           "importOrder": [
             "packages/schema/src/index.ts",
@@ -2096,6 +2367,63 @@
           "path": "packages/playback-engine/src/transition-player.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "ensureContext",
+              "kind": "catch",
+              "line": 65
+            },
+            {
+              "in": "ensureContext",
+              "kind": "throw",
+              "line": 70
+            },
+            {
+              "in": "ensureResumed",
+              "kind": "catch",
+              "line": 128
+            },
+            {
+              "in": "ensureResumed",
+              "kind": "throw",
+              "line": 133
+            },
+            {
+              "in": "playScene",
+              "kind": "catch",
+              "line": 152
+            },
+            {
+              "in": "switchScene",
+              "kind": "catch",
+              "line": 173
+            },
+            {
+              "in": "playSequence",
+              "kind": "catch",
+              "line": 190
+            },
+            {
+              "in": "stopMetronome",
+              "kind": "catch",
+              "line": 299
+            },
+            {
+              "in": "playCue",
+              "kind": "catch",
+              "line": 332
+            },
+            {
+              "in": "jumpToSection",
+              "kind": "catch",
+              "line": 349
+            },
+            {
+              "in": "emit",
+              "kind": "catch",
+              "line": 582
+            }
+          ],
           "hash": "a3fee804005c4296e898de3142eba7759ea5a12cf99aaf1479da089703d93b67",
           "importOrder": [
             "packages/schema/src/index.ts",
@@ -2141,7 +2469,8 @@
             "packages/playback-engine/src/transition-player.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/playback-engine/test/cue-player.test.ts"
+          "path": "packages/playback-engine/test/cue-player.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0c4a332e326d26b29be335bdacee7dd38a74bb45a1a2e00cca95211141f8e0a5",
@@ -2153,7 +2482,8 @@
             "packages/playback-engine/src/fx.ts",
             "packages/playback-engine/src/mixer-types.ts"
           ],
-          "path": "packages/playback-engine/test/fx.test.ts"
+          "path": "packages/playback-engine/test/fx.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d24944102d0db554125d4fb0b0823dec0b320c9eb0b62023157c9b6d3884e465",
@@ -2167,14 +2497,16 @@
             "packages/schema/src/index.ts",
             "packages/test-kit/src/index.ts"
           ],
-          "path": "packages/playback-engine/test/loader.test.ts"
+          "path": "packages/playback-engine/test/loader.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5c5bfc2993a264d82ea060cc70d76ae861c51f17e02dd8f83324060ccb517b00",
           "importsFiles": [
             "packages/playback-engine/src/transport.ts"
           ],
-          "path": "packages/playback-engine/test/metronome.test.ts"
+          "path": "packages/playback-engine/test/metronome.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9417bd2c35cda7c413116242a260517af4d61d3a408f739f814ff33d1949ec23",
@@ -2200,7 +2532,8 @@
             "packages/schema/src/index.ts",
             "packages/test-kit/src/index.ts"
           ],
-          "path": "packages/playback-engine/test/playback-engine.test.ts"
+          "path": "packages/playback-engine/test/playback-engine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9c989277529a358b23755ee37ac18a28ad7ae4a67fc0c13f318356fd15c86d01",
@@ -2212,7 +2545,8 @@
             "packages/playback-engine/src/stem-export.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/playback-engine/test/stem-export.test.ts"
+          "path": "packages/playback-engine/test/stem-export.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0617c9e8be02a58b6471954fdfcfbd67a0bd02c45a7651fed9143209590ac79d",
@@ -2234,7 +2568,8 @@
             "packages/schema/src/index.ts",
             "packages/test-kit/src/index.ts"
           ],
-          "path": "packages/playback-engine/test/transition-player.test.ts"
+          "path": "packages/playback-engine/test/transition-player.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a385bdb7a25d959579436f3c7ddb7872b1f9426d33fa31c42316c3f7d99181b2",
@@ -2250,14 +2585,16 @@
             "packages/schema/src/index.ts",
             "packages/test-kit/src/index.ts"
           ],
-          "path": "packages/playback-engine/test/transport.test.ts"
+          "path": "packages/playback-engine/test/transport.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "508c05d884fc5f5dced97addeea7db4dd648f0e3ab6fe93a1494907b8008ab51",
           "importsFiles": [
             "packages/playback-engine/src/renderer.ts"
           ],
-          "path": "packages/playback-engine/test/wav-encoder.test.ts"
+          "path": "packages/playback-engine/test/wav-encoder.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f325db2a8fe027ff28fd47167d89911b4d85786475172500aff58de53379bc4c",
@@ -2285,6 +2622,9 @@
       ],
       "outsideReads": 28,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 25,
       "unresolvedSites": 0
     },
@@ -2526,7 +2866,8 @@
             "packages/schema/src/index.ts",
             "packages/test-kit/src/index.ts"
           ],
-          "path": "packages/review/test/index.test.ts"
+          "path": "packages/review/test/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "07cf970893a82f70d0901499aefe264dadeb808f9129f07fc560ccd77671130e",
@@ -2544,6 +2885,9 @@
       "name": "review",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 14,
       "unresolvedSites": 0
     },
@@ -2618,6 +2962,10 @@
         {
           "hash": "e0a871adaf0449870b87d56d015c1ae206a3bfe1853108136c4b61cd0b65b98f",
           "path": "SHIP_GATE.md"
+        },
+        {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
         },
         {
           "hash": "2eaed4adec24adefaefa5ee059074c38dd4fe60004bd6c43bf441281a05a47d2",
@@ -2719,6 +3067,13 @@
         {
           "exports": [
             "exportRuntimePack"
+          ],
+          "failurePaths": [
+            {
+              "in": "exportRuntimePack",
+              "kind": "throw",
+              "line": 44
+            }
           ],
           "hash": "696b3aceac1c22b79b8fe1ab9000da04c061fdb0129612627579f6e5d7bd52eb",
           "importOrder": [
@@ -2825,7 +3180,8 @@
             "packages/schema/src/index.ts",
             "packages/test-kit/src/index.ts"
           ],
-          "path": "packages/runtime-pack/test/index.test.ts"
+          "path": "packages/runtime-pack/test/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8e95b3e8c6d5087878ade7f7f8f3aacbf57ddd1c060fa849e42f97b6e92a8b71",
@@ -2833,7 +3189,8 @@
             "packages/runtime-pack/src/types.ts",
             "packages/runtime-pack/src/validate.ts"
           ],
-          "path": "packages/runtime-pack/test/validate.test.ts"
+          "path": "packages/runtime-pack/test/validate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "07cf970893a82f70d0901499aefe264dadeb808f9129f07fc560ccd77671130e",
@@ -2851,6 +3208,9 @@
       "name": "runtime-pack",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 16,
       "unresolvedSites": 0
     },
@@ -2913,6 +3273,73 @@
             "runCloudGraph",
             "submitPrompt"
           ],
+          "failurePaths": [
+            {
+              "in": "submitPrompt",
+              "kind": "throw",
+              "line": 96
+            },
+            {
+              "in": "submitPrompt",
+              "kind": "throw",
+              "line": 102
+            },
+            {
+              "in": "submitPrompt",
+              "kind": "throw",
+              "line": 114
+            },
+            {
+              "in": "submitPrompt",
+              "kind": "throw",
+              "line": 121
+            },
+            {
+              "in": "submitPrompt",
+              "kind": "throw",
+              "line": 124
+            },
+            {
+              "in": "getJobStatus",
+              "kind": "throw",
+              "line": 138
+            },
+            {
+              "in": "getJobStatus",
+              "kind": "throw",
+              "line": 145
+            },
+            {
+              "in": "pollJob",
+              "kind": "throw",
+              "line": 162
+            },
+            {
+              "in": "pollJob",
+              "kind": "throw",
+              "line": 166
+            },
+            {
+              "in": "getJobDetail",
+              "kind": "throw",
+              "line": 180
+            },
+            {
+              "in": "downloadView",
+              "kind": "throw",
+              "line": 208
+            },
+            {
+              "in": "downloadView",
+              "kind": "throw",
+              "line": 212
+            },
+            {
+              "in": "downloadView",
+              "kind": "throw",
+              "line": 217
+            }
+          ],
           "hash": "18c179f80900b2b85b58ccbcf033aca041b5785a3a573fdecb49194d09dc72ef",
           "importOrder": [
             "packages/schema/src/index.ts",
@@ -2936,6 +3363,13 @@
             "decodeFlacPcm",
             "releaseFlacDecoder"
           ],
+          "failurePaths": [
+            {
+              "in": "decodeFlacPcm",
+              "kind": "throw",
+              "line": 81
+            }
+          ],
           "hash": "084e0ee645f25926222f35c2f0fa032bf57f083714ed615867a30445dd208f7e",
           "path": "packages/sample-lab/src/generation/decode.ts"
         },
@@ -2947,6 +3381,33 @@
           "exports": [
             "durationMsFromStreamInfo",
             "parseFlacStreamInfo"
+          ],
+          "failurePaths": [
+            {
+              "in": "parseFlacStreamInfo",
+              "kind": "throw",
+              "line": 19
+            },
+            {
+              "in": "parseFlacStreamInfo",
+              "kind": "throw",
+              "line": 27
+            },
+            {
+              "in": "parseFlacStreamInfo",
+              "kind": "throw",
+              "line": 32
+            },
+            {
+              "in": "parseFlacStreamInfo",
+              "kind": "throw",
+              "line": 39
+            },
+            {
+              "in": "parseFlacStreamInfo",
+              "kind": "throw",
+              "line": 59
+            }
           ],
           "hash": "c4c759da177f23d18b523a69edca973fafe9c24f634e69a45317df21dd3eaa49",
           "importsFiles": [
@@ -3013,6 +3474,13 @@
             "ingestAllGrounded",
             "ingestGroundedTake"
           ],
+          "failurePaths": [
+            {
+              "in": "generationParamsForTake",
+              "kind": "throw",
+              "line": 49
+            }
+          ],
           "hash": "8332a995c3db12bf3ea36422b6b93f5e04994664feef58675f8c48256cf96e76",
           "importOrder": [
             "packages/schema/src/index.ts",
@@ -3040,6 +3508,38 @@
             "loadLibraryPlans",
             "selectPlaybackDefaults"
           ],
+          "failurePaths": [
+            {
+              "in": "loadLibraryPlans",
+              "kind": "throw",
+              "line": 125
+            },
+            {
+              "in": "jobIdForTake",
+              "kind": "throw",
+              "line": 146
+            },
+            {
+              "in": "jobIdForTake",
+              "kind": "throw",
+              "line": 149
+            },
+            {
+              "in": "generationParamsForLibraryTake",
+              "kind": "throw",
+              "line": 171
+            },
+            {
+              "in": "libraryTakeArtifactDir",
+              "kind": "throw",
+              "line": 250
+            },
+            {
+              "in": "ingestLibraryPack",
+              "kind": "catch",
+              "line": 341
+            }
+          ],
           "hash": "e49cd238f364320381c861164fc78f42f9a22ab2d2314a51f019d22e7006ec43",
           "importOrder": [
             "packages/schema/src/index.ts",
@@ -3059,6 +3559,53 @@
           "exports": [
             "deriveIngestResult",
             "ingestRunArtifact"
+          ],
+          "failurePaths": [
+            {
+              "in": "mergeGeneration",
+              "kind": "throw",
+              "line": 95
+            },
+            {
+              "in": "toRuntimePcm",
+              "kind": "throw",
+              "line": 129
+            },
+            {
+              "in": "loadCachedIngest",
+              "kind": "catch",
+              "line": 190
+            },
+            {
+              "in": "assertNoVocalBleed",
+              "kind": "throw",
+              "line": 270
+            },
+            {
+              "in": "deriveIngestResult",
+              "kind": "throw",
+              "line": 325
+            },
+            {
+              "in": "deriveIngestResult",
+              "kind": "throw",
+              "line": 341
+            },
+            {
+              "in": "ingestRunArtifact",
+              "kind": "throw",
+              "line": 439
+            },
+            {
+              "in": "ingestRunArtifact",
+              "kind": "throw",
+              "line": 487
+            },
+            {
+              "in": "ingestRunArtifact",
+              "kind": "throw",
+              "line": 526
+            }
           ],
           "hash": "4fec25657462b36616c9f165c9d42eb7bfb4f3e0c22352c17a524708ed69006d",
           "importOrder": [
@@ -3106,6 +3653,13 @@
           "exports": [
             "parseIntegratedLufs"
           ],
+          "failurePaths": [
+            {
+              "in": "parseIntegratedLufs",
+              "kind": "throw",
+              "line": 10
+            }
+          ],
           "hash": "7ffa6c5c598a6f6828ae75c982035f5c494057dfc958c0866f60472b01e90ffc",
           "importsFiles": [
             "packages/sample-lab/src/generation/errors.ts"
@@ -3134,6 +3688,18 @@
             "populateDemoPacks",
             "renderMixdown",
             "renderSfx"
+          ],
+          "failurePaths": [
+            {
+              "in": "toStereo",
+              "kind": "throw",
+              "line": 124
+            },
+            {
+              "in": "sumStereo",
+              "kind": "throw",
+              "line": 133
+            }
           ],
           "hash": "06b1cd9c21448956f1a86766624503fe27668c1e77c37393165d08cfa168ca74",
           "importsFiles": [
@@ -3168,6 +3734,13 @@
             "resamplePlanar",
             "resampledSampleCount"
           ],
+          "failurePaths": [
+            {
+              "in": "resampleChannel",
+              "kind": "throw",
+              "line": 73
+            }
+          ],
           "hash": "bc0ba3ef3ae26e30b0b159a36358a6ec8aff2abc159ee7a4e7b728377f90b878",
           "importsFiles": [
             "packages/sample-lab/src/generation/constants.ts",
@@ -3188,6 +3761,33 @@
           "path": "packages/sample-lab/src/generation/run-ingest-grounded.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "parseArgs",
+              "kind": "throw",
+              "line": 81
+            },
+            {
+              "in": "parseArgs",
+              "kind": "throw",
+              "line": 86
+            },
+            {
+              "in": "parseArgs",
+              "kind": "throw",
+              "line": 94
+            },
+            {
+              "in": "parseArgs",
+              "kind": "throw",
+              "line": 99
+            },
+            {
+              "in": "parseArgs",
+              "kind": "throw",
+              "line": 104
+            }
+          ],
           "hash": "7dbb9957df5e59be821f7d0676db7e765d3f4cc7c4ea2ce76ce5bc6082025502",
           "importOrder": [
             "packages/score-map/src/index.ts",
@@ -3210,6 +3810,23 @@
           "exports": [
             "scanRunArtifact"
           ],
+          "failurePaths": [
+            {
+              "in": "scanRunArtifact",
+              "kind": "throw",
+              "line": 39
+            },
+            {
+              "in": "scanRunArtifact",
+              "kind": "throw",
+              "line": 58
+            },
+            {
+              "in": "scanRunArtifact",
+              "kind": "throw",
+              "line": 68
+            }
+          ],
           "hash": "1a51eeacb807e8627ac7e792160666d78a2f08414111a4674edff039eaee1ee0",
           "importOrder": [
             "packages/schema/src/index.ts",
@@ -3227,6 +3844,18 @@
             "assertStemSampleCountsEqual",
             "isNearSilent",
             "rmsOf"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertStemSampleCountsEqual",
+              "kind": "throw",
+              "line": 39
+            },
+            {
+              "in": "assertStemDurationsMatchMix",
+              "kind": "throw",
+              "line": 56
+            }
           ],
           "hash": "818ab81705dce8d6c0134ea124f9f2c1e9553500dafd262472932eabb96d3891",
           "importOrder": [
@@ -3357,7 +3986,8 @@
           "importsFiles": [
             "packages/sample-lab/src/index.ts"
           ],
-          "path": "packages/sample-lab/test/cloud-run.test.ts"
+          "path": "packages/sample-lab/test/cloud-run.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e1f564881053b31d499b5bfe1c3adb433c9ab2e2b27714fb2615bd358191601e",
@@ -3371,7 +4001,8 @@
             "packages/schema/src/index.ts",
             "packages/score-map/src/index.ts"
           ],
-          "path": "packages/sample-lab/test/generation.test.ts"
+          "path": "packages/sample-lab/test/generation.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "89ac9fdf6a7b4b53362cb97b4da97f4e8abd76fc5a6a73e2a58b32bf0d9d7e2f",
@@ -3391,7 +4022,8 @@
             "packages/sample-lab/src/trim.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/sample-lab/test/index.test.ts"
+          "path": "packages/sample-lab/test/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ef73ba84137a64c37bf6022d88f8621ef73bc41a1add5bd82da4b50deff53b52",
@@ -3420,6 +4052,9 @@
       "outsideReads": 7,
       "outsideWrites": 12,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 15,
       "unresolvedSites": 0
     },
@@ -3669,7 +4304,8 @@
             "packages/scene-mapper/src/game-state.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/scene-mapper/test/game-state.test.ts"
+          "path": "packages/scene-mapper/test/game-state.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4a4e49f8206ada1adeb12e5fef887d05e0d08676ef4c06ecbe76de625eff6a3d",
@@ -3683,7 +4319,8 @@
             "packages/scene-mapper/src/index.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/scene-mapper/test/grounded-automation.test.ts"
+          "path": "packages/scene-mapper/test/grounded-automation.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6416ec1d33f4b509079469d45d83044daeb9bf52af1a86ff603561fb4d076b56",
@@ -3695,7 +4332,8 @@
             "packages/instrument-rack/src/index.ts",
             "packages/scene-mapper/src/index.ts"
           ],
-          "path": "packages/scene-mapper/test/grounded-clips.test.ts"
+          "path": "packages/scene-mapper/test/grounded-clips.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "426dd144c9e218ea8f4d1faac2d92c99a6da53992e933884ecca3c18abaec7ef",
@@ -3707,7 +4345,8 @@
             "packages/clip-engine/src/index.ts",
             "packages/scene-mapper/src/index.ts"
           ],
-          "path": "packages/scene-mapper/test/grounded-cues.test.ts"
+          "path": "packages/scene-mapper/test/grounded-cues.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7a8c840cf5a3618ef5a165b67fff1c7a6f2c9aafb8c90a800016719f507edb4c",
@@ -3721,7 +4360,8 @@
             "packages/runtime-pack/src/index.ts",
             "packages/scene-mapper/src/index.ts"
           ],
-          "path": "packages/scene-mapper/test/grounded-export.test.ts"
+          "path": "packages/scene-mapper/test/grounded-export.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4bd8fc145dc0e25c6f97b9e11d895c1e435a5a12202d60b80d8f5cabffca268f",
@@ -3733,14 +4373,16 @@
             "packages/instrument-rack/src/index.ts",
             "packages/scene-mapper/src/index.ts"
           ],
-          "path": "packages/scene-mapper/test/grounded-instrument-resolution.test.ts"
+          "path": "packages/scene-mapper/test/grounded-instrument-resolution.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8ec743de2454a9fee38813052a090c873ba819d0f4fbbb34bc6301bebb38df36",
           "importsFiles": [
             "packages/scene-mapper/src/index.ts"
           ],
-          "path": "packages/scene-mapper/test/grounded-pack.test.ts"
+          "path": "packages/scene-mapper/test/grounded-pack.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "df12945eb6bc4c5f76d27db7eb69c736f327321169d1f20a0bd30222cde03ebc",
@@ -3754,7 +4396,8 @@
             "packages/schema/src/index.ts",
             "packages/test-kit/src/index.ts"
           ],
-          "path": "packages/scene-mapper/test/index.test.ts"
+          "path": "packages/scene-mapper/test/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "11e20f72be4fa109afe894660a0a0cc22d25c84b87be18da9f95492d58edffbe",
@@ -3766,7 +4409,8 @@
             "packages/scene-mapper/src/simulation.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/scene-mapper/test/simulation.test.ts"
+          "path": "packages/scene-mapper/test/simulation.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c1298debdf71fed2a82b4df23bd6cc019751bd023472e6c0a362c2c0511471da",
@@ -3778,7 +4422,8 @@
             "packages/scene-mapper/src/stingers.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/scene-mapper/test/stingers.test.ts"
+          "path": "packages/scene-mapper/test/stingers.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "07cf970893a82f70d0901499aefe264dadeb808f9129f07fc560ccd77671130e",
@@ -3806,6 +4451,9 @@
       ],
       "outsideReads": 2,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 34,
       "unresolvedSites": 0
     },
@@ -3941,7 +4589,8 @@
           "importsFiles": [
             "packages/schema/src/index.ts"
           ],
-          "path": "packages/schema/test/index.test.ts"
+          "path": "packages/schema/test/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c8347e1eda364aecf8618b117ff4a9d6b3e646ed559e5e8234825ef993b4316d",
@@ -3953,11 +4602,13 @@
             "packages/schema/src/index.ts",
             "packages/test-kit/src/index.ts"
           ],
-          "path": "packages/schema/test/schema.test.ts"
+          "path": "packages/schema/test/schema.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9b6d3b4dba70637da275ef7b8af7a29e7df007bf4cf4c32fb795b58b02493486",
-          "path": "packages/schema/test/workspace-health.test.ts"
+          "path": "packages/schema/test/workspace-health.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "07cf970893a82f70d0901499aefe264dadeb808f9129f07fc560ccd77671130e",
@@ -3975,6 +4626,9 @@
       "name": "schema",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 61,
       "unresolvedSites": 0
     },
@@ -4040,6 +4694,33 @@
             "sharedMotifs",
             "sharedScenes"
           ],
+          "failurePaths": [
+            {
+              "in": "assertRecordMatchesFamilyLock",
+              "kind": "throw",
+              "line": 33
+            },
+            {
+              "in": "assertRecordMatchesFamilyLock",
+              "kind": "throw",
+              "line": 52
+            },
+            {
+              "in": "lockCueFamily",
+              "kind": "throw",
+              "line": 73
+            },
+            {
+              "in": "attachGeneratedCueRecord",
+              "kind": "throw",
+              "line": 89
+            },
+            {
+              "in": "attachGeneratedCueRecord",
+              "kind": "throw",
+              "line": 96
+            }
+          ],
           "hash": "d601d64839519c40b34fe400955d5e59b956839b17161cf270304990c76a80b8",
           "importsFiles": [
             "packages/schema/src/index.ts"
@@ -4079,6 +4760,13 @@
           "exports": [
             "foldGeneratedIntoPack"
           ],
+          "failurePaths": [
+            {
+              "in": "foldGeneratedIntoPack",
+              "kind": "throw",
+              "line": 40
+            }
+          ],
           "hash": "6fb2e4334d59f5ed84af24923c5a26dd9ec45ca08ac553e1199366a98d3b4425",
           "importsFiles": [
             "packages/schema/src/index.ts",
@@ -4114,6 +4802,13 @@
             "lockKeyscale",
             "specForFamily",
             "styleTagsFor"
+          ],
+          "failurePaths": [
+            {
+              "in": "styleTagsFor",
+              "kind": "throw",
+              "line": 73
+            }
           ],
           "hash": "611055235fe1d91735fe8967734168f5e10b6bc64831cd167d564e2deb38c2d8",
           "importsFiles": [
@@ -4205,6 +4900,28 @@
             "libraryTakesForPack",
             "libraryTransitions"
           ],
+          "failurePaths": [
+            {
+              "in": "libraryPackTier",
+              "kind": "throw",
+              "line": 161
+            },
+            {
+              "in": "tierArtifactRoot",
+              "kind": "throw",
+              "line": 551
+            },
+            {
+              "in": "libraryTakesForPack",
+              "kind": "throw",
+              "line": 646
+            },
+            {
+              "in": "libraryTakes",
+              "kind": "throw",
+              "line": 674
+            }
+          ],
           "hash": "dca138772fc1bac356f7a6cca002149c3bc01024ae89c1f19db56a5d93ab328c",
           "importsFiles": [
             "packages/schema/src/index.ts",
@@ -4265,14 +4982,16 @@
             "packages/schema/src/index.ts",
             "packages/score-map/src/emotion-arc.ts"
           ],
-          "path": "packages/score-map/test/emotion-arc.test.ts"
+          "path": "packages/score-map/test/emotion-arc.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e15fbf65d89bfcd99958d08d2d722a731c74c3b5cbe4ad1fa4b8fb4b68c74b45",
           "importsFiles": [
             "packages/score-map/src/index.ts"
           ],
-          "path": "packages/score-map/test/grounded-families.test.ts"
+          "path": "packages/score-map/test/grounded-families.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9d2de4f5983202ffaa43dc1bb664a2928de4d10cd78a7295890fece5cbe74121",
@@ -4284,7 +5003,8 @@
             "packages/instrument-rack/src/index.ts",
             "packages/score-map/src/index.ts"
           ],
-          "path": "packages/score-map/test/grounded-profiles.test.ts"
+          "path": "packages/score-map/test/grounded-profiles.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5b569c08d66b39b56f6814928ae1321e4cee9d6635c9ab3781784a4c96a1ab60",
@@ -4292,7 +5012,8 @@
             "packages/schema/src/index.ts",
             "packages/score-map/src/index.ts"
           ],
-          "path": "packages/score-map/test/index.test.ts"
+          "path": "packages/score-map/test/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "193805beb5ff509f7e6d507478a540218b6c9eae699513878f7cb30ad063cdcc",
@@ -4300,7 +5021,8 @@
             "packages/schema/src/index.ts",
             "packages/score-map/src/index.ts"
           ],
-          "path": "packages/score-map/test/library-packs.test.ts"
+          "path": "packages/score-map/test/library-packs.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4a94cae76640f3cb918264c0a936a73af8815bc1c9090a1e04ac56418d6d0d94",
@@ -4328,6 +5050,9 @@
       ],
       "outsideReads": 1,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 30,
       "unresolvedSites": 0
     },
@@ -4580,6 +5305,53 @@
             "saveProjectToFile",
             "scheduleAutosave"
           ],
+          "failurePaths": [
+            {
+              "in": "parseProjectFile",
+              "kind": "catch",
+              "line": 78
+            },
+            {
+              "in": "parseProjectFile",
+              "kind": "throw",
+              "line": 79
+            },
+            {
+              "in": "parseProjectFile",
+              "kind": "throw",
+              "line": 87
+            },
+            {
+              "in": "parseProjectFile",
+              "kind": "throw",
+              "line": 93
+            },
+            {
+              "in": "parseProjectFile",
+              "kind": "throw",
+              "line": 102
+            },
+            {
+              "in": "parseProjectFile",
+              "kind": "throw",
+              "line": 108
+            },
+            {
+              "in": "scheduleAutosave",
+              "kind": "catch",
+              "line": 132
+            },
+            {
+              "in": "loadAutosave",
+              "kind": "catch",
+              "line": 164
+            },
+            {
+              "in": "clearAutosave",
+              "kind": "catch",
+              "line": 176
+            }
+          ],
           "hash": "ce7762dece860b73056e3ca0481b4be5f7eeba5f7be387f99b879cb31f110899",
           "importsFiles": [
             "apps/studio/src/app/store.ts",
@@ -4682,6 +5454,13 @@
           "exports": [
             "TransportStrip"
           ],
+          "failurePaths": [
+            {
+              "in": "formatTimestamp",
+              "kind": "catch",
+              "line": 11
+            }
+          ],
           "hash": "e2cc2160c43ce9721a8ade52dd64e8ce3a44c10aa8d076e6ad44504e65a34625",
           "importsFiles": [
             "apps/studio/src/app/playback-store.ts",
@@ -4747,6 +5526,38 @@
           "exports": [
             "auditionNote",
             "suspendPreviewCtx"
+          ],
+          "failurePaths": [
+            {
+              "in": "playScene",
+              "kind": "catch",
+              "line": 231
+            },
+            {
+              "in": "switchScene",
+              "kind": "catch",
+              "line": 244
+            },
+            {
+              "in": "playSequence",
+              "kind": "catch",
+              "line": 257
+            },
+            {
+              "in": "renderScene",
+              "kind": "catch",
+              "line": 350
+            },
+            {
+              "in": "playCue",
+              "kind": "catch",
+              "line": 364
+            },
+            {
+              "in": "jumpToSection",
+              "kind": "catch",
+              "line": 377
+            }
           ],
           "hash": "9836cd1bb509258842dc8ba302d7659903f8a342cfa39cf3eb8b8cb5648fd968",
           "importOrder": [
@@ -4905,6 +5716,23 @@
           "exports": [
             "ExportScreen"
           ],
+          "failurePaths": [
+            {
+              "in": "ExportScreen",
+              "kind": "catch",
+              "line": 47
+            },
+            {
+              "in": "ExportScreen",
+              "kind": "catch",
+              "line": 54
+            },
+            {
+              "in": "handleCopy",
+              "kind": "catch",
+              "line": 68
+            }
+          ],
           "hash": "90258e0d685f101ff11c88f8d76323359a9d940f85c9e8ce3cd4e08f4814bd41",
           "importOrder": [
             "apps/studio/src/app/store.ts",
@@ -5026,6 +5854,13 @@
         {
           "exports": [
             "ProjectScreen"
+          ],
+          "failurePaths": [
+            {
+              "in": "reader.onload",
+              "kind": "catch",
+              "line": 48
+            }
           ],
           "hash": "bdb970caa0c2f5e92667e0c9f89f6e551c295eb365ea3d22677f6dd4a4d0bcb9",
           "importOrder": [
@@ -5213,7 +6048,8 @@
             "apps/studio/src/app/seed-data.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "apps/studio/test/asset-files.test.ts"
+          "path": "apps/studio/test/asset-files.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "cd078b833634fa5891b85adc1ccba80e515f4d41bd01db9663ec56be5c561a4d",
@@ -5227,14 +6063,16 @@
             "apps/studio/src/app/store.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "apps/studio/test/autosave.test.ts"
+          "path": "apps/studio/test/autosave.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2c06d2aa3015c008afa246a1c19e19d8e8bc86c3e27e5411a532f59e989346d6",
           "importsFiles": [
             "apps/studio/src/app/components/ErrorBoundary.tsx"
           ],
-          "path": "apps/studio/test/error-boundary.test.tsx"
+          "path": "apps/studio/test/error-boundary.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "hash": "789571b87490993077f7a10f7b6c1f061bec9e337656fb085c800e097b56dfd6",
@@ -5250,7 +6088,8 @@
             "apps/studio/src/app/store.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "apps/studio/test/export.test.tsx"
+          "path": "apps/studio/test/export.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "hash": "0796e066bc41f2a373ec22befe243674975200a6a9ec1ae0893bb1ef13f0824d",
@@ -5258,7 +6097,8 @@
             "apps/studio/src/app/store.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "apps/studio/test/global-bpm.test.ts"
+          "path": "apps/studio/test/global-bpm.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c40dd225ef45c785e32eb7bbec5b519317158100525867bad429478dd41d8870",
@@ -5270,11 +6110,13 @@
             "apps/studio/src/app/seed-data.ts",
             "packages/score-map/src/index.ts"
           ],
-          "path": "apps/studio/test/grounded-fold.test.ts"
+          "path": "apps/studio/test/grounded-fold.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0cd487912643fd635e7bae3e3e15049c44329d5e7fdb99bfdbd50c2348d8839b",
-          "path": "apps/studio/test/index.test.ts"
+          "path": "apps/studio/test/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b4d5eed6de578606d2933e5c83c1b9420abdf285b48918b223fc252a53cb0097",
@@ -5292,7 +6134,8 @@
             "apps/studio/src/app/store.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "apps/studio/test/keyboard-shortcuts.test.tsx"
+          "path": "apps/studio/test/keyboard-shortcuts.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "hash": "2c196ae9fca9cf1d7922aa5278180e889a13696179ba84a3e2a79c6056df14a7",
@@ -5306,7 +6149,8 @@
             "apps/studio/src/app/seed-data.ts",
             "packages/score-map/src/index.ts"
           ],
-          "path": "apps/studio/test/library-fold.test.ts"
+          "path": "apps/studio/test/library-fold.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "db2ce24de49bfe0dca97965f169bc6db6033dce90651f6cf72263ff523648479",
@@ -5324,7 +6168,8 @@
             "packages/schema/src/index.ts",
             "packages/score-map/src/index.ts"
           ],
-          "path": "apps/studio/test/pack-fields.test.ts"
+          "path": "apps/studio/test/pack-fields.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b4f62ebfeda4902712658a4b1f210c7523b8de7812d54fe978177c2f29f2f7f9",
@@ -5348,7 +6193,8 @@
             "packages/schema/src/index.ts",
             "packages/test-kit/src/index.ts"
           ],
-          "path": "apps/studio/test/playback.test.tsx"
+          "path": "apps/studio/test/playback.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "hash": "fd8ec353d005c988e63e3afde06070d2a9049bd050c6397c406f32efde38aa33",
@@ -5364,7 +6210,8 @@
             "packages/schema/src/index.ts",
             "packages/score-map/src/index.ts"
           ],
-          "path": "apps/studio/test/preview-store.test.ts"
+          "path": "apps/studio/test/preview-store.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d581f1a304432ef205f4ca6a48199121483a8cf78a9ac7d19d0d976fd07255c2",
@@ -5384,7 +6231,8 @@
             "packages/schema/src/index.ts",
             "packages/score-map/src/index.ts"
           ],
-          "path": "apps/studio/test/preview.test.tsx"
+          "path": "apps/studio/test/preview.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "hash": "849f2d01716f602083b8086e5cea64a9876c49b0a34d1598f456245fad06d331",
@@ -5404,7 +6252,8 @@
             "apps/studio/src/app/store.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "apps/studio/test/save-shortcut.test.tsx"
+          "path": "apps/studio/test/save-shortcut.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "hash": "9b328c4843431fa76d8de00008fc159e95f99a840211085ff3b8f25e53d14409",
@@ -5422,7 +6271,8 @@
             "apps/studio/src/app/store.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "apps/studio/test/store.test.ts"
+          "path": "apps/studio/test/store.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d74a3ec8f9f86d8806504f28121a7b336114a29c447b5689984703ea4f5704ba",
@@ -5438,7 +6288,8 @@
             "apps/studio/src/app/store.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "apps/studio/test/studio.test.tsx"
+          "path": "apps/studio/test/studio.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "hash": "605066b31f7455b4e17a342327228dc74350ed01f82090b4bce56c781f8f1788",
@@ -5452,7 +6303,8 @@
             "apps/studio/src/app/store.ts",
             "packages/schema/src/index.ts"
           ],
-          "path": "apps/studio/test/undo-redo.test.ts"
+          "path": "apps/studio/test/undo-redo.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9c08a5bf60b190da29205790627b9c7a2dfcb85ea8d909989180ba9426bfd083",
@@ -5480,6 +6332,9 @@
       ],
       "outsideReads": 6,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 29,
       "unresolvedNamed": [
         {
@@ -5665,6 +6520,13 @@
             "fixturePath",
             "loadFixture"
           ],
+          "failurePaths": [
+            {
+              "in": "fixturePath",
+              "kind": "throw",
+              "line": 12
+            }
+          ],
           "hash": "252abca237771435d0f25b404c18609326d27d974eb286d5ae6b1b166dfe56c9",
           "path": "packages/test-kit/src/index.ts"
         },
@@ -5673,7 +6535,8 @@
           "importsFiles": [
             "packages/test-kit/src/index.ts"
           ],
-          "path": "packages/test-kit/test/index.test.ts"
+          "path": "packages/test-kit/test/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "07cf970893a82f70d0901499aefe264dadeb808f9129f07fc560ccd77671130e",
@@ -5691,6 +6554,9 @@
       "name": "test-kit",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 19,
       "unresolvedSites": 0
     },
@@ -5750,7 +6616,8 @@
           "importsFiles": [
             "packages/ui/src/index.ts"
           ],
-          "path": "packages/ui/test/index.test.ts"
+          "path": "packages/ui/test/index.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "07cf970893a82f70d0901499aefe264dadeb808f9129f07fc560ccd77671130e",
@@ -5768,6 +6635,9 @@
       "name": "ui",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 13,
       "unresolvedSites": 0
     }
@@ -5854,6 +6724,7 @@
       "name": "CI",
       "permissions": [
         "contents:read",
+        "id-token:write",
         "security-events:write"
       ],
       "pushes": false,
@@ -6369,9 +7240,7 @@
         }
       ],
       "runsCount": 53,
-      "secrets": [
-        "CODECOV_TOKEN"
-      ],
+      "secrets": [],
       "sends": {
         "deploysPages": false,
         "dispatchesTo": [],
@@ -6383,6 +7252,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "coverage": true,
+          "files": 74,
+          "job": "ci",
+          "junit": true,
+          "runner": "vitest",
+          "step": "Test with coverage"
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -6390,6 +7270,7 @@
             ".github/workflows/**",
             "apps/**",
             "atlas/**",
+            "codecov.yml",
             "package.json",
             "packages/**",
             "pnpm-lock.yaml",
@@ -6407,6 +7288,7 @@
             ".github/workflows/**",
             "apps/**",
             "atlas/**",
+            "codecov.yml",
             "package.json",
             "packages/**",
             "pnpm-lock.yaml",
@@ -6421,7 +7303,9 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
+        "actions/upload-artifact",
         "codecov/codecov-action",
         "pnpm/action-setup"
       ],
@@ -7177,6 +8061,15 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 74,
+          "job": "publish",
+          "runner": "vitest",
+          "step": "Test"
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -8361,10 +9254,10 @@
       "to": "test-kit"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
-    "commit": "83531a1a4f7899819d34e822196a717ddc37cccb",
-    "tracked": 593
+    "commit": "2b08099d4bf9339c0760bfec90594ca5ae0cf417",
+    "tracked": 594
   },
   "landings": [
     {
@@ -8805,5 +9698,24 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 77,
-  "unassigned": []
+  "unassigned": [],
+  "workspaces": [
+    "apps/studio",
+    "packages/asset-index",
+    "packages/audio-engine",
+    "packages/automation",
+    "packages/clip-engine",
+    "packages/instrument-rack",
+    "packages/library",
+    "packages/music-theory",
+    "packages/playback-engine",
+    "packages/review",
+    "packages/runtime-pack",
+    "packages/sample-lab",
+    "packages/scene-mapper",
+    "packages/schema",
+    "packages/score-map",
+    "packages/test-kit",
+    "packages/ui"
+  ]
 }

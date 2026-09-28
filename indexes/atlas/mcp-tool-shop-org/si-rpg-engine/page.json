@@ -11,8 +11,9 @@
   ],
   "breaks": [
     {
-      "doors": 8,
+      "doors": 9,
       "importedBy": [
+        "bench",
         "harness",
         "host",
         "load",
@@ -60,27 +61,34 @@
     },
     {
       "doors": 2,
-      "importedBy": [],
-      "importedByTests": [],
-      "kind": "part",
-      "name": "host",
-      "partLabel": "host"
-    },
-    {
-      "doors": 2,
-      "importedBy": [],
+      "importedBy": [
+        "bench"
+      ],
       "importedByTests": [],
       "kind": "part",
       "name": "propose",
       "partLabel": "propose"
     },
     {
-      "doors": 2,
+      "doors": 3,
       "importedBy": [],
       "importedByTests": [],
       "kind": "part",
       "name": "solver",
-      "partLabel": "solver"
+      "partLabel": "solver",
+      "spawnedBy": [
+        "bench"
+      ]
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [
+        "propose"
+      ],
+      "kind": "part",
+      "name": "bench",
+      "partLabel": "bench"
     },
     {
       "kind": "place",
@@ -97,21 +105,30 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 320,
+      "added": 4,
+      "changed": 379,
       "moved": 0,
-      "parts": 16,
+      "parts": 17,
       "removed": 0
     },
     "items": [
       {
         "kind": "door",
-        "sentence": "CI now also runs solver/build.rs, solver/src/kcc.rs and solver/src/rapier_law.rs.",
+        "sentence": "CI now also runs harness/step-up-121.test.js, solver/build.rs, solver/src/kcc.rs and 1 more.",
         "subjects": [
           ".github/workflows/ci.yml",
+          "harness/step-up-121.test.js",
           "solver/build.rs",
           "solver/src/kcc.rs",
           "solver/src/rapier_law.rs"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI now also checks harness/mesh.test.js.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "harness/mesh.test.js"
         ]
       },
       {
@@ -140,39 +157,39 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 13 more new writers and readers of places.",
+        "sentence": "And 17 more new writers and readers of places.",
         "subjects": []
       },
       {
         "kind": "counts",
-        "sentence": "320 files changed content, across 16 parts.",
+        "sentence": "4 files added and 379 changed content, across 17 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "386f0d9c9514e0d293fa9f7a5d71acf35a737b65",
-      "generatedAt": "2026-09-26T12:13:24.565Z"
+      "commit": "aa90e0026358de8508117fbf3a725953fa39164c",
+      "generatedAt": "2026-09-27T00:44:51.979Z"
     },
     "unchanged": false
   },
   "changesTogether": [
     {
-      "a": "harness/bundle.test.js",
-      "b": "harness/corpus.mjs",
-      "either": 10,
+      "a": "packages/propose/bin/propose.js",
+      "b": "packages/propose/seat.js",
+      "either": 14,
       "partLabels": [
-        "harness",
-        "harness"
+        "propose",
+        "propose"
       ],
       "parts": [
-        "harness",
-        "harness"
+        "propose",
+        "propose"
       ],
       "relation": "inside",
-      "shared": 7
+      "shared": 10
     },
     {
-      "a": "packages/propose/bin/propose.js",
+      "a": "packages/propose/prompt.js",
       "b": "packages/propose/seat.js",
       "either": 13,
       "partLabels": [
@@ -202,45 +219,45 @@
       "shared": 8
     },
     {
-      "a": "packages/propose/prompt.js",
-      "b": "packages/propose/seat.js",
-      "either": 12,
+      "a": "packages/load/load.test.js",
+      "b": "packages/load/suite.js",
+      "either": 6,
       "partLabels": [
-        "propose",
-        "propose"
+        "load",
+        "load"
       ],
       "parts": [
-        "propose",
-        "propose"
+        "load",
+        "load"
       ],
       "relation": "inside",
-      "shared": 8
+      "shared": 4
     },
     {
-      "a": "packages/propose/prompt.js",
-      "b": "packages/propose/schema.js",
-      "either": 9,
+      "a": "packages/bench/bench.js",
+      "b": "packages/bench/neutral.test.js",
+      "either": 8,
       "partLabels": [
-        "propose",
-        "propose"
+        "bench",
+        "bench"
       ],
       "parts": [
-        "propose",
-        "propose"
+        "bench",
+        "bench"
       ],
       "relation": "inside",
-      "shared": 6
+      "shared": 5
     }
   ],
   "changesTogetherNote": [
     "2 files changed together with their own tests, as expected.",
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 14 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 19 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "4231c2df4d25e322c37dc012234244b22ba372cf",
+  "commit": "8665b7657a7a670a56e518defe2e5cab8bdff3cf",
   "defaultBranch": "main",
-  "derived": "16 parts, mostly JavaScript (104 files), Rust (6), TypeScript (3), CSS (2), shell (2), Astro (1) and HTML (1). Work enters through 9 doors; the busiest is CI, which reaches 8 parts. It deploys a site to GitHub Pages. host, load, play, propose, replay and write-golden are commands of a private package (nothing ships them).",
+  "derived": "17 parts, mostly JSON data (615 files) and Markdown (100); code in JavaScript (137), Rust (6), TypeScript (3), CSS (2), shell (2), Astro (1) and HTML (1). Work enters through 10 doors; the busiest is CI, which reaches 9 parts. It deploys a site to GitHub Pages. bench, host, load, play, propose, replay and write-golden are commands of a private package (nothing ships them).",
   "doors": [
     {
       "checks": [
@@ -252,6 +269,7 @@
         "harness/corpus.mjs",
         "harness/events.mjs",
         "harness/law-runs.mjs",
+        "harness/mesh.test.js",
         "harness/minds-scene.mjs",
         "harness/plant-throw.mjs",
         "harness/product-run.mjs",
@@ -262,6 +280,7 @@
         "harness/trace-line.mjs",
         "harness/verbs-scene.mjs",
         "harness/write-golden.js",
+        "packages/bench/",
         "packages/frame/frame.js",
         "packages/frame/hash.js",
         "packages/frame/types.d.ts",
@@ -275,8 +294,8 @@
         "tools/review.mjs",
         "tools/verdicts.js"
       ],
-      "checksCount": 30,
-      "checksMore": 74,
+      "checksCount": 32,
+      "checksMore": 105,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -286,6 +305,11 @@
       ],
       "pushes": false,
       "reach": [
+        {
+          "boundary": "bench",
+          "depth": 0,
+          "files": 30
+        },
         {
           "boundary": "fixtures",
           "depth": 0,
@@ -299,7 +323,7 @@
         {
           "boundary": "harness",
           "depth": 0,
-          "files": 36
+          "files": 38
         },
         {
           "boundary": "host",
@@ -343,11 +367,22 @@
         "harness/solver.test.js",
         "harness/soundness.test.js",
         "harness/source.test.js",
+        "harness/step-up-121.test.js",
         "harness/surface.test.js",
         "harness/sweep.test.js",
         "harness/switch.test.js",
         "harness/trace.mjs",
         "harness/trace.test.js",
+        "packages/bench/coverage.test.js",
+        "packages/bench/finding.test.js",
+        "packages/bench/law.test.js",
+        "packages/bench/model.test.js",
+        "packages/bench/mutants.test.js",
+        "packages/bench/neutral.test.js",
+        "packages/bench/process.test.js",
+        "packages/bench/report.test.js",
+        "packages/bench/rungs.test.js",
+        "packages/bench/source.test.js",
         "packages/host/host.test.js",
         "packages/load/load.test.js",
         "packages/propose/propose.test.js",
@@ -372,8 +407,8 @@
         "solver/src/kcc.rs",
         "solver/src/rapier_law.rs"
       ],
-      "runsCount": 43,
-      "runsMore": 40,
+      "runsCount": 54,
+      "runsMore": 51,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -508,6 +543,51 @@
       "stages": [],
       "triggers": [],
       "unshipped": true
+    },
+    {
+      "builtFrom": "the repository root",
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
+      "id": "package.json#bench",
+      "kind": "command",
+      "landings": [
+        "fixtures/solver.sha256"
+      ],
+      "name": "bench",
+      "privatePackage": true,
+      "programs": [
+        "git"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "bench",
+          "depth": 0,
+          "files": 13
+        },
+        {
+          "boundary": "solver",
+          "depth": 2,
+          "files": 2
+        },
+        {
+          "boundary": "tick",
+          "depth": 2,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "packages/bench/bin/bench.js"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [],
+      "unshipped": true,
+      "untracked": "solver/dist/, which is not tracked"
     },
     {
       "builtFrom": "the repository root",
@@ -710,6 +790,16 @@
   "duplicatesNote": [],
   "edges": [
     {
+      "from": "bench",
+      "fromTests": false,
+      "to": "propose"
+    },
+    {
+      "from": "bench",
+      "fromTests": false,
+      "to": "tick"
+    },
+    {
       "from": "harness",
       "fromTests": false,
       "to": "frame"
@@ -725,14 +815,14 @@
       "to": "tick"
     },
     {
-      "from": "host",
+      "from": "load",
       "fromTests": false,
       "to": "tick"
     },
     {
-      "from": "load",
-      "fromTests": false,
-      "to": "tick"
+      "from": "propose",
+      "fromTests": true,
+      "to": "bench"
     },
     {
       "from": "propose",
@@ -760,7 +850,7 @@
       "to": "load"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [
     {
       "block": true,
@@ -794,23 +884,32 @@
       "writers": [
         "harness/corpus.mjs"
       ]
+    },
+    {
+      "place": "fixtures/t7c-runs/",
+      "writers": [
+        "tools/coordinator/t7c-runs.mjs"
+      ]
     }
   ],
-  "generatedAt": "2026-09-26T14:45:57.222Z",
+  "generatedAt": "2026-09-28T13:21:08.422Z",
   "limits": [
-    "15 imports could not be resolved: `harness/bundle.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/caps.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/corpus.mjs` imports `../solver/dist/solver.mjs`, which a build generates; and 12 more.",
-    "2 writes and 2 reads use paths built at run time and are not named here.",
+    "18 imports could not be resolved: `harness/bundle.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/caps.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/corpus.mjs` imports `../solver/dist/solver.mjs`, which a build generates; and 15 more.",
+    "2 writes and 7 reads use paths built at run time and are not named here.",
     "2 writes go to places this repository does not track, so they are not listed as generated.",
-    "9 writes and 31 reads go to a path their caller passes, not to this repository.",
-    "3 writes and 14 reads go to the directory the command is run in (harness/, predicates/ and worlds/), not to this repository.",
-    "2 writes and 1 read go to a temporary directory or a path their caller passes, not to this repository.",
-    "13 commands are built at run time and not followed, 10 of them in tests.",
-    "32 files belong to no part: packages/tool/guard.js, site/astro.config.mjs, site/package-lock.json and 29 more.",
+    "37 writes and 83 reads go to a path their caller passes, not to this repository.",
+    "4 writes and 47 reads go to the directory the command is run in, not to this repository.",
+    "9 writes and 1 read go to a temporary directory or a path their caller passes, not to this repository.",
+    "2 writes and 6 reads go to the directory the command is run in or a path their caller passes, not to this repository.",
+    "1 read goes to a temporary directory, not to this repository.",
+    "10 commands are built at run time and not followed, 5 of them in tests.",
+    "33 files belong to no part: packages/tool/guard.js, site/astro.config.mjs, site/package-lock.json and 30 more.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
     "beliefs": "beliefs",
+    "bench": "bench",
     "docs": "docs",
     "fixtures": "fixtures",
     "frame": "frame",
@@ -827,7 +926,7 @@
     "workflows": "workflows",
     "worlds": "worlds"
   },
-  "parts": 16,
+  "parts": 17,
   "readers": [],
   "repo": "mcp-tool-shop-org/si-rpg-engine",
   "sequences": [
@@ -1075,6 +1174,159 @@
       ]
     },
     {
+      "entry": "run",
+      "file": "packages/bench/finding.test.js",
+      "inner": [
+        {
+          "file": "packages/bench/bench.js",
+          "name": "runBench",
+          "part": "bench",
+          "partLabel": "bench",
+          "phrase": "`runBench`",
+          "steps": [
+            {
+              "name": "samePath",
+              "part": "bench",
+              "partLabel": "bench",
+              "phrase": "`samePath`"
+            },
+            {
+              "name": "oneTreePerProcess",
+              "part": "bench",
+              "partLabel": "bench",
+              "phrase": "`oneTreePerProcess`"
+            },
+            {
+              "name": "listFiles",
+              "part": "bench",
+              "partLabel": "bench",
+              "phrase": "`listFiles`"
+            },
+            {
+              "name": "readAnchors",
+              "part": "bench",
+              "partLabel": "bench",
+              "phrase": "`readAnchors`"
+            },
+            {
+              "count": 4,
+              "name": null,
+              "part": "bench",
+              "partLabel": "bench",
+              "phrase": "`trees.js`"
+            },
+            {
+              "count": 4,
+              "name": null,
+              "part": "bench",
+              "partLabel": "bench",
+              "phrase": "`build.js`"
+            }
+          ]
+        }
+      ],
+      "part": "bench",
+      "partLabel": "bench",
+      "phrase": "`run`",
+      "steps": [
+        {
+          "name": "copyCheckout",
+          "part": "bench",
+          "partLabel": "bench",
+          "phrase": "`copyCheckout`"
+        },
+        {
+          "count": 3,
+          "name": null,
+          "part": "bench",
+          "partLabel": "bench",
+          "phrase": "`plants.js`"
+        },
+        {
+          "name": "runBench",
+          "part": "bench",
+          "partLabel": "bench",
+          "phrase": "`runBench`"
+        }
+      ]
+    },
+    {
+      "entry": "run",
+      "file": "packages/bench/rungs.test.js",
+      "inner": [
+        {
+          "file": "packages/bench/bench.js",
+          "name": "runBench",
+          "part": "bench",
+          "partLabel": "bench",
+          "phrase": "`runBench`",
+          "steps": [
+            {
+              "name": "samePath",
+              "part": "bench",
+              "partLabel": "bench",
+              "phrase": "`samePath`"
+            },
+            {
+              "name": "oneTreePerProcess",
+              "part": "bench",
+              "partLabel": "bench",
+              "phrase": "`oneTreePerProcess`"
+            },
+            {
+              "name": "listFiles",
+              "part": "bench",
+              "partLabel": "bench",
+              "phrase": "`listFiles`"
+            },
+            {
+              "name": "readAnchors",
+              "part": "bench",
+              "partLabel": "bench",
+              "phrase": "`readAnchors`"
+            },
+            {
+              "count": 4,
+              "name": null,
+              "part": "bench",
+              "partLabel": "bench",
+              "phrase": "`trees.js`"
+            },
+            {
+              "count": 4,
+              "name": null,
+              "part": "bench",
+              "partLabel": "bench",
+              "phrase": "`build.js`"
+            }
+          ]
+        }
+      ],
+      "part": "bench",
+      "partLabel": "bench",
+      "phrase": "`run`",
+      "steps": [
+        {
+          "name": "copyCheckout",
+          "part": "bench",
+          "partLabel": "bench",
+          "phrase": "`copyCheckout`"
+        },
+        {
+          "name": "apply",
+          "part": "bench",
+          "partLabel": "bench",
+          "phrase": "`apply`"
+        },
+        {
+          "name": "runBench",
+          "part": "bench",
+          "partLabel": "bench",
+          "phrase": "`runBench`"
+        }
+      ]
+    },
+    {
       "entry": "probeSession",
       "file": "packages/propose/propose.test.js",
       "inner": [
@@ -1209,6 +1461,156 @@
           "part": "propose",
           "partLabel": "propose",
           "phrase": "`writeSession`"
+        }
+      ]
+    },
+    {
+      "alternatives": [
+        {
+          "steps": [
+            {
+              "name": "verifySession",
+              "part": "propose",
+              "partLabel": "propose",
+              "phrase": "`verifySession`"
+            }
+          ],
+          "when": "!p || p.inBase"
+        }
+      ],
+      "entry": "verifyInHead",
+      "file": "packages/propose/record.test.js",
+      "inner": [
+        {
+          "file": "packages/propose/record.js",
+          "name": "verifySession",
+          "part": "propose",
+          "partLabel": "propose",
+          "phrase": "`verifySession`",
+          "steps": [
+            {
+              "name": "manifestHash",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`manifestHash`"
+            },
+            {
+              "name": "validateManifest",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`validateManifest`"
+            },
+            {
+              "name": "canonical",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`canonical`"
+            },
+            {
+              "name": "sha256",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`sha256`"
+            },
+            {
+              "name": "canonical",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`canonical`"
+            },
+            {
+              "name": "sha256",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`sha256`"
+            },
+            {
+              "name": "canonical",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`canonical`"
+            },
+            {
+              "name": "sha256",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`sha256`"
+            },
+            {
+              "name": "canonical",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`canonical`"
+            },
+            {
+              "name": "readRoleOutput",
+              "part": "propose",
+              "partLabel": "propose",
+              "phrase": "`readRoleOutput`"
+            },
+            {
+              "name": "stampProposal",
+              "part": "propose",
+              "partLabel": "propose",
+              "phrase": "`stampProposal`"
+            },
+            {
+              "name": "canonical",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`canonical`"
+            }
+          ]
+        },
+        {
+          "file": "packages/bench/plant.js",
+          "name": "copyCheckout",
+          "part": "bench",
+          "partLabel": "bench",
+          "phrase": "`copyCheckout`",
+          "steps": [
+            {
+              "name": "copyTree",
+              "part": "bench",
+              "partLabel": "bench",
+              "phrase": "`copyTree`"
+            },
+            {
+              "name": "copyProduct",
+              "part": "bench",
+              "partLabel": "bench",
+              "phrase": "`copyProduct`"
+            }
+          ]
+        }
+      ],
+      "part": "propose",
+      "partLabel": "propose",
+      "phrase": "`verifyInHead`",
+      "steps": [
+        {
+          "name": "find",
+          "part": "bench",
+          "partLabel": "bench",
+          "phrase": "`find`"
+        },
+        {
+          "name": "copyCheckout",
+          "part": "bench",
+          "partLabel": "bench",
+          "phrase": "`copyCheckout`"
+        },
+        {
+          "name": "apply",
+          "part": "bench",
+          "partLabel": "bench",
+          "phrase": "`apply`"
+        },
+        {
+          "name": "apply",
+          "part": "bench",
+          "partLabel": "bench",
+          "phrase": "`apply`"
         }
       ]
     },
@@ -1469,14 +1871,15 @@
   ],
   "summary": "Deterministic 3D RPG tick: the model proposes, a checker admits, and the host draws committed frames.",
   "summaryFrom": "person",
-  "testFiles": 36,
+  "testFiles": 48,
   "testedBy": {
+    "bench": 11,
     "frame": 17,
     "host": 2,
     "load": 4,
     "propose": 2,
-    "solver": 3,
-    "tick": 27
+    "solver": 4,
+    "tick": 38
   },
   "unnamedWrites": 2,
   "unread": [
@@ -1485,11 +1888,17 @@
       "writers": [
         "harness/law-runs.mjs"
       ]
+    },
+    {
+      "place": "fixtures/t7c-runs/",
+      "writers": [
+        "tools/coordinator/t7c-runs.mjs"
+      ]
     }
   ],
   "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],
-  "written": 5
+  "written": 6
 }

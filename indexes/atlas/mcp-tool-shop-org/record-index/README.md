@@ -1,6 +1,6 @@
 # record-index: how it works
 
-Mapped at 2026-09-26 from commit b48f7b6 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit b48f7b6 by Atlas 1.23.4.
 
 ## What this is
 
@@ -21,7 +21,7 @@ Mapped at 2026-09-26 from commit b48f7b6 by Atlas 1.23.0.
 ## What happens through CI
 
 1. The workflow runs tests/ in tests.
-2. That reaches record_index (6 files).
+2. That reaches record_index (10 files).
 
 ## Who reads the results
 

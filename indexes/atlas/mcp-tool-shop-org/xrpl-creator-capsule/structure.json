@@ -66,11 +66,54 @@
             "packages/core/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "app/bridge-worker-access.test.ts"
+          "path": "app/bridge-worker-access.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "dispatch"
+          ],
+          "failurePaths": [
+            {
+              "in": "dispatch",
+              "kind": "throw",
+              "line": 138
+            },
+            {
+              "in": "validateManifestCmd",
+              "kind": "catch",
+              "line": 152
+            },
+            {
+              "in": "mintReleaseCmd",
+              "kind": "catch",
+              "line": 267
+            },
+            {
+              "in": "verifyReleaseCmd",
+              "kind": "catch",
+              "line": 510
+            },
+            {
+              "in": "recoverReleaseCmd",
+              "kind": "catch",
+              "line": 822
+            },
+            {
+              "in": "proposePayoutCmd",
+              "kind": "throw",
+              "line": 934
+            },
+            {
+              "in": "decidePayoutCmd",
+              "kind": "throw",
+              "line": 985
+            },
+            {
+              "in": "executePayoutCmd",
+              "kind": "throw",
+              "line": 1014
+            }
           ],
           "hash": "eff8be8430cd0e0aa8eedac6c99a803b29ceb1647e3af7c4e94a532bf7ae7543",
           "importOrder": [
@@ -95,7 +138,8 @@
             "app/bridge-worker-commands.ts",
             "packages/core/src/index.ts"
           ],
-          "path": "app/bridge-worker-governance.test.ts"
+          "path": "app/bridge-worker-governance.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "587f205aa6eb6455233641b108291225dc0b01caf428029d92f85c9d821fc451",
@@ -107,7 +151,8 @@
             "app/bridge-worker-commands.ts",
             "packages/core/src/index.ts"
           ],
-          "path": "app/bridge-worker-manifest.test.ts"
+          "path": "app/bridge-worker-manifest.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ab0e84130332fd49d802100c0edbad838cc7b6cba3e25af60c2ca43d8a82c5dc",
@@ -121,7 +166,8 @@
             "packages/core/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "app/bridge-worker-mint-persist.test.ts"
+          "path": "app/bridge-worker-mint-persist.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ee86ec0a7408a30bdf4f6c4d84810b2122d4a209bcfd1c4f38c9ae07ea13f517",
@@ -135,11 +181,16 @@
             "packages/core/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "app/bridge-worker-recovery.test.ts"
+          "path": "app/bridge-worker-recovery.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b25b99c277c2341cfb06190b5bee35d8129b20daaad51de9af7982f6f4d978c9",
-          "path": "app/bridge-worker-stdout-flush.test.ts"
+          "names": [
+            "app/bridge-worker.ts"
+          ],
+          "path": "app/bridge-worker-stdout-flush.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7fb812bdc0b7fb80c7d91f0c035376307cfb0ddcd76a8ec4f2f638b78535d8db",
@@ -153,16 +204,40 @@
             "packages/core/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "app/bridge-worker-verify-release.test.ts"
+          "path": "app/bridge-worker-verify-release.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f86abc403fb25ead8c2187c213d609f56f746c280dfb35cf5632c7c4904aa4de",
           "importsFiles": [
             "app/bridge-worker-commands.ts"
           ],
-          "path": "app/bridge-worker.test.ts"
+          "path": "app/bridge-worker.test.ts",
+          "testFramework": "vitest"
         },
         {
+          "failurePaths": [
+            {
+              "in": "writeStdoutSync",
+              "kind": "catch",
+              "line": 62
+            },
+            {
+              "in": "writeStdoutSync",
+              "kind": "throw",
+              "line": 64
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 79
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 89
+            }
+          ],
           "hash": "18e38088f9f1c4d6c7ff8c180d7b501e631c68d65ffaa4816ab3b266b06c9d59",
           "importsFiles": [
             "app/bridge-worker-commands.ts"
@@ -442,6 +517,73 @@
             "save_file",
             "save_file_atomic"
           ],
+          "failurePaths": [
+            {
+              "in": "resolve_bridge",
+              "kind": "err",
+              "line": 258
+            },
+            {
+              "in": "resolve_bridge",
+              "kind": "err",
+              "line": 269
+            },
+            {
+              "in": "load_file",
+              "kind": "err",
+              "line": 330
+            },
+            {
+              "in": "load_file",
+              "kind": "err",
+              "line": 335
+            },
+            {
+              "in": "load_file",
+              "kind": "err",
+              "line": 345
+            },
+            {
+              "in": "save_file",
+              "kind": "err",
+              "line": 363
+            },
+            {
+              "in": "save_file",
+              "kind": "err",
+              "line": 369
+            },
+            {
+              "in": "write_file_atomic",
+              "kind": "match-err",
+              "line": 403
+            },
+            {
+              "in": "write_file_atomic",
+              "kind": "err",
+              "line": 409
+            },
+            {
+              "in": "save_file_atomic",
+              "kind": "err",
+              "line": 441
+            },
+            {
+              "in": "save_file_atomic",
+              "kind": "err",
+              "line": 447
+            },
+            {
+              "in": "engine_call",
+              "kind": "err",
+              "line": 704
+            },
+            {
+              "in": "engine_call",
+              "kind": "err",
+              "line": 706
+            }
+          ],
           "hash": "9dc017339ed76e3149fc4a735140585ba6424f049cdad4ff38c512141e22932d",
           "path": "app/src-tauri/src/commands.rs",
           "testsInside": true
@@ -550,9 +692,22 @@
             "app/src/ErrorBoundary.tsx",
             "app/src/state/release.tsx"
           ],
-          "path": "app/src/ErrorBoundary.test.tsx"
+          "path": "app/src/ErrorBoundary.test.tsx",
+          "testFramework": "vitest"
         },
         {
+          "failurePaths": [
+            {
+              "in": "componentDidCatch",
+              "kind": "catch",
+              "line": 70
+            },
+            {
+              "in": "handleStartFresh",
+              "kind": "catch",
+              "line": 90
+            }
+          ],
           "hash": "242836fda7238ed5a79962977843ca12bba099cca4872a22746f67e346bd75e6",
           "importsFiles": [
             "app/src/state/release.tsx",
@@ -578,14 +733,16 @@
         },
         {
           "hash": "9e99e2edd2307de7a8a57a981ec02133ffd61a98f4d57519da2ec4602c017eb0",
-          "path": "app/src/__test__/tauri-security-config.test.ts"
+          "path": "app/src/__test__/tauri-security-config.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c4f8df15764af02273ca19163ed1633acb1d650e19673aeed94042621109d5f9",
           "importsFiles": [
             "app/src/bridge/engine.ts"
           ],
-          "path": "app/src/bridge/engine.test.ts"
+          "path": "app/src/bridge/engine.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -624,7 +781,8 @@
             "app/src/bridge/engine.ts",
             "app/src/components/CloseWarningGate.tsx"
           ],
-          "path": "app/src/components/CloseWarningGate.test.tsx"
+          "path": "app/src/components/CloseWarningGate.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -683,11 +841,19 @@
             "app/src/components/TitleBar.tsx",
             "app/src/support/bundle.ts"
           ],
-          "path": "app/src/components/TitleBar.test.tsx"
+          "path": "app/src/components/TitleBar.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "TitleBar"
+          ],
+          "failurePaths": [
+            {
+              "in": "handleExportBundle",
+              "kind": "catch",
+              "line": 55
+            }
           ],
           "hash": "280c419200410fc6bd5d015d7216df9790d08ddc6248adc2cdf67fa1eb44d398",
           "importOrder": [
@@ -725,7 +891,8 @@
             "app/src/components/panels/GovernancePanel.tsx",
             "app/src/state/release.tsx"
           ],
-          "path": "app/src/components/panels/GovernancePanel.test.tsx"
+          "path": "app/src/components/panels/GovernancePanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -767,7 +934,8 @@
             "app/src/components/panels/MintPanel.tsx",
             "app/src/state/release.tsx"
           ],
-          "path": "app/src/components/panels/MintPanel.test.tsx"
+          "path": "app/src/components/panels/MintPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -785,7 +953,8 @@
           "importsFiles": [
             "app/src/components/panels/PanelShell.tsx"
           ],
-          "path": "app/src/components/panels/PanelShell.test.tsx"
+          "path": "app/src/components/panels/PanelShell.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -818,7 +987,8 @@
             "app/src/components/panels/RecoveryPanel.tsx",
             "app/src/state/release.tsx"
           ],
-          "path": "app/src/components/panels/RecoveryPanel.test.tsx"
+          "path": "app/src/components/panels/RecoveryPanel.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -877,6 +1047,23 @@
         {
           "exports": [
             "PublishPage"
+          ],
+          "failurePaths": [
+            {
+              "in": "PublishPage",
+              "kind": "throw",
+              "line": 152
+            },
+            {
+              "in": "PublishPage",
+              "kind": "catch",
+              "line": 236
+            },
+            {
+              "in": "PublishPage",
+              "kind": "catch",
+              "line": 330
+            }
           ],
           "hash": "9659d946cc200a328d3f9935b299dee73355effa82a8d0d720a5e58fc8ab9cbd",
           "importOrder": [
@@ -939,7 +1126,8 @@
             "app/src/state/release.tsx",
             "app/src/state/studio.tsx"
           ],
-          "path": "app/src/components/studio/StudioShell.sample-error.test.tsx"
+          "path": "app/src/components/studio/StudioShell.sample-error.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "hash": "555e0d2dd03169ed45858750a285ea505837060a303ee58fdededbb89ca27dbd",
@@ -955,7 +1143,8 @@
             "app/src/state/release.tsx",
             "app/src/state/studio.tsx"
           ],
-          "path": "app/src/components/studio/StudioShell.test.tsx"
+          "path": "app/src/components/studio/StudioShell.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1011,6 +1200,18 @@
           "exports": [
             "TestAccessPage"
           ],
+          "failurePaths": [
+            {
+              "in": "TestAccessPage",
+              "kind": "catch",
+              "line": 49
+            },
+            {
+              "in": "TestAccessPage",
+              "kind": "catch",
+              "line": 64
+            }
+          ],
           "hash": "19640e1ba0e4d682bf42b796c6ddec7b345395889fcfac7fd37b7cab80e952fd",
           "importOrder": [
             "app/src/state/studio.tsx",
@@ -1044,7 +1245,11 @@
           "importsFiles": [
             "app/src/errors/humanize.ts"
           ],
-          "path": "app/src/errors/humanize.test.ts"
+          "names": [
+            "app/src/state/session.ts"
+          ],
+          "path": "app/src/errors/humanize.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1077,7 +1282,8 @@
           "importsFiles": [
             "app/src/state/actionlog.ts"
           ],
-          "path": "app/src/state/actionlog.test.ts"
+          "path": "app/src/state/actionlog.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1086,6 +1292,33 @@
             "initActionLog",
             "logAction",
             "resetActionLogForTests"
+          ],
+          "failurePaths": [
+            {
+              "in": "logAction",
+              "kind": "catch",
+              "line": 112
+            },
+            {
+              "in": "clearActionLog",
+              "kind": "catch",
+              "line": 129
+            },
+            {
+              "in": "loadPersistedEntries",
+              "kind": "catch",
+              "line": 187
+            },
+            {
+              "in": "loadPersistedEntries",
+              "kind": "catch",
+              "line": 202
+            },
+            {
+              "in": "persistNow",
+              "kind": "catch",
+              "line": 282
+            }
           ],
           "hash": "c0265f4a04c845d5e9292d6efdbdb19b5ec6d2aa3ab4515c8e7ef56fea5bc64c",
           "importsFiles": [
@@ -1104,7 +1337,8 @@
             "app/src/__test__/fixtures.ts",
             "app/src/state/release.tsx"
           ],
-          "path": "app/src/state/release-reconcile.test.tsx"
+          "path": "app/src/state/release-reconcile.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "hash": "f9e6cc1d2108f6aac4228584390d42cc5ff9d0294661b3e599df99b813bdb4f4",
@@ -1116,7 +1350,8 @@
             "app/src/__test__/fixtures.ts",
             "app/src/state/release.tsx"
           ],
-          "path": "app/src/state/release-timeout.test.tsx"
+          "path": "app/src/state/release-timeout.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "hash": "571774a02e02a934220f922c3771df03ce182db2cff30c51dc311d0048ccc835",
@@ -1130,7 +1365,8 @@
             "app/src/state/release.tsx",
             "app/src/state/studio.tsx"
           ],
-          "path": "app/src/state/release-trust.test.tsx"
+          "path": "app/src/state/release-trust.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "hash": "adb4d14c2d6f9dc0a9a70fb6e37f09fd72544bc3abaae26b95b4b862e7eda212",
@@ -1142,12 +1378,135 @@
             "app/src/__test__/fixtures.ts",
             "app/src/state/release.tsx"
           ],
-          "path": "app/src/state/release.test.tsx"
+          "path": "app/src/state/release.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "ReleaseProvider",
             "useRelease"
+          ],
+          "failurePaths": [
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 404
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 419
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 434
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 457
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 487
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 611
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "throw",
+              "line": 635
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 699
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "throw",
+              "line": 705
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 735
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 802
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 875
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 943
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 1064
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 1125
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 1165
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 1237
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 1274
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 1342
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 1378
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 1442
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 1476
+            },
+            {
+              "in": "ReleaseProvider",
+              "kind": "catch",
+              "line": 1541
+            },
+            {
+              "in": "useRelease",
+              "kind": "throw",
+              "line": 1656
+            }
           ],
           "hash": "8d67e6e161685aada011af8cd34505df6e62c9e534d67715e59a51b0aea589d2",
           "importsFiles": [
@@ -1168,7 +1527,8 @@
             "app/src/state/release.tsx",
             "app/src/state/session.ts"
           ],
-          "path": "app/src/state/session.test.ts"
+          "path": "app/src/state/session.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1176,6 +1536,43 @@
             "loadSession",
             "saveSession",
             "validateSession"
+          ],
+          "failurePaths": [
+            {
+              "in": "saveSession",
+              "kind": "catch",
+              "line": 121
+            },
+            {
+              "in": "loadSession",
+              "kind": "catch",
+              "line": 165
+            },
+            {
+              "in": "loadSession",
+              "kind": "throw",
+              "line": 176
+            },
+            {
+              "in": "loadSession",
+              "kind": "catch",
+              "line": 182
+            },
+            {
+              "in": "loadSession",
+              "kind": "throw",
+              "line": 189
+            },
+            {
+              "in": "clearSession",
+              "kind": "catch",
+              "line": 204
+            },
+            {
+              "in": "validateSession",
+              "kind": "catch",
+              "line": 236
+            }
           ],
           "hash": "4349debb070a8f0499bc6e8c3988c50eb593bd5bc526af8795fb3e16919343f6",
           "importOrder": [
@@ -1204,12 +1601,35 @@
             "app/src/__test__/fixtures.ts",
             "app/src/state/studio.tsx"
           ],
-          "path": "app/src/state/studio.test.tsx"
+          "path": "app/src/state/studio.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "StudioProvider",
             "useStudio"
+          ],
+          "failurePaths": [
+            {
+              "in": "StudioProvider",
+              "kind": "catch",
+              "line": 187
+            },
+            {
+              "in": "StudioProvider",
+              "kind": "catch",
+              "line": 337
+            },
+            {
+              "in": "StudioProvider",
+              "kind": "catch",
+              "line": 347
+            },
+            {
+              "in": "useStudio",
+              "kind": "throw",
+              "line": 446
+            }
           ],
           "hash": "45ef0388576fed643bce20cf6b1c8d5825738049f3eae0374fc321238ac39b00",
           "importsFiles": [
@@ -1229,7 +1649,8 @@
             "app/src/__test__/fixtures.ts",
             "app/src/state/validate.ts"
           ],
-          "path": "app/src/state/validate.test.ts"
+          "path": "app/src/state/validate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1280,6 +1701,9 @@
           "path": "app/vitest.config.ts"
         }
       ],
+      "frameworks": [
+        "tauri"
+      ],
       "globs": [
         "app/**"
       ],
@@ -1298,6 +1722,10 @@
       "outsideReads": 31,
       "outsideWrites": 14,
       "role": "code",
+      "testRunners": [
+        "cargo test",
+        "vitest"
+      ],
       "testedBy": 27,
       "unresolvedNamed": [
         {
@@ -1435,28 +1863,32 @@
           "importsFiles": [
             "packages/cli/src/commands/verify-release.ts"
           ],
-          "path": "artifacts/failure-drills.test.ts"
+          "path": "artifacts/failure-drills.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f69244441e06553d72c32e0f8dc0c356d632bcb68aad46463c08d7c0ed059dcd",
           "importsFiles": [
             "packages/core/src/index.ts"
           ],
-          "path": "artifacts/governance-drills.test.ts"
+          "path": "artifacts/governance-drills.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d69683d248662d084492482fd38ee95d7922c005d15f1a6bcf08b185a353385f",
           "importsFiles": [
             "packages/core/src/index.ts"
           ],
-          "path": "artifacts/governance-golden-path.test.ts"
+          "path": "artifacts/governance-golden-path.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a4f0aed6972338650259f676357375a92277a81ec3797e3003f789ae0e27527a",
           "importsFiles": [
             "packages/core/src/index.ts"
           ],
-          "path": "artifacts/simulation-trials.test.ts"
+          "path": "artifacts/simulation-trials.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1833cc2a4dbe675b8c0ed0d09af007883ae0e7e33785e5537b929dc95ad27220",
@@ -1477,6 +1909,9 @@
       "name": "artifacts",
       "origin": "authored",
       "role": "config",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     },
@@ -1500,14 +1935,22 @@
           "importsFiles": [
             "packages/cli/src/test-support/run-bin.ts"
           ],
-          "path": "packages/cli/src/bin-help.test.ts"
+          "names": [
+            "packages/cli/src/bin.ts"
+          ],
+          "path": "packages/cli/src/bin-help.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "183bdfe2106dd6e1345cc30948c149e31ff2a74cf3352ab5e781b567e8cf81d7",
           "importsFiles": [
             "packages/cli/src/test-support/run-bin.ts"
           ],
-          "path": "packages/cli/src/bin-json-args.test.ts"
+          "names": [
+            "packages/cli/src/bin.ts"
+          ],
+          "path": "packages/cli/src/bin-json-args.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4897369c8c00199ceca6e33bdc2cad911e769e3af1da40dbba0e0c1499570cd9",
@@ -1515,30 +1958,63 @@
             "packages/cli/src/test-support/run-bin.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/bin-mainnet-write.test.ts"
+          "names": [
+            "packages/cli/src/bin.ts"
+          ],
+          "path": "packages/cli/src/bin-mainnet-write.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "46c6c7efeb5cb38c12eb0ca6ac0f872f379061422aea64b1553fd509f60ea2bc",
           "importsFiles": [
             "packages/cli/src/test-support/run-bin.ts"
           ],
-          "path": "packages/cli/src/bin-network.test.ts"
+          "names": [
+            "packages/cli/src/bin.ts"
+          ],
+          "path": "packages/cli/src/bin-network.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "30d8f7eea00991cf0a6a2f1fede44c511e358bcac97e0f3d117360a72d7e0d69",
           "importsFiles": [
             "packages/cli/src/test-support/run-bin.ts"
           ],
-          "path": "packages/cli/src/bin-required-args.test.ts"
+          "names": [
+            "packages/cli/src/bin.ts"
+          ],
+          "path": "packages/cli/src/bin-required-args.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "43e75bff63a6a652d3fea7082040139ca5af3da511498dd54290c17bd29ecab5",
           "importsFiles": [
             "packages/cli/src/test-support/run-bin.ts"
           ],
-          "path": "packages/cli/src/bin.test.ts"
+          "names": [
+            "packages/cli/src/bin.ts"
+          ],
+          "path": "packages/cli/src/bin.test.ts",
+          "testFramework": "vitest"
         },
         {
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 387
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 394
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 403
+            }
+          ],
           "hash": "6443bc5c2ccdd83d851d4390b8a6b7f07387cfb4751d83da8e8c15a5067cf6ca",
           "importOrder": [
             "packages/cli/src/commands/create-release.ts",
@@ -1596,7 +2072,8 @@
             "packages/cli/src/commands/configure-minter.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/configure-minter.test.ts"
+          "path": "packages/cli/src/commands/configure-minter.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1623,7 +2100,8 @@
             "packages/cli/src/commands/create-governance-policy.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/create-governance-policy.test.ts"
+          "path": "packages/cli/src/commands/create-governance-policy.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1645,11 +2123,24 @@
           "importsFiles": [
             "packages/cli/src/commands/create-release.ts"
           ],
-          "path": "packages/cli/src/commands/create-release.test.ts"
+          "path": "packages/cli/src/commands/create-release.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "createRelease"
+          ],
+          "failurePaths": [
+            {
+              "in": "createRelease",
+              "kind": "catch",
+              "line": 28
+            },
+            {
+              "in": "createRelease",
+              "kind": "throw",
+              "line": 29
+            }
           ],
           "hash": "2d1eb172257eb6b63cd40521c1aab8b7e0f3f0cfb68bf486b52fc064d683c48b",
           "importsFiles": [
@@ -1669,11 +2160,24 @@
             "packages/core/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/decide-payout.test.ts"
+          "path": "packages/cli/src/commands/decide-payout.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "decidePayout"
+          ],
+          "failurePaths": [
+            {
+              "in": "decidePayout",
+              "kind": "throw",
+              "line": 37
+            },
+            {
+              "in": "decidePayout",
+              "kind": "throw",
+              "line": 65
+            }
           ],
           "hash": "7997553239b2bcf7a92e612e55f55458b4c9a1da29d7e9a375f0b89b9da8a6e9",
           "importOrder": [
@@ -1698,11 +2202,24 @@
             "packages/core/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/execute-payout.test.ts"
+          "path": "packages/cli/src/commands/execute-payout.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "executePayout"
+          ],
+          "failurePaths": [
+            {
+              "in": "executePayout",
+              "kind": "throw",
+              "line": 45
+            },
+            {
+              "in": "executePayout",
+              "kind": "throw",
+              "line": 80
+            }
           ],
           "hash": "37c11f5382e6781386ea2277ba850a610010c47bd9515e11341f51a808b72229",
           "importOrder": [
@@ -1729,7 +2246,8 @@
             "packages/storage/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/grant-access.test.ts"
+          "path": "packages/cli/src/commands/grant-access.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1755,11 +2273,19 @@
           "importsFiles": [
             "packages/cli/src/commands/init-wallets.ts"
           ],
-          "path": "packages/cli/src/commands/init-wallets.test.ts"
+          "path": "packages/cli/src/commands/init-wallets.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "initWallets"
+          ],
+          "failurePaths": [
+            {
+              "in": "initWallets",
+              "kind": "throw",
+              "line": 52
+            }
           ],
           "hash": "032432f161c4945a9587467a09f7942dd1e54e5d8b8eebb76dc8198193ecbb8d",
           "importsFiles": [
@@ -1772,11 +2298,24 @@
           "importsFiles": [
             "packages/cli/src/commands/mint-release.ts"
           ],
-          "path": "packages/cli/src/commands/mint-release.test.ts"
+          "path": "packages/cli/src/commands/mint-release.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "mintReleaseCommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "mintReleaseCommand",
+              "kind": "catch",
+              "line": 73
+            },
+            {
+              "in": "mintReleaseCommand",
+              "kind": "throw",
+              "line": 74
+            }
           ],
           "hash": "908a04c635193473b9e94328aa577801e1ebdacd27e03c74ddf038fbca55051c",
           "importOrder": [
@@ -1805,11 +2344,19 @@
             "packages/core/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/propose-payout.test.ts"
+          "path": "packages/cli/src/commands/propose-payout.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "proposePayout"
+          ],
+          "failurePaths": [
+            {
+              "in": "proposePayout",
+              "kind": "throw",
+              "line": 52
+            }
           ],
           "hash": "1faf60353addf86342a1cd7e899bd2cc28a9faaeb33afe307c6eb3e3014f2943",
           "importOrder": [
@@ -1834,12 +2381,20 @@
             "packages/core/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/recover-release.test.ts"
+          "path": "packages/cli/src/commands/recover-release.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "buildMintFactsLines",
             "recoverRelease"
+          ],
+          "failurePaths": [
+            {
+              "in": "recoverRelease",
+              "kind": "catch",
+              "line": 272
+            }
           ],
           "hash": "2c9f5baeb1588a038eba85b684ed416c4e85279ad4eac06031c5697f521febae",
           "importOrder": [
@@ -1859,7 +2414,8 @@
           "importsFiles": [
             "packages/cli/src/commands/resolve.ts"
           ],
-          "path": "packages/cli/src/commands/resolve.test.ts"
+          "path": "packages/cli/src/commands/resolve.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1881,11 +2437,22 @@
           "importsFiles": [
             "packages/cli/src/commands/validate.ts"
           ],
-          "path": "packages/cli/src/commands/validate.test.ts"
+          "names": [
+            "packages/cli/src/lib/json-input.ts"
+          ],
+          "path": "packages/cli/src/commands/validate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "validateManifestFile"
+          ],
+          "failurePaths": [
+            {
+              "in": "validateManifestFile",
+              "kind": "catch",
+              "line": 14
+            }
           ],
           "hash": "227c3b3a4a054f1db3ffe0824392e7c26a2e72c9da68e5706857d59a2a2ea078",
           "importsFiles": [
@@ -1905,11 +2472,24 @@
             "packages/core/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/verify-payout.test.ts"
+          "path": "packages/cli/src/commands/verify-payout.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "verifyPayout"
+          ],
+          "failurePaths": [
+            {
+              "in": "verifyPayout",
+              "kind": "catch",
+              "line": 253
+            },
+            {
+              "in": "verifyPayout",
+              "kind": "catch",
+              "line": 306
+            }
           ],
           "hash": "b742685e367b60775aa9319d6904336c3552993f0499412aadeea8b7f0fb3a9f",
           "importOrder": [
@@ -1936,11 +2516,19 @@
             "packages/core/src/index.ts",
             "packages/xrpl/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/verify-release.test.ts"
+          "path": "packages/cli/src/commands/verify-release.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "verifyRelease"
+          ],
+          "failurePaths": [
+            {
+              "in": "verifyRelease",
+              "kind": "catch",
+              "line": 257
+            }
           ],
           "hash": "7a23f077715b3c137116dd1add74a92602b708a53541321ab5f00f49987cf20e",
           "importOrder": [
@@ -1967,12 +2555,35 @@
             "packages/core/src/index.ts",
             "packages/xaman/src/index.ts"
           ],
-          "path": "packages/cli/src/commands/xaman-flow.test.ts"
+          "path": "packages/cli/src/commands/xaman-flow.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "configureMinterViaXaman",
             "mintReleaseViaXaman"
+          ],
+          "failurePaths": [
+            {
+              "in": "requireXamanConfig",
+              "kind": "throw",
+              "line": 106
+            },
+            {
+              "in": "configureMinterViaXaman",
+              "kind": "throw",
+              "line": 143
+            },
+            {
+              "in": "mintReleaseViaXaman",
+              "kind": "catch",
+              "line": 232
+            },
+            {
+              "in": "mintReleaseViaXaman",
+              "kind": "throw",
+              "line": 256
+            }
           ],
           "hash": "d586a39d7806bba509a16923652925a233bf6ae7196500f9cbf17979c79f20e9",
           "importOrder": [
@@ -2017,12 +2628,35 @@
           "importsFiles": [
             "packages/cli/src/lib/json-input.ts"
           ],
-          "path": "packages/cli/src/lib/json-input.test.ts"
+          "path": "packages/cli/src/lib/json-input.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "parseJsonArgument",
             "readJsonFile"
+          ],
+          "failurePaths": [
+            {
+              "in": "parseJsonArgument",
+              "kind": "catch",
+              "line": 41
+            },
+            {
+              "in": "parseJsonArgument",
+              "kind": "throw",
+              "line": 42
+            },
+            {
+              "in": "readJsonFile",
+              "kind": "catch",
+              "line": 62
+            },
+            {
+              "in": "readJsonFile",
+              "kind": "throw",
+              "line": 64
+            }
           ],
           "hash": "ed13ccb316f7848d47974251b79932933ced514c960727d0fac45281da8014bc",
           "path": "packages/cli/src/lib/json-input.ts"
@@ -2030,6 +2664,13 @@
         {
           "exports": [
             "runBin"
+          ],
+          "failurePaths": [
+            {
+              "in": "runBin",
+              "kind": "throw",
+              "line": 45
+            }
           ],
           "hash": "6aab9ec72ba6e09bbe5342a68004330d51d5e2820d17fb7df2b7db6610c30599",
           "importsFiles": [
@@ -2060,6 +2701,9 @@
       "outsideReads": 3,
       "outsideWrites": 8,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 23,
       "unresolvedSites": 0
     },
@@ -2095,7 +2739,8 @@
             "packages/core/src/access-grant-validate.ts",
             "packages/core/src/access-grant.ts"
           ],
-          "path": "packages/core/src/access-grant-validate.test.ts"
+          "path": "packages/core/src/access-grant-validate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2103,6 +2748,13 @@
             "computeGrantHash",
             "stampGrantHash",
             "validateAccessGrant"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertAccessGrant",
+              "kind": "throw",
+              "line": 27
+            }
           ],
           "hash": "2a377c7f89f02f08d805b041d3ffc627674fb9901492a5855b507e3f0e86da03",
           "importOrder": [
@@ -2149,13 +2801,21 @@
             "packages/core/src/manifest.ts",
             "packages/core/src/receipt.ts"
           ],
-          "path": "packages/core/src/access-policy-validate.test.ts"
+          "path": "packages/core/src/access-policy-validate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "assertAccessPolicy",
             "checkPolicyCoherence",
             "validateAccessPolicy"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertAccessPolicy",
+              "kind": "throw",
+              "line": 28
+            }
           ],
           "hash": "7fa97c4d8c1ac164f1802a52bde83aed6ed1abdc0b5a995f7944933743869b24",
           "importOrder": [
@@ -2214,7 +2874,8 @@
             "packages/core/src/payout-execution.ts",
             "packages/core/src/payout-proposal.ts"
           ],
-          "path": "packages/core/src/governance-validate.test.ts"
+          "path": "packages/core/src/governance-validate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2238,6 +2899,38 @@
             "validatePayoutDecision",
             "validatePayoutExecution",
             "validatePayoutProposal"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertGovernancePolicy",
+              "kind": "throw",
+              "line": 102
+            },
+            {
+              "in": "assertGovernancePolicy",
+              "kind": "throw",
+              "line": 117
+            },
+            {
+              "in": "assertPayoutProposal",
+              "kind": "throw",
+              "line": 125
+            },
+            {
+              "in": "assertPayoutProposal",
+              "kind": "throw",
+              "line": 138
+            },
+            {
+              "in": "assertPayoutDecision",
+              "kind": "throw",
+              "line": 146
+            },
+            {
+              "in": "assertPayoutExecution",
+              "kind": "throw",
+              "line": 154
+            }
           ],
           "hash": "210531bfe2d9e54d4fa32e84bb4dc49667508ec5611ef232ccd1178811f2cd9b",
           "importOrder": [
@@ -2278,7 +2971,8 @@
             "packages/core/src/hash.ts",
             "packages/core/src/validate.ts"
           ],
-          "path": "packages/core/src/hash.test.ts"
+          "path": "packages/core/src/hash.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2421,7 +3115,8 @@
             "packages/core/src/receipt-validate.ts",
             "packages/core/src/receipt.ts"
           ],
-          "path": "packages/core/src/receipt-validate.test.ts"
+          "path": "packages/core/src/receipt-validate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2429,6 +3124,18 @@
             "computeReceiptHash",
             "stampReceiptHash",
             "validateReceipt"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertReceipt",
+              "kind": "throw",
+              "line": 29
+            },
+            {
+              "in": "assertReceipt",
+              "kind": "throw",
+              "line": 49
+            }
           ],
           "hash": "82cc60ae4e38782816e163851dc76d02957c4a78594d00113e0099ba23362b20",
           "importsFiles": [
@@ -2472,7 +3179,8 @@
             "packages/core/src/recovery-bundle-validate.ts",
             "packages/core/src/recovery-bundle.ts"
           ],
-          "path": "packages/core/src/recovery-bundle-validate.test.ts"
+          "path": "packages/core/src/recovery-bundle-validate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -2482,6 +3190,13 @@
             "stampBundleHash",
             "validateRecoveryBundle",
             "verifyBundleConsistency"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertRecoveryBundle",
+              "kind": "throw",
+              "line": 31
+            }
           ],
           "hash": "ee20febe7396e824686935a5d05b5f5116a68725cda9d45fdf09f2bd1362b479",
           "importOrder": [
@@ -2522,11 +3237,19 @@
             "packages/core/src/resolve.ts",
             "packages/core/src/validate.ts"
           ],
-          "path": "packages/core/src/resolve.test.ts"
+          "path": "packages/core/src/resolve.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "resolveManifestPointers"
+          ],
+          "failurePaths": [
+            {
+              "in": "isUrlParseable",
+              "kind": "catch",
+              "line": 67
+            }
           ],
           "hash": "c99c5fa370dd0e94598da3c92d6c1457232ecef7b5e0a1b7f7e45484621bbe78",
           "importsFiles": [
@@ -2547,12 +3270,20 @@
           "importsFiles": [
             "packages/core/src/validate.ts"
           ],
-          "path": "packages/core/src/validate.test.ts"
+          "path": "packages/core/src/validate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "assertManifest",
             "validateManifest"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertManifest",
+              "kind": "throw",
+              "line": 31
+            }
           ],
           "hash": "e12cffa991143f299df70122652de0863084515d6f6a8a99203b2e7d0eaf8224",
           "importOrder": [
@@ -2579,6 +3310,9 @@
       "name": "core",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 35,
       "unresolvedSites": 0
     },
@@ -2883,7 +3617,8 @@
           "importsFiles": [
             "packages/storage/src/delivery.ts"
           ],
-          "path": "packages/storage/src/delivery.test.ts"
+          "path": "packages/storage/src/delivery.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "02c505dc4ea5a29c884d948b95db437d691815aaf7d797fb2a5eba7402a0c290",
@@ -2894,9 +3629,32 @@
           "importsFiles": [
             "packages/storage/src/fs-store.ts"
           ],
-          "path": "packages/storage/src/fs-store.test.ts"
+          "path": "packages/storage/src/fs-store.test.ts",
+          "testFramework": "vitest"
         },
         {
+          "failurePaths": [
+            {
+              "in": "get",
+              "kind": "catch",
+              "line": 26
+            },
+            {
+              "in": "has",
+              "kind": "catch",
+              "line": 35
+            },
+            {
+              "in": "filePath",
+              "kind": "throw",
+              "line": 42
+            },
+            {
+              "in": "filePath",
+              "kind": "throw",
+              "line": 50
+            }
+          ],
           "hash": "23966e474adafff3c36f8f6cac4f80b507de46e262213067796aca432a794122",
           "importsFiles": [
             "packages/storage/src/store.ts"
@@ -2925,7 +3683,8 @@
           "importsFiles": [
             "packages/storage/src/mock-store.ts"
           ],
-          "path": "packages/storage/src/mock-store.test.ts"
+          "path": "packages/storage/src/mock-store.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1a9be5e14630d4041c0f6db6f166589b3ec15755b172cfa6954210aa69224640",
@@ -2961,6 +3720,9 @@
       "outsideReads": 2,
       "outsideWrites": 1,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 13,
       "unresolvedSites": 0
     },
@@ -2983,9 +3745,72 @@
           "importsFiles": [
             "packages/xaman/src/client.ts"
           ],
-          "path": "packages/xaman/src/client.test.ts"
+          "path": "packages/xaman/src/client.test.ts",
+          "testFramework": "vitest"
         },
         {
+          "failurePaths": [
+            {
+              "in": "createPayload",
+              "kind": "throw",
+              "line": 118
+            },
+            {
+              "in": "createPayload",
+              "kind": "catch",
+              "line": 131
+            },
+            {
+              "in": "createPayload",
+              "kind": "throw",
+              "line": 132
+            },
+            {
+              "in": "createPayload",
+              "kind": "throw",
+              "line": 133
+            },
+            {
+              "in": "subscribeToPayload",
+              "kind": "catch",
+              "line": 169
+            },
+            {
+              "in": "subscribeToPayload",
+              "kind": "catch",
+              "line": 181
+            },
+            {
+              "in": "subscribeToPayload",
+              "kind": "throw",
+              "line": 182
+            },
+            {
+              "in": "getPayloadResult",
+              "kind": "catch",
+              "line": 214
+            },
+            {
+              "in": "getPayloadResult",
+              "kind": "throw",
+              "line": 215
+            },
+            {
+              "in": "fetchPayloadResult",
+              "kind": "throw",
+              "line": 236
+            },
+            {
+              "in": "cancelPayload",
+              "kind": "throw",
+              "line": 259
+            },
+            {
+              "in": "inferTxType",
+              "kind": "throw",
+              "line": 290
+            }
+          ],
           "hash": "332322a14f8a96870379503501e1c043b9ab4ccfb06bf89856f02c1bfa8d34ed",
           "importsFiles": [
             "packages/xaman/src/types.ts"
@@ -3015,13 +3840,29 @@
             "packages/core/src/index.ts",
             "packages/xaman/src/payloads.ts"
           ],
-          "path": "packages/xaman/src/payloads.test.ts"
+          "names": [
+            "packages/xrpl/src/mint.ts"
+          ],
+          "path": "packages/xaman/src/payloads.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "buildBuyPayload",
             "buildConfigureMinterPayload",
             "buildMintPayload"
+          ],
+          "failurePaths": [
+            {
+              "in": "buildMintPayload",
+              "kind": "throw",
+              "line": 56
+            },
+            {
+              "in": "buildMintPayload",
+              "kind": "throw",
+              "line": 70
+            }
           ],
           "hash": "82b46aa8fd42b13ddf452ab7b152add647ee58553cb17b15a8d194c58d66f9a3",
           "importsFiles": [
@@ -3044,7 +3885,8 @@
             "packages/xaman/src/types.ts",
             "packages/xaman/src/verify.ts"
           ],
-          "path": "packages/xaman/src/verify.test.ts"
+          "path": "packages/xaman/src/verify.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3079,6 +3921,9 @@
       ],
       "outsideReads": 1,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 4,
       "unresolvedSites": 0
     },
@@ -3101,7 +3946,8 @@
           "importsFiles": [
             "packages/xrpl/src/account-nfts.ts"
           ],
-          "path": "packages/xrpl/src/account-nfts.test.ts"
+          "path": "packages/xrpl/src/account-nfts.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3115,11 +3961,19 @@
           "importsFiles": [
             "packages/xrpl/src/check-holder.ts"
           ],
-          "path": "packages/xrpl/src/check-holder.test.ts"
+          "path": "packages/xrpl/src/check-holder.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "checkHolder"
+          ],
+          "failurePaths": [
+            {
+              "in": "checkHolder",
+              "kind": "catch",
+              "line": 56
+            }
           ],
           "hash": "c1e960ad5080158d199eeb92ca9c892a9f6cd2b08f67b350e0a3cd00753ea339",
           "importOrder": [
@@ -3173,11 +4027,39 @@
             "packages/xrpl/src/verify-minter.ts",
             "packages/xrpl/src/wallet.ts"
           ],
-          "path": "packages/xrpl/src/issue-release.test.ts"
+          "path": "packages/xrpl/src/issue-release.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "issueRelease"
+          ],
+          "failurePaths": [
+            {
+              "in": "issueRelease",
+              "kind": "throw",
+              "line": 114
+            },
+            {
+              "in": "issueRelease",
+              "kind": "throw",
+              "line": 128
+            },
+            {
+              "in": "issueRelease",
+              "kind": "catch",
+              "line": 138
+            },
+            {
+              "in": "issueRelease",
+              "kind": "throw",
+              "line": 143
+            },
+            {
+              "in": "issueRelease",
+              "kind": "throw",
+              "line": 152
+            }
           ],
           "hash": "cff40489920821984941366b74d4836ba4f24f082bdaf4cd1788bd60f804a2a0",
           "importOrder": [
@@ -3210,11 +4092,59 @@
             "packages/xrpl/src/mint.ts",
             "packages/xrpl/src/wallet.ts"
           ],
-          "path": "packages/xrpl/src/mint.test.ts"
+          "path": "packages/xrpl/src/mint.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "mintRelease"
+          ],
+          "failurePaths": [
+            {
+              "in": "buildTokenUri",
+              "kind": "throw",
+              "line": 54
+            },
+            {
+              "in": "percentToTransferFee",
+              "kind": "throw",
+              "line": 67
+            },
+            {
+              "in": "mintRelease",
+              "kind": "throw",
+              "line": 87
+            },
+            {
+              "in": "mintRelease",
+              "kind": "throw",
+              "line": 92
+            },
+            {
+              "in": "mintRelease",
+              "kind": "throw",
+              "line": 126
+            },
+            {
+              "in": "mintRelease",
+              "kind": "throw",
+              "line": 131
+            },
+            {
+              "in": "mintRelease",
+              "kind": "throw",
+              "line": 139
+            },
+            {
+              "in": "mintRelease",
+              "kind": "catch",
+              "line": 144
+            },
+            {
+              "in": "mintRelease",
+              "kind": "throw",
+              "line": 148
+            }
           ],
           "hash": "ccdee1ea3556afc960a9b8238d0c6def4a1dce750b68f742178ad955c773446d",
           "importOrder": [
@@ -3234,12 +4164,20 @@
           "importsFiles": [
             "packages/xrpl/src/network.ts"
           ],
-          "path": "packages/xrpl/src/network.test.ts"
+          "path": "packages/xrpl/src/network.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "assertMainnetAllowed",
             "getNetwork"
+          ],
+          "failurePaths": [
+            {
+              "in": "assertMainnetAllowed",
+              "kind": "throw",
+              "line": 50
+            }
           ],
           "hash": "c539a4526e8c5cda0653768a06d506ea1da2a215cde53f4f55e6f4f6934842b8",
           "path": "packages/xrpl/src/network.ts"
@@ -3249,11 +4187,24 @@
           "importsFiles": [
             "packages/xrpl/src/read-nft.ts"
           ],
-          "path": "packages/xrpl/src/read-nft.test.ts"
+          "path": "packages/xrpl/src/read-nft.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "readNftFromLedger"
+          ],
+          "failurePaths": [
+            {
+              "in": "readNftFromLedger",
+              "kind": "catch",
+              "line": 68
+            },
+            {
+              "in": "readNftFromLedger",
+              "kind": "throw",
+              "line": 73
+            }
           ],
           "hash": "1d6e1eaeaa8f8d7031c55479b676abe24cf23a3c2c494a718aa6c5b588c9d8c5",
           "importOrder": [
@@ -3271,11 +4222,19 @@
           "importsFiles": [
             "packages/xrpl/src/verify-minter.ts"
           ],
-          "path": "packages/xrpl/src/verify-minter.test.ts"
+          "path": "packages/xrpl/src/verify-minter.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "verifyAuthorizedMinter"
+          ],
+          "failurePaths": [
+            {
+              "in": "verifyAuthorizedMinter",
+              "kind": "catch",
+              "line": 60
+            }
           ],
           "hash": "85cfa36bf7fdda67fd7cabf9ede70ee78c886842c1e0ec28c0977b75eda23cea",
           "importsFiles": [
@@ -3288,7 +4247,8 @@
           "importsFiles": [
             "packages/xrpl/src/wallet.ts"
           ],
-          "path": "packages/xrpl/src/wallet.test.ts"
+          "path": "packages/xrpl/src/wallet.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -3297,6 +4257,23 @@
             "fundWalletPair",
             "generateWalletPair",
             "importWalletPair"
+          ],
+          "failurePaths": [
+            {
+              "in": "fundWalletPair",
+              "kind": "throw",
+              "line": 50
+            },
+            {
+              "in": "authorizeOperatorAsMinter",
+              "kind": "throw",
+              "line": 105
+            },
+            {
+              "in": "authorizeOperatorAsMinter",
+              "kind": "throw",
+              "line": 110
+            }
           ],
           "hash": "be8e91f915672c4747da5ef8f3a067802c15c6d9820d934d3b6086f9e073c52e",
           "importsFiles": [
@@ -3316,6 +4293,9 @@
       "name": "xrpl",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 28,
       "unresolvedSites": 0
     }
@@ -4259,6 +5239,36 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 48,
+          "job": "test",
+          "runner": "vitest",
+          "step": "Verify",
+          "through": [
+            "verify.sh"
+          ]
+        },
+        {
+          "config": "app/vitest.config.ts",
+          "dir": "app",
+          "files": 28,
+          "job": "test",
+          "runner": "vitest",
+          "step": "Verify",
+          "through": [
+            "verify.sh"
+          ]
+        },
+        {
+          "dir": "app/src-tauri",
+          "files": 2,
+          "job": "cargo-check",
+          "runner": "cargo test",
+          "step": "cargo test"
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -4521,7 +5531,7 @@
       "to": "storage"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "e2ce19a5099a1e2fba8c13c8bac76019e0db761a",
     "tracked": 345
@@ -4974,5 +5984,13 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 77,
-  "unassigned": []
+  "unassigned": [],
+  "workspaces": [
+    "app",
+    "packages/cli",
+    "packages/core",
+    "packages/storage",
+    "packages/xaman",
+    "packages/xrpl"
+  ]
 }

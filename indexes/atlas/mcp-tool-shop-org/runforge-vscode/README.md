@@ -1,6 +1,6 @@
 # runforge-vscode: how it works
 
-Mapped at 2026-09-26 from commit da77f7a by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit c9c6406 by Atlas 1.23.4.
 
 ## What this is
 
@@ -8,15 +8,17 @@ Mapped at 2026-09-26 from commit da77f7a by Atlas 1.23.0.
 
 ## What changed since 2026-09-24 (d4f816a)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - In src/extension.ts, `activate` lost a step, `isRunning`.
 - In src/extension.ts, `activate` lost a step, `executeRun`.
 - In src/extension.ts, `activate` lost a step, `showRunsPicker`.
 - And 18 more changes to the order of work.
-- 221 files changed content, across 9 parts.
+- 1 file added and 221 changed content, across 9 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 12 paths; on a push to main touching 12 paths; or by hand. Runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more; builds test/extension-host/; checks src/extension.ts.
+1. **CI.** On a pull request to main touching 13 paths; on a push to main touching 13 paths; or by hand. Runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more; builds test/extension-host/; checks src/extension.ts.
 2. **Build and Release.** When a tag matching `v*` is pushed; or by hand. Runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more; checks src/extension.ts.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **runforge** (the extension people install from the VS Code Marketplace). Loads src/extension.ts.
@@ -85,7 +87,7 @@ Read those in order to follow one activation of runforge end to end. This path f
 
 - 1 write and 9 reads use paths built at run time and are not named here.
 - 21 writes and 31 reads go to a path their caller passes, not to this repository.
-- 8 commands are built at run time and not followed, 5 of them in tests.
+- 4 commands are built at run time and not followed, 2 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

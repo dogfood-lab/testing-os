@@ -147,25 +147,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "site",
-      "qualifyingSourceCommits": 18,
-      "rebaseline": null
-    },
-    {
-      "breakage": {
-        "coChangesOnly": [
-          "xrpl_lab"
-        ],
-        "collapsed": false,
-        "confidence": "low",
-        "importsAndCoChanges": [],
-        "importsOnly": []
-      },
-      "cohesion": 0,
-      "cohesionDropped": false,
-      "confidence": "full",
-      "highWater": null,
-      "name": "tests",
-      "qualifyingSourceCommits": 78,
+      "qualifyingSourceCommits": 14,
       "rebaseline": null
     },
     {
@@ -173,19 +155,34 @@
         "coChangesOnly": [],
         "collapsed": false,
         "confidence": "low",
-        "importsAndCoChanges": [
-          "tests"
-        ],
+        "importsAndCoChanges": [],
+        "importsOnly": []
+      },
+      "cohesion": null,
+      "cohesionDropped": false,
+      "confidence": "full",
+      "highWater": null,
+      "name": "tests",
+      "qualifyingSourceCommits": 73,
+      "rebaseline": null
+    },
+    {
+      "breakage": {
+        "coChangesOnly": [],
+        "collapsed": false,
+        "confidence": "low",
+        "importsAndCoChanges": [],
         "importsOnly": [
-          "scripts"
+          "scripts",
+          "tests"
         ]
       },
-      "cohesion": 0,
+      "cohesion": null,
       "cohesionDropped": false,
       "confidence": "full",
       "highWater": null,
       "name": "xrpl_lab",
-      "qualifyingSourceCommits": 79,
+      "qualifyingSourceCommits": 68,
       "rebaseline": null
     }
   ],
@@ -193,13 +190,13 @@
     "definition": "commits is how many commits in the window touch the file, including merges and commits dropped from coupling. lines is added plus deleted in those commits.",
     "files": [
       {
-        "commits": 13,
+        "commits": 12,
         "lines": 202,
         "path": ".github/workflows/ci.yml"
       },
       {
-        "commits": 3,
-        "lines": 76,
+        "commits": 2,
+        "lines": 58,
         "path": ".github/workflows/pages.yml"
       },
       {
@@ -208,8 +205,8 @@
         "path": ".github/workflows/publish-pypi.yml"
       },
       {
-        "commits": 12,
-        "lines": 172,
+        "commits": 10,
+        "lines": 150,
         "path": ".github/workflows/release-binaries.yml"
       },
       {
@@ -218,17 +215,17 @@
         "path": ".github/workflows/release.yml"
       },
       {
-        "commits": 6,
-        "lines": 117,
+        "commits": 5,
+        "lines": 113,
         "path": ".github/workflows/smoke.yml"
       },
       {
-        "commits": 6,
+        "commits": 5,
         "lines": 48,
         "path": ".gitignore"
       },
       {
-        "commits": 23,
+        "commits": 22,
         "lines": 1012,
         "path": "CHANGELOG.md"
       },
@@ -243,58 +240,53 @@
         "path": "LICENSE"
       },
       {
-        "commits": 9,
-        "lines": 1065,
+        "commits": 8,
+        "lines": 1063,
         "path": "README.es.md"
       },
       {
-        "commits": 9,
-        "lines": 1063,
+        "commits": 8,
+        "lines": 1061,
         "path": "README.fr.md"
       },
       {
-        "commits": 9,
-        "lines": 1121,
+        "commits": 8,
+        "lines": 1093,
         "path": "README.hi.md"
       },
       {
-        "commits": 9,
-        "lines": 1085,
+        "commits": 8,
+        "lines": 1083,
         "path": "README.it.md"
       },
       {
-        "commits": 9,
-        "lines": 1319,
+        "commits": 8,
+        "lines": 1317,
         "path": "README.ja.md"
       },
       {
-        "commits": 17,
-        "lines": 503,
+        "commits": 16,
+        "lines": 501,
         "path": "README.md"
       },
       {
-        "commits": 9,
-        "lines": 1051,
+        "commits": 8,
+        "lines": 1049,
         "path": "README.pt-BR.md"
       },
       {
-        "commits": 9,
-        "lines": 1075,
+        "commits": 8,
+        "lines": 1051,
         "path": "README.zh.md"
       },
       {
-        "commits": 2,
-        "lines": 98,
-        "path": "SCORECARD.md"
-      },
-      {
-        "commits": 7,
-        "lines": 187,
+        "commits": 6,
+        "lines": 183,
         "path": "SECURITY.md"
       },
       {
-        "commits": 11,
-        "lines": 179,
+        "commits": 10,
+        "lines": 177,
         "path": "SHIP_GATE.md"
       },
       {
@@ -358,13 +350,13 @@
         "path": "docs/images/modules-list.png"
       },
       {
-        "commits": 9,
+        "commits": 8,
         "lines": 212,
         "path": "modules/account_hygiene.md"
       },
       {
-        "commits": 8,
-        "lines": 209,
+        "commits": 6,
+        "lines": 207,
         "path": "modules/amm_liquidity_101.md"
       },
       {
@@ -398,22 +390,22 @@
         "path": "modules/deposit_gate_101.md"
       },
       {
-        "commits": 9,
-        "lines": 156,
+        "commits": 7,
+        "lines": 154,
         "path": "modules/dex_inventory_guardrails.md"
       },
       {
-        "commits": 7,
+        "commits": 6,
         "lines": 162,
         "path": "modules/dex_literacy.md"
       },
       {
-        "commits": 12,
-        "lines": 233,
+        "commits": 9,
+        "lines": 215,
         "path": "modules/dex_market_making_101.md"
       },
       {
-        "commits": 9,
+        "commits": 8,
         "lines": 217,
         "path": "modules/dex_vs_amm_risk_literacy.md"
       },
@@ -438,7 +430,7 @@
         "path": "modules/escrow_finish_101.md"
       },
       {
-        "commits": 8,
+        "commits": 7,
         "lines": 125,
         "path": "modules/failure_literacy.md"
       },
@@ -483,17 +475,17 @@
         "path": "modules/permissioned_domains_101.md"
       },
       {
-        "commits": 9,
+        "commits": 8,
         "lines": 136,
         "path": "modules/receipt_audit.md"
       },
       {
-        "commits": 4,
+        "commits": 3,
         "lines": 91,
         "path": "modules/receipt_literacy.md"
       },
       {
-        "commits": 10,
+        "commits": 9,
         "lines": 154,
         "path": "modules/reserves_101.md"
       },
@@ -508,12 +500,12 @@
         "path": "modules/token_freeze_101.md"
       },
       {
-        "commits": 6,
+        "commits": 5,
         "lines": 148,
         "path": "modules/trust_line_failures.md"
       },
       {
-        "commits": 7,
+        "commits": 6,
         "lines": 153,
         "path": "modules/trust_lines_101.md"
       },
@@ -538,8 +530,8 @@
         "path": "presets/strategy_mm101.json"
       },
       {
-        "commits": 24,
-        "lines": 157,
+        "commits": 20,
+        "lines": 151,
         "path": "pyproject.toml"
       },
       {
@@ -628,8 +620,8 @@
         "path": "site/src/content/docs/handbook/getting-started.md"
       },
       {
-        "commits": 9,
-        "lines": 98,
+        "commits": 8,
+        "lines": 86,
         "path": "site/src/content/docs/handbook/index.md"
       },
       {
@@ -643,12 +635,12 @@
         "path": "site/src/data/curriculum.json"
       },
       {
-        "commits": 11,
+        "commits": 10,
         "lines": 469,
         "path": "site/src/layouts/DashboardLayout.astro"
       },
       {
-        "commits": 16,
+        "commits": 15,
         "lines": 610,
         "path": "site/src/lib/api.ts"
       },
@@ -708,13 +700,13 @@
         "path": "site/src/pages/app/facilitator/runs.astro"
       },
       {
-        "commits": 13,
+        "commits": 12,
         "lines": 774,
         "path": "site/src/pages/app/index.astro"
       },
       {
-        "commits": 11,
-        "lines": 705,
+        "commits": 10,
+        "lines": 685,
         "path": "site/src/pages/app/modules/[id].astro"
       },
       {
@@ -738,8 +730,8 @@
         "path": "site/src/pages/index.astro"
       },
       {
-        "commits": 9,
-        "lines": 163,
+        "commits": 7,
+        "lines": 159,
         "path": "site/src/site-config.ts"
       },
       {
@@ -828,8 +820,8 @@
         "path": "tests/test_atomic.py"
       },
       {
-        "commits": 5,
-        "lines": 783,
+        "commits": 4,
+        "lines": 779,
         "path": "tests/test_audit.py"
       },
       {
@@ -838,7 +830,7 @@
         "path": "tests/test_checks.py"
       },
       {
-        "commits": 10,
+        "commits": 9,
         "lines": 1027,
         "path": "tests/test_cli.py"
       },
@@ -898,8 +890,8 @@
         "path": "tests/test_envelope_pedagogy.py"
       },
       {
-        "commits": 4,
-        "lines": 231,
+        "commits": 3,
+        "lines": 227,
         "path": "tests/test_errors.py"
       },
       {
@@ -928,8 +920,8 @@
         "path": "tests/test_ft002_verified_surfacing.py"
       },
       {
-        "commits": 2,
-        "lines": 202,
+        "commits": 1,
+        "lines": 200,
         "path": "tests/test_hygiene.py"
       },
       {
@@ -1098,8 +1090,8 @@
         "path": "tests/test_runner_isolation.py"
       },
       {
-        "commits": 14,
-        "lines": 1438,
+        "commits": 13,
+        "lines": 1428,
         "path": "tests/test_runner_ws.py"
       },
       {
@@ -1118,12 +1110,12 @@
         "path": "tests/test_send_fund.py"
       },
       {
-        "commits": 5,
-        "lines": 603,
+        "commits": 3,
+        "lines": 545,
         "path": "tests/test_server.py"
       },
       {
-        "commits": 8,
+        "commits": 7,
         "lines": 757,
         "path": "tests/test_state.py"
       },
@@ -1378,8 +1370,8 @@
         "path": "tests/test_w7_transport_object_create_reserve.py"
       },
       {
-        "commits": 5,
-        "lines": 338,
+        "commits": 4,
+        "lines": 334,
         "path": "tests/test_wallet.py"
       },
       {
@@ -1403,8 +1395,8 @@
         "path": "verify.sh"
       },
       {
-        "commits": 16,
-        "lines": 41,
+        "commits": 14,
+        "lines": 37,
         "path": "xrpl_lab/__init__.py"
       },
       {
@@ -1423,8 +1415,8 @@
         "path": "xrpl_lab/actions/__init__.py"
       },
       {
-        "commits": 6,
-        "lines": 300,
+        "commits": 5,
+        "lines": 294,
         "path": "xrpl_lab/actions/amm.py"
       },
       {
@@ -1503,8 +1495,8 @@
         "path": "xrpl_lab/actions/permissioned_domains.py"
       },
       {
-        "commits": 2,
-        "lines": 122,
+        "commits": 1,
+        "lines": 120,
         "path": "xrpl_lab/actions/reserves.py"
       },
       {
@@ -1513,8 +1505,8 @@
         "path": "xrpl_lab/actions/send.py"
       },
       {
-        "commits": 7,
-        "lines": 415,
+        "commits": 6,
+        "lines": 413,
         "path": "xrpl_lab/actions/strategy.py"
       },
       {
@@ -1533,8 +1525,8 @@
         "path": "xrpl_lab/actions/verify.py"
       },
       {
-        "commits": 8,
-        "lines": 438,
+        "commits": 7,
+        "lines": 432,
         "path": "xrpl_lab/actions/wallet.py"
       },
       {
@@ -1543,13 +1535,13 @@
         "path": "xrpl_lab/api/__init__.py"
       },
       {
-        "commits": 17,
-        "lines": 1071,
+        "commits": 15,
+        "lines": 997,
         "path": "xrpl_lab/api/routes.py"
       },
       {
-        "commits": 25,
-        "lines": 2313,
+        "commits": 23,
+        "lines": 2105,
         "path": "xrpl_lab/api/runner_ws.py"
       },
       {
@@ -1558,13 +1550,13 @@
         "path": "xrpl_lab/api/schemas.py"
       },
       {
-        "commits": 10,
-        "lines": 800,
+        "commits": 7,
+        "lines": 792,
         "path": "xrpl_lab/audit.py"
       },
       {
-        "commits": 35,
-        "lines": 2922,
+        "commits": 29,
+        "lines": 2886,
         "path": "xrpl_lab/cli.py"
       },
       {
@@ -1578,13 +1570,13 @@
         "path": "xrpl_lab/curriculum_manifest.py"
       },
       {
-        "commits": 16,
-        "lines": 1002,
+        "commits": 13,
+        "lines": 964,
         "path": "xrpl_lab/doctor.py"
       },
       {
-        "commits": 5,
-        "lines": 160,
+        "commits": 4,
+        "lines": 158,
         "path": "xrpl_lab/errors.py"
       },
       {
@@ -1603,8 +1595,8 @@
         "path": "xrpl_lab/linter.py"
       },
       {
-        "commits": 14,
-        "lines": 428,
+        "commits": 11,
+        "lines": 414,
         "path": "xrpl_lab/modules.py"
       },
       {
@@ -1613,8 +1605,8 @@
         "path": "xrpl_lab/registry.py"
       },
       {
-        "commits": 17,
-        "lines": 1718,
+        "commits": 15,
+        "lines": 1716,
         "path": "xrpl_lab/reporting.py"
       },
       {
@@ -1623,8 +1615,8 @@
         "path": "xrpl_lab/reserves.py"
       },
       {
-        "commits": 23,
-        "lines": 3740,
+        "commits": 16,
+        "lines": 3656,
         "path": "xrpl_lab/runner.py"
       },
       {
@@ -1633,13 +1625,13 @@
         "path": "xrpl_lab/runtime.py"
       },
       {
-        "commits": 8,
-        "lines": 192,
+        "commits": 5,
+        "lines": 188,
         "path": "xrpl_lab/server.py"
       },
       {
-        "commits": 23,
-        "lines": 841,
+        "commits": 18,
+        "lines": 825,
         "path": "xrpl_lab/state.py"
       },
       {
@@ -1648,18 +1640,18 @@
         "path": "xrpl_lab/transport/__init__.py"
       },
       {
-        "commits": 11,
+        "commits": 10,
         "lines": 1419,
         "path": "xrpl_lab/transport/base.py"
       },
       {
-        "commits": 23,
-        "lines": 6204,
+        "commits": 20,
+        "lines": 6152,
         "path": "xrpl_lab/transport/dry_run.py"
       },
       {
-        "commits": 25,
-        "lines": 5485,
+        "commits": 21,
+        "lines": 5449,
         "path": "xrpl_lab/transport/xrpl_testnet.py"
       },
       {
@@ -1673,164 +1665,94 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-09-26T14:48:26.558Z",
+  "generatedAt": "2026-09-28T13:23:48.668Z",
   "generatedFrom": {
     "commit": "454f364c2c4c05c2149f8fd23b98123f50a019c2"
   },
   "pairs": [
     {
       "a": "modules/account_hygiene.md",
-      "b": "modules/amm_liquidity_101.md",
-      "either": 8,
-      "shared": 4,
-      "strength": 0.5
-    },
-    {
-      "a": "modules/account_hygiene.md",
-      "b": "modules/dex_inventory_guardrails.md",
-      "either": 7,
-      "shared": 5,
-      "strength": 0.714286
-    },
-    {
-      "a": "modules/account_hygiene.md",
       "b": "modules/dex_market_making_101.md",
-      "either": 8,
-      "shared": 6,
-      "strength": 0.75
-    },
-    {
-      "a": "modules/account_hygiene.md",
-      "b": "modules/dex_vs_amm_risk_literacy.md",
-      "either": 8,
+      "either": 5,
       "shared": 5,
-      "strength": 0.625
-    },
-    {
-      "a": "modules/account_hygiene.md",
-      "b": "modules/reserves_101.md",
-      "either": 6,
-      "shared": 6,
       "strength": 1
     },
     {
-      "a": "modules/amm_liquidity_101.md",
-      "b": "modules/dex_inventory_guardrails.md",
-      "either": 7,
-      "shared": 5,
-      "strength": 0.714286
-    },
-    {
-      "a": "modules/amm_liquidity_101.md",
-      "b": "modules/dex_market_making_101.md",
-      "either": 9,
-      "shared": 5,
-      "strength": 0.555556
-    },
-    {
-      "a": "modules/amm_liquidity_101.md",
+      "a": "modules/account_hygiene.md",
       "b": "modules/dex_vs_amm_risk_literacy.md",
-      "either": 8,
-      "shared": 5,
-      "strength": 0.625
-    },
-    {
-      "a": "modules/amm_liquidity_101.md",
-      "b": "modules/reserves_101.md",
-      "either": 8,
-      "shared": 4,
-      "strength": 0.5
-    },
-    {
-      "a": "modules/dex_inventory_guardrails.md",
-      "b": "modules/dex_market_making_101.md",
-      "either": 8,
-      "shared": 6,
-      "strength": 0.75
-    },
-    {
-      "a": "modules/dex_inventory_guardrails.md",
-      "b": "modules/reserves_101.md",
-      "either": 7,
-      "shared": 5,
-      "strength": 0.714286
-    },
-    {
-      "a": "modules/dex_market_making_101.md",
-      "b": "modules/dex_vs_amm_risk_literacy.md",
-      "either": 10,
-      "shared": 5,
-      "strength": 0.5
-    },
-    {
-      "a": "modules/dex_market_making_101.md",
-      "b": "modules/reserves_101.md",
-      "either": 8,
-      "shared": 6,
-      "strength": 0.75
-    },
-    {
-      "a": "modules/dex_vs_amm_risk_literacy.md",
-      "b": "modules/reserves_101.md",
-      "either": 8,
-      "shared": 5,
-      "strength": 0.625
-    },
-    {
-      "a": "modules/failure_literacy.md",
-      "b": "modules/receipt_audit.md",
-      "either": 7,
-      "shared": 6,
-      "strength": 0.857143
-    },
-    {
-      "a": "pyproject.toml",
-      "b": "xrpl_lab/__init__.py",
-      "either": 19,
-      "shared": 11,
-      "strength": 0.578947
-    },
-    {
-      "a": "site/src/layouts/DashboardLayout.astro",
-      "b": "site/src/pages/app/modules/[id].astro",
-      "either": 9,
-      "shared": 5,
-      "strength": 0.555556
-    },
-    {
-      "a": "site/src/layouts/DashboardLayout.astro",
-      "b": "site/src/pages/app/modules/index.astro",
-      "either": 10,
-      "shared": 5,
-      "strength": 0.5
-    },
-    {
-      "a": "site/src/pages/app/artifacts.astro",
-      "b": "site/src/pages/app/doctor.astro",
       "either": 7,
       "shared": 4,
       "strength": 0.571429
     },
     {
+      "a": "modules/account_hygiene.md",
+      "b": "modules/reserves_101.md",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "modules/dex_market_making_101.md",
+      "b": "modules/dex_vs_amm_risk_literacy.md",
+      "either": 7,
+      "shared": 4,
+      "strength": 0.571429
+    },
+    {
+      "a": "modules/dex_market_making_101.md",
+      "b": "modules/reserves_101.md",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "modules/dex_vs_amm_risk_literacy.md",
+      "b": "modules/reserves_101.md",
+      "either": 7,
+      "shared": 4,
+      "strength": 0.571429
+    },
+    {
+      "a": "modules/failure_literacy.md",
+      "b": "modules/receipt_audit.md",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "pyproject.toml",
+      "b": "uv.lock",
+      "either": 17,
+      "shared": 9,
+      "strength": 0.529412
+    },
+    {
+      "a": "pyproject.toml",
+      "b": "xrpl_lab/__init__.py",
+      "either": 15,
+      "shared": 9,
+      "strength": 0.6
+    },
+    {
+      "a": "site/src/layouts/DashboardLayout.astro",
+      "b": "site/src/pages/app/modules/index.astro",
+      "either": 8,
+      "shared": 4,
+      "strength": 0.5
+    },
+    {
       "a": "site/src/pages/app/artifacts.astro",
       "b": "site/src/pages/app/index.astro",
-      "either": 10,
-      "shared": 5,
+      "either": 8,
+      "shared": 4,
       "strength": 0.5
     },
     {
       "a": "site/src/pages/app/index.astro",
       "b": "site/src/pages/app/modules/index.astro",
-      "either": 11,
-      "shared": 6,
-      "strength": 0.545455
-    },
-    {
-      "a": "tests/test_server.py",
-      "b": "xrpl_lab/server.py",
-      "either": 8,
-      "shared": 4,
-      "strength": 0.5
+      "either": 9,
+      "shared": 5,
+      "strength": 0.555556
     }
   ],
   "parameters": {
@@ -1847,7 +1769,7 @@
     "inScopeFiles": 289,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 160,
+    "qualifyingCommits": 148,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
@@ -1868,7 +1790,7 @@
     ],
     "sourceFileReach": 20,
     "sourceFileRise": 25,
-    "sourceFilesReachingStrongFloor": 13,
+    "sourceFilesReachingStrongFloor": 9,
     "strength": 0.5,
     "windowDays": 180
   },

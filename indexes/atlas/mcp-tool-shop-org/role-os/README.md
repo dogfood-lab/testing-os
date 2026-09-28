@@ -1,6 +1,6 @@
 # role-os: how it works
 
-Mapped at 2026-09-26 from commit c0ee720 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit c0ee720 by Atlas 1.23.4.
 
 ## What this is
 
@@ -103,7 +103,7 @@ Read those in order to follow one pull request end to end.
 - 43 writes and 40 reads go to a path their caller passes, not to this repository.
 - 23 writes and 23 reads go to the directory the command is run in or a path their caller passes, not to this repository.
 - 8 writes and 1 read go to a temporary directory, not to this repository.
-- 10 commands are built at run time and not followed, 2 of them in tests.
+- 8 commands are built at run time and not followed, 2 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

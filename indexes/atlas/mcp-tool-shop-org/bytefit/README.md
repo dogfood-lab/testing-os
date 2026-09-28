@@ -1,6 +1,6 @@
 # bytefit: how it works
 
-Mapped at 2026-09-26 from commit 0f920ec by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 0f920ec by Atlas 1.23.4.
 
 ## What this is
 
@@ -85,7 +85,6 @@ Read those in order to follow one pull request end to end.
 - 3 reads go to a path their caller passes, not to this repository.
 - 1 write and 1 read go to a temporary directory or a path their caller passes, not to this repository.
 - 1 read goes to the home directory (.ollama/) or a path its caller passes, not to this repository.
-- 1 command is built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

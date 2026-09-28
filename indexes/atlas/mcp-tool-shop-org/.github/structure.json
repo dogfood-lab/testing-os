@@ -47,6 +47,22 @@
         {
           "entry": "audit",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "audit",
+              "kind": "catch",
+              "line": 39
+            },
+            {
+              "in": "ensureBase",
+              "kind": "catch",
+              "line": 64
+            },
+            {
+              "kind": "catch",
+              "line": 73
+            }
+          ],
           "hash": "db6a8e50c7da3858b97e39911f7bedee7586d9fd1751cc6685bdceb8272a37fb",
           "path": ".github/actions/delta-audit/delta-audit.mjs",
           "sequences": []
@@ -304,7 +320,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "569e7a88c46ab855d853b5ff2530e61d2323cedaccd98bf373b53eadf99ff91d",
+          "hash": "f47f6dc7d39216be43c15343da41aedcab88e751a6361f871db6020514bcc5e8",
           "path": "profile/README.md"
         }
       ],
@@ -430,6 +446,23 @@
       "externals": 0,
       "files": [
         {
+          "failurePaths": [
+            {
+              "in": "getJSON",
+              "kind": "catch",
+              "line": 217
+            },
+            {
+              "in": "getText",
+              "kind": "catch",
+              "line": 220
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 287
+            }
+          ],
           "hash": "3b9f5856cc3f9e3875ce352e4658061b42409edfbd8abc733091efa549eff49f",
           "path": "scripts/build-catalog.mjs"
         },
@@ -938,9 +971,9 @@
     }
   ],
   "edges": [],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
-    "commit": "8d8d1d23d1b860bbb3ebb374c74c636f93895777",
+    "commit": "d05c730ab4273f334d9363c56b7250f8923540bd",
     "tracked": 82
   },
   "landings": [

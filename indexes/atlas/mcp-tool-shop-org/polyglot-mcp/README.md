@@ -1,6 +1,6 @@
 # polyglot-mcp: how it works
 
-Mapped at 2026-09-26 from commit 25e970d by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 25e970d by Atlas 1.23.4.
 
 ## What this is
 
@@ -69,16 +69,11 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-- **.claude/** is written by dependabot[bot], which added every file in it.
-- **.github/** is written by dependabot[bot], which added every file in it.
-- **assets/** is written by dependabot[bot], which added every file in it.
-- **the repository root** is written by dependabot[bot], which added every file in it.
-- **scripts/** is written by dependabot[bot], which added every file in it.
-- **site/** is written by dependabot[bot], which added every file in it.
+Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-No configuration or documentation part is left to people alone.
+People write .claude/, .github/, assets/ and the repository root; 3 writes with paths built at run time may land here.
 
 ## Where to start
 

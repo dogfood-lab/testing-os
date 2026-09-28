@@ -74,6 +74,12 @@
             "main",
             "shade"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 424
+            }
+          ],
           "hash": "90f45d88093b35ec2cdcb4cb9ba713479e18871a868b47a8488dd19788764245",
           "path": "docs/brand/make_logo.py"
         },
@@ -200,6 +206,17 @@
           "exports": [
             "main",
             "run"
+          ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 124
+            },
+            {
+              "kind": "raise",
+              "line": 156
+            }
           ],
           "hash": "5e236d54bc315be9bf076960f8bf6f459a39914d18316f4479779b192fc890fb",
           "path": "verify.py",
@@ -355,6 +372,13 @@
             "asserts_are_stripped",
             "bare_assert_fires"
           ],
+          "failurePaths": [
+            {
+              "in": "bare_assert_fires",
+              "kind": "except",
+              "line": 36
+            }
+          ],
           "hash": "897e47844f3d562fdea463c431bcd8a665be546aa2d8449caf63ef4467c46dcb",
           "path": "src/comfy_preflight/_assert_probe.py"
         },
@@ -363,6 +387,13 @@
           "entryRule": 4,
           "exports": [
             "preflight"
+          ],
+          "failurePaths": [
+            {
+              "in": "preflight",
+              "kind": "raise",
+              "line": 199
+            }
           ],
           "hash": "21a23690bed4b5693a7c232297f5b45e5e6b648c46ec9879f2f1884426c30fe6",
           "importsFiles": [
@@ -431,6 +462,13 @@
           "exports": [
             "check_link_topology"
           ],
+          "failurePaths": [
+            {
+              "in": "check_link_topology",
+              "kind": "raise",
+              "line": 170
+            }
+          ],
           "hash": "cc24d3c281de279a9cc18cd748c35403ecef56972930b2b5b43ca2d04b717e39",
           "importsFiles": [
             "src/comfy_preflight/errors.py",
@@ -484,6 +522,13 @@
           "exports": [
             "check_register_scan"
           ],
+          "failurePaths": [
+            {
+              "in": "check_register_scan",
+              "kind": "raise",
+              "line": 358
+            }
+          ],
           "hash": "7d58dfc69e058688797cebe1fe4623549a33176d567d795fc11b0ab5cd2ad971",
           "importsFiles": [
             "src/comfy_preflight/errors.py",
@@ -496,6 +541,13 @@
           "exports": [
             "check_saved_is_submitted"
           ],
+          "failurePaths": [
+            {
+              "in": "check_saved_is_submitted",
+              "kind": "raise",
+              "line": 173
+            }
+          ],
           "hash": "3eedeed13d0c8e6f43ca1fdebbba921aed233463607c1797aed9b9284b6c48a6",
           "importsFiles": [
             "src/comfy_preflight/errors.py",
@@ -507,6 +559,13 @@
           "exports": [
             "check_generator_legal_frame",
             "declared_dimensions"
+          ],
+          "failurePaths": [
+            {
+              "in": "check_generator_legal_frame",
+              "kind": "raise",
+              "line": 264
+            }
           ],
           "hash": "b8188a823a3535df232bd69fea92cc63001b60a5c3fcd22d127fc156afd3f67d",
           "importsFiles": [
@@ -535,6 +594,102 @@
             "build_parser",
             "main"
           ],
+          "failurePaths": [
+            {
+              "in": "_read_json",
+              "kind": "raise",
+              "line": 74
+            },
+            {
+              "in": "_read_json",
+              "kind": "except",
+              "line": 77
+            },
+            {
+              "in": "_read_json",
+              "kind": "raise",
+              "line": 78
+            },
+            {
+              "in": "_load_graph",
+              "kind": "except",
+              "line": 85
+            },
+            {
+              "in": "_load_graph",
+              "kind": "raise",
+              "line": 88
+            },
+            {
+              "in": "_parse_dims",
+              "kind": "raise",
+              "line": 95
+            },
+            {
+              "in": "_parse_dims",
+              "kind": "except",
+              "line": 98
+            },
+            {
+              "in": "_parse_dims",
+              "kind": "raise",
+              "line": 99
+            },
+            {
+              "in": "_parse_consumer",
+              "kind": "raise",
+              "line": 106
+            },
+            {
+              "in": "_load_register",
+              "kind": "except",
+              "line": 113
+            },
+            {
+              "in": "_load_register",
+              "kind": "raise",
+              "line": 114
+            },
+            {
+              "in": "_load_schema",
+              "kind": "raise",
+              "line": 127
+            },
+            {
+              "in": "_load_schema",
+              "kind": "raise",
+              "line": 131
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 295
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 302
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 305
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 309
+            },
+            {
+              "in": "_run_check",
+              "kind": "except",
+              "line": 346
+            },
+            {
+              "kind": "raise",
+              "line": 360
+            }
+          ],
           "hash": "202dc972b4e31511838c4972320d9207f00e74e9b7a01672830ae6fcfdea0804",
           "importsFiles": [
             "src/comfy_preflight/__init__.py",
@@ -542,6 +697,7 @@
             "src/comfy_preflight/checks/c1_link_topology.py",
             "src/comfy_preflight/errors.py",
             "src/comfy_preflight/graph.py",
+            "src/comfy_preflight/mcp_server.py",
             "src/comfy_preflight/register.py",
             "src/comfy_preflight/registry.py"
           ],
@@ -761,6 +917,133 @@
             "keys_of",
             "parameters_of"
           ],
+          "failurePaths": [
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 124
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 129
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 135
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 140
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 164
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 202
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 207
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 213
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 219
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 282
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 287
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 289
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 318
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 323
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 367
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 371
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 377
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 383
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 390
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 397
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 403
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 410
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 418
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 426
+            },
+            {
+              "in": "index",
+              "kind": "raise",
+              "line": 494
+            }
+          ],
           "hash": "40bac521a5e1c40d4991f0941f9fb707685d44daa6cbe503ddbdb9543898925b",
           "path": "src/comfy_preflight/envelope.py"
         },
@@ -768,12 +1051,36 @@
           "exports": [
             "merge_verdicts"
           ],
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 125
+            }
+          ],
           "hash": "9e4193d01622df1bdb3211fcfa41e81f0bdf2f85e01a385322e341c0bd2fe5bf",
           "path": "src/comfy_preflight/errors.py"
         },
         {
           "exports": [
             "is_link"
+          ],
+          "failurePaths": [
+            {
+              "in": "from_api_dict",
+              "kind": "raise",
+              "line": 88
+            },
+            {
+              "in": "from_api_dict",
+              "kind": "raise",
+              "line": 98
+            },
+            {
+              "in": "from_api_dict",
+              "kind": "raise",
+              "line": 139
+            }
           ],
           "hash": "2b71fd72c205bc8801ef636ac5a7296526f3c24d0cd89777eefdc4a76076a31c",
           "importsFiles": [
@@ -787,6 +1094,52 @@
             "main",
             "run_preflight"
           ],
+          "failurePaths": [
+            {
+              "in": "_server_class",
+              "kind": "except",
+              "line": 80
+            },
+            {
+              "in": "_server_class",
+              "kind": "raise",
+              "line": 81
+            },
+            {
+              "in": "run_preflight",
+              "kind": "raise",
+              "line": 114
+            },
+            {
+              "in": "run_preflight",
+              "kind": "raise",
+              "line": 123
+            },
+            {
+              "in": "run_preflight",
+              "kind": "except",
+              "line": 142
+            },
+            {
+              "in": "_parse_graph",
+              "kind": "except",
+              "line": 155
+            },
+            {
+              "in": "_parse_graph",
+              "kind": "raise",
+              "line": 156
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 185
+            },
+            {
+              "kind": "raise",
+              "line": 195
+            }
+          ],
           "hash": "249d5076ac304b5b27571ff905866bc04af46e28f9b18b43cb4dfc1e729d2f1d",
           "importsFiles": [
             "src/comfy_preflight/__init__.py",
@@ -799,12 +1152,71 @@
           "path": "src/comfy_preflight/mcp_server.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 74
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 79
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 86
+            },
+            {
+              "in": "from_dict",
+              "kind": "raise",
+              "line": 109
+            },
+            {
+              "in": "from_dict",
+              "kind": "raise",
+              "line": 114
+            },
+            {
+              "in": "from_dict",
+              "kind": "raise",
+              "line": 120
+            },
+            {
+              "in": "from_dict",
+              "kind": "raise",
+              "line": 126
+            },
+            {
+              "in": "_cards",
+              "kind": "raise",
+              "line": 131
+            },
+            {
+              "in": "from_dict",
+              "kind": "raise",
+              "line": 136
+            },
+            {
+              "in": "from_dict",
+              "kind": "raise",
+              "line": 139
+            }
+          ],
           "hash": "795e16267a77b9c360d11a7c0a8e382c54c08095d2ff417b12fdc2a5a0643ded",
           "path": "src/comfy_preflight/register.py"
         },
         {
           "exports": [
             "registered_numbers"
+          ],
+          "failurePaths": [
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 106
+            }
           ],
           "hash": "0e0599092de6fa358ff93a26ef684ec63c615c6094d30a32fbc6d7943dcc6d62",
           "importsFiles": [
@@ -820,6 +1232,9 @@
           ],
           "path": "src/comfy_preflight/registry.py"
         }
+      ],
+      "frameworks": [
+        "mcp"
       ],
       "globs": [
         "src/**"
@@ -838,6 +1253,9 @@
       ],
       "outsideReads": 5,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 12,
       "unresolvedSites": 0
     },
@@ -861,7 +1279,8 @@
           "importsFiles": [
             "src/comfy_preflight/graph.py"
           ],
-          "path": "tests/conftest.py"
+          "path": "tests/conftest.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "37feb76b03946a1e09bf89da5f46e04e43904a42aee4914ab7759016482fecc5",
@@ -1198,7 +1617,8 @@
             "src/comfy_preflight/register.py",
             "tests/conftest.py"
           ],
-          "path": "tests/test_aggregate.py"
+          "path": "tests/test_aggregate.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1227,7 +1647,8 @@
             "src/comfy_preflight/errors.py",
             "tests/conftest.py"
           ],
-          "path": "tests/test_c1_link_topology.py"
+          "path": "tests/test_c1_link_topology.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1268,7 +1689,8 @@
             "src/comfy_preflight/register.py",
             "tests/conftest.py"
           ],
-          "path": "tests/test_c2_register.py"
+          "path": "tests/test_c2_register.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1300,7 +1722,8 @@
             "src/comfy_preflight/graph.py",
             "tests/conftest.py"
           ],
-          "path": "tests/test_c4_saved_is_submitted.py"
+          "path": "tests/test_c4_saved_is_submitted.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1338,7 +1761,8 @@
             "src/comfy_preflight/errors.py",
             "tests/conftest.py"
           ],
-          "path": "tests/test_c5_frame.py"
+          "path": "tests/test_c5_frame.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1407,7 +1831,8 @@
             "src/comfy_preflight/graph.py",
             "tests/conftest.py"
           ],
-          "path": "tests/test_c8_envelope.py"
+          "path": "tests/test_c8_envelope.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1449,14 +1874,17 @@
           "importOrder": [
             "tests/conftest.py",
             "src/comfy_preflight/__init__.py",
-            "src/comfy_preflight/cli.py"
+            "src/comfy_preflight/cli.py",
+            "src/comfy_preflight/mcp_server.py"
           ],
           "importsFiles": [
             "src/comfy_preflight/__init__.py",
             "src/comfy_preflight/cli.py",
+            "src/comfy_preflight/mcp_server.py",
             "tests/conftest.py"
           ],
-          "path": "tests/test_cli.py"
+          "path": "tests/test_cli.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1484,7 +1912,8 @@
             "src/comfy_preflight/_assert_probe.py",
             "src/comfy_preflight/errors.py"
           ],
-          "path": "tests/test_errors.py"
+          "path": "tests/test_errors.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1529,6 +1958,7 @@
           "importOrder": [
             "tests/conftest.py",
             "src/comfy_preflight/__init__.py",
+            "src/comfy_preflight/mcp_server.py",
             "src/comfy_preflight/errors.py",
             "src/comfy_preflight/graph.py",
             "src/comfy_preflight/register.py"
@@ -1537,10 +1967,12 @@
             "src/comfy_preflight/__init__.py",
             "src/comfy_preflight/errors.py",
             "src/comfy_preflight/graph.py",
+            "src/comfy_preflight/mcp_server.py",
             "src/comfy_preflight/register.py",
             "tests/conftest.py"
           ],
-          "path": "tests/test_mcp_surface.py"
+          "path": "tests/test_mcp_surface.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1551,7 +1983,11 @@
             "test_this_guard_survives_assert_stripping"
           ],
           "hash": "14dbc90a8dda1ca784453c7194509fe68f90cceadec18d53b281e1028bb3e461",
-          "path": "tests/test_no_assert_in_library.py"
+          "names": [
+            "src/comfy_preflight/_assert_probe.py"
+          ],
+          "path": "tests/test_no_assert_in_library.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1563,6 +1999,9 @@
             "test_version_is_at_least_one_zero_zero"
           ],
           "hash": "920e232304939df9870b09f98146eb801d60a0305fb6701e7c414bd61e5cab37",
+          "names": [
+            "bin/comfy-preflight.js"
+          ],
           "path": "tests/test_packaging.py"
         },
         {
@@ -1589,18 +2028,21 @@
           "importOrder": [
             "tests/conftest.py",
             "src/comfy_preflight/__init__.py",
+            "src/comfy_preflight/aggregate.py",
             "src/comfy_preflight/errors.py",
             "src/comfy_preflight/register.py",
             "src/comfy_preflight/registry.py"
           ],
           "importsFiles": [
             "src/comfy_preflight/__init__.py",
+            "src/comfy_preflight/aggregate.py",
             "src/comfy_preflight/errors.py",
             "src/comfy_preflight/register.py",
             "src/comfy_preflight/registry.py",
             "tests/conftest.py"
           ],
-          "path": "tests/test_registry.py"
+          "path": "tests/test_registry.py",
+          "testFramework": "pytest"
         }
       ],
       "globs": [
@@ -1610,6 +2052,9 @@
       "name": "tests",
       "origin": "mixed",
       "role": "test",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 0,
       "unresolvedNamed": [
         {
@@ -1639,6 +2084,17 @@
             "flat_name",
             "main",
             "sha256"
+          ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 89
+            },
+            {
+              "kind": "raise",
+              "line": 158
+            }
           ],
           "hash": "9a5c39ffec4fc987085e81bac1a4d82ce3ffa10585f9334c500080777aaa408f",
           "path": "tools/import_fixtures.py"
@@ -1756,6 +2212,18 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "pyproject.toml",
+          "files": 14,
+          "job": "test",
+          "runner": "pytest",
+          "step": "Verify (suite x3 modes, build, clean-venv smoke)",
+          "through": [
+            "verify.py"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -2088,6 +2556,23 @@
         "releases": true
       },
       "stages": [],
+      "tests": [
+        {
+          "job": "binaries",
+          "runner": null,
+          "step": "Smoke-test the binary before it can ever reach a user"
+        },
+        {
+          "config": "pyproject.toml",
+          "files": 14,
+          "job": "release",
+          "runner": "pytest",
+          "step": "Verify",
+          "through": [
+            "verify.py"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -2166,7 +2651,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 13
+          "files": 14
         }
       ],
       "readers": [],
@@ -2207,7 +2692,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "855e57c8b5634492409972c2d6c7057767a1da22",
     "tracked": 152

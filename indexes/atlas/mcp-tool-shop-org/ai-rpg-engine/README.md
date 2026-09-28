@@ -1,6 +1,6 @@
 # ai-rpg-engine: how it works
 
-Mapped at 2026-09-26 from commit f7e56e6 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit a54df85 by Atlas 1.23.4.
 
 ## What this is
 
@@ -8,21 +8,21 @@ Mapped at 2026-09-26 from commit f7e56e6 by Atlas 1.23.0.
 
 ## What changed since 2026-09-23 (7ff40cd)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - CI now also runs files in docs/examples/, packages/asset-registry/, packages/asset-registry/src/ and 64 more.
-- CI runs 425 more files than before.
-- Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
-- And 4 more changes to doors.
+- And 6 more changes to doors.
 - docs/c0-alignment/intake-table.json is now written by packages/cli/src/c0-intake-table.test.ts.
 - docs/c0-alignment/reverse-table.json is now written by packages/cli/src/c0-reverse-table.test.ts.
 - docs/c0-alignment/version-skew.json is now written by packages/cli/src/c0-version-skew.test.ts.
 - And 87 more new writers and readers of places.
 - docs was authored and is now mixed.
 - scripts/verify-isolated-consumer.mjs now starts at `run`; it started at `publishableWorkspaces`.
-- No file changed.
+- 1 file added and 1 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 15 paths; on a push touching 15 paths; or by hand. Runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 390 more; builds docs/mixed-game-viability-proof.ts; checks templates/, docs/, eslint.config.js and 5 more; packs package-lock.json, package.json, packages/ and 1 more into an image.
+1. **CI.** On a pull request touching 16 paths; on a push touching 16 paths; or by hand. Runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 390 more; builds docs/mixed-game-viability-proof.ts; checks templates/, docs/, eslint.config.js and 5 more; packs package-lock.json, package.json, packages/ and 1 more into an image.
 2. **Release.** When a release is published; or by hand. Runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more; builds docs/mixed-game-viability-proof.ts; checks templates/, docs/, eslint.config.js and 5 more; packs package-lock.json, package.json, packages/ and 1 more into an image.
 3. **Deploy site to GitHub Pages.** On a pull request touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Docs Integrity.** On a pull request touching 5 paths; on a push touching 5 paths; or by hand. Runs docs/check-docs-integrity.mjs.
@@ -91,7 +91,9 @@ Window: 180 days; a pair counts from 10 shared commits, since 55 source files re
 
 ## What no test touches
 
-- **scripts** is imported by no test.
+Every code part is touched by at least one test.
+
+scripts is touched by tests only through a spawn: a test runs its files as a child process.
 
 ## Written but never read
 

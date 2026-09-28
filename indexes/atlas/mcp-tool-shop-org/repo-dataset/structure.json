@@ -281,6 +281,66 @@
         {
           "entry": "cmdGenerate",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 31
+            },
+            {
+              "in": "detectRepoName",
+              "kind": "catch",
+              "line": 115
+            },
+            {
+              "in": "cmdGenerate",
+              "kind": "catch",
+              "line": 129
+            },
+            {
+              "in": "cmdGenerate",
+              "kind": "catch",
+              "line": 211
+            },
+            {
+              "in": "cmdInspect",
+              "kind": "catch",
+              "line": 244
+            },
+            {
+              "in": "cmdValidate",
+              "kind": "catch",
+              "line": 300
+            },
+            {
+              "in": "cmdVisualGenerate",
+              "kind": "catch",
+              "line": 391
+            },
+            {
+              "in": "cmdVisualInspect",
+              "kind": "catch",
+              "line": 440
+            },
+            {
+              "in": "cmdVisualValidate",
+              "kind": "catch",
+              "line": 494
+            },
+            {
+              "in": "cmdVisualValidate",
+              "kind": "catch",
+              "line": 527
+            },
+            {
+              "in": "cmdMerge",
+              "kind": "catch",
+              "line": 629
+            },
+            {
+              "kind": "catch",
+              "line": 914
+            }
+          ],
           "hash": "199fadcdff4c16b14fe92cf2d4b3addd39e0d53911062b528d1ceae2fa38ba1f",
           "importsFiles": [
             "src/discovery/git.ts",
@@ -709,6 +769,38 @@
             "gitLog",
             "isGitRepo"
           ],
+          "failurePaths": [
+            {
+              "in": "getHeadSha",
+              "kind": "catch",
+              "line": 14
+            },
+            {
+              "in": "isGitRepo",
+              "kind": "catch",
+              "line": 23
+            },
+            {
+              "in": "gitLog",
+              "kind": "catch",
+              "line": 63
+            },
+            {
+              "in": "gitDiff",
+              "kind": "catch",
+              "line": 80
+            },
+            {
+              "in": "gitClone",
+              "kind": "catch",
+              "line": 93
+            },
+            {
+              "in": "gitClone",
+              "kind": "throw",
+              "line": 94
+            }
+          ],
           "hash": "245d2df7089575c73865eec549851894b1796c4b93fa366379a0cc3f6cc3ade7",
           "importsFiles": [
             "src/errors.ts",
@@ -729,6 +821,18 @@
           "exports": [
             "scanRepo"
           ],
+          "failurePaths": [
+            {
+              "in": "walkDir",
+              "kind": "catch",
+              "line": 75
+            },
+            {
+              "in": "walkDir",
+              "kind": "catch",
+              "line": 95
+            }
+          ],
           "hash": "fc6e00577f53f824c74083dfef7027c40bfae5e62ece7b06c7ac06cc813e1ec8",
           "importOrder": [
             "src/discovery/languages.ts",
@@ -747,6 +851,13 @@
           "path": "src/errors.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "extract",
+              "kind": "catch",
+              "line": 21
+            }
+          ],
           "hash": "e66b4762a844e3863ba246eb83277b705c498792b09438937271becf41b20b31",
           "importsFiles": [
             "src/pipeline/tokens.ts",
@@ -764,6 +875,23 @@
           "path": "src/extractors/commits.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "walk",
+              "kind": "catch",
+              "line": 176
+            },
+            {
+              "in": "walk",
+              "kind": "catch",
+              "line": 194
+            },
+            {
+              "in": "extract",
+              "kind": "catch",
+              "line": 222
+            }
+          ],
           "hash": "753eda5ca540d80b11e2abb291360638937367542e261e475ef248711d497c44",
           "importsFiles": [
             "src/pipeline/tokens.ts",
@@ -772,6 +900,13 @@
           "path": "src/extractors/config.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "extract",
+              "kind": "catch",
+              "line": 20
+            }
+          ],
           "hash": "f79e2395b88aed9883551f95584c5390ed0c7783241ff02a45d0881447eaab8e",
           "importsFiles": [
             "src/pipeline/tokens.ts",
@@ -783,6 +918,13 @@
           "exports": [
             "matchImportsToSources",
             "parseFileImports"
+          ],
+          "failurePaths": [
+            {
+              "in": "parseFileImports",
+              "kind": "catch",
+              "line": 24
+            }
           ],
           "hash": "b2d6e623006f47209d1bdee26f5d2c5f4bcca5ea419f08caa94b90dda1efafb2",
           "importsFiles": [
@@ -826,6 +968,13 @@
           "path": "src/extractors/scope.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "extract",
+              "kind": "catch",
+              "line": 39
+            }
+          ],
           "hash": "f17e8d192cf005e35cb491c75c51219ef7d6de0e2dd384810d4e89a2de48775f",
           "importOrder": [
             "src/pipeline/tokens.ts",
@@ -1006,6 +1155,27 @@
             "inspectPipeline",
             "runPipeline"
           ],
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 25
+            },
+            {
+              "in": "runPipeline",
+              "kind": "catch",
+              "line": 90
+            },
+            {
+              "in": "runPipeline",
+              "kind": "throw",
+              "line": 198
+            },
+            {
+              "in": "inspectPipeline",
+              "kind": "catch",
+              "line": 278
+            }
+          ],
           "hash": "16712e56837d8d77153c2cea3a6a54d345e4c79494c4a1cf072b38b91733e9aa",
           "importsFiles": [
             "src/discovery/git.ts",
@@ -1174,18 +1344,24 @@
             "src/pipeline/balance.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/balance.test.ts"
+          "path": "src/tests/balance.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "b034f9da8edb1d8278e9e38d94d5a4421869feaac5437ec9db2fa5b12843e1a1",
           "importsFiles": [
             "src/pipeline/chunker.ts"
           ],
-          "path": "src/tests/chunker.test.ts"
+          "path": "src/tests/chunker.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "619b863c8e7a2c41266a34515fc77a6f94e3cbbde2d92c0a8ef3081a304c84e6",
-          "path": "src/tests/cli.test.ts"
+          "path": "src/tests/cli.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "df61577e55bedbfe9073059f786c3f271855409e6278efa7a901638a1b8982a3",
@@ -1193,7 +1369,8 @@
             "src/formatters/completion.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/completion.test.ts"
+          "path": "src/tests/completion.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "cdf45babce7273f3e23a2741afc8f8d5befecd8ade16fd303c32a54226b29c53",
@@ -1201,14 +1378,16 @@
             "src/pipeline/dedup.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/dedup.test.ts"
+          "path": "src/tests/dedup.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "5f03bd6d417ce5cd2e226158707628d514c480d49d265deeba35f1d403cbe903",
           "importsFiles": [
             "src/errors.ts"
           ],
-          "path": "src/tests/errors.test.ts"
+          "path": "src/tests/errors.test.ts",
+          "testFramework": "node --test"
         },
         {
           "entry": "collectPairs",
@@ -1239,7 +1418,8 @@
               "isDefaultExport": false,
               "name": "collectPairs"
             }
-          ]
+          ],
+          "testFramework": "node --test"
         },
         {
           "entry": "collectPairs",
@@ -1254,6 +1434,9 @@
             "src/discovery/scanner.ts",
             "src/extractors/commits.ts",
             "src/types.ts"
+          ],
+          "names": [
+            "src/extractors/config.ts"
           ],
           "path": "src/tests/extractors/commits.test.ts",
           "sequences": [
@@ -1270,7 +1453,8 @@
               "isDefaultExport": false,
               "name": "collectPairs"
             }
-          ]
+          ],
+          "testFramework": "node --test"
         },
         {
           "entry": "collectPairs",
@@ -1301,7 +1485,8 @@
               "isDefaultExport": false,
               "name": "collectPairs"
             }
-          ]
+          ],
+          "testFramework": "node --test"
         },
         {
           "entry": "collectPairs",
@@ -1332,14 +1517,16 @@
               "isDefaultExport": false,
               "name": "collectPairs"
             }
-          ]
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "b398c6b5d9e5d52958907f299e78dfa9c4034be15891da56628ef9691e1cec20",
           "importsFiles": [
             "src/discovery/filters.ts"
           ],
-          "path": "src/tests/filters.test.ts"
+          "path": "src/tests/filters.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "e0720baad6db7e3f61bf03daefefaa88b0d6448fbf2d935c24e9f92c6fce6000",
@@ -1347,7 +1534,8 @@
             "src/formatters/fim.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/fim.test.ts"
+          "path": "src/tests/fim.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "56e338db7e09e615d3ee72d8bb72331908f3ab39be0f03b50a4c1d806c2a43f3",
@@ -1384,7 +1572,8 @@
           "importsFiles": [
             "src/tests/fixtures/sample-repo/src/utils.ts"
           ],
-          "path": "src/tests/fixtures/sample-repo/tests/utils.test.ts"
+          "path": "src/tests/fixtures/sample-repo/tests/utils.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "b1ff9c8ea3a780bad09b346c423d2d0e46815926879b18e841d928376a946640",
@@ -1446,7 +1635,8 @@
             "src/formatters/sharegpt.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/formatters.test.ts"
+          "path": "src/tests/formatters.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "7dc35308da76eeefd632274a524547c0beb8172cbeee65728caa3222a03f5fd5",
@@ -1454,7 +1644,8 @@
             "src/discovery/git.ts",
             "src/errors.ts"
           ],
-          "path": "src/tests/git.test.ts"
+          "path": "src/tests/git.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "f6d0a843de716a67624f381699998d805dd6d9e1c0cee81b0c5d2d7c6c938e37",
@@ -1462,14 +1653,16 @@
             "src/extractors/imports.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/imports.test.ts"
+          "path": "src/tests/imports.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "489d775a78aa072f14a290f83d42101630e21e798442a8e4f9b4188486b1b54a",
           "importsFiles": [
             "src/discovery/languages.ts"
           ],
-          "path": "src/tests/languages.test.ts"
+          "path": "src/tests/languages.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "e5d491085d27ef37292b9e7df33105e247cf3f33bb7390176bab93cd8c2f3744",
@@ -1477,7 +1670,11 @@
             "src/pipeline/runner.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/pipeline.test.ts"
+          "names": [
+            "src/index.ts"
+          ],
+          "path": "src/tests/pipeline.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "de8194a828bf7a813c705270d0d25aeb0df34ba7be3e763e5e1e037771e748d9",
@@ -1485,7 +1682,8 @@
             "src/pipeline/quality.ts",
             "src/types.ts"
           ],
-          "path": "src/tests/quality.test.ts"
+          "path": "src/tests/quality.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "493a657d784c03884c3e51bd8b94cca4addd49005d387043b26d6f5142dc567b",
@@ -1493,28 +1691,32 @@
             "src/extractors/registry.ts",
             "src/formatters/registry.ts"
           ],
-          "path": "src/tests/registry.test.ts"
+          "path": "src/tests/registry.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "567d2c771cff47631564a75fc35fcf5789d3cd283343fb2a69692b6418d4a322",
           "importsFiles": [
             "src/discovery/scanner.ts"
           ],
-          "path": "src/tests/scanner.test.ts"
+          "path": "src/tests/scanner.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "8fc1fba2bb7545df372fab09b67d1535fb92c1eaf01030d399d1c1be34826e65",
           "importsFiles": [
             "src/extractors/scope.ts"
           ],
-          "path": "src/tests/scope.test.ts"
+          "path": "src/tests/scope.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "24e8c950b8c88863aeb3c9fabe19645a4ae559030160bb1e9f6f5c224908c864",
           "importsFiles": [
             "src/pipeline/tokens.ts"
           ],
-          "path": "src/tests/tokens.test.ts"
+          "path": "src/tests/tokens.test.ts",
+          "testFramework": "node --test"
         },
         {
           "entry": "makePair",
@@ -1525,7 +1727,8 @@
             "src/validate/distribution.ts"
           ],
           "path": "src/tests/validate/content.test.ts",
-          "sequences": []
+          "sequences": [],
+          "testFramework": "node --test"
         },
         {
           "entry": "makePairs",
@@ -1535,14 +1738,16 @@
             "src/validate/distribution.ts"
           ],
           "path": "src/tests/validate/distribution.test.ts",
-          "sequences": []
+          "sequences": [],
+          "testFramework": "node --test"
         },
         {
           "hash": "e97850de82a315a1f88ff2775dcda16155f960be64cc832e440eb8cc6cd779e4",
           "importsFiles": [
             "src/validate/report.ts"
           ],
-          "path": "src/tests/validate/report.test.ts"
+          "path": "src/tests/validate/report.test.ts",
+          "testFramework": "node --test"
         },
         {
           "entry": "makeStructural",
@@ -1561,14 +1766,16 @@
             "src/validate/structural.ts"
           ],
           "path": "src/tests/validate/scoring.test.ts",
-          "sequences": []
+          "sequences": [],
+          "testFramework": "node --test"
         },
         {
           "hash": "f7e7b889236a4bbc87a656e6a761f92e90468768e44ab9188738b5afef1507f0",
           "importsFiles": [
             "src/validate/structural.ts"
           ],
-          "path": "src/tests/validate/structural.test.ts"
+          "path": "src/tests/validate/structural.test.ts",
+          "testFramework": "node --test"
         },
         {
           "entry": "collect",
@@ -1585,7 +1792,8 @@
             "src/visual/scanner.ts"
           ],
           "path": "src/tests/visual/extractors.test.ts",
-          "sequences": []
+          "sequences": [],
+          "testFramework": "node --test"
         },
         {
           "entry": "makeClassifyUnit",
@@ -1600,7 +1808,8 @@
             "src/visual/formatters.ts"
           ],
           "path": "src/tests/visual/formatters.test.ts",
-          "sequences": []
+          "sequences": [],
+          "testFramework": "node --test"
         },
         {
           "entry": "makePng",
@@ -1610,7 +1819,8 @@
             "src/visual/image.ts"
           ],
           "path": "src/tests/visual/image.test.ts",
-          "sequences": []
+          "sequences": [],
+          "testFramework": "node --test"
         },
         {
           "entry": "makeVisualConfig",
@@ -1625,14 +1835,16 @@
             "src/visual/runner.ts"
           ],
           "path": "src/tests/visual/runner.test.ts",
-          "sequences": []
+          "sequences": [],
+          "testFramework": "node --test"
         },
         {
           "hash": "31ca8a8b32ffd113a1ea4f26d3cf43e71ed2fe6969c75d5f9fac6a60ee5c8473",
           "importsFiles": [
             "src/visual/scanner.ts"
           ],
-          "path": "src/tests/visual/scanner.test.ts"
+          "path": "src/tests/visual/scanner.test.ts",
+          "testFramework": "node --test"
         },
         {
           "hash": "c8eca31d66592ab879eb5cada3a6e179f5e61a2dca6baf30e509fdd74c0461d2",
@@ -1676,6 +1888,13 @@
           "entryRule": 4,
           "exports": [
             "runValidation"
+          ],
+          "failurePaths": [
+            {
+              "in": "runValidation",
+              "kind": "catch",
+              "line": 44
+            }
           ],
           "hash": "0249df8a06a921e98b4a6ce1fdae2755983fcf790fded1107cb8656d32a7d66b",
           "importsFiles": [
@@ -1763,6 +1982,13 @@
           "exports": [
             "validateStructural"
           ],
+          "failurePaths": [
+            {
+              "in": "validateStructural",
+              "kind": "catch",
+              "line": 47
+            }
+          ],
           "hash": "aff9ee15d374fca63d51ea31d764d84bb1065ce9679a6c76af5a34aa396e3b53",
           "path": "src/validate/structural.ts"
         },
@@ -1773,6 +1999,13 @@
             "extractConstitutionLinked",
             "extractSetCoherence",
             "generateSyntheticPairs"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadDocTexts",
+              "kind": "catch",
+              "line": 687
+            }
           ],
           "hash": "9067f6300b70d699302c6e837f7171d147815e64a23c7204f553229e29cfb6c9",
           "importsFiles": [
@@ -1803,6 +2036,13 @@
             "toDataUri",
             "validateImage"
           ],
+          "failurePaths": [
+            {
+              "in": "loadImage",
+              "kind": "catch",
+              "line": 206
+            }
+          ],
           "hash": "393a196b9c3a413046841e6406960835473fd80f92ae75dd3956cba8b5c3ae44",
           "path": "src/visual/image.ts"
         },
@@ -1812,6 +2052,18 @@
           "exports": [
             "inspectVisualPipeline",
             "runVisualPipeline"
+          ],
+          "failurePaths": [
+            {
+              "in": "runVisualPipeline",
+              "kind": "catch",
+              "line": 225
+            },
+            {
+              "in": "runVisualPipeline",
+              "kind": "catch",
+              "line": 245
+            }
           ],
           "hash": "a5b14febdca45a945e0b5be00b29f329d2971e854b59f0dc7444776b490138c3",
           "importsFiles": [
@@ -1935,6 +2187,43 @@
           "exports": [
             "scanVisualRepo"
           ],
+          "failurePaths": [
+            {
+              "in": "scanAssets",
+              "kind": "catch",
+              "line": 82
+            },
+            {
+              "in": "loadRecords",
+              "kind": "catch",
+              "line": 129
+            },
+            {
+              "in": "loadRecords",
+              "kind": "catch",
+              "line": 158
+            },
+            {
+              "in": "loadComparisons",
+              "kind": "catch",
+              "line": 227
+            },
+            {
+              "in": "loadComparisons",
+              "kind": "catch",
+              "line": 269
+            },
+            {
+              "in": "scanCanonDocs",
+              "kind": "catch",
+              "line": 282
+            },
+            {
+              "in": "scanCanonDocs",
+              "kind": "catch",
+              "line": 296
+            }
+          ],
           "hash": "dcf284e921c4a5d1cc890fcbca915bd3d7c08b83a021dd255be7361ef6990e43",
           "importsFiles": [
             "src/types.ts",
@@ -1996,6 +2285,9 @@
       "outsideReads": 17,
       "outsideWrites": 9,
       "role": "code",
+      "testRunners": [
+        "node --test"
+      ],
       "testedBy": 32,
       "unresolvedSites": 0
     }
@@ -2144,6 +2436,18 @@
         }
       ],
       "stages": [],
+      "tests": [
+        {
+          "files": 14,
+          "job": "test",
+          "runner": "node --test",
+          "step": "4",
+          "through": [
+            "npm run verify",
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -2435,6 +2739,18 @@
         }
       ],
       "stages": [],
+      "tests": [
+        {
+          "files": 14,
+          "job": "publish",
+          "runner": "node --test",
+          "step": "3",
+          "through": [
+            "npm run verify",
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -2539,7 +2855,7 @@
     }
   ],
   "edges": [],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "4198db586f87a4bb9d69a087dd0ce57bbd0c9a52",
     "tracked": 135
@@ -2696,5 +3012,25 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 49,
+  "testsNotRun": [
+    "src/tests/balance.test.ts",
+    "src/tests/chunker.test.ts",
+    "src/tests/cli.test.ts",
+    "src/tests/completion.test.ts",
+    "src/tests/dedup.test.ts",
+    "src/tests/errors.test.ts",
+    "src/tests/filters.test.ts",
+    "src/tests/fim.test.ts",
+    "src/tests/formatters.test.ts",
+    "src/tests/git.test.ts",
+    "src/tests/imports.test.ts",
+    "src/tests/languages.test.ts",
+    "src/tests/pipeline.test.ts",
+    "src/tests/quality.test.ts",
+    "src/tests/registry.test.ts",
+    "src/tests/scanner.test.ts",
+    "src/tests/scope.test.ts",
+    "src/tests/tokens.test.ts"
+  ],
   "unassigned": []
 }

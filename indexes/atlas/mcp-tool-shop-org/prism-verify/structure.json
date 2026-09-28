@@ -94,6 +94,148 @@
             "verify",
             "verify_receipt"
           ],
+          "failurePaths": [
+            {
+              "in": "verify",
+              "kind": "except",
+              "line": 149
+            },
+            {
+              "in": "_parse_verifier_models",
+              "kind": "raise",
+              "line": 209
+            },
+            {
+              "in": "_parse_verifier_models",
+              "kind": "except",
+              "line": 214
+            },
+            {
+              "in": "_parse_verifier_models",
+              "kind": "raise",
+              "line": 215
+            },
+            {
+              "in": "_parse_verifier_models",
+              "kind": "raise",
+              "line": 220
+            },
+            {
+              "in": "_build_verify_engine",
+              "kind": "raise",
+              "line": 265
+            },
+            {
+              "in": "_run_verify",
+              "kind": "except",
+              "line": 284
+            },
+            {
+              "in": "_open_store",
+              "kind": "except",
+              "line": 296
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "except",
+              "line": 336
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "except",
+              "line": 339
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "except",
+              "line": 351
+            },
+            {
+              "in": "keygen",
+              "kind": "except",
+              "line": 389
+            },
+            {
+              "in": "pubkey",
+              "kind": "except",
+              "line": 415
+            },
+            {
+              "in": "_parse_duration",
+              "kind": "raise",
+              "line": 436
+            },
+            {
+              "in": "serve",
+              "kind": "except",
+              "line": 494
+            },
+            {
+              "in": "serve",
+              "kind": "except",
+              "line": 508
+            },
+            {
+              "in": "_build_same_family_control",
+              "kind": "raise",
+              "line": 622
+            },
+            {
+              "in": "_run_family_ab",
+              "kind": "raise",
+              "line": 679
+            },
+            {
+              "in": "_run_family_ab",
+              "kind": "raise",
+              "line": 687
+            },
+            {
+              "in": "_run_round_robin_cli",
+              "kind": "raise",
+              "line": 850
+            },
+            {
+              "in": "_run_round_robin_cli",
+              "kind": "except",
+              "line": 898
+            },
+            {
+              "in": "_run_codejudgebench_cli",
+              "kind": "except",
+              "line": 1030
+            },
+            {
+              "in": "_run_codejudgebench_cli",
+              "kind": "except",
+              "line": 1043
+            },
+            {
+              "in": "eval_cmd",
+              "kind": "except",
+              "line": 1195
+            },
+            {
+              "in": "eval_cmd",
+              "kind": "except",
+              "line": 1218
+            },
+            {
+              "in": "_load_arg",
+              "kind": "except",
+              "line": 1258
+            },
+            {
+              "in": "calibrate_sycophancy_panel",
+              "kind": "except",
+              "line": 1490
+            },
+            {
+              "in": "calibrate_sycophancy_panel",
+              "kind": "except",
+              "line": 1493
+            }
+          ],
           "hash": "0afecb418639b903b50797222fd34338d31dce2c35858a122d482d79f6eddaed",
           "importOrder": [
             "src/prism/__init__.py",
@@ -1589,6 +1731,9 @@
       "outsideReads": 6,
       "outsideWrites": 9,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 6,
       "unresolvedSites": 0
     },
@@ -1618,6 +1763,28 @@
             "parse_citation_groundedness",
             "parse_citations"
           ],
+          "failurePaths": [
+            {
+              "in": "parse_citations",
+              "kind": "raise",
+              "line": 27
+            },
+            {
+              "in": "parse_citations",
+              "kind": "raise",
+              "line": 31
+            },
+            {
+              "in": "parse_citation_groundedness",
+              "kind": "except",
+              "line": 312
+            },
+            {
+              "in": "parse_citation_groundedness",
+              "kind": "except",
+              "line": 324
+            }
+          ],
           "hash": "de329b8817ee7ca6f8b3d8088ff0bab46e51f1709498c41591df802e0defb3c5",
           "importsFiles": [
             "src/prism/core/types.py",
@@ -1630,6 +1797,68 @@
         {
           "exports": [
             "aggregate_verdict"
+          ],
+          "failurePaths": [
+            {
+              "in": "verify",
+              "kind": "except",
+              "line": 172
+            },
+            {
+              "in": "verify",
+              "kind": "except",
+              "line": 195
+            },
+            {
+              "in": "verify",
+              "kind": "except",
+              "line": 234
+            },
+            {
+              "in": "verify",
+              "kind": "except",
+              "line": 269
+            },
+            {
+              "in": "_run_lens",
+              "kind": "except",
+              "line": 463
+            },
+            {
+              "in": "_verify_citations",
+              "kind": "except",
+              "line": 498
+            },
+            {
+              "in": "_verify_citations",
+              "kind": "except",
+              "line": 517
+            },
+            {
+              "in": "_verify_sycophancy_single",
+              "kind": "except",
+              "line": 644
+            },
+            {
+              "in": "_verify_sycophancy_single",
+              "kind": "except",
+              "line": 669
+            },
+            {
+              "in": "_verify_sycophancy_panel",
+              "kind": "except",
+              "line": 764
+            },
+            {
+              "in": "_verify_sycophancy_panel",
+              "kind": "except",
+              "line": 798
+            },
+            {
+              "in": "_adjudicate_citation",
+              "kind": "except",
+              "line": 1023
+            }
           ],
           "hash": "112e28a547fe8638709c58a5f5ae32aed7c456437a7935a170e298de88435096",
           "importsFiles": [
@@ -1692,6 +1921,13 @@
             "routing_map_digest",
             "with_local_verifier",
             "with_openrouter"
+          ],
+          "failurePaths": [
+            {
+              "in": "select_verifier",
+              "kind": "raise",
+              "line": 360
+            }
           ],
           "hash": "d6e53e8cc13f719b02b09f6e64647bc65a16312727fcf7543dacf21b1452a76d",
           "importsFiles": [
@@ -2141,6 +2377,28 @@
           "exports": [
             "strip_reasoning"
           ],
+          "failurePaths": [
+            {
+              "in": "_drop_reasoning_keys",
+              "kind": "except",
+              "line": 140
+            },
+            {
+              "in": "strip_reasoning",
+              "kind": "except",
+              "line": 204
+            },
+            {
+              "in": "strip_reasoning",
+              "kind": "except",
+              "line": 212
+            },
+            {
+              "in": "_verify_strip",
+              "kind": "raise",
+              "line": 249
+            }
+          ],
           "hash": "65fd632af0440af0514ee4583b4b32858817947ca139816a22cfbab04cca2645",
           "path": "src/prism/core/stripping.py"
         },
@@ -2148,6 +2406,13 @@
           "exports": [
             "compute_pairwise_rho",
             "jaccard_similarity"
+          ],
+          "failurePaths": [
+            {
+              "in": "_resolve_rho_max_default",
+              "kind": "except",
+              "line": 33
+            }
           ],
           "hash": "07c40c4ed520be56a4250a7872efcfaee8f623ba095ed67fd59458f9141740a7",
           "importsFiles": [
@@ -2160,6 +2425,13 @@
             "outcome_from_str",
             "panel_emission_decision",
             "sweep_agreement_k"
+          ],
+          "failurePaths": [
+            {
+              "in": "outcome_from_str",
+              "kind": "raise",
+              "line": 55
+            }
           ],
           "hash": "cfc880eaf1119bbc7fa50d45311c43eec53cf0ce42a5d60959548adb5a27f9c9",
           "importsFiles": [
@@ -2177,6 +2449,38 @@
           "path": "src/prism/retrieval/__init__.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "_oversize_detail",
+              "kind": "except",
+              "line": 194
+            },
+            {
+              "in": "_resolve_arxiv",
+              "kind": "except",
+              "line": 272
+            },
+            {
+              "in": "_resolve_arxiv",
+              "kind": "except",
+              "line": 283
+            },
+            {
+              "in": "_resolve_arxiv",
+              "kind": "except",
+              "line": 290
+            },
+            {
+              "in": "_resolve_crossref",
+              "kind": "except",
+              "line": 332
+            },
+            {
+              "in": "_resolve_crossref",
+              "kind": "except",
+              "line": 353
+            }
+          ],
           "hash": "237a8d12e52e743e160fb923158c582ec4840930146b1eddf39a8db75122733a",
           "importsFiles": [
             "src/prism/core/types.py"
@@ -2227,6 +2531,9 @@
       ],
       "outsideReads": 5,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 51,
       "unresolvedSites": 0
     },
@@ -2399,6 +2706,13 @@
         {
           "exports": [
             "main"
+          ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 41
+            }
           ],
           "hash": "a777871ff01a3b5d57833c47114dfb609945106aef3b61c17bd9f831a84fa275",
           "importsFiles": [
@@ -2816,6 +3130,43 @@
             "load_codejudgebench",
             "load_codejudgebench_offline"
           ],
+          "failurePaths": [
+            {
+              "in": "_row_to_item",
+              "kind": "raise",
+              "line": 103
+            },
+            {
+              "in": "load_codejudgebench_offline",
+              "kind": "raise",
+              "line": 140
+            },
+            {
+              "in": "load_codejudgebench_offline",
+              "kind": "raise",
+              "line": 151
+            },
+            {
+              "in": "_load_hf",
+              "kind": "except",
+              "line": 175
+            },
+            {
+              "in": "_load_hf",
+              "kind": "raise",
+              "line": 176
+            },
+            {
+              "in": "load_codejudgebench",
+              "kind": "raise",
+              "line": 215
+            },
+            {
+              "in": "load_codejudgebench",
+              "kind": "raise",
+              "line": 220
+            }
+          ],
           "hash": "8b5f143e65afadfe053d7e7ee51eefe38ec0095f2e4d82ceac81ece5149a3e41",
           "path": "src/prism/eval/benchmarks/codejudgebench.py",
           "sequences": [
@@ -2867,6 +3218,13 @@
           "exports": [
             "run_codejudgebench",
             "summarize_codejudgebench"
+          ],
+          "failurePaths": [
+            {
+              "in": "run_codejudgebench",
+              "kind": "raise",
+              "line": 173
+            }
           ],
           "hash": "fc0d56ac590138e2c58f4729977c181a2631c8aa40e4097cbae65ad45cf33fce",
           "importsFiles": [
@@ -3062,6 +3420,53 @@
             "load_bigcodebench",
             "load_bigcodebench_offline"
           ],
+          "failurePaths": [
+            {
+              "in": "_parse_libs",
+              "kind": "except",
+              "line": 123
+            },
+            {
+              "in": "_row_to_spec",
+              "kind": "raise",
+              "line": 134
+            },
+            {
+              "in": "_row_to_spec",
+              "kind": "raise",
+              "line": 142
+            },
+            {
+              "in": "_row_to_spec",
+              "kind": "raise",
+              "line": 146
+            },
+            {
+              "in": "load_bigcodebench_offline",
+              "kind": "raise",
+              "line": 169
+            },
+            {
+              "in": "load_bigcodebench_offline",
+              "kind": "raise",
+              "line": 180
+            },
+            {
+              "in": "_load_hf",
+              "kind": "except",
+              "line": 191
+            },
+            {
+              "in": "_load_hf",
+              "kind": "raise",
+              "line": 192
+            },
+            {
+              "in": "load_bigcodebench",
+              "kind": "raise",
+              "line": 223
+            }
+          ],
           "hash": "4f3c45ae33404b1bebc15295c12053631b2e593c1d8eb9c1816d39a7ef1c1039",
           "importsFiles": [
             "src/prism/eval/familygen.py"
@@ -3128,6 +3533,23 @@
             "run_signature_in_container",
             "signature_candidate"
           ],
+          "failurePaths": [
+            {
+              "in": "docker_available",
+              "kind": "except",
+              "line": 68
+            },
+            {
+              "in": "_docker_run",
+              "kind": "except",
+              "line": 108
+            },
+            {
+              "in": "_docker_run",
+              "kind": "except",
+              "line": 112
+            }
+          ],
           "hash": "f674beb03e6b5c67b3d135825a9cd8a1d4f0d5e95fca32af257bee60c63060f9",
           "importsFiles": [
             "src/prism/eval/sandbox.py"
@@ -3144,6 +3566,23 @@
             "generate_samples",
             "is_contaminated",
             "load_corpus"
+          ],
+          "failurePaths": [
+            {
+              "in": "generate_samples",
+              "kind": "raise",
+              "line": 370
+            },
+            {
+              "in": "load_corpus",
+              "kind": "raise",
+              "line": 547
+            },
+            {
+              "in": "load_corpus",
+              "kind": "raise",
+              "line": 554
+            }
           ],
           "hash": "31e353ef9bbfee3611aaac27472d3f2e4cb7b24475aa65e7779e2418259d63d6",
           "importsFiles": [
@@ -3265,6 +3704,18 @@
             "build_family_corpus",
             "contamination_overlap"
           ],
+          "failurePaths": [
+            {
+              "in": "_safe_generate",
+              "kind": "except",
+              "line": 264
+            },
+            {
+              "in": "build_family_corpus",
+              "kind": "raise",
+              "line": 468
+            }
+          ],
           "hash": "99f4c4983a656efdce4fb769654d5b2d3ebf5379548e944e075ab2a1e89d3762",
           "importOrder": [
             "src/prism/core/types.py",
@@ -3292,6 +3743,23 @@
             "harvest_max_bytes",
             "harvest_path"
           ],
+          "failurePaths": [
+            {
+              "in": "harvest_max_bytes",
+              "kind": "except",
+              "line": 143
+            },
+            {
+              "in": "build_records",
+              "kind": "except",
+              "line": 217
+            },
+            {
+              "in": "capture",
+              "kind": "except",
+              "line": 332
+            }
+          ],
           "hash": "cd5ab805b3168f0d28d984cd477b6c5f382f67a213246200ddf044586036cc33",
           "importsFiles": [
             "src/prism/core/citations.py",
@@ -3306,6 +3774,58 @@
             "livecodebench_content_hash",
             "load_livecodebench",
             "load_livecodebench_offline"
+          ],
+          "failurePaths": [
+            {
+              "in": "decode_private_tests",
+              "kind": "except",
+              "line": 79
+            },
+            {
+              "in": "_parse_arg",
+              "kind": "except",
+              "line": 88
+            },
+            {
+              "in": "_parse_arg",
+              "kind": "except",
+              "line": 91
+            },
+            {
+              "in": "_row_to_spec",
+              "kind": "raise",
+              "line": 167
+            },
+            {
+              "in": "_within_window",
+              "kind": "except",
+              "line": 205
+            },
+            {
+              "in": "load_livecodebench_offline",
+              "kind": "raise",
+              "line": 225
+            },
+            {
+              "in": "load_livecodebench_offline",
+              "kind": "raise",
+              "line": 236
+            },
+            {
+              "in": "_load_hf",
+              "kind": "except",
+              "line": 256
+            },
+            {
+              "in": "_load_hf",
+              "kind": "raise",
+              "line": 257
+            },
+            {
+              "in": "load_livecodebench",
+              "kind": "raise",
+              "line": 297
+            }
           ],
           "hash": "049a8707d5eac13284c48858aca745f6dc394b3bfc38e530f5404fdf3cefdd84",
           "importsFiles": [
@@ -3331,6 +3851,43 @@
             "tost_equivalence",
             "wilson_interval"
           ],
+          "failurePaths": [
+            {
+              "in": "confusion_matrix",
+              "kind": "raise",
+              "line": 77
+            },
+            {
+              "in": "cohen_kappa",
+              "kind": "raise",
+              "line": 137
+            },
+            {
+              "in": "expected_calibration_error",
+              "kind": "raise",
+              "line": 203
+            },
+            {
+              "in": "expected_calibration_error",
+              "kind": "raise",
+              "line": 208
+            },
+            {
+              "in": "brier_score",
+              "kind": "raise",
+              "line": 231
+            },
+            {
+              "in": "ast_node_similarity",
+              "kind": "except",
+              "line": 318
+            },
+            {
+              "in": "tost_equivalence",
+              "kind": "raise",
+              "line": 432
+            }
+          ],
           "hash": "2115841377ab2127fcdeca0c4173906fed65fe08964c91067f27f98113998fb6",
           "importsFiles": [
             "src/prism/core/submodularity.py"
@@ -3340,6 +3897,18 @@
         {
           "exports": [
             "generate_mutants"
+          ],
+          "failurePaths": [
+            {
+              "in": "generate_mutants",
+              "kind": "except",
+              "line": 110
+            },
+            {
+              "in": "generate_mutants",
+              "kind": "except",
+              "line": 121
+            }
           ],
           "hash": "9c3d5249f59d85f2bc173a3acea7bc99865c55a92b504e6b50edbf2ce9ebfe89",
           "path": "src/prism/eval/mutate.py"
@@ -3358,6 +3927,13 @@
         {
           "exports": [
             "ingest_quixbugs"
+          ],
+          "failurePaths": [
+            {
+              "in": "_read",
+              "kind": "except",
+              "line": 142
+            }
           ],
           "hash": "182422f3f1b0fc87f36bed2bbb2d7225b92057c169159359be42f25fa15cacee",
           "importsFiles": [
@@ -3388,6 +3964,13 @@
             "default_offline_policy",
             "run_eval",
             "same_family_self_preferring_policy"
+          ],
+          "failurePaths": [
+            {
+              "in": "run_eval",
+              "kind": "raise",
+              "line": 214
+            }
           ],
           "hash": "1d61edbe08c7e0c82bf01edb576b833a491587768a1073c80116f757874d1f09",
           "importsFiles": [
@@ -3495,6 +4078,23 @@
             "run_failure_signature",
             "write_runner_dir"
           ],
+          "failurePaths": [
+            {
+              "in": "parse_signature",
+              "kind": "except",
+              "line": 180
+            },
+            {
+              "in": "run_failure_signature",
+              "kind": "except",
+              "line": 205
+            },
+            {
+              "in": "run_candidate",
+              "kind": "except",
+              "line": 252
+            }
+          ],
           "hash": "f73252ccc86af8c460ea9d281b4ca859e4a0cf67fd9b0b55df85d63d5c426f50",
           "path": "src/prism/eval/sandbox.py"
         }
@@ -3517,6 +4117,9 @@
       "outsideReads": 8,
       "outsideWrites": 7,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 32,
       "unresolvedSites": 0
     },
@@ -3537,6 +4140,28 @@
           "exports": [
             "compute_prompt_hash",
             "parse_lens_response"
+          ],
+          "failurePaths": [
+            {
+              "in": "_coerce_confidence",
+              "kind": "except",
+              "line": 128
+            },
+            {
+              "in": "_as_int_or_none",
+              "kind": "except",
+              "line": 147
+            },
+            {
+              "in": "parse_lens_response",
+              "kind": "except",
+              "line": 184
+            },
+            {
+              "in": "parse_lens_response",
+              "kind": "except",
+              "line": 203
+            }
           ],
           "hash": "09b7c5fd96ef992e3bea57bbb2c4af7600853e9922e428c74621e9fd78c267d0",
           "importsFiles": [
@@ -3586,6 +4211,18 @@
             "nli_floor_enabled",
             "nli_groundedness"
           ],
+          "failurePaths": [
+            {
+              "in": "_tau",
+              "kind": "except",
+              "line": 47
+            },
+            {
+              "in": "_load",
+              "kind": "except",
+              "line": 68
+            }
+          ],
           "hash": "d10ab842b850b27b237379cf9701f65809fe68de45b5278b8eb8da9370c5f2a5",
           "path": "src/prism/lenses/nli.py"
         },
@@ -3596,6 +4233,18 @@
             "get_lens",
             "register_lens",
             "resolve_lenses"
+          ],
+          "failurePaths": [
+            {
+              "in": "resolve_lenses",
+              "kind": "raise",
+              "line": 40
+            },
+            {
+              "in": "resolve_lenses",
+              "kind": "raise",
+              "line": 48
+            }
           ],
           "hash": "5a323e4142a239317cb59e4ba721df3f4e9a71d895eac15efc6796a01a5191e3",
           "importsFiles": [
@@ -3630,6 +4279,9 @@
       ],
       "outsideReads": 1,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 20,
       "unresolvedSites": 0
     },
@@ -3733,6 +4385,9 @@
       "name": "probes",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 8,
       "unresolvedSites": 0
     },
@@ -3750,6 +4405,53 @@
           "path": "src/prism/providers/__init__.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 76
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 82
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 85
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 88
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 89
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 92
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 97
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 101
+            },
+            {
+              "in": "health_check",
+              "kind": "except",
+              "line": 130
+            }
+          ],
           "hash": "c7b8487b822d78dcc44c3f2f2b73b71c218d5088f7f5b0c4485b77c476a6152a",
           "importsFiles": [
             "src/prism/core/types.py",
@@ -3761,6 +4463,12 @@
           "exports": [
             "log_provider_failure",
             "log_provider_success"
+          ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 13
+            }
           ],
           "hash": "314680ea05e6bd1da39f474ca82bec17b70cc1fdfbcdb57148247d0a0f3748d9",
           "importOrder": [
@@ -3774,6 +4482,53 @@
           "path": "src/prism/providers/base.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 80
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 86
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 89
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 92
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 93
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 96
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 101
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 105
+            },
+            {
+              "in": "health_check",
+              "kind": "except",
+              "line": 140
+            }
+          ],
           "hash": "6b94568ce629d0f96e3fdc86c0ee02764aab60d4d6a7cf1963d02006e7c58634",
           "importsFiles": [
             "src/prism/core/types.py",
@@ -3786,6 +4541,28 @@
             "parse_verdict",
             "retemplate"
           ],
+          "failurePaths": [
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 155
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 160
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 170
+            },
+            {
+              "in": "health_check",
+              "kind": "except",
+              "line": 179
+            }
+          ],
           "hash": "d3ba60e1cb06b43940bd23d8a0bdb6a7adcb827a8b6289279e0bc8a5a771cafc",
           "importsFiles": [
             "src/prism/core/types.py",
@@ -3794,6 +4571,63 @@
           "path": "src/prism/providers/local_verifier.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 75
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 80
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 84
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 87
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 88
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 91
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 96
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 100
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 110
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 121
+            },
+            {
+              "in": "health_check",
+              "kind": "except",
+              "line": 136
+            }
+          ],
           "hash": "cd014c800496fab714639df06c3bb86d89018e19298436c8178fdba1da7d42e9",
           "importsFiles": [
             "src/prism/core/types.py",
@@ -3802,6 +4636,63 @@
           "path": "src/prism/providers/ollama.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 94
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 100
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 103
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 106
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 107
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 110
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 115
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 119
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 129
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 142
+            },
+            {
+              "in": "health_check",
+              "kind": "except",
+              "line": 158
+            }
+          ],
           "hash": "9751e940b68c5c813870e2c6c488d8a94101ebc3c45ca2a6b36effddcb200ec2",
           "importsFiles": [
             "src/prism/core/types.py",
@@ -3812,6 +4703,73 @@
         {
           "exports": [
             "validate_openrouter_lineage"
+          ],
+          "failurePaths": [
+            {
+              "in": "validate_openrouter_lineage",
+              "kind": "raise",
+              "line": 102
+            },
+            {
+              "in": "validate_openrouter_lineage",
+              "kind": "raise",
+              "line": 108
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 162
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 168
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 171
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 174
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 175
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 178
+            },
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 183
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 187
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 197
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 214
+            },
+            {
+              "in": "health_check",
+              "kind": "except",
+              "line": 230
+            }
           ],
           "hash": "ca89b97f378760a271bee75f173e6738adf03fa77c83275b8b3ec3460cdcf022",
           "importsFiles": [
@@ -3824,6 +4782,28 @@
           "exports": [
             "parse_verdict",
             "retemplate"
+          ],
+          "failurePaths": [
+            {
+              "in": "complete",
+              "kind": "except",
+              "line": 170
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 175
+            },
+            {
+              "in": "complete",
+              "kind": "raise",
+              "line": 185
+            },
+            {
+              "in": "health_check",
+              "kind": "except",
+              "line": 194
+            }
           ],
           "hash": "65e2229654423d2565c08cb78c524f4c1b48969911c1e1f27a562d1fcc5a75c7",
           "importsFiles": [
@@ -3840,6 +4820,9 @@
       "name": "providers",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 26,
       "unresolvedSites": 0
     },
@@ -3861,6 +4844,43 @@
             "generate_keypair",
             "prism_dev_enabled",
             "resolve_backends"
+          ],
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 104
+            },
+            {
+              "in": "sign",
+              "kind": "raise",
+              "line": 111
+            },
+            {
+              "in": "verify",
+              "kind": "except",
+              "line": 118
+            },
+            {
+              "in": "from_private_pem",
+              "kind": "raise",
+              "line": 135
+            },
+            {
+              "in": "from_public_pem",
+              "kind": "raise",
+              "line": 142
+            },
+            {
+              "in": "_read_key_material",
+              "kind": "raise",
+              "line": 159
+            },
+            {
+              "in": "resolve_backends",
+              "kind": "raise",
+              "line": 215
+            }
           ],
           "hash": "62d637e3b945d48ca3cab98e5b8a953f7e6b4ae9b3fd0536660a54125d3c5cbf",
           "path": "src/prism/receipts/signing.py",
@@ -3885,6 +4905,38 @@
           "entryRule": 4,
           "exports": [
             "verify_receipt_dict"
+          ],
+          "failurePaths": [
+            {
+              "in": "_v5_number",
+              "kind": "raise",
+              "line": 170
+            },
+            {
+              "in": "enc",
+              "kind": "raise",
+              "line": 209
+            },
+            {
+              "in": "_reject_non_finite",
+              "kind": "raise",
+              "line": 237
+            },
+            {
+              "in": "_verify_row",
+              "kind": "except",
+              "line": 545
+            },
+            {
+              "in": "verify_receipt_dict",
+              "kind": "except",
+              "line": 609
+            },
+            {
+              "in": "verify_receipt_dict",
+              "kind": "except",
+              "line": 658
+            }
           ],
           "hash": "593c5e95ab8c116cb4f39dc122d0ec6d27cc63d2e63d9cce3dca1a974f94f436",
           "importsFiles": [
@@ -3958,6 +5010,9 @@
       ],
       "outsideReads": 1,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 20,
       "unresolvedSites": 0
     },
@@ -4060,6 +5115,12 @@
           "exports": [
             "main"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 46
+            }
+          ],
           "hash": "f22b8196624ab183262af14241d894dd6b33ceffc9782ed4dbebf1894f655e9f",
           "path": "scripts/verify.py"
         }
@@ -4083,6 +5144,13 @@
       "externals": 0,
       "files": [
         {
+          "failurePaths": [
+            {
+              "in": "__getattr__",
+              "kind": "raise",
+              "line": 20
+            }
+          ],
           "hash": "adabd747d15715f33bf302c9a5bc3907ea3da253ceeea6873849bc5ce9aa77f2",
           "importsFiles": [
             "src/prism/http/app.py"
@@ -4093,6 +5161,63 @@
           "exports": [
             "create_app",
             "verify_error_response_with_headers"
+          ],
+          "failurePaths": [
+            {
+              "in": "_is_trusted",
+              "kind": "except",
+              "line": 224
+            },
+            {
+              "in": "verify",
+              "kind": "raise",
+              "line": 482
+            },
+            {
+              "in": "verify",
+              "kind": "raise",
+              "line": 496
+            },
+            {
+              "in": "verify",
+              "kind": "raise",
+              "line": 503
+            },
+            {
+              "in": "verify",
+              "kind": "raise",
+              "line": 511
+            },
+            {
+              "in": "verify",
+              "kind": "raise",
+              "line": 519
+            },
+            {
+              "in": "verify",
+              "kind": "except",
+              "line": 527
+            },
+            {
+              "in": "verify",
+              "kind": "raise",
+              "line": 528
+            },
+            {
+              "in": "verify",
+              "kind": "except",
+              "line": 544
+            },
+            {
+              "in": "verify",
+              "kind": "raise",
+              "line": 549
+            },
+            {
+              "in": "replay",
+              "kind": "raise",
+              "line": 567
+            }
           ],
           "hash": "c3c2c42b65b79a018b3729f2c18716daaa89ba2b8739bd9687f1254c8878d79e",
           "importsFiles": [
@@ -4113,6 +5238,33 @@
             "generate_api_key",
             "hash_key",
             "load_key_hashes"
+          ],
+          "failurePaths": [
+            {
+              "in": "authenticate",
+              "kind": "raise",
+              "line": 160
+            },
+            {
+              "in": "authenticate",
+              "kind": "raise",
+              "line": 173
+            },
+            {
+              "in": "authenticate",
+              "kind": "raise",
+              "line": 179
+            },
+            {
+              "in": "_charge_failure",
+              "kind": "raise",
+              "line": 184
+            },
+            {
+              "in": "check_rate",
+              "kind": "raise",
+              "line": 201
+            }
           ],
           "hash": "92ad29085b2ae6799c61eac91ff35a0fa7d09674bb935a395d0e8b27e44817f3",
           "importsFiles": [
@@ -4144,6 +5296,43 @@
             "verify_webhook",
             "webhook_id"
           ],
+          "failurePaths": [
+            {
+              "in": "_default_resolver",
+              "kind": "except",
+              "line": 114
+            },
+            {
+              "in": "_default_resolver",
+              "kind": "raise",
+              "line": 115
+            },
+            {
+              "in": "assert_safe_url",
+              "kind": "raise",
+              "line": 127
+            },
+            {
+              "in": "assert_safe_url",
+              "kind": "raise",
+              "line": 130
+            },
+            {
+              "in": "assert_safe_url",
+              "kind": "raise",
+              "line": 134
+            },
+            {
+              "in": "assert_safe_url",
+              "kind": "raise",
+              "line": 139
+            },
+            {
+              "in": "deliver",
+              "kind": "except",
+              "line": 241
+            }
+          ],
           "hash": "90bfbf9457fb115bf9e75c469b4b2a5a8aa3aff2935f2df258e8d3060398cb30",
           "path": "src/prism/http/webhook.py"
         },
@@ -4157,6 +5346,23 @@
             "create_server",
             "main"
           ],
+          "failurePaths": [
+            {
+              "in": "create_server",
+              "kind": "except",
+              "line": 33
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 177
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 185
+            }
+          ],
           "hash": "6ab9928b85255f35d418186616e46a52b474e65744b77ca824c60806680bfed1",
           "importsFiles": [
             "src/prism/core/engine.py",
@@ -4166,6 +5372,9 @@
           ],
           "path": "src/prism/mcp/server.py"
         }
+      ],
+      "frameworks": [
+        "mcp"
       ],
       "globs": [
         "src/prism/http/**",
@@ -4185,6 +5394,9 @@
       ],
       "outsideReads": 3,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 10,
       "unresolvedSites": 0
     },
@@ -4325,6 +5537,12 @@
             "build",
             "split_group_atomic"
           ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 84
+            }
+          ],
           "hash": "906b320277ee0c067c692d3367fc9953346d7d8f1d76effafef059ed37e67a54",
           "importOrder": [
             "specialist/dataset/puzzles.py",
@@ -4422,6 +5640,13 @@
             "parse_verdict",
             "query"
           ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 78
+            }
+          ],
           "hash": "4f931d4a77791a234813310fd668efbd1ea5a1d55f3aeac546c23ff8580d7ba3",
           "importsFiles": [
             "specialist/dataset/sycophancy_config.py"
@@ -4434,6 +5659,13 @@
             "main",
             "parse_verdict",
             "query"
+          ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 77
+            }
           ],
           "hash": "e3618af62a25ac1f8a2f297d4f2ebe5a5e00b399a4e8b7c45c20953131f1ffaf",
           "importsFiles": [
@@ -4512,6 +5744,23 @@
             "phase_gen",
             "pid_for"
           ],
+          "failurePaths": [
+            {
+              "in": "phase_gen",
+              "kind": "except",
+              "line": 64
+            },
+            {
+              "in": "phase_gen",
+              "kind": "except",
+              "line": 73
+            },
+            {
+              "in": "phase_gate",
+              "kind": "except",
+              "line": 104
+            }
+          ],
           "hash": "8a897394ef1f52c56c312935f6d8ca897b6ba75ef4d6945c0e4415a09a77d0fb",
           "importOrder": [
             "specialist/dataset/synth.py",
@@ -4530,6 +5779,13 @@
             "clean",
             "load_result",
             "main"
+          ],
+          "failurePaths": [
+            {
+              "in": "load_result",
+              "kind": "raise",
+              "line": 32
+            }
           ],
           "hash": "c5f0e873f832a57289f86b466f4f56b562bea88452f85844fef6d83feab7263c",
           "path": "specialist/dataset/ingest_corpus.py"
@@ -4623,6 +5879,23 @@
           "exports": [
             "main"
           ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 66
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 72
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 80
+            }
+          ],
           "hash": "7dee204b2893269d3ec358b8cee70c5f7ba9fd4863f583e0d095fd04638c3410",
           "importsFiles": [
             "specialist/dataset/synth.py"
@@ -4711,7 +5984,8 @@
           "importsFiles": [
             "src/prism/lenses/registry.py"
           ],
-          "path": "tests/conftest.py"
+          "path": "tests/conftest.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -4728,7 +6002,8 @@
             "src/prism/providers/base.py",
             "src/prism/providers/ollama.py"
           ],
-          "path": "tests/integration/test_citation_groundedness_ollama_live.py"
+          "path": "tests/integration/test_citation_groundedness_ollama_live.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4753,7 +6028,8 @@
             "src/prism/receipts/store.py",
             "src/prism/retrieval/oracle.py"
           ],
-          "path": "tests/integration/test_citations.py"
+          "path": "tests/integration/test_citations.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4818,7 +6094,8 @@
             "src/prism/lenses/registry.py",
             "src/prism/receipts/store.py"
           ],
-          "path": "tests/integration/test_eval_runner.py"
+          "path": "tests/integration/test_eval_runner.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4846,7 +6123,8 @@
             "src/prism/http/webhook.py",
             "src/prism/receipts/store.py"
           ],
-          "path": "tests/integration/test_http.py"
+          "path": "tests/integration/test_http.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4858,7 +6136,8 @@
             "src/prism/providers/base.py",
             "src/prism/providers/local_verifier.py"
           ],
-          "path": "tests/integration/test_local_verifier_live.py"
+          "path": "tests/integration/test_local_verifier_live.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4968,7 +6247,8 @@
             "src/prism/probes/sycophancy.py",
             "src/prism/providers/base.py"
           ],
-          "path": "tests/unit/test_active_probes.py"
+          "path": "tests/unit/test_active_probes.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "108f9674f5820a462bc745ff38ecbd117f4aec2773564adbf651a638c9977753",
@@ -4976,7 +6256,8 @@
             "src/prism/http/auth.py",
             "src/prism/http/errors.py"
           ],
-          "path": "tests/unit/test_auth.py"
+          "path": "tests/unit/test_auth.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -4994,13 +6275,18 @@
             "src/prism/eval/bigcodebench.py",
             "src/prism/eval/sandbox.py"
           ],
-          "path": "tests/unit/test_bigcodebench.py"
+          "path": "tests/unit/test_bigcodebench.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
             "test_allow_same_family_bypass_confined_to_eval_control"
           ],
           "hash": "fc934aa6a48c0fed4e0adc3fb183f385b8d415a9b5e78d40425b1ec765b7cd98",
+          "names": [
+            "src/prism/cli/main.py",
+            "src/prism/core/routing.py"
+          ],
           "path": "tests/unit/test_bypass_safety.py"
         },
         {
@@ -5021,7 +6307,8 @@
           "importsFiles": [
             "src/prism/core/citations.py"
           ],
-          "path": "tests/unit/test_citations.py"
+          "path": "tests/unit/test_citations.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "7f8979b8be47ab06476cb642ceea8a9aee01740deab05d200beb9bd53ed76256",
@@ -5037,7 +6324,8 @@
             "src/prism/core/types.py",
             "src/prism/receipts/store.py"
           ],
-          "path": "tests/unit/test_cli.py"
+          "path": "tests/unit/test_cli.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5062,7 +6350,8 @@
             "src/prism/eval/benchmarks/codejudgebench.py",
             "src/prism/eval/benchmarks/harness.py"
           ],
-          "path": "tests/unit/test_codejudgebench.py"
+          "path": "tests/unit/test_codejudgebench.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5112,7 +6401,8 @@
           "importsFiles": [
             "src/prism/eval/corpus.py"
           ],
-          "path": "tests/unit/test_eval_corpus.py"
+          "path": "tests/unit/test_eval_corpus.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "5673ce5600bde7368aeaffcc5153b9858c070933526f0a25db55cca7f31f1d06",
@@ -5126,7 +6416,8 @@
             "src/prism/eval/__init__.py",
             "src/prism/eval/harvest.py"
           ],
-          "path": "tests/unit/test_eval_harvest.py"
+          "path": "tests/unit/test_eval_harvest.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "d78a6845c461b8ee476f502e6f245471624127808e0477bea784a84c2a24098a",
@@ -5172,7 +6463,8 @@
           "importsFiles": [
             "src/prism/eval/metrics.py"
           ],
-          "path": "tests/unit/test_eval_stats.py"
+          "path": "tests/unit/test_eval_stats.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5266,7 +6558,8 @@
             "src/prism/eval/livecodebench.py",
             "src/prism/eval/sandbox.py"
           ],
-          "path": "tests/unit/test_livecodebench.py"
+          "path": "tests/unit/test_livecodebench.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5290,7 +6583,8 @@
             "src/prism/providers/base.py",
             "src/prism/providers/local_verifier.py"
           ],
-          "path": "tests/unit/test_local_verifier.py"
+          "path": "tests/unit/test_local_verifier.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5301,7 +6595,8 @@
           "importsFiles": [
             "src/prism/mcp/server.py"
           ],
-          "path": "tests/unit/test_mcp.py"
+          "path": "tests/unit/test_mcp.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5335,7 +6630,8 @@
             "src/prism/core/routing.py",
             "src/prism/core/types.py"
           ],
-          "path": "tests/unit/test_observability.py"
+          "path": "tests/unit/test_observability.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5369,7 +6665,8 @@
             "src/prism/providers/base.py",
             "src/prism/providers/openrouter.py"
           ],
-          "path": "tests/unit/test_openrouter.py"
+          "path": "tests/unit/test_openrouter.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5432,7 +6729,8 @@
             "src/prism/providers/ollama.py",
             "src/prism/providers/openai.py"
           ],
-          "path": "tests/unit/test_providers.py"
+          "path": "tests/unit/test_providers.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5443,7 +6741,8 @@
             "src/prism/eval/corpus.py",
             "src/prism/eval/realbug.py"
           ],
-          "path": "tests/unit/test_realbug.py"
+          "path": "tests/unit/test_realbug.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5454,7 +6753,8 @@
             "src/prism/core/types.py",
             "src/prism/receipts/store.py"
           ],
-          "path": "tests/unit/test_receipts.py"
+          "path": "tests/unit/test_receipts.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5494,7 +6794,8 @@
             "src/prism/providers/google.py",
             "src/prism/providers/openai.py"
           ],
-          "path": "tests/unit/test_routing.py"
+          "path": "tests/unit/test_routing.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5518,7 +6819,8 @@
             "src/prism/core/types.py",
             "src/prism/providers/anthropic.py"
           ],
-          "path": "tests/unit/test_routing_config.py"
+          "path": "tests/unit/test_routing_config.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "61870f0fd6d42800f200384af96554e9db905d0c1b79816b02058b0888013046",
@@ -5526,7 +6828,8 @@
             "src/prism/core/routing.py",
             "src/prism/core/types.py"
           ],
-          "path": "tests/unit/test_routing_same_family_bypass.py"
+          "path": "tests/unit/test_routing_same_family_bypass.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5587,14 +6890,16 @@
             "src/prism/receipts/signing.py",
             "src/prism/receipts/store.py"
           ],
-          "path": "tests/unit/test_signing.py"
+          "path": "tests/unit/test_signing.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "c8b6944d44a2211a9e6b1cd755d85e7e0503ccf44a80cd3ccaca48e8a1331e66",
           "importsFiles": [
             "src/prism/core/stripping.py"
           ],
-          "path": "tests/unit/test_stripping.py"
+          "path": "tests/unit/test_stripping.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "d3db9d87ca3ccd526e2035b1f7d8251c2ae5c60cdcd46ad49a6a223dce897c30",
@@ -5602,7 +6907,8 @@
             "src/prism/core/submodularity.py",
             "src/prism/core/types.py"
           ],
-          "path": "tests/unit/test_submodularity.py"
+          "path": "tests/unit/test_submodularity.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5630,7 +6936,8 @@
             "src/prism/providers/base.py",
             "src/prism/providers/sycophancy.py"
           ],
-          "path": "tests/unit/test_sycophancy.py"
+          "path": "tests/unit/test_sycophancy.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5652,7 +6959,8 @@
             "src/prism/core/sycophancy_panel.py",
             "src/prism/core/types.py"
           ],
-          "path": "tests/unit/test_sycophancy_panel.py"
+          "path": "tests/unit/test_sycophancy_panel.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -5667,14 +6975,16 @@
             "src/prism/http/__init__.py",
             "src/prism/receipts/store.py"
           ],
-          "path": "tests/unit/test_verifier_registry_surfaces.py"
+          "path": "tests/unit/test_verifier_registry_surfaces.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "806a60b78ca4b1a8d93636a4d9ed0abe0ac71e62ea98cef04873f164bb7317c1",
           "importsFiles": [
             "src/prism/http/webhook.py"
           ],
-          "path": "tests/unit/test_webhook.py"
+          "path": "tests/unit/test_webhook.py",
+          "testFramework": "pytest"
         }
       ],
       "globs": [
@@ -5684,6 +6994,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -5817,6 +7130,15 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "pyproject.toml",
+          "files": 62,
+          "job": "test",
+          "runner": "pytest",
+          "step": "8"
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -6171,6 +7493,13 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "job": "build-binaries",
+          "runner": null,
+          "step": "Smoke-test the binary"
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -6491,7 +7820,7 @@
       "to": "servers"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "121ce89ec7fea9ee5f9998d6d36c3bd18be4a910",
     "tracked": 329
@@ -7004,6 +8333,9 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 63,
+  "testsNotRun": [
+    "specialist/probes/test_sycophancy_probes.py"
+  ],
   "unassigned": [],
   "unseen": [
     {

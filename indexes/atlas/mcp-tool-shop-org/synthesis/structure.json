@@ -563,6 +563,13 @@
         {
           "entry": "loadJson",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "loadJson",
+              "kind": "catch",
+              "line": 28
+            }
+          ],
           "hash": "5554fad782417812bb8bafaf0a82047cd0c92af6b684e97f7fa7bc373d3c0550",
           "path": "scripts/check-report-schema.mjs",
           "sequences": []
@@ -570,6 +577,21 @@
         {
           "entry": "die",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "getRunCase",
+              "kind": "catch",
+              "line": 100
+            },
+            {
+              "kind": "catch",
+              "line": 126
+            },
+            {
+              "kind": "catch",
+              "line": 162
+            }
+          ],
           "hash": "857610e958627f225723cb4f31d8b7ac8b7ea580b47807c3c840781537a81599",
           "importsFiles": [
             "src/index.ts"
@@ -866,6 +888,38 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "realOrResolve",
+              "kind": "catch",
+              "line": 215
+            },
+            {
+              "in": "isDirectRun",
+              "kind": "catch",
+              "line": 236
+            },
+            {
+              "in": "isDirectRun",
+              "kind": "catch",
+              "line": 243
+            },
+            {
+              "in": "runPlantedCli",
+              "kind": "catch",
+              "line": 278
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 351
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 369
+            }
+          ],
           "hash": "832e0b46ec2f0df966a37a1d6df44b5e8d8eef39e9d50aa1d0854d2cd44bf60d",
           "importsFiles": [
             "src/color.ts",
@@ -1073,6 +1127,23 @@
             "loadCases",
             "validateCase"
           ],
+          "failurePaths": [
+            {
+              "in": "loadCases",
+              "kind": "catch",
+              "line": 43
+            },
+            {
+              "in": "loadCases",
+              "kind": "throw",
+              "line": 67
+            },
+            {
+              "in": "loadCases",
+              "kind": "throw",
+              "line": 73
+            }
+          ],
           "hash": "0ff43b681610c4b487afb41db5f458ba29b25ebe44131049411f5383edff2ff6",
           "importsFiles": [
             "src/color.ts",
@@ -1103,6 +1174,18 @@
           "entryRule": 4,
           "exports": [
             "evaluatePlanted"
+          ],
+          "failurePaths": [
+            {
+              "in": "evaluatePlanted",
+              "kind": "catch",
+              "line": 124
+            },
+            {
+              "in": "evaluatePlanted",
+              "kind": "catch",
+              "line": 198
+            }
           ],
           "hash": "4ec51e4c60d7c92a8d1fcba57eb771b7fa973bdd99aa9040504062bf8a21e48e",
           "importsFiles": [
@@ -1146,6 +1229,23 @@
             "printSummary",
             "summaryBannerWidth",
             "writeReport"
+          ],
+          "failurePaths": [
+            {
+              "in": "writeReport",
+              "kind": "catch",
+              "line": 52
+            },
+            {
+              "in": "writeReport",
+              "kind": "catch",
+              "line": 55
+            },
+            {
+              "in": "writeReport",
+              "kind": "throw",
+              "line": 59
+            }
           ],
           "hash": "9a76e8a3f2ac59afd950f1291943d556043852c51ee1672ecace8032fb0fc0e5",
           "importsFiles": [
@@ -1194,6 +1294,13 @@
           "exports": [
             "runAllCases",
             "runCase"
+          ],
+          "failurePaths": [
+            {
+              "in": "runAllCases",
+              "kind": "throw",
+              "line": 554
+            }
           ],
           "hash": "2dd73fb92c1f76951a7f6da49732a416e231070f0a7387f62c211985a6fbb9c0",
           "importsFiles": [
@@ -1352,6 +1459,9 @@
       "outsideReads": 8,
       "outsideWrites": 3,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 14,
       "unresolvedSites": 0
     },
@@ -1368,7 +1478,8 @@
           "importsFiles": [
             "src/checks/agency.ts"
           ],
-          "path": "tests/checks.agency.test.ts"
+          "path": "tests/checks.agency.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6d9aa758d7078c300285ca534be0b8a24039e39493b8af1079ff9176ef6bba8f",
@@ -1376,42 +1487,48 @@
             "src/checks/grounded_uptake.ts",
             "src/checks/performative.ts"
           ],
-          "path": "tests/checks.grounded_uptake.test.ts"
+          "path": "tests/checks.grounded_uptake.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5a15799a9afa21a4d631cab16ef48e9cf313abb66db265146aad194f6b39132a",
           "importsFiles": [
             "src/checks/performative.ts"
           ],
-          "path": "tests/checks.performative.test.ts"
+          "path": "tests/checks.performative.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "982350d94d6966e9febc55f3dc9d513c6baf56c241a1de23a49b8f6c6d1d56d0",
           "importsFiles": [
             "src/checks/pivot.ts"
           ],
-          "path": "tests/checks.pivot.test.ts"
+          "path": "tests/checks.pivot.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c97d4148095e7104a4462c8b01be5c59b0f06f7d19c6c4acaad472708c7a1fb1",
           "importsFiles": [
             "src/checks/reassurance.ts"
           ],
-          "path": "tests/checks.reassurance.test.ts"
+          "path": "tests/checks.reassurance.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "cbc284748fe68cdb1da2966e7c84abf7fb99288eb1eab71a425b759a3782eada",
           "importsFiles": [
             "src/checks/similarity.ts"
           ],
-          "path": "tests/checks.similarity.test.ts"
+          "path": "tests/checks.similarity.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3bc8b40f94618d5cbf53fe077e1e0fdc7ed4f701294ff31bccbe03d071ad5f4e",
           "importsFiles": [
             "src/index.ts"
           ],
-          "path": "tests/exports.test.ts"
+          "path": "tests/exports.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ff2ab66a74d46d70f3245667e167dc0b79f06f5810ba4010f381646ba8a60492",
@@ -1420,7 +1537,8 @@
             "src/runner.ts",
             "src/types.ts"
           ],
-          "path": "tests/fairness.test.ts"
+          "path": "tests/fairness.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "bf4ed7f05cd97acab1a02b32b252c794632e896f5ccc7a3127c1907331ef050f",
@@ -1435,14 +1553,19 @@
           "importsFiles": [
             "src/index.ts"
           ],
-          "path": "tests/index.test.ts"
+          "path": "tests/index.test.ts",
+          "spawns": [
+            "src/index.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "f5236250fc66cb721d058b9d3d803c3e71b66ee22105d6c4cfa16b420c0a664d",
           "importsFiles": [
             "src/load.ts"
           ],
-          "path": "tests/load.test.ts"
+          "path": "tests/load.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "303edcdfdd2e6b8833e02d792e5d5259a02784db660c602a138855570a5a005a",
@@ -1451,7 +1574,8 @@
             "src/runner.ts",
             "src/types.ts"
           ],
-          "path": "tests/planted-theater.test.ts"
+          "path": "tests/planted-theater.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1a1575f48375d383963b3433139e83695e2385fa2e8d6354bd7139774bc9ee1a",
@@ -1465,11 +1589,13 @@
             "src/runner.ts",
             "src/types.ts"
           ],
-          "path": "tests/relational.test.ts"
+          "path": "tests/relational.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "23d8f613372660aca9aa2586e8647aa0892493199a5006d426f6461941ea9757",
-          "path": "tests/report-schema.test.ts"
+          "path": "tests/report-schema.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e95c7e38372e1959bad0c129ba5255799f8de8bcacf9de8ac11833abbf0d801b",
@@ -1477,7 +1603,8 @@
             "src/report.ts",
             "src/types.ts"
           ],
-          "path": "tests/report.test.ts"
+          "path": "tests/report.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f467a5efbd8b8593bc5d492f1dfe33d105589560ec0674b87d36b02d978ca849",
@@ -1485,11 +1612,13 @@
             "src/runner.ts",
             "src/types.ts"
           ],
-          "path": "tests/runner.test.ts"
+          "path": "tests/runner.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "271cc024bc1d0000de18678434d23f28f62a10ba1c18ab2659e9d74647d6e609",
-          "path": "tests/version-alignment.test.ts"
+          "path": "tests/version-alignment.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -1499,6 +1628,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -1655,6 +1787,19 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 16,
+          "job": "test",
+          "runner": "vitest",
+          "step": "Verify (test + build + eval + report schema)",
+          "through": [
+            "npm run verify",
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -1924,6 +2069,19 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 16,
+          "job": "publish",
+          "runner": "vitest",
+          "step": "Verify (test + build + eval)",
+          "through": [
+            "npm run verify",
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -2040,7 +2198,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "dd0e1de4318d08e23e8da2649dd27df6f7e93548",
     "tracked": 155

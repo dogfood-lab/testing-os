@@ -72,7 +72,7 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 2,
+      "added": 4,
       "changed": 100,
       "moved": 0,
       "parts": 9,
@@ -81,14 +81,14 @@
     "items": [
       {
         "kind": "door",
-        "sentence": "CI's pull request trigger now also names `atlas/**`.",
+        "sentence": "CI's pull request trigger now also names `atlas/**` and `codecov.yml`.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
       },
       {
         "kind": "door",
-        "sentence": "CI's push trigger now also names `atlas/**`.",
+        "sentence": "CI's push trigger now also names `atlas/**` and `codecov.yml`.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
@@ -135,7 +135,7 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 241 more new writers and readers of places.",
+        "sentence": "And 242 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -154,7 +154,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "2 files added and 100 changed content, across 9 parts.",
+        "sentence": "4 files added and 100 changed content, across 9 parts.",
         "subjects": []
       }
     ],
@@ -170,9 +170,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "5657ed46b83528aa6cb884a87e3af22722002cfb",
+  "commit": "0c8dcb488f8849ac2663c7ea9f68bec2d57f2e2d",
   "defaultBranch": "main",
-  "derived": "11 parts, mostly images (253 files) and Markdown (60); code in TypeScript (40), JavaScript (8), Astro (2), CSS (2) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run brand.",
+  "derived": "11 parts, mostly images (254 files) and Markdown (60); code in TypeScript (40), JavaScript (8), Astro (2), CSS (2) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run brand.",
   "doors": [
     {
       "builds": [
@@ -236,11 +236,13 @@
       ],
       "runsCount": 21,
       "runsMore": 18,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 16 paths",
-        "on a push touching 16 paths",
+        "on a pull request touching 17 paths",
+        "on a push touching 17 paths",
         "or by hand"
       ]
     },
@@ -448,9 +450,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [],
-  "generatedAt": "2026-09-26T14:41:07.111Z",
+  "generatedAt": "2026-09-28T13:15:01.020Z",
   "limits": [
     "6 reads use paths built at run time and are not named here.",
     "24 writes and 66 reads go to a path their caller passes, not to this repository.",

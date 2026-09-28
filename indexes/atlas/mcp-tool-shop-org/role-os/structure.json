@@ -169,6 +169,16 @@
           "path": ".claude/handbook.md"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 16
+            },
+            {
+              "kind": "catch",
+              "line": 26
+            }
+          ],
           "hash": "dae764f49e258cb2695ac5776f72a6679ea861a41a58673f21dcb43cc9d23295",
           "importsFiles": [
             "src/hooks.mjs"
@@ -412,6 +422,16 @@
         {
           "entry": "printVerbHelp",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "kind": "throw",
+              "line": 312
+            },
+            {
+              "kind": "catch",
+              "line": 315
+            }
+          ],
           "hash": "a03c0b8fa8d3373a7bf19f2d89f8f330b799bf789bcbae95e69d537dca01128c",
           "importsFiles": [
             "src/artifacts-cmd.mjs",
@@ -710,6 +730,9 @@
       "name": "bin",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "node --test"
+      ],
       "testedBy": 11,
       "testedThroughSpawn": true,
       "unresolvedSites": 0
@@ -797,6 +820,23 @@
           "exports": [
             "main"
           ],
+          "failurePaths": [
+            {
+              "in": "loadTuned",
+              "kind": "catch",
+              "line": 69
+            },
+            {
+              "in": "loadTuned",
+              "kind": "catch",
+              "line": 75
+            },
+            {
+              "in": "isCli",
+              "kind": "catch",
+              "line": 200
+            }
+          ],
           "hash": "8e2a9de8e0a883754aaf76b60f7f37b4a620b319ec5f80b79d175172bacec1a9",
           "path": "dossier/build-dossiers.mjs"
         },
@@ -815,6 +855,28 @@
           "exports": [
             "compileRuntime",
             "main"
+          ],
+          "failurePaths": [
+            {
+              "in": "compileRuntime",
+              "kind": "catch",
+              "line": 75
+            },
+            {
+              "in": "compileRuntime",
+              "kind": "catch",
+              "line": 87
+            },
+            {
+              "in": "compileRuntime",
+              "kind": "catch",
+              "line": 97
+            },
+            {
+              "in": "isCli",
+              "kind": "catch",
+              "line": 140
+            }
           ],
           "hash": "22d4ecf58aff035dd2594e261435a108bd0111e94314b2e65728a0cb697e9a13",
           "path": "dossier/build-runtime.mjs"
@@ -1352,6 +1414,33 @@
           "path": "dossier/portraits/house-style.json"
         },
         {
+          "failurePaths": [
+            {
+              "in": "up",
+              "kind": "catch",
+              "line": 95
+            },
+            {
+              "in": "submit",
+              "kind": "throw",
+              "line": 103
+            },
+            {
+              "in": "wait",
+              "kind": "throw",
+              "line": 113
+            },
+            {
+              "in": "wait",
+              "kind": "throw",
+              "line": 121
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 153
+            }
+          ],
           "hash": "bd2ff00d45f021db1fa804a6a3f70d5c2adb52403edbfe3754f4a1ddc8afa066",
           "path": "dossier/portraits/render.mjs"
         },
@@ -1616,10 +1705,54 @@
           "path": "dossier/portraits/web/ux-researcher.jpg"
         },
         {
+          "failurePaths": [
+            {
+              "in": "authorBlocks",
+              "kind": "throw",
+              "line": 102
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 132
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 151
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 180
+            }
+          ],
           "hash": "4c7527aa08c7ce10832a24df7b4620074b3889f2a51e17ea203292659c9d413b",
           "path": "dossier/portraits/write-prompt.mjs"
         },
         {
+          "failurePaths": [
+            {
+              "in": "parseArr",
+              "kind": "catch",
+              "line": 61
+            },
+            {
+              "in": "ask",
+              "kind": "throw",
+              "line": 67
+            },
+            {
+              "in": "tuneRole",
+              "kind": "throw",
+              "line": 87
+            },
+            {
+              "in": "tuneRole",
+              "kind": "throw",
+              "line": 88
+            }
+          ],
           "hash": "de6856c57a9a0393bdf1704b0aaf8bf1a50828e4c1e97ad43856d64763679ab9",
           "path": "dossier/tune-aptitudes.mjs"
         }
@@ -1960,7 +2093,7 @@
     },
     {
       "dynamicReads": 7,
-      "dynamicSpawns": 8,
+      "dynamicSpawns": 6,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
@@ -1969,6 +2102,48 @@
         {
           "exports": [
             "artifactsCommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "artifactsCommand",
+              "kind": "throw",
+              "line": 42
+            },
+            {
+              "in": "runShow",
+              "kind": "throw",
+              "line": 65
+            },
+            {
+              "in": "runShow",
+              "kind": "throw",
+              "line": 74
+            },
+            {
+              "in": "runValidate",
+              "kind": "throw",
+              "line": 97
+            },
+            {
+              "in": "runValidate",
+              "kind": "throw",
+              "line": 109
+            },
+            {
+              "in": "runValidate",
+              "kind": "throw",
+              "line": 116
+            },
+            {
+              "in": "runChain",
+              "kind": "throw",
+              "line": 134
+            },
+            {
+              "in": "runChain",
+              "kind": "throw",
+              "line": 142
+            }
           ],
           "hash": "45a8474a462cf7e0b239a95369ccf8948e8a6963632393b88c016cac7c9f4830",
           "importsFiles": [
@@ -1987,6 +2162,13 @@
             "validatePackChain",
             "warnArtifactValidation"
           ],
+          "failurePaths": [
+            {
+              "in": "resolveArtifactContent",
+              "kind": "catch",
+              "line": 491
+            }
+          ],
           "hash": "4fbba1f845a6469621425fb6d4d12e9511c23a31c980291f235883408390a3c8",
           "path": "src/artifacts.mjs"
         },
@@ -1998,6 +2180,33 @@
             "evaluateAuditVerify",
             "parseAuditParcelFindings",
             "validateManifest"
+          ],
+          "failurePaths": [
+            {
+              "in": "readOptionalFile",
+              "kind": "catch",
+              "line": 300
+            },
+            {
+              "in": "expandCitedPath",
+              "kind": "catch",
+              "line": 351
+            },
+            {
+              "in": "listCwdNames",
+              "kind": "catch",
+              "line": 405
+            },
+            {
+              "in": "evaluateAuditVerify",
+              "kind": "catch",
+              "line": 431
+            },
+            {
+              "in": "evaluateAuditVerify",
+              "kind": "catch",
+              "line": 558
+            }
           ],
           "hash": "f217308ff20ad7f223077590380db9c4d0edb37ab9302930fcf71688dee647bd",
           "importsFiles": [
@@ -2143,6 +2352,13 @@
             "readOutcomes",
             "recordOutcome"
           ],
+          "failurePaths": [
+            {
+              "in": "readOutcomes",
+              "kind": "catch",
+              "line": 80
+            }
+          ],
           "hash": "f20dadc44c5058e3834169cbbbab3de44adeb63294bcb861fb5da85f7f6f4645",
           "path": "src/calibration.mjs"
         },
@@ -2151,6 +2367,33 @@
             "applyLocalPanel",
             "buildEvidence",
             "runOffloadPanel"
+          ],
+          "failurePaths": [
+            {
+              "in": "defaultOffloadExec",
+              "kind": "catch",
+              "line": 58
+            },
+            {
+              "in": "defaultOffloadExec",
+              "kind": "throw",
+              "line": 59
+            },
+            {
+              "in": "tryParseJson",
+              "kind": "catch",
+              "line": 73
+            },
+            {
+              "in": "tryParseJson",
+              "kind": "catch",
+              "line": 79
+            },
+            {
+              "in": "runOffloadPanel",
+              "kind": "catch",
+              "line": 184
+            }
           ],
           "hash": "ef5e487a46ed4ae34a57e2286b5a0a81c9e5378bd164979dfa6b1d61275868ce",
           "path": "src/citation-panel.mjs"
@@ -2185,6 +2428,28 @@
             "markFor",
             "renderCurriculum",
             "renderPreview"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadDossiers",
+              "kind": "catch",
+              "line": 43
+            },
+            {
+              "in": "loadRegistryRoles",
+              "kind": "catch",
+              "line": 49
+            },
+            {
+              "in": "crewCommand",
+              "kind": "throw",
+              "line": 289
+            },
+            {
+              "in": "crewCommand",
+              "kind": "throw",
+              "line": 322
+            }
           ],
           "hash": "36cf56caa5286f02444817381324efd35fc22783e7f3c0dcd883fa50ce227a4c",
           "importOrder": [
@@ -2225,6 +2490,28 @@
             "saveManifest",
             "updateStepState"
           ],
+          "failurePaths": [
+            {
+              "in": "updateStepState",
+              "kind": "throw",
+              "line": 153
+            },
+            {
+              "in": "updateStepState",
+              "kind": "throw",
+              "line": 154
+            },
+            {
+              "in": "loadManifest",
+              "kind": "catch",
+              "line": 265
+            },
+            {
+              "in": "loadManifest",
+              "kind": "throw",
+              "line": 270
+            }
+          ],
           "hash": "e49fd0a6007f6f1e26bc4eba9dad2442010f1fe0a30c4eee9cc5a95e2b08a772",
           "importOrder": [
             "src/escalation.mjs",
@@ -2246,6 +2533,13 @@
             "deriveProfile",
             "renderDossierBlock"
           ],
+          "failurePaths": [
+            {
+              "in": "loadDossiers",
+              "kind": "catch",
+              "line": 53
+            }
+          ],
           "hash": "10c34355dd2f9d080e77857cea19ac7655157a09818647fc466730cafe719949",
           "importsFiles": [
             "src/fs-utils.mjs"
@@ -2255,6 +2549,13 @@
         {
           "exports": [
             "startCommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "startCommand",
+              "kind": "throw",
+              "line": 29
+            }
           ],
           "hash": "a6ce91b74e82964e73445ab9fbbbabccda02734ece7dce544001b0c5e8053f44",
           "importsFiles": [
@@ -2309,6 +2610,13 @@
             "readFileSafe",
             "writeFileSafe"
           ],
+          "failurePaths": [
+            {
+              "in": "copyDirSafe",
+              "kind": "throw",
+              "line": 16
+            }
+          ],
           "hash": "718349ef414e15b798c0146290e4403035cbfa0779f0db1e5d280d228b9a6842",
           "path": "src/fs-utils.mjs"
         },
@@ -2325,6 +2633,43 @@
             "onSubagentStart",
             "saveSessionState",
             "scaffoldHooks"
+          ],
+          "failurePaths": [
+            {
+              "in": "warnOnce",
+              "kind": "catch",
+              "line": 103
+            },
+            {
+              "in": "getSessionState",
+              "kind": "catch",
+              "line": 136
+            },
+            {
+              "in": "saveSessionState",
+              "kind": "catch",
+              "line": 160
+            },
+            {
+              "in": "saveSessionState",
+              "kind": "catch",
+              "line": 161
+            },
+            {
+              "in": "saveSessionState",
+              "kind": "throw",
+              "line": 162
+            },
+            {
+              "in": "loadToolContracts",
+              "kind": "catch",
+              "line": 247
+            },
+            {
+              "in": "conformanceAdvisory",
+              "kind": "catch",
+              "line": 268
+            }
           ],
           "hash": "bf8c12b8fb0818ecfac21690d889b1a69589673fda9dccbd911e05f4c6706bf1",
           "importOrder": [
@@ -2415,6 +2760,13 @@
             "hasOverlay",
             "resolveOverlay"
           ],
+          "failurePaths": [
+            {
+              "in": "resolveOverlay",
+              "kind": "catch",
+              "line": 60
+            }
+          ],
           "hash": "ad923170a9dada9c27cff5db0ad4ff756358d3d397ead9d6b0e918ecdc0f7078",
           "path": "src/knowledge/resolve-overlay.mjs"
         },
@@ -2439,6 +2791,28 @@
           "exports": [
             "missionCommand"
           ],
+          "failurePaths": [
+            {
+              "in": "missionCommand",
+              "kind": "throw",
+              "line": 45
+            },
+            {
+              "in": "cmdShow",
+              "kind": "throw",
+              "line": 69
+            },
+            {
+              "in": "cmdShow",
+              "kind": "throw",
+              "line": 77
+            },
+            {
+              "in": "cmdSuggest",
+              "kind": "throw",
+              "line": 127
+            }
+          ],
           "hash": "addcb8ca0795390a0e5dd0552b5ffcbef5bf5ef34b89d680a141958f91b3daf1",
           "importsFiles": [
             "src/mission.mjs"
@@ -2460,6 +2834,38 @@
             "recordEscalation",
             "runCompletionGates",
             "startNextStep"
+          ],
+          "failurePaths": [
+            {
+              "in": "createRun",
+              "kind": "throw",
+              "line": 67
+            },
+            {
+              "in": "createRun",
+              "kind": "throw",
+              "line": 72
+            },
+            {
+              "in": "assertGateApproval",
+              "kind": "throw",
+              "line": 324
+            },
+            {
+              "in": "completeStep",
+              "kind": "throw",
+              "line": 367
+            },
+            {
+              "in": "failStep",
+              "kind": "throw",
+              "line": 403
+            },
+            {
+              "in": "failStep",
+              "kind": "throw",
+              "line": 408
+            }
           ],
           "hash": "bb108ddb3eaa52c529ae1d9694f5b73e9b1e562ad4a9e946219168b8c9785d23",
           "importOrder": [
@@ -2503,6 +2909,28 @@
           "exports": [
             "packetCommand"
           ],
+          "failurePaths": [
+            {
+              "in": "packetCommand",
+              "kind": "throw",
+              "line": 43
+            },
+            {
+              "in": "packetCommand",
+              "kind": "throw",
+              "line": 50
+            },
+            {
+              "in": "packetCommand",
+              "kind": "throw",
+              "line": 58
+            },
+            {
+              "in": "packetCommand",
+              "kind": "throw",
+              "line": 142
+            }
+          ],
           "hash": "c7de968ae4dcd8f4a47c623191e0385493e532e3060e141a9d4c5569d9bed1c0",
           "importsFiles": [
             "src/fs-utils.mjs",
@@ -2513,6 +2941,33 @@
         {
           "exports": [
             "packsCommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "runSuggest",
+              "kind": "throw",
+              "line": 26
+            },
+            {
+              "in": "runSuggest",
+              "kind": "throw",
+              "line": 34
+            },
+            {
+              "in": "runShow",
+              "kind": "throw",
+              "line": 70
+            },
+            {
+              "in": "runShow",
+              "kind": "throw",
+              "line": 79
+            },
+            {
+              "in": "packsCommand",
+              "kind": "throw",
+              "line": 140
+            }
           ],
           "hash": "c6a77bc52eb5e5dc16b40e3b607cbac74a279255d0aac4a1d212abc474bb926c",
           "importOrder": [
@@ -2553,6 +3008,13 @@
             "formatReplan",
             "replan"
           ],
+          "failurePaths": [
+            {
+              "in": "createChangeEvent",
+              "kind": "throw",
+              "line": 35
+            }
+          ],
           "hash": "dc6d1b8c6f0ae749a6713e3881c8261015b8f11215bbc0705ca97c5ed39554d0",
           "importsFiles": [
             "src/composite.mjs"
@@ -2562,6 +3024,23 @@
         {
           "exports": [
             "reviewCommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "reviewCommand",
+              "kind": "throw",
+              "line": 16
+            },
+            {
+              "in": "reviewCommand",
+              "kind": "throw",
+              "line": 23
+            },
+            {
+              "in": "reviewCommand",
+              "kind": "throw",
+              "line": 31
+            }
           ],
           "hash": "acf16db261e79da3663b53f2b25fefdd72285d92d4269893b161097df64adce0",
           "importOrder": [
@@ -2589,6 +3068,23 @@
             "extractFileRefs",
             "routeCommand",
             "scoreRole"
+          ],
+          "failurePaths": [
+            {
+              "in": "routeCommand",
+              "kind": "throw",
+              "line": 637
+            },
+            {
+              "in": "routeCommand",
+              "kind": "throw",
+              "line": 654
+            },
+            {
+              "in": "routeCommand",
+              "kind": "throw",
+              "line": 662
+            }
           ],
           "hash": "ef99537a991671e5acb6bd929694b7f05a32f18ad5b666f92dd734e225ad5b87",
           "importOrder": [
@@ -2620,6 +3116,78 @@
             "resumeCommand",
             "retryCommand",
             "runCommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "requireActiveRun",
+              "kind": "throw",
+              "line": 41
+            },
+            {
+              "in": "runCommand",
+              "kind": "throw",
+              "line": 86
+            },
+            {
+              "in": "runCommand",
+              "kind": "throw",
+              "line": 92
+            },
+            {
+              "in": "resumeCommand",
+              "kind": "throw",
+              "line": 145
+            },
+            {
+              "in": "explainCommand",
+              "kind": "throw",
+              "line": 216
+            },
+            {
+              "in": "completeCommand",
+              "kind": "throw",
+              "line": 231
+            },
+            {
+              "in": "failCommand",
+              "kind": "throw",
+              "line": 259
+            },
+            {
+              "in": "retryCommand",
+              "kind": "throw",
+              "line": 283
+            },
+            {
+              "in": "rerouteCommand",
+              "kind": "throw",
+              "line": 298
+            },
+            {
+              "in": "escalateCommand",
+              "kind": "throw",
+              "line": 315
+            },
+            {
+              "in": "blockCommand",
+              "kind": "throw",
+              "line": 336
+            },
+            {
+              "in": "reopenCommand",
+              "kind": "throw",
+              "line": 352
+            },
+            {
+              "in": "reportCommand",
+              "kind": "throw",
+              "line": 375
+            },
+            {
+              "in": "frictionCommand",
+              "kind": "throw",
+              "line": 397
+            }
           ],
           "hash": "8b50590571151cc30a75841ffc57cc1e23c05b82fe5f294061628add96c73cfa",
           "importOrder": [
@@ -2658,6 +3226,118 @@
             "saveRun",
             "startNext"
           ],
+          "failurePaths": [
+            {
+              "in": "createPersistentRun",
+              "kind": "throw",
+              "line": 99
+            },
+            {
+              "in": "createPersistentRun",
+              "kind": "throw",
+              "line": 111
+            },
+            {
+              "in": "createPersistentRun",
+              "kind": "throw",
+              "line": 117
+            },
+            {
+              "in": "createPersistentRun",
+              "kind": "catch",
+              "line": 147
+            },
+            {
+              "in": "buildPackSteps",
+              "kind": "throw",
+              "line": 222
+            },
+            {
+              "in": "completeCurrentStep",
+              "kind": "throw",
+              "line": 369
+            },
+            {
+              "in": "failCurrentStep",
+              "kind": "throw",
+              "line": 406
+            },
+            {
+              "in": "failCurrentStep",
+              "kind": "throw",
+              "line": 410
+            },
+            {
+              "in": "resumeRun",
+              "kind": "throw",
+              "line": 453
+            },
+            {
+              "in": "reroute",
+              "kind": "throw",
+              "line": 489
+            },
+            {
+              "in": "reroute",
+              "kind": "throw",
+              "line": 490
+            },
+            {
+              "in": "reroute",
+              "kind": "throw",
+              "line": 492
+            },
+            {
+              "in": "retry",
+              "kind": "throw",
+              "line": 586
+            },
+            {
+              "in": "retry",
+              "kind": "throw",
+              "line": 589
+            },
+            {
+              "in": "blockStep",
+              "kind": "throw",
+              "line": 631
+            },
+            {
+              "in": "blockStep",
+              "kind": "throw",
+              "line": 635
+            },
+            {
+              "in": "reopenStep",
+              "kind": "throw",
+              "line": 665
+            },
+            {
+              "in": "reopenStep",
+              "kind": "throw",
+              "line": 667
+            },
+            {
+              "in": "loadRun",
+              "kind": "catch",
+              "line": 973
+            },
+            {
+              "in": "loadRun",
+              "kind": "throw",
+              "line": 979
+            },
+            {
+              "in": "listRuns",
+              "kind": "catch",
+              "line": 1005
+            },
+            {
+              "in": "findActiveRun",
+              "kind": "catch",
+              "line": 1030
+            }
+          ],
           "hash": "aebd0ec00f154e5b852de217a26f0d8a147572b183ec2e1dda1b012df8759734",
           "importOrder": [
             "src/entry.mjs",
@@ -2688,6 +3368,18 @@
             "generateRouteCard",
             "scaffoldClaude"
           ],
+          "failurePaths": [
+            {
+              "in": "scaffoldClaude",
+              "kind": "catch",
+              "line": 105
+            },
+            {
+              "in": "doctor",
+              "kind": "catch",
+              "line": 218
+            }
+          ],
           "hash": "463f568df934747aeb385a30a9ed1b664571349fc3e430f0fc31a0c9134e6f44",
           "importOrder": [
             "src/fs-utils.mjs",
@@ -2708,6 +3400,48 @@
           "entryRule": 4,
           "exports": [
             "specialistCommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "specialistCommand",
+              "kind": "throw",
+              "line": 65
+            },
+            {
+              "in": "statusSpecialists",
+              "kind": "catch",
+              "line": 144
+            },
+            {
+              "in": "registerSpecialist",
+              "kind": "catch",
+              "line": 204
+            },
+            {
+              "in": "pointerSwap",
+              "kind": "throw",
+              "line": 292
+            },
+            {
+              "in": "dossierCrewFor",
+              "kind": "catch",
+              "line": 333
+            },
+            {
+              "in": "clearHaltSpecialist",
+              "kind": "catch",
+              "line": 347
+            },
+            {
+              "in": "clearHaltSpecialist",
+              "kind": "throw",
+              "line": 355
+            },
+            {
+              "in": "throwUsage",
+              "kind": "throw",
+              "line": 411
+            }
           ],
           "hash": "8940e3168878da4d5d4d5683159db253a4dce7f993c881cecfdfdc75083f29bb",
           "importsFiles": [
@@ -3183,6 +3917,13 @@
             "consultBudgetForManifest",
             "deterministicBudget"
           ],
+          "failurePaths": [
+            {
+              "in": "consultBudgetForManifest",
+              "kind": "catch",
+              "line": 95
+            }
+          ],
           "hash": "ace792aa65c28fde3ad889bba9d4185845c7ae9e978aa370bbf37aff3f63a826",
           "importsFiles": [
             "src/dispatch.mjs",
@@ -3196,12 +3937,61 @@
             "capabilityGateEnabled",
             "loadCapabilities"
           ],
+          "failurePaths": [
+            {
+              "in": "loadCapabilities",
+              "kind": "catch",
+              "line": 74
+            },
+            {
+              "in": "loadCapabilities",
+              "kind": "throw",
+              "line": 75
+            },
+            {
+              "in": "loadCapabilities",
+              "kind": "catch",
+              "line": 80
+            },
+            {
+              "in": "loadCapabilities",
+              "kind": "throw",
+              "line": 81
+            },
+            {
+              "in": "loadCapabilities",
+              "kind": "throw",
+              "line": 86
+            },
+            {
+              "in": "capabilityGate",
+              "kind": "catch",
+              "line": 185
+            },
+            {
+              "in": "capabilityGate",
+              "kind": "catch",
+              "line": 211
+            }
+          ],
           "hash": "b859bdca42a66551cd4460988dc4f3a21defebd158f01d4f5b32d408aac02896",
           "path": "src/specialist/capability-gate.mjs"
         },
         {
           "exports": [
             "callSpecialist"
+          ],
+          "failurePaths": [
+            {
+              "in": "defaultHttpFn",
+              "kind": "catch",
+              "line": 41
+            },
+            {
+              "in": "defaultHttpFn",
+              "kind": "catch",
+              "line": 43
+            }
           ],
           "hash": "ede541242efc9c623ba60648cd52fc39fe6ffe37bcab9abfbdd2c09c8d238268",
           "path": "src/specialist/client.mjs"
@@ -3218,6 +4008,18 @@
             "schemaFloor",
             "withToolConstraints"
           ],
+          "failurePaths": [
+            {
+              "in": "consultConformance",
+              "kind": "catch",
+              "line": 291
+            },
+            {
+              "in": "consultConformance",
+              "kind": "catch",
+              "line": 326
+            }
+          ],
           "hash": "4497b98250a6a95173641fd0cf9b8cff59692ff2e3fce3c1c7f5f20f67cf8b0f",
           "importsFiles": [
             "src/specialist/dispatch.mjs"
@@ -3227,6 +4029,68 @@
         {
           "exports": [
             "dispatchSpecialist"
+          ],
+          "failurePaths": [
+            {
+              "in": "dispatchSpecialist",
+              "kind": "throw",
+              "line": 107
+            },
+            {
+              "in": "dispatchSpecialist",
+              "kind": "throw",
+              "line": 110
+            },
+            {
+              "in": "dispatchSpecialist",
+              "kind": "throw",
+              "line": 113
+            },
+            {
+              "in": "dispatchSpecialist",
+              "kind": "catch",
+              "line": 132
+            },
+            {
+              "in": "dispatchSpecialist",
+              "kind": "catch",
+              "line": 146
+            },
+            {
+              "in": "dispatchSpecialist",
+              "kind": "catch",
+              "line": 223
+            },
+            {
+              "in": "dispatchSpecialist",
+              "kind": "catch",
+              "line": 299
+            },
+            {
+              "in": "dispatchSpecialist",
+              "kind": "throw",
+              "line": 306
+            },
+            {
+              "in": "dispatchSpecialist",
+              "kind": "catch",
+              "line": 309
+            },
+            {
+              "in": "strictEqualVerdicts",
+              "kind": "catch",
+              "line": 318
+            },
+            {
+              "in": "compareVerdicts",
+              "kind": "catch",
+              "line": 331
+            },
+            {
+              "in": "summarize",
+              "kind": "catch",
+              "line": 351
+            }
           ],
           "hash": "21a68ca8730bcd845ccff9170431e84a9eeccb1bd667b147287fc1822fae70ec",
           "importOrder": [
@@ -3270,6 +4134,13 @@
             "appendEvent",
             "readEvents"
           ],
+          "failurePaths": [
+            {
+              "in": "readEvents",
+              "kind": "catch",
+              "line": 49
+            }
+          ],
           "hash": "bfcc259689c6da1ae6801b80e542e7bc99100b995d897653f1c16a2fe52dd8b3",
           "path": "src/specialist/events.mjs"
         },
@@ -3278,6 +4149,23 @@
             "logDispatchInput",
             "readFieldInputs",
             "summarizeFieldInputs"
+          ],
+          "failurePaths": [
+            {
+              "in": "canonical",
+              "kind": "catch",
+              "line": 33
+            },
+            {
+              "in": "verdictLabel",
+              "kind": "catch",
+              "line": 48
+            },
+            {
+              "in": "readFieldInputs",
+              "kind": "catch",
+              "line": 105
+            }
           ],
           "hash": "c53e93fb8d77ee7939f6573acf7998e361a82d9912b9a4f394fd72e6a227df05",
           "path": "src/specialist/field-log.mjs"
@@ -3289,6 +4177,23 @@
             "defaultScoreFn",
             "gate"
           ],
+          "failurePaths": [
+            {
+              "in": "gate",
+              "kind": "catch",
+              "line": 76
+            },
+            {
+              "in": "gate",
+              "kind": "catch",
+              "line": 105
+            },
+            {
+              "in": "gate",
+              "kind": "catch",
+              "line": 116
+            }
+          ],
           "hash": "00dca29870a91b6671aacd801aa77bbab18a8f1c62d8e61a0f564d40bae4215e",
           "importsFiles": [
             "src/specialist/registry.mjs"
@@ -3299,6 +4204,53 @@
           "exports": [
             "buildRecord",
             "deriveTechniques"
+          ],
+          "failurePaths": [
+            {
+              "in": "readRegistryEntry",
+              "kind": "catch",
+              "line": 38
+            },
+            {
+              "in": "readRoleEvents",
+              "kind": "catch",
+              "line": 48
+            },
+            {
+              "in": "readExamReference",
+              "kind": "catch",
+              "line": 60
+            },
+            {
+              "in": "readDivergence",
+              "kind": "catch",
+              "line": 76
+            },
+            {
+              "in": "readDivergence",
+              "kind": "catch",
+              "line": 79
+            },
+            {
+              "in": "readDispatchWindow",
+              "kind": "catch",
+              "line": 86
+            },
+            {
+              "in": "readRunSteps",
+              "kind": "catch",
+              "line": 103
+            },
+            {
+              "in": "readRunSteps",
+              "kind": "catch",
+              "line": 106
+            },
+            {
+              "in": "readRoleOutcomes",
+              "kind": "catch",
+              "line": 116
+            }
           ],
           "hash": "70425a73c252a14d16cfe04937e98f3a54903db864a0e499ca57ea8588c97f4d",
           "importOrder": [
@@ -3326,6 +4278,43 @@
             "saveRegistry",
             "validateRegistry"
           ],
+          "failurePaths": [
+            {
+              "in": "loadRegistry",
+              "kind": "catch",
+              "line": 87
+            },
+            {
+              "in": "saveRegistry",
+              "kind": "throw",
+              "line": 108
+            },
+            {
+              "in": "saveRegistry",
+              "kind": "catch",
+              "line": 116
+            },
+            {
+              "in": "saveRegistry",
+              "kind": "catch",
+              "line": 120
+            },
+            {
+              "in": "saveRegistry",
+              "kind": "catch",
+              "line": 121
+            },
+            {
+              "in": "saveRegistry",
+              "kind": "throw",
+              "line": 122
+            },
+            {
+              "in": "resolveActiveVersion",
+              "kind": "throw",
+              "line": 255
+            }
+          ],
           "hash": "576168fe195c5d7909995d1f8c77a9b21b69be7bd1fa13b18bc1b5dbe1bb14b4",
           "path": "src/specialist/registry.mjs"
         },
@@ -3338,6 +4327,18 @@
             "recordProbe",
             "resolveShadowConfig",
             "shouldShadowProbe"
+          ],
+          "failurePaths": [
+            {
+              "in": "readPositiveIntEnv",
+              "kind": "throw",
+              "line": 53
+            },
+            {
+              "in": "readUnitIntervalEnv",
+              "kind": "throw",
+              "line": 66
+            }
           ],
           "hash": "c08ddd326655259b1915b7672f33521d2c9d3a122d20ea5a7c2c559cdcca24d1",
           "importsFiles": [
@@ -3358,6 +4359,48 @@
             "saveState",
             "setHalt"
           ],
+          "failurePaths": [
+            {
+              "in": "loadState",
+              "kind": "throw",
+              "line": 68
+            },
+            {
+              "in": "loadState",
+              "kind": "catch",
+              "line": 74
+            },
+            {
+              "in": "loadState",
+              "kind": "throw",
+              "line": 75
+            },
+            {
+              "in": "loadState",
+              "kind": "throw",
+              "line": 78
+            },
+            {
+              "in": "atomicWriteFile",
+              "kind": "catch",
+              "line": 122
+            },
+            {
+              "in": "atomicWriteFile",
+              "kind": "catch",
+              "line": 127
+            },
+            {
+              "in": "atomicWriteFile",
+              "kind": "catch",
+              "line": 128
+            },
+            {
+              "in": "atomicWriteFile",
+              "kind": "throw",
+              "line": 129
+            }
+          ],
           "hash": "15c977be00ad77154e501cbe8f6495775334b723ae00b7179d997b5ff8fc2180",
           "path": "src/specialist/state.mjs"
         },
@@ -3369,6 +4412,13 @@
             "loadCurriculum",
             "recipePreview"
           ],
+          "failurePaths": [
+            {
+              "in": "loadCurriculum",
+              "kind": "catch",
+              "line": 331
+            }
+          ],
           "hash": "2d046a5efd1d36738d00c6f55fec8de22bc3bc4ec1e5fba54311f8e5295a3106",
           "path": "src/specialist/training-programs.mjs"
         },
@@ -3378,12 +4428,26 @@
             "isValidRunTransition",
             "isValidStepTransition"
           ],
+          "failurePaths": [
+            {
+              "in": "assertStepTransition",
+              "kind": "throw",
+              "line": 68
+            }
+          ],
           "hash": "0cffed113186e60a52963def7a6bb6785cddf4cbd4c9ba50ffda86b7dcb6a7ba",
           "path": "src/state-machine.mjs"
         },
         {
           "exports": [
             "statusCommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "statusCommand",
+              "kind": "throw",
+              "line": 328
+            }
           ],
           "hash": "9ac5110f27082f8f89ebbec0ff7ec25bf693d02744266ecd9b535c6af031d1c6",
           "importsFiles": [
@@ -3396,6 +4460,33 @@
           "entryRule": 4,
           "exports": [
             "swarmCommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "readSwarmManifest",
+              "kind": "catch",
+              "line": 44
+            },
+            {
+              "in": "readSwarmManifest",
+              "kind": "throw",
+              "line": 45
+            },
+            {
+              "in": "readSwarmManifest",
+              "kind": "throw",
+              "line": 50
+            },
+            {
+              "in": "readSwarmManifest",
+              "kind": "catch",
+              "line": 54
+            },
+            {
+              "in": "readSwarmManifest",
+              "kind": "throw",
+              "line": 59
+            }
           ],
           "hash": "c019ec8e6fecaa4dafb560f95e2f30ffb4b46ee8fe84a5d0af4d69c883c74f86",
           "importsFiles": [
@@ -3860,6 +4951,28 @@
             "formatBuildGateStatus",
             "runBuildGate"
           ],
+          "failurePaths": [
+            {
+              "in": "detectBuildSystem",
+              "kind": "catch",
+              "line": 32
+            },
+            {
+              "in": "enforceBuildGate",
+              "kind": "throw",
+              "line": 142
+            },
+            {
+              "in": "enforceBuildGate",
+              "kind": "throw",
+              "line": 152
+            },
+            {
+              "in": "runStep",
+              "kind": "catch",
+              "line": 176
+            }
+          ],
           "hash": "d62f9e0c841719fe70ecddeee0c2fe9f96c7c21ec549ec623815dde934c7aad3",
           "path": "src/swarm/build-gate.mjs"
         },
@@ -3868,6 +4981,13 @@
             "detectRepoType",
             "generateSwarmManifest",
             "validateSwarmManifest"
+          ],
+          "failurePaths": [
+            {
+              "in": "readPackageJson",
+              "kind": "catch",
+              "line": 222
+            }
           ],
           "hash": "da613644fe370e27ea5aad97519ffd423480e8809d6ec1222e1bdcc9c4d0779d",
           "path": "src/swarm/domain-detect.mjs"
@@ -3883,6 +5003,33 @@
             "openBlockingFindings",
             "parseExitConditionRequirements",
             "parseWaveReportFindings"
+          ],
+          "failurePaths": [
+            {
+              "in": "findingsFromJsonText",
+              "kind": "catch",
+              "line": 56
+            },
+            {
+              "in": "bodyHasShipcheckEvidence",
+              "kind": "catch",
+              "line": 175
+            },
+            {
+              "in": "bodyHasShipcheckEvidence",
+              "kind": "catch",
+              "line": 180
+            },
+            {
+              "in": "enforceExitCondition",
+              "kind": "throw",
+              "line": 304
+            },
+            {
+              "in": "enforceExitCondition",
+              "kind": "throw",
+              "line": 322
+            }
           ],
           "hash": "9681aab992873be191d4204dd193c74dcb58d846a07d18c696c5c0e44ef4c090",
           "importsFiles": [
@@ -3934,6 +5081,28 @@
             "exitCodeFor",
             "verifyCitationsCommand"
           ],
+          "failurePaths": [
+            {
+              "in": "verifyCitationsCommand",
+              "kind": "throw",
+              "line": 25
+            },
+            {
+              "in": "verifyCitationsCommand",
+              "kind": "throw",
+              "line": 35
+            },
+            {
+              "in": "verifyCitationsCommand",
+              "kind": "throw",
+              "line": 41
+            },
+            {
+              "in": "verifyCitationsCommand",
+              "kind": "catch",
+              "line": 67
+            }
+          ],
           "hash": "628b17f98e0200f7ac1f2c8b7a0f2facd894fc7df1c88c2e30e057dfb581e06e",
           "importsFiles": [
             "src/verify-citations.mjs"
@@ -3946,6 +5115,38 @@
             "gateCitations",
             "runCitationGate"
           ],
+          "failurePaths": [
+            {
+              "in": "loadCitations",
+              "kind": "catch",
+              "line": 405
+            },
+            {
+              "in": "shellPrism",
+              "kind": "catch",
+              "line": 450
+            },
+            {
+              "in": "defaultExec",
+              "kind": "catch",
+              "line": 476
+            },
+            {
+              "in": "defaultExec",
+              "kind": "throw",
+              "line": 477
+            },
+            {
+              "in": "tryParseJson",
+              "kind": "catch",
+              "line": 491
+            },
+            {
+              "in": "tryParseJson",
+              "kind": "catch",
+              "line": 497
+            }
+          ],
           "hash": "6db159ab48c98989a5989981dd212fae342942bff85413a525f130ec782bb42c",
           "importsFiles": [
             "src/citation-panel.mjs"
@@ -3956,6 +5157,33 @@
           "exports": [
             "exitCodeFor",
             "verifyClaimsCommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "verifyClaimsCommand",
+              "kind": "throw",
+              "line": 30
+            },
+            {
+              "in": "verifyClaimsCommand",
+              "kind": "throw",
+              "line": 37
+            },
+            {
+              "in": "verifyClaimsCommand",
+              "kind": "throw",
+              "line": 43
+            },
+            {
+              "in": "verifyClaimsCommand",
+              "kind": "throw",
+              "line": 54
+            },
+            {
+              "in": "verifyClaimsCommand",
+              "kind": "catch",
+              "line": 82
+            }
           ],
           "hash": "2cf56cd7be04fa50bb7ec68bd2eb850dcd106e0f8f34d22fddd62b344b05bfd7",
           "importsFiles": [
@@ -3970,6 +5198,38 @@
             "normalizeClaims",
             "resolveInternCmd",
             "runClaimsGate"
+          ],
+          "failurePaths": [
+            {
+              "in": "resolveInternCmd",
+              "kind": "catch",
+              "line": 204
+            },
+            {
+              "in": "callInternTool",
+              "kind": "catch",
+              "line": 232
+            },
+            {
+              "in": "finish",
+              "kind": "catch",
+              "line": 245
+            },
+            {
+              "in": "callInternTool",
+              "kind": "catch",
+              "line": 285
+            },
+            {
+              "in": "callInternTool",
+              "kind": "catch",
+              "line": 302
+            },
+            {
+              "in": "loadClaims",
+              "kind": "catch",
+              "line": 431
+            }
           ],
           "hash": "9dc392fb4d8a8daa043b52a019790c8678c60cc6991a9347731249e8f6d3be03",
           "path": "src/verify-claims.mjs"
@@ -4191,6 +5451,9 @@
       "outsideReads": 133,
       "outsideWrites": 62,
       "role": "code",
+      "testRunners": [
+        "node --test"
+      ],
       "testedBy": 72,
       "unresolvedSites": 0
     },
@@ -4467,21 +5730,33 @@
       "files": [
         {
           "hash": "008a05a6b83fb5ddb0de911eaa4425240b2f992758e9aee4d80e78f1ac6bb9c6",
-          "path": "test/artifacts-cmd.test.mjs"
+          "path": "test/artifacts-cmd.test.mjs",
+          "spawns": [
+            "bin/roleos.mjs"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "054ee7afdc5cdf4ad5f8884f1ecccd99184b4a6e6c0e8f7832fe3d073d98b0a0",
           "importsFiles": [
             "src/artifacts.mjs"
           ],
-          "path": "test/artifacts.test.mjs"
+          "names": [
+            "src/route.mjs"
+          ],
+          "path": "test/artifacts.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "ecdcca804e0e6ee8e19f04a6008d88bc28d29b86f494dbe77dad7c29318529d8",
           "importsFiles": [
             "src/audit-cmd.mjs"
           ],
-          "path": "test/audit-cmd.test.mjs"
+          "path": "test/audit-cmd.test.mjs",
+          "spawns": [
+            "bin/roleos.mjs"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "93369839fea84c0c9e1a151c941e0b7929c9ea97da0771ac872b173434c13b3d",
@@ -4499,7 +5774,8 @@
             "src/route.mjs",
             "src/run.mjs"
           ],
-          "path": "test/audit-p5.test.mjs"
+          "path": "test/audit-p5.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "4d8a86ba2477906197a4877adc0d580ff70f3873fb3989351a0c4167fd4bfcab",
@@ -4513,35 +5789,40 @@
             "src/brainstorm-roles.mjs",
             "src/brainstorm.mjs"
           ],
-          "path": "test/brainstorm-golden-run.test.mjs"
+          "path": "test/brainstorm-golden-run.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "ae502234d7478509a4be766c3d732422fedd1f03bee0fea88130cc30e49c59fa",
           "importsFiles": [
             "src/brainstorm-render.mjs"
           ],
-          "path": "test/brainstorm-render.test.mjs"
+          "path": "test/brainstorm-render.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "73bb986a7afb7c4e4df1d6677d9859ff5b99afe95880530e1b53071e05cd9bfe",
           "importsFiles": [
             "src/brainstorm-roles.mjs"
           ],
-          "path": "test/brainstorm-roles.test.mjs"
+          "path": "test/brainstorm-roles.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "200b172eaa6d6efd8e8e96d2a1bb12b233cdc1bfbfb4a6568bca587f2ef77afb",
           "importsFiles": [
             "src/brainstorm.mjs"
           ],
-          "path": "test/brainstorm.test.mjs"
+          "path": "test/brainstorm.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "8151c0441518cdfea6b3ca713355020dd6f6f69eea1e1a47680179eae7f196c4",
           "importsFiles": [
             "src/calibration.mjs"
           ],
-          "path": "test/calibration.test.mjs"
+          "path": "test/calibration.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "3d9de84b3f12df5989ee8e023f76c045896e787ba39c07e2b82a881e8bd56776",
@@ -4553,7 +5834,8 @@
             "src/hooks.mjs",
             "src/specialist/capability-gate.mjs"
           ],
-          "path": "test/capability-gate.test.mjs"
+          "path": "test/capability-gate.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "c8539cf221aeff32b54a0f517bcd5fcb6fc81a56545cc7e1f6cd3b73c18da5f7",
@@ -4567,11 +5849,16 @@
             "src/verify-citations-cmd.mjs",
             "src/verify-citations.mjs"
           ],
-          "path": "test/citation-panel.test.mjs"
+          "path": "test/citation-panel.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "81587f7da17ae58f7e6f8adbb4e683d882bf1b134f6f048a005a1e5f7b474d71",
-          "path": "test/cli.test.mjs"
+          "path": "test/cli.test.mjs",
+          "spawns": [
+            "bin/roleos.mjs"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "baf804986c2ce0b15991f015c7d55097e8ae7f1c9f2ca51e8324d535f03b7136",
@@ -4579,7 +5866,8 @@
             "src/composite.mjs",
             "src/decompose.mjs"
           ],
-          "path": "test/composite.test.mjs"
+          "path": "test/composite.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "f35e12dd22f01059c24bf13a4b033f95be6f49747a98bec2650794e11c261336",
@@ -4587,7 +5875,8 @@
             "src/conflicts.mjs",
             "src/route.mjs"
           ],
-          "path": "test/conflicts.test.mjs"
+          "path": "test/conflicts.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "893996b4055d8ed6f6603607a8235c79559b2a003cf2baba5cb4ceee24cfb14c",
@@ -4599,21 +5888,27 @@
             "src/crew-cmd.mjs",
             "src/dossier-block.mjs"
           ],
-          "path": "test/crew-cmd.test.mjs"
+          "path": "test/crew-cmd.test.mjs",
+          "spawns": [
+            "bin/roleos.mjs"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "fd45960f9ef29e67ce75f389f5aebf8368778ae5f501c7b1e29b266a53aaae59",
           "importsFiles": [
             "src/decompose.mjs"
           ],
-          "path": "test/decompose.test.mjs"
+          "path": "test/decompose.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "d7cb71eaa6fb3d364758321f7050dae7f532ff2fa49b41222cc41aa494289025",
           "importsFiles": [
             "src/mission-run.mjs"
           ],
-          "path": "test/deep-audit-proof.test.mjs"
+          "path": "test/deep-audit-proof.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "6e19ce8b9cf6e9ee840cdce742548e438b78ce32679e0b707e3f048de5a5c09d",
@@ -4621,7 +5916,8 @@
             "src/dispatch.mjs",
             "src/route.mjs"
           ],
-          "path": "test/dispatch.test.mjs"
+          "path": "test/dispatch.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "fdbdd49b3940fa2d051535d8360cb20b48443e1100690035adbd59e14add3eef",
@@ -4629,49 +5925,62 @@
             "src/dispatch.mjs",
             "src/dossier-block.mjs"
           ],
-          "path": "test/dossier-prompt.test.mjs"
+          "path": "test/dossier-prompt.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "bedd39d536f60ac9e0c5382abb7e92186dc9d674f11b81fa4e2abdaeccd1af39",
           "importsFiles": [
             "src/entry.mjs"
           ],
-          "path": "test/entry-trials.test.mjs"
+          "path": "test/entry-trials.test.mjs",
+          "spawns": [
+            "bin/roleos.mjs"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "2f5aafdd747123b1e54ab2b088b687d70f890371e8606918b128766ad18dd3a1",
           "importsFiles": [
             "src/entry.mjs"
           ],
-          "path": "test/entry.test.mjs"
+          "path": "test/entry.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "c424c28d11b1901fd82f504302ab0afee0ccc6a77082045deeecbf18d1becddf",
           "importsFiles": [
             "src/escalation.mjs"
           ],
-          "path": "test/escalation.test.mjs"
+          "path": "test/escalation.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "672a5666d276e3068c4e6c659f360afecf32e13b9a4c75391471e7e0b9e1d386",
           "importsFiles": [
             "src/evidence.mjs"
           ],
-          "path": "test/evidence.test.mjs"
+          "path": "test/evidence.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "d5e1d49089e15e41b9b3c3fa67cc6d6bce1c9941bbb0f9e661a2e0b6777e6dd8",
           "importsFiles": [
             "src/hooks.mjs"
           ],
-          "path": "test/hooks.test.mjs"
+          "names": [
+            ".claude/hooks/pre-tool-use.mjs"
+          ],
+          "path": "test/hooks.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "282734db039dddac9513b5d9bbbc19e71a65d8a59a762d479df174ed52d8c4bd",
           "importsFiles": [
             "src/knowledge/analyze-artifact-evidence.mjs"
           ],
-          "path": "test/knowledge-eval.test.mjs"
+          "path": "test/knowledge-eval.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "d21b2621ab1bb8cd9d17c05efed51ad0a4b1dca9bee15c158060d31aa2d990e4",
@@ -4679,14 +5988,16 @@
             "src/knowledge/index.mjs",
             "src/run.mjs"
           ],
-          "path": "test/knowledge-integration.test.mjs"
+          "path": "test/knowledge-integration.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "3943798b31143936a4eff8703c55d9e4794eacd2b6d039d40ec1db075b09d9ad",
           "importsFiles": [
             "src/mission-run.mjs"
           ],
-          "path": "test/knowledge-mission.test.mjs"
+          "path": "test/knowledge-mission.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "c4de136fe154cbde28b75d8d8a444ea8c357dcabcdb3db744bc38a6d706cd3d0",
@@ -4698,32 +6009,47 @@
             "src/dispatch.mjs",
             "src/knowledge/render-knowledge-block.mjs"
           ],
-          "path": "test/knowledge-prompt.test.mjs"
+          "path": "test/knowledge-prompt.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "923b6e5686c0dfb1e8422d8f9182994f4d199654143eea470f21b4edd3aef589",
           "importsFiles": [
             "src/knowledge/index.mjs"
           ],
-          "path": "test/knowledge.test.mjs"
+          "path": "test/knowledge.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "141e4437d4adf6b3e23c4cc97376876117752e2014ae08c83b9aed715d0f4908",
           "importsFiles": [
             "src/specialist/conformance-consult.mjs"
           ],
-          "path": "test/live-tool-contracts.test.mjs"
+          "names": [
+            "tools/conformance-dataset/live-tools/build_live_contracts.mjs"
+          ],
+          "path": "test/live-tool-contracts.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "02adfc2d2557fcac4c70a55835d803f2bb80890982c84a21b58ff6975769030d",
-          "path": "test/mission-cmd.test.mjs"
+          "path": "test/mission-cmd.test.mjs",
+          "spawns": [
+            "bin/roleos.mjs"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "fdb036656c1eabc0efe9178eca71df2cddd2c3d99076b2ba175db903b77f71e8",
           "importsFiles": [
             "src/mission-run.mjs"
           ],
-          "path": "test/mission-run.test.mjs"
+          "names": [
+            "src/mission-cmd.mjs",
+            "src/mission.mjs"
+          ],
+          "path": "test/mission-run.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "c1be2a873d74e7c7f7bb08266a36268a2a69dd0d3f9878864662c43888914e40",
@@ -4731,18 +6057,29 @@
             "src/mission-run.mjs",
             "src/mission.mjs"
           ],
-          "path": "test/mission-trials.test.mjs"
+          "names": [
+            "bin/roleos.mjs",
+            "src/dispatch.mjs",
+            "src/mission-cmd.mjs"
+          ],
+          "path": "test/mission-trials.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "82225c1fbe1f2d49c57f86f4bb42318f831ac470ea47e715a66bd69e4e62d785",
           "importsFiles": [
             "src/mission.mjs"
           ],
-          "path": "test/mission.test.mjs"
+          "path": "test/mission.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "af417c887d1f47307f7e37c3e5a3c8741ae4240f5a3856eb35223f242f9161ee",
-          "path": "test/packs-cmd.test.mjs"
+          "path": "test/packs-cmd.test.mjs",
+          "spawns": [
+            "bin/roleos.mjs"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "10fcd15a28e841b162badcaf8dda4a000fe288da1c630411b21460f8be6bb283",
@@ -4750,21 +6087,27 @@
             "src/packs.mjs",
             "src/route.mjs"
           ],
-          "path": "test/packs.test.mjs"
+          "path": "test/packs.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "60de9cd78b642a0bd939a5ae392b8ba752bfbed51631146cbce8b091912c507c",
           "importsFiles": [
             "src/hooks.mjs"
           ],
-          "path": "test/regression-capability-hook.test.mjs"
+          "names": [
+            ".claude/hooks/pre-tool-use.mjs"
+          ],
+          "path": "test/regression-capability-hook.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "18d5443167577e6d24f147294be56083937887c2d0defd5acc7e9912a764fc64",
           "importsFiles": [
             "src/verify-citations.mjs"
           ],
-          "path": "test/regression-citations.test.mjs"
+          "path": "test/regression-citations.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "2054b2a7704b0289fdb0a75b1ff9985a2e979839478b7d9afcba99af8f0f3987",
@@ -4780,11 +6123,16 @@
             "src/route.mjs",
             "src/run.mjs"
           ],
-          "path": "test/regression-pack-steps.test.mjs"
+          "path": "test/regression-pack-steps.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "49e8d4ec8a90155863fabdf5e9630d3c438e6ceaca8e7a8a09fc383750cc019e",
-          "path": "test/regression-review-routing.test.mjs"
+          "path": "test/regression-review-routing.test.mjs",
+          "spawns": [
+            "bin/roleos.mjs"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "64caff3c7862f0ae08a74b5d60da023a627134920b1b928da64508566b32181b",
@@ -4796,11 +6144,19 @@
             "src/specialist/gate.mjs",
             "src/specialist/state.mjs"
           ],
-          "path": "test/regression-specialist-quota.test.mjs"
+          "path": "test/regression-specialist-quota.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "0eca6573d87e525ad22053a169fa46631b1233df6f82f6c8e6534d68b97c3c7a",
-          "path": "test/regression-swarm-audit-cmd.test.mjs"
+          "names": [
+            "src/knowledge/index.mjs"
+          ],
+          "path": "test/regression-swarm-audit-cmd.test.mjs",
+          "spawns": [
+            "bin/roleos.mjs"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "e9d4c80959fa028ca46832a4cae50c85c8871d0c4bdf994f80be95414c136295",
@@ -4814,67 +6170,83 @@
             "src/decompose.mjs",
             "src/replan.mjs"
           ],
-          "path": "test/replan.test.mjs"
+          "path": "test/replan.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "06ab608702b22d51a9b86df5caf9fe125886ac27d9c254d458629e215ae797a7",
           "importsFiles": [
             "src/route.mjs"
           ],
-          "path": "test/route.test.mjs"
+          "path": "test/route.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "bb464eb985280b47a3a95b11df7cc0551be1caa1edc6bc8cc4df24ce9aac09f7",
-          "path": "test/run-cmd.test.mjs"
+          "names": [
+            "bin/roleos.mjs"
+          ],
+          "path": "test/run-cmd.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "5208ed05ab36a933756bb97f7a58e5f32325d6e92a1588e66fc8cf555c5bc4b4",
           "importsFiles": [
             "src/run.mjs"
           ],
-          "path": "test/run-trials.test.mjs"
+          "path": "test/run-trials.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "086f9cac2659fda643cb00a590371f2299b13979a3b9766a912dd8e67494c4ee",
           "importsFiles": [
             "src/run.mjs"
           ],
-          "path": "test/run.test.mjs"
+          "path": "test/run.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "39389ee4f8e56eab27de99c9ce4957173363f273c7a520f44db20f0145b2e559",
           "importsFiles": [
             "src/session.mjs"
           ],
-          "path": "test/session.test.mjs"
+          "path": "test/session.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "1c5a91ec5fd844050cfb84e3f9496be3332c26d9191aa47220c6fc99cc72933c",
           "importsFiles": [
             "src/specialist/budget-consult.mjs"
           ],
-          "path": "test/specialist-budget-consult.test.mjs"
+          "path": "test/specialist-budget-consult.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "598efe4bced17e9f6f6431b25fac9948341e5ecf9a7ce42d7921551da23a1e31",
           "importsFiles": [
             "src/specialist/client.mjs"
           ],
-          "path": "test/specialist-client.test.mjs"
+          "path": "test/specialist-client.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "e49ee5240a30a9f3860edb9b27cbbf243d9ef4c2b9ce74d6b87c9897b8b50f05",
           "importsFiles": [
             "src/specialist/registry.mjs"
           ],
-          "path": "test/specialist-cmd.test.mjs"
+          "path": "test/specialist-cmd.test.mjs",
+          "spawns": [
+            "bin/roleos.mjs"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "57c5c220d1faea60e2ecfb9005b46ff85811473bbaa2d56b0a098467079225d4",
           "importsFiles": [
             "src/specialist/conformance-consult.mjs"
           ],
-          "path": "test/specialist-conformance-consult.test.mjs"
+          "path": "test/specialist-conformance-consult.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "d3a2f608848f41556c83c62772577d62f526f289a3615e0bbb7144994f5098d4",
@@ -4892,14 +6264,16 @@
             "src/specialist/registry.mjs",
             "src/specialist/state.mjs"
           ],
-          "path": "test/specialist-dispatch.test.mjs"
+          "path": "test/specialist-dispatch.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "17303952543003288f12f2200f01aef930db6170f5a298811162eebeeb63a60e",
           "importsFiles": [
             "src/specialist/drift.mjs"
           ],
-          "path": "test/specialist-drift.test.mjs"
+          "path": "test/specialist-drift.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "1e3764062904e0537b2250a8229aa9d9dbc4b408bb6f65ebb27b7e32d3a2289a",
@@ -4907,21 +6281,24 @@
             "src/specialist/dispatch.mjs",
             "src/specialist/registry.mjs"
           ],
-          "path": "test/specialist-e2e.test.mjs"
+          "path": "test/specialist-e2e.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "ae7822ae640a260a9273d7952bb0fd0b400ea61236705566090f864792e853f2",
           "importsFiles": [
             "src/specialist/field-log.mjs"
           ],
-          "path": "test/specialist-field-log.test.mjs"
+          "path": "test/specialist-field-log.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "37775ccd9ca74fa0d8ce3a386abdcbae223a83df49f762108d92560e7c801598",
           "importsFiles": [
             "src/specialist/gate.mjs"
           ],
-          "path": "test/specialist-gate.test.mjs"
+          "path": "test/specialist-gate.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "4f2b98f935cd39e227ff312d375be1a50d21d29e2b7fa2664b9e3b5e724175c5",
@@ -4929,14 +6306,16 @@
             "src/specialist/record.mjs",
             "src/specialist/registry.mjs"
           ],
-          "path": "test/specialist-record.test.mjs"
+          "path": "test/specialist-record.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "1e5f67641c761cdb91295483c2c7c7f4b1ebe3799fe2a891c25e0217144d84bd",
           "importsFiles": [
             "src/specialist/registry.mjs"
           ],
-          "path": "test/specialist-registry.test.mjs"
+          "path": "test/specialist-registry.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "77986296391316449d273331821912ea6b33354fe0309a82d2a8b472586eef4d",
@@ -4948,35 +6327,40 @@
             "src/specialist/events.mjs",
             "src/specialist/shadow.mjs"
           ],
-          "path": "test/specialist-shadow.test.mjs"
+          "path": "test/specialist-shadow.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "f316b0b493835b6100599c614c559e5ad864c5ba3b5ecd5c9c1497280df20416",
           "importsFiles": [
             "src/specialist/state.mjs"
           ],
-          "path": "test/specialist-state.test.mjs"
+          "path": "test/specialist-state.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "2add702920e8b5c573f472b89aac5dc2ac6eed4db5b6a56bbe60bc2738f116a1",
           "importsFiles": [
             "src/specialist/training-programs.mjs"
           ],
-          "path": "test/specialist-training-programs.test.mjs"
+          "path": "test/specialist-training-programs.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "75d71e38ef6e2694f5270251747e5b5571588a9fe5d9b6b0a3f665427163fd7f",
           "importsFiles": [
             "src/swarm/build-gate.mjs"
           ],
-          "path": "test/swarm-build-gate.test.mjs"
+          "path": "test/swarm-build-gate.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "a4a24453398f3ff20af7f5b41959528becb3d07d626d184b5ba39a32465128a1",
           "importsFiles": [
             "src/swarm/domain-detect.mjs"
           ],
-          "path": "test/swarm-domain-detect.test.mjs"
+          "path": "test/swarm-domain-detect.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "fe55ae46d9a1bcdedd8b68193d6ff86ea39bfc6763181d1dab1041f6557a9ed0",
@@ -4990,14 +6374,16 @@
             "src/run.mjs",
             "src/swarm/exit-condition.mjs"
           ],
-          "path": "test/swarm-exit-condition.test.mjs"
+          "path": "test/swarm-exit-condition.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "1ad533800be2819864c8be87df176cc25a807ca67c4721bff37006f3ff8ac023",
           "importsFiles": [
             "src/swarm/persist-bridge.mjs"
           ],
-          "path": "test/swarm-persist-bridge.test.mjs"
+          "path": "test/swarm-persist-bridge.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "f6aabbce0ce9ca417d699dc475cd4a709510b78d2338772beab6544e5083f421",
@@ -5017,21 +6403,27 @@
             "src/route.mjs",
             "src/tool-profiles.mjs"
           ],
-          "path": "test/swarm.test.mjs"
+          "path": "test/swarm.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "6083de62095cdf27353e64ef801d83c45b48b95e2bf22b22e6763dba56d75d7b",
           "importsFiles": [
             "src/specialist/conformance-consult.mjs"
           ],
-          "path": "test/tool-constraints.test.mjs"
+          "names": [
+            "tools/conformance-dataset/build_tool_constraints.mjs"
+          ],
+          "path": "test/tool-constraints.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "15ade47580228c828dcbf244427e6bd9114421fa645407176e4f52d8b65df74e",
           "importsFiles": [
             "src/trial.mjs"
           ],
-          "path": "test/trial.test.mjs"
+          "path": "test/trial.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "218e2e23f702875a38c9825b8931e93561e5b4c99385178afed5e87115b5b73f",
@@ -5043,7 +6435,8 @@
             "src/verify-citations-cmd.mjs",
             "src/verify-citations.mjs"
           ],
-          "path": "test/verify-citations.test.mjs"
+          "path": "test/verify-citations.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "398ee8c9f46fda148655f97c19782ea58a493187872710b0d9b293c5451b657f",
@@ -5055,11 +6448,16 @@
             "src/verify-claims-cmd.mjs",
             "src/verify-claims.mjs"
           ],
-          "path": "test/verify-claims.test.mjs"
+          "path": "test/verify-claims.test.mjs",
+          "testFramework": "node --test"
         },
         {
           "hash": "ce4950ded7293ac27a2721816ece6275618d8c11a09f6ba0447b43c00a4d809b",
-          "path": "test/version.test.mjs"
+          "path": "test/version.test.mjs",
+          "spawns": [
+            "bin/roleos.mjs"
+          ],
+          "testFramework": "node --test"
         }
       ],
       "globs": [
@@ -5069,6 +6467,9 @@
       "name": "test",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "node --test"
+      ],
       "testedBy": 0,
       "unresolvedNamed": [
         {
@@ -5109,6 +6510,13 @@
             "P",
             "build_fixes",
             "main"
+          ],
+          "failurePaths": [
+            {
+              "in": "build_fixes",
+              "kind": "raise",
+              "line": 627
+            }
           ],
           "hash": "b14e287fcb6ea33d2a4ee1c91e7cf6e2be3728e1b6aad6cee156f6a8ca840743",
           "path": "tools/conformance-dataset/author_l4.py"
@@ -5176,6 +6584,13 @@
             "query",
             "stamp_receipt"
           ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 122
+            }
+          ],
           "hash": "95722c749a5129c70e63da1b3634104a7ccf78dd0ac8efb559ac40a86230616c",
           "importsFiles": [
             "tools/conformance-dataset/config.py"
@@ -5242,6 +6657,13 @@
             "parse_verdict",
             "query"
           ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 104
+            }
+          ],
           "hash": "2bcb77fc3766ed46c818ca858f00b9cae7c953ae8750bad618def8156f61a357",
           "importsFiles": [
             "tools/conformance-dataset/config.py"
@@ -5275,6 +6697,12 @@
           "path": "tools/conformance-dataset/live-tools/corpus.json"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 30
+            }
+          ],
           "hash": "fd179b29033e132c36322dc3b627982b4c60aa5472dd9b104910c11281116242",
           "path": "tools/conformance-dataset/live-tools/prep_inputs.mjs"
         },
@@ -5322,6 +6750,13 @@
           "path": "tools/conformance-dataset/ood/tools_for_constraints.json"
         },
         {
+          "failurePaths": [
+            {
+              "in": "isDirectRun",
+              "kind": "catch",
+              "line": 28
+            }
+          ],
           "hash": "895db72b016cd8d5593a3d32d984d73bfb37516d73e6974452e7146d0a7dc438",
           "importsFiles": [
             "src/specialist/conformance-consult.mjs",
@@ -5399,6 +6834,13 @@
             "main",
             "minutes_between"
           ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 86
+            }
+          ],
           "hash": "947603a98c88d691d18adaaff20d5dca97026b67f0901f6b69171782990f23a5",
           "path": "tools/conformance-dataset/validate_l4.py"
         },
@@ -5425,9 +6867,59 @@
             "refuse_empty_write",
             "run"
           ],
+          "failurePaths": [
+            {
+              "in": "refuse_empty_write",
+              "kind": "raise",
+              "line": 42
+            },
+            {
+              "in": "refuse_empty_write",
+              "kind": "raise",
+              "line": 47
+            },
+            {
+              "in": "refuse_empty_write",
+              "kind": "raise",
+              "line": 51
+            },
+            {
+              "in": "run",
+              "kind": "raise",
+              "line": 95
+            },
+            {
+              "in": "run",
+              "kind": "raise",
+              "line": 109
+            }
+          ],
           "hash": "b666d5004de9611d573ec5e4eb62ff10d3c26696ab0f4639f70b080f3340ef6f",
+          "importOrder": [
+            "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/config.py",
+            "tools/token-budget-dataset/harvester/locate.py",
+            "tools/token-budget-dataset/harvester/parse_transcripts.py",
+            "tools/token-budget-dataset/harvester/parse_outcomes.py",
+            "tools/token-budget-dataset/harvester/join.py",
+            "tools/token-budget-dataset/harvester/label.py",
+            "tools/token-budget-dataset/harvester/scrub.py",
+            "tools/token-budget-dataset/harvester/split.py",
+            "tools/token-budget-dataset/harvester/schema.py",
+            "tools/token-budget-dataset/harvester/manifest.py"
+          ],
           "importsFiles": [
-            "tools/token-budget-dataset/harvester/__init__.py"
+            "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/config.py",
+            "tools/token-budget-dataset/harvester/join.py",
+            "tools/token-budget-dataset/harvester/label.py",
+            "tools/token-budget-dataset/harvester/locate.py",
+            "tools/token-budget-dataset/harvester/manifest.py",
+            "tools/token-budget-dataset/harvester/parse_outcomes.py",
+            "tools/token-budget-dataset/harvester/parse_transcripts.py",
+            "tools/token-budget-dataset/harvester/schema.py",
+            "tools/token-budget-dataset/harvester/scrub.py",
+            "tools/token-budget-dataset/harvester/split.py"
           ],
           "path": "tools/token-budget-dataset/harvester/build.py"
         },
@@ -5445,10 +6937,55 @@
             "freeze",
             "main"
           ],
+          "failurePaths": [
+            {
+              "in": "_load_jsonl",
+              "kind": "except",
+              "line": 33
+            },
+            {
+              "in": "_load_jsonl",
+              "kind": "raise",
+              "line": 36
+            },
+            {
+              "in": "freeze",
+              "kind": "raise",
+              "line": 45
+            },
+            {
+              "in": "freeze",
+              "kind": "raise",
+              "line": 57
+            },
+            {
+              "in": "freeze",
+              "kind": "raise",
+              "line": 79
+            },
+            {
+              "in": "freeze",
+              "kind": "raise",
+              "line": 81
+            },
+            {
+              "in": "freeze",
+              "kind": "raise",
+              "line": 83
+            }
+          ],
           "hash": "ad6b94ad7183babc9a59d2c2f609378f573c4db7762a3aa416288b2933cade2f",
+          "importOrder": [
+            "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/config.py",
+            "tools/token-budget-dataset/harvester/schema.py",
+            "tools/token-budget-dataset/harvester/manifest.py"
+          ],
           "importsFiles": [
             "tools/token-budget-dataset/harvester/__init__.py",
-            "tools/token-budget-dataset/harvester/manifest.py"
+            "tools/token-budget-dataset/harvester/config.py",
+            "tools/token-budget-dataset/harvester/manifest.py",
+            "tools/token-budget-dataset/harvester/schema.py"
           ],
           "path": "tools/token-budget-dataset/harvester/freeze.py"
         },
@@ -5459,8 +6996,21 @@
             "print_task_preview"
           ],
           "hash": "73c6e4db093ec287e1405bdc21372c433ebc9d19315871e492a885a447e56e92",
+          "importOrder": [
+            "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/locate.py",
+            "tools/token-budget-dataset/harvester/parse_transcripts.py",
+            "tools/token-budget-dataset/harvester/parse_outcomes.py",
+            "tools/token-budget-dataset/harvester/join.py",
+            "tools/token-budget-dataset/harvester/scrub.py"
+          ],
           "importsFiles": [
-            "tools/token-budget-dataset/harvester/__init__.py"
+            "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/join.py",
+            "tools/token-budget-dataset/harvester/locate.py",
+            "tools/token-budget-dataset/harvester/parse_outcomes.py",
+            "tools/token-budget-dataset/harvester/parse_transcripts.py",
+            "tools/token-budget-dataset/harvester/scrub.py"
           ],
           "path": "tools/token-budget-dataset/harvester/inspect_sample.py"
         },
@@ -5468,6 +7018,13 @@
           "exports": [
             "build_swarm_index",
             "join_dispatch"
+          ],
+          "failurePaths": [
+            {
+              "in": "_parse_time",
+              "kind": "except",
+              "line": 32
+            }
           ],
           "hash": "3b96e316c5e41605968ba1758a7e7780dacb5532bcaa8774511e434c56679825",
           "path": "tools/token-budget-dataset/harvester/join.py"
@@ -5478,7 +7035,8 @@
           ],
           "hash": "516ff0cd8e472c37e7ac64e1f9ac5f3d347162aac63d277d8b41979557c28309",
           "importsFiles": [
-            "tools/token-budget-dataset/harvester/__init__.py"
+            "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/config.py"
           ],
           "path": "tools/token-budget-dataset/harvester/label.py"
         },
@@ -5491,7 +7049,8 @@
           ],
           "hash": "6c6ef17ea35bd869e446f5365d653fe279574c7ead995bf2b6242f456ab022b9",
           "importsFiles": [
-            "tools/token-budget-dataset/harvester/__init__.py"
+            "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/config.py"
           ],
           "path": "tools/token-budget-dataset/harvester/locate.py"
         },
@@ -5500,9 +7059,18 @@
             "build_manifest",
             "contamination_check"
           ],
+          "failurePaths": [
+            {
+              "in": "contamination_check",
+              "kind": "raise",
+              "line": 46
+            }
+          ],
           "hash": "a2181d4c99283e2e09be0b65cc381225304c9b4a07c70d6ecf98425199cf85e2",
           "importsFiles": [
-            "tools/token-budget-dataset/harvester/__init__.py"
+            "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/config.py",
+            "tools/token-budget-dataset/harvester/schema.py"
           ],
           "path": "tools/token-budget-dataset/harvester/manifest.py"
         },
@@ -5512,9 +7080,27 @@
             "load_roleos_verdicts",
             "load_swarm_outcomes"
           ],
+          "failurePaths": [
+            {
+              "in": "load_readouts_verdicts",
+              "kind": "except",
+              "line": 107
+            },
+            {
+              "in": "load_readouts_verdicts",
+              "kind": "except",
+              "line": 112
+            },
+            {
+              "in": "load_roleos_verdicts",
+              "kind": "except",
+              "line": 142
+            }
+          ],
           "hash": "df4b4a1c51c9766b802e442ff26174b1928b56d7a3af85d90339dfb6549345a5",
           "importsFiles": [
-            "tools/token-budget-dataset/harvester/__init__.py"
+            "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/config.py"
           ],
           "path": "tools/token-budget-dataset/harvester/parse_outcomes.py"
         },
@@ -5524,9 +7110,27 @@
             "parse_role_signals",
             "parse_session_transcript"
           ],
+          "failurePaths": [
+            {
+              "in": "_iter_records",
+              "kind": "except",
+              "line": 16
+            },
+            {
+              "in": "_iter_records",
+              "kind": "raise",
+              "line": 18
+            },
+            {
+              "in": "_iter_records",
+              "kind": "except",
+              "line": 28
+            }
+          ],
           "hash": "8e966379a27f87dfd979eac1407fc21fcdbecd1930ab940716410fc8b203c8c1",
           "importsFiles": [
-            "tools/token-budget-dataset/harvester/__init__.py"
+            "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/config.py"
           ],
           "path": "tools/token-budget-dataset/harvester/parse_transcripts.py"
         },
@@ -5540,9 +7144,21 @@
             "level5_what_if",
             "write_dataset"
           ],
+          "failurePaths": [
+            {
+              "in": "write_dataset",
+              "kind": "raise",
+              "line": 236
+            },
+            {
+              "kind": "except",
+              "line": 273
+            }
+          ],
           "hash": "e96d6626a7e291a549f1e88614305e5870f150426d90a12ada9741bbdb8774e0",
           "importsFiles": [
             "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/config.py",
             "tools/token-budget-dataset/harvester/manifest.py"
           ],
           "path": "tools/token-budget-dataset/harvester/puzzles.py"
@@ -5564,7 +7180,8 @@
           ],
           "hash": "5658bac47127d23e1ecd91aa91fe9de6812b7597f3ee98b2cb0e9fba2308d3ea",
           "importsFiles": [
-            "tools/token-budget-dataset/harvester/__init__.py"
+            "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/config.py"
           ],
           "path": "tools/token-budget-dataset/harvester/scrub.py"
         },
@@ -5575,7 +7192,8 @@
           ],
           "hash": "fce3f75a1e3ce8e2fba1211ea4968d89512d8d88e26d5c00d5a8b81c7d9faaab",
           "importsFiles": [
-            "tools/token-budget-dataset/harvester/__init__.py"
+            "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/config.py"
           ],
           "path": "tools/token-budget-dataset/harvester/split.py"
         },
@@ -5608,8 +7226,35 @@
             "test_skipped_parse_counts"
           ],
           "hash": "5d805aa05006964449d71e9cedf6bcc8bc0ad244f82c6bd1bc27da16dcc27639",
+          "importOrder": [
+            "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/scrub.py",
+            "tools/token-budget-dataset/harvester/manifest.py",
+            "tools/token-budget-dataset/harvester/join.py",
+            "tools/token-budget-dataset/harvester/config.py",
+            "tools/token-budget-dataset/harvester/label.py",
+            "tools/token-budget-dataset/harvester/freeze.py",
+            "tools/token-budget-dataset/harvester/puzzles.py",
+            "tools/token-budget-dataset/harvester/parse_outcomes.py",
+            "tools/token-budget-dataset/harvester/parse_transcripts.py",
+            "tools/token-budget-dataset/harvester/build.py",
+            "tools/token-budget-dataset/harvester/locate.py",
+            "tools/token-budget-dataset/harvester/inspect_sample.py"
+          ],
           "importsFiles": [
-            "tools/token-budget-dataset/harvester/__init__.py"
+            "tools/token-budget-dataset/harvester/__init__.py",
+            "tools/token-budget-dataset/harvester/build.py",
+            "tools/token-budget-dataset/harvester/config.py",
+            "tools/token-budget-dataset/harvester/freeze.py",
+            "tools/token-budget-dataset/harvester/inspect_sample.py",
+            "tools/token-budget-dataset/harvester/join.py",
+            "tools/token-budget-dataset/harvester/label.py",
+            "tools/token-budget-dataset/harvester/locate.py",
+            "tools/token-budget-dataset/harvester/manifest.py",
+            "tools/token-budget-dataset/harvester/parse_outcomes.py",
+            "tools/token-budget-dataset/harvester/parse_transcripts.py",
+            "tools/token-budget-dataset/harvester/puzzles.py",
+            "tools/token-budget-dataset/harvester/scrub.py"
           ],
           "path": "tools/token-budget-dataset/test_harvester.py"
         }
@@ -5734,6 +7379,26 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 72,
+          "job": "test",
+          "runner": "node --test",
+          "step": "4",
+          "through": [
+            "npm test"
+          ]
+        },
+        {
+          "files": 72,
+          "job": "test",
+          "runner": "node --test",
+          "step": "5",
+          "through": [
+            "npm run verify"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -5988,6 +7653,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 72,
+          "job": "publish",
+          "runner": "node --test",
+          "step": "4",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -6085,7 +7761,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "c0ee7203c230fd1277228f27c982ac4707cc0040",
     "tracked": 625
@@ -7804,5 +9480,10 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 75,
+  "testsNotRun": [
+    "tools/conformance-dataset/test_certify_ship_stamp.py",
+    "tools/conformance-dataset/test_empty_write_gate.py",
+    "tools/token-budget-dataset/test_harvester.py"
+  ],
   "unassigned": []
 }

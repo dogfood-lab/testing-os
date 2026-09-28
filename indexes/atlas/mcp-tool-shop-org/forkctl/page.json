@@ -8,6 +8,17 @@
   ],
   "breaks": [
     {
+      "doors": 3,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "tests",
+      "partLabel": "tests",
+      "spawnedBy": [
+        "src"
+      ]
+    },
+    {
       "doors": 4,
       "importedBy": [],
       "importedByTests": [
@@ -46,7 +57,7 @@
   "changesTogetherWithTests": 0,
   "commit": "72e9d2192606c42df73a34dff75e045f7cef28a7",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly TypeScript (128 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp.",
+  "derived": "7 parts, mostly TypeScript (128 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI, forkctl and forkctl-mcp each reach 2 parts, and CI is followed because a pull request goes through it. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp.",
   "doors": [
     {
       "builds": [
@@ -160,43 +171,24 @@
       "checksCount": 0,
       "checksMore": 0,
       "file": "package.json",
-      "id": "package.json#@mcptoolshop/forkctl",
-      "kind": "package",
-      "landings": [],
-      "name": "@mcptoolshop/forkctl",
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "src",
-          "depth": 0,
-          "files": 1
-        }
-      ],
-      "runs": [
-        "src/index.ts"
-      ],
-      "runsCount": 1,
-      "runsMore": 0,
-      "sends": [],
-      "stages": [],
-      "triggers": [],
-      "unpublished": true
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "checksMore": 0,
-      "file": "package.json",
       "id": "package.json#forkctl",
       "kind": "command",
       "landings": [],
       "name": "forkctl",
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
           "boundary": "src",
           "depth": 0,
           "files": 65
+        },
+        {
+          "boundary": "tests",
+          "depth": 4,
+          "files": 60
         }
       ],
       "runs": [
@@ -219,12 +211,20 @@
       "kind": "command",
       "landings": [],
       "name": "forkctl-mcp",
+      "programs": [
+        "git"
+      ],
       "pushes": false,
       "reach": [
         {
           "boundary": "src",
           "depth": 0,
-          "files": 64
+          "files": 65
+        },
+        {
+          "boundary": "tests",
+          "depth": 4,
+          "files": 60
         }
       ],
       "runs": [
@@ -237,21 +237,53 @@
       ],
       "stages": [],
       "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
+      "id": "package.json#@mcptoolshop/forkctl",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/forkctl",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "src/index.ts"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [],
+      "unpublished": true
     }
   ],
   "duplicates": [],
   "duplicatesLead": null,
   "duplicatesNote": [],
-  "edges": [],
-  "engine": "1.23.0",
+  "edges": [
+    {
+      "from": "tests",
+      "fromTests": true,
+      "to": "src"
+    }
+  ],
+  "engine": "1.23.4",
   "generated": [],
-  "generatedAt": "2026-09-26T14:42:51.599Z",
+  "generatedAt": "2026-09-28T13:16:42.013Z",
   "limits": [
-    "1 import could not be resolved: `src/lib/rename/symbols.ts` imports a path built at run time.",
     "8 writes and 8 reads use paths built at run time and are not named here.",
     "26 writes and 22 reads go to a path their caller passes, not to this repository.",
     "14 reads go to the directory the command is run in (.env.example, .github/, LICENSE and 4 more places), not to this repository.",
-    "3 commands are built at run time and not followed.",
+    "2 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",

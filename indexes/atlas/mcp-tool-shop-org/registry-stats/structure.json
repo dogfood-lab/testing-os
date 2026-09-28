@@ -237,6 +237,9 @@
       "name": "desktop",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "dotnet test"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     },
@@ -375,6 +378,68 @@
         {
           "entry": "main",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "validateManifest",
+              "kind": "throw",
+              "line": 26
+            },
+            {
+              "in": "validateManifest",
+              "kind": "throw",
+              "line": 29
+            },
+            {
+              "in": "validateManifest",
+              "kind": "throw",
+              "line": 34
+            },
+            {
+              "in": "validateManifest",
+              "kind": "throw",
+              "line": 38
+            },
+            {
+              "in": "validateOutputPayload",
+              "kind": "throw",
+              "line": 54
+            },
+            {
+              "in": "loadHistory",
+              "kind": "catch",
+              "line": 86
+            },
+            {
+              "in": "fetchAllRegistries",
+              "kind": "catch",
+              "line": 263
+            },
+            {
+              "in": "fetchAllRegistries",
+              "kind": "catch",
+              "line": 282
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 359
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 375
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 391
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 437
+            }
+          ],
           "hash": "75a5f6025c8188a3374aa603e1a8c2f54d665512c40bc2c0bc63d5b27b58f4be",
           "importsFiles": [
             "src/index.ts"
@@ -605,6 +670,12 @@
           "path": "site/src/data/stats.json"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 62
+            }
+          ],
           "hash": "c041323c019e7cce8e37ba15c00afee55b257b3c16c2c84320eabfe357365fcb",
           "importOrder": [
             "site/src/components/AppShell.astro",
@@ -631,6 +702,12 @@
           "path": "site/src/pages/index.astro"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 6
+            }
+          ],
           "hash": "88771771bbc0d31d3166d843290ec72578d371713b3a1f268379b425ab9d1069",
           "importOrder": [
             "site/src/components/AppShell.astro",
@@ -645,6 +722,16 @@
           "path": "site/src/pages/privacy.astro"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 9
+            },
+            {
+              "kind": "catch",
+              "line": 17
+            }
+          ],
           "hash": "e882beba91a072b5cab45f10868c3c8a065cbfdfa7bf75b4bd4a7859b0d6d986",
           "importOrder": [
             "site/src/components/AppShell.astro",
@@ -706,7 +793,8 @@
             "src/index.ts",
             "src/types.ts"
           ],
-          "path": "src/cache.test.ts"
+          "path": "src/cache.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2d833e0a75287fd844339e84c309b52c913e69e2c13b6d4f4d81e570833f0d1d",
@@ -714,7 +802,8 @@
             "src/calc.ts",
             "src/types.ts"
           ],
-          "path": "src/calc.test.ts"
+          "path": "src/calc.test.ts",
+          "testFramework": "vitest"
         },
         {
           "constantOnly": true,
@@ -726,11 +815,27 @@
         },
         {
           "hash": "1ac1d97958b24228073f6f49c46b097f699051ee463d52361ae176f65035c971",
-          "path": "src/cli.test.ts"
+          "path": "src/cli.test.ts",
+          "spawns": [
+            "src/cli.ts"
+          ],
+          "testFramework": "vitest"
         },
         {
           "entry": "main",
           "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "runConfigPackages",
+              "kind": "catch",
+              "line": 208
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 454
+            }
+          ],
           "hash": "e60034eadc56e6b7a6b4d5085ff2ca124acafb5f7648634f5451b79c685909e4",
           "importsFiles": [
             "src/config.ts",
@@ -1027,6 +1132,53 @@
             "loadConfig",
             "starterConfig"
           ],
+          "failurePaths": [
+            {
+              "in": "loadConfig",
+              "kind": "catch",
+              "line": 24
+            },
+            {
+              "in": "loadConfig",
+              "kind": "throw",
+              "line": 26
+            },
+            {
+              "in": "validateConfig",
+              "kind": "throw",
+              "line": 45
+            },
+            {
+              "in": "validateConfig",
+              "kind": "throw",
+              "line": 53
+            },
+            {
+              "in": "validateConfig",
+              "kind": "throw",
+              "line": 60
+            },
+            {
+              "in": "validateConfig",
+              "kind": "throw",
+              "line": 67
+            },
+            {
+              "in": "validateConfig",
+              "kind": "throw",
+              "line": 74
+            },
+            {
+              "in": "validateConfig",
+              "kind": "throw",
+              "line": 81
+            },
+            {
+              "in": "validateConfig",
+              "kind": "throw",
+              "line": 88
+            }
+          ],
           "hash": "921a174c14adf94760273260af4f063c05df0f9a17383fc17a84e49eb9132a73",
           "importsFiles": [
             "src/types.ts"
@@ -1045,12 +1197,25 @@
             "src/providers/npm.ts",
             "src/types.ts"
           ],
-          "path": "src/contract.test.ts"
+          "path": "src/contract.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "fetchDirect",
             "fetchWithRetry"
+          ],
+          "failurePaths": [
+            {
+              "in": "fetchRetryCore",
+              "kind": "catch",
+              "line": 60
+            },
+            {
+              "in": "fetchRetryCore",
+              "kind": "throw",
+              "line": 96
+            }
           ],
           "hash": "ec215146a5cdf3b03271d9aff04bf2747ba7972e25d450c56916f0a8fee5dba7",
           "importsFiles": [
@@ -1063,6 +1228,53 @@
             "createCache",
             "registerProvider",
             "stats"
+          ],
+          "failurePaths": [
+            {
+              "in": "validatePackageName",
+              "kind": "throw",
+              "line": 32
+            },
+            {
+              "in": "validatePackageName",
+              "kind": "throw",
+              "line": 35
+            },
+            {
+              "in": "validatePackageName",
+              "kind": "throw",
+              "line": 38
+            },
+            {
+              "in": "registerProvider",
+              "kind": "throw",
+              "line": 109
+            },
+            {
+              "in": "registerProvider",
+              "kind": "throw",
+              "line": 112
+            },
+            {
+              "in": "stats",
+              "kind": "throw",
+              "line": 170
+            },
+            {
+              "in": "bulk",
+              "kind": "throw",
+              "line": 229
+            },
+            {
+              "in": "range",
+              "kind": "throw",
+              "line": 317
+            },
+            {
+              "in": "range",
+              "kind": "throw",
+              "line": 320
+            }
           ],
           "hash": "8dd0cbfd256a87fce568300c8dfa32209213ed3845dcc50b6ea15a4fa8cf8312",
           "importOrder": [
@@ -1129,6 +1341,13 @@
           "path": "src/inference.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "getStats",
+              "kind": "throw",
+              "line": 24
+            }
+          ],
           "hash": "de7ecd9c199259b5ec15559ccb7687c76902470511118d4da0717b3144d651a3",
           "importOrder": [
             "src/types.ts",
@@ -1141,6 +1360,13 @@
           "path": "src/providers/docker.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "getStats",
+              "kind": "throw",
+              "line": 43
+            }
+          ],
           "hash": "9c23866637e85cfb8b98399acf9ea09e7853d20432d03edb70efac7764ffd2af",
           "importOrder": [
             "src/types.ts",
@@ -1192,6 +1418,18 @@
           "path": "src/providers/pypi.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "getStats",
+              "kind": "catch",
+              "line": 45
+            },
+            {
+              "in": "getStats",
+              "kind": "throw",
+              "line": 47
+            }
+          ],
           "hash": "de57b06421157c3ad12f4ead660e2741064821b81841eb2b0b0fefb24e0778f8",
           "importOrder": [
             "src/types.ts",
@@ -1209,7 +1447,8 @@
             "src/fetch.ts",
             "src/types.ts"
           ],
-          "path": "src/retry.test.ts"
+          "path": "src/retry.test.ts",
+          "testFramework": "vitest"
         },
         {
           "entry": "createHandler",
@@ -1219,6 +1458,38 @@
             "createRateLimiter",
             "resolveServeHost",
             "serve"
+          ],
+          "failurePaths": [
+            {
+              "in": "handle",
+              "kind": "catch",
+              "line": 185
+            },
+            {
+              "in": "handle",
+              "kind": "throw",
+              "line": 190
+            },
+            {
+              "in": "handle",
+              "kind": "catch",
+              "line": 272
+            },
+            {
+              "in": "createHandler",
+              "kind": "catch",
+              "line": 296
+            },
+            {
+              "in": "createHandler",
+              "kind": "catch",
+              "line": 303
+            },
+            {
+              "in": "createHandler",
+              "kind": "catch",
+              "line": 305
+            }
           ],
           "hash": "e5a240fe42040cd7c5dab3a25c5586d89191367401378e25226bf8a484ab327e",
           "importsFiles": [
@@ -1327,6 +1598,9 @@
       "outsideReads": 11,
       "outsideWrites": 1,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 17,
       "unresolvedSites": 0
     },
@@ -1343,7 +1617,8 @@
           "importsFiles": [
             "src/index.ts"
           ],
-          "path": "test/cache.test.ts"
+          "path": "test/cache.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e9693a573f26f738046e71591c544c6ba0f858938e4eeaf735bf886623ab6937",
@@ -1351,7 +1626,8 @@
             "src/calc.ts",
             "src/types.ts"
           ],
-          "path": "test/calc.test.ts"
+          "path": "test/calc.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c96afb7227924c113ed2c03561c177e0b07ca04ff612f0a5db0874a0c63d0100",
@@ -1371,7 +1647,8 @@
             "src/providers/vscode.ts",
             "src/types.ts"
           ],
-          "path": "test/contract.test.ts"
+          "path": "test/contract.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1a8d2bce7c7a0dcea315c7049e352b0d3331f7ada49403fbbd23fddebfd9133b",
@@ -1380,7 +1657,8 @@
             "src/providers/docker.ts",
             "src/types.ts"
           ],
-          "path": "test/docker.test.ts"
+          "path": "test/docker.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "84d9247d14ba2a930cc4c47bb4ae78c4743474cad82c023545637145a54a2f74",
@@ -1388,14 +1666,16 @@
             "src/index.ts",
             "src/providers/github.ts"
           ],
-          "path": "test/github.test.ts"
+          "path": "test/github.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3a6678377519a84ab996415112797eb7e181dd85780d7397dee3a3e4eb62c6cc",
           "importsFiles": [
             "src/inference.ts"
           ],
-          "path": "test/inference.test.ts"
+          "path": "test/inference.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ea802f51b860287e272413c59bef4af73aee48a736752732d87c2bb1033ed446",
@@ -1403,7 +1683,8 @@
             "src/index.ts",
             "src/providers/npm.ts"
           ],
-          "path": "test/npm.test.ts"
+          "path": "test/npm.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b9de394628aef73743f3542598423eafb83c5afa9864856b1ef49abb98e1fb78",
@@ -1411,7 +1692,8 @@
             "src/index.ts",
             "src/providers/nuget.ts"
           ],
-          "path": "test/nuget.test.ts"
+          "path": "test/nuget.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "035856d6f61dcbd177e64a4ef32945b274a4fedaf65d439d43347932a426d663",
@@ -1419,14 +1701,16 @@
             "src/index.ts",
             "src/providers/pypi.ts"
           ],
-          "path": "test/pypi.test.ts"
+          "path": "test/pypi.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ee65e90540d56af037c380496e23ef361929982c81f95c1eaa4e2b3881ba4297",
           "importsFiles": [
             "src/fetch.ts"
           ],
-          "path": "test/retry.test.ts"
+          "path": "test/retry.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "caa7ce896bb99ae8d200199be5ad766a56ccd6f7a98907576313cc1b446cc722",
@@ -1440,11 +1724,16 @@
             "src/server.ts",
             "src/types.ts"
           ],
-          "path": "test/server.test.ts"
+          "path": "test/server.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f90b5720f05ab935911e40f93197accf56553989328825171f5d8ec236d2981f",
-          "path": "test/version.test.ts"
+          "names": [
+            "src/cli.ts"
+          ],
+          "path": "test/version.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c8413368ebac3320b274d7fafe8287f6f2c7b91cffa6a2fdc9f4bf1b0625ba19",
@@ -1452,7 +1741,8 @@
             "src/index.ts",
             "src/providers/vscode.ts"
           ],
-          "path": "test/vscode.test.ts"
+          "path": "test/vscode.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -1462,6 +1752,9 @@
       "name": "test",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -1590,6 +1883,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 18,
+          "job": "build-test",
+          "runner": "vitest",
+          "step": "4",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -1843,6 +2147,17 @@
         "site/src/data/snapshots.json",
         "site/src/data/stats.json"
       ],
+      "tests": [
+        {
+          "files": 18,
+          "job": "refresh",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "cron": "0 6 * * *",
@@ -2070,6 +2385,14 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 1,
+          "job": "build-msix",
+          "runner": "dotnet test",
+          "step": "Run desktop tests"
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -2528,6 +2851,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 18,
+          "job": "publish",
+          "runner": "vitest",
+          "step": "4",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -2644,7 +2978,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "ccdcd1374bfbc49d4c77bf18f1265745c64da64e",
     "tracked": 123

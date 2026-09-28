@@ -75,10 +75,10 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 1,
+      "changed": 1,
       "moved": 0,
-      "parts": 0,
+      "parts": 2,
       "removed": 0
     },
     "items": [
@@ -88,6 +88,20 @@
         "subjects": [
           "projects",
           "lib"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
         ]
       },
       {
@@ -121,7 +135,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "1 file added and 1 changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -136,7 +150,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 1 source file reaches 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "f4d22102bd41890d912151550f0120bb434a464f",
+  "commit": "f7b4973768c843655383d17005a6353a4ef2de74",
   "defaultBranch": "main",
   "derived": "13 parts, mostly JSON data (2616 files); code in JavaScript (233), Python (30), Astro (3), PowerShell (3), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; CI and Publish each reach 4 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run sdlab.",
   "doors": [
@@ -168,7 +182,7 @@
         {
           "boundary": "scripts",
           "depth": 1,
-          "files": 33
+          "files": 39
         }
       ],
       "runs": [
@@ -211,8 +225,8 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 13 paths",
-        "on a push touching 13 paths",
+        "on a pull request touching 14 paths",
+        "on a push touching 14 paths",
         "or by hand"
       ]
     },
@@ -244,7 +258,7 @@
         {
           "boundary": "scripts",
           "depth": 1,
-          "files": 33
+          "files": 39
         }
       ],
       "runs": [
@@ -389,7 +403,7 @@
       "to": "scripts"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [
     {
       "place": "projects/ai-eye-test/outputs/synthetic/phase1/",
@@ -454,16 +468,16 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-26T14:47:36.583Z",
+  "generatedAt": "2026-09-28T13:22:57.720Z",
   "limits": [
-    "5 imports could not be resolved: `bin/sdlab.js` imports a path built at run time; `lib/training-adapters.js` imports a path built at run time; `projects/salt-road/inputs/prompts/wave-runner.py` imports a path built at run time; and 2 more.",
+    "4 imports could not be resolved: `bin/sdlab.js` imports a path built at run time; `lib/training-adapters.js` imports a path built at run time; `projects/salt-road/inputs/prompts/wave-runner.py` imports a path built at run time; and 1 more.",
     "38 writes and 72 reads use paths built at run time and are not named here.",
     "3 writes go to places this repository does not track, so they are not listed as generated.",
     "112 writes and 220 reads go to a path their caller passes, not to this repository.",
     "12 writes and 3 reads go to the directory the command is run in or a path their caller passes, not to this repository.",
     "7 reads go to the directory the command is run in, not to this repository.",
     "1 write and 2 reads go to a temporary directory, not to this repository.",
-    "11 commands are built at run time and not followed, 8 of them in tests.",
+    "11 commands are built at run time and not followed, 9 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",

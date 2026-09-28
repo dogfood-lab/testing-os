@@ -83,6 +83,22 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI now also runs test/unit/.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "test/unit/"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Build and Release now also runs test/unit/.",
+        "subjects": [
+          ".github/workflows/publish.yml",
+          "test/unit/"
+        ]
+      },
+      {
         "kind": "landing",
         "sentence": "src/kb/nodes.json is now written by scripts/sync-kb.mjs.",
         "subjects": [
@@ -231,9 +247,10 @@
         }
       ],
       "runs": [
-        "test/register-vscode-stub.js"
+        "test/register-vscode-stub.js",
+        "test/unit/"
       ],
-      "runsCount": 1,
+      "runsCount": 2,
       "runsMore": 0,
       "sends": [],
       "stages": [],
@@ -288,9 +305,10 @@
         }
       ],
       "runs": [
-        "test/register-vscode-stub.js"
+        "test/register-vscode-stub.js",
+        "test/unit/"
       ],
-      "runsCount": 1,
+      "runsCount": 2,
       "runsMore": 0,
       "sends": [
         "creates a GitHub release and uploads SHA256SUMS.txt and files named at run time to the release on a tag push",
@@ -372,7 +390,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [
     {
       "place": "src/kb/nodes.json",
@@ -387,12 +405,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-26T14:41:27.063Z",
+  "generatedAt": "2026-09-28T13:15:23.434Z",
   "limits": [
     "1 import could not be resolved: `test/helpers.ts` imports a path built at run time.",
     "2 writes and 6 reads use paths built at run time and are not named here.",
     "16 writes and 39 reads go to a path their caller passes, not to this repository.",
-    "3 commands are built at run time and not followed.",
+    "4 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",

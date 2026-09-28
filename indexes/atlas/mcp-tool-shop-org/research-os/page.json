@@ -31,10 +31,10 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 1,
+      "changed": 1,
       "moved": 0,
-      "parts": 0,
+      "parts": 2,
       "removed": 0
     },
     "items": [
@@ -66,7 +66,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "1 file added and 1 changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -158,7 +158,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 7 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "23a0bc238d328d207817abace7c98e1f9b30a00c",
+  "commit": "4bc808e3760ecfe1424b531bbbb68750597e8546",
   "defaultBranch": "main",
   "derived": "10 parts, mostly TypeScript (420 files), JavaScript (7), CSS (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run research-os. People import @mcptoolshop/research-os.",
   "doors": [
@@ -344,7 +344,9 @@
       ],
       "runsCount": 147,
       "runsMore": 215,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request to main",
@@ -639,7 +641,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generated": [
     {
       "place": "calibration/reviewer-profiles/",
@@ -648,14 +650,14 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-26T14:45:22.855Z",
+  "generatedAt": "2026-09-28T13:20:25.225Z",
   "limits": [
     "1 import could not be resolved: `src/indexer/sync.ts` loads `@mcptoolshop/repo-knowledge` when it is installed, which is not declared.",
     "12 writes and 7 reads use paths built at run time and are not named here.",
     "101 writes and 223 reads go to the directory the command is run in or a path their caller passes, not to this repository.",
     "47 writes and 142 reads go to a path their caller passes, not to this repository.",
     "2 reads go to the directory the command is run in (README.md), not to this repository.",
-    "1 command is built at run time and not followed, and it is in tests.",
+    "2 commands are built at run time and not followed, 1 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",

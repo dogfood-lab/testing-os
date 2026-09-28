@@ -9,7 +9,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "23c162b12673a10cc1a4a24b911f3d0bde5988545b9db37d05673e61663cf00e",
+          "hash": "1eec19014a5cd85c2f5c4546129b86d448fb309fca321cbb6e493466a95a2501",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -417,6 +417,10 @@
           "path": "STATE_MODEL.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "fa65ed32139ed1cd0ee655ab8bc3a9d43bde6766fee12e4617c02a267c511266",
           "path": "logo.png"
         },
@@ -629,6 +633,123 @@
             "work",
             "world_map"
           ],
+          "failurePaths": [
+            {
+              "in": "version",
+              "kind": "raise",
+              "line": 43
+            },
+            {
+              "in": "_session",
+              "kind": "except",
+              "line": 63
+            },
+            {
+              "in": "_session",
+              "kind": "raise",
+              "line": 65
+            },
+            {
+              "in": "_session",
+              "kind": "raise",
+              "line": 68
+            },
+            {
+              "in": "new",
+              "kind": "raise",
+              "line": 94
+            },
+            {
+              "in": "_confirm",
+              "kind": "except",
+              "line": 144
+            },
+            {
+              "in": "_interactive_captain_select",
+              "kind": "except",
+              "line": 153
+            },
+            {
+              "in": "_interactive_captain_select",
+              "kind": "raise",
+              "line": 155
+            },
+            {
+              "in": "_interactive_captain_select",
+              "kind": "raise",
+              "line": 163
+            },
+            {
+              "in": "_interactive_captain_select",
+              "kind": "except",
+              "line": 172
+            },
+            {
+              "in": "_create_custom_game",
+              "kind": "raise",
+              "line": 238
+            },
+            {
+              "in": "_create_custom_game",
+              "kind": "raise",
+              "line": 273
+            },
+            {
+              "in": "tui",
+              "kind": "except",
+              "line": 297
+            },
+            {
+              "in": "tui",
+              "kind": "raise",
+              "line": 299
+            },
+            {
+              "in": "buy",
+              "kind": "except",
+              "line": 392
+            },
+            {
+              "in": "sell",
+              "kind": "except",
+              "line": 427
+            },
+            {
+              "in": "fire",
+              "kind": "except",
+              "line": 613
+            },
+            {
+              "in": "advance",
+              "kind": "except",
+              "line": 803
+            },
+            {
+              "in": "warehouse",
+              "kind": "except",
+              "line": 1433
+            },
+            {
+              "in": "_finalize_victory",
+              "kind": "except",
+              "line": 2859
+            },
+            {
+              "in": "_finalize_victory",
+              "kind": "except",
+              "line": 2895
+            },
+            {
+              "in": "print_and_play",
+              "kind": "except",
+              "line": 3161
+            },
+            {
+              "in": "print_and_play",
+              "kind": "raise",
+              "line": 3166
+            }
+          ],
           "hash": "75c1ce93894e1c44fd41e416ef29551a462821516083413bda69a0459da67e5d",
           "importsFiles": [
             "src/portlight/__init__.py",
@@ -637,6 +758,7 @@
             "src/portlight/app/formatting.py",
             "src/portlight/app/session.py",
             "src/portlight/app/tui/app.py",
+            "src/portlight/app/views.py",
             "src/portlight/content/armor.py",
             "src/portlight/content/companions.py",
             "src/portlight/content/crew_roles.py",
@@ -4906,6 +5028,23 @@
           "path": "src/portlight/app/formatting.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "captain_template",
+              "kind": "except",
+              "line": 132
+            },
+            {
+              "in": "hire_crew",
+              "kind": "except",
+              "line": 855
+            },
+            {
+              "in": "fire_crew",
+              "kind": "except",
+              "line": 916
+            }
+          ],
           "hash": "1db317455e68ac27c6c1f905d7889e17bc4e59b25e600349a37f630af7cf76af",
           "importOrder": [
             "src/portlight/content/contracts.py",
@@ -5036,6 +5175,13 @@
           "path": "src/portlight/app/tui/screens/__init__.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "action_combat_action",
+              "kind": "except",
+              "line": 144
+            }
+          ],
           "hash": "4620aefce47c999fc0842fb5f4c0625bd19bef672e882bc38ed04646d421b5e4",
           "importsFiles": [
             "src/portlight/app/session.py",
@@ -5051,11 +5197,13 @@
             "src/portlight/app/tui/theme.py",
             "src/portlight/engine/crew.py",
             "src/portlight/content/star_freight.py",
-            "src/portlight/app/__init__.py"
+            "src/portlight/app/__init__.py",
+            "src/portlight/app/sf_views.py"
           ],
           "importsFiles": [
             "src/portlight/app/__init__.py",
             "src/portlight/app/session.py",
+            "src/portlight/app/sf_views.py",
             "src/portlight/app/tui/theme.py",
             "src/portlight/content/star_freight.py",
             "src/portlight/engine/crew.py"
@@ -5063,6 +5211,58 @@
           "path": "src/portlight/app/tui/screens/dashboard.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "_check_weapon_recognition",
+              "kind": "except",
+              "line": 194
+            },
+            {
+              "in": "_begin_duel",
+              "kind": "except",
+              "line": 397
+            },
+            {
+              "in": "_finalize_victory",
+              "kind": "except",
+              "line": 548
+            },
+            {
+              "in": "_finalize_victory",
+              "kind": "except",
+              "line": 560
+            },
+            {
+              "in": "_finalize_victory",
+              "kind": "except",
+              "line": 581
+            },
+            {
+              "in": "_finalize_victory",
+              "kind": "except",
+              "line": 594
+            },
+            {
+              "in": "_finalize_victory",
+              "kind": "except",
+              "line": 629
+            },
+            {
+              "in": "_finalize_victory",
+              "kind": "except",
+              "line": 639
+            },
+            {
+              "in": "_finalize_victory",
+              "kind": "except",
+              "line": 654
+            },
+            {
+              "in": "_enter_defeat",
+              "kind": "except",
+              "line": 684
+            }
+          ],
           "hash": "083410c65fbbfddf8d1d4f72b6753385891a3ebeb89a08c1df54c5baea78c57b",
           "importOrder": [
             "src/portlight/app/session.py",
@@ -5173,6 +5373,7 @@
           "hash": "5130e21c8477de1adde99c55f16d80ab1c60ec105328fe800519c02d67eccb8a",
           "importOrder": [
             "src/portlight/app/__init__.py",
+            "src/portlight/app/formatting.py",
             "src/portlight/content/goods.py",
             "src/portlight/content/ships.py",
             "src/portlight/engine/campaign.py",
@@ -5193,6 +5394,7 @@
           ],
           "importsFiles": [
             "src/portlight/app/__init__.py",
+            "src/portlight/app/formatting.py",
             "src/portlight/content/campaign.py",
             "src/portlight/content/crew_roles.py",
             "src/portlight/content/goods.py",
@@ -5256,6 +5458,13 @@
           "exports": [
             "choose_actions"
           ],
+          "failurePaths": [
+            {
+              "in": "_should_hire_specialist",
+              "kind": "except",
+              "line": 373
+            }
+          ],
           "hash": "779971140d1c20edcb8110ef63cae1da45f756acc23230d25be3327da84d1db1",
           "importOrder": [
             "src/portlight/balance/types.py",
@@ -5297,6 +5506,18 @@
             "run_balance_simulation",
             "run_batch"
           ],
+          "failurePaths": [
+            {
+              "in": "_execute_actions",
+              "kind": "except",
+              "line": 103
+            },
+            {
+              "in": "_execute_one",
+              "kind": "except",
+              "line": 173
+            }
+          ],
           "hash": "0244dce54c8a64ae03af91c0a8d5a76b9237b08994cf7728678ed0bf2baff765",
           "importOrder": [
             "src/portlight/balance/collectors.py",
@@ -5319,6 +5540,13 @@
         {
           "exports": [
             "get_scenario"
+          ],
+          "failurePaths": [
+            {
+              "in": "get_scenario",
+              "kind": "raise",
+              "line": 76
+            }
           ],
           "hash": "6b7a009209444dd1fece1897c52eb754a36463d5b30ebef4c1c043a61c3e0fb0",
           "path": "src/portlight/balance/scenarios.py"
@@ -5982,6 +6210,13 @@
             "apply_consequence",
             "check_port_consequences",
             "check_sea_consequences"
+          ],
+          "failurePaths": [
+            {
+              "in": "check_port_consequences",
+              "kind": "except",
+              "line": 427
+            }
           ],
           "hash": "5e976b332730b2cfa2fc55bfcb0d504312d3513af00f1bb653e3157f00aae2b2",
           "importOrder": [
@@ -7532,6 +7767,38 @@
             "format_arrival_text",
             "generate_arrival"
           ],
+          "failurePaths": [
+            {
+              "in": "generate_arrival",
+              "kind": "except",
+              "line": 103
+            },
+            {
+              "in": "generate_arrival",
+              "kind": "except",
+              "line": 127
+            },
+            {
+              "in": "generate_arrival",
+              "kind": "except",
+              "line": 137
+            },
+            {
+              "in": "generate_arrival",
+              "kind": "except",
+              "line": 146
+            },
+            {
+              "in": "generate_arrival",
+              "kind": "except",
+              "line": 161
+            },
+            {
+              "in": "generate_arrival",
+              "kind": "except",
+              "line": 180
+            }
+          ],
           "hash": "34d098be2c6869310bc8752fc2735f84fa831fa537f34dbded84274f7004a3b7",
           "importOrder": [
             "src/portlight/engine/models.py",
@@ -7578,6 +7845,43 @@
             "world_from_dict",
             "world_to_dict"
           ],
+          "failurePaths": [
+            {
+              "in": "migrate_save",
+              "kind": "raise",
+              "line": 304
+            },
+            {
+              "in": "migrate_save",
+              "kind": "raise",
+              "line": 315
+            },
+            {
+              "in": "_ship_from_dict",
+              "kind": "except",
+              "line": 389
+            },
+            {
+              "in": "load_game",
+              "kind": "except",
+              "line": 1412
+            },
+            {
+              "in": "load_game",
+              "kind": "except",
+              "line": 1417
+            },
+            {
+              "in": "load_game",
+              "kind": "raise",
+              "line": 1418
+            },
+            {
+              "in": "load_game",
+              "kind": "except",
+              "line": 1419
+            }
+          ],
           "hash": "d7184953687ca2047419b65cfd7c06076feb4bcaf90458ebb1b40029de60a368",
           "importOrder": [
             "src/portlight/engine/models.py",
@@ -7612,6 +7916,13 @@
             "get_arrival_weather",
             "get_departure_weather",
             "get_night_weather"
+          ],
+          "failurePaths": [
+            {
+              "in": "enrich_voyage_day",
+              "kind": "except",
+              "line": 369
+            }
           ],
           "hash": "227ea6cb2493b848922f6106d7177c7ac5929ace5a60e5c6c3daac4ac0e86b07",
           "importOrder": [
@@ -8491,6 +8802,13 @@
             "find_route",
             "ship_class_rank"
           ],
+          "failurePaths": [
+            {
+              "in": "_get_captain_mods",
+              "kind": "except",
+              "line": 43
+            }
+          ],
           "hash": "04d4c35b19e1024b64b495eab3702afb985deecfb30a4c530bc37298f8615c4c",
           "importOrder": [
             "src/portlight/engine/models.py",
@@ -8626,6 +8944,28 @@
           "entryRule": 4,
           "exports": [
             "generate"
+          ],
+          "failurePaths": [
+            {
+              "in": "generate",
+              "kind": "except",
+              "line": 42
+            },
+            {
+              "in": "generate",
+              "kind": "raise",
+              "line": 43
+            },
+            {
+              "in": "generate",
+              "kind": "except",
+              "line": 60
+            },
+            {
+              "in": "generate",
+              "kind": "except",
+              "line": 70
+            }
           ],
           "hash": "331d2f33cda67fe1a6ceea4bdfd37c31278ea132463d0675a211a214b407ae33",
           "importsFiles": [
@@ -8918,6 +9258,18 @@
           "path": "src/portlight/rpc/protocol.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "dispatch",
+              "kind": "except",
+              "line": 108
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 145
+            }
+          ],
           "hash": "4750667e01287e037ffe19aaee8ef23446abd9ed120c196d9eadcaf0a367570b",
           "importOrder": [
             "src/portlight/rpc/protocol.py",
@@ -8973,6 +9325,23 @@
           "exports": [
             "run_stress_batch",
             "run_stress_scenario"
+          ],
+          "failurePaths": [
+            {
+              "in": "run_stress_scenario",
+              "kind": "except",
+              "line": 60
+            },
+            {
+              "in": "run_stress_scenario",
+              "kind": "except",
+              "line": 74
+            },
+            {
+              "in": "_execute_actions",
+              "kind": "except",
+              "line": 148
+            }
           ],
           "hash": "7e416ed9153285b79f7fe3287e91b56025cf7513133fdcc413548e9b71a857a7",
           "importOrder": [
@@ -9034,6 +9403,9 @@
       "outsideReads": 126,
       "outsideWrites": 6,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 85,
       "unresolvedNamed": [
         {
@@ -9074,7 +9446,8 @@
             "src/portlight/balance/runner.py",
             "src/portlight/balance/types.py"
           ],
-          "path": "tests/balance/test_captain_parity.py"
+          "path": "tests/balance/test_captain_parity.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "e989504567490a5f5daa3b32818d755ea3149987a9c26a96c22bb473af4807ec",
@@ -9098,7 +9471,8 @@
             "src/portlight/balance/scenarios.py",
             "src/portlight/balance/types.py"
           ],
-          "path": "tests/balance/test_scenarios.py"
+          "path": "tests/balance/test_scenarios.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "55a59a6e50bfeaecd022d2c32b3dc3b1b8411337cfc856bb3ee7e5263f0532e8",
@@ -9128,7 +9502,8 @@
             "src/portlight/engine/sf_campaign.py",
             "src/portlight/rpc/protocol.py"
           ],
-          "path": "tests/rpc/test_protocol.py"
+          "path": "tests/rpc/test_protocol.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "ac934ffdca0f5d5bbd4bdd122a3e6c09036348f740eedb4e7e26e4efc2262ffe",
@@ -9142,7 +9517,8 @@
             "src/portlight/rpc/protocol.py",
             "src/portlight/rpc/server.py"
           ],
-          "path": "tests/rpc/test_server.py"
+          "path": "tests/rpc/test_server.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -9160,7 +9536,8 @@
             "src/portlight/stress/runner.py",
             "src/portlight/stress/scenarios.py"
           ],
-          "path": "tests/stress/test_campaign_under_stress.py"
+          "path": "tests/stress/test_campaign_under_stress.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "e1f8c6d6653c425ab51401f9f1ec234522c72026b7262027298632590fd268b9",
@@ -9196,7 +9573,8 @@
             "src/portlight/stress/scenarios.py",
             "src/portlight/stress/types.py"
           ],
-          "path": "tests/stress/test_scenarios.py"
+          "path": "tests/stress/test_scenarios.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "cd187ebebeac27eb330c4e9b97d938b5dff42a72dcc7ee3d0034a04a6ddfa2e7",
@@ -9275,7 +9653,8 @@
             "src/portlight/engine/save.py",
             "src/portlight/receipts/models.py"
           ],
-          "path": "tests/test_brokers_licenses.py"
+          "path": "tests/test_brokers_licenses.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "9b198662680b12a0e65c396dff0c58e940c2a599bcdbf631b5b246902501c18f",
@@ -9301,7 +9680,8 @@
             "src/portlight/engine/models.py",
             "src/portlight/engine/sea_culture_engine.py"
           ],
-          "path": "tests/test_bugfixes.py"
+          "path": "tests/test_bugfixes.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "5759383fa3907b8d56d19756c905bcc9383c796e8337cc9b66eb2bb1fca772a2",
@@ -9388,12 +9768,16 @@
           "hash": "9b5c476e6a9175587134fb853feb033e8bbfcee7cd04e5e4976f9add3bb32e4f",
           "importOrder": [
             "src/portlight/app/__init__.py",
+            "src/portlight/app/formatting.py",
+            "src/portlight/app/views.py",
             "src/portlight/engine/captain_identity.py",
             "src/portlight/app/session.py"
           ],
           "importsFiles": [
             "src/portlight/app/__init__.py",
+            "src/portlight/app/formatting.py",
             "src/portlight/app/session.py",
+            "src/portlight/app/views.py",
             "src/portlight/engine/captain_identity.py"
           ],
           "path": "tests/test_captain_select.py"
@@ -9450,7 +9834,8 @@
             "src/portlight/engine/models.py",
             "src/portlight/engine/save.py"
           ],
-          "path": "tests/test_contracts.py"
+          "path": "tests/test_contracts.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "1c5b4d75807bb7def5802f569414f4180e70b9705dc03768be78922b7a985272",
@@ -9498,7 +9883,8 @@
             "src/portlight/engine/save.py",
             "src/portlight/receipts/models.py"
           ],
-          "path": "tests/test_credit.py"
+          "path": "tests/test_credit.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -9661,7 +10047,8 @@
             "src/portlight/engine/models.py",
             "src/portlight/engine/save.py"
           ],
-          "path": "tests/test_encounter_flow.py"
+          "path": "tests/test_encounter_flow.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "910e618bf0a42001da81dfc40487b04721f950822bc810dedf692f7d487f6850",
@@ -9678,7 +10065,8 @@
             "src/portlight/content/fighting_styles.py",
             "src/portlight/engine/training.py"
           ],
-          "path": "tests/test_fighting_styles.py"
+          "path": "tests/test_fighting_styles.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "b592868718d48d54aa1bac1e98b271f30ca94d6ef489a1c7c99d70d8a4d64753",
@@ -9755,7 +10143,8 @@
             "src/portlight/engine/infrastructure.py",
             "src/portlight/engine/save.py"
           ],
-          "path": "tests/test_infrastructure.py"
+          "path": "tests/test_infrastructure.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "6f7de753cb9e7bdbfd6bd73e3592c868f48ad957ad631252a3e822677fc2f4b7",
@@ -9794,7 +10183,8 @@
             "src/portlight/engine/voyage.py",
             "src/portlight/receipts/models.py"
           ],
-          "path": "tests/test_insurance.py"
+          "path": "tests/test_insurance.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -9851,6 +10241,7 @@
           "hash": "8c670fe3d70810558f25a19acde24c8b4397815aa1985d40402fac3b9aecc2c8",
           "importsFiles": [
             "src/portlight/app/__init__.py",
+            "src/portlight/app/views.py",
             "src/portlight/content/ports.py",
             "src/portlight/content/routes.py"
           ],
@@ -9930,7 +10321,8 @@
               "isDefaultExport": false,
               "name": "_make_state"
             }
-          ]
+          ],
+          "testFramework": "pytest"
         },
         {
           "hash": "6f0bcd55b14993d5ba14986eb635996ad26e54d734f0326b1f1f44bfd392774b",
@@ -9964,7 +10356,8 @@
             "src/portlight/engine/models.py",
             "src/portlight/engine/naval.py"
           ],
-          "path": "tests/test_naval_combat.py"
+          "path": "tests/test_naval_combat.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "3effb3c4747871cd761022eded500554b41721980ed1668f0278036d2bf7a761",
@@ -9980,14 +10373,16 @@
             "src/portlight/engine/playtest.py",
             "src/portlight/engine/sf_campaign.py"
           ],
-          "path": "tests/test_p1_tuning.py"
+          "path": "tests/test_p1_tuning.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "dacb4a2233f91d60ede31bab36610b1613a88e601b6720575beffbeafbd748f4",
           "importsFiles": [
             "src/portlight/engine/combat.py"
           ],
-          "path": "tests/test_personal_combat.py"
+          "path": "tests/test_personal_combat.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "1ca5d220e346ae155aec6a7e0b09532c353c01501f55fb212ba71bf63078c849",
@@ -10047,7 +10442,8 @@
             "src/portlight/printandplay/assets.py",
             "src/portlight/printandplay/generator.py"
           ],
-          "path": "tests/test_printandplay.py"
+          "path": "tests/test_printandplay.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "c92ab3a3345b20c417b57aeb5fadda3528b9f5b4a08cdd7eb3f7805604e9721a",
@@ -10100,7 +10496,8 @@
             "src/portlight/engine/voyage.py",
             "src/portlight/receipts/models.py"
           ],
-          "path": "tests/test_save.py"
+          "path": "tests/test_save.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "87edde7b9172784c5323907fd7c82a33e29211130e10daf9a67b7a7f856d65f0",
@@ -10241,7 +10638,8 @@
             "src/portlight/engine/models.py",
             "src/portlight/engine/voyage.py"
           ],
-          "path": "tests/test_tui_encounter.py"
+          "path": "tests/test_tui_encounter.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10262,7 +10660,8 @@
             "src/portlight/app/session.py",
             "src/portlight/app/tui/app.py"
           ],
-          "path": "tests/test_tui_integration.py"
+          "path": "tests/test_tui_integration.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10306,7 +10705,8 @@
             "src/portlight/app/tui/screens/routes.py",
             "src/portlight/app/tui/theme.py"
           ],
-          "path": "tests/test_tui_smoke.py"
+          "path": "tests/test_tui_smoke.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10352,7 +10752,8 @@
             "src/portlight/app/session.py",
             "src/portlight/app/tui/app.py"
           ],
-          "path": "tests/test_tui_voyage_legacy.py"
+          "path": "tests/test_tui_voyage_legacy.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "4e085d4da9b1d198db6e638d20fa210d09de298e62cb77bc9c13937b045c093b",
@@ -10410,6 +10811,7 @@
           "hash": "db40b0b2298e80d02b50d2da36aedb05e62fca6d550228782a1b010bd709bbea",
           "importOrder": [
             "src/portlight/app/__init__.py",
+            "src/portlight/app/views.py",
             "src/portlight/app/session.py",
             "src/portlight/engine/contracts.py",
             "src/portlight/engine/models.py",
@@ -10421,6 +10823,7 @@
             "src/portlight/app/__init__.py",
             "src/portlight/app/cli.py",
             "src/portlight/app/session.py",
+            "src/portlight/app/views.py",
             "src/portlight/content/infrastructure.py",
             "src/portlight/engine/contracts.py",
             "src/portlight/engine/infrastructure.py",
@@ -10504,6 +10907,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     },
@@ -10653,7 +11059,10 @@
       "landings": [],
       "mentions": [],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -10698,12 +11107,38 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "pyproject.toml",
+          "files": 89,
+          "job": "test",
+          "runner": "pytest",
+          "step": "Run tests"
+        },
+        {
+          "config": "pyproject.toml",
+          "coverage": true,
+          "files": 89,
+          "job": "test",
+          "junit": true,
+          "runner": "pytest",
+          "step": "Run tests with coverage (3.12 only)"
+        },
+        {
+          "config": "pyproject.toml",
+          "files": 1,
+          "job": "test",
+          "runner": "pytest",
+          "step": "Maritime term guard"
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "pyproject.toml",
             "site/astro.config.mjs",
             "site/package-lock.json",
@@ -10717,6 +11152,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "pyproject.toml",
             "site/astro.config.mjs",
             "site/package-lock.json",
@@ -10731,8 +11167,10 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
         "actions/setup-python",
+        "actions/upload-artifact",
         "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
@@ -10960,7 +11398,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 88
+          "files": 90
         }
       ],
       "readers": [],
@@ -11025,7 +11463,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 87
+          "files": 89
         }
       ],
       "readers": [],
@@ -11066,10 +11504,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
-    "commit": "743f657647f787f7b6fcbf46772f961c04089a8c",
-    "tracked": 321
+    "commit": "ae33f19e7d4d1dd6c1b2cbf98da636e28a86a377",
+    "tracked": 322
   },
   "landings": [
     {

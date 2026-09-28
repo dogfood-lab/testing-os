@@ -45,7 +45,7 @@
           "path": ".github/issue_bodies/005-p2-performance-regression-suite.md"
         },
         {
-          "hash": "b3056357f2ebe7060af85f4663fc5b4630624f539023aaad8368d14ae75c207f",
+          "hash": "85022476dc4a1cd35e8b33914b58873869eae03d5457e4aa5f7169bdcb80d872",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -185,6 +185,10 @@
         {
           "hash": "d860078100307243178e6c84c9c7ac81aab4e1e0da900ef102ae058b5efb4880",
           "path": "SHIP_GATE.md"
+        },
+        {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
         },
         {
           "hash": "c6100f2d1fa400ae9f87f19b3f12581c01dbe54f8712388d8a4e741949ff754c",
@@ -393,6 +397,23 @@
             "chain_list",
             "chain_show"
           ],
+          "failurePaths": [
+            {
+              "in": "chain_show",
+              "kind": "raise",
+              "line": 70
+            },
+            {
+              "in": "chain_execute",
+              "kind": "raise",
+              "line": 152
+            },
+            {
+              "in": "chain_execute",
+              "kind": "raise",
+              "line": 154
+            }
+          ],
           "hash": "aa00ce2e9d31ed5eda8dd5b37f6a40fa3ecda8f51f62242eb0ff0580e2b39c47",
           "importOrder": [
             "src/mcp_stress_test/cli/quality_gate.py",
@@ -416,6 +437,18 @@
             "fuzz_group",
             "fuzz_mutate",
             "fuzz_run"
+          ],
+          "failurePaths": [
+            {
+              "in": "fuzz_run",
+              "kind": "except",
+              "line": 55
+            },
+            {
+              "in": "fuzz_evasion",
+              "kind": "except",
+              "line": 141
+            }
           ],
           "hash": "afce6530738ccec9a6c1c8e0568fb081e6168a7321642eb1a822601edcaa0d58",
           "importOrder": [
@@ -492,6 +525,93 @@
             "report_group",
             "report_preview"
           ],
+          "failurePaths": [
+            {
+              "in": "_as_float",
+              "kind": "except",
+              "line": 20
+            },
+            {
+              "in": "_read_optional_float",
+              "kind": "except",
+              "line": 37
+            },
+            {
+              "in": "parse_report_input",
+              "kind": "raise",
+              "line": 181
+            },
+            {
+              "in": "parse_report_input",
+              "kind": "raise",
+              "line": 189
+            },
+            {
+              "in": "parse_report_input",
+              "kind": "raise",
+              "line": 198
+            },
+            {
+              "in": "parse_report_input",
+              "kind": "raise",
+              "line": 211
+            },
+            {
+              "in": "parse_report_input",
+              "kind": "raise",
+              "line": 213
+            },
+            {
+              "in": "parse_report_input",
+              "kind": "raise",
+              "line": 219
+            },
+            {
+              "in": "load_report_json",
+              "kind": "except",
+              "line": 233
+            },
+            {
+              "in": "load_report_json",
+              "kind": "raise",
+              "line": 234
+            },
+            {
+              "in": "load_report_json",
+              "kind": "except",
+              "line": 235
+            },
+            {
+              "in": "load_report_json",
+              "kind": "raise",
+              "line": 236
+            },
+            {
+              "in": "report_generate",
+              "kind": "raise",
+              "line": 323
+            },
+            {
+              "in": "report_preview",
+              "kind": "except",
+              "line": 391
+            },
+            {
+              "in": "report_preview",
+              "kind": "raise",
+              "line": 392
+            },
+            {
+              "in": "report_preview",
+              "kind": "except",
+              "line": 393
+            },
+            {
+              "in": "report_preview",
+              "kind": "raise",
+              "line": 394
+            }
+          ],
           "hash": "c27c4bde3892e8b6ad0d2d4bc7c81cac207a2c1c1e16a9ef225b21e747cdf27d",
           "importOrder": [
             "src/mcp_stress_test/core/protocols.py",
@@ -512,6 +632,33 @@
             "scan_group",
             "scan_scanners"
           ],
+          "failurePaths": [
+            {
+              "in": "scan_batch",
+              "kind": "raise",
+              "line": 194
+            },
+            {
+              "in": "scan_batch",
+              "kind": "raise",
+              "line": 199
+            },
+            {
+              "in": "scan_batch",
+              "kind": "raise",
+              "line": 201
+            },
+            {
+              "in": "scan_batch",
+              "kind": "except",
+              "line": 252
+            },
+            {
+              "in": "scan_batch",
+              "kind": "raise",
+              "line": 281
+            }
+          ],
           "hash": "bca5437beaa56311f8dcde99d4e55058bdaad6ebe3c94aa071fe3c4f3efb86f3",
           "importsFiles": [
             "src/mcp_stress_test/cli/quality_gate.py",
@@ -529,6 +676,13 @@
             "server_list",
             "server_serve"
           ],
+          "failurePaths": [
+            {
+              "in": "_serve",
+              "kind": "raise",
+              "line": 54
+            }
+          ],
           "hash": "61b27c94dd53bb12ec77ed5cbe720449c738cd71a334f19fdd765cd079c34ddb",
           "importsFiles": [
             "src/mcp_stress_test/models.py",
@@ -541,6 +695,33 @@
             "execute_stress_run",
             "stress_group",
             "stress_run"
+          ],
+          "failurePaths": [
+            {
+              "in": "execute_stress_run",
+              "kind": "raise",
+              "line": 49
+            },
+            {
+              "in": "execute_stress_run",
+              "kind": "raise",
+              "line": 55
+            },
+            {
+              "in": "execute_stress_run",
+              "kind": "raise",
+              "line": 66
+            },
+            {
+              "in": "execute_stress_run",
+              "kind": "raise",
+              "line": 68
+            },
+            {
+              "in": "execute_stress_run",
+              "kind": "raise",
+              "line": 74
+            }
           ],
           "hash": "90f7df767b6fc589ad33bb2f4008d4cee529c1d689a9144544d4ac7af9acde9d",
           "importOrder": [
@@ -576,6 +757,12 @@
             "app",
             "main"
           ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 28
+            }
+          ],
           "hash": "80e965e08c9c98891814a1d1f649a2f03180eccd02ca069773f8460fa02fe348",
           "importsFiles": [
             "src/mcp_stress_test/__init__.py",
@@ -598,6 +785,18 @@
             "enforce_quality_gate",
             "quality_gate_options"
           ],
+          "failurePaths": [
+            {
+              "in": "enforce_quality_gate",
+              "kind": "raise",
+              "line": 42
+            },
+            {
+              "in": "enforce_quality_gate",
+              "kind": "raise",
+              "line": 49
+            }
+          ],
           "hash": "6ce8a6090f7e53eef0194b82dce44eb2ae5431b2cc868eab757dbe5922e45896",
           "path": "src/mcp_stress_test/cli/quality_gate.py"
         },
@@ -606,6 +805,28 @@
             "raise_if_scan_error",
             "require_scanner_available",
             "resolve_scanner"
+          ],
+          "failurePaths": [
+            {
+              "in": "resolve_scanner",
+              "kind": "raise",
+              "line": 37
+            },
+            {
+              "in": "resolve_scanner",
+              "kind": "raise",
+              "line": 42
+            },
+            {
+              "in": "require_scanner_available",
+              "kind": "raise",
+              "line": 70
+            },
+            {
+              "in": "raise_if_scan_error",
+              "kind": "raise",
+              "line": 84
+            }
           ],
           "hash": "ecfde8ae6817b04e43da4074f1f8708e0882887fe69dbd66baf6291e4f1870cc",
           "importsFiles": [
@@ -647,6 +868,52 @@
             "stress_run",
             "tools",
             "tools_list"
+          ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 23
+            },
+            {
+              "in": "attack_mutate",
+              "kind": "raise",
+              "line": 425
+            },
+            {
+              "in": "attack_simulate",
+              "kind": "raise",
+              "line": 533
+            },
+            {
+              "in": "stress_compare",
+              "kind": "raise",
+              "line": 774
+            },
+            {
+              "in": "checkpoint_restore",
+              "kind": "except",
+              "line": 1054
+            },
+            {
+              "in": "run_farm",
+              "kind": "except",
+              "line": 1212
+            },
+            {
+              "in": "poison_tool",
+              "kind": "raise",
+              "line": 1343
+            },
+            {
+              "in": "server_call",
+              "kind": "except",
+              "line": 1399
+            },
+            {
+              "in": "call_tool",
+              "kind": "raise",
+              "line": 1413
+            }
           ],
           "hash": "a3f933cef7f6d86e482f9f8a3250e8183fde1c267496fb0042688e87d9acc52c",
           "importOrder": [
@@ -752,6 +1019,23 @@
           "exports": [
             "create_fuzzer"
           ],
+          "failurePaths": [
+            {
+              "in": "_call_llm",
+              "kind": "raise",
+              "line": 117
+            },
+            {
+              "in": "fuzz",
+              "kind": "except",
+              "line": 154
+            },
+            {
+              "in": "fuzz",
+              "kind": "except",
+              "line": 170
+            }
+          ],
           "hash": "f9c9546c4a424999940d2097578f083b1d5f21282b1e5965e90ae33fe9f93538",
           "importsFiles": [
             "src/mcp_stress_test/core/config.py",
@@ -809,6 +1093,13 @@
           "exports": [
             "get_all_strategies",
             "get_strategy"
+          ],
+          "failurePaths": [
+            {
+              "in": "get_strategy",
+              "kind": "raise",
+              "line": 393
+            }
           ],
           "hash": "aa81e86ded61294c27f8b0b384081f04dacca953054aa860e0efaf13a484bd10",
           "importsFiles": [
@@ -926,6 +1217,13 @@
           "path": "src/mcp_stress_test/reporters/__init__.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "_first_present_float",
+              "kind": "except",
+              "line": 70
+            }
+          ],
           "hash": "c89818a1cda52c417c099628bb9076e96c888e1ed02b5a1bc3ac06f0bb4ba40e",
           "importsFiles": [
             "src/mcp_stress_test/core/protocols.py"
@@ -978,6 +1276,43 @@
           "path": "src/mcp_stress_test/scanner/__init__.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "scan",
+              "kind": "except",
+              "line": 280
+            },
+            {
+              "in": "scan",
+              "kind": "except",
+              "line": 297
+            },
+            {
+              "in": "scan",
+              "kind": "except",
+              "line": 304
+            },
+            {
+              "in": "scan",
+              "kind": "except",
+              "line": 308
+            },
+            {
+              "in": "_create_backend",
+              "kind": "raise",
+              "line": 456
+            },
+            {
+              "in": "_create_backend",
+              "kind": "raise",
+              "line": 460
+            },
+            {
+              "in": "_create_backend",
+              "kind": "raise",
+              "line": 470
+            }
+          ],
           "hash": "a7a388020e6c4ac7cac784199ae3dec2c263b9bd84eb8ba5b467f77ea4a2843c",
           "importsFiles": [
             "src/mcp_stress_test/models.py",
@@ -986,6 +1321,88 @@
           "path": "src/mcp_stress_test/scanner/adapter.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "thaw",
+              "kind": "raise",
+              "line": 137
+            },
+            {
+              "in": "thaw",
+              "kind": "raise",
+              "line": 141
+            },
+            {
+              "in": "thaw",
+              "kind": "raise",
+              "line": 145
+            },
+            {
+              "in": "list",
+              "kind": "except",
+              "line": 153
+            },
+            {
+              "in": "_load_cwm_module",
+              "kind": "except",
+              "line": 165
+            },
+            {
+              "in": "freeze",
+              "kind": "except",
+              "line": 197
+            },
+            {
+              "in": "list",
+              "kind": "except",
+              "line": 221
+            },
+            {
+              "in": "create_checkpoint",
+              "kind": "except",
+              "line": 337
+            },
+            {
+              "in": "restore_checkpoint",
+              "kind": "raise",
+              "line": 370
+            },
+            {
+              "in": "restore_checkpoint",
+              "kind": "except",
+              "line": 385
+            },
+            {
+              "in": "restore_checkpoint",
+              "kind": "except",
+              "line": 388
+            },
+            {
+              "in": "restore_checkpoint",
+              "kind": "raise",
+              "line": 390
+            },
+            {
+              "in": "_cwm_freeze",
+              "kind": "except",
+              "line": 611
+            },
+            {
+              "in": "_cwm_thaw",
+              "kind": "except",
+              "line": 626
+            },
+            {
+              "in": "__next__",
+              "kind": "raise",
+              "line": 656
+            },
+            {
+              "in": "jump_to",
+              "kind": "raise",
+              "line": 683
+            }
+          ],
           "hash": "9d37b3f1fd48d469c313ae38e4b5e43b8ca2f24471c01bf5cfb331a1656669c8",
           "importsFiles": [
             "src/mcp_stress_test/core/data_paths.py",
@@ -994,6 +1411,23 @@
           "path": "src/mcp_stress_test/scanner/checkpoint.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "scan",
+              "kind": "raise",
+              "line": 65
+            },
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 105
+            },
+            {
+              "in": "fan_out",
+              "kind": "except",
+              "line": 129
+            }
+          ],
           "hash": "4af39c4b5541ad037259f63ba546da09986165898fbf3536c1cfcebffd9618f8",
           "importsFiles": [
             "src/mcp_stress_test/core/protocols.py",
@@ -1009,6 +1443,98 @@
             "ingest_tools",
             "tool_schema_from_mcp"
           ],
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 68
+            },
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 70
+            },
+            {
+              "in": "list_tools",
+              "kind": "raise",
+              "line": 112
+            },
+            {
+              "in": "list_tools",
+              "kind": "raise",
+              "line": 115
+            },
+            {
+              "in": "_rpc",
+              "kind": "raise",
+              "line": 174
+            },
+            {
+              "in": "_rpc",
+              "kind": "raise",
+              "line": 176
+            },
+            {
+              "in": "_write",
+              "kind": "raise",
+              "line": 188
+            },
+            {
+              "in": "worker",
+              "kind": "except",
+              "line": 201
+            },
+            {
+              "in": "_read_message",
+              "kind": "raise",
+              "line": 209
+            },
+            {
+              "in": "_read_message",
+              "kind": "raise",
+              "line": 211
+            },
+            {
+              "in": "_read_message",
+              "kind": "raise",
+              "line": 214
+            },
+            {
+              "in": "_read_message_blocking",
+              "kind": "raise",
+              "line": 219
+            },
+            {
+              "in": "_read_message_blocking",
+              "kind": "raise",
+              "line": 232
+            },
+            {
+              "in": "_read_message_blocking",
+              "kind": "raise",
+              "line": 249
+            },
+            {
+              "in": "_read_message_blocking",
+              "kind": "raise",
+              "line": 253
+            },
+            {
+              "in": "_read_message_blocking",
+              "kind": "raise",
+              "line": 260
+            },
+            {
+              "in": "_read_message_blocking",
+              "kind": "raise",
+              "line": 263
+            },
+            {
+              "in": "_read_message_blocking",
+              "kind": "raise",
+              "line": 266
+            }
+          ],
           "hash": "4b726376a74556b5af648f61f1696af4f164587cd9137e039486fc47ad81da24",
           "importsFiles": [
             "src/mcp_stress_test/models.py"
@@ -1016,6 +1542,13 @@
           "path": "src/mcp_stress_test/scanner/mcp_client.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "export_results",
+              "kind": "raise",
+              "line": 1023
+            }
+          ],
           "hash": "61ff0e85685bb0244e7ed9ed3e857fb5b3986df53eafccae9953fae6f1382d3d",
           "importOrder": [
             "src/mcp_stress_test/generator/__init__.py",
@@ -1046,6 +1579,38 @@
           "path": "src/mcp_stress_test/scanners/__init__.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "scan",
+              "kind": "except",
+              "line": 117
+            },
+            {
+              "in": "scan",
+              "kind": "except",
+              "line": 124
+            },
+            {
+              "in": "_parse_json_output",
+              "kind": "except",
+              "line": 162
+            },
+            {
+              "in": "_extract_json_value",
+              "kind": "except",
+              "line": 255
+            },
+            {
+              "in": "_split_template",
+              "kind": "except",
+              "line": 269
+            },
+            {
+              "in": "is_available",
+              "kind": "except",
+              "line": 287
+            }
+          ],
           "hash": "7b50f5875c99ce7767514e1f62f41a04dd2372c6a8127da0524c8bd59b4ea303",
           "importsFiles": [
             "src/mcp_stress_test/core/protocols.py",
@@ -1058,6 +1623,43 @@
             "extract_json_path",
             "normalize_threats",
             "score_to_grade"
+          ],
+          "failurePaths": [
+            {
+              "in": "extract_json_path",
+              "kind": "except",
+              "line": 41
+            },
+            {
+              "in": "_load_httpx",
+              "kind": "except",
+              "line": 76
+            },
+            {
+              "in": "post_tool",
+              "kind": "except",
+              "line": 108
+            },
+            {
+              "in": "post_tool",
+              "kind": "except",
+              "line": 110
+            },
+            {
+              "in": "post_tool",
+              "kind": "except",
+              "line": 121
+            },
+            {
+              "in": "map_scan_result",
+              "kind": "except",
+              "line": 133
+            },
+            {
+              "in": "map_scan_result",
+              "kind": "except",
+              "line": 140
+            }
           ],
           "hash": "ce3d063f1e2c693c8736a76ac7fe24650e2b07d50372aea5e1fe23692fe121a8",
           "importsFiles": [
@@ -1075,6 +1677,28 @@
           "path": "src/mcp_stress_test/scanners/mock.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "scan",
+              "kind": "except",
+              "line": 79
+            },
+            {
+              "in": "scan",
+              "kind": "except",
+              "line": 83
+            },
+            {
+              "in": "_parse_output",
+              "kind": "except",
+              "line": 130
+            },
+            {
+              "in": "is_available",
+              "kind": "except",
+              "line": 200
+            }
+          ],
           "hash": "295dc5a02c220e93c941f62b78ad46d25f11647b953b60d333399d87d32cc23b",
           "importsFiles": [
             "src/mcp_stress_test/core/protocols.py",
@@ -1092,6 +1716,23 @@
           "path": "src/mcp_stress_test/servers/__init__.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "handle_tool_call",
+              "kind": "except",
+              "line": 419
+            },
+            {
+              "in": "run_stdio",
+              "kind": "except",
+              "line": 591
+            },
+            {
+              "in": "run_stdio",
+              "kind": "except",
+              "line": 607
+            }
+          ],
           "hash": "cebc7b9acc4a6ba9f1c9adfc62035b912204e98adf71227fb3039867bf901a0a",
           "importsFiles": [
             "src/mcp_stress_test/models.py"
@@ -1101,6 +1742,13 @@
         {
           "exports": [
             "create_server"
+          ],
+          "failurePaths": [
+            {
+              "in": "create_server",
+              "kind": "raise",
+              "line": 856
+            }
           ],
           "hash": "43fa3c730d5b7391bae177117b5fe0b15ca2ede217a0713879b1dec857ee1d9c",
           "importsFiles": [
@@ -1140,6 +1788,9 @@
       "outsideReads": 21,
       "outsideWrites": 12,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 9,
       "unresolvedSites": 0
     },
@@ -1172,7 +1823,8 @@
             "src/mcp_stress_test/__init__.py",
             "src/mcp_stress_test/cli_legacy.py"
           ],
-          "path": "tests/test_cli.py"
+          "path": "tests/test_cli.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1194,7 +1846,8 @@
             "src/mcp_stress_test/generator/strategies.py",
             "src/mcp_stress_test/models.py"
           ],
-          "path": "tests/test_generator.py"
+          "path": "tests/test_generator.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "eacc8337e722d161954f64970a79362c9c323b48baba8640ad7f1b58a41a3a60",
@@ -1241,7 +1894,8 @@
             "src/mcp_stress_test/reporters/sarif_reporter.py",
             "src/mcp_stress_test/scanners/mock.py"
           ],
-          "path": "tests/test_new_features.py"
+          "path": "tests/test_new_features.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1254,6 +1908,7 @@
             "src/mcp_stress_test/core/protocols.py",
             "src/mcp_stress_test/models.py",
             "src/mcp_stress_test/fuzzing/__init__.py",
+            "src/mcp_stress_test/fuzzing/llm_fuzzer.py",
             "src/mcp_stress_test/cli_legacy.py",
             "src/mcp_stress_test/cli/commands/report.py",
             "src/mcp_stress_test/reporters/json_reporter.py",
@@ -1272,13 +1927,15 @@
             "src/mcp_stress_test/cli_legacy.py",
             "src/mcp_stress_test/core/protocols.py",
             "src/mcp_stress_test/fuzzing/__init__.py",
+            "src/mcp_stress_test/fuzzing/llm_fuzzer.py",
             "src/mcp_stress_test/generator/__init__.py",
             "src/mcp_stress_test/models.py",
             "src/mcp_stress_test/patterns/__init__.py",
             "src/mcp_stress_test/reporters/json_reporter.py",
             "src/mcp_stress_test/scanners/mock.py"
           ],
-          "path": "tests/test_operator_contract.py"
+          "path": "tests/test_operator_contract.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "f3396491fa474be888d35e3d6fd323f670a63438bc28c74a32b173c7d7f2fd7b",
@@ -1287,7 +1944,8 @@
             "src/mcp_stress_test/patterns/__init__.py",
             "src/mcp_stress_test/patterns/payloads.py"
           ],
-          "path": "tests/test_patterns.py"
+          "path": "tests/test_patterns.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1319,7 +1977,8 @@
             "src/mcp_stress_test/scanner/checkpoint.py",
             "src/mcp_stress_test/scanner/runner.py"
           ],
-          "path": "tests/test_scanner.py"
+          "path": "tests/test_scanner.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -1334,7 +1993,8 @@
             "src/mcp_stress_test/scanners/cli_adapter.py",
             "src/mcp_stress_test/scanners/tool_scan.py"
           ],
-          "path": "tests/test_scanner_adapters.py"
+          "path": "tests/test_scanner_adapters.py",
+          "testFramework": "pytest"
         },
         {
           "hash": "f192581e27a341ce75d7f079a02242acb255ed9185ba96b00191451d7d09a28d",
@@ -1352,7 +2012,8 @@
             "src/mcp_stress_test/servers/domains.py",
             "src/mcp_stress_test/servers/farm.py"
           ],
-          "path": "tests/test_servers.py"
+          "path": "tests/test_servers.py",
+          "testFramework": "pytest"
         }
       ],
       "globs": [
@@ -1362,6 +2023,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 0,
       "unresolvedNamed": [
         {
@@ -1466,7 +2130,10 @@
       "landings": [],
       "mentions": [],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -1523,6 +2190,25 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "pyproject.toml",
+          "coverage": true,
+          "files": 11,
+          "job": "test",
+          "junit": true,
+          "runner": "pytest",
+          "step": "Run tests"
+        },
+        {
+          "job": "test",
+          "ran": [
+            "src/mcp_stress_test/cli/__init__.py"
+          ],
+          "runner": null,
+          "step": "Test CLI"
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -1538,6 +2224,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "pyproject.toml",
             "site/astro.config.mjs",
             "site/package-lock.json",
@@ -1552,8 +2239,11 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
-        "actions/setup-python"
+        "actions/setup-python",
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -1911,6 +2601,32 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "pyproject.toml",
+          "coverage": true,
+          "files": 11,
+          "job": "test",
+          "runner": "pytest",
+          "step": "Run tests"
+        },
+        {
+          "job": "package-smoke",
+          "ran": [
+            "src/mcp_stress_test/cli/__init__.py"
+          ],
+          "runner": null,
+          "step": "Smoke-test wheel"
+        },
+        {
+          "job": "package-smoke",
+          "ran": [
+            "src/mcp_stress_test/cli/__init__.py"
+          ],
+          "runner": null,
+          "step": "Smoke-test sdist"
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -1986,10 +2702,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
-    "commit": "a8a79e8ac1f94d79173271b443e304d501a8bf24",
-    "tracked": 135
+    "commit": "b6c6103d12166ac95a1ef0b4f81c991ba351d8dc",
+    "tracked": 136
   },
   "landings": [
     {

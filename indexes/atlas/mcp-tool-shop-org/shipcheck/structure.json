@@ -304,6 +304,113 @@
             "scanTextForSecrets",
             "summarizeFrontDoor"
           ],
+          "failurePaths": [
+            {
+              "in": "detectTypes",
+              "kind": "catch",
+              "line": 75
+            },
+            {
+              "in": "detectTypes",
+              "kind": "catch",
+              "line": 91
+            },
+            {
+              "in": "initCommand",
+              "kind": "catch",
+              "line": 143
+            },
+            {
+              "in": "runFrontDoorGate",
+              "kind": "catch",
+              "line": 431
+            },
+            {
+              "in": "runFrontDoorGate",
+              "kind": "catch",
+              "line": 452
+            },
+            {
+              "in": "readJsonSafe",
+              "kind": "catch",
+              "line": 543
+            },
+            {
+              "in": "expandWorkspaceGlob",
+              "kind": "catch",
+              "line": 556
+            },
+            {
+              "in": "runPublishGate",
+              "kind": "catch",
+              "line": 642
+            },
+            {
+              "in": "defaultSecretFileReader",
+              "kind": "catch",
+              "line": 789
+            },
+            {
+              "in": "runSecretsGate",
+              "kind": "catch",
+              "line": 809
+            },
+            {
+              "in": "defaultReadPyproject",
+              "kind": "catch",
+              "line": 925
+            },
+            {
+              "in": "defaultListTags",
+              "kind": "catch",
+              "line": 938
+            },
+            {
+              "in": "defaultDocReader",
+              "kind": "catch",
+              "line": 1111
+            },
+            {
+              "in": "defaultReadWorkflows",
+              "kind": "catch",
+              "line": 1240
+            },
+            {
+              "in": "defaultReadWorkflows",
+              "kind": "catch",
+              "line": 1243
+            },
+            {
+              "in": "checkProvenancePublished",
+              "kind": "catch",
+              "line": 1277
+            },
+            {
+              "in": "walk",
+              "kind": "catch",
+              "line": 1408
+            },
+            {
+              "in": "defaultAuditRunner",
+              "kind": "catch",
+              "line": 1423
+            },
+            {
+              "in": "defaultAuditRunner",
+              "kind": "catch",
+              "line": 1426
+            },
+            {
+              "in": "defaultAlertsChecker",
+              "kind": "catch",
+              "line": 1439
+            },
+            {
+              "in": "parseGitRemote",
+              "kind": "catch",
+              "line": 1449
+            }
+          ],
           "hash": "c50675f7fe91d51396c726f3ed77a23913ee19b3bdc3ce233d64f9536b2a2597",
           "path": "bin/shipcheck.mjs",
           "sequences": []
@@ -446,6 +553,9 @@
       "outsideReads": 50,
       "outsideWrites": 4,
       "role": "code",
+      "testRunners": [
+        "node --test"
+      ],
       "testedBy": 3,
       "unresolvedSites": 0
     },
@@ -747,18 +857,30 @@
           "importsFiles": [
             "bin/shipcheck.mjs"
           ],
-          "path": "test/front-door.test.mjs"
+          "path": "test/front-door.test.mjs",
+          "spawns": [
+            "bin/shipcheck.mjs"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "576f7c80cb4c596afa09bb499552296430ae18267bb7a98ebe8713277ffae8e3",
           "importsFiles": [
             "bin/shipcheck.mjs"
           ],
-          "path": "test/shipcheck.test.mjs"
+          "path": "test/shipcheck.test.mjs",
+          "spawns": [
+            "bin/shipcheck.mjs"
+          ],
+          "testFramework": "node --test"
         },
         {
           "hash": "581e26dc9351b0ad1b568e56f8903fd58090174d724d51abf7033e23f906efc9",
-          "path": "test/version.test.mjs"
+          "path": "test/version.test.mjs",
+          "spawns": [
+            "bin/shipcheck.mjs"
+          ],
+          "testFramework": "node --test"
         }
       ],
       "globs": [
@@ -768,6 +890,9 @@
       "name": "test",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "node --test"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -962,6 +1087,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 3,
+          "job": "verify",
+          "runner": "node --test",
+          "step": "3",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -1226,6 +1362,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 3,
+          "job": "publish",
+          "runner": "node --test",
+          "step": "Test",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -1445,7 +1592,7 @@
       "to": "bin"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "838720f99155a0c6e0be6baa92dd87e1504abdb4",
     "tracked": 101

@@ -48,7 +48,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "8d2c2f36048eeb4289c54c92e4423a7c4ef50bb9a4413181ea031d76ba37b237",
+          "hash": "99abac147207ce3e8509a80eaf13e9827cf0b5243c2eec8447727dadf2a70f33",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -137,6 +137,10 @@
         {
           "hash": "c16a9dc71549e5ad1cd55798e58958f572b8cea74bbcf7ffe607d99ea2b2b823",
           "path": "TEST-PLAN.md"
+        },
+        {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
         },
         {
           "hash": "2008eafed356a06e31989203e7f111685534c78b01be7501fe2f51d35189963e",
@@ -275,6 +279,48 @@
           "entryRule": 3,
           "exports": [
             "apply"
+          ],
+          "failurePaths": [
+            {
+              "in": "apply",
+              "kind": "catch",
+              "line": 47
+            },
+            {
+              "in": "createIssue",
+              "kind": "throw",
+              "line": 127
+            },
+            {
+              "in": "createIssue",
+              "kind": "throw",
+              "line": 136
+            },
+            {
+              "in": "createWorkflowPR",
+              "kind": "throw",
+              "line": 203
+            },
+            {
+              "in": "createWorkflowPR",
+              "kind": "throw",
+              "line": 210
+            },
+            {
+              "in": "createWorkflowPR",
+              "kind": "throw",
+              "line": 232
+            },
+            {
+              "in": "createWorkflowPR",
+              "kind": "throw",
+              "line": 259
+            },
+            {
+              "in": "createWorkflowPR",
+              "kind": "throw",
+              "line": 286
+            }
           ],
           "hash": "c0e83a28eed10005f07e696aab3ba749ac3afdbda8e1c82578fa19833916fe01",
           "importsFiles": [
@@ -429,6 +475,18 @@
           "exports": [
             "getGitHubToken"
           ],
+          "failurePaths": [
+            {
+              "in": "getGitHubToken",
+              "kind": "catch",
+              "line": 26
+            },
+            {
+              "in": "getGitHubToken",
+              "kind": "throw",
+              "line": 30
+            }
+          ],
           "hash": "cf17a25e3e65c622da04674f0f414b82bfec55a1a38d26ec27e3d2d4bcd565bc",
           "importsFiles": [
             "src/errors.ts"
@@ -442,6 +500,43 @@
             "loadAuditFromFile",
             "main",
             "parseArgs"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadAuditFromFile",
+              "kind": "throw",
+              "line": 126
+            },
+            {
+              "in": "loadAuditFromFile",
+              "kind": "catch",
+              "line": 133
+            },
+            {
+              "in": "loadAuditFromFile",
+              "kind": "throw",
+              "line": 134
+            },
+            {
+              "in": "loadAuditFromFile",
+              "kind": "throw",
+              "line": 135
+            },
+            {
+              "in": "runApply",
+              "kind": "throw",
+              "line": 280
+            },
+            {
+              "in": "printVersion",
+              "kind": "catch",
+              "line": 395
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 439
+            }
           ],
           "hash": "a2eb9ed8c053419b36f87fccf2de0aefdc8d61e231b292fa74a90bcabd422cb1",
           "importsFiles": [
@@ -1024,6 +1119,18 @@
             "loadConfig",
             "starterConfig"
           ],
+          "failurePaths": [
+            {
+              "in": "loadConfig",
+              "kind": "catch",
+              "line": 37
+            },
+            {
+              "in": "loadConfig",
+              "kind": "throw",
+              "line": 38
+            }
+          ],
           "hash": "7ff6b453ae3f26caf172ebfa1dda6a57efa913d16d1aeb978f50e0b6b7ad79f3",
           "importOrder": [
             "src/types.ts",
@@ -1061,6 +1168,38 @@
             "fetchGitHubPaginated",
             "fetchNpm",
             "pLimit"
+          ],
+          "failurePaths": [
+            {
+              "in": "fetchGitHub",
+              "kind": "catch",
+              "line": 67
+            },
+            {
+              "in": "fetchGitHub",
+              "kind": "throw",
+              "line": 82
+            },
+            {
+              "in": "fetchGitHub",
+              "kind": "throw",
+              "line": 105
+            },
+            {
+              "in": "fetchGitHubPaginated",
+              "kind": "throw",
+              "line": 128
+            },
+            {
+              "in": "fetchNpm",
+              "kind": "catch",
+              "line": 163
+            },
+            {
+              "in": "fetchNpm",
+              "kind": "throw",
+              "line": 184
+            }
           ],
           "hash": "4963db76a1004e0279380d0d3c23c47f10651f537cbf79af97306e2517f59a28",
           "importOrder": [
@@ -1164,6 +1303,13 @@
             "getGhcrPackage",
             "listGhcrPackages"
           ],
+          "failurePaths": [
+            {
+              "in": "listGhcrPackages",
+              "kind": "catch",
+              "line": 34
+            }
+          ],
           "hash": "21d7725d85fd723934abecb4718ca6302a0e94d595eb7e57596954d847dc4619",
           "importsFiles": [
             "src/fetch.ts",
@@ -1177,6 +1323,13 @@
             "listOrgRepos",
             "readFileContent",
             "readPackageJson"
+          ],
+          "failurePaths": [
+            {
+              "in": "readPackageJson",
+              "kind": "catch",
+              "line": 76
+            }
           ],
           "hash": "20dfcac01bf3f057fc60972663a7d7a9f50ec867dab24649a57cc00601b38264",
           "importsFiles": [
@@ -1249,6 +1402,9 @@
       "outsideReads": 7,
       "outsideWrites": 4,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 16,
       "unresolvedSites": 0
     },
@@ -1298,7 +1454,8 @@
             "src/fetch.ts",
             "src/types.ts"
           ],
-          "path": "test/apply.test.ts"
+          "path": "test/apply.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "323d3034c99e5a012116b33b711ac7443a0ad440c342b5fd9e26d5abb4dc07ce",
@@ -1316,14 +1473,16 @@
             "src/providers/npm.ts",
             "src/types.ts"
           ],
-          "path": "test/audit.test.ts"
+          "path": "test/audit.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c2b3ac6dd0f410ef5003ed0107782a783bbe8698f3a3b5bb5aac40495db21652",
           "importsFiles": [
             "src/auth.ts"
           ],
-          "path": "test/auth.test.ts"
+          "path": "test/auth.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d10ca1ac3368614c4f4e5fa5723fd131081ad15492d57a81fab398ea758fa5e2",
@@ -1339,21 +1498,24 @@
             "src/errors.ts",
             "src/types.ts"
           ],
-          "path": "test/cli-commands.test.ts"
+          "path": "test/cli-commands.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7b4e6bd598aeb80b878a1cc755249e086cdcdf46214b136583447fe59a96b70a",
           "importsFiles": [
             "src/cli.ts"
           ],
-          "path": "test/cli.test.ts"
+          "path": "test/cli.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "26b9c0cb2a605232bdd78e5816ec787b554cb3041e5db8268b18e110c044d86e",
           "importsFiles": [
             "src/config.ts"
           ],
-          "path": "test/config.test.ts"
+          "path": "test/config.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "193845d6b3074ee6cba8fc3a3f92844b2c728f5f04114de642668078abf5b91e",
@@ -1361,21 +1523,24 @@
             "src/diff.ts",
             "src/types.ts"
           ],
-          "path": "test/diff.test.ts"
+          "path": "test/diff.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c8f03faaa45ba44051c8822d99a8fc59e0a521ca1ffabb51259bf27dcaebe6fc",
           "importsFiles": [
             "src/errors.ts"
           ],
-          "path": "test/errors.test.ts"
+          "path": "test/errors.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f341ee511b6802e8e9c06197b01be043d70bf7e7dfa20a88bd9b769339a265e7",
           "importsFiles": [
             "src/fetch.ts"
           ],
-          "path": "test/fetch.test.ts"
+          "path": "test/fetch.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ef89cafbd16fc2346941e1c74c2583e8e7dbf810e8f424e26516e72957112e8f",
@@ -1383,7 +1548,8 @@
             "src/format/diff.ts",
             "src/types.ts"
           ],
-          "path": "test/format-diff.test.ts"
+          "path": "test/format-diff.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7e476d8d1c4cfe2c7a3d7aa08a54ceaf6bf043635d8361cda324b1635be412e3",
@@ -1399,7 +1565,8 @@
             "src/format/table.ts",
             "src/types.ts"
           ],
-          "path": "test/format.test.ts"
+          "path": "test/format.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e2d5098d55b2dc5d975690b710e43874cd95ca157eab251584aad0e735f62e57",
@@ -1407,7 +1574,8 @@
             "src/plan.ts",
             "src/types.ts"
           ],
-          "path": "test/plan.test.ts"
+          "path": "test/plan.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "69ccbb33822b3c1de6fce2bac49f810349a011336ef4be0af65215512f74deb9",
@@ -1419,7 +1587,8 @@
             "src/fetch.ts",
             "src/providers/ghcr.ts"
           ],
-          "path": "test/providers/ghcr.test.ts"
+          "path": "test/providers/ghcr.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "05f84c977115670abc23bba673cab4b3ad9ce382eca9a71fca631fae8a878978",
@@ -1431,25 +1600,29 @@
             "src/fetch.ts",
             "src/providers/github.ts"
           ],
-          "path": "test/providers/github.test.ts"
+          "path": "test/providers/github.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d2c162dc326c43763e62059e78e605d6d984b0e929ea93d8728feebd7981df6d",
           "importsFiles": [
             "src/providers/npm.ts"
           ],
-          "path": "test/providers/npm.test.ts"
+          "path": "test/providers/npm.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6df2a4abdc0977c8875c3d333b7679dd6342ccb5ac854367ced35366ebd04047",
           "importsFiles": [
             "src/semver.ts"
           ],
-          "path": "test/semver.test.ts"
+          "path": "test/semver.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0de2fd987f594b99aa3c6574f0278cc4183d63f0af7626fbe22e60d84fafaf83",
-          "path": "test/version.test.ts"
+          "path": "test/version.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -1459,6 +1632,9 @@
       "name": "test",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -1500,21 +1676,21 @@
           "programs": [
             "node"
           ],
-          "step": "6"
-        },
-        {
-          "job": "test",
-          "programs": [
-            "npm"
-          ],
-          "step": "7"
-        },
-        {
-          "job": "test",
-          "programs": [
-            "npm"
-          ],
           "step": "8"
+        },
+        {
+          "job": "test",
+          "programs": [
+            "npm"
+          ],
+          "step": "9"
+        },
+        {
+          "job": "test",
+          "programs": [
+            "npm"
+          ],
+          "step": "10"
         }
       ],
       "elsewhere": [],
@@ -1522,7 +1698,10 @@
       "landings": [],
       "mentions": [],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "programs": [
         "gh"
       ],
@@ -1575,6 +1754,20 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "coverage": true,
+          "files": 17,
+          "job": "test",
+          "junit": true,
+          "runner": "vitest",
+          "step": "5",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -1584,6 +1777,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "src/**",
@@ -1599,6 +1793,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "src/**",
@@ -1612,7 +1807,10 @@
       ],
       "uses": [
         "actions/checkout",
-        "actions/setup-node"
+        "actions/download-artifact",
+        "actions/setup-node",
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -1801,6 +1999,19 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "coverage": true,
+          "files": 17,
+          "job": "publish",
+          "runner": "vitest",
+          "step": "4",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -1916,10 +2127,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
-    "commit": "b7d57d35f9141242642e60ff20069ab04e443ac4",
-    "tracked": 82
+    "commit": "779aa9a2e955b49fb0fc2ddcc046d88b31dcab17",
+    "tracked": 83
   },
   "landings": [
     {

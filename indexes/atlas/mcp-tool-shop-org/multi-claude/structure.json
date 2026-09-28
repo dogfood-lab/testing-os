@@ -240,7 +240,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "65a8203e3fc55e6917837098e7c29d293ebd8d3239dfe1401b2bde63edbc368e",
+          "hash": "a64368624633c19bcb060ca4bbebd5b858c28f82c286904168fefea7ffb897af",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -583,6 +583,13 @@
           "exports": [
             "useActions"
           ],
+          "failurePaths": [
+            {
+              "in": "useActions",
+              "kind": "catch",
+              "line": 51
+            }
+          ],
           "hash": "b8056c9666563bf91978eda3e69a24b58d17d3e69b856c66f35410196d0f7343",
           "importsFiles": [
             "apps/control-plane-monitor/src/lib/api/command-client.ts",
@@ -596,12 +603,31 @@
             "timeAgo",
             "useApi"
           ],
+          "failurePaths": [
+            {
+              "in": "useApi",
+              "kind": "throw",
+              "line": 20
+            },
+            {
+              "in": "useApi",
+              "kind": "catch",
+              "line": 25
+            }
+          ],
           "hash": "32b53e23a06797523ee579e4c2798211ba08da832ef90996e829b1cb5c35e8ba",
           "path": "apps/control-plane-monitor/src/hooks/useApi.ts"
         },
         {
           "exports": [
             "useDecision"
+          ],
+          "failurePaths": [
+            {
+              "in": "useDecision",
+              "kind": "catch",
+              "line": 51
+            }
           ],
           "hash": "1121ed658c665fee736a7159a30bda1715d529edc9bc38e408e7d19b5500c4db",
           "importsFiles": [
@@ -995,6 +1021,10 @@
           "path": "WHEN-TO-USE-MULTI-CLAUDE.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "b19951c4f25270958da155ac5db4d66fe6192fa39fbc666a51c1487e8663b835",
           "path": "package-lock.json"
         },
@@ -1143,6 +1173,53 @@
             "autoCommand",
             "cleanupWorktree"
           ],
+          "failurePaths": [
+            {
+              "in": "createWorktree",
+              "kind": "catch",
+              "line": 193
+            },
+            {
+              "in": "createWorktree",
+              "kind": "catch",
+              "line": 195
+            },
+            {
+              "in": "cleanupWorktree",
+              "kind": "catch",
+              "line": 206
+            },
+            {
+              "in": "cleanupWorktree",
+              "kind": "catch",
+              "line": 207
+            },
+            {
+              "in": "verifyWorkerOutput",
+              "kind": "catch",
+              "line": 263
+            },
+            {
+              "in": "verifyWorkerOutput",
+              "kind": "catch",
+              "line": 282
+            },
+            {
+              "in": "executeAutoRun",
+              "kind": "catch",
+              "line": 524
+            },
+            {
+              "in": "executeAutoRun",
+              "kind": "catch",
+              "line": 709
+            },
+            {
+              "in": "resumeAutoRun",
+              "kind": "catch",
+              "line": 798
+            }
+          ],
           "hash": "ae7c7830c1f138b82e95383c88e2b0362dfae771534b6aa121805e61a1b9430a",
           "importOrder": [
             "src/db/connection.ts",
@@ -1200,6 +1277,28 @@
           "exports": [
             "blueprintCommand"
           ],
+          "failurePaths": [
+            {
+              "in": "blueprintCommand",
+              "kind": "catch",
+              "line": 34
+            },
+            {
+              "in": "blueprintCommand",
+              "kind": "catch",
+              "line": 52
+            },
+            {
+              "in": "blueprintCommand",
+              "kind": "catch",
+              "line": 70
+            },
+            {
+              "in": "blueprintCommand",
+              "kind": "catch",
+              "line": 88
+            }
+          ],
           "hash": "ecde6f0d5afa6762a6b0f65c1c7aff627847380c715dba7a02e0dc77dd583f44",
           "importsFiles": [
             "src/planner/freeze.ts"
@@ -1213,6 +1312,18 @@
             "progressCommand",
             "runClaim",
             "runProgress"
+          ],
+          "failurePaths": [
+            {
+              "in": "runClaim",
+              "kind": "catch",
+              "line": 146
+            },
+            {
+              "in": "runClaim",
+              "kind": "catch",
+              "line": 153
+            }
           ],
           "hash": "4bce0832a827be1c44cd4a3413b1e6cd07eb0af9a7159c47260b0beb7d0c645b",
           "importOrder": [
@@ -1241,6 +1352,13 @@
             "renderActionResult",
             "renderActions",
             "renderAuditTrail"
+          ],
+          "failurePaths": [
+            {
+              "in": "formatAuditTimestamp",
+              "kind": "catch",
+              "line": 148
+            }
           ],
           "hash": "6f4b42b217d13391f24573e7577a8e5333873e80bb2c424f80c3f9fafb0fb504",
           "importOrder": [
@@ -1286,6 +1404,13 @@
         {
           "exports": [
             "exportSubcommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "resolveExportModel",
+              "kind": "catch",
+              "line": 32
+            }
           ],
           "hash": "ec2d28adbdc9847052d815bdc88a3e6d21c8469f69148eaadb2794950a2fc386",
           "importOrder": [
@@ -1481,6 +1606,28 @@
             "runPacketCreate",
             "runPacketReady"
           ],
+          "failurePaths": [
+            {
+              "in": "runPacketReady",
+              "kind": "throw",
+              "line": 211
+            },
+            {
+              "in": "runPacketReady",
+              "kind": "throw",
+              "line": 212
+            },
+            {
+              "in": "runPacketReady",
+              "kind": "catch",
+              "line": 255
+            },
+            {
+              "in": "runPacketReady",
+              "kind": "throw",
+              "line": 264
+            }
+          ],
           "hash": "f1d29c86874e63315367783949a961e71f01fc020fa7ce776154d74f4141119c",
           "importsFiles": [
             "src/db/connection.ts",
@@ -1493,6 +1640,28 @@
         {
           "exports": [
             "planCommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "planCommand",
+              "kind": "catch",
+              "line": 33
+            },
+            {
+              "in": "planCommand",
+              "kind": "catch",
+              "line": 48
+            },
+            {
+              "in": "planCommand",
+              "kind": "catch",
+              "line": 67
+            },
+            {
+              "in": "planCommand",
+              "kind": "catch",
+              "line": 85
+            }
           ],
           "hash": "c04f1da47ebe56dea6a667ceb17756d3051ba43af26886d932d417f07fe6a92d",
           "importOrder": [
@@ -1523,6 +1692,18 @@
           "exports": [
             "renderCommand",
             "runRender"
+          ],
+          "failurePaths": [
+            {
+              "in": "runRender",
+              "kind": "catch",
+              "line": 82
+            },
+            {
+              "in": "runRender",
+              "kind": "catch",
+              "line": 88
+            }
           ],
           "hash": "48403035cfe4b0cec08209fe82a021182690b0f101515607a9aba74d33226243",
           "importsFiles": [
@@ -1581,6 +1762,13 @@
           "exports": [
             "runVerify",
             "verifyCommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "runVerify",
+              "kind": "catch",
+              "line": 82
+            }
           ],
           "hash": "513f0f91662e2bce832fd7c06a65115a1458474bfede79f906c1d62a92bf37ea",
           "importsFiles": [
@@ -1644,6 +1832,13 @@
             "checkApprovalStatus",
             "executeApprove",
             "executeReject"
+          ],
+          "failurePaths": [
+            {
+              "in": "trySpineResolution",
+              "kind": "catch",
+              "line": 294
+            }
           ],
           "hash": "2bc9eaf7e970b8b6337506b0b700b4cdd94c28e27378df32010033b4c390ac00",
           "importOrder": [
@@ -1803,6 +1998,18 @@
             "queryFitnessView",
             "queryPacketMaturation"
           ],
+          "failurePaths": [
+            {
+              "in": "parsePenalties",
+              "kind": "catch",
+              "line": 86
+            },
+            {
+              "in": "safeJsonParse",
+              "kind": "catch",
+              "line": 99
+            }
+          ],
           "hash": "718a0a8f615e4dffc998bdc3229dec455473333df9782bacdd4bed42522a549e",
           "importsFiles": [
             "src/db/connection.ts",
@@ -1836,6 +2043,13 @@
             "queryHookFeed",
             "queryPacketDecisionTrail",
             "queryPendingApprovals"
+          ],
+          "failurePaths": [
+            {
+              "in": "parseJson",
+              "kind": "catch",
+              "line": 88
+            }
           ],
           "hash": "3566f9c65485c314cada3bb97ce64b919681d109d9152e78cc430a8b6a2291ed",
           "importsFiles": [
@@ -1956,6 +2170,13 @@
             "renderRunOverview",
             "renderWorkerSessions"
           ],
+          "failurePaths": [
+            {
+              "in": "formatTimestamp",
+              "kind": "catch",
+              "line": 61
+            }
+          ],
           "hash": "d2475fa99a2d874daa37eb844e956bf98a8bd2cb1f9928641122b83fab9f93f3",
           "importOrder": [
             "src/console/run-model.ts",
@@ -2012,6 +2233,13 @@
             "queryWorkerSessions",
             "queryWorkerSessionsWithDb"
           ],
+          "failurePaths": [
+            {
+              "in": "queryRunModelWithDb",
+              "kind": "catch",
+              "line": 251
+            }
+          ],
           "hash": "7b7ce0e2ed2014fd08fed0b4d3349d9f7faacc9868e7966e21a431b969f2aa4d",
           "importsFiles": [
             "src/db/connection.ts",
@@ -2063,6 +2291,13 @@
         {
           "exports": [
             "scoreRun"
+          ],
+          "failurePaths": [
+            {
+              "in": "scoreRun",
+              "kind": "catch",
+              "line": 89
+            }
           ],
           "hash": "5335421a3f6c9fa39389d6beaeacbd3349e69c56c87d1c4476c677afacf4666b",
           "importOrder": [
@@ -2436,6 +2671,13 @@
             "resolveLastValidHandoff",
             "resolveLastValidHandoffForPacket"
           ],
+          "failurePaths": [
+            {
+              "in": "findHandoffBySourcePacket",
+              "kind": "catch",
+              "line": 141
+            }
+          ],
           "hash": "d1f1ec9470280d36af25ecf6692f499a3009428aa3f46258951db3fd9c386238",
           "importOrder": [
             "src/handoff/store/handoff-store.ts",
@@ -2508,6 +2750,18 @@
         {
           "exports": [
             "bridgeExecutionPacket"
+          ],
+          "failurePaths": [
+            {
+              "in": "safeParseArray",
+              "kind": "catch",
+              "line": 298
+            },
+            {
+              "in": "safeParseRecord",
+              "kind": "catch",
+              "line": 303
+            }
           ],
           "hash": "b6b80b811f7a283981c0d16285a4df71b99b2ef820348ba99738e0ae13eba4ca",
           "importOrder": [
@@ -2953,6 +3207,23 @@
           "exports": [
             "handoffDeferCommand"
           ],
+          "failurePaths": [
+            {
+              "in": "resolveTime",
+              "kind": "throw",
+              "line": 65
+            },
+            {
+              "in": "resolveTime",
+              "kind": "throw",
+              "line": 70
+            },
+            {
+              "in": "resolveTime",
+              "kind": "throw",
+              "line": 77
+            }
+          ],
           "hash": "4715cd5d6eb4e97015cf78055ab4ad0d32b30d28298f88c6235febbf828b9267",
           "importOrder": [
             "src/db/connection.ts",
@@ -3196,6 +3467,23 @@
             "handoffPolicyShowCommand",
             "handoffPolicySimulateCommand",
             "handoffPolicyValidateCommand"
+          ],
+          "failurePaths": [
+            {
+              "in": "handoffPolicyValidateCommand",
+              "kind": "catch",
+              "line": 164
+            },
+            {
+              "in": "handoffPolicySimulateCommand",
+              "kind": "catch",
+              "line": 261
+            },
+            {
+              "in": "handoffPolicyCreateCommand",
+              "kind": "catch",
+              "line": 398
+            }
           ],
           "hash": "64c09b68e1577a5d3308717f76c478b2e44b3a6858e13305c2f71b8c0d974dfa",
           "importOrder": [
@@ -4569,6 +4857,13 @@
           "exports": [
             "evaluateConditions"
           ],
+          "failurePaths": [
+            {
+              "in": "evaluateConditions",
+              "kind": "catch",
+              "line": 73
+            }
+          ],
           "hash": "31e0110a10e33cbc0258de2295506007749dcb13e4c3f0a89bc2e3d0b1035dfa",
           "importsFiles": [
             "src/db/connection.ts"
@@ -4581,6 +4876,23 @@
             "getRecentDecisions",
             "processHookEvent",
             "resolveDecision"
+          ],
+          "failurePaths": [
+            {
+              "in": "processHookEvent",
+              "kind": "catch",
+              "line": 78
+            },
+            {
+              "in": "getRecentDecisions",
+              "kind": "catch",
+              "line": 135
+            },
+            {
+              "in": "resolveDecision",
+              "kind": "catch",
+              "line": 151
+            }
           ],
           "hash": "deecc371ede442c2158de16ab34bbb1565e7eec8d958d572327f325132c8179e",
           "importOrder": [
@@ -5010,6 +5322,68 @@
             "createMonitorServer",
             "startMonitorServer"
           ],
+          "failurePaths": [
+            {
+              "in": "createMonitorServer",
+              "kind": "catch",
+              "line": 101
+            },
+            {
+              "in": "createMonitorServer",
+              "kind": "catch",
+              "line": 122
+            },
+            {
+              "in": "createMonitorServer",
+              "kind": "catch",
+              "line": 136
+            },
+            {
+              "in": "createMonitorServer",
+              "kind": "catch",
+              "line": 146
+            },
+            {
+              "in": "createMonitorServer",
+              "kind": "catch",
+              "line": 161
+            },
+            {
+              "in": "createMonitorServer",
+              "kind": "catch",
+              "line": 177
+            },
+            {
+              "in": "createMonitorServer",
+              "kind": "catch",
+              "line": 194
+            },
+            {
+              "in": "createMonitorServer",
+              "kind": "catch",
+              "line": 209
+            },
+            {
+              "in": "createMonitorServer",
+              "kind": "catch",
+              "line": 224
+            },
+            {
+              "in": "createMonitorServer",
+              "kind": "catch",
+              "line": 239
+            },
+            {
+              "in": "createMonitorServer",
+              "kind": "catch",
+              "line": 254
+            },
+            {
+              "in": "createMonitorServer",
+              "kind": "catch",
+              "line": 272
+            }
+          ],
           "hash": "8782d99f178649d9def0821dc52974f051f9752c08400c5a394c7a31bf8da19e",
           "importOrder": [
             "src/db/connection.ts",
@@ -5090,6 +5464,23 @@
             "renderContractFreeze",
             "validateBlueprint"
           ],
+          "failurePaths": [
+            {
+              "in": "initBlueprint",
+              "kind": "throw",
+              "line": 34
+            },
+            {
+              "in": "initBlueprint",
+              "kind": "throw",
+              "line": 39
+            },
+            {
+              "in": "freezeBlueprint",
+              "kind": "throw",
+              "line": 183
+            }
+          ],
           "hash": "e3819e54edb17a866ea660bf1c7923fa86cee8fc93ff12cfe15820182838ee5e",
           "importOrder": [
             "src/planner/schema.ts",
@@ -5130,6 +5521,18 @@
             "freezePlan",
             "overridePlan"
           ],
+          "failurePaths": [
+            {
+              "in": "overridePlan",
+              "kind": "throw",
+              "line": 45
+            },
+            {
+              "in": "freezePlan",
+              "kind": "throw",
+              "line": 53
+            }
+          ],
           "hash": "a0b6a023a36542b79533f91bd8548f6ea3fa3625a4ff7ac3a08116541f1ff636",
           "importOrder": [
             "src/planner/rules.ts",
@@ -5166,6 +5569,18 @@
             "cleanupOrphanWorktrees",
             "cleanupWorkerArtifacts"
           ],
+          "failurePaths": [
+            {
+              "in": "cleanupWorkerArtifacts",
+              "kind": "catch",
+              "line": 28
+            },
+            {
+              "in": "cleanupWorkerArtifacts",
+              "kind": "catch",
+              "line": 32
+            }
+          ],
           "hash": "958f342d8370cddc7d5b99bff1a1dd487def62d23c93743c3e072086856925e1",
           "importOrder": [
             "src/runtime/types.ts",
@@ -5184,6 +5599,13 @@
             "createEnvelope",
             "getEnvelopes"
           ],
+          "failurePaths": [
+            {
+              "in": "completeEnvelopeOnExit",
+              "kind": "catch",
+              "line": 135
+            }
+          ],
           "hash": "0885ee87703a0205ad8a96895a77771408dcb81b0c4de072452798010e141477",
           "importsFiles": [
             "src/db/connection.ts",
@@ -5196,6 +5618,18 @@
           "exports": [
             "reconcileOutput"
           ],
+          "failurePaths": [
+            {
+              "in": "getActualDiff",
+              "kind": "catch",
+              "line": 47
+            },
+            {
+              "in": "reconcileOutput",
+              "kind": "catch",
+              "line": 76
+            }
+          ],
           "hash": "2a95fdfb1c03ff3f283936ebc878f016b024beabcbec269fc8d38a6ad321291a",
           "importsFiles": [
             "src/schema/submission.ts"
@@ -5205,6 +5639,18 @@
         {
           "exports": [
             "launchWorkerSession"
+          ],
+          "failurePaths": [
+            {
+              "in": "classifyOutput",
+              "kind": "catch",
+              "line": 64
+            },
+            {
+              "in": "launchWorkerSession",
+              "kind": "catch",
+              "line": 148
+            }
           ],
           "hash": "c9bf8433e140fcbb2f11e23823acf1ed63f2b28cc4d3074a2e1249f5c2f977fd",
           "importOrder": [
@@ -5252,6 +5698,23 @@
           "exports": [
             "validateArtifactManifest",
             "validateWriteback"
+          ],
+          "failurePaths": [
+            {
+              "in": "validateArtifactManifest",
+              "kind": "catch",
+              "line": 105
+            },
+            {
+              "in": "validateWriteback",
+              "kind": "catch",
+              "line": 121
+            },
+            {
+              "in": "validateWriteback",
+              "kind": "catch",
+              "line": 125
+            }
           ],
           "hash": "48a1cf63af74c502c77d3c1476dbc1ff229ccc190ba68277415162d89b5c0acc",
           "path": "src/schema/submission.ts"
@@ -5337,6 +5800,9 @@
       "outsideReads": 129,
       "outsideWrites": 3,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 72,
       "unresolvedSites": 0
     },
@@ -5364,7 +5830,8 @@
             "src/commands/packet.ts",
             "src/db/connection.ts"
           ],
-          "path": "test/claim.test.ts"
+          "path": "test/claim.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "bb20d9dd7e674e6f4e5de899e045de993356792c0cf7d4c0a3f7032f148c5b83",
@@ -5384,7 +5851,8 @@
             "src/console/run-model.ts",
             "src/hooks/policy.ts"
           ],
-          "path": "test/commands/console-actions.test.ts"
+          "path": "test/commands/console-actions.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "413846386e7f4c5f285b834683f53ce4771449a988b1db6f32aaead3f3934954",
@@ -5402,7 +5870,8 @@
             "src/console/render.ts",
             "src/console/run-model.ts"
           ],
-          "path": "test/commands/console.test.ts"
+          "path": "test/commands/console.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b0be3e3330d483ee1d283f67008d2c8a435f3ca5c876feff37882af9b2279638",
@@ -5418,7 +5887,8 @@
             "src/console/run-model.ts",
             "src/hooks/policy.ts"
           ],
-          "path": "test/console/action-availability.test.ts"
+          "path": "test/console/action-availability.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "12a50465f15e124f23c81c1eb9ece15562ec8b07c437abb8c4c8b2f1d69e1e74",
@@ -5426,7 +5896,8 @@
             "src/console/action-executor.ts",
             "src/console/audit-trail.ts"
           ],
-          "path": "test/console/action-executor.test.ts"
+          "path": "test/console/action-executor.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0c58b941bc56fee7471ec64595d70713838b49e68ffa1343d726f0d1f0c6d5c7",
@@ -5444,14 +5915,16 @@
             "src/types/approval.ts",
             "src/types/handoff.ts"
           ],
-          "path": "test/console/approval.test.ts"
+          "path": "test/console/approval.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "74a961291f7fd01189fd47b81cb891283854da7327b602e88d478d2b96306bd2",
           "importsFiles": [
             "src/console/audit-trail.ts"
           ],
-          "path": "test/console/audit-trail.test.ts"
+          "path": "test/console/audit-trail.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "53531779bbeb33e18c69b51a82a2c709483925ee4a220d7ff3f5b8b3247eb198",
@@ -5479,21 +5952,24 @@
             "src/types/export.ts",
             "test/trials/trial-fixtures.ts"
           ],
-          "path": "test/console/export.test.ts"
+          "path": "test/console/export.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ef01408ee474ef7f0ec5ceab5be9b9b6b297cf17e7175e3d9b52efbb69229d99",
           "importsFiles": [
             "src/console/fitness-view.ts"
           ],
-          "path": "test/console/fitness-view.test.ts"
+          "path": "test/console/fitness-view.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a4b179a710680607e22f0de3d84728b0d93308842a3d9a5c1a77cd554fb8a42e",
           "importsFiles": [
             "src/console/hook-feed.ts"
           ],
-          "path": "test/console/hook-feed.test.ts"
+          "path": "test/console/hook-feed.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "93fcf69fc272a5f0cee5a15a1d7f30bc09d5831f734db00fc88f99ddccb0d930",
@@ -5507,7 +5983,8 @@
             "src/console/next-action.ts",
             "src/console/run-model.ts"
           ],
-          "path": "test/console/next-action.test.ts"
+          "path": "test/console/next-action.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "799900e304d1109c6387d412e1477eb0b2ecfa36b2c61b3a3c3a8cb749e132c8",
@@ -5529,7 +6006,8 @@
             "src/console/run-model.ts",
             "src/types/recovery.ts"
           ],
-          "path": "test/console/recovery-plan.test.ts"
+          "path": "test/console/recovery-plan.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a6ad49d40f722fbf27e8aa5524b1e29cca4bcd96e7bdc1d84388921fb37e3aa3",
@@ -5545,7 +6023,8 @@
             "src/console/render.ts",
             "src/console/run-model.ts"
           ],
-          "path": "test/console/render.test.ts"
+          "path": "test/console/render.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f2b1053d520ab2e567feccabdafb05775a92b599aa88e2851e1969c1e8bb6575",
@@ -5567,14 +6046,16 @@
             "src/types/actions.ts",
             "src/types/handoff.ts"
           ],
-          "path": "test/console/run-handoff.test.ts"
+          "path": "test/console/run-handoff.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "644a05ac14db5f2b1ec706357628474ae84e71ad23234a372bbb25d9f882f9ab",
           "importsFiles": [
             "src/console/run-model.ts"
           ],
-          "path": "test/console/run-model.test.ts"
+          "path": "test/console/run-model.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4c4588ef9cea8702caf389dcbd3aa8d15a4e0ab75593392db06efbc28668e73c",
@@ -5594,14 +6075,16 @@
             "src/types/actions.ts",
             "src/types/outcome.ts"
           ],
-          "path": "test/console/run-outcome.test.ts"
+          "path": "test/console/run-outcome.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "82a9235d8c4615c653528a380165ce9c81fe10405ba9847c47da94b98e939110",
           "importsFiles": [
             "src/db/connection.ts"
           ],
-          "path": "test/db.test.ts"
+          "path": "test/db.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "16817d21ee18f7e428d7c4fbb6a73da648e5791e868f3a05c2087298eba743a8",
@@ -5639,7 +6122,8 @@
             "src/commands/verify.ts",
             "src/db/connection.ts"
           ],
-          "path": "test/e2e.test.ts"
+          "path": "test/e2e.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "96ddcde1f832eb55c2c05c9870b04839134a87346c6231a089366d594caaf19a",
@@ -5647,7 +6131,8 @@
             "src/fitness/engine.ts",
             "src/fitness/types.ts"
           ],
-          "path": "test/fitness/back-score.test.ts"
+          "path": "test/fitness/back-score.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e56230a6c7b641a396aa555fef1e0e971544cf850bc4ca5130f8ee55c280eea3",
@@ -5655,7 +6140,8 @@
             "src/fitness/metrics.ts",
             "src/fitness/types.ts"
           ],
-          "path": "test/fitness/fitness.test.ts"
+          "path": "test/fitness/fitness.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "10499300bf389dc261d7521e43a37939dbe153095d6f10571f52ee018298eea5",
@@ -5674,7 +6160,8 @@
             "src/handoff/render/role/worker-renderer.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/adapter.test.ts"
+          "path": "test/handoff/adapter.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "46988fea4903f6159f478f74888a5bb9ec892ac6c5237275e9e352b830ab9f2a",
@@ -5706,7 +6193,8 @@
             "src/lib/ids.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/approval.test.ts"
+          "path": "test/handoff/approval.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1218f5917b0ef76ce847597f9ec12c0140aa6419d3dbb0686c43c46ef4cc6875",
@@ -5730,7 +6218,8 @@
             "src/handoff/store/handoff-store.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/bridge.test.ts"
+          "path": "test/handoff/bridge.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "cf17b12c84ef430df404fcb33fd42ee0cbecde4c8d836a7d6f91397bc458f704",
@@ -5784,7 +6273,8 @@
             "src/handoff/supervisor/supervisor-store.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/calibration-law.test.ts"
+          "path": "test/handoff/calibration-law.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "69f480dc17d398389941063672ceaa4ec242d00fcbcdcd0c3675a9ff1f8b8d13",
@@ -5792,7 +6282,8 @@
             "src/handoff/store/artifact-cas.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/cas.test.ts"
+          "path": "test/handoff/cas.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f7c1df6f202b740a772c2548de71ba351e88780e434bad9ca67ded31d4a4998d",
@@ -5814,7 +6305,8 @@
             "src/handoff/store/handoff-store.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/compose.test.ts"
+          "path": "test/handoff/compose.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3ffe61e22b9fec512c0ac9635d116cf5c8c75ed3f47c01bd33d650a140dd7641",
@@ -5856,7 +6348,8 @@
             "src/lib/ids.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/decision-brief.test.ts"
+          "path": "test/handoff/decision-brief.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "743783462297b65a667c90d7c4efb2295f441d87c87affa4fd7ebc9d88d91cab",
@@ -5898,7 +6391,8 @@
             "src/lib/ids.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/decision-queue.test.ts"
+          "path": "test/handoff/decision-queue.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4db4371800862f87e9ab70b198006c2e75c609a2b435509f1aab3a4a2d2cdff0",
@@ -5916,7 +6410,8 @@
             "src/handoff/derive/derive-open-loops.ts",
             "src/handoff/integrity/verify-packet.ts"
           ],
-          "path": "test/handoff/derive.test.ts"
+          "path": "test/handoff/derive.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "6a9eea4cfde25b06eb2dfb820c6130145783ed67789aa68ff201ec1dceae74b2",
@@ -5958,7 +6453,8 @@
             "src/handoff/supervisor/supervisor-store.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/flow-control.test.ts"
+          "path": "test/handoff/flow-control.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6026,7 +6522,8 @@
             "src/handoff/supervisor/supervisor-store.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/intervention-law.test.ts"
+          "path": "test/handoff/intervention-law.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "392b731cd56e4c7af4546e2136d5960d0bff3f74e4d5cbbab4c7618724741a47",
@@ -6044,7 +6541,8 @@
             "src/handoff/store/handoff-store.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/invalidation.test.ts"
+          "path": "test/handoff/invalidation.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b666fc5b648edd335b285d48e062491e418b8444581165aa4261d10d5c9382d1",
@@ -6098,7 +6596,8 @@
             "src/handoff/supervisor/supervisor-store.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/outcome-ledger.test.ts"
+          "path": "test/handoff/outcome-ledger.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "433670899fbfddd2ea2afcff6fb6b0814ac8df75e1977b2d84bb4f34dd2daa67",
@@ -6107,7 +6606,8 @@
             "src/handoff/integrity/verify-packet.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/packet.test.ts"
+          "path": "test/handoff/packet.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9a5cd80c087549a124004d97c1fd2e956951c35e366016e14655c400bd348095",
@@ -6139,7 +6639,8 @@
             "src/handoff/supervisor/supervisor-store.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/policy-control.test.ts"
+          "path": "test/handoff/policy-control.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "77e1cf9ad93a88cd62f9a94d085aa0f20537e5262aa703051835a27e73f1bcfa",
@@ -6187,7 +6688,8 @@
             "src/handoff/supervisor/supervisor-store.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/promotion-law.test.ts"
+          "path": "test/handoff/promotion-law.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "25ae323de0cea9bbd06903af613b07bec56c27985e53c06e190128ef3aad1c77",
@@ -6219,7 +6721,8 @@
             "src/lib/ids.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/recovery.test.ts"
+          "path": "test/handoff/recovery.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8d4e1e755ad762044ac56713ff5032ff51708a4ba2a7dc2e44532b4c5d44563d",
@@ -6237,7 +6740,8 @@
             "src/handoff/render/role/worker-renderer.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/renderer.test.ts"
+          "path": "test/handoff/renderer.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "aed463507d9fd1392c6946637b013ed5149908cdd69f1dda3f88c4a141d810b2",
@@ -6281,7 +6785,8 @@
             "src/lib/ids.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/routing-law.test.ts"
+          "path": "test/handoff/routing-law.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "da2a3acaf3172a9907d6d5a85c6256693966bfe139e293c1547da8636a0709f7",
@@ -6295,7 +6800,8 @@
             "src/handoff/store/handoff-store.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/store.test.ts"
+          "path": "test/handoff/store.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2490e12cd6c85467bc287f14c4304e60974cbd974e8244efcafa722f9f9e6fb9",
@@ -6339,7 +6845,8 @@
             "src/lib/ids.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/handoff/supervisor-loop.test.ts"
+          "path": "test/handoff/supervisor-loop.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5bffac8a66efd0793326a31fad8b96da81d37f5a96537a507e6c0328a241e351",
@@ -6353,7 +6860,8 @@
             "src/hooks/events.ts",
             "src/hooks/policy.ts"
           ],
-          "path": "test/hooks/policy.test.ts"
+          "path": "test/hooks/policy.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ce643b6ed93009255c9623b1df8b8854e812817ea5d702d6db35760f44e57841",
@@ -6369,7 +6877,8 @@
             "src/commands/packet.ts",
             "src/db/connection.ts"
           ],
-          "path": "test/lifecycle.test.ts"
+          "path": "test/lifecycle.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "53a2183a58e8c0493345444412acdd23a1d73546ec3c9844ba158464abaadfb0",
@@ -6419,7 +6928,8 @@
             "src/monitor/queries/queue-query.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/monitor/monitor-commands.test.ts"
+          "path": "test/monitor/monitor-commands.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "adc7095942d655ccd0259c26f7c5296524fe1d1e6acfb6bd0f9c1a536890380c",
@@ -6463,7 +6973,8 @@
             "src/monitor/queries/item-detail-query.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/monitor/monitor-decisions.test.ts"
+          "path": "test/monitor/monitor-decisions.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c4bf570a8b61c4b6299c977ab06b0ef66d00317bb86faa4da14d8a9033fe0b86",
@@ -6507,7 +7018,8 @@
             "src/monitor/queries/queue-query.ts",
             "test/handoff/helpers.ts"
           ],
-          "path": "test/monitor/monitor-queries.test.ts"
+          "path": "test/monitor/monitor-queries.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "16476444bbc44ee7300cf1dbe0d6dc8a7a93c7d995bb23c79407f1dc65379106",
@@ -6515,7 +7027,8 @@
             "src/planner/freeze.ts",
             "src/planner/schema.ts"
           ],
-          "path": "test/planner/freeze.test.ts"
+          "path": "test/planner/freeze.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "dc1c936e8c880184d1deb96d4230e7189834e37a219123a996c4ab0e1ec25b93",
@@ -6523,14 +7036,16 @@
             "src/planner/rules.ts",
             "src/planner/types.ts"
           ],
-          "path": "test/planner/rules.test.ts"
+          "path": "test/planner/rules.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "38467ef07dbde46e24ccb323f4cd5f005a7c4285e90b4bacbe91a70a219f3e02",
           "importsFiles": [
             "src/planner/schema.ts"
           ],
-          "path": "test/planner/schema.test.ts"
+          "path": "test/planner/schema.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "83afe84bbc02efc7e88983996fffa64f9ffb395495079113fa791d3ff1ccc814",
@@ -6544,14 +7059,16 @@
             "src/planner/service.ts",
             "src/planner/types.ts"
           ],
-          "path": "test/planner/service.test.ts"
+          "path": "test/planner/service.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3987b31a2fa86e08d47cc89a95ba97b15b373a52610ba583ec3dbadf64e97ebd",
           "importsFiles": [
             "src/planner/templates.ts"
           ],
-          "path": "test/planner/templates.test.ts"
+          "path": "test/planner/templates.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f770262fac991f9931057cff39e09d62775e9fd15eb9c30841cfe1bf423c8cc0",
@@ -6579,7 +7096,8 @@
             "src/runtime/cleanup.ts",
             "src/runtime/envelope.ts"
           ],
-          "path": "test/retry-recovery.test.ts"
+          "path": "test/retry-recovery.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ae1066a1540dcdf3e819a26c361e5f036519f5eea336b6d6a48a919defd405a1",
@@ -6593,7 +7111,8 @@
             "src/runtime/cleanup.ts",
             "src/runtime/envelope.ts"
           ],
-          "path": "test/runtime/cleanup.test.ts"
+          "path": "test/runtime/cleanup.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "73035e52419e265d641be7bb6cd3b9bd51b18b4411c5d9f92ed92a1eaf15f9df",
@@ -6605,21 +7124,24 @@
             "src/runtime/reconcile.ts",
             "src/runtime/tool-profiles.ts"
           ],
-          "path": "test/runtime/runtime.test.ts"
+          "path": "test/runtime/runtime.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e0efacbeb97bd637a09bae0c06f6e7681212418a6aa4ed14228c218416a65716",
           "importsFiles": [
             "src/schema/submission.ts"
           ],
-          "path": "test/schema/contract-parity.test.ts"
+          "path": "test/schema/contract-parity.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1b2ddc51228372ccea3486de9b623d23d02f14eb7864890145d211895edff1a8",
           "importsFiles": [
             "src/schema/submission.ts"
           ],
-          "path": "test/schema/submission-contract.test.ts"
+          "path": "test/schema/submission-contract.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "06b852f00d67731aae0b5b3e1f7c919ad963b11e16904b4648fdf94b2e5cd804",
@@ -6641,14 +7163,16 @@
             "src/commands/submit.ts",
             "src/db/connection.ts"
           ],
-          "path": "test/submit.test.ts"
+          "path": "test/submit.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "31142b657e6a55428ab56fbd3dd6714c335ff3364804db9f398180cd09d9a98f",
           "importsFiles": [
             "src/lib/transitions.ts"
           ],
-          "path": "test/transitions.test.ts"
+          "path": "test/transitions.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8be2353e7fc41c4c47d9b2ffcc89b5215a01cc6797ea5897df76dddea07af9c4",
@@ -6668,7 +7192,8 @@
             "src/types/approval.ts",
             "test/trials/trial-fixtures.ts"
           ],
-          "path": "test/trials/trial-a.test.ts"
+          "path": "test/trials/trial-a.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "379f80d13abb5b3ebb896b18a59bb714b5d1364c0ae9ccd7e233550cdd7c1f8c",
@@ -6688,7 +7213,8 @@
             "src/types/approval.ts",
             "test/trials/trial-fixtures.ts"
           ],
-          "path": "test/trials/trial-b.test.ts"
+          "path": "test/trials/trial-b.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "37dd125c8374e57f149d67ca520d722d28bbf7412688ab803360b66290dd0145",
@@ -6708,7 +7234,8 @@
             "src/types/approval.ts",
             "test/trials/trial-fixtures.ts"
           ],
-          "path": "test/trials/trial-c.test.ts"
+          "path": "test/trials/trial-c.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -6756,14 +7283,24 @@
             "src/types/approval.ts",
             "test/trials/trial-fixtures.ts"
           ],
-          "path": "test/trials/trial-synthesis.test.ts"
+          "path": "test/trials/trial-synthesis.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "4496b464540c9180c292dd8e3dcd5e6d720a58c454b9c456b1670ce94999b900",
           "importsFiles": [
             "src/types/approval.ts"
           ],
-          "path": "test/types/approval-guard.test.ts"
+          "names": [
+            "src/commands/console-approval.ts",
+            "src/console/approval-executor.ts",
+            "src/console/approval-invalidation.ts",
+            "src/console/approval-render.ts",
+            "src/console/approval-store.ts",
+            "src/console/promotion-check.ts"
+          ],
+          "path": "test/types/approval-guard.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3747a95c1d403b1acde4d5436f7a16b8190bf70188f8b2f186720b4418fefacf",
@@ -6771,14 +7308,36 @@
             "src/types/actions.ts",
             "src/types/statuses.ts"
           ],
-          "path": "test/types/contract-guard.test.ts"
+          "names": [
+            "src/commands/auto.ts",
+            "src/commands/console-actions.ts",
+            "src/console/action-availability.ts",
+            "src/console/action-executor.ts",
+            "src/console/audit-trail.ts",
+            "src/console/next-action.ts",
+            "src/console/render.ts",
+            "src/console/run-model.ts",
+            "src/hooks/actions.ts",
+            "src/hooks/engine.ts",
+            "src/hooks/events.ts",
+            "src/hooks/policy.ts"
+          ],
+          "path": "test/types/contract-guard.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "845ada4da8266f8f75373f22a525d9caf2774535eb5af4204e1c006d32a06010",
           "importsFiles": [
             "src/types/export.ts"
           ],
-          "path": "test/types/export-guard.test.ts"
+          "names": [
+            "src/commands/console-export.ts",
+            "src/console/export-json.ts",
+            "src/console/export-markdown.ts",
+            "src/console/export-model.ts"
+          ],
+          "path": "test/types/export-guard.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c939fbf27ba05f544a1a130b830949578056d0cc205ed09fd35f1cc24f542881",
@@ -6790,14 +7349,27 @@
             "src/console/handoff-readiness.ts",
             "src/types/handoff.ts"
           ],
-          "path": "test/types/handoff-guard.test.ts"
+          "names": [
+            "src/commands/console-handoff.ts",
+            "src/console/handoff-render.ts",
+            "src/console/run-handoff.ts"
+          ],
+          "path": "test/types/handoff-guard.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ed52f165ed756f02fd2a18d38baabb740cf3f35761579e9615cc279db20fe6b5",
           "importsFiles": [
             "src/types/outcome.ts"
           ],
-          "path": "test/types/outcome-guard.test.ts"
+          "names": [
+            "src/commands/console-outcome.ts",
+            "src/commands/console.ts",
+            "src/console/outcome-render.ts",
+            "src/console/run-outcome.ts"
+          ],
+          "path": "test/types/outcome-guard.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c560fb3cf0556f7896202e5d1b444e3758410ca1653fa08d2c097a2851b66826",
@@ -6809,7 +7381,14 @@
             "src/types/actions.ts",
             "src/types/recovery.ts"
           ],
-          "path": "test/types/recovery-guard.test.ts"
+          "names": [
+            "src/commands/console-recover.ts",
+            "src/console/recovery-catalog.ts",
+            "src/console/recovery-plan.ts",
+            "src/console/recovery-render.ts"
+          ],
+          "path": "test/types/recovery-guard.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7846eae5f609a8b0eaa63d3eff46cb4166a0d731529b9e74c07f16791f010a07",
@@ -6831,7 +7410,8 @@
             "src/commands/verify.ts",
             "src/db/connection.ts"
           ],
-          "path": "test/verify.test.ts"
+          "path": "test/verify.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -6841,6 +7421,9 @@
       "name": "test",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -6882,7 +7465,7 @@
           "programs": [
             "npm"
           ],
-          "step": "6"
+          "step": "8"
         }
       ],
       "elsewhere": [],
@@ -6890,7 +7473,10 @@
       "landings": [],
       "mentions": [],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -7246,6 +7832,20 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "coverage": true,
+          "files": 69,
+          "job": "ci",
+          "junit": true,
+          "runner": "vitest",
+          "step": "5",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -7254,6 +7854,7 @@
             "apps/**",
             "atlas/**",
             "bin/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "site/astro.config.mjs",
@@ -7271,6 +7872,7 @@
             "apps/**",
             "atlas/**",
             "bin/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "site/astro.config.mjs",
@@ -7287,7 +7889,9 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
+        "actions/upload-artifact",
         "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
@@ -7459,10 +8063,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
-    "commit": "7e09d24fc09378541112ae8001a8d7b6a309f1be",
-    "tracked": 475
+    "commit": "bed1180e3d025ed604afbe1a75c20d18de49848a",
+    "tracked": 476
   },
   "landings": [
     {

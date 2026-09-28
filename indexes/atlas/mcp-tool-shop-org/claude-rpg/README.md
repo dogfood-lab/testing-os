@@ -1,6 +1,6 @@
 # claude-rpg: how it works
 
-Mapped at 2026-09-26 from commit 55ff274 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 55ff274 by Atlas 1.23.4.
 
 ## What this is
 
@@ -53,9 +53,9 @@ Mapped at 2026-09-26 from commit 55ff274 by Atlas 1.23.0.
 
 No two source files, other than a file and its own test, changed together often enough to name.
 
-8 files changed together with their own tests, as expected.
+7 files changed together with their own tests, as expected.
 
-Window: 180 days; a pair counts from 10 shared commits, since 34 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do.
+Window: 180 days; a pair counts from 10 shared commits, since 27 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do.
 
 ## What no test touches
 

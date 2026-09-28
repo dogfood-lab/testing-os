@@ -1,6 +1,6 @@
 # star-freight: how it works
 
-Mapped at 2026-09-26 from commit 743f657 by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit ae33f19 by Atlas 1.23.4.
 
 ## What this is
 
@@ -8,19 +8,19 @@ Mapped at 2026-09-26 from commit 743f657 by Atlas 1.23.0.
 
 ## What changed since 2026-09-23 (fd07312)
 
-- CI's pull request trigger now also names `atlas/**`.
-- CI's push trigger now also names `atlas/**`.
+- CI's pull request trigger now also names `atlas/**` and `codecov.yml`.
+- CI's push trigger now also names `atlas/**` and `codecov.yml`.
 - Publish to PyPI now also checks src/portlight/.
 - And 1 more change to a door.
 - README.md is now read by pyproject.toml.
 - dogfood/scenarios/ is now also read by src/portlight/engine/dogfood_runner.py and tests/test_dogfood_runner.py.
 - dogfood/scenarios/gray_seizure_60d_s17.json is now read by tests/test_dogfood_runner.py.
 - And 6 more new writers and readers of places.
-- 316 files changed content, across 8 parts.
+- 1 file added and 316 changed content, across 8 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 8 paths; on a push touching 8 paths; or by hand. Runs tests/.
+1. **CI.** On a pull request touching 9 paths; on a push touching 9 paths; or by hand. Runs tests/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Release Binaries.** When a release is published; or by hand. Builds src/portlight/__main__.py.
 4. **Publish to PyPI.** When a release is published; or by hand. Checks src/portlight/.

@@ -1,6 +1,6 @@
 # claude-synergy: how it works
 
-Mapped at 2026-09-26 from commit 6d91d8c by Atlas 1.23.0.
+Mapped at 2026-09-28 from commit 819f3d3 by Atlas 1.23.4.
 
 ## What this is
 
@@ -11,7 +11,7 @@ Mapped at 2026-09-26 from commit 6d91d8c by Atlas 1.23.0.
 - synergies/ is now read by src/mcp-server.ts.
 - products was generated and is now authored.
 - the repository root was mixed and is now authored.
-- 1701 files changed content, across 9 parts.
+- 1 file added and 1701 changed content, across 9 parts.
 
 ## What comes in
 
@@ -35,7 +35,7 @@ Daily sync writes nothing this map can see.
 
 ## The other doors
 
-**Tests** runs test/integration/, test/regression/ and test/unit/, and checks src/.
+**Tests** runs test/integration/, test/regression/ and test/unit/, checks src/, and uploads coverage to Codecov.
 
 **Release** runs test/integration/, test/regression/ and test/unit/, builds src/cli.ts and src/mcp-server.ts, publishes to npm, and creates a GitHub release.
 

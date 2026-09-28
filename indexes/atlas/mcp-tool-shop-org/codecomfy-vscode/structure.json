@@ -254,6 +254,13 @@
       "externals": 0,
       "files": [
         {
+          "failurePaths": [
+            {
+              "in": "resolveSource",
+              "kind": "throw",
+              "line": 77
+            }
+          ],
           "hash": "045197d8d44350a92ae9bcde094f2079bfaaa99d98b32d8df0a9e9bbca0bc687",
           "path": "scripts/sync-kb.mjs"
         }
@@ -389,7 +396,7 @@
     },
     {
       "dynamicReads": 6,
-      "dynamicSpawns": 3,
+      "dynamicSpawns": 4,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 2,
       "entryPoints": [
@@ -449,6 +456,28 @@
             "isEventStreamSupported",
             "toWebSocketUrl"
           ],
+          "failurePaths": [
+            {
+              "in": "connect",
+              "kind": "catch",
+              "line": 243
+            },
+            {
+              "in": "connect",
+              "kind": "catch",
+              "line": 258
+            },
+            {
+              "in": "close",
+              "kind": "catch",
+              "line": 332
+            },
+            {
+              "in": "handleMessage",
+              "kind": "catch",
+              "line": 354
+            }
+          ],
           "hash": "39afa376e1cab86b3b90d482333985f49fdcb65412a149ed0680846fecb0c157",
           "importsFiles": [
             "src/logging/logger.ts"
@@ -459,6 +488,113 @@
           "exports": [
             "categorizeError",
             "composeAvailabilityMessage"
+          ],
+          "failurePaths": [
+            {
+              "in": "hasClass",
+              "kind": "catch",
+              "line": 289
+            },
+            {
+              "in": "listModels",
+              "kind": "catch",
+              "line": 313
+            },
+            {
+              "in": "uploadFile",
+              "kind": "catch",
+              "line": 371
+            },
+            {
+              "in": "getAvailability",
+              "kind": "catch",
+              "line": 395
+            },
+            {
+              "in": "finish",
+              "kind": "catch",
+              "line": 436
+            },
+            {
+              "in": "generate",
+              "kind": "catch",
+              "line": 592
+            },
+            {
+              "in": "cancel",
+              "kind": "catch",
+              "line": 635
+            },
+            {
+              "in": "clearQueue",
+              "kind": "catch",
+              "line": 661
+            },
+            {
+              "in": "getQueueDepth",
+              "kind": "catch",
+              "line": 686
+            },
+            {
+              "in": "submitPrompt",
+              "kind": "throw",
+              "line": 791
+            },
+            {
+              "in": "submitPrompt",
+              "kind": "catch",
+              "line": 796
+            },
+            {
+              "in": "submitPrompt",
+              "kind": "throw",
+              "line": 806
+            },
+            {
+              "in": "submitPrompt",
+              "kind": "throw",
+              "line": 808
+            },
+            {
+              "in": "fetchHistoryOnce",
+              "kind": "catch",
+              "line": 827
+            },
+            {
+              "in": "pollForCompletion",
+              "kind": "catch",
+              "line": 883
+            },
+            {
+              "in": "pollForCompletion",
+              "kind": "throw",
+              "line": 895
+            },
+            {
+              "in": "collectFiles",
+              "kind": "catch",
+              "line": 972
+            },
+            {
+              "in": "collectFiles",
+              "kind": "catch",
+              "line": 1023
+            },
+            {
+              "in": "collectFrames",
+              "kind": "catch",
+              "line": 1108
+            },
+            {
+              "in": "downloadToFile",
+              "kind": "catch",
+              "line": 1222
+            },
+            {
+              "in": "downloadToFile",
+              "kind": "catch",
+              "line": 1224
+            }
           ],
           "hash": "d01634872067decaadf25ff231a1db9ad3d1d0101e79f605164afe1629815133",
           "importOrder": [
@@ -488,6 +624,88 @@
             "validateHistoryResponse",
             "validatePromptResponse"
           ],
+          "failurePaths": [
+            {
+              "in": "validatePromptResponse",
+              "kind": "throw",
+              "line": 55
+            },
+            {
+              "in": "validatePromptResponse",
+              "kind": "throw",
+              "line": 61
+            },
+            {
+              "in": "validatePromptResponse",
+              "kind": "throw",
+              "line": 70
+            },
+            {
+              "in": "validatePromptResponse",
+              "kind": "throw",
+              "line": 88
+            },
+            {
+              "in": "validateHistoryEntry",
+              "kind": "throw",
+              "line": 168
+            },
+            {
+              "in": "validateHistoryEntry",
+              "kind": "throw",
+              "line": 175
+            },
+            {
+              "in": "validateHistoryEntry",
+              "kind": "throw",
+              "line": 185
+            },
+            {
+              "in": "validateHistoryEntry",
+              "kind": "throw",
+              "line": 200
+            },
+            {
+              "in": "validateHistoryResponse",
+              "kind": "throw",
+              "line": 264
+            },
+            {
+              "in": "sanitizeComfyFilename",
+              "kind": "throw",
+              "line": 311
+            },
+            {
+              "in": "sanitizeComfyFilename",
+              "kind": "throw",
+              "line": 322
+            },
+            {
+              "in": "sanitizeComfyFilename",
+              "kind": "throw",
+              "line": 331
+            },
+            {
+              "in": "sanitizeComfyFilename",
+              "kind": "throw",
+              "line": 340
+            },
+            {
+              "in": "sanitizeComfyFilename",
+              "kind": "throw",
+              "line": 349
+            },
+            {
+              "in": "sanitizeComfyFilename",
+              "kind": "throw",
+              "line": 359
+            },
+            {
+              "in": "sanitizeComfyFilename",
+              "kind": "throw",
+              "line": 369
+            }
+          ],
           "hash": "27d551453a22ee6b7ab40c65a66b6de4dc6016914fc1e0c9ad85b7785dbdf584",
           "path": "src/engines/comfyValidation.ts"
         },
@@ -497,6 +715,28 @@
             "cleanupPartialVideo",
             "findFfmpeg",
             "parseFfmpegVersionLine"
+          ],
+          "failurePaths": [
+            {
+              "in": "isFfmpegOnPath",
+              "kind": "catch",
+              "line": 66
+            },
+            {
+              "in": "probeFfmpegVersion",
+              "kind": "catch",
+              "line": 190
+            },
+            {
+              "in": "renameFramesSequentially",
+              "kind": "catch",
+              "line": 341
+            },
+            {
+              "in": "cleanupPartialVideo",
+              "kind": "catch",
+              "line": 397
+            }
           ],
           "hash": "70d7d5892ec46c71a242ae8f54cbf6af23601e461763cc1dfb00910b08a2bf87",
           "importsFiles": [
@@ -580,6 +820,43 @@
           "exports": [
             "activate",
             "deactivate"
+          ],
+          "failurePaths": [
+            {
+              "in": "ensureComfyReachable",
+              "kind": "catch",
+              "line": 127
+            },
+            {
+              "in": "activate",
+              "kind": "catch",
+              "line": 206
+            },
+            {
+              "in": "openGalleryCommand",
+              "kind": "catch",
+              "line": 278
+            },
+            {
+              "in": "rerunJobCommand",
+              "kind": "catch",
+              "line": 734
+            },
+            {
+              "in": "newPresetFromHQCommand",
+              "kind": "catch",
+              "line": 854
+            },
+            {
+              "in": "newPresetFromHQCommand",
+              "kind": "catch",
+              "line": 865
+            },
+            {
+              "in": "runGeneration",
+              "kind": "catch",
+              "line": 1246
+            }
           ],
           "hash": "85289552392140c06e07dde82f1b1315fe6da2cf362ab4e6e174d5e7a0104e4c",
           "importsFiles": [
@@ -1096,6 +1373,13 @@
           "exports": [
             "getPresetRegistry"
           ],
+          "failurePaths": [
+            {
+              "in": "loadFromDirectory",
+              "kind": "catch",
+              "line": 135
+            }
+          ],
           "hash": "397e91525a86e6f1d3dcf864269a3644a9187194e466137585ac6506551f9c52",
           "importOrder": [
             "src/types/index.ts",
@@ -1118,6 +1402,28 @@
             "extractApiGraph",
             "readPngTextChunks",
             "readPngWorkflow"
+          ],
+          "failurePaths": [
+            {
+              "in": "readPngTextChunks",
+              "kind": "catch",
+              "line": 48
+            },
+            {
+              "in": "parseTextChunk",
+              "kind": "catch",
+              "line": 118
+            },
+            {
+              "in": "readPngWorkflow",
+              "kind": "catch",
+              "line": 154
+            },
+            {
+              "in": "extractApiGraph",
+              "kind": "catch",
+              "line": 194
+            }
           ],
           "hash": "dcf5f9933e808e143fc09c767ed60a94b718d681c4629d4c55a53f0436849797",
           "path": "src/profiles/metadata.ts",
@@ -1285,6 +1591,53 @@
             "createEmptyIndex",
             "pruneRuns"
           ],
+          "failurePaths": [
+            {
+              "in": "listRuns",
+              "kind": "catch",
+              "line": 129
+            },
+            {
+              "in": "listRuns",
+              "kind": "catch",
+              "line": 133
+            },
+            {
+              "in": "getRunTimestamp",
+              "kind": "catch",
+              "line": 158
+            },
+            {
+              "in": "getRunTimestamp",
+              "kind": "catch",
+              "line": 165
+            },
+            {
+              "in": "pruneSelected",
+              "kind": "catch",
+              "line": 189
+            },
+            {
+              "in": "pruneSelected",
+              "kind": "catch",
+              "line": 209
+            },
+            {
+              "in": "walk",
+              "kind": "catch",
+              "line": 255
+            },
+            {
+              "in": "walk",
+              "kind": "catch",
+              "line": 270
+            },
+            {
+              "in": "pruneIndexEntries",
+              "kind": "catch",
+              "line": 315
+            }
+          ],
           "hash": "ed23b854cf20afa4c969de29e695e3281a88772fd138ad5da952dee0a65c17c2",
           "importOrder": [
             "src/types/index.ts",
@@ -1297,6 +1650,48 @@
           "path": "src/pruning/pruner.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 209
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 221
+            },
+            {
+              "in": "run",
+              "kind": "catch",
+              "line": 226
+            },
+            {
+              "in": "cancel",
+              "kind": "catch",
+              "line": 264
+            },
+            {
+              "in": "handleFailure",
+              "kind": "catch",
+              "line": 411
+            },
+            {
+              "in": "updateIndex",
+              "kind": "catch",
+              "line": 468
+            },
+            {
+              "in": "atomicRenameWithRetry",
+              "kind": "catch",
+              "line": 553
+            },
+            {
+              "in": "atomicRenameWithRetry",
+              "kind": "catch",
+              "line": 576
+            }
+          ],
           "hash": "343a6e34cf19933d252175dc04cc512e0724a06470cd67a9a6719cd26df1a38b",
           "importOrder": [
             "src/types/index.ts",
@@ -1315,6 +1710,23 @@
           "path": "src/router/jobRouter.ts"
         },
         {
+          "failurePaths": [
+            {
+              "in": "attachWatcher",
+              "kind": "catch",
+              "line": 84
+            },
+            {
+              "in": "attachWatcher",
+              "kind": "catch",
+              "line": 94
+            },
+            {
+              "in": "readRuns",
+              "kind": "catch",
+              "line": 179
+            }
+          ],
           "hash": "9cd122f53b42a782ce5d6a83efa3ad53449f1fa6dce4bada229f8e120f47287c",
           "importsFiles": [
             "src/types/index.ts"
@@ -1340,12 +1752,26 @@
             "looksExecutable",
             "validateExecutablePath"
           ],
+          "failurePaths": [
+            {
+              "in": "existsFile",
+              "kind": "catch",
+              "line": 25
+            }
+          ],
           "hash": "ffde54675cd4df504b59f141efa7388dc4c07d92c0c1cb5ce659a19d671f99b8",
           "path": "src/validation/paths.ts"
         },
         {
           "exports": [
             "validateComfyUrl"
+          ],
+          "failurePaths": [
+            {
+              "in": "validateComfyUrl",
+              "kind": "catch",
+              "line": 35
+            }
           ],
           "hash": "75263d9cafb28428d1f8a7864f842be16533e3878a11dbdccf8f513e592c5c52",
           "path": "src/validation/url.ts"
@@ -1357,6 +1783,9 @@
           "hash": "91b2604fe0eef32f05310375ffb565762cdb83986693724db4fd70ab1f8c97df",
           "path": "src/validation/video.ts"
         }
+      ],
+      "frameworks": [
+        "vscode"
       ],
       "globs": [
         "src/**"
@@ -1376,6 +1805,9 @@
       "outsideReads": 35,
       "outsideWrites": 16,
       "role": "code",
+      "testRunners": [
+        "mocha"
+      ],
       "testedBy": 22,
       "unresolvedSites": 0
     },
@@ -1630,7 +2062,8 @@
           "importsFiles": [
             "src/validation/url.ts"
           ],
-          "path": "test/unit/validation-url.test.ts"
+          "path": "test/unit/validation-url.test.ts",
+          "testFramework": "mocha"
         },
         {
           "hash": "be00dbcffa75ea157c9671e675cd18db195a6ce189a6779a5b2c2a3397ee6062",
@@ -1655,6 +2088,9 @@
       "name": "test",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "mocha"
+      ],
       "testedBy": 0,
       "unresolvedNamed": [
         {
@@ -1799,9 +2235,17 @@
           "job": "quality-gates",
           "path": "test/register-vscode-stub.js",
           "runKind": "executes"
+        },
+        {
+          "directory": true,
+          "job": "quality-gates",
+          "matched": true,
+          "path": "test/unit/",
+          "runKind": "executes",
+          "via": "eslint eslint.config.mjs"
         }
       ],
-      "runsCount": 6,
+      "runsCount": 7,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -1814,6 +2258,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 24,
+          "job": "quality-gates",
+          "runner": "mocha",
+          "step": "Run tests",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "branches": [
@@ -2173,9 +2628,17 @@
           "job": "build",
           "path": "test/register-vscode-stub.js",
           "runKind": "executes"
+        },
+        {
+          "directory": true,
+          "job": "build",
+          "matched": true,
+          "path": "test/unit/",
+          "runKind": "executes",
+          "via": "eslint eslint.config.mjs"
         }
       ],
-      "runsCount": 6,
+      "runsCount": 7,
       "secrets": [
         "GITHUB_TOKEN",
         "VSCE_PAT"
@@ -2191,6 +2654,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 24,
+          "job": "build",
+          "runner": "mocha",
+          "step": "Run tests",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "push",
@@ -2265,7 +2739,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "93df7e1bb9d6c2cf9580b625ecd8454f19be8507",
     "tracked": 113

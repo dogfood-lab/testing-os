@@ -291,6 +291,18 @@
             "ingestCorpusData",
             "ingestFixtureCorpus"
           ],
+          "failurePaths": [
+            {
+              "in": "ingestCorpusData",
+              "kind": "catch",
+              "line": 90
+            },
+            {
+              "in": "ingestCorpusData",
+              "kind": "catch",
+              "line": 94
+            }
+          ],
           "hash": "917662862c2511b782486ec26e8f09749b04a30622ebd20f367ef860c3ee9d97",
           "importsFiles": [
             "src/storage/corpus-store.ts",
@@ -418,6 +430,13 @@
             "generateEmbedding",
             "semanticSearch"
           ],
+          "failurePaths": [
+            {
+              "in": "generateEmbedding",
+              "kind": "catch",
+              "line": 39
+            }
+          ],
           "hash": "8c82ff7bf6526ab981ce2232f753511be6552de34244e3790a52fa9bb116dbea",
           "importsFiles": [
             "src/storage/corpus-store.ts"
@@ -464,6 +483,9 @@
       ],
       "outsideReads": 6,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 2,
       "unresolvedSites": 0
     },
@@ -485,7 +507,8 @@
             "src/types.ts",
             "src/validate.ts"
           ],
-          "path": "test/contracts.test.ts"
+          "path": "test/contracts.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c222fe27443781664c7570ca9ae0dbee55a1399c163c6a298cc17125b555076e",
@@ -511,7 +534,8 @@
             "src/types.ts",
             "src/validate.ts"
           ],
-          "path": "test/pipeline.test.ts"
+          "path": "test/pipeline.test.ts",
+          "testFramework": "vitest"
         }
       ],
       "globs": [
@@ -521,6 +545,9 @@
       "name": "test",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -609,6 +636,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "files": 2,
+          "job": "test",
+          "runner": "vitest",
+          "step": "5",
+          "through": [
+            "npm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -791,7 +829,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "f7dfb2efc4649fd8b6a2a17034113a6e18cb503d",
     "tracked": 56

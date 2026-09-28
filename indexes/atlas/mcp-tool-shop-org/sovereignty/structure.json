@@ -39,6 +39,22 @@
             "extract_artifacts_values",
             "main"
           ],
+          "failurePaths": [
+            {
+              "in": "_bash",
+              "kind": "raise",
+              "line": 35
+            },
+            {
+              "in": "_fail",
+              "kind": "raise",
+              "line": 40
+            },
+            {
+              "kind": "raise",
+              "line": 192
+            }
+          ],
           "hash": "d2a5a22d2f13e25a099aefee6554a541f88521f7b978e489b81c757601ac48e2",
           "path": ".github/scripts/check-publish-yml.py",
           "sequences": []
@@ -49,6 +65,17 @@
           "exports": [
             "generate_latest_json",
             "main"
+          ],
+          "failurePaths": [
+            {
+              "in": "generate_latest_json",
+              "kind": "raise",
+              "line": 90
+            },
+            {
+              "kind": "raise",
+              "line": 119
+            }
           ],
           "hash": "76223c3d894b1300067bbaacbb1a88241857dbd6bf83d8b0ef06cde2a5fc421c",
           "path": ".github/scripts/generate-latest-json.py",
@@ -443,6 +470,33 @@
             "read_daemon_config_at",
             "subprocess_cwd"
           ],
+          "failurePaths": [
+            {
+              "in": "read_daemon_config_at",
+              "kind": "match-err",
+              "line": 94
+            },
+            {
+              "in": "read_daemon_config_at",
+              "kind": "err",
+              "line": 95
+            },
+            {
+              "in": "read_daemon_config_at",
+              "kind": "match-err",
+              "line": 97
+            },
+            {
+              "in": "read_daemon_config_at",
+              "kind": "err",
+              "line": 98
+            },
+            {
+              "in": "read_daemon_config_at",
+              "kind": "err",
+              "line": 108
+            }
+          ],
           "hash": "fb53224accc4741893ad68aaebcca7aed70ee0522c678e576bb50884e22c65a7",
           "importsFiles": [
             "app/src-tauri/src/commands.rs"
@@ -457,6 +511,78 @@
             "daemon_stop_subprocess",
             "parse_status_output",
             "stop_blocking"
+          ],
+          "failurePaths": [
+            {
+              "in": "pid_is_alive",
+              "kind": "match-err",
+              "line": 156
+            },
+            {
+              "in": "pid_is_alive",
+              "kind": "match-err",
+              "line": 168
+            },
+            {
+              "in": "run_with_timeout_inner",
+              "kind": "match-err",
+              "line": 227
+            },
+            {
+              "in": "run_with_timeout_inner",
+              "kind": "err",
+              "line": 227
+            },
+            {
+              "in": "run_with_timeout_inner",
+              "kind": "match-err",
+              "line": 234
+            },
+            {
+              "in": "run_with_timeout_inner",
+              "kind": "err",
+              "line": 234
+            },
+            {
+              "in": "run_with_timeout_inner",
+              "kind": "match-err",
+              "line": 253
+            },
+            {
+              "in": "run_with_timeout_inner",
+              "kind": "err",
+              "line": 260
+            },
+            {
+              "in": "daemon_start_subprocess",
+              "kind": "err",
+              "line": 313
+            },
+            {
+              "in": "daemon_stop_subprocess",
+              "kind": "err",
+              "line": 342
+            },
+            {
+              "in": "parse_status_output",
+              "kind": "err",
+              "line": 395
+            },
+            {
+              "in": "extract_state",
+              "kind": "err",
+              "line": 447
+            },
+            {
+              "in": "parse_state_str",
+              "kind": "err",
+              "line": 458
+            },
+            {
+              "in": "extract_config",
+              "kind": "err",
+              "line": 480
+            }
           ],
           "hash": "5a0f3350313ecca79b56661f46f0d80683940418364a733038fff32091960a7b",
           "importsFiles": [
@@ -474,6 +600,13 @@
             "format_panic_location",
             "format_panic_payload",
             "run"
+          ],
+          "failurePaths": [
+            {
+              "in": "handle_window_event",
+              "kind": "match-err",
+              "line": 226
+            }
           ],
           "hash": "7d45962fb87893a575eb322173c12f1a9feb7b85bc229ababc0e4787fac30d6d",
           "importsFiles": [
@@ -537,7 +670,8 @@
           "importsFiles": [
             "app/src/App.tsx"
           ],
-          "path": "app/src/App.test.tsx"
+          "path": "app/src/App.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -564,7 +698,8 @@
           "importsFiles": [
             "app/src/components/ConfirmDialog.tsx"
           ],
-          "path": "app/src/components/ConfirmDialog.test.tsx"
+          "path": "app/src/components/ConfirmDialog.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -590,7 +725,8 @@
             "app/src/components/DaemonDisconnectedBanner.tsx",
             "app/src/hooks/useDaemon.tsx"
           ],
-          "path": "app/src/components/DaemonDisconnectedBanner.test.tsx"
+          "path": "app/src/components/DaemonDisconnectedBanner.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -616,7 +752,8 @@
           "importsFiles": [
             "app/src/components/EmptyState.tsx"
           ],
-          "path": "app/src/components/EmptyState.test.tsx"
+          "path": "app/src/components/EmptyState.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -640,7 +777,8 @@
           "importsFiles": [
             "app/src/components/EventFeed.tsx"
           ],
-          "path": "app/src/components/EventFeed.test.tsx"
+          "path": "app/src/components/EventFeed.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -667,7 +805,8 @@
           "importsFiles": [
             "app/src/components/ExpandableRow.tsx"
           ],
-          "path": "app/src/components/ExpandableRow.test.tsx"
+          "path": "app/src/components/ExpandableRow.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -688,7 +827,8 @@
           "importsFiles": [
             "app/src/components/LoadingSpinner.tsx"
           ],
-          "path": "app/src/components/LoadingSpinner.test.tsx"
+          "path": "app/src/components/LoadingSpinner.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -714,11 +854,28 @@
             "app/src/components/PanicModal.tsx",
             "app/src/types/daemon.ts"
           ],
-          "path": "app/src/components/PanicModal.test.tsx"
+          "names": [
+            "app/src-tauri/src/commands.rs",
+            "app/src-tauri/src/lib.rs"
+          ],
+          "path": "app/src/components/PanicModal.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "PanicModal"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadTauriEvents",
+              "kind": "catch",
+              "line": 36
+            },
+            {
+              "in": "PanicModal",
+              "kind": "catch",
+              "line": 56
+            }
           ],
           "hash": "7ccd386a5e0d0f5780508f1ecacad2ccfc95d26113fcdf64d226647301ffcb04",
           "importOrder": [
@@ -740,7 +897,8 @@
           "importsFiles": [
             "app/src/components/Pill.tsx"
           ],
-          "path": "app/src/components/Pill.test.tsx"
+          "path": "app/src/components/Pill.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -766,7 +924,8 @@
             "app/src/components/PlayerCard.tsx",
             "app/src/types/game.ts"
           ],
-          "path": "app/src/components/PlayerCard.test.tsx"
+          "path": "app/src/components/PlayerCard.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -792,7 +951,8 @@
           "importsFiles": [
             "app/src/components/RoundTimeline.tsx"
           ],
-          "path": "app/src/components/RoundTimeline.test.tsx"
+          "path": "app/src/components/RoundTimeline.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -809,12 +969,50 @@
           "importsFiles": [
             "app/src/hooks/useDaemon.tsx"
           ],
-          "path": "app/src/hooks/useDaemon.test.tsx"
+          "path": "app/src/hooks/useDaemon.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "DaemonProvider",
             "useDaemon"
+          ],
+          "failurePaths": [
+            {
+              "in": "DaemonProvider",
+              "kind": "catch",
+              "line": 54
+            },
+            {
+              "in": "DaemonProvider",
+              "kind": "catch",
+              "line": 66
+            },
+            {
+              "in": "DaemonProvider",
+              "kind": "throw",
+              "line": 68
+            },
+            {
+              "in": "DaemonProvider",
+              "kind": "catch",
+              "line": 77
+            },
+            {
+              "in": "DaemonProvider",
+              "kind": "throw",
+              "line": 79
+            },
+            {
+              "in": "DaemonProvider",
+              "kind": "catch",
+              "line": 97
+            },
+            {
+              "in": "useDaemon",
+              "kind": "throw",
+              "line": 121
+            }
           ],
           "hash": "3a61c3eca622e94ed3a8a5e54239d6d90f06c80d0370f0776882f1c58e26dfd1",
           "importsFiles": [
@@ -830,19 +1028,43 @@
             "app/src/hooks/useDaemon.tsx",
             "app/src/hooks/useDaemonEvents.ts"
           ],
-          "path": "app/src/hooks/useDaemonEvents.hook.test.tsx"
+          "path": "app/src/hooks/useDaemonEvents.hook.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "hash": "999ac85ca50b27769cf0351b7a77694629cdd527ab9209c313c0ba335e976e62",
           "importsFiles": [
             "app/src/hooks/useDaemonEvents.ts"
           ],
-          "path": "app/src/hooks/useDaemonEvents.test.ts"
+          "path": "app/src/hooks/useDaemonEvents.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "parseSSEFrame",
             "useDaemonEvents"
+          ],
+          "failurePaths": [
+            {
+              "in": "connect",
+              "kind": "throw",
+              "line": 48
+            },
+            {
+              "in": "connect",
+              "kind": "catch",
+              "line": 70
+            },
+            {
+              "in": "connect",
+              "kind": "catch",
+              "line": 81
+            },
+            {
+              "in": "parseSSEFrame",
+              "kind": "catch",
+              "line": 118
+            }
           ],
           "hash": "41c61cc37bbdac24c7b7bc1bd689191dab5b8a0c67e88aa77f39505f894b8291",
           "importOrder": [
@@ -867,12 +1089,20 @@
             "app/src/types/daemon.ts",
             "app/src/types/game.ts"
           ],
-          "path": "app/src/hooks/useGameState.test.tsx"
+          "path": "app/src/hooks/useGameState.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "pickActiveGame",
             "useGameState"
+          ],
+          "failurePaths": [
+            {
+              "in": "useGameState",
+              "kind": "catch",
+              "line": 75
+            }
           ],
           "hash": "f8b15d9e77393697649fa3b0bd2dae54676d9f9895ee1bd0177169daf5d03a82",
           "importOrder": [
@@ -896,13 +1126,41 @@
           "importsFiles": [
             "app/src/hooks/useVerifyFlow.ts"
           ],
-          "path": "app/src/hooks/useVerifyFlow.test.tsx"
+          "path": "app/src/hooks/useVerifyFlow.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "canonicalJson",
             "sha256Hex",
             "useVerifyFlow"
+          ],
+          "failurePaths": [
+            {
+              "in": "canonicalize",
+              "kind": "throw",
+              "line": 94
+            },
+            {
+              "in": "canonicalize",
+              "kind": "throw",
+              "line": 115
+            },
+            {
+              "in": "useVerifyFlow",
+              "kind": "catch",
+              "line": 178
+            },
+            {
+              "in": "useVerifyFlow",
+              "kind": "catch",
+              "line": 201
+            },
+            {
+              "in": "useVerifyFlow",
+              "kind": "catch",
+              "line": 242
+            }
           ],
           "hash": "06d6f71c8771137a7c40a749607e96a065c0b30ba291b8d671d83317bcfb56ea",
           "importOrder": [
@@ -925,11 +1183,54 @@
             "app/src/lib/daemonClient.ts",
             "app/src/types/daemon.ts"
           ],
-          "path": "app/src/lib/daemonClient.test.ts"
+          "path": "app/src/lib/daemonClient.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "unwrapPendingAnchors"
+          ],
+          "failurePaths": [
+            {
+              "in": "health",
+              "kind": "throw",
+              "line": 37
+            },
+            {
+              "in": "games",
+              "kind": "throw",
+              "line": 43
+            },
+            {
+              "in": "game",
+              "kind": "throw",
+              "line": 51
+            },
+            {
+              "in": "proofs",
+              "kind": "throw",
+              "line": 70
+            },
+            {
+              "in": "proof",
+              "kind": "throw",
+              "line": 82
+            },
+            {
+              "in": "pendingAnchors",
+              "kind": "throw",
+              "line": 90
+            },
+            {
+              "in": "anchorStatus",
+              "kind": "throw",
+              "line": 104
+            },
+            {
+              "in": "verifyRound",
+              "kind": "throw",
+              "line": 119
+            }
           ],
           "hash": "ab20afe6793bc070ef1e59a73d7d6f63f77331517074ac738a116755a47fa892",
           "importsFiles": [
@@ -943,11 +1244,19 @@
           "importsFiles": [
             "app/src/lib/errorFormat.ts"
           ],
-          "path": "app/src/lib/errorFormat.test.ts"
+          "path": "app/src/lib/errorFormat.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "formatError"
+          ],
+          "failurePaths": [
+            {
+              "in": "tryParseJsonObject",
+              "kind": "catch",
+              "line": 82
+            }
           ],
           "hash": "1e52794feb9b789a8d05187adde7ea76964856603cea5df99b06a93d9f2f0515",
           "path": "app/src/lib/errorFormat.ts"
@@ -970,11 +1279,19 @@
           "importsFiles": [
             "app/src/lib/url.ts"
           ],
-          "path": "app/src/lib/url.test.ts"
+          "path": "app/src/lib/url.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "isSafeExplorerUrl"
+          ],
+          "failurePaths": [
+            {
+              "in": "isSafeExplorerUrl",
+              "kind": "catch",
+              "line": 17
+            }
           ],
           "hash": "848d65c721a3c41d968d9c7d3cf87c00ffa8c9b1b13e1b8062d89d4e05edca4b",
           "path": "app/src/lib/url.ts"
@@ -984,7 +1301,8 @@
           "importsFiles": [
             "app/src/lib/verifyDisplay.ts"
           ],
-          "path": "app/src/lib/verifyDisplay.test.ts"
+          "path": "app/src/lib/verifyDisplay.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -999,6 +1317,12 @@
           "path": "app/src/lib/verifyDisplay.ts"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "throw",
+              "line": 9
+            }
+          ],
           "hash": "bdead5f71ffc84454a053f19f79144c127c307a6098285f5b2fa8c53b1a461c2",
           "importOrder": [
             "app/src/App.tsx",
@@ -1022,12 +1346,35 @@
             "app/src/hooks/useDaemon.tsx",
             "app/src/routes/Audit.tsx"
           ],
-          "path": "app/src/routes/Audit.test.tsx"
+          "path": "app/src/routes/Audit.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "Audit",
             "auditBrowseAnchorParts"
+          ],
+          "failurePaths": [
+            {
+              "in": "Audit",
+              "kind": "catch",
+              "line": 85
+            },
+            {
+              "in": "Audit",
+              "kind": "catch",
+              "line": 124
+            },
+            {
+              "in": "Audit",
+              "kind": "catch",
+              "line": 140
+            },
+            {
+              "in": "Audit",
+              "kind": "catch",
+              "line": 165
+            }
           ],
           "hash": "162d1b49fb144ca9a807898cddb6c05dc2c917fafd73b462e993209fb98010a6",
           "importOrder": [
@@ -1074,7 +1421,8 @@
             "app/src/hooks/useDaemon.tsx",
             "app/src/routes/Game.tsx"
           ],
-          "path": "app/src/routes/Game.test.tsx"
+          "path": "app/src/routes/Game.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1119,7 +1467,8 @@
             "app/src/hooks/useDaemon.tsx",
             "app/src/routes/Index.tsx"
           ],
-          "path": "app/src/routes/Index.test.tsx"
+          "path": "app/src/routes/Index.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -1158,11 +1507,34 @@
             "app/src/hooks/useDaemon.tsx",
             "app/src/routes/Settings.tsx"
           ],
-          "path": "app/src/routes/Settings.test.tsx"
+          "path": "app/src/routes/Settings.test.tsx",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "Settings"
+          ],
+          "failurePaths": [
+            {
+              "in": "Settings",
+              "kind": "catch",
+              "line": 89
+            },
+            {
+              "in": "Settings",
+              "kind": "catch",
+              "line": 120
+            },
+            {
+              "in": "Settings",
+              "kind": "catch",
+              "line": 186
+            },
+            {
+              "in": "Settings",
+              "kind": "catch",
+              "line": 192
+            }
           ],
           "hash": "2aecff3a8b46c1d7030cb4d49bea16add33ac11a1dcbb8cf6dcc606c85054c6f",
           "importOrder": [
@@ -1195,7 +1567,8 @@
         },
         {
           "hash": "3d63fc24981603aa5ba4389b463d8840056b822c935c5d6cab9db2c80143b0cc",
-          "path": "app/src/styles/globals.test.ts"
+          "path": "app/src/styles/globals.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "045fce35730bf7351933fb4c0cb6c98f921f379343d84f0cd1953f406a1d11c9",
@@ -1207,7 +1580,8 @@
             "app/src/routes/Audit.tsx",
             "app/src/types/daemon.ts"
           ],
-          "path": "app/src/test/anchor-status-wire-shape.test.ts"
+          "path": "app/src/test/anchor-status-wire-shape.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "85a9f0200383e054a145d221c0c19f50ba8c4837b10e201e56c92ad87c116297",
@@ -1232,7 +1606,11 @@
           "importsFiles": [
             "app/src/types/daemon.ts"
           ],
-          "path": "app/src/test/proofs-wire-shape.test.ts"
+          "names": [
+            "app/src/routes/Audit.tsx"
+          ],
+          "path": "app/src/test/proofs-wire-shape.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a124fefbcaf4c0448eb684c0822df6ea508d77de079cac5a800871710a435ebc",
@@ -1243,7 +1621,12 @@
           "importsFiles": [
             "app/src/types/daemon.ts"
           ],
-          "path": "app/src/types/daemon.test.ts"
+          "names": [
+            "app/src-tauri/src/commands.rs",
+            "app/src-tauri/src/lib.rs"
+          ],
+          "path": "app/src/types/daemon.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "0fe1c10d66129a0f33769453bc5f6bf11d6072de0e4eeba267755a995c49ea9e",
@@ -1265,6 +1648,9 @@
           "path": "app/vite.config.ts"
         }
       ],
+      "frameworks": [
+        "tauri"
+      ],
       "globs": [
         "app/**"
       ],
@@ -1282,6 +1668,10 @@
       ],
       "outsideReads": 3,
       "role": "code",
+      "testRunners": [
+        "cargo test",
+        "vitest"
+      ],
       "testedBy": 32,
       "unresolvedSites": 0
     },
@@ -1397,6 +1787,17 @@
           "exports": [
             "main"
           ],
+          "failurePaths": [
+            {
+              "in": "_const_block",
+              "kind": "raise",
+              "line": 27
+            },
+            {
+              "kind": "raise",
+              "line": 119
+            }
+          ],
           "hash": "af50cc6bd54a2f908c20ae85fba46a66b801c93ff174d3dde02ba39e8f0a541a",
           "importsFiles": [
             "sov_engine/content.py",
@@ -1409,10 +1810,22 @@
             "inspect",
             "main"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 87
+            }
+          ],
           "hash": "27221a693b41aaf408a2b3dd08378c2c2122c7a1c5cbd4f417de924452281ddd",
           "path": "assets/print/source/check-pdf-fonts.py"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "throw",
+              "line": 39
+            }
+          ],
           "hash": "b30193e52d4f46d6f7725de6cee18cde1e0f6e64059573b9e80a5452defeb2c0",
           "path": "assets/print/source/compile-jsx.mjs"
         },
@@ -1499,6 +1912,21 @@
           "path": "assets/print/source/print-viewer.js"
         },
         {
+          "failurePaths": [
+            {
+              "in": "resolveChrome",
+              "kind": "throw",
+              "line": 45
+            },
+            {
+              "kind": "throw",
+              "line": 57
+            },
+            {
+              "kind": "throw",
+              "line": 62
+            }
+          ],
           "hash": "5fdab57d6e5f5894f5087d8bb00651dc276af9f1c35536ea46ce822c59a50301",
           "path": "assets/print/source/render.mjs"
         },
@@ -1519,10 +1947,767 @@
           "path": "assets/print/source/vendor/README.md"
         },
         {
+          "failurePaths": [
+            {
+              "in": "bc",
+              "kind": "throw",
+              "line": 17
+            },
+            {
+              "in": "bc",
+              "kind": "catch",
+              "line": 17
+            },
+            {
+              "in": "b",
+              "kind": "throw",
+              "line": 17
+            },
+            {
+              "in": "set",
+              "kind": "throw",
+              "line": 17
+            },
+            {
+              "in": "be",
+              "kind": "catch",
+              "line": 17
+            },
+            {
+              "in": "be",
+              "kind": "catch",
+              "line": 17
+            },
+            {
+              "in": "be",
+              "kind": "throw",
+              "line": 17
+            },
+            {
+              "in": "be",
+              "kind": "catch",
+              "line": 18
+            },
+            {
+              "in": "be",
+              "kind": "catch",
+              "line": 18
+            },
+            {
+              "in": "de",
+              "kind": "catch",
+              "line": 20
+            },
+            {
+              "in": "Qc",
+              "kind": "catch",
+              "line": 24
+            },
+            {
+              "in": "ne",
+              "kind": "throw",
+              "line": 28
+            },
+            {
+              "in": "ng",
+              "kind": "throw",
+              "line": 28
+            },
+            {
+              "in": "ng",
+              "kind": "throw",
+              "line": 28
+            },
+            {
+              "in": "pe",
+              "kind": "throw",
+              "line": 31
+            },
+            {
+              "in": "pe",
+              "kind": "throw",
+              "line": 31
+            },
+            {
+              "in": "pe",
+              "kind": "throw",
+              "line": 31
+            },
+            {
+              "in": "pe",
+              "kind": "throw",
+              "line": 31
+            },
+            {
+              "in": "tg",
+              "kind": "throw",
+              "line": 32
+            },
+            {
+              "in": "fc",
+              "kind": "throw",
+              "line": 34
+            },
+            {
+              "in": "mj",
+              "kind": "throw",
+              "line": 34
+            },
+            {
+              "in": "Ag",
+              "kind": "throw",
+              "line": 35
+            },
+            {
+              "in": "nj",
+              "kind": "throw",
+              "line": 35
+            },
+            {
+              "in": "nj",
+              "kind": "throw",
+              "line": 35
+            },
+            {
+              "in": "nj",
+              "kind": "throw",
+              "line": 36
+            },
+            {
+              "in": "nj",
+              "kind": "throw",
+              "line": 36
+            },
+            {
+              "in": "nj",
+              "kind": "throw",
+              "line": 36
+            },
+            {
+              "in": "oj",
+              "kind": "catch",
+              "line": 37
+            },
+            {
+              "in": "ch",
+              "kind": "catch",
+              "line": 57
+            },
+            {
+              "in": "Xg",
+              "kind": "throw",
+              "line": 63
+            },
+            {
+              "in": "jd",
+              "kind": "throw",
+              "line": 74
+            },
+            {
+              "in": "ik",
+              "kind": "throw",
+              "line": 74
+            },
+            {
+              "in": "Ib",
+              "kind": "throw",
+              "line": 76
+            },
+            {
+              "in": "th",
+              "kind": "throw",
+              "line": 77
+            },
+            {
+              "in": "uh",
+              "kind": "throw",
+              "line": 78
+            },
+            {
+              "in": "vh",
+              "kind": "throw",
+              "line": 78
+            },
+            {
+              "in": "db",
+              "kind": "catch",
+              "line": 79
+            },
+            {
+              "in": "db",
+              "kind": "throw",
+              "line": 79
+            },
+            {
+              "in": "Xe",
+              "kind": "throw",
+              "line": 82
+            },
+            {
+              "in": "Xe",
+              "kind": "throw",
+              "line": 82
+            },
+            {
+              "in": "pd",
+              "kind": "throw",
+              "line": 83
+            },
+            {
+              "in": "pd",
+              "kind": "throw",
+              "line": 83
+            },
+            {
+              "in": "vc",
+              "kind": "throw",
+              "line": 84
+            },
+            {
+              "in": "vc",
+              "kind": "throw",
+              "line": 84
+            },
+            {
+              "in": "vc",
+              "kind": "throw",
+              "line": 84
+            },
+            {
+              "in": "vc",
+              "kind": "throw",
+              "line": 84
+            },
+            {
+              "in": "qd",
+              "kind": "throw",
+              "line": 85
+            },
+            {
+              "in": "I",
+              "kind": "throw",
+              "line": 91
+            },
+            {
+              "in": "I",
+              "kind": "throw",
+              "line": 91
+            },
+            {
+              "in": "qa",
+              "kind": "throw",
+              "line": 96
+            },
+            {
+              "in": "Hh",
+              "kind": "throw",
+              "line": 103
+            },
+            {
+              "in": "ub",
+              "kind": "throw",
+              "line": 103
+            },
+            {
+              "in": "V",
+              "kind": "throw",
+              "line": 105
+            },
+            {
+              "in": "mf",
+              "kind": "throw",
+              "line": 105
+            },
+            {
+              "in": "mf",
+              "kind": "throw",
+              "line": 106
+            },
+            {
+              "in": "sa",
+              "kind": "throw",
+              "line": 106
+            },
+            {
+              "in": "of",
+              "kind": "throw",
+              "line": 107
+            },
+            {
+              "in": "pf",
+              "kind": "throw",
+              "line": 109
+            },
+            {
+              "in": "Kh",
+              "kind": "throw",
+              "line": 110
+            },
+            {
+              "in": "Oh",
+              "kind": "catch",
+              "line": 111
+            },
+            {
+              "in": "ok",
+              "kind": "catch",
+              "line": 116
+            },
+            {
+              "in": "Ub",
+              "kind": "catch",
+              "line": 120
+            },
+            {
+              "in": "wf",
+              "kind": "catch",
+              "line": 121
+            },
+            {
+              "in": "wf",
+              "kind": "throw",
+              "line": 121
+            },
+            {
+              "in": "Qa",
+              "kind": "throw",
+              "line": 142
+            },
+            {
+              "in": "xk",
+              "kind": "throw",
+              "line": 147
+            },
+            {
+              "in": "xk",
+              "kind": "throw",
+              "line": 154
+            },
+            {
+              "in": "xk",
+              "kind": "throw",
+              "line": 155
+            },
+            {
+              "in": "xk",
+              "kind": "throw",
+              "line": 155
+            },
+            {
+              "in": "xk",
+              "kind": "throw",
+              "line": 160
+            },
+            {
+              "in": "Bk",
+              "kind": "throw",
+              "line": 160
+            },
+            {
+              "in": "Wb",
+              "kind": "catch",
+              "line": 161
+            },
+            {
+              "in": "If",
+              "kind": "catch",
+              "line": 161
+            },
+            {
+              "in": "Ck",
+              "kind": "catch",
+              "line": 162
+            },
+            {
+              "in": "Ck",
+              "kind": "throw",
+              "line": 164
+            },
+            {
+              "in": "Ck",
+              "kind": "catch",
+              "line": 164
+            },
+            {
+              "in": "Di",
+              "kind": "catch",
+              "line": 168
+            },
+            {
+              "in": "Di",
+              "kind": "catch",
+              "line": 170
+            },
+            {
+              "in": "Aa",
+              "kind": "throw",
+              "line": 171
+            },
+            {
+              "in": "Aa",
+              "kind": "catch",
+              "line": 171
+            },
+            {
+              "in": "Fi",
+              "kind": "catch",
+              "line": 172
+            },
+            {
+              "in": "Fi",
+              "kind": "catch",
+              "line": 172
+            },
+            {
+              "in": "Fi",
+              "kind": "catch",
+              "line": 172
+            },
+            {
+              "in": "Fi",
+              "kind": "catch",
+              "line": 173
+            },
+            {
+              "in": "Fi",
+              "kind": "throw",
+              "line": 174
+            },
+            {
+              "in": "Fi",
+              "kind": "catch",
+              "line": 174
+            },
+            {
+              "in": "Fi",
+              "kind": "catch",
+              "line": 174
+            },
+            {
+              "in": "Fi",
+              "kind": "catch",
+              "line": 175
+            },
+            {
+              "in": "Fi",
+              "kind": "catch",
+              "line": 176
+            },
+            {
+              "in": "Fi",
+              "kind": "catch",
+              "line": 177
+            },
+            {
+              "in": "Ha",
+              "kind": "throw",
+              "line": 178
+            },
+            {
+              "in": "Ha",
+              "kind": "throw",
+              "line": 178
+            },
+            {
+              "in": "Ha",
+              "kind": "catch",
+              "line": 178
+            },
+            {
+              "in": "Ji",
+              "kind": "throw",
+              "line": 181
+            },
+            {
+              "in": "Ji",
+              "kind": "catch",
+              "line": 181
+            },
+            {
+              "in": "Ii",
+              "kind": "catch",
+              "line": 182
+            },
+            {
+              "in": "Ii",
+              "kind": "catch",
+              "line": 182
+            },
+            {
+              "in": "Ii",
+              "kind": "catch",
+              "line": 182
+            },
+            {
+              "in": "Ii",
+              "kind": "catch",
+              "line": 182
+            },
+            {
+              "in": "Ii",
+              "kind": "catch",
+              "line": 182
+            },
+            {
+              "in": "xa",
+              "kind": "throw",
+              "line": 183
+            },
+            {
+              "in": "Ni",
+              "kind": "throw",
+              "line": 185
+            },
+            {
+              "in": "Ni",
+              "kind": "catch",
+              "line": 185
+            },
+            {
+              "in": "Ni",
+              "kind": "throw",
+              "line": 185
+            },
+            {
+              "in": "Ni",
+              "kind": "throw",
+              "line": 186
+            },
+            {
+              "in": "Ni",
+              "kind": "throw",
+              "line": 186
+            },
+            {
+              "in": "Ni",
+              "kind": "throw",
+              "line": 187
+            },
+            {
+              "in": "Lk",
+              "kind": "catch",
+              "line": 188
+            },
+            {
+              "in": "Li",
+              "kind": "throw",
+              "line": 189
+            },
+            {
+              "in": "Li",
+              "kind": "throw",
+              "line": 189
+            },
+            {
+              "in": "Li",
+              "kind": "throw",
+              "line": 189
+            },
+            {
+              "in": "Pi",
+              "kind": "catch",
+              "line": 194
+            },
+            {
+              "in": "Nd",
+              "kind": "catch",
+              "line": 194
+            },
+            {
+              "in": "Nd",
+              "kind": "throw",
+              "line": 195
+            },
+            {
+              "in": "Rk",
+              "kind": "throw",
+              "line": 196
+            },
+            {
+              "in": "Rk",
+              "kind": "throw",
+              "line": 196
+            },
+            {
+              "in": "Rk",
+              "kind": "throw",
+              "line": 198
+            },
+            {
+              "in": "Xb",
+              "kind": "throw",
+              "line": 198
+            },
+            {
+              "in": "Xb",
+              "kind": "catch",
+              "line": 200
+            },
+            {
+              "in": "Xb",
+              "kind": "catch",
+              "line": 201
+            },
+            {
+              "in": "Gk",
+              "kind": "throw",
+              "line": 203
+            },
+            {
+              "in": "rd",
+              "kind": "throw",
+              "line": 206
+            },
+            {
+              "in": "Vi",
+              "kind": "throw",
+              "line": 209
+            },
+            {
+              "in": "Vi",
+              "kind": "throw",
+              "line": 209
+            },
+            {
+              "kind": "catch",
+              "line": 223
+            },
+            {
+              "in": "kj",
+              "kind": "catch",
+              "line": 223
+            },
+            {
+              "in": "useSyncExternalStore",
+              "kind": "throw",
+              "line": 241
+            },
+            {
+              "in": "useSyncExternalStore",
+              "kind": "throw",
+              "line": 241
+            },
+            {
+              "in": "Qk",
+              "kind": "throw",
+              "line": 251
+            },
+            {
+              "in": "Qk",
+              "kind": "throw",
+              "line": 252
+            },
+            {
+              "in": "Qk",
+              "kind": "throw",
+              "line": 256
+            },
+            {
+              "in": "Qk",
+              "kind": "throw",
+              "line": 257
+            },
+            {
+              "in": "Xf.prototype.render",
+              "kind": "throw",
+              "line": 257
+            },
+            {
+              "in": "se",
+              "kind": "throw",
+              "line": 260
+            },
+            {
+              "kind": "catch",
+              "line": 262
+            },
+            {
+              "in": "Q.createPortal",
+              "kind": "throw",
+              "line": 263
+            },
+            {
+              "in": "Q.createRoot",
+              "kind": "throw",
+              "line": 263
+            },
+            {
+              "in": "Q.findDOMNode",
+              "kind": "throw",
+              "line": 264
+            },
+            {
+              "in": "Q.findDOMNode",
+              "kind": "throw",
+              "line": 264
+            },
+            {
+              "in": "Q.hydrate",
+              "kind": "throw",
+              "line": 264
+            },
+            {
+              "in": "Q.hydrateRoot",
+              "kind": "throw",
+              "line": 264
+            },
+            {
+              "in": "Q.render",
+              "kind": "throw",
+              "line": 266
+            },
+            {
+              "in": "Q.unmountComponentAtNode",
+              "kind": "throw",
+              "line": 266
+            },
+            {
+              "in": "Q.unstable_renderSubtreeIntoContainer",
+              "kind": "throw",
+              "line": 266
+            },
+            {
+              "in": "Q.unstable_renderSubtreeIntoContainer",
+              "kind": "throw",
+              "line": 266
+            }
+          ],
           "hash": "35f4f974f4b2bcd44da73963347f8952e341f83909e4498227d4e26b98f66f0d",
           "path": "assets/print/source/vendor/react-dom.production.min.js"
         },
         {
+          "failurePaths": [
+            {
+              "in": "B",
+              "kind": "throw",
+              "line": 13
+            },
+            {
+              "in": "ra",
+              "kind": "throw",
+              "line": 15
+            },
+            {
+              "in": "ka",
+              "kind": "throw",
+              "line": 17
+            },
+            {
+              "in": "w.prototype.setState",
+              "kind": "throw",
+              "line": 19
+            },
+            {
+              "in": "only",
+              "kind": "throw",
+              "line": 25
+            },
+            {
+              "in": "c.cloneElement",
+              "kind": "throw",
+              "line": 26
+            }
+          ],
           "hash": "d949f1c3687aedadcedac85261865f29b17cd273997e7f6b2bfc53b2f9d4c4dd",
           "path": "assets/print/source/vendor/react.production.min.js"
         },
@@ -1935,6 +3120,13 @@
           "path": "site/src/content/docs/handbook/tiers.md"
         },
         {
+          "failurePaths": [
+            {
+              "in": "assertNever",
+              "kind": "throw",
+              "line": 65
+            }
+          ],
           "hash": "f8190ef4a5ea119b49d367dc87cc0794a184a6fb39615920ae6d1a9445187d6b",
           "importOrder": [
             "site/src/styles/global.css",
@@ -2053,6 +3245,18 @@
             "upgrade_unavailable_error",
             "wallet_error"
           ],
+          "failurePaths": [
+            {
+              "in": "_v1_layout_note",
+              "kind": "except",
+              "line": 206
+            },
+            {
+              "in": "state_version_mismatch_error",
+              "kind": "except",
+              "line": 247
+            }
+          ],
           "hash": "976431bb644076069b8bbd2dd226de88b7ba5ffb71237643c4a81a2281f7428b",
           "importsFiles": [
             "sov_cli/main.py",
@@ -2147,6 +3351,358 @@
             "verify",
             "vote",
             "wallet"
+          ],
+          "failurePaths": [
+            {
+              "in": "_version_callback",
+              "kind": "except",
+              "line": 135
+            },
+            {
+              "in": "_version_callback",
+              "kind": "raise",
+              "line": 145
+            },
+            {
+              "in": "_validate_game_id_or_fail",
+              "kind": "except",
+              "line": 252
+            },
+            {
+              "in": "_resolve_active_game_id",
+              "kind": "except",
+              "line": 283
+            },
+            {
+              "in": "_resolve_network",
+              "kind": "except",
+              "line": 492
+            },
+            {
+              "in": "_commit_anchor_chunks",
+              "kind": "raise",
+              "line": 545
+            },
+            {
+              "in": "_commit_anchor_chunks",
+              "kind": "except",
+              "line": 551
+            },
+            {
+              "in": "_commit_anchor_chunks",
+              "kind": "raise",
+              "line": 562
+            },
+            {
+              "in": "_load_game",
+              "kind": "except",
+              "line": 592
+            },
+            {
+              "in": "_fail",
+              "kind": "raise",
+              "line": 726
+            },
+            {
+              "in": "doctor",
+              "kind": "raise",
+              "line": 927
+            },
+            {
+              "in": "doctor",
+              "kind": "except",
+              "line": 937
+            },
+            {
+              "in": "doctor",
+              "kind": "except",
+              "line": 1022
+            },
+            {
+              "in": "doctor",
+              "kind": "except",
+              "line": 1061
+            },
+            {
+              "in": "_doctor_check_daemon_presence",
+              "kind": "except",
+              "line": 1164
+            },
+            {
+              "in": "_doctor_check_daemon_extra_coherence",
+              "kind": "except",
+              "line": 1221
+            },
+            {
+              "in": "_doctor_check_schema_version_currency",
+              "kind": "except",
+              "line": 1336
+            },
+            {
+              "in": "_doctor_check_schema_version_currency",
+              "kind": "except",
+              "line": 1338
+            },
+            {
+              "in": "_doctor_check_schema_version_currency",
+              "kind": "except",
+              "line": 1352
+            },
+            {
+              "in": "_doctor_check_schema_version_currency",
+              "kind": "except",
+              "line": 1354
+            },
+            {
+              "in": "_doctor_check_schema_version_currency",
+              "kind": "except",
+              "line": 1371
+            },
+            {
+              "in": "_collect_checks",
+              "kind": "except",
+              "line": 1414
+            },
+            {
+              "in": "_collect_checks",
+              "kind": "except",
+              "line": 1423
+            },
+            {
+              "in": "_collect_checks",
+              "kind": "except",
+              "line": 1439
+            },
+            {
+              "in": "support_bundle",
+              "kind": "except",
+              "line": 1574
+            },
+            {
+              "in": "new",
+              "kind": "raise",
+              "line": 1691
+            },
+            {
+              "in": "turn",
+              "kind": "raise",
+              "line": 1916
+            },
+            {
+              "in": "turn",
+              "kind": "raise",
+              "line": 1959
+            },
+            {
+              "in": "verify",
+              "kind": "except",
+              "line": 2094
+            },
+            {
+              "in": "verify",
+              "kind": "except",
+              "line": 2129
+            },
+            {
+              "in": "verify",
+              "kind": "raise",
+              "line": 2132
+            },
+            {
+              "in": "verify",
+              "kind": "except",
+              "line": 2133
+            },
+            {
+              "in": "anchor",
+              "kind": "except",
+              "line": 2202
+            },
+            {
+              "in": "anchor",
+              "kind": "raise",
+              "line": 2206
+            },
+            {
+              "in": "anchor",
+              "kind": "raise",
+              "line": 2214
+            },
+            {
+              "in": "anchor",
+              "kind": "except",
+              "line": 2288
+            },
+            {
+              "in": "anchor",
+              "kind": "except",
+              "line": 2297
+            },
+            {
+              "in": "anchor",
+              "kind": "raise",
+              "line": 2330
+            },
+            {
+              "in": "anchor",
+              "kind": "raise",
+              "line": 2341
+            },
+            {
+              "in": "_sort_key",
+              "kind": "except",
+              "line": 2356
+            },
+            {
+              "in": "anchor",
+              "kind": "except",
+              "line": 2451
+            },
+            {
+              "in": "anchor",
+              "kind": "except",
+              "line": 2461
+            },
+            {
+              "in": "wallet",
+              "kind": "except",
+              "line": 2503
+            },
+            {
+              "in": "wallet",
+              "kind": "raise",
+              "line": 2515
+            },
+            {
+              "in": "wallet",
+              "kind": "except",
+              "line": 2544
+            },
+            {
+              "in": "wallet",
+              "kind": "except",
+              "line": 2548
+            },
+            {
+              "in": "wallet",
+              "kind": "except",
+              "line": 2550
+            },
+            {
+              "in": "toast",
+              "kind": "raise",
+              "line": 2960
+            },
+            {
+              "in": "_read_season_document",
+              "kind": "except",
+              "line": 3055
+            },
+            {
+              "in": "_sort_key",
+              "kind": "except",
+              "line": 3300
+            },
+            {
+              "in": "game_end",
+              "kind": "except",
+              "line": 3349
+            },
+            {
+              "in": "season_postcard",
+              "kind": "raise",
+              "line": 3382
+            },
+            {
+              "in": "season_postcard",
+              "kind": "raise",
+              "line": 3396
+            },
+            {
+              "in": "_print_status",
+              "kind": "except",
+              "line": 3963
+            },
+            {
+              "in": "_query_daemon_status",
+              "kind": "except",
+              "line": 3992
+            },
+            {
+              "in": "_daemon_status_view",
+              "kind": "except",
+              "line": 4012
+            },
+            {
+              "in": "_print_brief_status",
+              "kind": "except",
+              "line": 4068
+            },
+            {
+              "in": "_print_brief_status",
+              "kind": "except",
+              "line": 4084
+            },
+            {
+              "in": "_status_json_payload",
+              "kind": "except",
+              "line": 4126
+            },
+            {
+              "in": "_sort_key",
+              "kind": "except",
+              "line": 4137
+            },
+            {
+              "in": "_status_json_payload",
+              "kind": "except",
+              "line": 4160
+            },
+            {
+              "in": "_resolve_version",
+              "kind": "except",
+              "line": 4281
+            },
+            {
+              "in": "_resolve_version",
+              "kind": "except",
+              "line": 4285
+            },
+            {
+              "in": "scenario",
+              "kind": "raise",
+              "line": 4596
+            },
+            {
+              "in": "_format_last_played",
+              "kind": "except",
+              "line": 4652
+            },
+            {
+              "in": "resume_cmd",
+              "kind": "raise",
+              "line": 4741
+            },
+            {
+              "in": "resume_cmd",
+              "kind": "except",
+              "line": 4756
+            },
+            {
+              "in": "_import_daemon_api",
+              "kind": "except",
+              "line": 4914
+            },
+            {
+              "in": "daemon_stop",
+              "kind": "except",
+              "line": 5035
+            },
+            {
+              "in": "daemon_stop",
+              "kind": "except",
+              "line": 5037
+            }
           ],
           "hash": "9be07f35f25d09f4b52c3a2ffc406b3cda948d0ec84ecea6fd5ed32ff3421ac3",
           "importOrder": [
@@ -7900,6 +9456,9 @@
       ],
       "outsideReads": 9,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 37,
       "unresolvedNamed": [
         {
@@ -7944,6 +9503,13 @@
           "exports": [
             "cors_headers"
           ],
+          "failurePaths": [
+            {
+              "in": "_authorization_header",
+              "kind": "except",
+              "line": 77
+            }
+          ],
           "hash": "07cb58923a20b5f194bf6578190c7dca2cb928ad10562be69371bbab3b0daee1",
           "path": "sov_daemon/auth.py"
         },
@@ -7956,6 +9522,48 @@
             "get_chain_cache",
             "reset_default_broadcaster",
             "sse_stream"
+          ],
+          "failurePaths": [
+            {
+              "in": "subscribe",
+              "kind": "raise",
+              "line": 112
+            },
+            {
+              "in": "broadcast",
+              "kind": "except",
+              "line": 171
+            },
+            {
+              "in": "_poll_state_changes",
+              "kind": "except",
+              "line": 197
+            },
+            {
+              "in": "_poll_state_changes",
+              "kind": "except",
+              "line": 209
+            },
+            {
+              "in": "_poll_state_changes",
+              "kind": "raise",
+              "line": 212
+            },
+            {
+              "in": "_poll_once",
+              "kind": "except",
+              "line": 228
+            },
+            {
+              "in": "get",
+              "kind": "except",
+              "line": 302
+            },
+            {
+              "in": "get",
+              "kind": "raise",
+              "line": 307
+            }
           ],
           "hash": "92d7c56ba6a8cfcfe2f11d94d1197a01f926e0a36a6f2000cdf7e5764f6c1d4c",
           "importsFiles": [
@@ -7972,6 +9580,133 @@
             "run_foreground_from_env",
             "start_daemon",
             "stop_daemon"
+          ],
+          "failurePaths": [
+            {
+              "in": "_pid_alive",
+              "kind": "except",
+              "line": 131
+            },
+            {
+              "in": "_pid_alive",
+              "kind": "except",
+              "line": 133
+            },
+            {
+              "in": "_pid_alive",
+              "kind": "except",
+              "line": 137
+            },
+            {
+              "in": "_pid_alive_windows",
+              "kind": "except",
+              "line": 157
+            },
+            {
+              "in": "_read_handshake",
+              "kind": "except",
+              "line": 190
+            },
+            {
+              "in": "_spawn_detached",
+              "kind": "except",
+              "line": 423
+            },
+            {
+              "in": "_spawn_detached",
+              "kind": "raise",
+              "line": 427
+            },
+            {
+              "in": "_health_endpoint_ok",
+              "kind": "except",
+              "line": 454
+            },
+            {
+              "in": "_wait_for_handshake",
+              "kind": "raise",
+              "line": 490
+            },
+            {
+              "in": "start_daemon",
+              "kind": "raise",
+              "line": 524
+            },
+            {
+              "in": "start_daemon",
+              "kind": "except",
+              "line": 545
+            },
+            {
+              "in": "start_daemon",
+              "kind": "raise",
+              "line": 548
+            },
+            {
+              "in": "stop_daemon",
+              "kind": "raise",
+              "line": 587
+            },
+            {
+              "in": "stop_daemon",
+              "kind": "except",
+              "line": 600
+            },
+            {
+              "in": "stop_daemon",
+              "kind": "except",
+              "line": 604
+            },
+            {
+              "in": "stop_daemon",
+              "kind": "raise",
+              "line": 622
+            },
+            {
+              "in": "_windows_process_image_name",
+              "kind": "except",
+              "line": 646
+            },
+            {
+              "in": "_windows_process_image_name",
+              "kind": "except",
+              "line": 673
+            },
+            {
+              "in": "_windows_process_command_line",
+              "kind": "except",
+              "line": 689
+            },
+            {
+              "in": "_windows_process_command_line",
+              "kind": "except",
+              "line": 741
+            },
+            {
+              "in": "_is_sov_daemon_pid",
+              "kind": "except",
+              "line": 781
+            },
+            {
+              "in": "_is_sov_daemon_pid",
+              "kind": "except",
+              "line": 794
+            },
+            {
+              "in": "_terminate_windows",
+              "kind": "except",
+              "line": 808
+            },
+            {
+              "in": "run_foreground",
+              "kind": "except",
+              "line": 866
+            },
+            {
+              "in": "run_foreground",
+              "kind": "raise",
+              "line": 868
+            }
           ],
           "hash": "6bae9a56ccea53476253289f3cef3c2414ebf685f4e40d0b587c41c2c0dc4551",
           "importOrder": [
@@ -8009,6 +9744,198 @@
             "proof_detail_handler",
             "proofs_list_handler",
             "verify_round_handler"
+          ],
+          "failurePaths": [
+            {
+              "in": "_daemon_version",
+              "kind": "except",
+              "line": 74
+            },
+            {
+              "in": "_read_state",
+              "kind": "except",
+              "line": 199
+            },
+            {
+              "in": "_read_state",
+              "kind": "except",
+              "line": 209
+            },
+            {
+              "in": "_proof_path_for_round",
+              "kind": "except",
+              "line": 317
+            },
+            {
+              "in": "_proof_path_for_round",
+              "kind": "except",
+              "line": 327
+            },
+            {
+              "in": "_proof_path_for_round",
+              "kind": "except",
+              "line": 340
+            },
+            {
+              "in": "health_handler",
+              "kind": "except",
+              "line": 386
+            },
+            {
+              "in": "health_handler",
+              "kind": "except",
+              "line": 399
+            },
+            {
+              "in": "games_handler",
+              "kind": "except",
+              "line": 437
+            },
+            {
+              "in": "games_handler",
+              "kind": "except",
+              "line": 469
+            },
+            {
+              "in": "proofs_list_handler",
+              "kind": "except",
+              "line": 543
+            },
+            {
+              "in": "proof_detail_handler",
+              "kind": "except",
+              "line": 583
+            },
+            {
+              "in": "anchor_status_handler",
+              "kind": "except",
+              "line": 620
+            },
+            {
+              "in": "verify_round_handler",
+              "kind": "except",
+              "line": 675
+            },
+            {
+              "in": "verify_round_handler",
+              "kind": "except",
+              "line": 705
+            },
+            {
+              "in": "flush_pending_anchors",
+              "kind": "raise",
+              "line": 842
+            },
+            {
+              "in": "flush_pending_anchors",
+              "kind": "raise",
+              "line": 881
+            },
+            {
+              "in": "flush_pending_anchors",
+              "kind": "except",
+              "line": 887
+            },
+            {
+              "in": "flush_pending_anchors",
+              "kind": "raise",
+              "line": 900
+            },
+            {
+              "in": "_reserve_base_drops_from_server_state",
+              "kind": "except",
+              "line": 940
+            },
+            {
+              "in": "_async_xrpl_client",
+              "kind": "raise",
+              "line": 957
+            },
+            {
+              "in": "_fetch_reserve_base_drops",
+              "kind": "raise",
+              "line": 973
+            },
+            {
+              "in": "_check_wallet_balance_or_raise",
+              "kind": "except",
+              "line": 1018
+            },
+            {
+              "in": "_check_wallet_balance_or_raise",
+              "kind": "raise",
+              "line": 1028
+            },
+            {
+              "in": "_check_wallet_balance_or_raise",
+              "kind": "raise",
+              "line": 1032
+            },
+            {
+              "in": "_check_wallet_balance_or_raise",
+              "kind": "except",
+              "line": 1033
+            },
+            {
+              "in": "_check_wallet_balance_or_raise",
+              "kind": "raise",
+              "line": 1041
+            },
+            {
+              "in": "_check_wallet_balance_or_raise",
+              "kind": "raise",
+              "line": 1044
+            },
+            {
+              "in": "_do_anchor",
+              "kind": "except",
+              "line": 1103
+            },
+            {
+              "in": "_do_anchor",
+              "kind": "except",
+              "line": 1110
+            },
+            {
+              "in": "_do_anchor",
+              "kind": "except",
+              "line": 1120
+            },
+            {
+              "in": "_do_anchor",
+              "kind": "except",
+              "line": 1124
+            },
+            {
+              "in": "_do_anchor",
+              "kind": "except",
+              "line": 1130
+            },
+            {
+              "in": "_round_sort_key",
+              "kind": "except",
+              "line": 1207
+            },
+            {
+              "in": "build_app",
+              "kind": "raise",
+              "line": 1381
+            },
+            {
+              "in": "__call__",
+              "kind": "except",
+              "line": 1590
+            },
+            {
+              "in": "counted_receive",
+              "kind": "raise",
+              "line": 1612
+            },
+            {
+              "in": "__call__",
+              "kind": "except",
+              "line": 1619
+            }
           ],
           "hash": "85d51d550d4af3540651ee109c3ee4353715e9fcce9e35ac86561ba90c0154dd",
           "importOrder": [
@@ -8061,7 +9988,10 @@
       ],
       "outsideReads": 3,
       "role": "code",
-      "testedBy": 32,
+      "testRunners": [
+        "pytest"
+      ],
+      "testedBy": 33,
       "unresolvedSites": 0
     },
     {
@@ -8189,6 +10119,33 @@
             "mark_final_proof",
             "save_proof",
             "verify_proof"
+          ],
+          "failurePaths": [
+            {
+              "in": "verify_proof",
+              "kind": "except",
+              "line": 100
+            },
+            {
+              "in": "verify_proof",
+              "kind": "raise",
+              "line": 101
+            },
+            {
+              "in": "verify_proof",
+              "kind": "raise",
+              "line": 105
+            },
+            {
+              "in": "verify_proof",
+              "kind": "raise",
+              "line": 112
+            },
+            {
+              "in": "verify_proof",
+              "kind": "raise",
+              "line": 117
+            }
           ],
           "hash": "2f240545e63048ca697e08f7e4e4e8b809e80214a5c6c35adb8ca5afb6b7ce41",
           "importsFiles": [
@@ -8357,6 +10314,113 @@
             "set_active_game_id",
             "state_file",
             "undo_state_file"
+          ],
+          "failurePaths": [
+            {
+              "in": "_validate_game_id",
+              "kind": "raise",
+              "line": 72
+            },
+            {
+              "in": "atomic_write_text",
+              "kind": "except",
+              "line": 119
+            },
+            {
+              "in": "atomic_write_text",
+              "kind": "raise",
+              "line": 125
+            },
+            {
+              "in": "atomic_write_text",
+              "kind": "except",
+              "line": 132
+            },
+            {
+              "in": "atomic_write_text",
+              "kind": "except",
+              "line": 146
+            },
+            {
+              "in": "get_active_game_id",
+              "kind": "except",
+              "line": 248
+            },
+            {
+              "in": "get_active_game_id",
+              "kind": "except",
+              "line": 260
+            },
+            {
+              "in": "_summarize_game",
+              "kind": "except",
+              "line": 302
+            },
+            {
+              "in": "list_saved_games",
+              "kind": "except",
+              "line": 338
+            },
+            {
+              "in": "_write_migration_breadcrumb",
+              "kind": "except",
+              "line": 395
+            },
+            {
+              "in": "_read_migration_breadcrumb",
+              "kind": "except",
+              "line": 418
+            },
+            {
+              "in": "migrate_v1_layout",
+              "kind": "except",
+              "line": 481
+            },
+            {
+              "in": "migrate_v1_layout",
+              "kind": "except",
+              "line": 494
+            },
+            {
+              "in": "migrate_v1_layout",
+              "kind": "except",
+              "line": 522
+            },
+            {
+              "in": "migrate_v1_layout",
+              "kind": "raise",
+              "line": 532
+            },
+            {
+              "in": "_recover_partial_migration",
+              "kind": "except",
+              "line": 559
+            },
+            {
+              "in": "_recover_partial_migration",
+              "kind": "except",
+              "line": 582
+            },
+            {
+              "in": "_recover_partial_migration",
+              "kind": "raise",
+              "line": 590
+            },
+            {
+              "in": "_quarantine_malformed",
+              "kind": "except",
+              "line": 702
+            },
+            {
+              "in": "_read_pending_anchors_tagged",
+              "kind": "except",
+              "line": 749
+            },
+            {
+              "in": "_read_pending_anchors_tagged",
+              "kind": "except",
+              "line": 758
+            }
           ],
           "hash": "9a0c2365608cde3c67997122c59ec96036439e7e1eeb1ef23427167e1e352cc8",
           "importsFiles": [
@@ -8669,6 +10733,68 @@
             "record_anchors",
             "record_anchors_and_clear_pending",
             "verify_proof_local"
+          ],
+          "failurePaths": [
+            {
+              "in": "_render_proof_path",
+              "kind": "except",
+              "line": 102
+            },
+            {
+              "in": "_render_proof_path",
+              "kind": "except",
+              "line": 108
+            },
+            {
+              "in": "_load_proof",
+              "kind": "except",
+              "line": 126
+            },
+            {
+              "in": "_load_proof",
+              "kind": "raise",
+              "line": 127
+            },
+            {
+              "in": "_load_proof",
+              "kind": "raise",
+              "line": 134
+            },
+            {
+              "in": "_load_proof",
+              "kind": "raise",
+              "line": 142
+            },
+            {
+              "in": "_load_proof",
+              "kind": "raise",
+              "line": 148
+            },
+            {
+              "in": "_load_proof",
+              "kind": "raise",
+              "line": 156
+            },
+            {
+              "in": "_load_proof",
+              "kind": "raise",
+              "line": 162
+            },
+            {
+              "in": "_read_anchors",
+              "kind": "except",
+              "line": 225
+            },
+            {
+              "in": "_migrate_anchors_to_wrapped",
+              "kind": "except",
+              "line": 302
+            },
+            {
+              "in": "read_anchors_file",
+              "kind": "except",
+              "line": 364
+            }
           ],
           "hash": "9af3b874e553790102c73ff98782ca7310c3e7817ceff76a1c6fb75b60250c4c",
           "importsFiles": [
@@ -9076,6 +11202,18 @@
           ]
         },
         {
+          "failurePaths": [
+            {
+              "in": "setstate",
+              "kind": "raise",
+              "line": 43
+            },
+            {
+              "in": "setstate",
+              "kind": "raise",
+              "line": 46
+            }
+          ],
           "hash": "99a63e1c8f866cef50bac92005828d5999e4ecedc0204bdbc31feb6ba62d8636",
           "path": "sov_engine/rng.py"
         },
@@ -9103,6 +11241,13 @@
             "resolve_help_desk",
             "resolve_space",
             "roll_and_move"
+          ],
+          "failurePaths": [
+            {
+              "in": "new_game",
+              "kind": "raise",
+              "line": 41
+            }
           ],
           "hash": "4bec6f4b067c599f6d663bb9d0d4a8312f0366e63f18a1a87ff335f6cd3f75bb",
           "importsFiles": [
@@ -9597,6 +11742,13 @@
           "exports": [
             "new_market_day_game"
           ],
+          "failurePaths": [
+            {
+              "in": "new_market_day_game",
+              "kind": "raise",
+              "line": 63
+            }
+          ],
           "hash": "f9594fd088c0d848ecf66d57ab47fad01a1ebd50da84db8ac379994f33bf388c",
           "importsFiles": [
             "sov_engine/content.py",
@@ -9712,6 +11864,13 @@
             "market_status",
             "new_town_hall_game",
             "upgrade_with_resources"
+          ],
+          "failurePaths": [
+            {
+              "in": "new_town_hall_game",
+              "kind": "raise",
+              "line": 80
+            }
           ],
           "hash": "a2da9bded0202da5c1b7a790c13624db43d674928ba955bb5ef7a60ce473e911",
           "importsFiles": [
@@ -9901,6 +12060,23 @@
             "treaty_keep",
             "treaty_list",
             "treaty_make"
+          ],
+          "failurePaths": [
+            {
+              "in": "_next_treaty_id",
+              "kind": "except",
+              "line": 58
+            },
+            {
+              "in": "new_treaty_table_game",
+              "kind": "raise",
+              "line": 75
+            },
+            {
+              "in": "parse_stake",
+              "kind": "except",
+              "line": 133
+            }
           ],
           "hash": "cf14e1e4774fb53995380bf2875fc595a33429f44e0ba1bfd27d2c44ee9862a1",
           "importsFiles": [
@@ -10209,6 +12385,18 @@
           "exports": [
             "read_versioned"
           ],
+          "failurePaths": [
+            {
+              "in": "read_versioned",
+              "kind": "raise",
+              "line": 84
+            },
+            {
+              "in": "read_versioned",
+              "kind": "raise",
+              "line": 100
+            }
+          ],
           "hash": "b5e5a878b3ec5a6dc0af150fddea192c8f2b86f7961b1864cebb596e2a6723b3",
           "path": "sov_engine/schemas.py",
           "sequences": [
@@ -10246,6 +12434,63 @@
             "get_mainnet_seed",
             "resolve_wallet_seed",
             "set_mainnet_seed"
+          ],
+          "failurePaths": [
+            {
+              "in": "get_mainnet_seed",
+              "kind": "except",
+              "line": 40
+            },
+            {
+              "in": "get_mainnet_seed",
+              "kind": "except",
+              "line": 45
+            },
+            {
+              "in": "set_mainnet_seed",
+              "kind": "raise",
+              "line": 66
+            },
+            {
+              "in": "set_mainnet_seed",
+              "kind": "except",
+              "line": 69
+            },
+            {
+              "in": "set_mainnet_seed",
+              "kind": "raise",
+              "line": 70
+            },
+            {
+              "in": "set_mainnet_seed",
+              "kind": "except",
+              "line": 73
+            },
+            {
+              "in": "set_mainnet_seed",
+              "kind": "raise",
+              "line": 74
+            },
+            {
+              "in": "clear_mainnet_seed",
+              "kind": "except",
+              "line": 82
+            },
+            {
+              "in": "clear_mainnet_seed",
+              "kind": "except",
+              "line": 86
+            },
+            {
+              "in": "resolve_wallet_seed",
+              "kind": "except",
+              "line": 110
+            },
+            {
+              "in": "resolve_wallet_seed",
+              "kind": "except",
+              "line": 123
+            }
           ],
           "hash": "a3228b8eafa7ac35559dde9873b8f18b87556d9fbb1edfee3fa379b09f590acc",
           "path": "sov_engine/wallet_seed.py",
@@ -10291,7 +12536,10 @@
       "outsideReads": 19,
       "outsideWrites": 2,
       "role": "code",
-      "testedBy": 51,
+      "testRunners": [
+        "pytest"
+      ],
+      "testedBy": 53,
       "unresolvedSites": 0
     },
     {
@@ -10316,10 +12564,29 @@
           "path": "sov_transport/__init__.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "get_memo_text",
+              "kind": "raise",
+              "line": 184
+            }
+          ],
           "hash": "9cfb2a5896f89fc375664a4cad29f2a89dba0d0706e4f323b745f99fed09dca2",
           "path": "sov_transport/base.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "anchor_batch",
+              "kind": "raise",
+              "line": 55
+            },
+            {
+              "in": "is_anchored_on_chain",
+              "kind": "raise",
+              "line": 62
+            }
+          ],
           "hash": "c59d4eb800c108df3e7fa772ec1df61ae367ca0ac3ba46960ac28129254acb0f",
           "importsFiles": [
             "sov_transport/base.py",
@@ -10332,6 +12599,158 @@
           "entryRule": 4,
           "exports": [
             "fund_dev_wallet"
+          ],
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 128
+            },
+            {
+              "in": "anchor",
+              "kind": "raise",
+              "line": 187
+            },
+            {
+              "in": "anchor_batch",
+              "kind": "raise",
+              "line": 237
+            },
+            {
+              "in": "anchor_batch",
+              "kind": "raise",
+              "line": 246
+            },
+            {
+              "in": "anchor_batch",
+              "kind": "raise",
+              "line": 266
+            },
+            {
+              "in": "_submit",
+              "kind": "except",
+              "line": 297
+            },
+            {
+              "in": "_submit",
+              "kind": "raise",
+              "line": 298
+            },
+            {
+              "in": "_submit",
+              "kind": "except",
+              "line": 353
+            },
+            {
+              "in": "_submit",
+              "kind": "raise",
+              "line": 391
+            },
+            {
+              "in": "_submit",
+              "kind": "except",
+              "line": 408
+            },
+            {
+              "in": "_submit",
+              "kind": "raise",
+              "line": 417
+            },
+            {
+              "in": "_submit",
+              "kind": "raise",
+              "line": 427
+            },
+            {
+              "in": "_submit",
+              "kind": "raise",
+              "line": 438
+            },
+            {
+              "in": "_submit",
+              "kind": "except",
+              "line": 454
+            },
+            {
+              "in": "_submit",
+              "kind": "raise",
+              "line": 469
+            },
+            {
+              "in": "_submit",
+              "kind": "except",
+              "line": 470
+            },
+            {
+              "in": "_submit",
+              "kind": "raise",
+              "line": 471
+            },
+            {
+              "in": "is_anchored_on_chain",
+              "kind": "raise",
+              "line": 520
+            },
+            {
+              "in": "is_anchored_on_chain",
+              "kind": "raise",
+              "line": 522
+            },
+            {
+              "in": "is_anchored_on_chain",
+              "kind": "except",
+              "line": 527
+            },
+            {
+              "in": "is_anchored_on_chain",
+              "kind": "raise",
+              "line": 528
+            },
+            {
+              "in": "is_anchored_on_chain",
+              "kind": "except",
+              "line": 536
+            },
+            {
+              "in": "is_anchored_on_chain",
+              "kind": "except",
+              "line": 563
+            },
+            {
+              "in": "get_memo_text",
+              "kind": "raise",
+              "line": 616
+            },
+            {
+              "in": "get_memo_text",
+              "kind": "except",
+              "line": 620
+            },
+            {
+              "in": "get_memo_text",
+              "kind": "raise",
+              "line": 621
+            },
+            {
+              "in": "fund_dev_wallet",
+              "kind": "raise",
+              "line": 677
+            },
+            {
+              "in": "fund_dev_wallet",
+              "kind": "except",
+              "line": 688
+            },
+            {
+              "in": "fund_dev_wallet",
+              "kind": "raise",
+              "line": 689
+            },
+            {
+              "in": "fund_dev_wallet",
+              "kind": "raise",
+              "line": 697
+            }
           ],
           "hash": "d2eee66691f5515f268d8aadd99565b0a5a2dfde6e78483f8e29755ea9b1d91d",
           "importsFiles": [
@@ -10360,6 +12779,148 @@
           ]
         },
         {
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 118
+            },
+            {
+              "in": "anchor",
+              "kind": "raise",
+              "line": 166
+            },
+            {
+              "in": "anchor_batch",
+              "kind": "raise",
+              "line": 202
+            },
+            {
+              "in": "anchor_batch",
+              "kind": "raise",
+              "line": 209
+            },
+            {
+              "in": "anchor_batch",
+              "kind": "raise",
+              "line": 226
+            },
+            {
+              "in": "_submit",
+              "kind": "except",
+              "line": 259
+            },
+            {
+              "in": "_submit",
+              "kind": "raise",
+              "line": 260
+            },
+            {
+              "in": "_submit",
+              "kind": "except",
+              "line": 311
+            },
+            {
+              "in": "_submit",
+              "kind": "raise",
+              "line": 349
+            },
+            {
+              "in": "_submit",
+              "kind": "except",
+              "line": 366
+            },
+            {
+              "in": "_submit",
+              "kind": "raise",
+              "line": 375
+            },
+            {
+              "in": "_submit",
+              "kind": "raise",
+              "line": 385
+            },
+            {
+              "in": "_submit",
+              "kind": "raise",
+              "line": 396
+            },
+            {
+              "in": "_submit",
+              "kind": "except",
+              "line": 412
+            },
+            {
+              "in": "_submit",
+              "kind": "raise",
+              "line": 427
+            },
+            {
+              "in": "_submit",
+              "kind": "except",
+              "line": 428
+            },
+            {
+              "in": "_submit",
+              "kind": "raise",
+              "line": 429
+            },
+            {
+              "in": "is_anchored_on_chain",
+              "kind": "raise",
+              "line": 458
+            },
+            {
+              "in": "is_anchored_on_chain",
+              "kind": "raise",
+              "line": 460
+            },
+            {
+              "in": "is_anchored_on_chain",
+              "kind": "except",
+              "line": 465
+            },
+            {
+              "in": "is_anchored_on_chain",
+              "kind": "raise",
+              "line": 466
+            },
+            {
+              "in": "is_anchored_on_chain",
+              "kind": "except",
+              "line": 474
+            },
+            {
+              "in": "is_anchored_on_chain",
+              "kind": "except",
+              "line": 491
+            },
+            {
+              "in": "get_memo_text",
+              "kind": "raise",
+              "line": 546
+            },
+            {
+              "in": "get_memo_text",
+              "kind": "except",
+              "line": 550
+            },
+            {
+              "in": "get_memo_text",
+              "kind": "raise",
+              "line": 551
+            },
+            {
+              "in": "_maybe_aclose",
+              "kind": "except",
+              "line": 598
+            },
+            {
+              "in": "_maybe_aclose",
+              "kind": "except",
+              "line": 606
+            }
+          ],
           "hash": "d138e60c9897522526829f20f1e0320dc3d2bf0ad1f6bc2a370d7359e15b2ebd",
           "importsFiles": [
             "sov_transport/__init__.py",
@@ -10369,6 +12930,13 @@
           "path": "sov_transport/xrpl_async.py"
         },
         {
+          "failurePaths": [
+            {
+              "in": "_from_hex",
+              "kind": "except",
+              "line": 169
+            }
+          ],
           "hash": "6ad55badcb72bd77fcbb626f66e6662ceff65b17b9f35bcbc7f48e3fa5978d64",
           "importsFiles": [
             "sov_transport/base.py"
@@ -10379,14 +12947,23 @@
           "exports": [
             "fund_testnet_wallet"
           ],
+          "failurePaths": [
+            {
+              "in": "__getattr__",
+              "kind": "raise",
+              "line": 83
+            }
+          ],
           "hash": "d9ac1ae07adadfb385fdc88b160a4b48a24c289d2319491a7bf8ec30990ba11b",
           "importOrder": [
             "sov_transport/xrpl.py",
-            "sov_transport/__init__.py"
+            "sov_transport/__init__.py",
+            "sov_transport/xrpl_internals.py"
           ],
           "importsFiles": [
             "sov_transport/__init__.py",
-            "sov_transport/xrpl.py"
+            "sov_transport/xrpl.py",
+            "sov_transport/xrpl_internals.py"
           ],
           "path": "sov_transport/xrpl_testnet.py"
         }
@@ -10398,7 +12975,10 @@
       "name": "sov_transport",
       "origin": "authored",
       "role": "code",
-      "testedBy": 45,
+      "testRunners": [
+        "pytest"
+      ],
+      "testedBy": 47,
       "unresolvedSites": 0
     },
     {
@@ -10420,9 +13000,11 @@
         {
           "hash": "3e1ed744eb1c752f9ad25781dca984068a40dd4fb72eef670df6bf14ec217a51",
           "importsFiles": [
-            "sov_engine/rules/__init__.py"
+            "sov_engine/rules/__init__.py",
+            "sov_engine/rules/campfire.py"
           ],
-          "path": "tests/conftest.py"
+          "path": "tests/conftest.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10440,7 +13022,8 @@
             "sov_cli/main.py",
             "sov_engine/io_utils.py"
           ],
-          "path": "tests/test_active_game_resolution.py"
+          "path": "tests/test_active_game_resolution.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10459,7 +13042,8 @@
             "sov_transport/base.py",
             "sov_transport/xrpl.py"
           ],
-          "path": "tests/test_anchor_batch.py"
+          "path": "tests/test_anchor_batch.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10489,7 +13073,8 @@
             "sov_transport/xrpl.py",
             "sov_transport/xrpl_internals.py"
           ],
-          "path": "tests/test_anchor_cli.py"
+          "path": "tests/test_anchor_cli.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10500,6 +13085,9 @@
           "importsFiles": [
             "sov_engine/hashing.py",
             "sov_engine/rules/campfire.py"
+          ],
+          "names": [
+            "sov_cli/main.py"
           ],
           "path": "tests/test_anchor_contract.py"
         },
@@ -10524,7 +13112,8 @@
             "sov_engine/proof.py",
             "sov_transport/xrpl_internals.py"
           ],
-          "path": "tests/test_anchors_json_shape.py"
+          "path": "tests/test_anchors_json_shape.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10551,7 +13140,8 @@
           "importsFiles": [
             "sov_engine/io_utils.py"
           ],
-          "path": "tests/test_backend_amend_wave6.py"
+          "path": "tests/test_backend_amend_wave6.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10566,10 +13156,12 @@
           "hash": "c686feffe4b9e1e82ecc1719a16832d1de0734dcb57cd9be9f2716a654cb0f2e",
           "importOrder": [
             "sov_cli/main.py",
-            "sov_cli/__init__.py"
+            "sov_cli/__init__.py",
+            "sov_cli/errors.py"
           ],
           "importsFiles": [
             "sov_cli/__init__.py",
+            "sov_cli/errors.py",
             "sov_cli/main.py"
           ],
           "path": "tests/test_backtick_rendering.py"
@@ -10594,7 +13186,8 @@
             "sov_transport/xrpl_async.py",
             "sov_transport/xrpl_internals.py"
           ],
-          "path": "tests/test_bridge_amend_wave11.py"
+          "path": "tests/test_bridge_amend_wave11.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10619,9 +13212,11 @@
             "sov_engine/io_utils.py",
             "sov_engine/rules/campfire.py",
             "sov_engine/serialize.py",
-            "sov_transport/__init__.py"
+            "sov_transport/__init__.py",
+            "sov_transport/xrpl.py"
           ],
-          "path": "tests/test_cli_amend_wave9.py"
+          "path": "tests/test_cli_amend_wave9.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10636,7 +13231,8 @@
           ],
           "hash": "c2c7807aebfa236a7709346ec1344de72cd7f2a38a6a22b9ca221c581344e78b",
           "importsFiles": [
-            "sov_cli/__init__.py"
+            "sov_cli/__init__.py",
+            "sov_cli/main.py"
           ],
           "path": "tests/test_cli_empty_states.py"
         },
@@ -10648,7 +13244,8 @@
           "importsFiles": [
             "sov_cli/main.py"
           ],
-          "path": "tests/test_cli_help_no_placeholders.py"
+          "path": "tests/test_cli_help_no_placeholders.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10692,7 +13289,8 @@
             "sov_engine/rules/treaty_table.py",
             "sov_engine/serialize.py"
           ],
-          "path": "tests/test_cli_integration.py"
+          "path": "tests/test_cli_integration.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10707,11 +13305,16 @@
           "hash": "1062b02757f756569d15bb0694863b29c5363f3ca52fbbc28bbeb858eb435572",
           "importOrder": [
             "sov_daemon/events.py",
-            "sov_daemon/__init__.py"
+            "sov_daemon/__init__.py",
+            "sov_daemon/lifecycle.py"
           ],
           "importsFiles": [
             "sov_daemon/__init__.py",
-            "sov_daemon/events.py"
+            "sov_daemon/events.py",
+            "sov_daemon/lifecycle.py"
+          ],
+          "names": [
+            "sov_daemon/server.py"
           ],
           "path": "tests/test_daemon_amend_wave11.py"
         },
@@ -10753,7 +13356,8 @@
             "sov_engine/io_utils.py",
             "sov_transport/xrpl_async.py"
           ],
-          "path": "tests/test_daemon_amend_wave7.py"
+          "path": "tests/test_daemon_amend_wave7.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10797,7 +13401,12 @@
             "sov_daemon/server.py",
             "sov_engine/io_utils.py"
           ],
-          "path": "tests/test_daemon_amend_wave9.py"
+          "names": [
+            "app/src-tauri/src/commands.rs",
+            "app/src/types/daemon.ts"
+          ],
+          "path": "tests/test_daemon_amend_wave9.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10812,7 +13421,8 @@
           "importsFiles": [
             "sov_daemon/server.py"
           ],
-          "path": "tests/test_daemon_auth.py"
+          "path": "tests/test_daemon_auth.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10825,7 +13435,8 @@
           "importsFiles": [
             "sov_daemon/server.py"
           ],
-          "path": "tests/test_daemon_cors.py"
+          "path": "tests/test_daemon_cors.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10856,7 +13467,8 @@
             "sov_engine/io_utils.py",
             "sov_engine/proof.py"
           ],
-          "path": "tests/test_daemon_endpoints.py"
+          "path": "tests/test_daemon_endpoints.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10888,7 +13500,8 @@
             "sov_transport/xrpl_internals.py",
             "tests/test_cli_integration.py"
           ],
-          "path": "tests/test_daemon_lifecycle.py"
+          "path": "tests/test_daemon_lifecycle.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10904,7 +13517,8 @@
           "importsFiles": [
             "sov_daemon/server.py"
           ],
-          "path": "tests/test_daemon_readonly.py"
+          "path": "tests/test_daemon_readonly.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10918,7 +13532,8 @@
             "sov_daemon/lifecycle.py",
             "sov_transport/xrpl_internals.py"
           ],
-          "path": "tests/test_daemon_seed_leak.py"
+          "path": "tests/test_daemon_seed_leak.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10939,7 +13554,8 @@
             "sov_daemon/events.py",
             "sov_daemon/server.py"
           ],
-          "path": "tests/test_daemon_sse.py"
+          "path": "tests/test_daemon_sse.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10960,7 +13576,11 @@
             "sov_transport/base.py",
             "sov_transport/xrpl_internals.py"
           ],
-          "path": "tests/test_daemon_types_ts_in_sync.py"
+          "names": [
+            "app/src/types/daemon.ts"
+          ],
+          "path": "tests/test_daemon_types_ts_in_sync.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -10985,7 +13605,8 @@
             "sov_engine/proof.py",
             "sov_transport/base.py"
           ],
-          "path": "tests/test_daemon_verify_endpoint.py"
+          "path": "tests/test_daemon_verify_endpoint.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11002,7 +13623,8 @@
             "sov_engine/io_utils.py",
             "tests/test_daemon_endpoints.py"
           ],
-          "path": "tests/test_daemon_wallet_file.py"
+          "path": "tests/test_daemon_wallet_file.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11114,7 +13736,8 @@
             "sov_engine/io_utils.py",
             "sov_engine/rules/campfire.py"
           ],
-          "path": "tests/test_engine.py"
+          "path": "tests/test_engine.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11122,7 +13745,11 @@
             "test_hint_contains_backticked_command"
           ],
           "hash": "12e6dc87ee6a4a290bb43d9ca8133866a336805b93aec1063d24a42288d85438",
-          "path": "tests/test_error_hints_have_commands.py"
+          "names": [
+            "sov_cli/errors.py"
+          ],
+          "path": "tests/test_error_hints_have_commands.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11162,9 +13789,11 @@
           ],
           "hash": "26c0a4f9fb149f53eb320d5c1038a131e0df826e84287157491fb1e8b319776e",
           "importsFiles": [
-            "sov_cli/__init__.py"
+            "sov_cli/__init__.py",
+            "sov_cli/errors.py"
           ],
-          "path": "tests/test_errors_hint_backticks.py"
+          "path": "tests/test_errors_hint_backticks.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11172,6 +13801,9 @@
             "test_no_inline_sov_error_codes_outside_registry"
           ],
           "hash": "07ff5ffe71d1af29dc02fe2585a00105ef6bf72a198e0348ee214b2ea3c3e48b",
+          "names": [
+            "sov_cli/errors.py"
+          ],
           "path": "tests/test_errors_registry_no_inline_codes.py"
         },
         {
@@ -11188,7 +13820,8 @@
             "sov_transport/xrpl.py",
             "sov_transport/xrpl_testnet.py"
           ],
-          "path": "tests/test_fund_dev_wallet.py"
+          "path": "tests/test_fund_dev_wallet.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11208,7 +13841,12 @@
             "test_game_ts_contains_field"
           ],
           "hash": "be9a14324f0191212f49337eb9bb62f68466dee4e454b00aa99a896b922615d1",
-          "path": "tests/test_game_types_ts_in_sync.py"
+          "names": [
+            "app/src/types/game.ts",
+            "sov_engine/models.py"
+          ],
+          "path": "tests/test_game_types_ts_in_sync.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11226,7 +13864,8 @@
             "sov_engine/proof.py",
             "sov_engine/serialize.py"
           ],
-          "path": "tests/test_load_proof_errors.py"
+          "path": "tests/test_load_proof_errors.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11254,7 +13893,8 @@
             "sov_engine/rules/treaty_table.py",
             "sov_engine/serialize.py"
           ],
-          "path": "tests/test_log_contracts.py"
+          "path": "tests/test_log_contracts.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11331,7 +13971,8 @@
           "importsFiles": [
             "sov_engine/io_utils.py"
           ],
-          "path": "tests/test_multi_save.py"
+          "path": "tests/test_multi_save.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11350,7 +13991,8 @@
           "importsFiles": [
             "sov_engine/io_utils.py"
           ],
-          "path": "tests/test_pending_anchors.py"
+          "path": "tests/test_pending_anchors.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11374,7 +14016,8 @@
             "sov_engine/proof.py",
             "sov_transport/xrpl_internals.py"
           ],
-          "path": "tests/test_proof_anchor_status.py"
+          "path": "tests/test_proof_anchor_status.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11409,7 +14052,8 @@
             "sov_engine/rules/campfire.py",
             "sov_engine/serialize.py"
           ],
-          "path": "tests/test_proofs.py"
+          "path": "tests/test_proofs.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11428,7 +14072,8 @@
           "importsFiles": [
             "sov_cli/main.py"
           ],
-          "path": "tests/test_readme_examples.py"
+          "path": "tests/test_readme_examples.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11443,7 +14088,8 @@
           "importsFiles": [
             "sov_engine/schemas.py"
           ],
-          "path": "tests/test_schema_reader.py"
+          "path": "tests/test_schema_reader.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11456,7 +14102,8 @@
           "importsFiles": [
             "sov_engine/schemas.py"
           ],
-          "path": "tests/test_schema_version_error_has_hint.py"
+          "path": "tests/test_schema_version_error_has_hint.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11470,7 +14117,8 @@
           "importsFiles": [
             "sov_cli/main.py"
           ],
-          "path": "tests/test_share_codes.py"
+          "path": "tests/test_share_codes.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11484,7 +14132,8 @@
             "sov_cli/main.py",
             "sov_engine/io_utils.py"
           ],
-          "path": "tests/test_sov_games_cli.py"
+          "path": "tests/test_sov_games_cli.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11514,7 +14163,8 @@
             "sov_cli/main.py",
             "sov_engine/io_utils.py"
           ],
-          "path": "tests/test_sov_resume_cli.py"
+          "path": "tests/test_sov_resume_cli.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11645,7 +14295,8 @@
           "importsFiles": [
             "sov_engine/io_utils.py"
           ],
-          "path": "tests/test_v1_migration.py"
+          "path": "tests/test_v1_migration.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11659,7 +14310,8 @@
           "importsFiles": [
             "sov_engine/io_utils.py"
           ],
-          "path": "tests/test_validate_game_id.py"
+          "path": "tests/test_validate_game_id.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11669,6 +14321,9 @@
             "test_version_is_semver"
           ],
           "hash": "f845711d6575497a881254e21fc6e04ce99d95867fd4511b788beea6b8a27e62",
+          "names": [
+            "sov_cli/main.py"
+          ],
           "path": "tests/test_version.py"
         },
         {
@@ -11681,6 +14336,9 @@
           "hash": "379aba5fb66e980675e2188759517947dae8ec4e1a90ea883fa5b283f97d02c2",
           "importsFiles": [
             "sov_cli/main.py"
+          ],
+          "names": [
+            "sov_cli/errors.py"
           ],
           "path": "tests/test_version_in_sync.py"
         },
@@ -11720,7 +14378,8 @@
             "sov_cli/main.py",
             "sov_engine/wallet_seed.py"
           ],
-          "path": "tests/test_wallet_keychain.py"
+          "path": "tests/test_wallet_keychain.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11757,7 +14416,8 @@
             "sov_transport/xrpl_async.py",
             "sov_transport/xrpl_internals.py"
           ],
-          "path": "tests/test_xrpl_amend_regressions.py"
+          "path": "tests/test_xrpl_amend_regressions.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11779,7 +14439,8 @@
             "sov_transport/xrpl_async.py",
             "sov_transport/xrpl_internals.py"
           ],
-          "path": "tests/test_xrpl_async_integration.py"
+          "path": "tests/test_xrpl_async_integration.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11819,7 +14480,8 @@
             "sov_transport/xrpl_async.py",
             "sov_transport/xrpl_internals.py"
           ],
-          "path": "tests/test_xrpl_async_transport.py"
+          "path": "tests/test_xrpl_async_transport.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11840,7 +14502,8 @@
             "sov_transport/xrpl.py",
             "sov_transport/xrpl_testnet.py"
           ],
-          "path": "tests/test_xrpl_integration.py"
+          "path": "tests/test_xrpl_integration.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11890,7 +14553,8 @@
             "sov_transport/xrpl.py",
             "sov_transport/xrpl_internals.py"
           ],
-          "path": "tests/test_xrpl_internals.py"
+          "path": "tests/test_xrpl_internals.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11928,7 +14592,8 @@
           "importsFiles": [
             "sov_transport/xrpl.py"
           ],
-          "path": "tests/test_xrpl_transport.py"
+          "path": "tests/test_xrpl_transport.py",
+          "testFramework": "pytest"
         },
         {
           "exports": [
@@ -11954,7 +14619,8 @@
             "sov_transport/xrpl_internals.py",
             "sov_transport/xrpl_testnet.py"
           ],
-          "path": "tests/test_xrpl_transport_legacy.py"
+          "path": "tests/test_xrpl_transport_legacy.py",
+          "testFramework": "pytest"
         }
       ],
       "globs": [
@@ -11964,6 +14630,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -12494,6 +15163,33 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "pyproject.toml",
+          "files": 71,
+          "job": "lint-and-test",
+          "runner": "pytest",
+          "step": "Run tests"
+        },
+        {
+          "dir": "app/src-tauri",
+          "files": 5,
+          "job": "tauri-and-frontend",
+          "runner": "cargo test",
+          "step": "Cargo test"
+        },
+        {
+          "config": "app/vite.config.ts",
+          "dir": "app",
+          "files": 28,
+          "job": "tauri-and-frontend",
+          "runner": "vitest",
+          "step": "Frontend test",
+          "through": [
+            "npm test (app)"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request"
@@ -12958,6 +15654,17 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "job": "publish",
+          "ran": [
+            "sov_cli/main.py",
+            "sov_daemon/__init__.py"
+          ],
+          "runner": null,
+          "step": "Smoke test built wheel in fresh venv"
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -13170,7 +15877,7 @@
       "to": "sov_transport"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.4",
   "generatedFrom": {
     "commit": "8bed6b624294b05e8ec37d74ba9cff50a47d4229",
     "tracked": 397
