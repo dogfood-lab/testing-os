@@ -57,7 +57,7 @@ Options:
 2. **The leg.**
    - It uses the matrix values the step's `if:` fixes.
    - When the step names none, it uses the leg the old Codecov upload ran on.
-   - Failing both, it takes the first value of each matrix axis, preferring an ubuntu runner.
+   - Failing both, it takes the first value of each matrix axis, preferring an ubuntu runner. For node --test it passes over a Node older than 20 on a Node axis, since the JUnit reporter needs 20.11 or later, and hands the repository to a person when every Node on the axis is older.
 3. **The reports, by runner.** A flag goes at the end of the one command that runs the runner, before any redirection or pipe. The step's `if:` is never changed.
    - **Vitest:**
      - The JUnit reporter is added. Any reporters the command or the configuration already names are kept.

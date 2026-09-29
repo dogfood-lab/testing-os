@@ -72,8 +72,8 @@ export function planRepository({ files, read, facts, step: chosen = null, report
   }
   // A step that runs on every leg keeps the leg the old upload ran on.
   const oldUpload = steps.find(isCodecovStep);
-  const leg = legOf(stepNode.get('if'), jobMap.getIn(['strategy', 'matrix']), oldUpload?.get('if'));
-  if (leg.reason) return hand(`${label} runs when ${leg.reason}; the tool picks a leg only from matrix values`);
+  const leg = legOf(stepNode.get('if'), jobMap.getIn(['strategy', 'matrix']), oldUpload?.get('if'), { junitNode: runs[0].runner === 'node --test' && reports == null });
+  if (leg.reason) return hand(leg.whole ? leg.reason : `${label} runs when ${leg.reason}; the tool picks a leg only from matrix values`);
   const run = stepNode.get('run');
   if (typeof run !== 'string') return hand(`${label} runs no shell text`);
   // Where no flag on the step reaches the runner (a chain of scripts), a
@@ -282,13 +282,13 @@ function describeStep(file, step) {
  * and the first value of each axis it leaves open (an ubuntu runner first).
  * A condition that is not a matrix value leaves no leg to pick.
  */
-function legOf(condition, matrix, fallback = null) {
+function legOf(condition, matrix, fallback = null, { junitNode = false } = {}) {
   const terms = [];
   const fixed = new Set();
   if (fallback != null) {
     const own = legOf(condition, null);
     const old = legOf(fallback, null);
-    if (!own.reason && own.terms.length === 0 && !old.reason && old.terms.length > 0) return legOf(fallback, matrix);
+    if (!own.reason && own.terms.length === 0 && !old.reason && old.terms.length > 0) return legOf(fallback, matrix, null, { junitNode });
   }
   if (condition != null) {
     const raw = String(condition).trim().replace(/^\$\{\{\s*([\s\S]*?)\s*\}\}$/, '$1');
@@ -310,7 +310,13 @@ function legOf(condition, matrix, fallback = null) {
   for (const pair of matrix.items) {
     const key = keyOf(pair);
     if (key === 'include' || key === 'exclude' || fixed.has(key) || !isSeq(pair.value) || pair.value.items.length < 2) continue;
-    const values = pair.value.items.map((item) => item.value);
+    let values = pair.value.items.map((item) => item.value);
+    // node --test writes JUnit only from Node 20.11 on; a leg on an older Node
+    // would fail its save step for want of a file it cannot write.
+    if (junitNode && /node/i.test(key)) {
+      values = values.filter((entry) => !(Number.parseInt(String(entry), 10) < 20));
+      if (values.length === 0) return { reason: 'every Node version on the matrix is older than 20, and the node --test JUnit reporter needs 20.11 or later', whole: true };
+    }
     const value = values.find((entry) => /^ubuntu/.test(String(entry))) ?? values[0];
     terms.push(`matrix.${key} == ${typeof value === 'string' ? `'${value}'` : String(value)}`);
   }

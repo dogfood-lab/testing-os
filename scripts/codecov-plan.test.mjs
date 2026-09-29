@@ -139,6 +139,21 @@ describe('the plan for a repository', () => {
     assert.match(plan.files[0].after, /COVERAGE_LEG: \$\{\{ matrix\.node-version == 22 && matrix\.os == 'ubuntu-latest' && \(/);
   });
 
+  it('passes over a Node older than 20 for node --test, which has no JUnit reporter there', () => {
+    const { files, read, facts } = fixture('node-test-c8');
+    const open = (matrix) => {
+      const out = new Map(files);
+      out.set(WORKFLOW, files.get(WORKFLOW).replace('        node-version: [20, 22]\n', `        node-version: ${matrix}\n`).replaceAll('        if: matrix.node-version == 22\n', ''));
+      return out;
+    };
+    const plan = planRepository({ files: open('[18, 22]'), read, facts });
+    assert.equal(plan.status, 'ready');
+    assert.match(plan.files[0].after, /COVERAGE_LEG: \$\{\{ matrix\.node-version == 22 && \(/);
+    const old = planRepository({ files: open('[16, 18]'), read, facts });
+    assert.equal(old.status, 'hand');
+    assert.deepEqual(old.reasons, ['every Node version on the matrix is older than 20, and the node --test JUnit reporter needs 20.11 or later']);
+  });
+
   it('takes the step a person names', () => {
     const { files, read, facts } = fixture('vitest-pnpm');
     const plan = planRepository({ files, read, facts, step: 'ci.yml:ci:Test' });
