@@ -154,6 +154,18 @@ describe('the plan for a repository', () => {
     assert.deepEqual(old.reasons, ['every Node version on the matrix is older than 20, and the node --test JUnit reporter needs 20.11 or later']);
   });
 
+  it('leaves a flow-style paths filter alone when it already takes codecov.yml', () => {
+    const { files, read, facts } = fixture('vitest-pnpm');
+    const flow = new Map(files);
+    const line = '    paths: ["package.json", "src/**", "codecov.yml"]\n';
+    flow.set(WORKFLOW, files.get(WORKFLOW).replace('  pull_request:\n    paths:\n      - "package.json"\n      - "src/**"\n', `  pull_request:\n${line}`));
+    const plan = planRepository({ files: flow, read, facts });
+    assert.deepEqual(plan.reasons, []);
+    assert.equal(plan.status, 'ready');
+    assert.ok(plan.files[0].after.includes(`  pull_request:\n${line}`));
+    assert.ok(plan.changes.includes('ci.yml: codecov.yml joins the push paths filter'), plan.changes.join('\n'));
+  });
+
   it('takes the step a person names', () => {
     const { files, read, facts } = fixture('vitest-pnpm');
     const plan = planRepository({ files, read, facts, step: 'ci.yml:ci:Test' });

@@ -191,8 +191,9 @@ export function planRepository({ files, read, facts, step: chosen = null, report
     if (ignored != null && filterTakes([...(ignored.items ?? [])].map((item) => String(item.value ?? item)), 'codecov.yml')) return hand(`${file}: the ${event} paths-ignore filter leaves out codecov.yml; change it by hand`);
     const paths = trigger.get('paths', true);
     if (paths == null) continue;
+    // A filter that already takes codecov.yml needs no edit, in whatever style.
+    if (isSeq(paths) && filterTakes(paths.items.map((item) => String(item.value)), 'codecov.yml')) continue;
     if (!isSeq(paths) || paths.flow || paths.items.length === 0) return hand(`${file}: the ${event} paths filter is written in flow style; add codecov.yml to it by hand`);
-    if (filterTakes(paths.items.map((item) => String(item.value)), 'codecov.yml')) continue;
     const last = paths.items.at(-1);
     const quote = { "'": "'", '"': '"' }[text[last.range[0]]] ?? '';
     const itemCol = column(text, last.range[0]) - 2;
