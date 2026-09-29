@@ -313,11 +313,13 @@ describe('cli-p-001: `swarm persist --ingest` exits non-zero when ingest hard-fa
   // Red if persist defaults the root again (the run then fails on 'badsha'
   // instead) or if run.js stops refusing a stub write without one.
   it('persist --ingest with no INGEST_REPO_ROOT is refused before any record is written', () => {
+    // CI markers cleared: on a runner, run.js's stub-in-CI refusal would fire
+    // first and this would pass or fail for a reason other than the root.
     const { INGEST_REPO_ROOT: _unset, ...envWithoutRoot } = process.env;
     const r = spawnSync(process.execPath, [CLI_PATH, 'persist', RUN_ID, '--ingest'], {
       encoding: 'utf-8',
       cwd: __dirname,
-      env: { ...envWithoutRoot, SWARM_DB: dbPath },
+      env: { ...envWithoutRoot, CI: '', GITHUB_ACTIONS: '', SWARM_DB: dbPath },
     });
     assert.notEqual(r.status, 0, `stdout:\n${r.stdout}\nstderr:\n${r.stderr}`);
     assert.match(`${r.stdout}${r.stderr}`, /writes a record only under an explicit INGEST_REPO_ROOT/,
