@@ -154,6 +154,40 @@ describe('the plan for a repository', () => {
     assert.deepEqual(old.reasons, ['every Node version on the matrix is older than 20, and the node --test JUnit reporter needs 20.11 or later']);
   });
 
+  it('saves the reports of every package a filtered Vitest step tests, not the first alone', () => {
+    const workflow = [
+      'name: CI',
+      'on:',
+      '  pull_request:',
+      '  push:',
+      '    branches: [main]',
+      'jobs:',
+      '  test:',
+      '    runs-on: ubuntu-latest',
+      '    steps:',
+      '      - uses: actions/checkout@v7',
+      '      - run: pnpm install',
+      '      - name: Test packages',
+      '        run: pnpm --filter a --filter b test',
+      '',
+    ].join('\n');
+    const pkg = (name) => JSON.stringify({ name, scripts: { test: 'vitest run' }, devDependencies: { vitest: '4.1.0', '@vitest/coverage-v8': '4.1.0' } });
+    const tree = new Map([[WORKFLOW, workflow], ['package.json', JSON.stringify({ name: 'root', private: true })], ['packages/a/package.json', pkg('a')], ['packages/b/package.json', pkg('b')]]);
+    const facts = {
+      boundaries: null,
+      workflows: [{
+        file: WORKFLOW,
+        triggers: [{ event: 'pull_request' }, { event: 'push', branches: ['main'] }],
+        tests: ['a', 'b'].map((name) => ({ job: 'test', step: 'Test packages', runner: 'vitest', dir: `packages/${name}`, through: [`pnpm test (packages/${name})`], files: 1 })),
+      }],
+    };
+    const plan = planRepository({ files: new Map([[WORKFLOW, workflow]]), read: (path) => tree.get(path) ?? null, facts });
+    assert.deepEqual(plan.reasons, []);
+    assert.equal(plan.status, 'ready');
+    assert.match(plan.files[0].after, /packages\/a\/coverage\/coverage-final\.json\n\s+packages\/b\/coverage\/coverage-final\.json\n/);
+    assert.match(plan.files[0].after, /packages\/a\/junit\.xml\n\s+packages\/b\/junit\.xml\n/);
+  });
+
   it('leaves a flow-style paths filter alone when it already takes codecov.yml', () => {
     const { files, read, facts } = fixture('vitest-pnpm');
     const flow = new Map(files);

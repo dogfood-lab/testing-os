@@ -21,6 +21,8 @@ import { simpleCommands } from './shell.mjs';
  * @param {string[]} [input.dirs] every such directory, for a step that runs several
  * @param {boolean} [input.coverage] whether Atlas saw the run collect coverage
  * @param {string} [input.config] the runner's configuration file, from the root
+ * @param {Array<{ through?: string[], dir: string, config?: string, coverage?: boolean }>} [input.others]
+ *   the step's runs in other packages, for a step that runs one script in several
  * @param {Set<string>} [input.env] variables the step, job or workflow already sets
  * @param {string} [input.jobText] the job's other shell text, for what it installs
  * @param {(path: string) => string | null} input.read a file of the repository
@@ -28,11 +30,31 @@ import { simpleCommands } from './shell.mjs';
  */
 export function reportEdit(input) {
   const { runner } = input;
-  if (runner === 'vitest') return vitest(input);
+  if (runner === 'vitest') return everyPackage(input, vitest);
   if (runner === 'pytest') return pytest(input);
   if (runner === 'node --test') return nodeTest(input);
   if (runner === 'node') return { reason: 'the tests run as plain node scripts, which write no test results to upload' };
   return { reason: `the tool adds reports to Vitest, pytest and node --test runs; this step runs ${runner ?? 'no runner Atlas can name'}` };
+}
+
+// A step that runs one script in several packages (pnpm --filter, a
+// workspace fan-out) hands every package the same flags, and each package
+// writes its reports where it runs, so all of them are uploaded, not the
+// first package's alone. Packages that would need different flags go to a
+// person.
+function everyPackage(input, edit) {
+  const first = edit(input);
+  if (first.reason || !(input.others?.length > 0)) return first;
+  const coverage = [...first.coverage];
+  const results = [...first.results];
+  for (const other of input.others) {
+    const next = edit({ ...input, ...other });
+    if (next.reason) return next;
+    if (next.run !== first.run) return { reason: 'the packages this step tests would need different flags for their reports; add them by hand' };
+    coverage.push(...next.coverage);
+    results.push(...next.results);
+  }
+  return { ...first, coverage: [...new Set(coverage)].sort(), results: [...new Set(results)].sort() };
 }
 
 // Words that start a command without being the program it runs.

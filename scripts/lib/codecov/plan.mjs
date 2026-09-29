@@ -87,6 +87,7 @@ export function planRepository({ files, read, facts, step: chosen = null, report
     dirs: runs.map((entry) => entry.dir ?? ''),
     coverage: runs.some((entry) => entry.coverage),
     config: runs[0].config,
+    others: runs.slice(1).map((entry) => ({ through: entry.through, dir: entry.dir ?? '', config: entry.config, coverage: entry.coverage })),
     env: envNames(doc, jobMap, stepNode),
     jobText: steps.filter(isMap).map((node) => node.get('run')).filter((value) => typeof value === 'string').join('\n'),
     read,
