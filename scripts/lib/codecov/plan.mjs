@@ -24,9 +24,12 @@ const UNIT = 2;
  * @param {(path: string) => string | null} input.read any file of the repository
  * @param {{ workflows: object[], boundaries: object[] | null }} input.facts Atlas's facts (facts.mjs)
  * @param {string} [input.step] workflow:job:step, to name the test step
+ * @param {{ coverage: string[], results: string[] }} [input.reports] the
+ *   reports a person made the step write on the coverage leg, from the root;
+ *   the step's command is then left as it is
  * @returns {{ status: 'ready' | 'hand' | 'done', target: object | null, reasons: string[], changes: string[], files: Array<{ path: string, before: string | null, after: string }>, atlas: { version: string | null, remap: boolean } }}
  */
-export function planRepository({ files, read, facts, step: chosen = null }) {
+export function planRepository({ files, read, facts, step: chosen = null, reports = null }) {
   const plan = { status: 'ready', target: null, reasons: [], changes: [], files: [], atlas: { version: atlasVersion(files), remap: false } };
   const hand = (...reasons) => ({ ...plan, status: 'hand', reasons, changes: [], files: [] });
   if (checkRecipe(files).problems.length === 0) return { ...plan, status: 'done' };
@@ -73,7 +76,10 @@ export function planRepository({ files, read, facts, step: chosen = null }) {
   if (leg.reason) return hand(`${label} runs when ${leg.reason}; the tool picks a leg only from matrix values`);
   const run = stepNode.get('run');
   if (typeof run !== 'string') return hand(`${label} runs no shell text`);
-  const edit = reportEdit({
+  // Where no flag on the step reaches the runner (a chain of scripts), a
+  // person makes the runner's own configuration write both reports when
+  // COVERAGE_LEG is 'true' and names the files; the tool writes the rest.
+  const edit = reports != null ? { coverage: reports.coverage, results: reports.results } : reportEdit({
     runner: runs[0].runner,
     run,
     through: runs[0].through,
@@ -213,7 +219,7 @@ export function planRepository({ files, read, facts, step: chosen = null }) {
   plan.atlas.remap = !files.has('codecov.yml') && facts.boundaries != null && !facts.boundaries.some((boundary) => boundary.globs.some((glob) => picomatch(glob, { dot: true })('codecov.yml')));
   plan.changes.push(
     `${file} job ${job}: COVERAGE_LEG is true ${leg.terms.length > 0 ? `where ${leg.terms.join(' && ')}, ` : ''}on a pull request or a push to the default branch`,
-    `${label}: writes coverage to ${edit.coverage.join(', ')} and test results to ${edit.results.join(', ')}`,
+    `${label}: writes coverage to ${edit.coverage.join(', ')} and test results to ${edit.results.join(', ')}${reports != null ? ' by its own configuration, as a person named them' : ''}`,
     ...(edit.after ?? []).map((extra) => `${file} job ${job}: step "${extra.name}" writes the lcov report`),
     `${file} job ${job}: two steps save them for Codecov on that leg`,
     ...removed.map((name) => `${file}: the old Codecov upload ${/^step \d+$/.test(name) ? name : `"${name}"`} is removed`),

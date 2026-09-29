@@ -35,6 +35,10 @@ A repository is a path to a local checkout.
 
 options:
   --step workflow:job:step   the test step to carry the reports (plan, apply)
+  --coverage <path>          a coverage report the test step's own configuration
+                             writes on the coverage leg; repeatable (plan, apply)
+  --results <path>           a JUnit file it writes there; repeatable. With
+                             --coverage, the step's command is left as it is
   --trailer "Key: value"     a trailer for apply's commit message; repeatable
   --json                     print JSON (check, plan)
 `;
@@ -64,20 +68,24 @@ function parseArgs(argv) {
   const [command, ...rest] = argv;
   if (command == null) return { error: 'name a command' };
   if (!COMMANDS.has(command)) return { error: `unknown command ${command}` };
-  const args = { command, json: false, step: null, trailers: [], targets: [] };
+  const args = { command, json: false, step: null, trailers: [], targets: [], coverage: [], results: [] };
   for (let i = 0; i < rest.length; i += 1) {
     const word = rest[i];
     if (word === '--json') args.json = true;
-    else if (word === '--step' || word === '--trailer') {
+    else if (['--step', '--trailer', '--coverage', '--results'].includes(word)) {
       const value = rest[i + 1];
       if (value == null || value.startsWith('--')) return { error: `${word} needs a value` };
       if (word === '--step') args.step = value;
-      else args.trailers.push(value);
+      else if (word === '--trailer') args.trailers.push(value);
+      else args[word.slice(2)].push(value);
       i += 1;
     } else if (word.startsWith('--')) return { error: `unknown option ${word}` };
     else args.targets.push(word);
   }
   if (args.targets.length === 0) return { error: `${command} needs at least one repository` };
+  // Both reports or neither: the recipe uploads coverage and test results.
+  if ((args.coverage.length > 0) !== (args.results.length > 0)) return { error: '--coverage and --results go together' };
+  args.reports = args.coverage.length > 0 ? { coverage: args.coverage, results: args.results } : null;
   return args;
 }
 
@@ -94,8 +102,8 @@ function check({ targets, json }, write) {
   return results.some((result) => result.problems.length > 0) ? 1 : 0;
 }
 
-function planFor(root, step) {
-  return { repository: root, ...planRepository({ files: readRecipeFiles(root), read: fileReader(root), facts: atlasFacts(root), step }) };
+function planFor(root, step, reports) {
+  return { repository: root, ...planRepository({ files: readRecipeFiles(root), read: fileReader(root), facts: atlasFacts(root), step, reports }) };
 }
 
 function describe(plan, write) {
@@ -115,8 +123,8 @@ function describe(plan, write) {
   else if (plan.atlas.remap) write('   . codecov.yml falls in no Atlas part and no workflow pins Atlas: map the repository again by hand\n');
 }
 
-function plan({ targets, json, step }, write) {
-  const plans = targets.map((root) => planFor(root, step));
+function plan({ targets, json, step, reports }, write) {
+  const plans = targets.map((root) => planFor(root, step, reports));
   if (json) write(`${JSON.stringify(plans, null, 2)}\n`);
   else {
     for (const each of plans) {
@@ -127,7 +135,7 @@ function plan({ targets, json, step }, write) {
   return plans.some((each) => each.status === 'hand') ? 1 : 0;
 }
 
-function apply({ targets, step, trailers }, write, exec) {
+function apply({ targets, step, reports, trailers }, write, exec) {
   let code = 0;
   for (const root of targets) {
     const git = (args, options = {}) => spawnSync('git', ['-C', root, ...args], { encoding: 'utf8', ...options });
@@ -142,7 +150,7 @@ function apply({ targets, step, trailers }, write, exec) {
       code = 1;
       continue;
     }
-    const each = planFor(root, step);
+    const each = planFor(root, step, reports);
     describe(each, write);
     if (each.status === 'hand') code = 1;
     if (each.status !== 'ready') continue;

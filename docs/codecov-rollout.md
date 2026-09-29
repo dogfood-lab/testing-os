@@ -45,6 +45,7 @@ node scripts/codecov-rollout.mjs delivered ../ai-jam-sessions mcp-tool-shop-org/
 Options:
 - `--step workflow:job:step` names the test step that carries the reports, for when the tool finds two.
 - `--trailer "Key: value"` adds a trailer to the commit message.
+- `--coverage <path>` and `--results <path>` name the reports the test step already writes on the coverage leg, from the repository's root. They go together, and each can be repeated. With them the tool leaves the step's command as it is and writes the rest of the recipe. Use them after making the runner's own configuration write both reports when `COVERAGE_LEG` is `'true'`, for a step no flag can reach. See [What it leaves to a person](#what-it-leaves-to-a-person).
 - `--json` prints the result of `check` or `plan` as data.
 
 ## How it decides
@@ -83,9 +84,12 @@ Options:
 
 A plan that needs a person names each reason. Here they are, with the fix each points to:
 
-- **The step runs the runner through a chain of scripts,** for example `npm run verify`, then `npm test`. A flag added to the step would reach the chain's last command, not the runner. Add the reporters where the chain calls the runner, or in the runner's configuration.
+- **The step runs the runner through a chain of scripts,** for example `npm run verify`, then `npm test`. A flag added to the step would reach the chain's last command, not the runner. Make the runner write both reports when `COVERAGE_LEG` is `'true'`, then run `apply` with `--coverage` and `--results` naming the files:
+  - **Vitest:** in the configuration, read `process.env.COVERAGE_LEG === 'true'`. On that leg add the `junit` reporter with `outputFile.junit`, turn coverage on if the chain does not already, and add a coverage reporter Codecov reads (`lcovonly`, or keep `json`). claude-rpg, roll and ai-playtest are done this way.
+  - **pytest in a script:** add `--cov`, an XML coverage report and `--junitxml` to the script's pytest call on that leg only. prompt-craft's `verify.py` is done this way.
+  - Check the chain both ways before committing: with `COVERAGE_LEG=true` it writes both files, and without it nothing changes.
 - **A script runs more than the runner** (`vitest run && node check.js`), for the same reason.
-- **The tests run from a build's output without source maps.** Coverage would name built files, which Codecov cannot match to the repository. Turn on `sourceMap` in the build.
+- **The tests run from a build's output without source maps.** Coverage would name built files, which Codecov cannot match to the repository. Turn on `sourceMap` in the build, and keep the maps out of a published package (`"!dist/**/*.map"` in `files`) so `npm pack --dry-run` lists the same files as before; then the tool plans the repository by itself. bytefit and loadout-os are done this way.
 - **The tests are plain node scripts.** They write no test results to upload.
 - **Something is missing or already there:**
   - no coverage provider, or pytest-cov, among the dependencies;

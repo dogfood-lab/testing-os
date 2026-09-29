@@ -96,6 +96,14 @@ describe('codecov-rollout plan', () => {
     assert.equal(code, 0);
     assert.match(out, /: ready: ci\.yml job ci, step "Test" \(vitest\)\n/);
   });
+
+  it('takes the reports a person names, and leaves the step as it is', async () => {
+    const { root } = repository('vitest-pnpm');
+    const { code, out } = await run(['plan', '--coverage', 'coverage/lcov.info', '--results', 'junit.xml', root]);
+    assert.equal(code, 0);
+    assert.match(out, /writes coverage to coverage\/lcov\.info and test results to junit\.xml by its own configuration, as a person named them\n/);
+    assert.doesNotMatch(out, /--reporter=junit/);
+  });
 });
 
 describe('codecov-rollout apply', () => {
@@ -246,7 +254,7 @@ describe('codecov-rollout usage', () => {
   });
 
   it('explains itself when it is called wrong', async () => {
-    for (const argv of [[], ['unknown', '.'], ['plan'], ['plan', '--step']]) {
+    for (const argv of [[], ['unknown', '.'], ['plan'], ['plan', '--step'], ['plan', '--coverage', 'lcov.info', '.'], ['plan', '--results', 'junit.xml', '.']]) {
       const { code, out } = await run(argv);
       assert.equal(code, 2);
       assert.match(out, /^usage: node scripts\/codecov-rollout\.mjs <check\|plan\|apply\|delivered>/m);

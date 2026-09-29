@@ -146,6 +146,22 @@ describe('the plan for a repository', () => {
     assert.deepEqual(plan.target, { workflow: WORKFLOW, job: 'ci', step: 'Test', runner: 'vitest' });
     assert.match(plan.files[0].after, /run: pnpm test --coverage\.enabled=\$\{\{ env\.COVERAGE_LEG == 'true' \}\} --reporter=default/);
   });
+
+  it('takes the reports a person names where no flag reaches the runner, and leaves the command as it is', () => {
+    const { files, read, facts } = fixture('vitest-pnpm');
+    const chained = structuredClone(facts);
+    chained.workflows[0].tests[1].through = ['pnpm run verify', 'pnpm run test:coverage'];
+    const reports = { coverage: ['coverage/lcov.info'], results: ['reports/junit.xml'] };
+    const plan = planRepository({ files, read, facts: chained, reports });
+    assert.deepEqual(plan.reasons, []);
+    assert.equal(plan.status, 'ready');
+    // The step's command, exactly as the fixture has it, with nothing added.
+    assert.match(plan.files[0].after, /\n {8}run: pnpm test:coverage\n/);
+    assert.match(plan.files[0].after, /path: coverage\/lcov\.info\n/);
+    assert.match(plan.files[0].after, /path: reports\/junit\.xml\n/);
+    assert.ok(plan.changes.includes('ci.yml step "Test with coverage": writes coverage to coverage/lcov.info and test results to reports/junit.xml by its own configuration, as a person named them'), plan.changes.join('\n'));
+    assert.deepEqual(checkRecipe(after(files, plan)).problems, []);
+  });
 });
 
 describe('the plan declines, and says why', () => {
