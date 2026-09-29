@@ -154,6 +154,26 @@ describe('the plan for a repository', () => {
     assert.deepEqual(old.reasons, ['every Node version on the matrix is older than 20, and the node --test JUnit reporter needs 20.11 or later']);
   });
 
+  it('puts -- before the flags for pnpm 9 and older, and never for pnpm 10 and newer', () => {
+    // Measured on pnpm 8.15, 9.15, 10.18 and 11.4: up to 9, options after the
+    // script name are pnpm's own (a dotted one is an error) unless a -- comes
+    // first, which pnpm then strips; from 10, they pass through, and a -- is
+    // passed on too, which Vitest reads as the end of its options.
+    const { files, read, facts } = fixture('vitest-pnpm');
+    const unpinned = new Map(files);
+    unpinned.set(WORKFLOW, files.get(WORKFLOW).replace('        with:\n          version: 10\n', ''));
+    const withManager = (packageManager) => (path) => (path === 'package.json' ? JSON.stringify({ ...JSON.parse(read(path)), packageManager }) : read(path));
+    const nine = planRepository({ files: unpinned, read: withManager('pnpm@9.15.4'), facts, step: 'ci.yml:ci:Test' });
+    assert.equal(nine.status, 'ready');
+    assert.match(nine.files[0].after, /run: pnpm test -- --coverage\.enabled=/);
+    const eleven = planRepository({ files: unpinned, read: withManager('pnpm@11.4.0'), facts, step: 'ci.yml:ci:Test' });
+    assert.equal(eleven.status, 'ready');
+    assert.match(eleven.files[0].after, /run: pnpm test --coverage\.enabled=/);
+    const unknown = planRepository({ files: unpinned, read, facts, step: 'ci.yml:ci:Test' });
+    assert.equal(unknown.status, 'hand');
+    assert.deepEqual(unknown.reasons, ["the tool cannot tell which pnpm runs here (no packageManager in package.json, no version on pnpm/action-setup): pnpm 9 and older need -- before the flags, and pnpm 10 and newer must not have it"]);
+  });
+
   it('saves the reports of every package a filtered Vitest step tests, not the first alone', () => {
     const workflow = [
       'name: CI',
@@ -172,7 +192,7 @@ describe('the plan for a repository', () => {
       '',
     ].join('\n');
     const pkg = (name) => JSON.stringify({ name, scripts: { test: 'vitest run' }, devDependencies: { vitest: '4.1.0', '@vitest/coverage-v8': '4.1.0' } });
-    const tree = new Map([[WORKFLOW, workflow], ['package.json', JSON.stringify({ name: 'root', private: true })], ['packages/a/package.json', pkg('a')], ['packages/b/package.json', pkg('b')]]);
+    const tree = new Map([[WORKFLOW, workflow], ['package.json', JSON.stringify({ name: 'root', private: true, packageManager: 'pnpm@10.18.3' })], ['packages/a/package.json', pkg('a')], ['packages/b/package.json', pkg('b')]]);
     const facts = {
       boundaries: null,
       workflows: [{

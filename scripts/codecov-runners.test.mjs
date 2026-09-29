@@ -20,7 +20,7 @@ describe('the report edit for Vitest', () => {
       coverage: true,
       config: 'vitest.config.ts',
       read: repo({
-        'package.json': { scripts: { 'test:coverage': 'vitest run --coverage' }, ...VITEST_DEPS },
+        'package.json': { packageManager: 'pnpm@10.18.3', scripts: { 'test:coverage': 'vitest run --coverage' }, ...VITEST_DEPS },
         'vitest.config.ts': 'import { defineConfig } from "vitest/config";\nexport default defineConfig({\n  test: {\n    coverage: {\n      provider: "v8",\n      reportsDirectory: "./coverage",\n      reporter: ["text", "json", "json-summary", "html"],\n    },\n  },\n});\n',
       }),
     });

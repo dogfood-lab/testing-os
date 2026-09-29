@@ -25,6 +25,7 @@ import { simpleCommands } from './shell.mjs';
  *   the step's runs in other packages, for a step that runs one script in several
  * @param {Set<string>} [input.env] variables the step, job or workflow already sets
  * @param {string} [input.jobText] the job's other shell text, for what it installs
+ * @param {string} [input.workflowText] the workflow file, for the pnpm version it sets up
  * @param {(path: string) => string | null} input.read a file of the repository
  * @returns {{ run?: string, env?: Record<string, string>, after?: Array<{ name: string, run: string, dir: string }>, coverage: string[], results: string[] } | { reason: string }}
  */
@@ -138,9 +139,23 @@ function managerScript(words, manager) {
 
 // Where to add flags to a manager command, so they reach the script's
 // command: npm wants them after a --, the others pass them on as they are.
-function managerFlags(command, index, manager) {
+function managerFlags(command, index, dashes) {
   const after = command.words.slice(index + 1).map((word) => word.text);
-  return { at: command.words.at(-1).end, prefix: manager === 'npm' && !after.includes('--') ? ' --' : '', args: after.filter((word) => word !== '--') };
+  return { at: command.words.at(-1).end, prefix: dashes && !after.includes('--') ? ' --' : '', args: after.filter((word) => word !== '--') };
+}
+
+// Which pnpm major runs a repository's scripts: the packageManager field,
+// which pnpm/action-setup itself installs, else that action's version input.
+// It decides how flags reach a script. Measured on 8.15, 9.15, 10.18 and
+// 11.4: up to 9, options after the script name are pnpm's own (a dotted one
+// is an error, and --reporter is silently pnpm's) unless a -- comes first,
+// which pnpm strips; from 10 they pass through, and a -- is passed on as an
+// argument, which Vitest reads as the end of its options.
+function pnpmMajor(read, workflowText) {
+  const declared = /^pnpm@(\d+)/.exec(readJson(read, 'package.json')?.packageManager ?? '');
+  if (declared) return Number(declared[1]);
+  const setup = /pnpm\/action-setup@[^\n]*\n(?:[ \t]+[^\n]*\n)*?[ \t]+version:[ \t]*['"]?(\d+)/.exec(workflowText ?? '');
+  return setup ? Number(setup[1]) : null;
 }
 
 function insert(run, at, text) {
@@ -223,7 +238,7 @@ function vitestFlags(args) {
   return flags;
 }
 
-function vitest({ run, through, coverage, config, dir = '', read }) {
+function vitest({ run, through, coverage, config, dir = '', read, workflowText }) {
   const hops = (through ?? []).map(hopOf);
   let at;
   let prefix;
@@ -248,7 +263,13 @@ function vitest({ run, through, coverage, config, dir = '', read }) {
     const call = vitestCall(inside[0].words);
     if (call == null) return { reason: `the script ${hop.script} runs ${script}, not Vitest itself; a flag added to the step would not reach Vitest` };
     const found = managerScript(calls[0].words, hop.manager);
-    const place = managerFlags(calls[0], found.index, hop.manager);
+    let dashes = hop.manager === 'npm';
+    if (hop.manager === 'pnpm') {
+      const major = pnpmMajor(read, workflowText);
+      if (major == null) return { reason: 'the tool cannot tell which pnpm runs here (no packageManager in package.json, no version on pnpm/action-setup): pnpm 9 and older need -- before the flags, and pnpm 10 and newer must not have it' };
+      dashes = major <= 9;
+    }
+    const place = managerFlags(calls[0], found.index, dashes);
     at = place.at;
     prefix = place.prefix;
     args = [...call.args, ...place.args];

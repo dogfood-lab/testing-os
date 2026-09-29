@@ -58,7 +58,7 @@ Options:
    - It uses the matrix values the step's `if:` fixes.
    - When the step names none, it uses the leg the old Codecov upload ran on.
    - Failing both, it takes the first value of each matrix axis, preferring an ubuntu runner. For node --test it passes over a Node older than 20 on a Node axis, since the JUnit reporter needs 20.11 or later, and hands the repository to a person when every Node on the axis is older.
-3. **The reports, by runner.** A flag goes at the end of the one command that runs the runner, before any redirection or pipe. The step's `if:` is never changed.
+3. **The reports, by runner.** A flag goes at the end of the one command that runs the runner, before any redirection or pipe. The step's `if:` is never changed. Through npm the flags follow a `--`. Through pnpm it depends on the version, read from `packageManager` or else from `pnpm/action-setup`'s `version`: pnpm 9 and older need a `--`, which they strip, and pnpm 10 and newer must not have one, since they pass it on and Vitest then ignores every flag after it. When neither says which pnpm runs, the repository goes to a person.
    - **Vitest:**
      - The JUnit reporter is added. Any reporters the command or the configuration already names are kept.
      - Coverage comes from the configuration's reporters: lcov, then Istanbul JSON, then Cobertura or Clover. If none of those is configured, lcov is added.
