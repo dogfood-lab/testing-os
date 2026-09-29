@@ -144,6 +144,10 @@ Some comments in the repositories are about the old Codecov step, and they go st
 - world-forge says its Codecov step was removed and why;
 - the vitest configuration of ai-jam-sessions describes the old tokenless upload.
 
+## When the coverage leg goes red
+
+Turning coverage on slows the tests it instruments, so a pull request whose coverage leg is red while the other legs pass is usually a test that times itself. In roll, a Monte Carlo test with a 10-second budget took 20 seconds under V8 coverage on a runner, and passed locally. Keep the budget on every run that does not collect coverage, and skip it where `COVERAGE_LEG` is `'true'`, with a comment saying why. Do not raise the budget for everyone.
+
 ## Confirming delivery
 
 A pull request's `codecov` job fails when Codecov refuses a report, so a green run means the reports were accepted. What CI cannot show is the branch Codecov treats as the default.
