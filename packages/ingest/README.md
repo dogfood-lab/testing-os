@@ -56,7 +56,7 @@ Flags:
 
 - `--file <path>` / `--payload <path>` — the submission JSON to ingest (both spellings accepted).
 - `--provenance=github` — confirm provenance against the GitHub Actions API (requires `GITHUB_TOKEN` / `GH_TOKEN`). **Production.**
-- `--provenance=stub` — accept the claimed provenance without an API call. **Test/dev only — refused in CI.**
+- `--provenance=stub` — accept the claimed provenance without an API call. **Test/dev only — refused in CI**, and a write needs an explicit `INGEST_REPO_ROOT` (a scratch root with a copy of `policies/`) so a stub record never enters this repository's own corpus. `--verify-only` needs no root.
 - `--verify-only` — verify and report, write nothing.
 
 Standalone audit verb (no submission, no stdin, no `--provenance` — fully offline):
@@ -69,7 +69,7 @@ Exit codes:
 
 - `0` — the record was accepted (and, without `--verify-only`, persisted).
 - `1` — the submission was verified but **not accepted** (rejected by a validator gate).
-- `2` — an operator/runtime fault (missing/unreadable `--file`, missing `--provenance`, missing token in CI, downstream I/O failure). Every exit-2 path emits a structured `logStage('error', …)` event first so a log grep finds the cause.
+- `2` — an operator/runtime fault (missing/unreadable `--file`, missing `--provenance`, missing token in CI, a stub write with no `INGEST_REPO_ROOT`, downstream I/O failure). Every exit-2 path emits a structured `logStage('error', …)` event first so a log grep finds the cause.
 
 There is no exit code 3.
 

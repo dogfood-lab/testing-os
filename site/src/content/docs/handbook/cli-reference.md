@@ -419,7 +419,7 @@ Example:
 
 ## swarm persist
 
-Export the canonical truth from the swarm control plane to downstream systems — typically the testing-os ingest pipeline for cross-repo intelligence. Use `--dry-run` to preview the export without writing, `--ingest` to invoke the downstream ingester after the export lands.
+Export the canonical truth from the swarm control plane to downstream systems — typically the testing-os ingest pipeline for cross-repo intelligence. Use `--dry-run` to preview the export without writing, `--ingest` to invoke the downstream ingester after the export lands. The ingest uses stub provenance, so it writes only under an explicit `INGEST_REPO_ROOT` (a scratch directory holding a copy of `policies/`); without one it is refused and nothing enters this repository's own `records/`.
 
 ```text
 Usage: swarm persist <run-id> [--ingest] [--dry-run]

@@ -97,11 +97,15 @@ node packages/report/build-submission.js \
   --scenario-file my-scenario-results.json \
   --output submission.json
 
-# Ingest the submission with stub provenance
-node packages/ingest/run.js --file submission.json --provenance=stub
+# Check the submission with stub provenance (writes nothing)
+node packages/ingest/run.js --file submission.json --provenance=stub --verify-only
+
+# Or ingest it for real into a scratch root that holds a copy of policies/
+mkdir -p /tmp/dogfood-scratch && cp -r policies /tmp/dogfood-scratch/
+INGEST_REPO_ROOT=/tmp/dogfood-scratch node packages/ingest/run.js --file submission.json --provenance=stub
 ```
 
-The `--provenance=stub` flag is only allowed outside CI. In GitHub Actions, provenance defaults to real GitHub API verification.
+The `--provenance=stub` flag is only allowed outside CI. In GitHub Actions, provenance defaults to real GitHub API verification. A stub ingest that writes a record needs `INGEST_REPO_ROOT` set, so a stub record never lands in this repository's own `records/`: the stub confirms whatever the submission claims, and the record would join the published integrity chain.
 
 ### Generating the portfolio report
 
@@ -193,6 +197,7 @@ When a submission is rejected:
 | Verdict downgraded from `pass` to `fail` | A required step failed, policy validation failed, or provenance was not confirmed | Check `overall_verdict.downgrade_reasons` in the persisted record for specifics |
 | Gate F fails in shipcheck | The repo has no accepted record, the verdict is not `pass`, or the record is stale | Re-run the dogfood workflow; check that the CDN cache has refreshed (3-5 minutes after ingestion) |
 | `--provenance=stub` rejected in CI | Stub provenance is blocked when `CI=true` or `GITHUB_ACTIONS=true` | Use `--provenance=github` in CI with a valid `GITHUB_TOKEN` |
+| `--provenance=stub writes a record only under an explicit INGEST_REPO_ROOT` | A stub ingest (including `swarm persist --ingest`) was about to write into this repository's own `records/` | Add `--verify-only`, or set `INGEST_REPO_ROOT` to a scratch directory holding a copy of `policies/` |
 | Portfolio shows repo in `missing` array | The repo has a policy file but no accepted record in the index | Run the dogfood workflow for that repo at least once |
 | Tests fail in `npm run verify` | Workspace dependencies may be missing | Run `npm ci` at the repo root once — npm workspaces installs every package in a single pass |
 | Consumer workflow is green, but no record appears in `indexes/latest-by-repo.json` | `DOGFOOD_TOKEN` secret is missing on the consumer repo — the dispatch step skipped with a `DOGFOOD_TOKEN not set` warning | Add `DOGFOOD_TOKEN` (fine-grained PAT with `contents: write` on `dogfood-lab/testing-os`) under the consumer's **Settings → Secrets and variables → Actions** |

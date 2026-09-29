@@ -308,6 +308,24 @@ describe('cli-p-001: `swarm persist --ingest` exits non-zero when ingest hard-fa
       'a copy-pasteable reproduce line must be offered, mirroring persist-results.js');
   });
 
+  // The four stub records stranded in records/ on 2026-09-29 came from exactly
+  // this call with no INGEST_REPO_ROOT: persist filled in the real repo root.
+  // Red if persist defaults the root again (the run then fails on 'badsha'
+  // instead) or if run.js stops refusing a stub write without one.
+  it('persist --ingest with no INGEST_REPO_ROOT is refused before any record is written', () => {
+    const { INGEST_REPO_ROOT: _unset, ...envWithoutRoot } = process.env;
+    const r = spawnSync(process.execPath, [CLI_PATH, 'persist', RUN_ID, '--ingest'], {
+      encoding: 'utf-8',
+      cwd: __dirname,
+      env: { ...envWithoutRoot, SWARM_DB: dbPath },
+    });
+    assert.notEqual(r.status, 0, `stdout:\n${r.stdout}\nstderr:\n${r.stderr}`);
+    assert.match(`${r.stdout}${r.stderr}`, /writes a record only under an explicit INGEST_REPO_ROOT/,
+      'the ingest must fail on the stub-root guard, not on a later stage');
+    assert.match(r.stderr, /Needs: +INGEST_REPO_ROOT set to a scratch directory/,
+      'the reproduce hint must say what the rerun needs');
+  });
+
   it('persist WITHOUT --ingest exits 0 (no false red) and reports artifacts-written honestly', () => {
     const r = spawnSync(process.execPath, [CLI_PATH, 'persist', RUN_ID], {
       encoding: 'utf-8',

@@ -14,8 +14,8 @@
  * persist.js pivots on `path`).
  *
  * SAFETY: every subprocess here either runs `--verify-only` (writes NOTHING
- * anywhere) or sets `INGEST_REPO_ROOT` to a fresh per-test temp dir (so the
- * real working tree is never touched). `afterEach` deletes the sandbox. We
+ * anywhere), sets `INGEST_REPO_ROOT` to a fresh per-test temp dir (so the
+ * real working tree is never touched), or is refused before any write (C). `afterEach` deletes the sandbox. We
  * additionally assert the real records/_rejected tree gained no new entry.
  *
  * Test-first note: the side-effect-free verify-only assertion (Test A) is the
@@ -182,6 +182,39 @@ describe('SEED-2 INGEST_REPO_ROOT override (d3-ingest-002)', () => {
     const outB = JSON.parse(b.stdout.trim().split('\n').pop());
     assert.equal(outB.written, true,
       'B must be a fresh write (proves B used its own root, not a shared one where it would be a duplicate)');
+  });
+});
+
+describe('a stub-provenance write needs an explicit INGEST_REPO_ROOT', () => {
+  // Stub provenance confirms whatever a submission claims. Written into the
+  // default root, such a record reads as provenance-confirmed and takes the
+  // next seq in the published integrity chain; four did on 2026-09-29, from
+  // `swarm persist --ingest`. INGEST_REPO_ROOT is set to '' rather than
+  // omitted so an operator's own shell value cannot make this vacuous.
+  it('C: no root → exit 2 at cli_provenance_resolve, and the real tree gains nothing', () => {
+    const realRecordsBefore = countRecords(resolve(REPO_ROOT, 'records'));
+
+    const child = runCli([], pilot0, { INGEST_REPO_ROOT: '' });
+
+    assert.equal(child.status, 2, `stdout=${child.stdout} stderr=${child.stderr}`);
+    assert.match(child.stderr, /writes a record only under an explicit INGEST_REPO_ROOT/);
+    const errorEvents = child.stderr
+      .split('\n')
+      .map(l => { try { return JSON.parse(l); } catch { return null; } })
+      .filter(o => o && o.component === 'ingest' && o.stage === 'error');
+    assert.equal(errorEvents.length, 1, `one structured error event; stderr=${child.stderr}`);
+    assert.equal(errorEvents[0].failed_stage, 'cli_provenance_resolve');
+    assert.equal(countRecords(resolve(REPO_ROOT, 'records')), realRecordsBefore,
+      'the refusal must come before any write to the real records/ tree');
+  });
+
+  it('C2: no root with --verify-only is not refused, because it writes nothing', () => {
+    const child = runCli(['--verify-only'], pilot0, { INGEST_REPO_ROOT: '' });
+
+    assert.equal(child.status, 0, `stdout=${child.stdout} stderr=${child.stderr}`);
+    assert.doesNotMatch(child.stderr, /explicit INGEST_REPO_ROOT/);
+    const out = JSON.parse(child.stdout.trim().split('\n').pop());
+    assert.equal(out.verify_only, true);
   });
 });
 

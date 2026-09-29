@@ -845,7 +845,11 @@ Input (exactly one; stdin used when neither flag is given):
 
 Provenance (required for an ingest):
   --provenance=github  Confirm the source run via the GitHub API.
-  --provenance=stub    No-network local confirm (dry-run / dev only).
+  --provenance=stub    No-network local confirm (dry-run / dev only). Writes a
+                       record only when INGEST_REPO_ROOT names the root.
+
+Environment:
+  INGEST_REPO_ROOT     Root for records/ and indexes/ (default: this checkout).
 
 Modes:
   --verify-only        Run the full pipeline WITHOUT writing or rebuilding
@@ -878,8 +882,8 @@ if (isMain) {
   // a brittle source-copy of this file (the setupTempRunJs run.js-copy in
   // d1b-001-cli-toplevel-error-event.test.js) that rewrote __dirname's `../..`
   // walk. A production caller passes the real root explicitly; a test passes a
-  // temp dir; the default preserves the historical behavior when the env var
-  // is unset. resolve() makes a relative override absolute so the downstream
+  // temp dir; the default applies when the env var is unset, and a stub-
+  // provenance write refuses it (see the provenance resolution below). resolve() makes a relative override absolute so the downstream
   // join()s stay anchored.
   const repoRoot = process.env.INGEST_REPO_ROOT
     ? resolve(process.env.INGEST_REPO_ROOT)
@@ -1250,6 +1254,25 @@ if (isMain) {
         correlationId: cliCorrelationId,
         submissionId: submission && submission.run_id ? submission.run_id : null,
         err: new Error('--provenance=stub is not allowed in CI/production. Use --provenance=github.'),
+        humanPrefix: 'provenance precondition unmet'
+      });
+      process.exit(2);
+    }
+    // Stub provenance confirms whatever the submission claims, so a stub record
+    // written into the default root reads as provenance-confirmed and takes the
+    // next seq in the integrity chain — a fork of the published chain once a
+    // real ingest lands first. Writing a stub record therefore needs a root the
+    // operator named; --verify-only writes nothing and stays free.
+    if (!verifyOnlyFlag && !process.env.INGEST_REPO_ROOT) {
+      emitCliErrorEvent({
+        failedStage: 'cli_provenance_resolve',
+        correlationId: cliCorrelationId,
+        submissionId: submission && submission.run_id ? submission.run_id : null,
+        err: new Error(
+          '--provenance=stub writes a record only under an explicit INGEST_REPO_ROOT. ' +
+          'Stub records are test/dev only and must not enter the real corpus. ' +
+          'Set INGEST_REPO_ROOT to a scratch directory, add --verify-only, or use --provenance=github.'
+        ),
         humanPrefix: 'provenance precondition unmet'
       });
       process.exit(2);

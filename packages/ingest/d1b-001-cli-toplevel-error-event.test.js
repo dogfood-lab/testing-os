@@ -111,7 +111,7 @@ function runSandboxCli(payload, extraEnv = {}) {
   ], {
     input: typeof payload === 'string' ? payload : JSON.stringify(payload),
     encoding: 'utf-8',
-    env: { ...process.env, CI: '', GITHUB_ACTIONS: '', ...extraEnv }
+    env: { ...process.env, CI: '', GITHUB_ACTIONS: '', INGEST_REPO_ROOT: TEST_ROOT, ...extraEnv }
   });
 }
 

@@ -372,11 +372,9 @@ try {
   // execFileSync('git', [...]), lib/worktree.js, and F-21240958's fix).
   execFileSync('node', [ingestScript, '--provenance=stub', '--file', submissionPath], {
     stdio: ['ignore', 'inherit', 'inherit'],
-    // SEED-2: forward the ingest DATA root so it stays overridable. run.js
-    // honors INGEST_REPO_ROOT for the records/ + indexes/ it writes; in
-    // production this resolves to REPO_ROOT (the real corpus), but a test can
-    // point it at a temp dir so the ingest never touches the real repo tree.
-    env: { ...process.env, INGEST_REPO_ROOT: process.env.INGEST_REPO_ROOT || REPO_ROOT },
+    // INGEST_REPO_ROOT reaches run.js through the inherited environment and is
+    // never defaulted here: run.js refuses a stub-provenance write without an
+    // explicit root, and filling in REPO_ROOT would hand it the real corpus.
   });
 } catch (e) {
   // F-091578-012 (wave-17): bare 'ERROR: dogfood ingest failed' scrolled past
@@ -386,6 +384,7 @@ try {
   console.error('ERROR [INGEST_FAILED]: dogfood ingest exited non-zero');
   console.error(`  Submission: ${submissionPath}`);
   console.error(`  Reproduce:  node "${ingestScript}" --provenance=stub --file "${submissionPath}"`);
+  if (!process.env.INGEST_REPO_ROOT) console.error('  Needs:      INGEST_REPO_ROOT set to a scratch directory (stub records never enter the real corpus)');
   if (e && e.status != null) console.error(`  Exit code:  ${e.status}`);
   if (e && e.message) console.error(`  Cause:      ${e.message}`);
   process.exit(1);

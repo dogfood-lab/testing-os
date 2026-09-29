@@ -2330,6 +2330,7 @@ function cmdPersist(args) {
     if (result.artifacts?.dogfoodSubmission) {
       console.error(`  Submission: ${result.artifacts.dogfoodSubmission}`);
       console.error(`  Reproduce:  node "<repo>/packages/ingest/run.js" --provenance=stub --file "${result.artifacts.dogfoodSubmission}"`);
+      if (!process.env.INGEST_REPO_ROOT) console.error('  Needs:      INGEST_REPO_ROOT set to a scratch directory (stub records never enter the real corpus)');
     }
     process.exit(1);
   }

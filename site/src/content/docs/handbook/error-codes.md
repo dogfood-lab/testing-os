@@ -508,7 +508,7 @@ A `swarm verify --ingest` run (or `persist-results.js`) reached the dogfood-inge
 - **Message shape:**
   - CLI seam: `ERROR [INGEST_FAILED]: dogfood ingest did not complete — <reason>`
   - persist-results seam: `ERROR [INGEST_FAILED]: dogfood ingest exited non-zero`
-  - Both follow the failure line with `  Submission: <path>` and a copy-pasteable `  Reproduce:  node "<repo>/packages/ingest/run.js" --provenance=stub --file "<submission>"` line; the persist-results seam also prints `  Exit code:  <n>` when available.
+  - Both follow the failure line with `  Submission: <path>` and a copy-pasteable `  Reproduce:  node "<repo>/packages/ingest/run.js" --provenance=stub --file "<submission>"` line; the persist-results seam also prints `  Exit code:  <n>` when available. With no `INGEST_REPO_ROOT` set, both add `  Needs:      INGEST_REPO_ROOT set to a scratch directory`, because the stub ingest refuses to write into this repository's own corpus.
 - **Operator action:**
   1. Run the printed `Reproduce:` command to replay the ingest in isolation with full output.
   2. The most common cause is a schema-invalid submission — inspect the AJV failure against `packages/schemas/src/json/dogfood-record.schema.json` and fix the swarm's submission emitter, not the schema.

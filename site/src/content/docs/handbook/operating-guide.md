@@ -67,10 +67,13 @@ The ingestion CLI (`packages/ingest/run.js`) requires an explicit `--provenance`
 node packages/ingest/run.js --file submission.json --provenance=github
 
 # Local development / testing -- uses a stub that always confirms
-node packages/ingest/run.js --file submission.json --provenance=stub
+node packages/ingest/run.js --file submission.json --provenance=stub --verify-only
+INGEST_REPO_ROOT=/tmp/dogfood-scratch node packages/ingest/run.js --file submission.json --provenance=stub
 ```
 
 The `--provenance=stub` flag is blocked in CI environments (`CI=true` or `GITHUB_ACTIONS=true`) as a safety measure. In CI without an explicit flag, the ingestion pipeline defaults to GitHub provenance and requires `GITHUB_TOKEN`.
+
+Outside CI, a stub ingest writes a record only when `INGEST_REPO_ROOT` names the root, and the root needs a copy of `policies/`. Without it the CLI exits 2 before writing, because a stub record in this repository's own `records/` would read as provenance-confirmed and take the next place in the integrity chain. `--verify-only` writes nothing and needs no root. `swarm persist --ingest` uses stub provenance, so it follows the same rule.
 
 For the full per-verb reference of every `swarm` command (init / domains / dispatch / collect / verify / advance / status / revalidate / rewind / redrive / history and the other 21 verbs), see the [swarm CLI reference](../cli-reference/). The reference is organised by verb in the order an operator typically reaches them — start with the verbs documented in this Operating Guide, then consult the reference for one-line synopses of the rest.
 
