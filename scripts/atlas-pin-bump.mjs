@@ -9,9 +9,13 @@
  *
  *   check   the pins, the map's engine and a verdict for each clone
  *   plan    the change as a diff, made in a temporary clone; writes nothing
+ *   apply   the change, committed on branch atlas/pin-<version>; never pushes
  */
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
+import { applyClone, titleFor } from './lib/atlas-pin/apply.mjs';
 import { commandRunner, engineRunner } from './lib/atlas-pin/engine.mjs';
 import { formatProblem } from './lib/atlas-pin/errors.mjs';
 import { EXACT_VERSION } from './lib/atlas-pin/pins.mjs';
@@ -20,25 +24,28 @@ import { checkClone } from './lib/atlas-pin/verdict.mjs';
 
 const WORKSPACE_VERSION = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).version;
 
-const USAGE = `usage: node scripts/atlas-pin-bump.mjs <check|plan> [options] <clone>...
+const USAGE = `usage: node scripts/atlas-pin-bump.mjs <check|plan|apply> [options] <clone>...
 
   check   the pins, the map's engine and a verdict for each clone
   plan    the change as a unified diff, with a summary of the map's change and
           the notices atlas check prints on it; writes nothing to the clone
+  apply   commit the change on branch atlas/pin-<version> from the default
+          branch, then prove atlas check on a clean clone of it; never pushes
 
 A clone is a path to a local clone, on its default branch.
 
 options:
-  --version <x.y.z>   the target engine (default ${WORKSPACE_VERSION}, this workspace's version)
-  --json              print JSON
+  --version <x.y.z>       the target engine (default ${WORKSPACE_VERSION}, this workspace's version)
+  --trailer "Key: value"  a trailer for apply's commit message; repeatable
+  --json                  print JSON (check, plan)
 `;
 
-const COMMANDS = new Set(['check', 'plan']);
+const COMMANDS = new Set(['check', 'plan', 'apply']);
 
 /**
  * @param {string[]} argv
  * @param {{ write?: (text: string) => void, exec?: Function, env?: NodeJS.ProcessEnv }} [io]
- * @returns {Promise<number>} 0 when every clone is done or ready, 1 when one needs a person, 2 on a usage error
+ * @returns {Promise<number>} 0 when every clone is done, ready, or applied and proven; 1 when one needs a person; 2 on a usage error
  */
 export async function main(argv, io = {}) {
   const write = io.write ?? ((text) => process.stdout.write(text));
@@ -51,22 +58,24 @@ export async function main(argv, io = {}) {
   const engine = engineRunner({ version: args.version, exec: io.exec ?? commandRunner(env) });
   const context = { write, env, engine };
   if (args.command === 'check') return check(args, context);
-  return plan(args, context);
+  if (args.command === 'plan') return plan(args, context);
+  return apply(args, context);
 }
 
 function parseArgs(argv) {
   const [command, ...rest] = argv;
   if (command == null) return { error: 'name a command' };
   if (!COMMANDS.has(command)) return { error: `unknown command ${command}` };
-  const args = { command, json: false, version: WORKSPACE_VERSION, targets: [] };
+  const args = { command, json: false, version: WORKSPACE_VERSION, trailers: [], targets: [] };
   for (let i = 0; i < rest.length; i += 1) {
     const word = rest[i];
     if (word === '--json') args.json = true;
-    else if (word === '--version') {
+    else if (word === '--version' || word === '--trailer') {
       const value = rest[i + 1];
       if (value == null || value.startsWith('--')) return { error: `${word} needs a value` };
-      if (!EXACT_VERSION.test(value)) return { error: `--version ${value} is not an exact version such as 1.24.0` };
-      args.version = value;
+      if (word === '--trailer') args.trailers.push(value);
+      else if (!EXACT_VERSION.test(value)) return { error: `--version ${value} is not an exact version such as 1.24.0` };
+      else args.version = value;
       i += 1;
     } else if (word.startsWith('--')) return { error: `unknown option ${word}` };
     else args.targets.push(word);
@@ -108,6 +117,33 @@ function planFor(root, { target, env, engine }) {
   return { ...facts, target, ...change };
 }
 
+function apply({ targets, version, trailers }, { write, env, engine }) {
+  let code = 0;
+  for (const root of targets) {
+    const result = applyClone(root, { target: version, engine, env, trailers });
+    if (result.outcome === 'done') {
+      write(`== ${root}: done on ${version}; nothing to apply\n`);
+      continue;
+    }
+    describe(result, version, write);
+    const again = result.outcome === 'already';
+    if (result.commit) write(`   ${again ? 'already applied' : 'committed'} ${result.commit} on ${result.branch}; ${result.defaultBranch} is where it was${again ? ', and nothing changed' : ''}\n`);
+    if (result.proof) write(`   proof  atlas check (${result.proof.engine}) on a clean clone of ${result.branch} exited ${result.proof.status}\n`);
+    if (result.verdict === 'person') {
+      code = 1;
+      continue;
+    }
+    if (again) continue;
+    writeSummary(result, version, write);
+    const bodyFile = join(gitDir(root), 'atlas-pin-bump-pr.md');
+    writeFileSync(bodyFile, pullRequestBody(result, version));
+    const slug = slugOf(root);
+    write(`   next:\n   git -C ${quote(root)} push -u origin ${result.branch}\n`);
+    if (slug) write(`   gh pr create --repo ${slug} --head ${result.branch} --title "${titleFor(version)}" --body-file ${quote(bodyFile)}\n`);
+  }
+  return code;
+}
+
 function describe(result, target, write) {
   const heading = { done: `done on ${target}`, ready: `ready to move to ${target}`, person: 'needs a person' }[result.verdict];
   write(`== ${result.repository}: ${heading}\n`);
@@ -136,6 +172,44 @@ function counted({ before, after, added, removed, changed }) {
   if (removed.length > 0) parts.push(`gone: ${removed.join(', ')}`);
   if (changed != null && changed > 0) parts.push(`${changed} read differently`);
   return parts.join('; ');
+}
+
+// What the pull request says: the change, the proof, and the notices atlas
+// check at the target prints on it, which the door checks of 1.24.0 raise on
+// some repositories and a reviewer should see.
+function pullRequestBody({ summary, notices, proof, branch }, target) {
+  const lines = [
+    `Moves every pin of @dogfood-lab/atlas to ${target} and makes the map again with that engine, in one change: the org rule keeps one Atlas version across the fleet, moved by pull request.`,
+    '',
+    ...summary.pins.map((pin) => `- \`${pin.file}:${pin.line}\`: ${pin.from} -> ${pin.to}`),
+    `- the map: made by ${summary.engine.before ?? 'no engine stamp'} -> made by ${summary.engine.after}; doors ${counted(summary.doors)}; parts ${counted(summary.parts)}`,
+    `- atlas/ files that change: ${summary.files.join(', ') || 'none'}`,
+    '',
+    `atlas check (${proof.engine}) exited ${proof.status} on a clean clone of ${branch}.`,
+    '',
+    notices.length === 0
+      ? `atlas check at ${target} prints no notices on this change.`
+      : `atlas check at ${target} prints ${notices.length === 1 ? 'this notice' : `these ${notices.length} notices`} on this change; a notice does not fail the check:`,
+    ...(notices.length === 0 ? [] : ['', '```', ...notices, '```']),
+    '',
+    'Made with scripts/atlas-pin-bump.mjs (dogfood-lab/testing-os).',
+  ];
+  return `${lines.join('\n')}\n`;
+}
+
+function gitDir(root) {
+  return spawnSync('git', ['-C', root, 'rev-parse', '--absolute-git-dir'], { encoding: 'utf8' }).stdout.trim();
+}
+
+function slugOf(root) {
+  const origin = spawnSync('git', ['-C', root, 'remote', 'get-url', 'origin'], { encoding: 'utf8' });
+  if (origin.status !== 0) return null;
+  const match = /github\.com[:/]([^/\s]+)\/([^/\s]+?)(?:\.git)?\/?\s*$/i.exec(origin.stdout.trim());
+  return match ? `${match[1]}/${match[2]}` : null;
+}
+
+function quote(path) {
+  return /^[\w./:@-]+$/.test(path) ? path : `"${path}"`;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

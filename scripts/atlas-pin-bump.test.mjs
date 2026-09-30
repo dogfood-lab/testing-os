@@ -36,7 +36,11 @@ function gitAt(cwd) {
  * engine made it (`engine`), or left with no stamp (`engine: null`) as every
  * map before 1.23.0 is; `engine: 'as-made'` keeps the stamp it was made with.
  */
-function fleetClone({ pin = '1.14.0', engine = '1.14.0', map = true, change = null, crlf = false, identity = true } = {}) {
+function fleetClone(options = {}) {
+  return cloneOf(fleetRemote(options), options);
+}
+
+function fleetRemote({ pin = '1.14.0', engine = '1.14.0', map = true, change = null } = {}) {
   const base = makeRepo(FIXTURE);
   made.push(base);
   const inBase = gitAt(base);
@@ -62,6 +66,10 @@ function fleetClone({ pin = '1.14.0', engine = '1.14.0', map = true, change = nu
   }
   const remote = join(temporary('atlas-pin-bump-remote-'), 'fleet.git');
   execFileSync('git', ['clone', '-q', '--bare', base, remote]);
+  return remote;
+}
+
+function cloneOf(remote, { crlf = false, identity = true } = {}) {
   const root = join(temporary('atlas-pin-bump-clone-'), 'fleet');
   execFileSync('git', ['clone', '-q', '-c', `core.autocrlf=${crlf}`, remote, root]);
   const git = gitAt(root);
@@ -243,6 +251,156 @@ describe('atlas-pin-bump plan', () => {
       const { code, out } = await run(['plan', '--version', version, '.']);
       assert.equal(code, 2, version);
       assert.match(out, /is not an exact version such as 1\.24\.0/);
+    }
+  });
+});
+
+const BRANCH = `atlas/pin-${TARGET}`;
+
+function refsOf(dir) {
+  return gitAt(dir)('for-each-ref', '--format=%(refname) %(objectname)');
+}
+
+// An environment in which git finds no identity but the clone's own: no
+// global or system configuration, and no identity variables.
+function withoutIdentity() {
+  const empty = join(temporary('atlas-pin-bump-config-'), 'gitconfig');
+  writeFileSync(empty, '');
+  const env = { ...process.env, GIT_CONFIG_GLOBAL: empty, GIT_CONFIG_NOSYSTEM: '1' };
+  for (const name of ['GIT_AUTHOR_NAME', 'GIT_AUTHOR_EMAIL', 'GIT_COMMITTER_NAME', 'GIT_COMMITTER_EMAIL', 'EMAIL']) delete env[name];
+  return env;
+}
+
+// What a clock writes into a map: the time it was made, and the dates the
+// page names. Everything else must match byte for byte.
+function settle(text) {
+  return text
+    .replace(/^index [0-9a-f]+\.\.[0-9a-f]+/gm, 'index')
+    .replace(/\d{4}-\d{2}-\d{2}T[\d:.]+Z/g, 'STAMP')
+    .replace(/\d{4}-\d{2}-\d{2}/g, 'DATE');
+}
+
+describe('atlas-pin-bump apply', () => {
+  it('commits the pins and the map in one commit on its branch, pushes nothing, and proves the check', async () => {
+    const remote = fleetRemote();
+    const { root, git } = cloneOf(remote);
+    const main = git('branch', '--show-current');
+    const tip = git('rev-parse', main);
+    const remoteRefs = refsOf(remote);
+    const calls = [];
+    const { code, out } = await run(['apply', root], { exec: localEngine(calls) });
+    assert.equal(code, 0, out);
+    assert.equal(git('rev-parse', main), tip, 'the default branch is where it was');
+    assert.equal(git('branch', '--show-current'), main, 'the clone is back on its default branch');
+    assert.equal(git('status', '--porcelain'), '');
+    assert.equal(refsOf(remote), remoteRefs, 'nothing was pushed');
+    assert.equal(git('rev-parse', `${BRANCH}^`), tip, 'one commit, on the default branch');
+    assert.equal(git('log', '-1', '--format=%s', BRANCH), `Pin Atlas ${TARGET} and make the map again`);
+    assert.equal(git('log', '-1', '--format=%an <%ae>|%cn <%ce>', BRANCH), 'fleet <fleet@example.com>|fleet <fleet@example.com>');
+    assert.deepEqual(git('diff', '--name-only', main, BRANCH).split('\n'), [WORKFLOW, 'atlas/README.md', 'atlas/page.json', 'atlas/statistics.json', 'atlas/structure.json']);
+    assert.match(git('show', `${BRANCH}:${WORKFLOW}`), new RegExp(`\\n {8}run: npx --yes @dogfood-lab/atlas@${escaped(TARGET)} check\\n`));
+    assert.equal(JSON.parse(git('show', `${BRANCH}:atlas/structure.json`)).engine, TARGET);
+    assert.match(out, new RegExp(`\\n {3}committed [0-9a-f]+ on ${escaped(BRANCH)}; ${main} is where it was\\n {3}proof {2}atlas check \\(@dogfood-lab/atlas@${escaped(TARGET)}\\) on a clean clone of ${escaped(BRANCH)} exited 0\\n`));
+    assert.match(out, new RegExp(`\\n {3}next:\\n {3}git -C \\S+ push -u origin ${escaped(BRANCH)}\\n`));
+    assert.deepEqual(calls.map((call) => call.args.at(-1)), ['map', 'check', 'check']);
+    assert.notEqual(resolve(calls[2].cwd), resolve(root), 'the proof runs in a clean clone of the branch');
+    const body = readFileSync(join(root, '.git', 'atlas-pin-bump-pr.md'), 'utf8');
+    assert.match(body, new RegExp(`atlas check \\(@dogfood-lab/atlas@${escaped(TARGET)}\\) exited 0 on a clean clone of ${escaped(BRANCH)}\\.`));
+    assert.match(body, /\n```\nATLAS_DOOR_TOOLCHAIN {2}/);
+  });
+
+  it('changes nothing when it is run again, and says so', async () => {
+    const { root, git } = fleetClone();
+    assert.equal((await run(['apply', root], { exec: localEngine() })).code, 0);
+    const before = snapshot(git);
+    const { code, out } = await run(['apply', root], { exec: localEngine() });
+    assert.equal(code, 0, out);
+    assert.deepEqual(snapshot(git), before);
+    assert.match(out, new RegExp(`\\n {3}already applied [0-9a-f]+ on ${escaped(BRANCH)}; \\S+ is where it was, and nothing changed\\n {3}proof {2}[^\\n]+ exited 0\\n`));
+  });
+
+  it('does nothing to a clone that is done', async () => {
+    const { root, git } = fleetClone({ pin: TARGET, engine: 'as-made' });
+    const before = snapshot(git);
+    const calls = [];
+    const { code, out } = await run(['apply', root], { exec: localEngine(calls) });
+    assert.equal(code, 0);
+    assert.match(out, new RegExp(`: done on ${escaped(TARGET)}; nothing to apply\\n$`));
+    assert.deepEqual(snapshot(git), before);
+    assert.deepEqual(calls, []);
+  });
+
+  it('adds the trailers it is given to the commit message', async () => {
+    const { root, git } = fleetClone();
+    const { code } = await run(['apply', '--trailer', 'Refs: atlas-pin-wave', '--trailer', 'Checked-by: atlas-pin-bump', root], { exec: localEngine() });
+    assert.equal(code, 0);
+    assert.match(git('log', '-1', '--format=%B', BRANCH), /\n\nRefs: atlas-pin-wave\nChecked-by: atlas-pin-bump$/);
+  });
+
+  it('stops when git has no identity for the clone, and invents none', async () => {
+    const { root, git } = fleetClone({ identity: false });
+    const before = snapshot(git);
+    const calls = [];
+    const { code, out } = await run(['apply', root], { exec: localEngine(calls), env: withoutIdentity() });
+    assert.equal(code, 1);
+    assert.match(out, /: needs a person\n[\s\S]*! PIN_BUMP_NO_IDENTITY {2}git has no author identity configured for this clone\n/);
+    assert.deepEqual(snapshot(git), before);
+    assert.deepEqual(calls, []);
+  });
+
+  it('leaves the branch to a person when atlas check fails on a clean clone of it', async () => {
+    // The engine answers as the target does, except in the proof's clean
+    // clone, where a tracked file no part holds stands in for
+    // whatever makes a fresh clone differ from the place the map was made.
+    const failing = (command, args, cwd) => {
+      if (args.at(-1) === 'check' && gitAt(cwd)('branch', '--show-current') === BRANCH) {
+        writeFileSync(join(cwd, 'late.js'), 'export const late = true;\n');
+        gitAt(cwd)('add', '--', 'late.js');
+      }
+      return localEngine()(command, args, cwd);
+    };
+    const { root, git } = fleetClone();
+    const main = git('branch', '--show-current');
+    const tip = git('rev-parse', main);
+    const { code, out } = await run(['apply', root], { exec: failing });
+    assert.equal(code, 1);
+    assert.match(out, new RegExp(`\\n {3}proof {2}atlas check \\(@dogfood-lab/atlas@${escaped(TARGET)}\\) on a clean clone of ${escaped(BRANCH)} exited 1\\n`));
+    assert.match(out, new RegExp(`! PIN_BUMP_PROOF_FAILED {2}atlas check \\(@dogfood-lab/atlas@${escaped(TARGET)}\\) on a clean clone of ${escaped(BRANCH)} exited 1:\\n[\\s\\S]*ATLAS_[A-Z_]+ {2}`));
+    assert.equal(git('rev-parse', main), tip);
+    assert.equal(git('rev-parse', `${BRANCH}^`), tip, 'the branch is left for the person');
+  });
+
+  it('leaves a pin branch it did not make to a person', async () => {
+    const { root, git } = fleetClone();
+    git('branch', BRANCH);
+    const tip = git('rev-parse', BRANCH);
+    const { code, out } = await run(['apply', root], { exec: localEngine() });
+    assert.equal(code, 1);
+    assert.match(out, new RegExp(`! PIN_BUMP_BRANCH_EXISTS {2}${escaped(BRANCH)} does not hold every pin at ${escaped(TARGET)} and a map made by it\\n`));
+    assert.equal(git('rev-parse', BRANCH), tip);
+  });
+
+  it('makes the same diff and commits the same map on a CRLF checkout', async () => {
+    const remote = fleetRemote();
+    const lf = cloneOf(remote, { crlf: false });
+    const crlf = cloneOf(remote, { crlf: true });
+    assert.doesNotMatch(readFileSync(join(lf.root, WORKFLOW), 'utf8'), /\r/);
+    assert.match(readFileSync(join(crlf.root, WORKFLOW), 'utf8'), /\r\n/);
+    const plans = [];
+    for (const { root } of [lf, crlf]) {
+      const { code, out } = await run(['plan', '--json', root], { exec: localEngine() });
+      assert.equal(code, 0, out);
+      plans.push(JSON.parse(out)[0]);
+    }
+    assert.equal(settle(plans[1].diff), settle(plans[0].diff));
+    assert.deepEqual(plans[1].summary, plans[0].summary);
+    for (const { root } of [lf, crlf]) assert.equal((await run(['apply', root], { exec: localEngine() })).code, 0);
+    const blob = (clone, path) => execFileSync('git', ['cat-file', 'blob', `${BRANCH}:${path}`], { cwd: clone.root });
+    for (const path of [WORKFLOW, 'atlas/structure.json', 'atlas/boundaries.yaml']) {
+      assert.equal(Buffer.compare(blob(crlf, path), blob(lf, path)), 0, path);
+    }
+    for (const path of ['atlas/statistics.json', 'atlas/README.md', 'atlas/page.json']) {
+      assert.equal(settle(blob(crlf, path).toString('utf8')), settle(blob(lf, path).toString('utf8')), path);
     }
   });
 });
