@@ -568,6 +568,11 @@ function carryDoor(door) {
     ...(door.entry ? { entry: door.entry } : {}),
     ...(door.extension ? { extension: true } : {}),
     file: door.file,
+    // What the door checks found at map time (core/door-checks.js), each
+    // with its rule, job, step, facts and the lines they were read from, and
+    // what they could not judge. Facts only: the words are made where a
+    // finding shows.
+    ...(door.findings?.length > 0 ? { findings: door.findings.map((finding) => structuredClone(finding)) } : {}),
     ...(door.jobs ? { jobs: door.jobs.map(carryJob) } : {}),
     ...(door.gated?.length > 0
       ? { gated: door.gated.map((entry) => ({ jobs: [...entry.jobs], pushes: entry.pushes, ...(entry.pushesForReview ? { pushesForReview: true } : {}), ...(entry.pushesTo ? { pushesTo: [...entry.pushesTo] } : {}), sends: [...entry.sends], stages: [...entry.stages], when: { ...entry.when } })) }
@@ -607,6 +612,7 @@ function carryDoor(door) {
     ...(door.shellMissed?.length > 0 ? { shellMissed: door.shellMissed.map((entry) => ({ ...entry })) } : {}),
     stages: [...door.stages],
     ...(door.tests?.length > 0 ? { tests: door.tests.map(carryTestRun) } : {}),
+    ...(door.unresolvedChecks?.length > 0 ? { unresolvedChecks: door.unresolvedChecks.map((entry) => structuredClone(entry)) } : {}),
     ...(door.unwrittenStages?.length > 0 ? { unwrittenStages: [...door.unwrittenStages] } : {}),
     triggers: door.triggers.map((trigger) => ({ ...trigger })),
     ...(door.untrackedLandings?.length > 0 ? { untrackedLandings: door.untrackedLandings.filter((target) => !inAtlas(target)) } : {}),
