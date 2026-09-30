@@ -11,6 +11,7 @@
 # testing-os
 
 [![CI](https://github.com/dogfood-lab/testing-os/actions/workflows/ci.yml/badge.svg)](https://github.com/dogfood-lab/testing-os/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/dogfood-lab/testing-os/graph/badge.svg)](https://codecov.io/gh/dogfood-lab/testing-os)
 [![Pages](https://github.com/dogfood-lab/testing-os/actions/workflows/pages.yml/badge.svg)](https://dogfood-lab.github.io/testing-os/)
 [![dogfood](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/dogfood-lab/testing-os/main/indexes/badges/dogfood-lab--testing-os--cli.json)](https://dogfood-lab.github.io/testing-os/handbook/read-model/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -21,7 +22,7 @@
 *Protocols, evidence stores, and learning loops for AI-assisted software.*
 
 <!-- version:start -->
-**v1.23.4** — current release. See [CHANGELOG.md](CHANGELOG.md) for what shipped.
+**v1.23.5** — current release. See [CHANGELOG.md](CHANGELOG.md) for what shipped.
 <!-- version:end -->
 
 📖 **[Read the handbook →](https://dogfood-lab.github.io/testing-os/handbook/)**
@@ -71,7 +72,7 @@ testing-os processes dogfood submissions dispatched via `repository_dispatch` fr
 
 **Provenance is the attestation.** For a `github` submission the verifier confirms the claimed GitHub Actions run actually exists (GitHub API) and binds the submission's `repo` and `commit_sha` to that confirmed run — a live, keyless check rooted in GitHub's own OIDC identity, so a record cannot attest to a run or commit that did not happen. **GitLab CI** is supported opt-in (`source.provider: gitlab`); a GitLab submission is the one case the verifier calls a non-GitHub host (`gitlab.com/api`), and only for `gitlab` submissions.
 
-**Record integrity is tamper-EVIDENT, not tamper-proof.** Every persisted record carries an `integrity` block (`submission_digest` + `prev_digest`) forming an append-only hash chain that `node packages/ingest/run.js --verify-chain` validates fully offline — detecting out-of-band tampering, disk corruption, and partial restores. It does **not** defend against the ingest credential itself, which can rewrite both a record and the chain; closing that needs an anchor outside the writer's control. An **optional, off-by-default XRPL anchor** (`node packages/ingest/run.js --anchor-*`) witnesses the chain head to the public XRP Ledger, making any truncation or rewrite below an anchored point detectable — the second disclosed non-GitHub call, and only when an operator enables it.
+**Record integrity is tamper-EVIDENT, not tamper-proof.** Every persisted record carries an `integrity` block (`submission_digest` + `prev_digest`) forming an append-only hash chain that `node packages/ingest/run.js --verify-chain` validates fully offline — detecting out-of-band tampering, disk corruption, and partial restores. Stub provenance, which confirms any claim without an API call, exists for local development only: it is refused in CI, and it writes a record only under an explicitly named `INGEST_REPO_ROOT`, so a stub record cannot enter this repository's own chain. The chain does **not** defend against the ingest credential itself, which can rewrite both a record and the chain; closing that needs an anchor outside the writer's control. An **optional, off-by-default XRPL anchor** (`node packages/ingest/run.js --anchor-*`) witnesses the chain head to the public XRP Ledger, making any truncation or rewrite below an anchored point detectable — the second disclosed non-GitHub call, and only when an operator enables it.
 
 **What testing-os touches:** the submission JSON in each `repository_dispatch` payload; `policies/`, `fixtures/`, `records/`, `indexes/`, and `dogfood/roadmap/` in this repo (the last written only by an operator-invoked `swarm roadmap compile` — never by the automated ingest path); outbound calls to `api.github.com` for provenance verification; and — for `github` submissions only — a read-only fetch of the submitting repo's `dogfood/scenarios/<scenario_id>.yaml` at the attested commit (the scenario definition that powers required-steps enforcement; size-capped and schema-validated before use, absent files simply leave that check unenforced with a visible warning).
 
@@ -131,7 +132,7 @@ Requires Node ≥ 22. CI matrix runs Node 22 + 24 on `ubuntu-latest`; locally va
 
 ## Versioning
 
-All `@dogfood-lab/*` packages bump together — one number across the monorepo. Seven packages publish to npm under `@dogfood-lab` at v1.23.4 in lockstep (`schemas`, `verify`, `report`, `ingest`, `findings`, `dogfood-swarm`, `atlas`); the eighth, `@dogfood-lab/portfolio`, stays internal. The version line near the top of this README is auto-stamped from `package.json` via [`scripts/sync-version.mjs`](scripts/sync-version.mjs) on every `npm run build`.
+All `@dogfood-lab/*` packages bump together — one number across the monorepo. Seven packages publish to npm under `@dogfood-lab` at v1.23.5 in lockstep (`schemas`, `verify`, `report`, `ingest`, `findings`, `dogfood-swarm`, `atlas`); the eighth, `@dogfood-lab/portfolio`, stays internal. The version line near the top of this README is auto-stamped from `package.json` via [`scripts/sync-version.mjs`](scripts/sync-version.mjs) on every `npm run build`.
 
 ## License
 
