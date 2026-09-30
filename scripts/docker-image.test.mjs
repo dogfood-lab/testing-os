@@ -153,13 +153,19 @@ describe('release.yml container job', () => {
     assert.equal(workflow.jobs.publish.permissions, undefined, 'the publish job keeps the workflow default');
   });
 
-  it('waits up to five minutes for npm to serve the version before building', () => {
+  // The registry's version endpoint has lagged past five minutes after a
+  // publish; the poll is fifteen, and the job's own limit leaves the build
+  // room after it.
+  it('waits up to fifteen minutes for npm to serve the version before building', () => {
     const wait = job.steps.find((step) => typeof step.run === 'string' && step.run.includes('npm view'));
     assert.ok(wait, 'a wait step');
     assert.match(wait.run, /npm view "@dogfood-lab\/atlas@\$\{VERSION\}" version/);
-    const loop = /seq 1 (\d+)[\s\S]*sleep (\d+)/.exec(wait.run);
-    assert.ok(loop, 'a bounded poll');
-    assert.equal(Number(loop[1]) * Number(loop[2]), 300, 'five minutes');
+    const loop = /seq 1 (\d+)[\s\S]*of (\d+)[\s\S]*sleep (\d+)/.exec(wait.run);
+    assert.ok(loop, 'a bounded poll that says how many checks it makes');
+    assert.equal(loop[2], loop[1], 'the count it prints is the count it makes');
+    assert.equal(Number(loop[1]) * Number(loop[3]), 900, 'fifteen minutes');
+    assert.match(wait.run, /within fifteen minutes/, 'the error names the wait');
+    assert.ok(job['timeout-minutes'] * 60 >= 900 + 600, 'ten minutes left for the build after a full wait');
     const build = job.steps.findIndex((step) => String(step.uses).startsWith('docker/build-push-action@'));
     assert.ok(job.steps.indexOf(wait) < build, 'before the build');
   });

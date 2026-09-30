@@ -587,6 +587,171 @@ describe('files the render no longer writes', () => {
   });
 });
 
+describe('a repository that leaves the list', () => {
+  const LEAVING = 'dogfood-lab/leaving';
+  const STAYING = ['mcp-tool-shop-org/shipcheck', 'mcp-tool-shop-org/widgets'];
+  const RENDERED = ['README.md', 'divergence.json', 'history.json', 'page.json', 'statistics.json', 'structure.json'];
+
+  function listed(name, change = {}) {
+    return { full_name: name, visibility: 'public', archived: false, default_branch: 'main', ...change };
+  }
+
+  // Every file and directory under the branch's indexes/atlas, relative to it.
+  function entriesUnder(dir, base = dir) {
+    const found = [];
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const abs = join(dir, entry.name);
+      found.push(abs.slice(base.length + 1).replaceAll('\\', '/') + (entry.isDirectory() ? '/' : ''));
+      if (entry.isDirectory()) found.push(...entriesUnder(abs, base));
+    }
+    return found.sort();
+  }
+
+  // A render of three repositories onto an empty branch, then a second run
+  // over what it left, in which the third has left the list the given way.
+  async function renderTwice(t, second) {
+    const tree = mkdtempSync(join(tmpdir(), 'atlas-render-leaving-'));
+    t.after(() => rmSync(tree, { recursive: true, force: true }));
+    const org = STAYING.map((name) => listed(name));
+    const first = harness(t, { lab: [listed(LEAVING)], org, branch: tree });
+    await first.runFleet({ dryRun: false, writeBranch: (payload) => writeRenderFiles(tree, payload) });
+    assert.ok(existsSync(join(tree, 'indexes', 'atlas', ...LEAVING.split('/'), 'page.json')), 'the first run renders all three');
+    const again = harness(t, { org, branch: tree, ...second });
+    const result = await again.runFleet({ dryRun: false, writeBranch: (payload) => writeRenderFiles(tree, payload) });
+    return { tree, result };
+  }
+
+  const ways = [
+    ['is made private', { lab: [listed(LEAVING, { visibility: 'private' })] }],
+    ['is archived', { lab: [listed(LEAVING, { archived: true })] }],
+    ['removes its map', { lab: [listed(LEAVING)], heads: { [LEAVING]: 'f'.repeat(40) }, notMapped: true }],
+    ['is excluded', { lab: [listed(LEAVING)], exclude: `${LEAVING}\n` }],
+  ];
+  for (const [how, second] of ways) {
+    it(`loses its folder, its fleet row and its index line when it ${how}, and nothing stale is left`, async (t) => {
+      const { tree, result } = await renderTwice(t, second);
+      const atlas = join(tree, 'indexes', 'atlas');
+      assert.deepEqual(entriesUnder(atlas), [
+        'fleet.json',
+        'llms.txt',
+        'mcp-tool-shop-org/',
+        ...STAYING.flatMap((name) => [`${name.split('/')[1]}/`, ...RENDERED.map((file) => `${name.split('/')[1]}/${file}`)])
+          .map((path) => `mcp-tool-shop-org/${path}`),
+        'state.json',
+      ].sort(), 'the two that stay, as the first run wrote them, and the files beside the fleet');
+      assert.deepEqual(JSON.parse(readFileSync(join(atlas, 'fleet.json'), 'utf8')).repositories.map((row) => row.repo), STAYING);
+      assert.equal(readFileSync(join(atlas, 'llms.txt'), 'utf8').includes(LEAVING), false);
+      assert.ok(result.logs.includes(`removed indexes/atlas/${LEAVING}: no longer on the list`), result.logs.join('\n'));
+    });
+  }
+
+  it('keeps the folder of a repository still on the list whose render failed this run', async (t) => {
+    const { tree } = await renderTwice(t, { lab: [listed(LEAVING)], heads: { [LEAVING]: 'f'.repeat(40) }, cloneFails: true });
+    assert.deepEqual(readdirSync(join(tree, 'indexes', 'atlas', ...LEAVING.split('/'))).sort(), RENDERED);
+  });
+});
+
+describe('a run that would remove many folders at once', () => {
+  const OWNER = 'mcp-tool-shop-org';
+  const names = (n) => Array.from({ length: n }, (_, i) => `${OWNER}/r${String(i + 1).padStart(2, '0')}`);
+
+  // A render branch holding these repositories, each rendered at the head the
+  // harness serves by this engine, so a run over it renders none of them again
+  // and does nothing but decide which folders stay.
+  function branchOf(t, repos) {
+    const tree = mkdtempSync(join(tmpdir(), 'atlas-render-guard-'));
+    t.after(() => rmSync(tree, { recursive: true, force: true }));
+    const atlas = join(tree, 'indexes', 'atlas');
+    const at = '2026-09-15T06:00:00.000Z';
+    for (const repo of repos) {
+      mkdirSync(join(atlas, ...repo.split('/')), { recursive: true });
+      writeFileSync(join(atlas, ...repo.split('/'), 'page.json'), `${JSON.stringify({ repo })}\n`);
+    }
+    const rendered = Object.fromEntries(repos.map((repo) => [repo, { commit: 'a'.repeat(40), engine: ENGINE, renderedAt: at }]));
+    writeFileSync(join(atlas, 'state.json'), `${JSON.stringify({ rendered, failures: {} }, null, 2)}\n`);
+    writeFileSync(join(atlas, 'fleet.json'), `${JSON.stringify({ generatedAt: at, repositories: repos.map((repo) => ({ repo, commit: 'a'.repeat(40), renderedAt: at, doors: 1 })) }, null, 2)}\n`);
+    return tree;
+  }
+
+  // Every file under the branch with its bytes, to show a refused run left it as it was.
+  function snapshot(dir, base = dir, found = {}) {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const abs = join(dir, entry.name);
+      if (entry.isDirectory()) snapshot(abs, base, found);
+      else found[abs.slice(base.length + 1).replaceAll('\\', '/')] = readFileSync(abs, 'utf8');
+    }
+    return found;
+  }
+
+  function run(t, tree, listedNames, env = {}) {
+    const org = listedNames.map((name) => ({ full_name: name, visibility: 'public', archived: false, default_branch: 'main' }));
+    const { runFleet } = harness(t, { org, branch: tree });
+    return runFleet({ dryRun: false, env, writeBranch: (payload) => writeRenderFiles(tree, payload) });
+  }
+
+  function refusal(removed) {
+    return (error) => {
+      assert.equal(error.code, 'ATLAS_RENDER_MASS_REMOVAL');
+      for (const name of removed) assert.ok(error.message.includes(name), `${name} is named: ${error.message}`);
+      assert.match(error.hint, /ATLAS_RENDER_ALLOW_REMOVALS/);
+      return true;
+    };
+  }
+
+  it('refuses an empty list while the branch holds folders, and changes nothing', async (t) => {
+    const present = names(2);
+    const tree = branchOf(t, present);
+    const before = snapshot(tree);
+    await assert.rejects(run(t, tree, []), refusal(present));
+    assert.deepEqual(snapshot(tree), before, 'the branch is as it was');
+  });
+
+  it('refuses five removals out of twenty folders, and changes nothing', async (t) => {
+    const present = names(20);
+    const tree = branchOf(t, present);
+    const before = snapshot(tree);
+    await assert.rejects(run(t, tree, present.slice(0, 15)), refusal(present.slice(15)));
+    assert.deepEqual(snapshot(tree), before, 'the branch is as it was');
+  });
+
+  it('removes two folders out of twenty', async (t) => {
+    const present = names(20);
+    const tree = branchOf(t, present);
+    const result = await run(t, tree, present.slice(0, 18));
+    const atlas = join(tree, 'indexes', 'atlas', OWNER);
+    assert.deepEqual(readdirSync(atlas).sort(), present.slice(0, 18).map((name) => name.split('/')[1]));
+    assert.equal(result.logs.filter((line) => line.startsWith('removed ')).length, 2);
+  });
+
+  it('lets five through when ATLAS_RENDER_ALLOW_REMOVALS allows five, and not when it allows four', async (t) => {
+    const present = names(20);
+    const refused = branchOf(t, present);
+    const before = snapshot(refused);
+    await assert.rejects(run(t, refused, present.slice(0, 15), { ATLAS_RENDER_ALLOW_REMOVALS: '4' }), refusal(present.slice(15)));
+    assert.deepEqual(snapshot(refused), before);
+    const tree = branchOf(t, present);
+    await run(t, tree, present.slice(0, 15), { ATLAS_RENDER_ALLOW_REMOVALS: '5' });
+    assert.deepEqual(readdirSync(join(tree, 'indexes', 'atlas', OWNER)).sort(), present.slice(0, 15).map((name) => name.split('/')[1]));
+  });
+
+  it('refuses an override that is not a count, before anything is cloned', async (t) => {
+    const tree = branchOf(t, names(1));
+    await assert.rejects(run(t, tree, names(1), { ATLAS_RENDER_ALLOW_REMOVALS: 'all' }), (error) => {
+      assert.equal(error.code, 'ATLAS_RENDER_BAD_ALLOWANCE');
+      assert.match(error.message, /"all"/);
+      return true;
+    });
+  });
+
+  it('takes the override from the workflow_dispatch input, and nothing else from it', () => {
+    const workflow = parse(readFileSync(WORKFLOW, 'utf8'));
+    assert.equal(workflow.on.workflow_dispatch.inputs.allow_removals.required, false);
+    const step = workflow.jobs.render.steps.find((entry) => entry.run === 'node scripts/atlas-render.mjs');
+    assert.equal(step.env.ATLAS_RENDER_ALLOW_REMOVALS, '${{ inputs.allow_removals }}');
+    assert.doesNotMatch(step.run, /inputs\./, 'the input reaches the script as an environment variable, never as shell text');
+  });
+});
+
 describe('exclude file', () => {
   it('ignores comments and blank lines', () => {
     assert.deepEqual([...readExclusions('# note\n\nowner/repo\n')], ['owner/repo']);

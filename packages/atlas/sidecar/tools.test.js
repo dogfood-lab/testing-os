@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+import { makeThisRepository } from '../core/fixture-repo.js';
 import { assertInventsNothing, committedMap, explainJson } from './test-oracle.js';
 
 /**
@@ -125,26 +126,22 @@ describe('the tools on the committed map', () => {
     }
   });
 
-  it('answer on this repository from its committed map', async (t) => {
-    const shallow = git(REPO_ROOT, ['rev-parse', '--is-shallow-repository']) === 'true';
-    const source = committedMap(REPO_ROOT);
-    const commit = source.structure.generatedFrom.commit;
-    const held = spawnSync('git', ['cat-file', '-e', `${commit}^{commit}`], { cwd: REPO_ROOT }).status === 0;
-    if (shallow && !held) {
-      t.skip('this shallow clone does not hold the commit the committed map was made from, so the sidecar halts, as it must');
-      return;
-    }
-    const client = await connect(REPO_ROOT);
+  // This repository's tree with a history of its own, so the test runs the
+  // same in a shallow clone: the map committed at HEAD, then made again.
+  it('answer on this repository from its committed map', async () => {
+    const own = makeThisRepository({ prefix: 'atlas-tools-this-' });
+    scratch.push(own);
+    const source = committedMap(own);
+    const client = await connect(own);
     try {
       const path = 'packages/ingest/persist.js';
-      assertInventsNothing('atlas_explain', (await call(client, 'atlas_explain', { path })).answer, source, { explained: explainJson(REPO_ROOT, path) });
+      assertInventsNothing('atlas_explain', (await call(client, 'atlas_explain', { path })).answer, source, { explained: explainJson(own, path) });
       assertInventsNothing('atlas_overview', (await call(client, 'atlas_overview', {})).answer, source);
       assertInventsNothing('atlas_reach', (await call(client, 'atlas_reach', { paths: ['packages/verify/index.js'] })).answer, source);
-      const earlier = git(REPO_ROOT, ['log', '--format=%H', '-n', '2', '--', 'atlas/structure.json']).split('\n')[1];
-      if (earlier) {
-        const base = JSON.parse(git(REPO_ROOT, ['show', `${earlier}:atlas/structure.json`]));
-        assertInventsNothing('atlas_changes', (await call(client, 'atlas_changes', { since: earlier })).answer, source, { base });
-      }
+      const [, earlier] = git(own, ['log', '--format=%H', '-n', '2', '--', 'atlas/structure.json']).split('\n');
+      assert.ok(earlier, 'the map as HEAD committed it, before it was made again');
+      const base = JSON.parse(git(own, ['show', `${earlier}:atlas/structure.json`]));
+      assertInventsNothing('atlas_changes', (await call(client, 'atlas_changes', { since: earlier })).answer, source, { base });
     } finally {
       await client.close();
     }

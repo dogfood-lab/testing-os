@@ -1,10 +1,10 @@
 import { spawnSync } from 'node:child_process';
-import { appendFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { appendFileSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { after, describe, it } from 'node:test';
+import { makeThisRepository } from '../core/fixture-repo.js';
 import { git, mappedRepository, modernMeta, startServer } from './test-client.js';
 
 /**
@@ -146,14 +146,11 @@ describe('a change the scoped reading cannot settle', () => {
 
 describe('the time atlas_check_change takes on 20 changed files of this repository', () => {
   it('is measured and reported', async (t) => {
-    const clone = mkdtempSync(join(tmpdir(), 'atlas-check-speed-'));
+    // This repository's tree with a history of its own, mapped, so a shallow
+    // clone runs the timing as a full one does.
+    const clone = makeThisRepository({ prefix: 'atlas-check-speed-' });
     scratch.push(clone);
-    git(tmpdir(), ['clone', '-q', '--no-hardlinks', REPO_ROOT, clone]);
     const structure = JSON.parse(readFileSync(join(clone, 'atlas', 'structure.json'), 'utf8'));
-    if (spawnSync('git', ['cat-file', '-e', `${structure.generatedFrom.commit}^{commit}`], { cwd: clone }).status !== 0) {
-      t.skip('this clone does not hold the commit the committed map was made from, so the sidecar halts, as it must');
-      return;
-    }
     // Twenty source files the map holds, spread over the packages, each
     // changed by a line.
     const candidates = structure.boundaries.filter((boundary) => boundary.role === 'code')
