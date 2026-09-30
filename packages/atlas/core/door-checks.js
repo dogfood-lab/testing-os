@@ -1,6 +1,6 @@
 import { posix } from 'node:path';
 import semver from 'semver';
-import { lockFor, lockPackages, packageByBin } from './lockfile.js';
+import { lockFor, lockPackages, optionalBindings, packageByBin } from './lockfile.js';
 import { pep440Range } from './runtime.js';
 
 /**
@@ -12,6 +12,13 @@ import { pep440Range } from './runtime.js';
  * known offline, and the package's engines.node excludes every version the
  * pin can resolve to. Its Python form (D1-python) holds a setup-python pin
  * against the requires-python of the package a step installs or tests.
+ *
+ * D2, lockfile platform. A step runs npm ci or npm install in a directory
+ * with a tracked package-lock.json, in a job whose platform is known, and
+ * the lock holds an entry listing optional bindings of which at least one is
+ * present with its os and cpu, at least one is missing, and none present
+ * matches the job's platform: a lock written on another system that dropped
+ * this one's binding (npm/cli issue 4828). One finding per lock and job.
  *
  * Each finding carries its rule, job and step, the facts it rests on and the
  * lines they were read from. What a check could not judge (no setup step, a
@@ -48,12 +55,99 @@ export function checkDoor({ file, jobs, steps, repo }) {
   const unresolved = [];
   const unreadLocks = new Set();
   for (const job of jobs) {
+    const installed = new Set();
     for (const step of steps.get(job.name) ?? []) {
       toolchain({ file, job, step, repo, findings, unresolved, unreadLocks });
       pythonToolchain({ file, job, step, repo, findings, unresolved });
+      lockfilePlatform({ file, job, step, repo, findings, unresolved, installed });
     }
   }
   return { findings: sortFacts(findings), unresolved: sortFacts(dedupe(unresolved)) };
+}
+
+/**
+ * D2 for one step: each lock the step installs from, once per job, judged
+ * for each leg of the job whose platform is known.
+ */
+function lockfilePlatform({ file, job, step, repo, findings, unresolved, installed }) {
+  for (const run of step.invocations) {
+    if (run.program !== 'npm' || !installsHere(run)) continue;
+    const dir = installDir(run);
+    const found = dir == null ? null : lockFor(repo, dir);
+    if (!found || installed.has(found.path)) continue;
+    installed.add(found.path);
+    if (!found.lock.ok) {
+      unresolved.push({ rule: 'D2', job: job.name, step: step.step, lock: found.path, why: found.lock.unresolved });
+      continue;
+    }
+    const parents = optionalBindings(found.lock).map(judged).filter((parent) => parent != null);
+    if (parents.length === 0) continue;
+    const legs = job.runsOn.filter((leg) => leg.platform);
+    for (const leg of job.runsOn.filter((entry) => !entry.platform)) {
+      unresolved.push({ rule: 'D2', job: job.name, step: step.step, lock: found.path, runsOn: [...leg.labels], why: leg.unresolved });
+    }
+    const failing = [];
+    for (const leg of legs) {
+      const missed = parents.filter((parent) => !parent.present.some((child) => matches(child, leg.platform)));
+      if (missed.length > 0) failing.push({ leg, missed });
+    }
+    if (failing.length === 0) continue;
+    const fired = new Map();
+    for (const { missed } of failing) for (const parent of missed) fired.set(parent.key, parent);
+    const ordered = [...fired.values()].sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0));
+    const names = [...new Set(ordered.map((parent) => parent.name))];
+    const holds = [...new Set(ordered.flatMap((parent) => parent.present.flatMap(systemsOf)))].sort();
+    findings.push({
+      rule: 'D2',
+      job: job.name,
+      step: step.step,
+      tool: `npm ${positionals(run.args)[0]}`,
+      lock: found.path,
+      platforms: [...new Set(failing.map(({ leg }) => systemName(leg.platform)))].sort(),
+      runsOn: [...new Set(failing.flatMap(({ leg }) => leg.labels))],
+      packages: names,
+      holds,
+      lines: lines([[step.file ?? file, step.line], ...ordered.slice(0, 3).map((parent) => [found.path, parent.line])]),
+    });
+  }
+}
+
+// An entry that lists optional bindings, as D2 judges it: the children it
+// lists, wasm32 builds left out, split into those present with their os and
+// cpu and those missing; null unless at least one of each, since without a
+// present sibling nothing shows the lock dropped the rest (a lone fsevents).
+function judged(parent) {
+  const children = parent.children.filter((child) => !/wasm32/i.test(child.name) && !(child.cpu ?? []).includes('wasm32'));
+  const present = children.filter((child) => child.present && child.os && child.cpu);
+  const missing = children.filter((child) => !child.present);
+  if (present.length === 0 || missing.length === 0) return null;
+  return { key: parent.key, name: parent.name, line: parent.line, present };
+}
+
+// Whether a binding the lock holds is for a platform: its os and cpu lists
+// (a leading ! excludes), and musl or gnu read from its name, since the
+// lock's libc field is rarely written.
+function matches(child, platform) {
+  if (!listAllows(child.os, platform.os) || !listAllows(child.cpu, platform.cpu)) return false;
+  const libc = /musl/i.test(child.name) ? 'musl' : /gnu|glibc/i.test(child.name) ? 'glibc' : null;
+  return libc == null || platform.libc == null || libc === platform.libc;
+}
+
+function listAllows(list, value) {
+  const allowed = list.filter((entry) => !entry.startsWith('!'));
+  if (list.some((entry) => entry === `!${value}`)) return false;
+  return allowed.length === 0 || allowed.includes(value);
+}
+
+// The systems a present binding is for, as os-cpu pairs: win32-x64.
+function systemsOf(child) {
+  const os = child.os.filter((entry) => !entry.startsWith('!'));
+  const cpu = child.cpu.filter((entry) => !entry.startsWith('!'));
+  return os.flatMap((a) => cpu.map((b) => `${a}-${b}`));
+}
+
+function systemName(platform) {
+  return `${platform.os}-${platform.cpu}`;
 }
 
 // The setup pin of a tool that holds for a step: the last setup step of the
@@ -346,6 +440,11 @@ export function findingSentence(door, finding) {
   if (finding.rule === 'D1-python') {
     return `${door.name} ${pinPhrase(finding, 'Python')} and runs ${finding.tool}; ${finding.manifest} requires Python ${finding.requires}.`;
   }
+  if (finding.rule === 'D2') {
+    const named = finding.packages.length <= 3 ? list(finding.packages) : `${finding.packages.slice(0, 3).join(', ')} and ${finding.packages.length - 3} more`;
+    const platforms = finding.platforms.join(' or ');
+    return `${finding.lock} holds no ${platforms} binding for ${named} (it holds ${list(finding.holds)} only); ${door.name} runs ${finding.tool} on ${list(finding.runsOn)}.`;
+  }
   return '';
 }
 
@@ -357,6 +456,7 @@ export function findingRemedy(finding) {
     return `pin a Node version ${finding.package} accepts (${finding.requires}), or use a release of ${finding.package} that accepts ${list(finding.pins)}${source ? `; the start check is in ${source}` : ''}`;
   }
   if (finding.rule === 'D1-python') return `pin a Python version ${finding.manifest} accepts (${finding.requires}), or widen requires-python`;
+  if (finding.rule === 'D2') return `rewrite ${finding.lock} with npm 11.3.0 or later, the release that carries the fix for npm/cli issue 4828 (https://github.com/npm/cli/issues/4828)`;
   return '';
 }
 
@@ -364,4 +464,5 @@ export function findingRemedy(finding) {
 export const FINDING_CODES = {
   D1: 'ATLAS_DOOR_TOOLCHAIN',
   'D1-python': 'ATLAS_DOOR_TOOLCHAIN',
+  D2: 'ATLAS_DOOR_LOCKFILE_PLATFORM',
 };
