@@ -117,6 +117,11 @@ export function mapCommand(cwd, argv = []) {
   process.stdout.write(ignoredNotice(boundary));
   const commit = head(repo);
   if (!commit) return usage('atlas: git rev-parse HEAD failed');
+  // The map is of the tracked tree, so it is the same on every clone. What
+  // the working tree holds beside it is named, on stderr so a piped stdout
+  // stays clean, since a flow that writes files and maps before staging them
+  // would otherwise get a map without them and no word of it.
+  process.stderr.write(untrackedWarning(repo));
   const { mapped, artifact, statistics, page } = buildMap({ repo, boundary, commit, origin, previous, baseline });
   writeMap(join(repo, 'atlas'), { artifact, statistics, page });
   let divergenceMs = null;
@@ -478,6 +483,32 @@ function priorFloor(committed, previous, document) {
   if (shared === parameters.shared) return 'strong';
   if (shared === parameters.fallenShared) return 'fallen';
   return null;
+}
+
+const UNTRACKED_NAMED = 5;
+
+/**
+ * The warning for the files in the working tree git does not track and no
+ * ignore rule covers, or '' when there are none. atlas/ is left out: the map
+ * reads nothing there, and a first map writes it into a tree that does not
+ * track it yet.
+ */
+function untrackedWarning(repo) {
+  const result = spawnSync('git', ['ls-files', '--others', '--exclude-standard', '-z'], { cwd: repo, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  if (result.status !== 0) return '';
+  const paths = result.stdout.split('\0').filter((path) => path !== '' && path !== 'atlas' && !path.startsWith('atlas/')).sort(cmpPaths);
+  if (paths.length === 0) return '';
+  const shown = paths.slice(0, UNTRACKED_NAMED);
+  const rest = paths.length - shown.length;
+  const named = rest > 0 ? `${shown.join(', ')} and ${rest} more`
+    : shown.length === 1 ? shown[0] : `${shown.slice(0, -1).join(', ')} and ${shown.at(-1)}`;
+  const count = paths.length === 1 ? '1 untracked file' : `${paths.length} untracked files`;
+  return formatNotice('ATLAS_MAP_UNTRACKED', [`${count} outside .gitignore: ${named}`], 'git add the files the map should hold and run atlas map again, or add them to .gitignore');
+}
+
+// Code-point order, so the names are listed alike on every platform.
+function cmpPaths(a, b) {
+  return a < b ? -1 : a > b ? 1 : 0;
 }
 
 function committedAtHead(repo, path) {

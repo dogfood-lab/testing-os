@@ -31,6 +31,7 @@ export const ERRORS = {
   ATLAS_DOOR_TOOLCHAIN: 'A door pins a runtime version the tool it runs does not accept.',
   ATLAS_DOOR_LOCKFILE_PLATFORM: "A lockfile a door installs from holds no native binding for the job's platform.",
   ATLAS_MAP_ENGINE_OLDER: 'The map was made by an older Atlas than the one running.',
+  ATLAS_MAP_UNTRACKED: 'The working tree holds files git does not track, which the map leaves out.',
 };
 
 /**
