@@ -1,3 +1,4 @@
+import { findingRemedy, findingSentence } from '../core/door-checks.js';
 import { basisOf, byBasis, firmest, group } from './answer.js';
 import { capped } from './data.js';
 import { cannotSeeFor, cannotSeeSentence } from './limits.js';
@@ -55,6 +56,16 @@ export function overviewAnswer(snapshot) {
     stages: [...(door.stages ?? [])],
   }))));
 
+  // What the door checks found on each door (docs/atlas-production.spec.md,
+  // Part 3), as of the map's commit: notices, stated by the workflow and the
+  // lock they were read from.
+  const findings = [];
+  for (const door of page.doors) {
+    const source = byKey.get(door.id ?? doorKey(door));
+    for (const finding of source?.findings ?? []) findings.push({ door: door.name, file: door.file, ...finding, sentence: findingSentence(source, finding), remedy: findingRemedy(finding) });
+  }
+  if (findings.length > 0) facts.push(group('doorFindings', 'declared', findings));
+
   // How far each door reaches: the parts of the files it runs, as the
   // workflow states them, and the parts further in, through imports.
   const reaches = page.doors.flatMap((door) => (door.reach ?? []).map((entry) => ({
@@ -86,6 +97,12 @@ export function overviewAnswer(snapshot) {
   if (start) facts.push(group('startDoor', 'declared', [{ name: start.name, file: start.file }]));
   const chain = (page.startHere ?? []).filter((path) => path !== start?.file);
   if (chain.length > 0) facts.push(group('startHere', 'parsed', chain, { grain: 'file' }));
+  // The runtime each workflow door's jobs declare: runners, the platform
+  // each means, environment and setup pins.
+  const runtimes = page.doors.map((door) => ({ door, source: byKey.get(door.id ?? doorKey(door)) }))
+    .filter(({ source }) => (source?.jobs ?? []).length > 0)
+    .map(({ door, source }) => ({ door: door.name, file: door.file, jobs: structuredClone(source.jobs) }));
+  if (runtimes.length > 0) facts.push(group('doorRuntime', 'declared', runtimes));
 
   const cannotSee = cannotSeeFor(snapshot, { parts: ctx.boundaries.map((boundary) => boundary.name), doors: structure.doors ?? [] });
 
@@ -100,6 +117,7 @@ export function overviewAnswer(snapshot) {
     const sends = (door.sends ?? []).length > 0 ? `; it ${list(door.sends)}` : '';
     sentences.push(`Atlas: ${door.name} (${door.file}) ${starts}${running}${sends}.`);
   }
+  for (const finding of findings) sentences.push(`Atlas: finding ${finding.rule}, a notice: ${finding.sentence}`);
   if (main) sentences.push(`Atlas: the main flow is ${main.name}, the door whose reach covers the most parts.`);
   for (const sequence of page.sequences ?? []) {
     const steps = (sequence.steps ?? []).map((step) => `${step.phrase}${step.part ? ` (${step.partLabel ?? step.part})` : ''}`);

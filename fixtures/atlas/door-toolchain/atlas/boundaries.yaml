@@ -1,0 +1,21 @@
+boundaries:
+  - name: site
+    globs:
+      - site/**
+    role: code
+  - name: strict
+    globs:
+      - strict/**
+    role: code
+  - name: pylib
+    globs:
+      - pylib/**
+    role: code
+  - name: root
+    globs:
+      - "*"
+    role: config
+  - name: workflows
+    globs:
+      - .github/**
+    role: config

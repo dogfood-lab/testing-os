@@ -125,6 +125,16 @@ function checkExplain(map, answer, explained) {
           assert.deepEqual(item.permissions, source.permissions ?? [], where);
           assert.deepEqual(item.sends, source.sends ?? {}, where);
           assert.deepEqual(item.reach, source.reach ?? [], where);
+          // Each job's runtime, and the door's findings and the checks it
+          // could not judge, are the map's own.
+          for (const job of item.jobs ?? []) {
+            if (!job.runtime) continue;
+            const { name, ...runtime } = (source.jobs ?? []).find((entry) => entry.name === job.name) ?? {};
+            assert.equal(name, job.name, where);
+            assert.deepEqual(job.runtime, runtime, where);
+          }
+          assert.deepEqual((item.findings ?? []).map(({ sentence, remedy, ...finding }) => finding), source.findings ?? [], where);
+          assert.deepEqual(item.unresolvedChecks ?? [], source.unresolvedChecks ?? [], where);
           break;
         }
         case 'runBy':
@@ -207,6 +217,18 @@ function checkOverview(map, answer) {
         case 'doorWrites':
           assert.ok(map.structure.doors.some((entry) => entry.name === item.door && (entry.landings ?? []).includes(strip(item.place))), where);
           break;
+        case 'doorRuntime': {
+          const source = map.structure.doors.find((entry) => entry.name === item.door && entry.file === item.file);
+          assert.ok(source, where);
+          sameOrCut(item, 'jobs', source.jobs ?? [], where);
+          break;
+        }
+        case 'doorFindings': {
+          const source = map.structure.doors.find((entry) => entry.name === item.door && entry.file === item.file);
+          const { door: name, file, sentence, remedy, ...finding } = item;
+          assert.ok((source?.findings ?? []).some((entry) => JSON.stringify(entry) === JSON.stringify(finding)), where);
+          break;
+        }
         case 'mainDoor':
           assert.equal(page.doors.find((entry) => (entry.id ?? entry.file) === page.mainDoor)?.name, item.name, where);
           break;

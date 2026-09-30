@@ -153,7 +153,10 @@ export function explainAnswer(snapshot, repo, target) {
   }
 
   const parts = found.kind === 'part' ? [found.part] : (facts.parts ?? []).map((entry) => entry.part).concat(facts.part ? [facts.part] : []);
-  const cannotSee = cannotSeeFor(snapshot, { files: found.kind === 'file' ? [found.path] : found.members, parts });
+  // A workflow file explained as its door also says what the door's checks
+  // could not judge, and what it sends elsewhere.
+  const ownDoor = facts.door ? ctx.doors.filter((door) => door.file === facts.door.file && !door.kind) : [];
+  const cannotSee = cannotSeeFor(snapshot, { files: found.kind === 'file' ? [found.path] : found.members, parts, doors: ownDoor });
 
   const weakWrites = writes.filter((entry) => entry.basis === 'weak').map((entry) => entry.item);
   const weakWriters = writtenBy.filter((entry) => entry.basis === 'weak').map((entry) => entry.item.by);

@@ -659,7 +659,7 @@ ATLAS_OVERLAP  A file belongs to more than one boundary.
 exit 1
 ```
 
-Every failure names what changed and what to do; the second line is never optional. Exit `2` means the input was unusable and nothing was checked; exit `1` means the check ran and the tree disagrees with what is committed. A repository with no `atlas/` directory is a notice and exit `0`, so adopting Atlas reddens nothing.
+Every failure names what changed and what to do; the second line is never optional. Exit `2` means the input was unusable and nothing was checked; exit `1` means the check ran and the tree disagrees with what is committed. A repository with no `atlas/` directory is a notice and exit `0`, so adopting Atlas reddens nothing. The three notice codes print the same shape without the exit line and leave the exit code alone; `atlas check --strict` exits `1` when there is any.
 
 | Code | Exit | Severity | Emitted by |
 |------|------|----------|------------|
@@ -679,6 +679,9 @@ Every failure names what changed and what to do; the second line is never option
 | `ATLAS_NOT_A_REPOSITORY` | 2 | LOW | `adapter/commands.js` |
 | `ATLAS_REF_UNKNOWN` | 2 | LOW | `sidecar/map.js` |
 | `ATLAS_REF_MAP_FOREIGN` | 2 | LOW | `sidecar/map.js` |
+| `ATLAS_DOOR_TOOLCHAIN` | 0 (1 with `--strict`) | LOW | `adapter/commands.js` |
+| `ATLAS_DOOR_LOCKFILE_PLATFORM` | 0 (1 with `--strict`) | LOW | `adapter/commands.js` |
+| `ATLAS_MAP_ENGINE_OLDER` | 0 (1 with `--strict`) | LOW | `adapter/commands.js` |
 | `ATLAS_SIDECAR_NOT_A_REPOSITORY` | none | LOW | `sidecar/tools.js` |
 | `ATLAS_SIDECAR_NO_MAP` | none | LOW | `sidecar/map.js` |
 | `ATLAS_SIDECAR_MAP_UNREADABLE` | none | LOW | `sidecar/map.js` |
@@ -836,6 +839,33 @@ The map at the ref was made from a commit that is not in that ref's history.
 
 - **Trigger:** a map copied from another branch or repository, or a shallow clone that does not hold the commit the map names.
 - **Operator action:** name a ref whose map was made from its own history, or ask without a ref.
+
+### `ATLAS_DOOR_TOOLCHAIN`
+
+:::tip[Severity: LOW]
+A notice: a workflow job pins a runtime version that the tool one of its steps runs does not accept.
+:::
+
+- **Trigger:** a job pins Node with `actions/setup-node` in a form known offline (`20`, `20.x`, an exact version, a range, `lts/<codename>`, or a version file), a later step runs a tool whose package is in the `package-lock.json` of the step's directory, and that package's `engines.node` excludes every version the pin can resolve to. A pin of `20` means any 20.x, so `^20.19.0 || >=22.12.0` does not fire. For Astro and Next.js, which check the version at start and exit, the notice says "refuses to start"; for any other tool it says "declares". The Python form holds an `actions/setup-python` pin against the `requires-python` of the package a step installs or tests. No setup step, `lts/*`, `latest` or an expression is not judged, and said so.
+- **Operator action:** pin a version the tool accepts, or use a release of the tool that accepts the pin. The notice names the workflow line of the pin, the step, and the lockfile line of the package.
+
+### `ATLAS_DOOR_LOCKFILE_PLATFORM`
+
+:::tip[Severity: LOW]
+A notice: a lockfile a workflow installs from holds no native binding for the job's platform.
+:::
+
+- **Trigger:** a step runs `npm ci` in a directory with a tracked `package-lock.json`, on a GitHub-hosted runner (`npm install` is not judged, since it may add the missing binding at install time), and a lock entry lists optional native bindings of which at least one is present, at least one is missing, and none present is for the job's platform: a lock written on another system that dropped this one's binding (npm/cli issue 4828). A package that only ever ships one platform (`fsevents`) does not fire, and `wasm32` builds never count. One notice per lockfile and job, naming the packages.
+- **Operator action:** rewrite the lockfile with npm 11.3.0 or later, the release that carries the fix, so it lists every platform's binding.
+
+### `ATLAS_MAP_ENGINE_OLDER`
+
+:::tip[Severity: LOW]
+A notice: the committed map was made by an older Atlas than the one running, or records no engine at all.
+:::
+
+- **Trigger:** the pin in CI was bumped without regenerating the map, or the map predates 1.23.0, when the engine stamp was added. The check still passes or fails on the tree as before.
+- **Operator action:** run `atlas map` with the running version and commit `atlas/`.
 
 ### The sidecar's codes
 

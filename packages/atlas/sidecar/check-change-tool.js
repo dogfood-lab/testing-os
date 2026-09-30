@@ -1,11 +1,14 @@
 import { createHash } from 'node:crypto';
 import { posix } from 'node:path';
+import { findingRemedy, findingSentence } from '../core/door-checks.js';
+import { doorChecksNow } from '../core/doors.js';
 import { isCodePath } from '../core/languages.js';
 import { isOwnTest, isTestFile } from '../core/landings.js';
 import { isTest, testReachOf } from '../adapter/test-reach.js';
 import { storedBytes, textAttributes } from '../core/text.js';
 import { basisOf, byBasis, group } from './answer.js';
 import { mapHashes } from './freshness.js';
+import { cannotSeeSentence, doorChecksUnjudged } from './limits.js';
 import { filesAt, git } from './git.js';
 import { importersOf, importsOf, reread, rereadFacts, trackedPlace } from './reread.js';
 
@@ -69,9 +72,45 @@ export function reshapes(path) {
   if (WORKFLOW.test(path)) return 'a workflow';
   if (ACTION.test(path)) return 'an action';
   const base = posix.basename(path);
+  // The door checks read a lock (core/lockfile.js), so a changed one changes
+  // what the map records of the doors that install from it.
+  if (base === 'package-lock.json') return 'a lockfile';
   if (MANIFESTS.has(base)) return 'a manifest';
   if (CONFIGURATION.some((pattern) => pattern.test(base))) return 'a configuration file the engine reads';
   return null;
+}
+
+/**
+ * The workflow doors a change touches, read from the tree as it is now, with
+ * what the door checks find on them: a changed workflow is its own door; a
+ * changed package-lock.json or package.json touches every door with a step
+ * whose programs run in its directory or below (npm run, --prefix and cd
+ * followed), or whose checks name the file. Each
+ * finding is carried with its door, sentence and remedy.
+ */
+function doorsTouched(root, changed) {
+  const live = changed.filter((entry) => entry.status !== 'unchanged');
+  const workflows = new Set(live.filter((entry) => WORKFLOW.test(entry.path)).map((entry) => entry.path));
+  const manifests = live.filter((entry) => ['package-lock.json', 'package.json'].includes(posix.basename(entry.path))).map((entry) => entry.path);
+  if (workflows.size === 0 && manifests.length === 0) return { doors: [], findings: [] };
+  const listed = git(root, ['ls-files', '-z']);
+  const tracked = new Set(listed.ok ? String(listed.stdout).split('\0').filter(Boolean) : []);
+  for (const entry of live) {
+    if (entry.status === 'deleted') tracked.delete(entry.path);
+    else tracked.add(entry.path);
+  }
+  const touches = (door) => {
+    if (workflows.has(door.file)) return true;
+    const named = [...(door.findings ?? []), ...(door.unresolvedChecks ?? [])].flatMap((entry) => [entry.lock, entry.manifest, ...(entry.lines ?? []).map((line) => line.file)]);
+    return manifests.some((path) => {
+      if (named.includes(path)) return true;
+      const dir = posix.dirname(path) === '.' ? '' : posix.dirname(path);
+      return (door.workingDirs ?? []).some((at) => dir === '' || at === dir || at.startsWith(`${dir}/`));
+    });
+  };
+  const doors = doorChecksNow({ repoPath: root, tracked }).filter(touches);
+  const findings = doors.flatMap((door) => (door.findings ?? []).map((finding) => ({ door: door.name, file: door.file, ...finding, sentence: findingSentence(door, finding), remedy: findingRemedy(finding) })));
+  return { doors, findings };
 }
 
 // Two-letter git status to what happened to the file.
@@ -207,9 +246,19 @@ export function checkChangeAnswer(snapshot, repo, args) {
       `Atlas: a full refresh is needed to answer for this change: ${refresh.slice(0, 6).map((entry) => `${entry.path} is ${entry.why}`).join('; ')}${refresh.length > 6 ? `; and ${refresh.length - 6} more` : ''}.`,
       'Atlas: a scoped reading cannot settle how such a change reshapes the rest of the map, so it answers nothing else; atlas_refresh maps the whole checkout.',
     ];
+    // The one thing it does answer: what the door checks find now on the
+    // doors a changed workflow, lock or package manifest touches, read from
+    // the tree (docs/atlas-production.spec.md, Part 4). This is the moment
+    // before a push.
+    const checked = doorsTouched(repo.root, changed);
+    const facts = checked.findings.length > 0 ? [group('doorFindings', 'declared', checked.findings, { source: 're-read' })] : [];
+    const cannotSee = doorChecksUnjudged(checked.doors).map((entry) => ({ ...entry, source: 're-read' }));
+    for (const finding of checked.findings) sentences.push(`Atlas: finding ${finding.rule} on the tree as it is now, a notice: ${finding.sentence}`);
+    if (checked.doors.length > 0 && checked.findings.length === 0) sentences.push(`Atlas: the door checks find nothing on ${list(checked.doors.map((door) => door.name))} as the tree stands.`);
+    sentences.push(...cannotSee.map((entry) => cannotSeeSentence(entry)));
     return {
       ok: true,
-      answer: { question, changed: listed, verdict: { fullRefresh: { needed: true, because: refresh }, regenerate: { needed: true, because: ['a full refresh is needed first'] } }, facts: [], cannotSee: [] },
+      answer: { question, changed: listed, verdict: { fullRefresh: { needed: true, because: refresh }, regenerate: { needed: true, because: ['a full refresh is needed first'] } }, facts, cannotSee },
       sentences,
       files: changed.map((entry) => entry.path),
     };

@@ -376,6 +376,13 @@ function packagingRoots(repo) {
  * `through` is where the text itself was reached from (a reusable workflow
  * or a composite action of this repository), and `env` gives the value of
  * a variable the step's environment sets, or null.
+ *
+ * It also returns every program the text starts (invocations), each with
+ * its arguments, the directory it runs in once npm run scripts, --prefix and
+ * cd are followed, and whether it runs a package's installed bin (`local`:
+ * reached through a package script, npx or node_modules/.bin, where
+ * node_modules/.bin is on the path). The door checks read them
+ * (core/door-checks.js); the arguments are never recorded in the map.
  */
 export function readCommands(text, dir, repo, platforms = null, { through = [], env = null } = {}) {
   const runs = new Map();
@@ -385,7 +392,7 @@ export function readCommands(text, dir, repo, platforms = null, { through = [], 
   const where = platforms ? { platforms: [...platforms] } : {};
   reader.read(text, dir, { level: 0, via: null, active: new Set(), through, env, ...where });
   for (const path of runs.keys()) mentions.delete(path);
-  return { runs, mentions, shellMissed: [...missed.values()], tests: reader.tests(), ends: reader.ends() };
+  return { runs, mentions, shellMissed: [...missed.values()], tests: reader.tests(), ends: reader.ends(), invocations: reader.invocations() };
 }
 
 /**
@@ -461,6 +468,17 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
   // The test run whose runner is being read, which notes its configuration
   // and whether it collects coverage or writes JUnit results.
   let open = null;
+  // Every program a line starts, in the directory it runs in, once each.
+  const started = new Map();
+
+  function invoked(argv, dir, frame) {
+    if (dir == null || dir === OUTSIDE || typeof argv[0] !== 'string') return;
+    const program = baseName(argv[0]);
+    if (program === '') return;
+    const local = frame.bins === true || argv[0].includes('node_modules/.bin/');
+    const key = [program, dir, local ? 1 : 0, ...argv.slice(1)].join('\0');
+    if (!started.has(key)) started.set(key, { program, args: argv.slice(1), dir, local, through: [...(frame.through ?? [])] });
+  }
 
   function addTest(entry) {
     const key = [entry.runner, entry.dir, entry.config ?? '', entry.through.join('\u0001')].join('\0');
@@ -670,6 +688,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     if (assigned.size > 0) frame = { ...frame, env: withEnv(frame.env, assigned) };
     for (const target of npmTargets(tokens, dir, repo)) npmScript(target.dir, target.script, frame, target.args ?? [], target.manager);
     const argv = tokens.slice(first);
+    invoked(argv, dir, frame);
     // pnpm vitest run, with no script named vitest, is vitest.
     const binary = runnerBinary(argv, dir, repo);
     if (binary != null) {
@@ -735,7 +754,9 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     const shell = reached.platforms ? { ...reached, expanding: reached.platforms.filter((os) => os !== 'windows') } : reached;
     // A package's own test script is a test of that package, whatever it
     // runs (armature's launcher self-test is its bin run with a flag).
-    const next = script === 'test' ? { ...shell, testScript: target } : shell;
+    // A package script runs with the package's node_modules/.bin on its path.
+    const bins = { ...shell, bins: true };
+    const next = script === 'test' ? { ...bins, testScript: target } : bins;
     for (const name of [`pre${script}`, script, `post${script}`]) {
       if (typeof scripts[name] !== 'string') continue;
       read(name === script && args.length > 0 ? `${scripts[name]} ${args.join(' ')}` : scripts[name], target, next);
@@ -1176,6 +1197,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
       }
       if (!test) {
         const tool = i < argv.length ? nodeModulesTool(argv[i]) : null;
+        if (tool != null) invoked([tool, ...argv.slice(i + 1)], dir, { ...frame, bins: true });
         if (tool != null) interpret([tool, ...argv.slice(i + 1)], dir, frame);
         else if (i < argv.length) runsScript('node', argv[i], dir, frame, argv.slice(i + 1));
         return;
@@ -1323,6 +1345,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
         return;
       }
       const name = bin.replace(/@[^@/]+$/, '');
+      invoked([name, ...argv.slice(i + 1)], dir, { ...frame, bins: true });
       if (toolOf(name) != null || NAMED_RUNNERS.has(baseName(name))) {
         interpret([name, ...argv.slice(i + 1)], dir, frame);
         return;
@@ -1780,6 +1803,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     container: (context, dockerfile, dir, frame) => readContainer(context, dockerfile, dir, frame),
     tests: () => [...tests.values()].map(testRun),
     ends: () => [...ends],
+    invocations: () => [...started.values()],
   };
 }
 

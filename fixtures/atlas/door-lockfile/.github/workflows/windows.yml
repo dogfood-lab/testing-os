@@ -1,0 +1,11 @@
+name: Windows build
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: npm ci --prefix site

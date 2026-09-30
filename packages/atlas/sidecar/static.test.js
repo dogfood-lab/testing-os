@@ -124,6 +124,11 @@ describe('what the sidecar can do, read from its code', () => {
     for (const module of ['adapter/gaps.js', 'adapter/test-gaps.js', 'adapter/test-reach.js', 'adapter/test-kinds.js', 'adapter/test-sources.js', 'core/failure-paths.js', 'core/mentions.js', 'sidecar/test-gaps-tool.js']) {
       assert.ok([...MODULES.keys()].map(name).includes(module), `the command line reaches ${module}`);
     }
+    // And so is what reads a door's runtime and checks it
+    // (docs/atlas-production.spec.md, acceptance 9).
+    for (const module of ['core/runtime.js', 'core/lockfile.js', 'core/door-checks.js']) {
+      assert.ok([...MODULES.keys()].map(name).includes(module), `the command line reaches ${module}`);
+    }
   });
 
   it('imports no network module', () => {

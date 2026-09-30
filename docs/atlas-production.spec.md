@@ -70,7 +70,7 @@ Guards: a pin of `20` means any 20.x, so `^20.19.0 || >=22.12.0` does not fire. 
 Sentence, for a tool on the known list (Astro, Next.js): "Deploy site pins Node 20 and runs astro build; astro 7.3.3 requires Node >=22.12.0 and refuses to start." For any other tool: "… declares Node >=X", with no claim about failure. The same rule for Python (`setup-python` against the repository's own `requires-python`) is built second and ships only if the fleet check supports it.
 
 **D2, lockfile platform.** Fires when all hold:
-- a step runs `npm ci` or `npm install` in a directory with a tracked `package-lock.json`, in a job whose platform is known;
+- a step runs `npm ci` in a directory with a tracked `package-lock.json`, in a job whose platform is known (`npm install` is not judged, and said so: the fleet check found it adds the missing binding at install time);
 - a lock entry lists optional bindings, at least one listed binding is present with `os` and `cpu`, at least one is missing, and no present binding matches the job's platform.
 
 Guards: a parent whose only listed binding is for another system (`fsevents`) does not fire, because no present sibling proves the pattern. `wasm32` bindings never count as a match or a miss. Only the parent's own listed children are judged. musl or gnu is read from the binding's name.
@@ -87,9 +87,11 @@ One finding per lockfile and job, naming the packages: "site/package-lock.json h
 
 **Becoming a gate.** Notices fail `atlas check` by default only after one release in which the fleet check shows each rule within the bar and the Director says so.
 
+**As built (slice AI).** Beyond the label table above, `windows-*-arm` is win32 arm64 and `macos-13` and older, and `-large`, are darwin x64; a label outside the table, or more than one label, is unresolved. Version ranges are compared with `semver`, npm's own implementation, the one dependency this slice adds. A tool is matched only when the step reaches it through a package script, `npx` or `node_modules/.bin`; a bare `vite build` in a step is not matched. The Python form of D1 has its own rule id, `D1-python`. D2 names its packages in the lock's own order. A tracked `.npmrc` with `engine-strict=true` makes D1 read every package the lock installs. A finding on a step inlined from a reusable workflow names the file and no line. `atlas_check_change` treats a changed lockfile as a full-refresh reason.
+
 ## Part 5: the precision bar
 
-As in the test-gap spec. Before a rule ships, it runs over every fleet repository at its default branch, and the coordinator reviews every firing. A rule wrong more than once in ten does not ship. A rule with fewer than 20 firings is judged on all of them and marked provisional. A finding is wrong when the repository contradicts a fact in it, or when the door it names is green for a reason the rule should have seen. The result is committed as `docs/atlas-door-checks.fleet-check.md`.
+As in the test-gap spec. Before a rule ships, it runs over every fleet repository at its default branch, and the coordinator reviews every firing. A rule wrong more than once in ten does not ship. A rule with fewer than 20 firings is judged on all of them and marked provisional. A finding is wrong when the repository contradicts a fact in it, or when the door it names is green for a reason the rule should have seen. The result is committed as `docs/atlas-door-checks.fleet-check.md`. **Met 2026-09-30:** D1 8 firings, none wrong, provisional; D2 one firing, wrong at the class (`npm install` repairs the lock), fixed and re-run, provisional; the engine notice right on 78 of 78.
 
 Known before the run, and named in the slice brief: two doors where D1 should fire, one where D2 should, and the same-shaped green Pages doors that must stay quiet.
 
@@ -124,9 +126,9 @@ Measured 2026-09-30: 79 repositories carry eight different pins; 11 are on 1.14.
 
 ## Build order
 
-1. **Slice AH, release 1.24.0:** Part 1 items 1 to 5.
-2. **Slice AI, release 1.25.0:** Parts 2 to 5 and the Pages-door fixture. The fleet check is a Sonnet lane; the coordinator reviews the firings.
-3. **The pin-bump wave** at 1.25.0: the tool by one Opus agent, the wave by Sonnet agents.
+1. **Slice AH:** Part 1 items 1 to 5. Built 2026-09-30.
+2. **Slice AI:** Parts 2 to 5 and the Pages-door fixture. Built 2026-09-30; the fleet check was a script the coordinator ran, and the coordinator reviewed the firings. AH and AI ship together as release 1.24.0, since both were built before either was released and a release now carries a full treatment and a Docker proof; the later version numbers below move down by one.
+3. **The pin-bump wave** at 1.24.0: the tool by one Opus agent, the wave by Sonnet agents.
 4. **Slice AJ, release 1.26.0:** Part 6. The test and release items may run beside AI; the engine items follow it.
 5. **Slice AK:** Part 1 item 6.
 6. **Coverage and the docs pass:** door-only maps for the unmapped repositories that run workflows, first proving that Atlas maps a repository whose language it cannot parse; the landing page's Atlas section; the exit test.
@@ -146,7 +148,7 @@ Every test is red on the tree before its slice.
 7. **Notices.** `atlas check` exits 0 with a notice and 1 under `--strict`; an adopter's map made by an older engine passes with the engine notice.
 8. **Determinism.** The map is byte-identical on a clean clone, after an install and on a CRLF checkout, findings included.
 9. **Offline and read-only.** The static import check finds no network module; the checkout is as it was after every command.
-10. **The fleet run,** Part 5, met before 1.25.0 ships.
+10. **The fleet run,** Part 5, met before the checks ship (2026-09-30, `docs/atlas-door-checks.fleet-check.md`).
 11. **The exit test.** The triage replayed on the clones it used: asked from a stale clone, Atlas names the upstream map; D1 and D2 flag the three doors whose cause is in committed files; no answer reports a missing map that exists.
 12. **The existing gates:** `npm run verify` on a clean worktree, `atlas check`, the identity scan, then each release.
 

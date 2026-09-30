@@ -15,7 +15,10 @@ import { after, before, describe, it } from 'node:test';
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
 const GAPS = resolve(REPO_ROOT, 'fixtures/atlas/gaps');
-const MAP_LINE = /^Map from commit [0-9a-f]{7}, \d{4}-\d{2}-\d{2}\.$/;
+// The plain line, or the line with the upstream clause slice AH added: a
+// checkout whose fetched upstream holds a newer map is told so, and this
+// repository's own checkout is such a checkout whenever main has moved.
+const MAP_LINE = /^Map from commit [0-9a-f]{7}, \d{4}-\d{2}-\d{2}(\.|; origin\/\S+ holds a different map, .+: run with --ref origin\/\S+ to answer from it\.)$/;
 const roots = [];
 let repo;
 
