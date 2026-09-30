@@ -2,6 +2,7 @@ import { posix } from 'node:path';
 import { isSourcePath } from '../core/history.js';
 import { isTestFile, isTestMaterial, ownTestPair } from '../core/landings.js';
 import { isCodePath, languageOf } from '../core/languages.js';
+import { stepPrograms } from './artifact.js';
 import { isImagePath } from './templates.js';
 
 /**
@@ -1175,7 +1176,9 @@ function jobsOf(door) {
     if (!jobs.has(name)) jobs.set(name, { name, steps: [], runs: [] });
     return jobs.get(name);
   };
-  for (const command of door.commands ?? []) job(command.job).steps.push({ step: command.step, programs: [...(command.programs ?? [])] });
+  // A map made before 1.22.0 kept a step's script, not its programs; they
+  // are read from it as a map made now records them.
+  for (const command of door.commands ?? []) job(command.job).steps.push({ step: command.step, programs: command.programs ? [...command.programs] : stepPrograms(command.text) });
   for (const test of door.tests ?? []) {
     const step = job(test.job).steps.find((entry) => entry.step === test.step);
     const entry = { runner: test.runner ?? null, files: test.files ?? null, ...(test.through ? { through: [...test.through] } : {}) };

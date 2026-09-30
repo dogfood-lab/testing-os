@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { readFileSync, rmSync } from 'node:fs';
+import { readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
@@ -82,6 +82,26 @@ describe('atlas explain on a workflow file', () => {
     assert.ok(!settings.includes('No file imports it.'), settings.join('\n'));
     assert.ok(settings.includes('Read by lib/report.js.'));
     assert.ok(explain('lib/core.js').includes('Imports no file in this repository.'), 'a parsed file that imports nothing is still said to');
+  });
+
+  it('reads the programs from the step text a map made before 1.22.0 kept', () => {
+    // Such a map kept each step's script where a map made now keeps the
+    // programs it runs (adapter/artifact.js stepPrograms).
+    const older = mappedRepository(FIXTURE, { prefix: 'atlas-explain-workflow-older-' });
+    try {
+      const path = join(older, 'atlas', 'structure.json');
+      const structure = JSON.parse(readFileSync(path, 'utf8'));
+      const door = structure.doors.find((entry) => entry.file === WORKFLOW);
+      const texts = { 1: 'node --test lib/core.test.js', 'Build the report': 'node lib/report.js', 'Publish to npm': 'npm publish --provenance' };
+      door.commands = door.commands.map(({ programs, ...command }) => ({ ...command, text: texts[command.step] }));
+      writeFileSync(path, `${JSON.stringify(structure, null, 2)}\n`);
+      const result = spawnSync(process.execPath, [CLI, 'explain', WORKFLOW], { cwd: older, encoding: 'utf8' });
+      const lines = result.stdout.trimEnd().split('\n');
+      assert.ok(lines.includes('Job `publish`: "Build the report" runs node; "Publish to npm" runs npm; the job runs lib/report.js.'), lines.join('\n'));
+      assert.ok(!result.stdout.includes('npm publish --provenance'), 'the script itself is never printed');
+    } finally {
+      rmSync(older, { recursive: true, force: true });
+    }
   });
 
   it('gives atlas_explain the same door, as a declared fact the map states', async () => {

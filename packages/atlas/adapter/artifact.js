@@ -647,7 +647,7 @@ const LOOP_HEADS = new Set(['for', 'select', 'case', 'function']);
 // Builtins that steer the shell and run nothing.
 const STEERING = new Set(['break', 'continue', 'return', 'exit', 'set', 'shift', 'export', 'unset', 'local', 'readonly', 'declare', 'true', 'false', ':']);
 
-function stepPrograms(text) {
+export function stepPrograms(text) {
   const programs = new Set();
   for (const words of commandLines(text ?? '')) {
     let i = 0;
