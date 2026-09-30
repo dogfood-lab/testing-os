@@ -1,0 +1,18 @@
+summary: a repository whose Atlas pin is behind the fleet's
+boundaries:
+  - name: .github
+    globs:
+      - .github/**
+    role: config
+  - name: root
+    globs:
+      - package.json
+    role: config
+  - name: site
+    globs:
+      - site/**
+    role: docs
+  - name: src
+    globs:
+      - src/**
+    role: code

@@ -106,6 +106,9 @@ Known before the run, and named in the slice brief: two doors where D1 should fi
 | The release's container job | Waits 5 minutes on an endpoint that lags | Polls the version endpoint for 15 minutes |
 | A repository that leaves the public list | Its folder stays on the render branch and blocks later commits | The render removes it |
 | Cut inner lists | Marked cut, no cursor | Carry a cursor |
+| Files git does not track | `atlas map` leaves them out and says nothing, so a flow that writes files and maps before staging gets a map without them | The map stays of the tracked tree, and `map` names the untracked files outside `.gitignore` as a warning |
+| A repository with no commit | `atlas map` exits 2 with "git rev-parse HEAD failed" | It says to commit once first |
+| A program run through an action input | A step such as a retry action whose `with.command` runs `node` shows the map no program, so neither the map nor D1 sees it | The command inputs of known wrapper actions are read as the step's command; any other command-shaped input is listed unresolved |
 | The written-down corners (1.22.0 to 1.23.4) | About twenty, unranked | A Sonnet lane counts how often each shows on the fleet's maps; the ones that produce a wrong sentence are fixed at the class, the rest stay stated limits |
 
 ## Part 7: one engine everywhere
@@ -113,7 +116,7 @@ Known before the run, and named in the slice brief: two doors where D1 should fi
 Measured 2026-09-30: 79 repositories carry eight different pins; 11 are on 1.14.0, whose maps leave same-shaped Pages doors empty (fixed in 1.15.0); none is on the current engine.
 
 - A tool, `scripts/atlas-pin-bump.mjs`, in the shape of the Codecov rollout tool: it checks a clone, plans the change as a diff (the pin, and the map made again by that engine), commits on a branch without pushing, and proves `check` green on a clean clone.
-- The coordinator reviews each diff, pushes and opens one pull request per repository. Merges wait for the Director's word.
+- The coordinator reviews each diff, pushes and opens one pull request per repository. Merges waited for the Director's word, which he gave for this wave on 2026-09-30: the coordinator merges a pull request once the tool's proof, its CI and the coordinator's review of the diff all pass, pinned to the reviewed head; any other pull request goes to him with the reason.
 - A regression fixture holds the shapes of the Pages doors found on the fleet, so an empty door is red in this repository's own suite.
 - A weekly job that opens these pull requests is a later decision; it needs a cross-org token.
 
