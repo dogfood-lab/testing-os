@@ -1,6 +1,6 @@
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
-import { basename, join } from 'node:path';
+import { basename, join, relative } from 'node:path';
 import { mapRepository } from '../core/index.js';
 import { buildArtifact, serializeArtifact } from './artifact.js';
 import { ignoredNotice, readBoundaryFile } from './boundary-file.js';
@@ -15,6 +15,7 @@ import { buildEnvelope, hitsFromStatistics } from './divergence.js';
 import { buildPage } from './page.js';
 import { buildStatistics, parametersFrom, serializeStatistics, statisticsProblem } from './statistics.js';
 import { writeArtifactSync } from './write.js';
+import { exportedRoot } from '../sidecar/map.js';
 
 /**
  * @returns {number | Promise<number>} the exit code; `mcp` settles it when
@@ -54,24 +55,37 @@ function forCore(boundaries) {
 
 function initAt(cwd, argv) {
   const repo = repoRoot(cwd);
-  if (!repo) return usage('atlas: not a git repository');
+  if (!repo) return notARepository(cwd, 'init');
   return initCommand(repo, argv);
 }
 
 // Explain reads only the committed artifacts, so it needs the root to find
 // them and the caller's place inside the tree to read a path the way they wrote it.
+// A tree exported without its git history is answered from the atlas/ it
+// holds, and says so.
 function explainAt(cwd, argv) {
   const repo = repoRoot(cwd);
-  if (!repo) return usage('atlas: not a git repository');
-  return explainCommand(repo, showPrefix(cwd), argv);
+  if (repo) return explainCommand(repo, showPrefix(cwd), argv);
+  const exported = exportedRoot(cwd);
+  if (!exported) return notARepository(cwd, 'explain');
+  return explainCommand(exported, exportedPrefix(exported, cwd), argv, { exported: true });
 }
 
 // Gaps, like explain, reads only the committed artifacts; the repository's
 // name decides which house rules a suggestion cites.
 function gapsAt(cwd, argv) {
   const repo = repoRoot(cwd);
-  if (!repo) return usage('atlas: not a git repository');
-  return gapsCommand(repo, showPrefix(cwd), argv, { repository: repositoryName(repo) });
+  if (repo) return gapsCommand(repo, showPrefix(cwd), argv, { repository: repositoryName(repo) });
+  const exported = exportedRoot(cwd);
+  if (!exported) return notARepository(cwd, 'gaps');
+  return gapsCommand(exported, exportedPrefix(exported, cwd), argv, { exported: true });
+}
+
+// Where the caller stands inside an exported tree, as git's --show-prefix
+// gives it inside a checkout.
+function exportedPrefix(root, cwd) {
+  const inside = relative(root, cwd).replaceAll('\\', '/');
+  return inside === '' ? '' : `${inside}/`;
 }
 
 export function mapCommand(cwd, argv = []) {
@@ -79,7 +93,7 @@ export function mapCommand(cwd, argv = []) {
   const flags = parseMapArgs(argv);
   if (flags.error) return usage(flags.error);
   const repo = repoRoot(cwd);
-  if (!repo) return usage('atlas: not a git repository');
+  if (!repo) return notARepository(cwd, 'map');
   const origin = flags.name ?? repositoryName(repo);
   if (flags.divergence && !origin) return usage('atlas: --divergence needs an origin URL that names org/repo, or --name');
   let baseline = null;
@@ -183,7 +197,7 @@ export function writeMap(dir, { artifact, statistics, page }) {
 
 export function checkCommand(cwd) {
   const repo = repoRoot(cwd);
-  if (!repo) return usage('atlas: not a git repository');
+  if (!repo) return notARepository(cwd, 'check');
   if (!existsSync(join(repo, 'atlas'))) {
     process.stdout.write('atlas: no atlas/ directory; nothing to check\n');
     return 0;
@@ -244,7 +258,7 @@ export function diffCommand(cwd, argv = []) {
   const flags = parseDiffArgs(argv);
   if (flags.error) return usage(flags.error);
   const repo = repoRoot(cwd);
-  if (!repo) return usage('atlas: not a git repository');
+  if (!repo) return notARepository(cwd, 'diff');
   const boundary = readBoundaryFile(repo);
   if (!boundary.ok) return failBoundary(boundary);
   // stdout is the markdown or JSON a caller posts or parses as is, so the
@@ -273,6 +287,21 @@ function failBoundary(boundary) {
 
 function usage(line) {
   process.stdout.write(`${line}\nexit 2\n`);
+  return 2;
+}
+
+// Every command but mcp needs the repository it is run in; outside one it
+// fails in the error shape, so the failure has a code a reader can look up.
+// In a tree exported without its history the answer names what still works
+// there: explain and gaps read its atlas/.
+function notARepository(cwd, command) {
+  const exported = command === 'explain' || command === 'gaps' ? null : exportedRoot(cwd);
+  const where = exported ? '; here, in a tree exported without its history, atlas explain and atlas gaps answer from atlas/'
+    : command === 'explain' || command === 'gaps' ? ', or in a directory holding atlas/structure.json' : '';
+  process.stdout.write(formatFailure('ATLAS_NOT_A_REPOSITORY', [`${cwd} is in no git repository`], {
+    exitCode: 2,
+    whatToDo: `run atlas ${command} inside a git repository${where}`,
+  }));
   return 2;
 }
 

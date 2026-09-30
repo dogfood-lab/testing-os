@@ -169,12 +169,15 @@ describe('the map is checked before it is answered from', () => {
     return root;
   }
 
-  it('halts with the reason when there is no map, and names atlas init', async () => {
+  it('halts with the reason when there is no map, and names the map to make', async () => {
     const root = brokenCopy((dir) => rmSync(join(dir, 'atlas', 'structure.json')));
     const result = await explain(root, 'lib/store.js');
     assert.equal(result.isError, true);
     assert.equal(result.structuredContent.error.code, 'ATLAS_SIDECAR_NO_MAP');
-    assert.match(result.structuredContent.error.whatToDo, /atlas init/);
+    // The boundary file is still there, so init, which will not overwrite
+    // it, is not the step to take; atlas_refresh and atlas map are.
+    assert.match(result.structuredContent.error.whatToDo, /atlas_refresh.*; else run atlas map and commit atlas\/$/);
+    assert.doesNotMatch(result.structuredContent.error.whatToDo, /atlas init/);
   });
 
   it('halts when a map file does not parse', async () => {

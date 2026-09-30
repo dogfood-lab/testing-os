@@ -4,6 +4,22 @@ All notable changes to `testing-os` are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+Atlas answers from where it is asked: from a fetched ref, from a tree exported without its history, and about a workflow file as the door it is (`docs/atlas-production.spec.md`, Part 1).
+
+### Added
+- **`--ref <ref>` on `atlas explain` and `atlas gaps`, and `ref` on every sidecar tool but `atlas_refresh`.** The map is read at a ref the clone already holds, such as `origin/main`, with git read commands and no fetch; files in the answer are read at that ref. The map's commit must be in the ref's history. The provenance names the ref, its commit and how far it is from the checkout ("map 7fe13cd from origin/main, 3 commits ahead of this checkout"), and "changed after the map" is judged between the map's commit and the ref, with a sentence saying the working tree was not compared. `atlas_check_change` takes a ref only when the checkout holds the commit that map was made from. Two new codes: `ATLAS_REF_UNKNOWN` and `ATLAS_REF_MAP_FOREIGN`.
+- **A newer map upstream is said.** When the checkout's fetched upstream (the branch's own, else `origin/HEAD`) holds a different map and commits the checkout lacks, the provenance says so and names the ref to ask with. Maps are compared by the ids git keeps them under. Atlas never switches by itself.
+- **An exported tree is answered.** In a directory that is not a git repository but holds `atlas/structure.json`, `atlas explain`, `atlas gaps` and the sidecar tools that only read the map answer, and say "an exported tree: history and freshness not checked". `map`, `check`, `atlas_changes`, `atlas_check_change` and `atlas_refresh` refuse there and name what does work.
+- **`atlas explain <workflow file>` prints the door.** What triggers it, each job with its steps and the programs they run, what it sends, what it reaches and the permissions it asks for by name; `--json` and `atlas_explain` carry the same. On a map made before 1.22.0, which kept each step's script text, the programs are worked out from that text and the text is never printed.
+
+### Changed
+- **A checkout with no map is offered reads before writes.** The no-map message lists, in order: the fetched ref that holds a map, with how far behind it the checkout is; `atlas_refresh`, when a boundary file exists (it fails without one); and last a map made and committed there, with `atlas init` named only when there is no boundary file. Before, a clone a few commits behind a mapped branch was told to run `atlas init`.
+- **"not a git repository" is `ATLAS_NOT_A_REPOSITORY`.** `init`, `map`, `check`, `explain`, `gaps` and `diff` printed a bare usage line; they now print the one error shape, exit 2 as before.
+- **`explain` no longer says "Imports no file in this repository." or "No file imports it." of a file Atlas does not parse for imports,** such as a workflow or a manifest.
+
+### Fixed
+- **Shell arithmetic names no program.** A step's script is kept in the map as the programs it runs. A variable inside `$(( ))` or a `(( ))` command was read as one, so a retry loop's `sleep $((attempt * 5))` recorded a program called `attempt`, and the new workflow explain would have printed "runs attempt". Arithmetic is now set aside before the script is split into commands; a subshell inside a command substitution, which also opens with two parentheses, is still read. Maps change only where a step used arithmetic.
+
 ## [1.23.5] — 2026-09-29
 
 A stub ingest can no longer write into this repository's evidence store, and the Codecov rollout tool carries what moving 56 fleet repositories to recipe v2 taught it.

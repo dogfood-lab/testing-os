@@ -26,7 +26,7 @@ const NETWORK = new Set(['http', 'https', 'http2', 'net', 'dgram', 'tls', 'dns']
 const NETWORK_NAMES = new Set(['fetch', 'WebSocket', 'EventSource', 'XMLHttpRequest']);
 const LISTENS = new Set(['listen', 'createServer', 'createConnection', 'connect']);
 const RUNS = new Set(['spawnSync', 'spawn', 'execFileSync', 'execFile', 'execSync', 'exec', 'fork']);
-const READS = new Set(['cat-file', 'diff', 'ls-files', 'merge-base', 'rev-parse', 'show', 'status']);
+const READS = new Set(['cat-file', 'diff', 'ls-files', 'ls-tree', 'merge-base', 'rev-list', 'rev-parse', 'show', 'status']);
 
 await Parser.init({ locateFile: () => fileURLToPath(import.meta.resolve('web-tree-sitter/web-tree-sitter.wasm')) });
 const parser = new Parser();

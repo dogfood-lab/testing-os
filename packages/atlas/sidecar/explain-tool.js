@@ -54,6 +54,9 @@ export function explainAnswer(snapshot, repo, target) {
 
   const doors = facts.doors ?? {};
   if (doors.isDoor) groups.push(group('door', 'declared', [doors.isDoor]));
+  // A workflow file's own door: its triggers, jobs, sends, reach and
+  // permissions, each stated by the workflow.
+  if (facts.door) groups.push(group('doorDetail', 'declared', [facts.door]));
   for (const field of ['runBy', 'builtBy', 'checkedBy']) if ((doors[field] ?? []).length > 0) groups.push(group(field, 'declared', doors[field]));
   // A door that runs a file of the part reaches it as the workflow says; one
   // that reaches it further in reaches it through imports.

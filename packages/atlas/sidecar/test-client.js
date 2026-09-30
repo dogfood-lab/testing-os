@@ -1,5 +1,5 @@
 import { spawn, spawnSync } from 'node:child_process';
-import { appendFileSync, cpSync, mkdtempSync } from 'node:fs';
+import { appendFileSync, cpSync, mkdirSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -139,6 +139,52 @@ export function mappedRepository(fixture, { together = [], times = 6, prefix = '
   mapIn(root);
   commitAll(root, 'map');
   return root;
+}
+
+// A repository git's background maintenance leaves alone, so a test that
+// checks .git is untouched does not race a repack.
+function quiet(cwd) {
+  git(cwd, ['config', 'core.autocrlf', 'false']);
+  git(cwd, ['config', 'maintenance.auto', 'false']);
+  git(cwd, ['config', 'gc.auto', '0']);
+}
+
+/**
+ * A clone behind the remote it was cloned from, as the triage of 2026-09-30
+ * met them: the remote's main holds a map, made after two more commits and
+ * committed in a third, and the clone is reset to the first commit, where no
+ * map exists yet, so it is three commits behind origin/main. Returns the
+ * directories and commits; the caller removes base.
+ *
+ * @param {string} fixture a fixture directory holding atlas/boundaries.yaml
+ * @param {{ prefix?: string }} [options]
+ */
+export function staleClone(fixture, { prefix = 'atlas-stale-' } = {}) {
+  const base = mkdtempSync(join(tmpdir(), prefix));
+  const work = join(base, 'work');
+  const remote = join(base, 'remote.git');
+  const clone = join(base, 'clone');
+  mkdirSync(work);
+  cpSync(fixture, work, { recursive: true });
+  git(work, ['init', '-q', '--initial-branch=main']);
+  quiet(work);
+  commitAll(work, 'fixture');
+  const start = git(work, ['rev-parse', 'HEAD']);
+  for (let i = 1; i <= 2; i += 1) {
+    appendFileSync(join(work, 'lib', 'core.js'), `// change ${i}\n`);
+    appendFileSync(join(work, 'lib', 'other.js'), `// change ${i}\n`);
+    commitAll(work, `change ${i}`);
+  }
+  const mapped = git(work, ['rev-parse', 'HEAD']);
+  mapIn(work);
+  commitAll(work, 'map');
+  const tip = git(work, ['rev-parse', 'HEAD']);
+  git(base, ['init', '-q', '--bare', '--initial-branch=main', remote]);
+  quiet(remote);
+  git(work, ['push', '-q', remote, 'main']);
+  git(base, ['clone', '-q', '-c', 'core.autocrlf=false', '-c', 'maintenance.auto=false', '-c', 'gc.auto=0', remote, clone]);
+  git(clone, ['reset', '-q', '--hard', start]);
+  return { base, work, remote, clone, start, mapped, tip };
 }
 
 /** The _meta a 2026-07-28 request carries. */

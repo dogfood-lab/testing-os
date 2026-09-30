@@ -95,16 +95,17 @@
           "path": "packages/atlas/LICENSE"
         },
         {
-          "hash": "b56e95377d160d71ae3e1ff7e487f6e95ac1e5845d395a60e1a5a85d14e1ddeb",
+          "hash": "d134391b07e2b34c787931b28ed54373cac2a6e522789ea21626d406398e3775",
           "path": "packages/atlas/README.md"
         },
         {
           "exports": [
             "buildArtifact",
             "serializeArtifact",
+            "stepPrograms",
             "unresolvedEntry"
           ],
-          "hash": "7af5f34b247b2f266e26b09a31742719ec20c15dcfd063823658de4c65b64e8b",
+          "hash": "87905074835bc53ef7ad7076f2035881f5fe163c8c5c91d89eb20df8870e4ec0",
           "importOrder": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/languages.js",
@@ -212,35 +213,35 @@
             {
               "in": "mapCommand",
               "kind": "catch",
-              "line": 94
+              "line": 108
             },
             {
               "in": "checkCommand",
               "kind": "catch",
-              "line": 213
+              "line": 227
             },
             {
               "in": "readBaseline",
               "kind": "catch",
-              "line": 322
+              "line": 351
             },
             {
               "in": "readBaseline",
               "kind": "catch",
-              "line": 329
+              "line": 358
             },
             {
               "in": "manifestName",
               "kind": "catch",
-              "line": 383
+              "line": 412
             },
             {
               "in": "committedJson",
               "kind": "catch",
-              "line": 426
+              "line": 455
             }
           ],
-          "hash": "71ae9d7b5938c103535565db4269f1b01e4ad6e4cc8269c82a1c6a0202855490",
+          "hash": "a96459244fc3d9b50778b2fbfde6b15f1e9520a875875ee7d6c6a670315e3f24",
           "importOrder": [
             "packages/atlas/core/index.js",
             "packages/atlas/adapter/artifact.js",
@@ -256,6 +257,7 @@
             "packages/atlas/adapter/page.js",
             "packages/atlas/adapter/statistics.js",
             "packages/atlas/adapter/write.js",
+            "packages/atlas/sidecar/map.js",
             "packages/atlas/sidecar/server.js"
           ],
           "importsFiles": [
@@ -273,6 +275,7 @@
             "packages/atlas/adapter/statistics.js",
             "packages/atlas/adapter/write.js",
             "packages/atlas/core/index.js",
+            "packages/atlas/sidecar/map.js",
             "packages/atlas/sidecar/server.js"
           ],
           "path": "packages/atlas/adapter/commands.js"
@@ -357,7 +360,7 @@
           "exports": [
             "formatFailure"
           ],
-          "hash": "d6d6e97a789b408751cb2d6d6a16b3f49d898216056819a415db805597af37e0",
+          "hash": "ec7af8516252664e228cff94444903f26d488ec41f153d7ad4b9237bcb7ab49e",
           "path": "packages/atlas/adapter/errors.js"
         },
         {
@@ -369,7 +372,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "d9e3096eb54fe11d594f511e92e303c74c90f84bca65077fa9892d7a5914cf3f",
+          "hash": "ebc209a5a7d8a2399fd071c25de806bd8a75a33663c354b08615e7e3fee5d81c",
           "path": "packages/atlas/adapter/explain-manifest.test.js",
           "spawns": [
             "packages/atlas/cli.js"
@@ -385,33 +388,55 @@
           "testFramework": "node --test"
         },
         {
+          "hash": "8ec8be5248fca9f5ade8dcf4974ce8924b6383c44c15bf44b36c803d93ac49b8",
+          "importsFiles": [
+            "packages/atlas/sidecar/test-client.js",
+            "packages/atlas/sidecar/test-oracle.js",
+            "packages/atlas/sidecar/tools.js"
+          ],
+          "path": "packages/atlas/adapter/explain-workflow.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
+        },
+        {
           "exports": [
             "explainCommand",
             "explainTarget",
-            "pairFacts"
+            "mapLine",
+            "pairFacts",
+            "readAnswerMap",
+            "refFields"
           ],
           "failurePaths": [
             {
               "in": "readJson",
               "kind": "catch",
-              "line": 45
+              "line": 48
             }
           ],
-          "hash": "9fbc8013cdf5a231334db9f382d8468d9807e8b8043c8d965f56e97fa81e2b45",
+          "hash": "0bc2594f9018fa6906fdf2e8eeb8e0b7b49265bc41c465bd1d6fd2b7c4bf2707",
           "importOrder": [
+            "packages/atlas/core/languages.js",
             "packages/atlas/core/landings.js",
+            "packages/atlas/sidecar/git.js",
+            "packages/atlas/sidecar/map.js",
             "packages/atlas/adapter/errors.js",
             "packages/atlas/adapter/page.js"
           ],
           "importsFiles": [
             "packages/atlas/adapter/errors.js",
             "packages/atlas/adapter/page.js",
-            "packages/atlas/core/landings.js"
+            "packages/atlas/core/landings.js",
+            "packages/atlas/core/languages.js",
+            "packages/atlas/sidecar/git.js",
+            "packages/atlas/sidecar/map.js"
           ],
           "path": "packages/atlas/adapter/explain.js"
         },
         {
-          "hash": "60d90fe566cf70d1168ebcae2df1d51ec039f44042771a8910fabfb37ad56ae9",
+          "hash": "b0a39a63216e92a7030ef350b81ba2dbbfd5ca7f63b0a5c8f4e8d1c59ec6f0d6",
           "names": [
             "packages/ingest/persist.js"
           ],
@@ -767,19 +792,22 @@
             "gapsLines",
             "locate"
           ],
-          "failurePaths": [
-            {
-              "in": "readJson",
-              "kind": "catch",
-              "line": 22
-            }
-          ],
-          "hash": "0bdede9f702e3f2c56f749486364cc09c2eb64298a5d2e7f49da44ba8c8e23be",
-          "importsFiles": [
+          "hash": "4f3ac161533843d403f1907d3b30bda763965694ad3e94f123adf6040c62700a",
+          "importOrder": [
+            "packages/atlas/sidecar/git.js",
             "packages/atlas/adapter/errors.js",
+            "packages/atlas/adapter/explain.js",
             "packages/atlas/adapter/page.js",
             "packages/atlas/adapter/test-gaps.js",
             "packages/atlas/adapter/test-reach.js"
+          ],
+          "importsFiles": [
+            "packages/atlas/adapter/errors.js",
+            "packages/atlas/adapter/explain.js",
+            "packages/atlas/adapter/page.js",
+            "packages/atlas/adapter/test-gaps.js",
+            "packages/atlas/adapter/test-reach.js",
+            "packages/atlas/sidecar/git.js"
           ],
           "path": "packages/atlas/adapter/gaps.js"
         },
@@ -914,6 +942,17 @@
         {
           "hash": "dbc628e3823c3776d528d6925c2924590f29a6432ee9fcbbe1d6a539c23e5024",
           "path": "packages/atlas/adapter/line-endings.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "cf09f8aa176842634fd93763f45cae61cc0d1925b8843811212d37e315d83ace",
+          "importsFiles": [
+            "packages/atlas/adapter/errors.js"
+          ],
+          "path": "packages/atlas/adapter/not-a-repository.test.js",
           "spawns": [
             "packages/atlas/cli.js"
           ],
@@ -2594,6 +2633,7 @@
             "cover",
             "dataOnly",
             "displayName",
+            "doorDetail",
             "doorKey",
             "echoOnly",
             "entryOrder",
@@ -2629,14 +2669,16 @@
             "worded",
             "words"
           ],
-          "hash": "f071dc57ee9b2214bc42f33137adeb62aef3d9834d3d546186530472f6f5f22b",
+          "hash": "86d771e4ca50851c4bb9be898eeae89aa87252feddd595f9fe843a1f43cd9b68",
           "importOrder": [
             "packages/atlas/core/history.js",
             "packages/atlas/core/landings.js",
             "packages/atlas/core/languages.js",
+            "packages/atlas/adapter/artifact.js",
             "packages/atlas/adapter/templates.js"
           ],
           "importsFiles": [
+            "packages/atlas/adapter/artifact.js",
             "packages/atlas/adapter/templates.js",
             "packages/atlas/core/history.js",
             "packages/atlas/core/landings.js",
@@ -2749,6 +2791,14 @@
           "spawns": [
             "packages/atlas/cli.js"
           ],
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "693dff3c71960e5ef9e009f1d84a0b5e2ee88fbf8b5493ef9439d3d1883f59aa",
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js"
+          ],
+          "path": "packages/atlas/adapter/step-programs.test.js",
           "testFramework": "node --test"
         },
         {
@@ -3822,27 +3872,22 @@
             {
               "in": "bytesOf",
               "kind": "catch",
-              "line": 326
+              "line": 330
             },
             {
               "in": "collectIgnored",
               "kind": "catch",
-              "line": 490
+              "line": 494
             },
             {
               "in": "rootManifest",
               "kind": "catch",
-              "line": 598
+              "line": 602
             },
             {
               "in": "repositoryManifests",
               "kind": "catch",
-              "line": 617
-            },
-            {
-              "in": "validateBoundary",
-              "kind": "throw",
-              "line": 716
+              "line": 621
             },
             {
               "in": "validateBoundary",
@@ -3850,37 +3895,42 @@
               "line": 720
             },
             {
-              "in": "listTracked",
+              "in": "validateBoundary",
               "kind": "throw",
-              "line": 743
+              "line": 724
             },
             {
               "in": "listTracked",
               "kind": "throw",
-              "line": 762
+              "line": 747
+            },
+            {
+              "in": "listTracked",
+              "kind": "throw",
+              "line": 766
             },
             {
               "in": "parseStageLine",
               "kind": "throw",
-              "line": 770
+              "line": 774
             },
             {
               "in": "parseStageLine",
               "kind": "throw",
-              "line": 772
+              "line": 776
             },
             {
               "in": "parseFile",
               "kind": "catch",
-              "line": 858
+              "line": 862
             },
             {
               "in": "manifestOf",
               "kind": "catch",
-              "line": 1078
+              "line": 1082
             }
           ],
-          "hash": "0249300aa65ad70e1d390f11d29d5347f5bc56a8b5dee5faba221c5892cf3269",
+          "hash": "f591ac54028f965a2cee9d5193b1fad837a74758e87972e62e3443d5f6d10361",
           "importOrder": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/doors.js",
@@ -5019,14 +5069,15 @@
             {
               "in": "group",
               "kind": "throw",
-              "line": 42
+              "line": 43
             }
           ],
-          "hash": "0959a69f8e6e2373b200d4daffd9749d721b9ddb90334cf96ad8d1d74e60dbd6",
+          "hash": "aa0e633517c78443517c56e9511bf3b126e6e77660ac95dd26a10d6267a70b74",
           "importsFiles": [
             "packages/atlas/adapter/engine.js",
             "packages/atlas/adapter/errors.js",
-            "packages/atlas/sidecar/data.js"
+            "packages/atlas/sidecar/data.js",
+            "packages/atlas/sidecar/map.js"
           ],
           "path": "packages/atlas/sidecar/answer.js"
         },
@@ -5120,7 +5171,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "0790e4a5f20c71ffd606a193e9bd4e4ef385cdac3fcdd7277c3bb8f31ed1ee58",
+          "hash": "57eb45368bdc6056e9c2aed9a034838a80de49dc1f9f1596b33984234e28d719",
           "importsFiles": [
             "packages/atlas/sidecar/test-client.js"
           ],
@@ -5134,7 +5185,7 @@
           "exports": [
             "explainAnswer"
           ],
-          "hash": "b7358df694075c65b9b8f84eff9d6010ad30c75e0691babf084a58502abb0093",
+          "hash": "810fa17a840bfe5b93e9de09db6fdbe2e7cbec0267ecdc53c764b81297639144",
           "importOrder": [
             "packages/atlas/core/landings.js",
             "packages/atlas/adapter/explain.js",
@@ -5152,19 +5203,33 @@
           "path": "packages/atlas/sidecar/explain-tool.js"
         },
         {
+          "hash": "c12e7f46d858f1791699db4bb38843d7888a7468e0575448bb8875f918db3a72",
+          "importsFiles": [
+            "packages/atlas/core/checkout-state.js",
+            "packages/atlas/sidecar/test-client.js",
+            "packages/atlas/sidecar/test-oracle.js"
+          ],
+          "path": "packages/atlas/sidecar/exported.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
+        },
+        {
           "exports": [
             "changedFiles",
             "checkoutState",
-            "mapHashes"
+            "mapHashes",
+            "stateAt"
           ],
           "failurePaths": [
             {
               "in": "hashAt",
               "kind": "catch",
-              "line": 72
+              "line": 90
             }
           ],
-          "hash": "530d221c5ea3b9029d642c59df29ea630aac503c839bdd52908b3354a77b71fc",
+          "hash": "479e4f5b3b6f9106d28e57479033c14454944f066c4d5fa953821886f02bb191",
           "importsFiles": [
             "packages/atlas/core/text.js",
             "packages/atlas/sidecar/git.js"
@@ -5181,26 +5246,33 @@
         },
         {
           "exports": [
+            "blobAt",
+            "commitOf",
+            "distanceFromHead",
             "filesAt",
             "git",
             "head",
             "inHistory",
+            "isRefShaped",
             "isShallow",
-            "topLevel"
+            "topLevel",
+            "trackedAt",
+            "upstreamOf",
+            "upstreamsOf"
           ],
           "failurePaths": [
             {
               "in": "git",
               "kind": "throw",
-              "line": 29
+              "line": 41
             },
             {
               "in": "topLevel",
               "kind": "catch",
-              "line": 48
+              "line": 60
             }
           ],
-          "hash": "d0d5686d3cdb89bd5fff18d32d7e80b4265b9e75dfff1d5d5670f5f419844040",
+          "hash": "f9cd75ec86a98014406f74d843c1ba10e06a05f27b11d00a73a13d1cd5cd1048",
           "path": "packages/atlas/sidecar/git.js"
         },
         {
@@ -5223,23 +5295,44 @@
         },
         {
           "exports": [
+            "distanceWords",
+            "exportedRoot",
             "formatProblem",
+            "newerUpstream",
+            "noMapAdvice",
             "readCommittedMap",
-            "readSnapshot"
+            "readExportedMap",
+            "readSnapshot",
+            "readSnapshotAt",
+            "upstreamMap"
           ],
           "failurePaths": [
             {
-              "in": "readJson",
+              "in": "parsed",
               "kind": "catch",
-              "line": 24
+              "line": 28
             }
           ],
-          "hash": "962f0b3de9a67253dc8c9af5fbd25ca1185e5b1ead15d3ef2c9ce70479e90ee0",
+          "hash": "ac6be2af7c13197a7d855ba4af7c3b6984014cf5ddfeb72636f32df5c276e559",
           "importsFiles": [
             "packages/atlas/adapter/page.js",
             "packages/atlas/sidecar/git.js"
           ],
           "path": "packages/atlas/sidecar/map.js"
+        },
+        {
+          "hash": "32d5d176419d9abebfb1f7f221ba2f195b96430938bfa3873cc304470a2d2437",
+          "importsFiles": [
+            "packages/atlas/core/checkout-state.js",
+            "packages/atlas/sidecar/refresh.js",
+            "packages/atlas/sidecar/test-client.js",
+            "packages/atlas/sidecar/tools.js"
+          ],
+          "path": "packages/atlas/sidecar/no-map.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
         },
         {
           "exports": [
@@ -5293,12 +5386,25 @@
           "path": "packages/atlas/sidecar/reach-tool.js"
         },
         {
-          "hash": "693c1c97cb2b45f011c2af9a6cb250abccee7ef4c5e2887b68d6b95a88fc5a6c",
+          "hash": "729df702c3f53cf9bf8018625e772f1688539df6b0867f4c5d6ffdb74d37395d",
           "importsFiles": [
             "packages/atlas/core/checkout-state.js",
             "packages/atlas/sidecar/test-client.js"
           ],
           "path": "packages/atlas/sidecar/read-only.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "40d859cb0def065c8633d8245345c0110e54ba5060023a595e487ea0f528e40c",
+          "importsFiles": [
+            "packages/atlas/core/checkout-state.js",
+            "packages/atlas/sidecar/test-client.js",
+            "packages/atlas/sidecar/test-oracle.js"
+          ],
+          "path": "packages/atlas/sidecar/ref.test.js",
           "spawns": [
             "packages/atlas/cli.js"
           ],
@@ -5418,18 +5524,20 @@
             "rereadFacts",
             "trackedPlace"
           ],
-          "hash": "950845c039a1191da43ef15dcd9cac4bac8c9f1e8a5ac57e011a162fc8723dfa",
+          "hash": "eb771d15c738e611cb0c48ef8e7b8b34d2d9a110d7eb94f0c67386e39376e599",
           "importOrder": [
             "packages/atlas/core/index.js",
             "packages/atlas/core/languages.js",
             "packages/atlas/adapter/artifact.js",
-            "packages/atlas/sidecar/answer.js"
+            "packages/atlas/sidecar/answer.js",
+            "packages/atlas/sidecar/git.js"
           ],
           "importsFiles": [
             "packages/atlas/adapter/artifact.js",
             "packages/atlas/core/index.js",
             "packages/atlas/core/languages.js",
-            "packages/atlas/sidecar/answer.js"
+            "packages/atlas/sidecar/answer.js",
+            "packages/atlas/sidecar/git.js"
           ],
           "path": "packages/atlas/sidecar/reread.js"
         },
@@ -5484,7 +5592,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "a3fdcbd1a035617f8f5da9f5a931c2d4e6ef873a1ee75ffb2118c6fa56f909d9",
+          "hash": "e0479934f28dc07c507bd7d4ca3d2c158a898e2b0d0cbaeb819a2525f3dd2b79",
           "importsFiles": [
             "packages/atlas/sidecar/git.js"
           ],
@@ -5512,6 +5620,7 @@
             "mapIn",
             "mappedRepository",
             "modernMeta",
+            "staleClone",
             "startServer"
           ],
           "failurePaths": [
@@ -5531,7 +5640,7 @@
               "line": 113
             }
           ],
-          "hash": "bf6aefef9946c02b320428cfc9b63a0a35d7739e99a3d3c5b830ef55efd73a36",
+          "hash": "c8dd5f552bb25928656404d1c659f464bac8ceec9e6568c286ed34e8aa7df7b0",
           "path": "packages/atlas/sidecar/test-client.js"
         },
         {
@@ -5558,16 +5667,22 @@
           "exports": [
             "assertInventsNothing",
             "committedMap",
-            "explainJson"
+            "explainJson",
+            "mapAt"
           ],
           "failurePaths": [
             {
+              "in": "mapAt",
+              "kind": "throw",
+              "line": 35
+            },
+            {
               "in": "read",
               "kind": "catch",
-              "line": 31
+              "line": 44
             }
           ],
-          "hash": "ebf3ece78d23a2723c8b9154d85a54cfadbe6fd81146abcb80fc1a39f6f7c3a4",
+          "hash": "5bac9c655e068be0e94e47c39bc946c78f5337f8f50bfcb3a8fd94709a4c165f",
           "importsFiles": [
             "packages/atlas/adapter/changes.js"
           ],
@@ -5577,7 +5692,7 @@
           "exports": [
             "createTools"
           ],
-          "hash": "e2e9827cf7f6b5df79a0b5b607dc92ab5cf37a3a98daa9a6ffc145011b0af40f",
+          "hash": "6955905cbb2e84348e3618aef093b6735e355569176b853522bc641826d4ac7d",
           "importOrder": [
             "packages/atlas/sidecar/answer.js",
             "packages/atlas/sidecar/changes-tool.js",
@@ -5632,6 +5747,24 @@
           "testFramework": "node --test"
         },
         {
+          "hash": "3549dd7e1b0eb321935711be1174141004916d4f1b2586979c446c2f829ef174",
+          "importOrder": [
+            "packages/atlas/core/checkout-state.js",
+            "packages/atlas/sidecar/tools.js",
+            "packages/atlas/sidecar/test-client.js"
+          ],
+          "importsFiles": [
+            "packages/atlas/core/checkout-state.js",
+            "packages/atlas/sidecar/test-client.js",
+            "packages/atlas/sidecar/tools.js"
+          ],
+          "path": "packages/atlas/sidecar/upstream.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
+        },
+        {
           "hash": "f8eb8d1ddd14b2fcff662b01959bc73175556fc587c26e3b0ff42876418316f9",
           "path": "packages/atlas/templates/atlas-refresh.yml"
         }
@@ -5644,7 +5777,7 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 274,
+          "reads": 275,
           "where": [
             "caller"
           ],
@@ -5694,14 +5827,14 @@
           "writes": 0
         },
         {
-          "reads": 6,
+          "reads": 7,
           "where": [
             "cwd:atlas"
           ],
           "writes": 0
         },
         {
-          "reads": 8,
+          "reads": 10,
           "where": [
             "cwd:atlas/"
           ],
@@ -5726,16 +5859,16 @@
           "where": [
             "temp"
           ],
-          "writes": 2
+          "writes": 5
         }
       ],
-      "outsideReads": 315,
-      "outsideWrites": 8,
+      "outsideReads": 319,
+      "outsideWrites": 11,
       "role": "code",
       "testRunners": [
         "node --test"
       ],
-      "testedBy": 266,
+      "testedBy": 273,
       "unresolvedNamed": [
         {
           "path": "packages/atlas/adapter/divergence-envelope.test.js",
@@ -5811,11 +5944,15 @@
           "path": "docs/atlas-page.spec.md"
         },
         {
+          "hash": "814217c265831f0dbd6ba67eff32f24330d21be86e4b53207c3163af36444956",
+          "path": "docs/atlas-production.spec.md"
+        },
+        {
           "hash": "afb91bfc00df49b63b0602902cc02fea9ab83216496df785300bc5797ea9cb1a",
           "path": "docs/atlas-sidecar.dispatch.md"
         },
         {
-          "hash": "c85dd63e95870683da438909a1d8993b681a20a4d4474365b4580d77ebd744b5",
+          "hash": "e0073008329b5d63617cf1fe4a4b50233055cb4456f9e905e7a3fdf6a75ab1f6",
           "path": "docs/atlas-sidecar.spec.md"
         },
         {
@@ -24605,6 +24742,44 @@
           "path": "fixtures/atlas/explain-places/tools/summary.js"
         },
         {
+          "hash": "7bcc641bb259814bb4aad9c86214314121f5b0302e922cf663120a87cb296f9b",
+          "path": "fixtures/atlas/explain-workflow/.github/workflows/release.yml"
+        },
+        {
+          "hash": "b1dbbd04b9c148b8e473c20ee37679414efb31cfb523225c857921d770f8662a",
+          "path": "fixtures/atlas/explain-workflow/atlas/boundaries.yaml"
+        },
+        {
+          "hash": "da3f7a77349a3567f7c358e3f862055dd40543cdbd50923a03d3ec9279caab98",
+          "path": "fixtures/atlas/explain-workflow/config/settings.yaml"
+        },
+        {
+          "exports": [
+            "total"
+          ],
+          "hash": "e215a7abaa89146a4915e144f99c3ce3070fcba711bdf66b553f55e6df4ec9ab",
+          "path": "fixtures/atlas/explain-workflow/lib/core.js"
+        },
+        {
+          "hash": "07e56c57bf963d2b8cb6ef0b9a68c41b48e9a9f95103aa372fc512b5e26feb5c",
+          "importsFiles": [
+            "fixtures/atlas/explain-workflow/lib/core.js"
+          ],
+          "path": "fixtures/atlas/explain-workflow/lib/core.test.js",
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "d928d159eac6b1cf001ad6f9ca0c1b230e92ea9559d85a67295e61f150498d94",
+          "importsFiles": [
+            "fixtures/atlas/explain-workflow/lib/core.js"
+          ],
+          "path": "fixtures/atlas/explain-workflow/lib/report.js"
+        },
+        {
+          "hash": "c35d9c7916faa2836bf917893c9f72063feaa508ee2117facb4e5c4d8a71f5b0",
+          "path": "fixtures/atlas/explain-workflow/package.json"
+        },
+        {
           "hash": "b9b8b1eccfe5b2b09168a9b7bc2f08c935b541634c39a3335ff0c47f3452227c",
           "path": "fixtures/atlas/exports-and-api/.github/workflows/ci.yml"
         },
@@ -34294,7 +34469,7 @@
       "origin": "authored",
       "outsideImports": 3,
       "role": "code",
-      "testedBy": 140,
+      "testedBy": 141,
       "unresolvedNamed": [
         {
           "path": "fixtures/atlas/build-config/scripts/use.mjs",
@@ -34395,19 +34570,19 @@
           "path": "indexes/failing.json"
         },
         {
-          "hash": "47e4c57753b9aa0cc54eb31cb52a4d4dd27043bc6d55efef05e945742503e16f",
+          "hash": "7e1431ee39838895594720b074f7a41a4bbc08ede946b9c47b62607284a39ed2",
           "path": "indexes/integrity/chain.jsonl"
         },
         {
-          "hash": "67679ecabfacf1bfbe5babebfef761277badccac549e60b1b4db8beacaa924bb",
+          "hash": "32406b54c6600bad9405edf79a6fafccf45a6da6d64a31216cfacd1452c34883",
           "path": "indexes/latest-by-repo.json"
         },
         {
-          "hash": "ba7fa5586ebee483e8eaf74a09fba6a4941ac504f66354cd173035b8639fd82d",
+          "hash": "7f53cb80459f400fe18526ca9edefb0041a0a9e674d63f8d32acfd2a56a7e140",
           "path": "indexes/stale.json"
         },
         {
-          "hash": "63857214d791d73ecb250c83dc0522ada4bcbb798997803d68560a7926f0b37a",
+          "hash": "60774b66c66f7c07ec6299a93f86d31edf8fb351d93fa7e00532b38a5b25cf36",
           "path": "indexes/trends.json"
         }
       ],
@@ -37574,6 +37749,14 @@
           "path": "records/dogfood-lab/testing-os/2026/09/30/run-00mundasde-hNnoU8rOU8eT0g.json"
         },
         {
+          "hash": "d36f2c26c7ed53577ce6d00dfdcdcba680c774e3ce07263d626392a36c890174",
+          "path": "records/dogfood-lab/testing-os/2026/09/30/run-00munew5g5-sZSjmdf6VEPIMA.json"
+        },
+        {
+          "hash": "293a7f21b9c5efbcec5b94433d2a08919391d6ff3abcd622d745b709e9ea584b",
+          "path": "records/dogfood-lab/testing-os/2026/09/30/run-00muo9ultk-XGviTLGHv8n5mw.json"
+        },
+        {
           "hash": "d80bd628d70f1275786c79da48bfb6da79ef0eb303eceed6fe87960e8c7a308c",
           "path": "records/mcp-tool-shop-org/a11y-demo-site/2026/03/20/run-a11y-demo-site-23329256169-1.json"
         },
@@ -38522,7 +38705,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "f7b5743ec89438774226158f28a0cef8382648366c476b6900d5e4125f911686",
+          "hash": "9ef167188af1875e6c3b7b32b6c2311e7567618a53c01b70169257e87d19e285",
           "path": "CHANGELOG.md"
         },
         {
@@ -38542,23 +38725,23 @@
           "path": "LICENSE"
         },
         {
-          "hash": "b5d9969cf1be0658fd0023e78a3d39578828c5a599683b94ee88c0b7d546cd3e",
+          "hash": "8eb2b03027f175488cbb0bd05425cf65bb9e2853a11d33844eb680126777d80d",
           "path": "README.es.md"
         },
         {
-          "hash": "37439e70e983afb535cce4628f22bb7d90a46a3006fd037a873ee407931922f8",
+          "hash": "4fa8fcc138575d0bf7821e28632e2f7fe8e67ff44f141cfe3ea80fd25e698350",
           "path": "README.fr.md"
         },
         {
-          "hash": "d710a92423fc1390a65594d1e3e494e69bf229e27cc362ba7cb976716e5ee489",
+          "hash": "7da8bf2f8a641f6b6c70f5d76003b5f3114769a550c07ee799c98620f694c586",
           "path": "README.hi.md"
         },
         {
-          "hash": "809b5d7a287b49c1fdcfe771ebf98ab6ddbed693c4fe83e1e4a2b8bab759f41b",
+          "hash": "6ac5df2688159535834ee586b65155df4b3905f73cf38fca2fff8e697495aca9",
           "path": "README.it.md"
         },
         {
-          "hash": "ad5ac4af571339924b9ce6b2023434f0db2368a86ac9db0bf64c2b6268a5e542",
+          "hash": "9b4dcc6b4c55cc4a7e366f317b790204edf9c683da81760d20832c3973ebf1d0",
           "path": "README.ja.md"
         },
         {
@@ -38566,11 +38749,11 @@
           "path": "README.md"
         },
         {
-          "hash": "c0ce57a27151d1de8f1069e6dd220a86deb1f4d99338a12f3a301c3efa5d7c0c",
+          "hash": "9b332b0598b98441a1dd487fc71906657ea5bcf7a84a2005a181400cadef3700",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "99389f3bc59fef92837111f682fdab87281924a5e89c700677dc0c54220ea27c",
+          "hash": "73aa9d1afa9bd61ef5670e61fca61ef25003547ca0f636e993eae3e48878a1ed",
           "path": "README.zh.md"
         },
         {
@@ -40818,7 +41001,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "fe2e0765131d1f1b970f7feab360678b19b54329aac3eb26af61084145f1c0ca",
+          "hash": "8d150f3c36eab6a3c94cb5e90f02c4b434dc8b71bf7948ce13bd5b9e5c80bbf0",
           "path": "scripts/test-floor-allowlist.json"
         }
       ],
@@ -41007,7 +41190,7 @@
           "path": "site/src/content/docs/handbook/architecture.md"
         },
         {
-          "hash": "64d9dcc170f0dc9844cbc0a720505dbf4daf362dda6229bf659b9fe874afbd17",
+          "hash": "01c7bd745a3b8b1fdd810b00577a246035121a77b8da631c8c0beb74c67a0b3e",
           "path": "site/src/content/docs/handbook/atlas.md"
         },
         {
@@ -41015,7 +41198,7 @@
           "path": "site/src/content/docs/handbook/beginners.md"
         },
         {
-          "hash": "e9f40cc9f490798b5e7d2fb63f9aa98ec19763903381794970a55a9229c374aa",
+          "hash": "d404b4acd1ba2fca2b22773ae5d100f60819a360f63bdb3bb7ff3e5ef5cfea44",
           "path": "site/src/content/docs/handbook/cli-reference.md"
         },
         {
@@ -41023,7 +41206,7 @@
           "path": "site/src/content/docs/handbook/contracts.md"
         },
         {
-          "hash": "6a70850baf1bee61760e9e0fa5dab078286548048aca9d49e443e803238dcf90",
+          "hash": "ea82fe5a65ef43b183ad0a47811704ce5b0d1d57814600469a74b0cd0839b250",
           "path": "site/src/content/docs/handbook/error-codes.md"
         },
         {
@@ -43716,6 +43899,12 @@
         {
           "job": "build-and-test",
           "matched": true,
+          "path": "packages/atlas/adapter/explain-workflow.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
           "path": "packages/atlas/adapter/explain.test.js",
           "runKind": "executes"
         },
@@ -43735,12 +43924,6 @@
           "job": "build-and-test",
           "matched": true,
           "path": "packages/atlas/adapter/gaps.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/adapter/init-data-roles.test.js",
           "runKind": "executes"
         },
         {
@@ -43853,6 +44036,12 @@
         {
           "job": "build-and-test",
           "matched": true,
+          "path": "packages/atlas/sidecar/exported.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
           "path": "packages/atlas/sidecar/freshness.test.js",
           "runKind": "executes"
         },
@@ -43865,7 +44054,19 @@
         {
           "job": "build-and-test",
           "matched": true,
+          "path": "packages/atlas/sidecar/no-map.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
           "path": "packages/atlas/sidecar/read-only.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/atlas/sidecar/ref.test.js",
           "runKind": "executes"
         },
         {
@@ -43884,24 +44085,6 @@
           "job": "build-and-test",
           "matched": true,
           "path": "packages/atlas/sidecar/size.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/sidecar/static.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/sidecar/test-gaps-tool.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/sidecar/tools.test.js",
           "runKind": "executes"
         },
         {
@@ -44973,7 +45156,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 740,
+      "runsCount": 747,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -45001,7 +45184,7 @@
         {
           "coverage": true,
           "dir": "packages/atlas",
-          "files": 248,
+          "files": 255,
           "job": "build-and-test",
           "junit": true,
           "runner": "node --test",
@@ -45251,7 +45434,6 @@
         {
           "job": "ingest",
           "programs": [
-            "attempt",
             "echo",
             "git",
             "sleep"
@@ -46299,7 +46481,6 @@
         {
           "job": "deploy",
           "programs": [
-            "attempt",
             "awk",
             "curl",
             "echo",
@@ -46310,7 +46491,6 @@
         {
           "job": "a11y",
           "programs": [
-            "attempt",
             "cat",
             "echo",
             "npx",
@@ -46434,7 +46614,6 @@
         {
           "job": "publish",
           "programs": [
-            "attempt",
             "echo",
             "mkdir",
             "npm",
@@ -46486,13 +46665,10 @@
           "job": "publish",
           "programs": [
             "1",
-            "attempt",
             "echo",
             "mapfile",
             "node",
             "npm",
-            "published",
-            "skipped",
             "sleep"
           ],
           "step": "Publish public packages to npm (idempotent + resilient)"
@@ -47534,6 +47710,12 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "packages/atlas/adapter/explain-workflow.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "packages/atlas/adapter/explain.test.js",
           "runKind": "executes"
         },
@@ -47547,12 +47729,6 @@
           "job": "publish",
           "matched": true,
           "path": "packages/atlas/adapter/fleet.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/adapter/gaps.test.js",
           "runKind": "executes"
         },
         {
@@ -47665,6 +47841,12 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "packages/atlas/sidecar/exported.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "packages/atlas/sidecar/freshness.test.js",
           "runKind": "executes"
         },
@@ -47677,7 +47859,19 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "packages/atlas/sidecar/no-map.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "packages/atlas/sidecar/read-only.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "packages/atlas/sidecar/ref.test.js",
           "runKind": "executes"
         },
         {
@@ -47696,24 +47890,6 @@
           "job": "publish",
           "matched": true,
           "path": "packages/atlas/sidecar/size.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/sidecar/static.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/sidecar/test-gaps-tool.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/sidecar/tools.test.js",
           "runKind": "executes"
         },
         {
@@ -48779,7 +48955,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 744,
+      "runsCount": 751,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -48816,7 +48992,7 @@
         },
         {
           "dir": "packages/atlas",
-          "files": 248,
+          "files": 255,
           "job": "publish",
           "runner": "node --test",
           "step": "Verify (full pre-publish gate)",
@@ -50629,8 +50805,8 @@
   ],
   "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "798da17ed4c3944bfb88cd2a53399efccdfe768c",
-    "tracked": 3913
+    "commit": "e84ad73bf4e8e60cf884536c618ef5362a338df4",
+    "tracked": 3930
   },
   "landings": [
     {
@@ -51234,6 +51410,12 @@
         },
         {
           "by": "packages/atlas/adapter/engine-stamp.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/adapter/explain-workflow.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -53233,6 +53415,29 @@
         }
       ],
       "target": "fixtures/atlas/explain-places/test/ledger.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/adapter/explain-workflow.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/explain-workflow",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/explain-workflow/lib/core.test.js",
       "writers": []
     },
     {
@@ -55454,13 +55659,31 @@
           "fromTests": true
         },
         {
+          "by": "packages/atlas/sidecar/exported.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/atlas/sidecar/injection.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
         },
         {
+          "by": "packages/atlas/sidecar/no-map.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/atlas/sidecar/read-only.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/sidecar/ref.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -55473,6 +55696,12 @@
         },
         {
           "by": "packages/atlas/sidecar/tools.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/sidecar/upstream.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -63351,7 +63580,7 @@
       "target": "README.md"
     }
   ],
-  "testFiles": 960,
+  "testFiles": 969,
   "unassigned": [
     {
       "hash": "ae8cd9e48976f29e3293dbbe6a4b41aff3f2b9b968fcfb551ce183a0b08ed8cc",

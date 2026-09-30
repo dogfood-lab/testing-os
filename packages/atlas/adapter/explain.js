@@ -1,8 +1,11 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { isAbsolute, join, posix, relative } from 'node:path';
+import { isCodePath } from '../core/languages.js';
 import { isOwnTest, isTestFile } from '../core/landings.js';
+import { isRefShaped } from '../sidecar/git.js';
+import { distanceWords, EXPORTED, newerUpstream, noMapAdvice, readSnapshotAt, upstreamMap } from '../sidecar/map.js';
 import { formatFailure } from './errors.js';
-import { boundaryRoot, capitalize, collapse, count, cover, entryOrder, externalsLine, installed, list, pageFacts, readerFiles, readerItem, testsClause, under, worded } from './page.js';
+import { boundaryRoot, capitalize, collapse, count, cover, doorDetail, entryOrder, externalsLine, installed, list, pageFacts, readerFiles, readerItem, testsClause, under, worded } from './page.js';
 
 /**
  * atlas explain: what one file, one directory or one part is in the system,
@@ -50,14 +53,20 @@ function readJson(path) {
 function parseArgs(argv) {
   let json = false;
   let target = null;
-  for (const arg of argv) {
+  let ref = null;
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
     if (arg === '--json') json = true;
-    else if (arg.startsWith('--')) return { error: `atlas: unknown argument ${arg}` };
+    else if (arg === '--ref') {
+      ref = argv[i + 1];
+      if (!isRefShaped(ref)) return { error: 'atlas: --ref needs a ref, such as --ref origin/main' };
+      i += 1;
+    } else if (arg.startsWith('--')) return { error: `atlas: unknown argument ${arg}` };
     else if (target != null) return { error: `atlas: explain takes one path, got ${arg} as well` };
     else target = arg;
   }
   if (target == null) return { error: 'atlas: explain needs a path' };
-  return { json, target };
+  return { json, target, ref };
 }
 
 // A path is tried as the caller wrote it from where they stand, then as a
@@ -142,16 +151,20 @@ function targetText(ctx, target) {
   return target.startsWith('@') ? `a built chunk of ${ctx.shown(target.slice(1))}` : target;
 }
 
-function fileImportLines(ctx, own) {
+// A file in a language Atlas does not parse for imports (a workflow, a
+// configuration file, prose) is never said to import nothing or to be
+// imported by nothing: Atlas did not read it for that.
+function fileImportLines(ctx, own, parsed) {
   const lines = [];
   const shown = (targets) => shownList(targets.map((target) => targetText(ctx, target)));
   if (own.parseError) lines.push('It could not be parsed, so what it imports is not known.');
   else if (own.importsFiles.length > 0) lines.push(`Imports ${count(own.importsFiles.length, 'file')}: ${shown(own.importsFiles)}.`);
   if (own.reexportsAll.length > 0) lines.push(`Re-exports everything from ${shown(own.reexportsAll)}.`);
-  if (!own.parseError && own.importsFiles.length + own.reexportsAll.length === 0) lines.push('Imports no file in this repository.');
+  if (parsed && !own.parseError && own.importsFiles.length + own.reexportsAll.length === 0) lines.push('Imports no file in this repository.');
   const importers = own.importedByFiles.length;
-  if (importers === 0) lines.push('No file imports it.');
-  else {
+  if (importers === 0) {
+    if (parsed) lines.push('No file imports it.');
+  } else {
     const tests = own.importedByTestFiles;
     const which = tests === 0 ? '' : tests === importers ? `, ${importers === 1 ? 'a test' : 'all of them tests'}` : `, ${tests} of them ${tests === 1 ? 'a test' : 'tests'}`;
     lines.push(`Imported by ${count(importers, 'file')}${which}: ${shownList(own.importedByFiles)}.`);
@@ -440,11 +453,31 @@ function labelsFor(ctx, facts) {
   return Object.fromEntries([...new Set(ids)].sort(cmp).map((part) => [part, ctx.shown(part)]));
 }
 
-function mapLine(map) {
+/**
+ * Where the answer came from, last: the map's commit and date, and, for a
+ * map read at a ref, that ref and how far it is from this checkout.
+ *
+ * @param {{ commit: string, generatedAt: string, source?: { ref?: { name: string, ahead: number|null, behind: number|null } } | null }} map
+ */
+export function mapLine(map) {
+  const source = map.source ?? null;
   const commit = map.commit.slice(0, 7);
   const date = map.generatedAt.slice(0, 10);
-  if (!commit) return date ? `Map from ${date}.` : 'The map does not say which commit it is from.';
-  return date ? `Map from commit ${commit}, ${date}.` : `Map from commit ${commit}.`;
+  let at = source?.ref ? `, read at ${source.ref.name}, ${distanceWords(source.ref)}` : '';
+  // The fetched upstream holds another map the checkout may be behind; it is
+  // named with the flag that answers from it, never switched to.
+  if (source?.upstream) at += `; ${source.upstream.name} holds a different map, ${distanceWords(source.upstream)}: run with --ref ${source.upstream.name} to answer from it`;
+  if (source?.exported) at += `; ${EXPORTED}`;
+  if (!commit) return date ? `Map from ${date}${at}.` : `The map does not say which commit it is from${at}.`;
+  return date ? `Map from commit ${commit}, ${date}${at}.` : `Map from commit ${commit}${at}.`;
+}
+
+/** An answer from an exported tree, as the JSON of explain and gaps says so. */
+export const EXPORTED_FIELDS = Object.freeze({ freshnessChecked: false, historyChecked: false });
+
+// A ref as the JSON of explain and gaps carries it.
+export function refFields(ref) {
+  return { ahead: ref.ahead, behind: ref.behind, commit: ref.commit, name: ref.name };
 }
 
 // What a part imports and what imports it, at part grain, and what it could
@@ -559,6 +592,13 @@ function explainFound(ctx, found, map) {
   const doors = doorFacts(ctx, found, part?.part ?? null);
   facts.doors = { builtBy: doors.builtBy, checkedBy: doors.checkedBy, isDoor: doors.self?.name ?? null, onPath: doors.onPath, runBy: doors.runBy };
   lines.push(doorLine(doors, part?.partLabel ?? null, found.kind));
+  // A workflow file is its door: what starts it, what it runs, reaches and
+  // sends, its jobs and the permissions it asks for, as the page states them.
+  if (doors.self) {
+    const detail = doorDetail(ctx, doors.self);
+    facts.door = detail.facts;
+    lines.push(...detail.lines);
+  }
 
   const place = placeFacts(ctx, found);
   Object.assign(facts, place);
@@ -567,7 +607,7 @@ function explainFound(ctx, found, map) {
   if (found.kind === 'file') {
     const own = fileImports(ctx, found.path);
     Object.assign(facts, own);
-    lines.push(...fileImportLines(ctx, own));
+    lines.push(...fileImportLines(ctx, own, isCodePath(found.path)));
   }
 
   if (part) {
@@ -670,7 +710,7 @@ function explainPart(ctx, found, map) {
  * @returns {{ ok: true, found: object, facts: object, lines: string[], ctx: object }
  *   | { ok: false, code: string, details: string[], whatToDo: string }}
  */
-export function explainTarget({ structure, statistics = {}, page = null }, { repo, prefix = '', target }) {
+export function explainTarget({ structure, statistics = {}, page = null }, { repo, prefix = '', target, source = null }) {
   const ctx = pageFacts({ structure, statistics: statistics ?? {} });
   const tried = candidates(repo, prefix, target);
   const found = locate(ctx, tried, target);
@@ -682,8 +722,69 @@ export function explainTarget({ structure, statistics = {}, page = null }, { rep
       whatToDo: 'check the path or the part name, or run atlas map if the file is new',
     };
   }
-  const { facts, lines } = explainFound(ctx, found, mapCommit(page, statistics, structure));
+  const { facts, lines } = explainFound(ctx, found, { ...mapCommit(page, statistics, structure), source });
+  if (source?.ref) facts.ref = refFields(source.ref);
+  if (source?.upstream) facts.upstream = refFields(source.upstream);
+  if (source?.exported) facts.exported = EXPORTED_FIELDS;
   return { ok: true, ctx, found, facts: sortKeys(facts), lines };
+}
+
+/**
+ * The map explain and gaps answer from: atlas/ in the checkout, or, given a
+ * ref, the map that ref holds, read with git (sidecar/map.js). A failure is
+ * in the error shape, under the command's own no-map code where the map is
+ * missing or unreadable.
+ *
+ * @param {string} repo
+ * @param {string|null} ref
+ * @param {string} noMap the command's code for a missing map
+ * @returns {{ ok: true, structure: object, statistics: object|null, page: object|null, source: object|null }
+ *   | { ok: false, code: string, details: string[], whatToDo: string }}
+ */
+export function readAnswerMap(repo, ref, noMap, { exported = false } = {}) {
+  if (exported) {
+    // A tree exported without its history: its atlas/ is all there is, so a
+    // ref cannot be read and freshness cannot be judged.
+    if (ref != null) return { ok: false, code: 'ATLAS_NOT_A_REPOSITORY', details: ['a ref is read from git history, and an exported tree has none'], whatToDo: 'run it again without --ref; here atlas explain and atlas gaps answer from atlas/' };
+    const structure = readJson(join(repo, 'atlas', 'structure.json'));
+    if (!structure.value) return { ok: false, code: noMap, details: ['atlas/structure.json is not valid JSON'], whatToDo: 'export the tree again from a repository whose map is committed' };
+    return {
+      ok: true,
+      structure: structure.value,
+      statistics: readJson(join(repo, 'atlas', 'statistics.json')).value ?? null,
+      page: readJson(join(repo, 'atlas', 'page.json')).value ?? null,
+      source: { exported: true },
+    };
+  }
+  if (ref == null) {
+    const structure = readJson(join(repo, 'atlas', 'structure.json'));
+    if (structure.invalid) return { ok: false, code: noMap, details: ['atlas/structure.json is not valid JSON'], whatToDo: 'run atlas map and commit atlas/' };
+    if (structure.absent) {
+      // A clone behind a remote that holds a map is told of that map first.
+      const { steps, offered } = noMapAdvice(repo, { passRef: (name) => `run it again with --ref ${name}`, refresh: false });
+      return {
+        ok: false,
+        code: noMap,
+        details: ['atlas/structure.json is absent', ...(offered ? [`${offered.name} (${offered.commit.slice(0, 7)}) holds a map`] : [])],
+        whatToDo: steps.join('; else '),
+      };
+    }
+    const upstream = upstreamMap(repo);
+    return {
+      ok: true,
+      structure: structure.value,
+      statistics: readJson(join(repo, 'atlas', 'statistics.json')).value ?? null,
+      page: readJson(join(repo, 'atlas', 'page.json')).value ?? null,
+      source: newerUpstream(upstream) ? { upstream } : null,
+    };
+  }
+  const read = readSnapshotAt(repo, ref);
+  if (!read.ok) {
+    const { code, details, whatToDo } = read.error;
+    return { ok: false, code: code.startsWith('ATLAS_SIDECAR_') ? noMap : code, details, whatToDo };
+  }
+  const { structure, statistics, page, ref: at } = read.snapshot;
+  return { ok: true, structure, statistics, page, source: { ref: at } };
 }
 
 /**
@@ -692,22 +793,19 @@ export function explainTarget({ structure, statistics = {}, page = null }, { rep
  * @param {string[]} argv  the arguments after `explain`
  * @returns {number} exit code
  */
-export function explainCommand(repo, prefix, argv) {
+export function explainCommand(repo, prefix, argv, { exported = false } = {}) {
   const args = parseArgs(argv);
   if (args.error) {
     process.stdout.write(`${args.error}\nexit 2\n`);
     return 2;
   }
-  const structure = readJson(join(repo, 'atlas', 'structure.json'));
-  if (!structure.value) {
-    process.stdout.write(formatFailure('ATLAS_EXPLAIN_NO_MAP', [
-      structure.absent ? 'atlas/structure.json is absent' : 'atlas/structure.json is not valid JSON',
-    ], { exitCode: 2, whatToDo: 'run atlas map and commit atlas/' }));
+  const map = readAnswerMap(repo, args.ref, 'ATLAS_EXPLAIN_NO_MAP', { exported });
+  if (!map.ok) {
+    process.stdout.write(formatFailure(map.code, map.details, { exitCode: 2, whatToDo: map.whatToDo }));
     return 2;
   }
-  const statistics = readJson(join(repo, 'atlas', 'statistics.json')).value ?? {};
-  const page = readJson(join(repo, 'atlas', 'page.json')).value ?? null;
-  const answer = explainTarget({ structure: structure.value, statistics, page }, { repo, prefix, target: args.target });
+  const { structure, page, source } = map;
+  const answer = explainTarget({ structure, statistics: map.statistics ?? {}, page }, { repo, prefix, target: args.target, source });
   if (!answer.ok) {
     process.stdout.write(formatFailure(answer.code, answer.details, { exitCode: 2, whatToDo: answer.whatToDo }));
     return 2;

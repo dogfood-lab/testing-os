@@ -64,7 +64,7 @@ Every answer is capped: 8 KB of JSON by default, and up to 64 KB when the asker 
 
 - **Read-only.** No tool writes the repository. `atlas_refresh` writes only to a cache outside it. The fleet test's "the checkout is as it was" assertion runs against every tool.
 - **No network.** No model inside. It never listens on a port: stdio only. (Padilla 2026: of 414 internet-facing MCP servers dynamically audited, 91.8% lacked OAuth authentication.)
-- **Commands.** It runs only git read commands (`rev-parse`, `status`, `diff --name-only`) and the engine.
+- **Commands.** It runs only git read commands (`rev-parse`, `status`, `diff --name-only`; since 1.24.0 also `rev-list` and `ls-tree`, for answers read at a ref) and the engine.
 - **Repository text is data.** Strings taken from the repository are returned as length-capped data fields. Tool names and descriptions are static and never carry repository text. (Hou et al. 2025; Radosevich & Halloran 2025.)
 
 ### Freshness: the newest engine, the newest map
@@ -81,7 +81,7 @@ Every answer is capped: 8 KB of JSON by default, and up to 64 KB when the asker 
 
 - Registered once at user scope for Claude Code on this rig, on by default, and documented for Copilot in VS Code and other MCP hosts.
 - A repository's context file gets one pointer line, not a summary (Gloaguen et al. 2026).
-- A repository with no map: every tool says so and names `atlas init`. It never guesses.
+- A repository with no map: every tool says so. Since 1.24.0 the message offers, in order, a fetched ref that holds a map, `atlas_refresh` when a boundary file exists, and last a map made and committed there (`docs/atlas-production.spec.md`, Part 1). It never guesses.
 - Swarm briefs keep calling `atlas explain --json` (slice V); the sidecar shares that code.
 
 ## The front door

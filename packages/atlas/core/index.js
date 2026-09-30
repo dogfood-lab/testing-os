@@ -296,20 +296,23 @@ export function mapRepository({ repoPath, boundaries } = {}) {
  *   content?: (path: string) => Buffer | null,
  *   doors?: Array<{ kind?: string, example?: boolean, stages?: string[], gated?: object[], reachFiles: string[] }> | null,
  *   callersOf?: ((path: string) => string[]) | null,
+ *   tree?: { files: string[], bytes: (path: string) => Buffer | null } | null,
  * }} input
  *   content gives a file's bytes from elsewhere than the working tree (a
  *   committed version); a path it returns null for, and one not on disk,
  *   is skipped. doors are the doors of the map with the files each runs and
  *   imports (reachFiles); without them a bare path stays this repository's,
  *   as it does for a file no door reaches. callersOf names the files that
- *   import a file, as the map records them
+ *   import a file, as the map records them. tree reads a commit instead of
+ *   the working tree: the regular files it holds, and the bytes of any of
+ *   them; the configuration the resolver reads is still the working tree's
  * @returns {object[]} one reading per path read, in the order given: path,
  *   parts, language, parseError, unreadSyntax, imports (sites with their
  *   resolution), writes, reads, dynamic and outside counts, testsInside
  */
-export function rereadFiles({ repoPath, boundaries, paths, content = null, doors = null, callersOf = null }) {
+export function rereadFiles({ repoPath, boundaries, paths, content = null, doors = null, callersOf = null, tree = null }) {
   repoPath = resolve(repoPath);
-  const listed = listTracked(repoPath).regular;
+  const listed = tree ? tree.files : listTracked(repoPath).regular;
   const known = new Set(listed);
   // A new file, not yet added, is read as if it were tracked: it may import
   // what is, though nothing in the map can import it yet.
@@ -321,6 +324,7 @@ export function rereadFiles({ repoPath, boundaries, paths, content = null, doors
   const matchers = boundaries.map(validateBoundary).map((boundary) => ({ ...boundary, isMatch: picomatch(boundary.globs, { dot: true }) }));
   const bytesOf = (path) => {
     if (content && paths.includes(path)) return content(path);
+    if (tree) return tree.bytes(path);
     try {
       return readFileSync(join(repoPath, path));
     } catch {

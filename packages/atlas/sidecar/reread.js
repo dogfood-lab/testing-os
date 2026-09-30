@@ -2,6 +2,7 @@ import { rereadFiles } from '../core/index.js';
 import { loadsManifest } from '../core/languages.js';
 import { unresolvedEntry } from '../adapter/artifact.js';
 import { basisOf, byBasis, group } from './answer.js';
+import { filesAt, trackedAt } from './git.js';
 
 /**
  * A scoped re-read of files that changed after the map, as answers show it:
@@ -78,12 +79,27 @@ export function mapDoors(snapshot) {
  * @param {object} snapshot
  * @param {{ root: string }} repo
  * @param {string[]} paths
- * @param {{ content?: (path: string) => Buffer | null }} [options]
+ * @param {{ content?: (path: string) => Buffer | null, at?: string|null }} [options]
+ *   at reads the files as a commit holds them, for an answer read at a ref
  */
-export function reread(snapshot, repo, paths, { content = null } = {}) {
+export function reread(snapshot, repo, paths, { content = null, at = null } = {}) {
   const boundaries = snapshot.structure.boundaries.map((boundary) => ({ name: boundary.name, globs: boundary.globs, role: boundary.role }));
   const importers = importersOf(snapshot);
-  return rereadFiles({ repoPath: repo.root, boundaries, paths, content, doors: mapDoors(snapshot), callersOf: (path) => importers.get(path) ?? [] });
+  return rereadFiles({ repoPath: repo.root, boundaries, paths, content, tree: at ? treeAt(repo.root, at) : null, doors: mapDoors(snapshot), callersOf: (path) => importers.get(path) ?? [] });
+}
+
+// The files of a commit as the re-read reads a tree: the list once, and the
+// bytes of each file when it is first asked for.
+function treeAt(root, commit) {
+  const files = trackedAt(root, commit) ?? [];
+  const read = new Map();
+  return {
+    files,
+    bytes: (path) => {
+      if (!read.has(path)) read.set(path, filesAt(root, commit, [path]).get(path) ?? null);
+      return read.get(path);
+    },
+  };
 }
 
 const IMPORTERS = new WeakMap();

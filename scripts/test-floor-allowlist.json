@@ -488,6 +488,10 @@
     {
       "path": "fixtures/atlas/spawn-shapes/test/helper.test.ts",
       "reason": "Atlas fixture, not a test. It sits inside the spawn-shapes fixture repository that packages/atlas/core/spawn-sources.test.js maps, where the way it starts a program under bin/ is one the map must read as a test running that file. It contains no test of this repository and runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/explain-workflow/lib/core.test.js",
+      "reason": "Atlas fixture, not a test of this repository. It sits inside the explain-workflow fixture repository that packages/atlas/adapter/explain-workflow.test.js maps, where the release workflow's test job runs it under node --test, so atlas explain on that workflow names a step whose tests run under a runner. It runs only inside that fixture, never here."
     }
   ]
 }

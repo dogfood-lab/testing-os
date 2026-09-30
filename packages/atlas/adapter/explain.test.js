@@ -159,7 +159,8 @@ describe('atlas explain on the doors fixture', () => {
     const result = explain(repoFrom(null), 'README.md');
     assert.equal(result.status, 2);
     assert.equal(result.lines[0], 'ATLAS_EXPLAIN_NO_MAP  There is no committed map to explain from.');
-    assert.equal(result.lines[2], '  what to do:     run atlas map and commit atlas/');
+    // No boundary file and no upstream: the one step left is to make a map.
+    assert.equal(result.lines[2], '  what to do:     run atlas init, then atlas map, and commit atlas/');
   });
 
   it('prints the same facts as one sorted JSON object with --json', () => {
