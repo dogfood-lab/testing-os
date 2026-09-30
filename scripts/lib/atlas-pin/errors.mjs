@@ -36,6 +36,20 @@ export function problem(code, message, hint) {
   return { code, message, hint };
 }
 
+/** A failure of the whole run (a usage error, or the tool itself), as the tool prints it. */
+export function formatError({ code, message, hint }) {
+  return `atlas-pin-bump: ${code}  ${message}\n  hint: ${hint}\n`;
+}
+
+/**
+ * A fault while working on one clone, as a reason for a person rather than a
+ * stack: the message names what failed, and the run goes on to the next clone.
+ */
+export function faultOf(error) {
+  const message = error instanceof Error ? error.message : String(error);
+  return problem('PIN_BUMP_FAILED', message,'nothing was pushed; read the clone (git status, git branch) and run the tool again on it');
+}
+
 /** One problem as the tool prints it, indented under its repository. */
 export function formatProblem({ code, message, hint }, indent = '   ') {
   return `${indent}! ${code}  ${message}\n${indent}  hint: ${hint}\n`;

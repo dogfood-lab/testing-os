@@ -17,7 +17,7 @@ import { spawnSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { applyClone, titleFor } from './lib/atlas-pin/apply.mjs';
 import { commandRunner, engineRunner } from './lib/atlas-pin/engine.mjs';
-import { formatProblem } from './lib/atlas-pin/errors.mjs';
+import { faultOf, formatError, formatProblem, problem } from './lib/atlas-pin/errors.mjs';
 import { EXACT_VERSION } from './lib/atlas-pin/pins.mjs';
 import { planClone } from './lib/atlas-pin/plan.mjs';
 import { checkClone } from './lib/atlas-pin/verdict.mjs';
@@ -54,52 +54,70 @@ export async function main(argv, io = {}) {
   const env = io.env ?? process.env;
   const args = parseArgs(argv);
   if (args.error) {
-    write(`atlas-pin-bump: ${args.error}\n${USAGE}`);
+    write(`${formatError(problem('PIN_BUMP_USAGE', args.error, args.hint))}${USAGE}`);
     return 2;
   }
-  const engine = engineRunner({ version: args.version, engine: args.engine, exec: io.exec ?? commandRunner(env) });
-  const context = { write, env, engine };
-  if (args.command === 'check') return check(args, context);
-  if (args.command === 'plan') return plan(args, context);
-  return apply(args, context);
+  try {
+    const engine = engineRunner({ version: args.version, engine: args.engine, exec: io.exec ?? commandRunner(env) });
+    const context = { write, env, engine };
+    if (args.command === 'check') return check(args, context);
+    if (args.command === 'plan') return plan(args, context);
+    return apply(args, context);
+  } catch (error) {
+    write(formatError(faultOf(error)));
+    return 1;
+  }
 }
 
 function parseArgs(argv) {
   const [command, ...rest] = argv;
-  if (command == null) return { error: 'name a command' };
-  if (!COMMANDS.has(command)) return { error: `unknown command ${command}` };
+  const commands = 'run check, plan or apply';
+  if (command == null) return { error: 'no command was named', hint: commands };
+  if (!COMMANDS.has(command)) return { error: `unknown command ${command}`, hint: commands };
   const args = { command, json: false, version: WORKSPACE_VERSION, engine: null, trailers: [], targets: [] };
   for (let i = 0; i < rest.length; i += 1) {
     const word = rest[i];
     if (word === '--json') args.json = true;
     else if (word === '--version' || word === '--trailer' || word === '--engine') {
       const value = rest[i + 1];
-      if (value == null || value.startsWith('--')) return { error: `${word} needs a value` };
+      if (value == null || value.startsWith('--')) return { error: `${word} needs a value`, hint: `give ${word} a value; see the options below` };
       if (word === '--trailer') args.trailers.push(value);
       else if (word === '--engine') {
         // The engine runs in each temporary clone, so a relative path is
         // resolved here, against the directory the tool was started in.
         args.engine = resolve(value);
-        if (!existsSync(args.engine) || !statSync(args.engine).isFile()) return { error: `--engine ${value} names no file; pass the path to a build's packages/atlas/cli.js` };
-      } else if (!EXACT_VERSION.test(value)) return { error: `--version ${value} is not an exact version such as 1.24.0` };
-      else args.version = value;
+        if (!existsSync(args.engine) || !statSync(args.engine).isFile()) return { error: `--engine ${value} names no file`, hint: "pass the path to a build's packages/atlas/cli.js" };
+      } else if (!EXACT_VERSION.test(value)) {
+        return { error: `--version ${value} is not an exact version such as 1.24.0`, hint: 'pass a published version; a range, a tag or a prerelease is not a pin' };
+      } else args.version = value;
       i += 1;
-    } else if (word.startsWith('--')) return { error: `unknown option ${word}` };
+    } else if (word.startsWith('--')) return { error: `unknown option ${word}`, hint: 'see the options below' };
     else args.targets.push(word);
   }
-  if (args.targets.length === 0) return { error: `${command} needs at least one clone` };
+  if (args.targets.length === 0) return { error: `${command} needs at least one clone`, hint: 'pass the path to a local clone of the repository' };
+  if (args.json && command === 'apply') return { error: '--json is for check and plan', hint: 'run plan --json for the change as data, then apply' };
   return args;
 }
 
+// One clone's work, kept from stopping the run: a fault while working on it
+// sends that clone to a person with the fault's message, never a stack.
+function guarded(root, work) {
+  try {
+    return work();
+  } catch (error) {
+    return { repository: root, verdict: 'person', outcome: 'person', problems: [faultOf(error)] };
+  }
+}
+
 function check({ targets, json, version }, { write, env }) {
-  const results = targets.map((root) => checkClone(root, { target: version, env }));
+  const results = targets.map((root) => guarded(root, () => checkClone(root, { target: version, env })));
   if (json) write(`${JSON.stringify(results.map((result) => ({ ...result, target: version })), null, 2)}\n`);
   else for (const result of results) describe(result, version, write);
   return results.some((result) => result.verdict === 'person') ? 1 : 0;
 }
 
 function plan({ targets, json, version }, { write, env, engine }) {
-  const plans = targets.map((root) => planFor(root, { target: version, env, engine }));
+  const plans = targets.map((root) => guarded(root, () => planFor(root, { target: version, env, engine })));
   if (json) write(`${JSON.stringify(plans, null, 2)}\n`);
   else {
     for (const each of plans) {
@@ -127,7 +145,7 @@ function planFor(root, { target, env, engine }) {
 function apply({ targets, version, trailers }, { write, env, engine }) {
   let code = 0;
   for (const root of targets) {
-    const result = applyClone(root, { target: version, engine, env, trailers });
+    const result = guarded(root, () => applyClone(root, { target: version, engine, env, trailers }));
     if (result.outcome === 'done') {
       write(`== ${root}: done on ${version}; nothing to apply\n`);
       continue;

@@ -458,6 +458,45 @@ describe('atlas-pin-bump engine', () => {
   it('takes --engine only as a file that exists', async () => {
     const { code, out } = await run(['plan', '--engine', join(temporary('atlas-pin-bump-engine-'), 'cli.js'), '.']);
     assert.equal(code, 2);
-    assert.match(out, /--engine \S+ names no file; pass the path to a build's packages\/atlas\/cli\.js/);
+    assert.match(out, /--engine \S+ names no file\n {2}hint: pass the path to a build's packages\/atlas\/cli\.js\n/);
+  });
+});
+
+describe('atlas-pin-bump exit codes and errors', () => {
+  it('exits 0 when every clone is done or ready, and 1 when one needs a person', async () => {
+    const done = fleetClone({ pin: TARGET, engine: 'as-made' });
+    const ready = fleetClone();
+    const person = fleetClone({ map: false });
+    assert.equal((await run(['check', done.root, ready.root])).code, 0);
+    assert.equal((await run(['check', done.root, ready.root, person.root])).code, 1);
+  });
+
+  it('answers a usage error in the error shape, with its usage, and exits 2', async () => {
+    for (const argv of [[], ['unknown', '.'], ['plan'], ['plan', '--version'], ['check', '--bogus', '.'], ['apply', '--json', '.'], ['plan', '--version', 'latest', '.']]) {
+      const { code, out } = await run(argv);
+      assert.equal(code, 2, argv.join(' '));
+      assert.match(out, /^atlas-pin-bump: PIN_BUMP_USAGE {2}\S[^\n]*\n {2}hint: \S[^\n]*\nusage: node scripts\/atlas-pin-bump\.mjs <check\|plan\|apply>/, argv.join(' '));
+    }
+  });
+
+  it('runs as a program, and exits 2 when called wrong', () => {
+    const result = spawnSync(process.execPath, [resolve(HERE, 'atlas-pin-bump.mjs'), 'plan'], { encoding: 'utf8' });
+    assert.equal(result.status, 2);
+    assert.match(result.stdout, /^atlas-pin-bump: PIN_BUMP_USAGE {2}plan needs at least one clone\n {2}hint: pass the path to a local clone of the repository\n/);
+  });
+
+  it('turns a fault on one clone into a reason for a person, with no stack, and goes on to the next', async () => {
+    const broken = fleetClone();
+    const done = fleetClone({ pin: TARGET, engine: 'as-made' });
+    const exec = () => {
+      throw new Error('spawn npx ENOENT');
+    };
+    const { code, out } = await run(['apply', broken.root, done.root], { exec });
+    assert.equal(code, 1);
+    assert.match(out, /: needs a person\n {3}! PIN_BUMP_FAILED {2}spawn npx ENOENT\n {5}hint: \S/);
+    assert.match(out, new RegExp(`: done on ${escaped(TARGET)}; nothing to apply\\n$`));
+    assert.doesNotMatch(out, /\n\s+at \S+ \(/, 'no stack');
+    assert.equal(broken.git('status', '--porcelain'), '');
+    assert.equal(broken.git('branch', '--list', BRANCH), '');
   });
 });
