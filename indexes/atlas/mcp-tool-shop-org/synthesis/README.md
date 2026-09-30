@@ -1,22 +1,14 @@
 # synthesis: how it works
 
-Mapped at 2026-09-30 from commit dd0e1de by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit bd5151e by Atlas 1.24.0.
 
 ## What this is
 
 12 parts, mostly Markdown (83 files) and JSON data (16); code in TypeScript (36), JavaScript (6), Astro (3) and CSS (2). Work enters through 5 doors; CI and Release (npm via Trusted Publishing) each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run synthesis. People import @mcptoolshop/synthesis.
 
-## What changed since 2026-09-23 (0128f11)
+## What changed since 2026-09-30 (dd0e1de)
 
-- CI now also runs src/index.ts.
-- Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
-- Release (npm via Trusted Publishing) now also runs src/index.ts.
-- And 2 more changes to doors.
-- CHANGELOG.md is now also read by tests/version-alignment.test.ts.
-- data/DATASHEET.md is now read by tests/fairness.test.ts.
-- data/evals.jsonl is now also read by tests/fairness.test.ts and tests/planted-theater.test.ts.
-- And 13 more new writers and readers of places.
-- 153 files changed content, across 11 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

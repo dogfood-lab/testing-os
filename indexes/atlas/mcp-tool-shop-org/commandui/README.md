@@ -1,17 +1,14 @@
 # commandui: how it works
 
-Mapped at 2026-09-30 from commit 842976b by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 9b77cf9 by Atlas 1.24.0.
 
 ## What this is
 
 15 parts, in TypeScript (59 files), Rust (53 files), CSS (3 files), Astro (2 files), HTML (1 file) and JavaScript (1 file). Work enters through 5 doors; the busiest is Release Desktop, which reaches 7 parts. It deploys a site to GitHub Pages. People install the commandui-desktop desktop app. commandui-console is a command built from apps/console (nothing ships it).
 
-## What changed since 2026-09-24 (cd989a3)
+## What changed since 2026-09-30 (842976b)
 
-- Release Desktop now also runs apps/desktop/src-tauri/build.rs.
-- apps/desktop/src-tauri/gen/schemas/ is now written by apps/desktop/src-tauri/build.rs.
-- desktop was authored and is now mixed.
-- No file changed.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

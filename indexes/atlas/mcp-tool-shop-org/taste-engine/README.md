@@ -1,19 +1,14 @@
 # taste-engine: how it works
 
-Mapped at 2026-09-30 from commit 00527bb by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 51efe46 by Atlas 1.24.0.
 
 ## What this is
 
 11 parts, mostly TypeScript (142 files), shell (7), JavaScript (3), CSS (2), Astro (1) and HTML (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. People run taste.
 
-## What changed since 2026-09-24 (ac181ee)
+## What changed since 2026-09-30 (00527bb)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- migrations/ is now read by src/db/migrate.ts.
-- src/workbench/ui/app.js is now read by src/workbench/ui/index.html.
-- canon was generated and is now authored.
-- 1 file added and 235 changed content, across 10 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

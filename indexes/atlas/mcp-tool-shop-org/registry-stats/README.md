@@ -1,21 +1,14 @@
 # registry-stats: how it works
 
-Mapped at 2026-09-30 from commit ccdcd13 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 7bd013b by Atlas 1.24.0.
 
 ## What this is
 
 8 parts, mostly TypeScript (35 files), C# (8), Astro (6), HTML (4), CSS (3) and JavaScript (2). Work enters through 7 doors; Daily Refresh and Desktop CI (MSIX) each reach 3 parts, and Daily Refresh is followed because it commits into the repository. It publishes to npm. It deploys a site to GitHub Pages. People run registry-stats. People import @mcptoolshop/registry-stats.
 
-## What changed since 2026-09-25 (38f6612)
+## What changed since 2026-09-30 (ccdcd13)
 
-- the site now imports src.
-- Desktop CI (MSIX) now also builds desktop/RegistryPulse.Desktop/RegistryPulse.Desktop.csproj.
-- site/src/data/stats.json is now also read by site/src/pages/dashboard.astro, site/src/pages/privacy.astro and site/src/pages/setup.astro.
-- In site/scripts/fetch-stats.mjs, `main` gained a step, `createCache`, before `mine`.
-- In site/scripts/fetch-stats.mjs, `main` gained a step, `mine`, before `bulk`.
-- In site/scripts/fetch-stats.mjs, `main` gained a step, `bulk`, before `stats`.
-- And 3 more changes to the order of work.
-- No file changed.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

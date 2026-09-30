@@ -1,22 +1,14 @@
 # star-freight: how it works
 
-Mapped at 2026-09-30 from commit ae33f19 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 3c9ba45 by Atlas 1.24.0.
 
 ## What this is
 
 8 parts, mostly Python (207 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run starfreight.
 
-## What changed since 2026-09-23 (fd07312)
+## What changed since 2026-09-30 (ae33f19)
 
-- CI's pull request trigger now also names `atlas/**` and `codecov.yml`.
-- CI's push trigger now also names `atlas/**` and `codecov.yml`.
-- Publish to PyPI now also checks src/portlight/.
-- And 1 more change to a door.
-- README.md is now read by pyproject.toml.
-- dogfood/scenarios/ is now also read by src/portlight/engine/dogfood_runner.py and tests/test_dogfood_runner.py.
-- dogfood/scenarios/gray_seizure_60d_s17.json is now read by tests/test_dogfood_runner.py.
-- And 6 more new writers and readers of places.
-- 1 file added and 316 changed content, across 8 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

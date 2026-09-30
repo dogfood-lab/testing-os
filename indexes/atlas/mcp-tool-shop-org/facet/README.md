@@ -1,22 +1,14 @@
 # facet: how it works
 
-Mapped at 2026-09-30 from commit 8d2fa34 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 1b0e0a3 by Atlas 1.24.0.
 
 ## What this is
 
 10 parts, mostly Markdown (489 files); code in Python (292), CSS (2), JavaScript (2), TypeScript (2), Astro (1), PowerShell (1) and shell (1). Work enters through 6 doors; the busiest is ci, which reaches 2 parts. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run facet, facet-index and facet-mcp.
 
-## What changed since 2026-09-23 (7c06851)
+## What changed since 2026-09-30 (8d2fa34)
 
-- Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
-- Release now also runs tools/facet_index.py and tools/record_mcp.py.
-- Release now also checks tools/diagnostics/ and tools/verify/.
-- And 3 more changes to doors.
-- docs/brand/four-accepted-assets.png is now written by docs/brand/make_asset_sheet.py.
-- docs/experiments/E14-brush-prompts.json is now written by tools/diagnostics/e14_make_brush_prompts.py.
-- tools/diagnostics/front_padded.png is now written by tools/diagnostics/prep_front.py.
-- And 86 more new writers and readers of places.
-- 1 file changed content, across 1 part.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

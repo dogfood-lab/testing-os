@@ -1,24 +1,14 @@
 # world-forge: how it works
 
-Mapped at 2026-09-30 from commit 2512ab0 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit fa8ab80 by Atlas 1.24.0.
 
 ## What this is
 
 15 parts, mostly TypeScript (497 files), Astro (4), JavaScript (4), CSS (3), GDScript (1) and HTML (1). Work enters through 11 doors; the busiest is CI, which reaches 11 parts. It publishes @world-forge/editor (packages/editor), @world-forge/export-ai-rpg (packages/export-ai-rpg), @world-forge/export-godot (packages/export-godot), @world-forge/export-unreal (packages/export-unreal), @world-forge/renderer-2d (packages/renderer-2d) and @world-forge/schema (packages/schema) to npm. It deploys a site to GitHub Pages. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal. People import @world-forge/export-ai-rpg, @world-forge/export-godot, @world-forge/export-unreal, @world-forge/renderer-2d and @world-forge/schema.
 
-## What changed since 2026-09-23 (b6fa56a)
+## What changed since 2026-09-30 (69358f1)
 
-- site no longer imports the repository root.
-- CI now also runs dogfood/__tests__/, packages/editor/src/__tests__/, packages/editor/src/kits/bundle-migrate.test.ts and 58 more.
-- CI now also checks dogfood/chapel-threshold-unreal.ts, dogfood/chapel-threshold.ts, dogfood/export-stage-fixture.ts and 6 more.
-- CI no longer runs dogfood/.
-- And 12 more changes to doors.
-- docs/c0-alignment/export-table.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
-- docs/c0-alignment/export-table.md is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
-- docs/c0-alignment/fixture-manifest.json is now written by packages/export-ai-rpg/src/__tests__/c0-export-table.test.ts.
-- And 99 more new writers and readers of places.
-- docs was authored and is now mixed.
-- 1 file added and 633 changed content, across 14 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

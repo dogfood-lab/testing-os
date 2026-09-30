@@ -1,20 +1,14 @@
 # knowledge-core: how it works
 
-Mapped at 2026-09-30 from commit a03320f by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit ba4ad42 by Atlas 1.24.0.
 
 ## What this is
 
 6 parts, mostly TypeScript (17 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages.
 
-## What changed since 2026-09-23 (274af45)
+## What changed since 2026-09-30 (a03320f)
 
-- CI's pull request trigger now also names `atlas/**` and `codecov.yml`.
-- CI's push trigger now also names `atlas/**` and `codecov.yml`.
-- knowledge/corpus/fixtures/corpus-divergence.json is now read by test/pipeline.test.ts.
-- knowledge/roles/ is now read by test/contracts.test.ts and test/pipeline.test.ts.
-- knowledge/roles/competitive-analyst.json is now read by test/pipeline.test.ts.
-- And 6 more new writers and readers of places.
-- 1 file added and 56 changed content, across 6 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

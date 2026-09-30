@@ -1,19 +1,14 @@
 # claude-guardian: how it works
 
-Mapped at 2026-09-30 from commit b484cb2 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit d6d8c52 by Atlas 1.24.0.
 
 ## What this is
 
 7 parts, mostly Markdown (75 files); code in TypeScript (38), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run claude-guardian.
 
-## What changed since 2026-09-23 (628c46f)
+## What changed since 2026-09-30 (b484cb2)
 
-- src no longer imports the repository root.
-- CI's pull request trigger now also names `atlas/**` and `codecov.yml`.
-- CI's push trigger now also names `atlas/**` and `codecov.yml`.
-- Dogfood now also runs src/cli.ts.
-- package.json is now also read by src/cli.ts.
-- 1 file added and 130 changed content, across 7 parts.
+Nothing structural changed since 2026-09-30; 1 file changed content.
 
 ## What comes in
 

@@ -1,22 +1,14 @@
 # sovereignty: how it works
 
-Mapped at 2026-09-30 from commit 83f9b40 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit a1733f7 by Atlas 1.24.0.
 
 ## What this is
 
 14 parts, mostly Python (121 files), TypeScript (61), JavaScript (21), CSS (19), Rust (6), shell (5), HTML (4) and Astro (2). Work enters through 8 doors; the busiest is CI, which reaches 11 parts. It publishes to PyPI, @mcptoolshop/sovereignty to npm, and a container image. It deploys a site to GitHub Pages. People run sov and sovereignty. People install the sov-tauri-shell desktop app.
 
-## What changed since 2026-09-30 (9a1df32)
+## What changed since 2026-09-30 (83f9b40)
 
-- CI now also runs sov_daemon/__init__.py.
-- Release now also runs app/src-tauri/build.rs, app/src/ and app/vite.config.ts.
-- Release now also builds app/src-tauri/src/main.rs.
-- And 2 more changes to doors.
-- assets/print/source/fonts.css is now read by assets/print/source/Board A - Parchment Heritage.html, assets/print/source/Sovereignty Print Pack - print.html and assets/print/source/Sovereignty Print Pack.html.
-- assets/print/source/print-bundle.js is now also read by assets/print/source/Board A - Parchment Heritage.html, assets/print/source/Sovereignty Print Pack - print.html and assets/print/source/Sovereignty Print Pack.html.
-- assets/print/source/print-entry.js is now read by assets/print/source/Sovereignty Print Pack - print.html.
-- And 4 more new writers and readers of places.
-- No file changed.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

@@ -1,24 +1,14 @@
 # ai-rpg-engine: how it works
 
-Mapped at 2026-09-30 from commit a54df85 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 8dceef7 by Atlas 1.24.0.
 
 ## What this is
 
 39 parts, mostly TypeScript (797 files), JavaScript (13), CSS (2), GDScript (2) and Astro (1). Work enters through 6 doors; CI and Release each reach 35 parts, and CI is followed because a pull request goes through it. It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run ai and ai-rpg-engine.
 
-## What changed since 2026-09-23 (7ff40cd)
+## What changed since 2026-09-30 (a54df85)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- CI now also runs files in docs/examples/, packages/asset-registry/, packages/asset-registry/src/ and 64 more.
-- And 6 more changes to doors.
-- docs/c0-alignment/intake-table.json is now written by packages/cli/src/c0-intake-table.test.ts.
-- docs/c0-alignment/reverse-table.json is now written by packages/cli/src/c0-reverse-table.test.ts.
-- docs/c0-alignment/version-skew.json is now written by packages/cli/src/c0-version-skew.test.ts.
-- And 87 more new writers and readers of places.
-- docs was authored and is now mixed.
-- scripts/verify-isolated-consumer.mjs now starts at `run`; it started at `publishableWorkspaces`.
-- 1 file added and 1 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; 1 file changed content.
 
 ## What comes in
 

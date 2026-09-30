@@ -1,22 +1,14 @@
 # polyglot-mcp: how it works
 
-Mapped at 2026-09-30 from commit c3305f2 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit a72ff29 by Atlas 1.24.0.
 
 ## What this is
 
 7 parts, mostly Markdown (71 files); code in TypeScript (39), JavaScript (4), CSS (2) and Astro (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.
 
-## What changed since 2026-09-23 (a91c112)
+## What changed since 2026-09-30 (c3305f2)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- CI now also runs src/cache.concurrency.test.ts, src/cache.test.ts, src/codeSpans.test.ts and 18 more.
-- And 4 more changes to doors.
-- CHANGELOG.md is now read by src/version.test.ts.
-- README.ja.md is now also read by src/translateAll.test.ts and src/translateReadme.test.ts.
-- README.md is now also read by src/translateReadme.test.ts.
-- And 6 more new writers and readers of places.
-- 4 files added and 127 changed content, across 6 parts.
+Nothing structural changed since 2026-09-30; 1 file changed content.
 
 ## What comes in
 

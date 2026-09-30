@@ -1,21 +1,14 @@
 # audiobooker: how it works
 
-Mapped at 2026-09-30 from commit 6fcd238 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit c6ef1df by Atlas 1.24.0.
 
 ## What this is
 
 10 parts, mostly Python (131 files), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 7 doors; CI and Publish to GHCR each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to PyPI, @mcptoolshop/audiobooker to npm, and a container image. It deploys a site to GitHub Pages. People run audiobooker. Other repositories use the Audiobooker action.
 
-## What changed since 2026-09-25 (d8ba5c2)
+## What changed since 2026-09-30 (6fcd238)
 
-- CI's push trigger now also names `codecov.yml`.
-- CI now also runs audiobooker/__init__.py, audiobooker/casting/voice_registry.py, audiobooker/casting/voice_suggester.py and 13 more.
-- Audiobooker (action.yml) is a new action other repositories use. It runs audiobooker/cli.py and tools/read_project_version.py.
-- And 1 more change to a door.
-- tools/pyright_baseline.txt is now written by tools/check_pyright_gate.py.
-- pyproject.toml is now also read by action.yml.
-- tools was authored and is now mixed.
-- 1 file added and 1 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

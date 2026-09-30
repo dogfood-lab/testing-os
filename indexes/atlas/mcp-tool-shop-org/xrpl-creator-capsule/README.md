@@ -1,23 +1,14 @@
 # xrpl-creator-capsule: how it works
 
-Mapped at 2026-09-30 from commit 138def5 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 868aa7d by Atlas 1.24.0.
 
 ## What this is
 
 12 parts, mostly TypeScript (183 files), Rust (4), CSS (3), JavaScript (2), Astro (1), HTML (1) and shell (1). Work enters through 3 doors; the busiest is CI, which reaches 8 parts. It deploys a site to GitHub Pages. People install the capsule-desktop desktop app.
 
-## What changed since 2026-09-24 (1f7eeff)
+## What changed since 2026-09-30 (138def5)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- CI now also runs app/src-tauri/build.rs and app/src-tauri/src/commands.rs.
-- And 4 more changes to doors.
-- app/src-tauri/gen/schemas/ is now written by app/src-tauri/build.rs.
-- app/src-tauri/icons/128x128.png is now read by app/src-tauri/tauri.conf.json.
-- app/src-tauri/icons/128x128@2x.png is now read by app/src-tauri/tauri.conf.json.
-- And 8 more new writers and readers of places.
-- app was authored and is now mixed.
-- 1 file added and 263 changed content, across 12 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

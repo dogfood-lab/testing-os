@@ -1,24 +1,14 @@
 # db-cluster: how it works
 
-Mapped at 2026-09-30 from commit 5bbcb23 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit d661ea3 by Atlas 1.24.0.
 
 ## What this is
 
 13 parts, mostly TypeScript (258 files), JavaScript (16), CSS (2), Astro (1) and HTML (1). Work enters through 9 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run db-cluster and db-cluster-mcp. People import @mcptoolshop/db-cluster.
 
-## What changed since 2026-09-24 (1374860)
+## What changed since 2026-09-30 (5bbcb23)
 
-- dashboard no longer imports src.
-- examples no longer imports src.
-- CI now also runs test/kernel-errors-contract.test.ts and test/policy-kernel-scoping.test.ts.
-- Docker Publish now also runs src/cli.ts.
-- Docker Publish now also builds src/.
-- And 4 more changes to doors.
-- .demo-rk-ops/sources is now written by scripts/repo-knowledge-ops.ts.
-- .demo-rk-update/sources is now written by scripts/repo-knowledge-update-demo.ts.
-- .doc-drift-extract is now written by scripts/doc-drift.mjs.
-- And 143 more new writers and readers of places.
-- 3 files added and 275 changed content, across 9 parts.
+Nothing structural changed since 2026-09-30; 1 file changed content.
 
 ## What comes in
 

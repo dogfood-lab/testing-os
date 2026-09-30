@@ -1,22 +1,14 @@
 # stillpoint: how it works
 
-Mapped at 2026-09-30 from commit 6054b1b by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit df37a1a by Atlas 1.24.0.
 
 ## What this is
 
 7 parts, mostly TypeScript (26 files), CSS (3), JavaScript (3), Rust (2), Astro (1), HTML (1) and PowerShell (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. stillpoint is a desktop app built from apps/desktop/src-tauri (nothing ships it).
 
-## What changed since 2026-09-24 (26647ad)
+## What changed since 2026-09-30 (6054b1b)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- CI now also runs packages/ui/vite.config.ts.
-- And 2 more changes to doors.
-- apps/desktop/msix/layout/ is now written by apps/desktop/msix/build-msix.ps1.
-- apps/desktop/msix/layout/Assets/ is now written by apps/desktop/msix/build-msix.ps1.
-- apps/desktop/src-tauri/gen/schemas/ is now written by apps/desktop/src-tauri/build.rs.
-- And 18 more new writers and readers of places.
-- 1 file added and 107 changed content, across 7 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

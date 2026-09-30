@@ -1,24 +1,14 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-09-30 from commit 6e89814 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit e5fcb31 by Atlas 1.24.0.
 
 ## What this is
 
 14 parts, mostly JSON data (1520 files) and Markdown (348); code in TypeScript (563), Python (48), JavaScript (32), shell (28), PowerShell (3), CSS (2), Astro (1) and HTML (1). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
-## What changed since 2026-09-25 (d92a167)
+## What changed since 2026-09-30 (6e89814)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- CI now also runs files in apps/cockpit/.
-- And 3 more changes to doors.
-- .eval-checkpoints is now written by scripts/run-jam-actions-corpus-eval.ts.
-- datasets/jam-actions-v0-public/ is now also written by scripts/run-jam-actions-corpus-eval.ts.
-- datasets/jam-actions-v0-public/evals/ is now written by scripts/run-jam-actions-corpus-eval.ts.
-- And 131 more new writers and readers of places.
-- the site was authored and is now mixed.
-- songs was generated and is now mixed.
-- 17 files added and 1756 changed content, across 13 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

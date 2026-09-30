@@ -1,18 +1,14 @@
 # comfy-preflight: how it works
 
-Mapped at 2026-09-30 from commit d8e4911 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit ddf5a11 by Atlas 1.24.0.
 
 ## What this is
 
 8 parts, mostly Python (33 files), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run comfy-preflight.
 
-## What changed since 2026-09-25 (93d683c)
+## What changed since 2026-09-30 (d8e4911)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- CI now also runs tests/.
-- And 1 more change to a door.
-- 1 file added and 3 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

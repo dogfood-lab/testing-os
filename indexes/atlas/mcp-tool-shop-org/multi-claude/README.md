@@ -1,19 +1,14 @@
 # multi-claude: how it works
 
-Mapped at 2026-09-30 from commit bed1180 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 5f00fa1 by Atlas 1.24.0.
 
 ## What this is
 
 11 parts, mostly TypeScript (328 files), CSS (3), JavaScript (3), Astro (1) and HTML (1). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. It deploys a site to GitHub Pages. People run multi-claude.
 
-## What changed since 2026-09-24 (9d36a21)
+## What changed since 2026-09-30 (bed1180)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- .multi-claude/drill/drill-report.json is now written by test/drill/stop-drill.ts.
-- .multi-claude/workers is now written by src/commands/auto.ts and src/runtime/sdk-runtime.ts.
-- .multi-claude was authored and is now mixed.
-- 1 file added and 472 changed content, across 11 parts.
+Nothing structural changed since 2026-09-30; 1 file changed content.
 
 ## What comes in
 

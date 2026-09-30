@@ -1,21 +1,14 @@
 # style-dataset-lab: how it works
 
-Mapped at 2026-09-30 from commit f7b4973 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit dfeac64 by Atlas 1.24.0.
 
 ## What this is
 
 13 parts, mostly JSON data (2616 files); code in JavaScript (233), Python (30), Astro (3), PowerShell (3), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; CI and Publish each reach 4 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run sdlab.
 
-## What changed since 2026-09-25 (b0426ac)
+## What changed since 2026-09-30 (f7b4973)
 
-- projects now imports lib.
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- projects/ai-eye-test/outputs/synthetic/phase1/ is now written by projects/ai-eye-test/compositor/compositor.py.
-- projects/salt-road/inbox/generated/set-v2-2026-07-30/*.png is now written by projects/salt-road/inputs/prompts/wave-runner.py.
-- projects/salt-road/inbox/generated/set-v2-2026-07-30/receipts.jsonl is now written by projects/salt-road/inputs/prompts/wave-runner.py.
-- And 3 more new writers and readers of places.
-- 1 file added and 1 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; 1 file changed content.
 
 ## What comes in
 

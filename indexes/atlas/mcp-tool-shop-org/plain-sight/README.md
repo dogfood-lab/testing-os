@@ -1,17 +1,14 @@
 # plain-sight: how it works
 
-Mapped at 2026-09-30 from commit cf9b6eb by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 00b5c82 by Atlas 1.24.0.
 
 ## What this is
 
 5 parts, mostly Python (9 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 4 doors; CI, Deploy site to GitHub Pages, plain-sight and plain-sight-mcp each reach 1 part, and CI is followed because a pull request goes through it. It deploys a site to GitHub Pages. People run plain-sight and plain-sight-mcp.
 
-## What changed since 2026-09-25 (953ac4e)
+## What changed since 2026-09-30 (cf9b6eb)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- CI no longer runs tests/.
-- 1 file added and 2 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 
@@ -45,7 +42,7 @@ CI writes nothing this map can see.
 
 No two source files changed together often enough to name.
 
-Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
+Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -81,6 +78,6 @@ Read those in order to follow one pull request end to end.
 
 - 1 read uses a path built at run time and is not named here.
 - 2 writes and 2 reads go to a path their caller passes, not to this repository.
-- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

@@ -1,22 +1,14 @@
 # npm-launcher: how it works
 
-Mapped at 2026-09-30 from commit 7269308 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit ecc477e by Atlas 1.24.0.
 
 ## What this is
 
 10 parts, mostly JavaScript (15 files), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 10 doors; the busiest is CI, which reaches 3 parts. It publishes @mcptoolshop/npm-launcher, @mcptoolshop/backpropagate (examples/backpropagate), @mcptoolshop/sovereignty (examples/sovereignty), @mcptoolshop/xrpl-camp (examples/xrpl-camp) and @mcptoolshop/xrpl-lab (examples/xrpl-lab) to npm. It deploys a site to GitHub Pages. People run backpropagate, mcptoolshop-launch, sovereignty, xrpl-camp and xrpl-lab. People import @mcptoolshop/npm-launcher.
 
-## What changed since 2026-09-25 (bb50ee9)
+## What changed since 2026-09-30 (7269308)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- backpropagate (examples/backpropagate/package.json) is a new command. It runs examples/backpropagate/bin/backpropagate.js.
-- And 3 more changes to doors.
-- examples/backpropagate/LICENSE is now read by .github/workflows/publish-wrapper.yml.
-- examples/backpropagate/README.md is now read by .github/workflows/publish-wrapper.yml.
-- examples/backpropagate/package.json is now read by .github/workflows/publish-wrapper.yml.
-- And 9 more new writers and readers of places.
-- 1 file added and 1 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

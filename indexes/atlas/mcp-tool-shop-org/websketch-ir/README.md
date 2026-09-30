@@ -1,15 +1,14 @@
 # websketch-ir: how it works
 
-Mapped at 2026-09-30 from commit 6a7f45d by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 04ee588 by Atlas 1.24.0.
 
 ## What this is
 
 6 parts, mostly TypeScript (46 files), CSS (2), JavaScript (2) and Astro (1). Work enters through 4 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People import @mcptoolshop/websketch-ir.
 
-## What changed since 2026-09-25 (e9980b1)
+## What changed since 2026-09-30 (f50cd7d)
 
-- CI's push trigger now also names `codecov.yml`.
-- 1 file added and 3 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

@@ -1,19 +1,14 @@
 # backprop-trace: how it works
 
-Mapped at 2026-09-30 from commit b40b7a6 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 596a5e7 by Atlas 1.24.0.
 
 ## What this is
 
 10 parts, mostly JSON data (242 files); code in TypeScript (148), Python (5), JavaScript (4), CSS (2) and Astro (1). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run bp. People import @mcptoolshop/backprop-trace.
 
-## What changed since 2026-09-24 (5611f68)
+## What changed since 2026-09-30 (aa93d58)
 
-- examples now imports scripts.
-- fixtures/bad/*.jsonl is now written by scripts/build-pytorch-helper-fixtures.mjs.
-- fixtures/bad/*.meta.json is now written by scripts/build-pytorch-helper-fixtures.mjs.
-- fixtures/external/pytorch.helper-emitted.adamw.sidecar.jsonl is now written by scripts/generate-pytorch-helper-goldens.py.
-- And 10 more new writers and readers of places.
-- 1 file added and 1 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

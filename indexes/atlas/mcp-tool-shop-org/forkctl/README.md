@@ -1,16 +1,14 @@
 # forkctl: how it works
 
-Mapped at 2026-09-30 from commit 55f9f76 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit e8a273f by Atlas 1.24.0.
 
 ## What this is
 
 7 parts, mostly TypeScript (128 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI, forkctl and forkctl-mcp each reach 2 parts, and CI is followed because a pull request goes through it. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp.
 
-## What changed since 2026-09-24 (31ad2f4)
+## What changed since 2026-09-30 (4e066e1)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- 1 file added and 3 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

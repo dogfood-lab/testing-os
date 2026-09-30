@@ -1,17 +1,14 @@
 # saints-mile: how it works
 
-Mapped at 2026-09-30 from commit 18fa475 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit f161838 by Atlas 1.24.0.
 
 ## What this is
 
 6 parts, mostly Rust (109 files), JavaScript (3), CSS (2), TypeScript (2), Astro (1), PowerShell (1) and shell (1). Work enters through 4 doors; CI and Release Binaries each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to crates.io. It deploys a site to GitHub Pages. People run saints-mile.
 
-## What changed since 2026-09-24 (49f5266)
+## What changed since 2026-09-30 (18fa475)
 
-- In src/ui/screens/combat.rs, `render_combat` gained a step, `locked_style`, before `lock_reason_style`.
-- In src/ui/screens/combat.rs, `render_combat` gained a step, `lock_reason_style`, before `dim_style`.
-- In src/ui/screens/status.rs, `render_status` gained a step, `ammo_color`, before `echo_style`.
-- No file changed.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

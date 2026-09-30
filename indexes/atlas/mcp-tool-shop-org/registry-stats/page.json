@@ -42,75 +42,23 @@
     },
     "items": [
       {
-        "kind": "import-added",
-        "sentence": "the site now imports src.",
-        "subjects": [
-          "site",
-          "src"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Desktop CI (MSIX) now also builds desktop/RegistryPulse.Desktop/RegistryPulse.Desktop.csproj.",
-        "subjects": [
-          ".github/workflows/desktop-ci.yml",
-          "desktop/RegistryPulse.Desktop/RegistryPulse.Desktop.csproj"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "site/src/data/stats.json is now also read by site/src/pages/dashboard.astro, site/src/pages/privacy.astro and site/src/pages/setup.astro.",
-        "subjects": [
-          "site/src/data/stats.json",
-          "site/src/pages/dashboard.astro",
-          "site/src/pages/privacy.astro",
-          "site/src/pages/setup.astro"
-        ]
-      },
-      {
-        "kind": "sequence",
-        "sentence": "In site/scripts/fetch-stats.mjs, `main` gained a step, `createCache`, before `mine`.",
-        "subjects": [
-          "site/scripts/fetch-stats.mjs"
-        ]
-      },
-      {
-        "kind": "sequence",
-        "sentence": "In site/scripts/fetch-stats.mjs, `main` gained a step, `mine`, before `bulk`.",
-        "subjects": [
-          "site/scripts/fetch-stats.mjs"
-        ]
-      },
-      {
-        "kind": "sequence",
-        "sentence": "In site/scripts/fetch-stats.mjs, `main` gained a step, `bulk`, before `stats`.",
-        "subjects": [
-          "site/scripts/fetch-stats.mjs"
-        ]
-      },
-      {
-        "kind": "sequence",
-        "sentence": "And 3 more changes to the order of work.",
-        "subjects": []
-      },
-      {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "38f6612ae62fb5a45c6d4f17759f7a45cdf74fe1",
-      "generatedAt": "2026-09-25T09:12:50.403Z"
+      "commit": "ccdcd1374bfbc49d4c77bf18f1265745c64da64e",
+      "generatedAt": "2026-09-30T20:11:54.487Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [],
   "changesTogetherNote": [
     "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "ccdcd1374bfbc49d4c77bf18f1265745c64da64e",
+  "commit": "7bd013bf4d2a84f1c17307489c97afbc8667a7da",
   "defaultBranch": "main",
   "derived": "8 parts, mostly TypeScript (35 files), C# (8), Astro (6), HTML (4), CSS (3) and JavaScript (2). Work enters through 7 doors; Daily Refresh and Desktop CI (MSIX) each reach 3 parts, and Daily Refresh is followed because it commits into the repository. It publishes to npm. It deploys a site to GitHub Pages. People run registry-stats. People import @mcptoolshop/registry-stats.",
   "doors": [
@@ -502,7 +450,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-30T19:06:35.773Z",
+  "generatedAt": "2026-09-30T21:52:01.222Z",
   "limits": [
     "8 reads go to a path their caller passes, not to this repository.",
     "1 write and 3 reads go to the directory the command is run in (registry-stats.config.json), not to this repository.",

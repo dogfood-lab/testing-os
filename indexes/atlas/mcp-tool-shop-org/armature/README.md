@@ -1,27 +1,14 @@
 # armature: how it works
 
-Mapped at 2026-09-30 from commit 7a70d6f by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 944340b by Atlas 1.24.0.
 
 ## What this is
 
 8 parts, mostly Python (320 files), CSS (2), JavaScript (2), TypeScript (2), Astro (1) and PowerShell (1). Work enters through 5 doors; the busiest is ci, which reaches 4 parts. It publishes to PyPI and @mcptoolshop/armature-studio to npm. It deploys a site to GitHub Pages. People run armature.
 
-## What changed since 2026-09-25 (f57d428)
+## What changed since 2026-09-30 (7a70d6f)
 
-- .github now imports tools.
-- ci now also runs tools/armature_core/cli.py.
-- ci now also checks tools/.
-- release now also runs tools/armature_core/cli.py.
-- And 2 more changes to doors.
-- MANIFEST.in is now also read by .github/workflows/ci.yml and .github/workflows/release.yml.
-- pyproject.toml is now also read by .github/workflows/ci.yml.
-- tests/ is now also read by tests/test_refusal_clauses.py.
-- And 4 more new writers and readers of places.
-- tests/test_amend_w12_core_gates.py now starts at `test_the_three_gate_p_clauses_refuse_an_infinite_diagonal_too`; it started at `test_the_condition_flipped_back_to_allowed_drops_out_of_the_receipt`.
-- In tests/test_amend_w12_core_solvers.py, `test_gate_conv_refuses_when_the_modules_tables_drift_from_the_recorded_reference` gained a step, `setattr`, before `setattr`.
-- In tests/test_amend_w12_core_solvers.py, `test_gate_conv_refuses_when_the_modules_tables_drift_from_the_recorded_reference` gained a step, `setattr`, before `setattr`.
-- And 9 more changes to the order of work.
-- No file changed.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

@@ -1,16 +1,14 @@
 # sensor-humor: how it works
 
-Mapped at 2026-09-30 from commit a2c1927 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit c62986b by Atlas 1.24.0.
 
 ## What this is
 
 8 parts, mostly TypeScript (86 files), JavaScript (3), CSS (2), Astro (1), Python (1) and shell (1). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run sensor-humor.
 
-## What changed since 2026-09-24 (6e8ea9a)
+## What changed since 2026-09-30 (a2c1927)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- 1 file added and 152 changed content, across 8 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

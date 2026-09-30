@@ -1,15 +1,14 @@
 # comfy-headless: how it works
 
-Mapped at 2026-09-30 from commit a804d34 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 8e77c6e by Atlas 1.24.0.
 
 ## What this is
 
 9 parts, mostly Python (83 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI and a container image. It deploys a site to GitHub Pages. People run comfy-headless.
 
-## What changed since 2026-09-25 (bfb7973)
+## What changed since 2026-09-30 (a804d34)
 
-- CI's push trigger now also names `codecov.yml`.
-- 1 file added and 1 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

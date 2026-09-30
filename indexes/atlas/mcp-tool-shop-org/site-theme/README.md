@@ -1,16 +1,14 @@
 # site-theme: how it works
 
-Mapped at 2026-09-30 from commit 0e0eb2e by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 700f363 by Atlas 1.24.0.
 
 ## What this is
 
 14 parts, in JavaScript (51 files), Astro (45 files), TypeScript (20 files), CSS (4 files) and HTML (2 files). Work enters through 7 doors; the busiest is @mcptoolshop/site-theme, which reaches 5 parts. It publishes to npm. It deploys a site to GitHub Pages. People run site-theme. People import @mcptoolshop/site-theme.
 
-## What changed since 2026-09-25 (0e76d24)
+## What changed since 2026-09-30 (0e0eb2e)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- 1 file added and 3 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

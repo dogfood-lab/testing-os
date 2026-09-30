@@ -69,99 +69,24 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 3,
-      "changed": 275,
+      "added": 0,
+      "changed": 1,
       "moved": 0,
-      "parts": 9,
+      "parts": 1,
       "removed": 0
     },
     "items": [
       {
-        "kind": "import-removed",
-        "sentence": "dashboard no longer imports src.",
-        "subjects": [
-          "dashboard",
-          "src"
-        ]
-      },
-      {
-        "kind": "import-removed",
-        "sentence": "examples no longer imports src.",
-        "subjects": [
-          "examples",
-          "src"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "CI now also runs test/kernel-errors-contract.test.ts and test/policy-kernel-scoping.test.ts.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "test/kernel-errors-contract.test.ts",
-          "test/policy-kernel-scoping.test.ts"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Docker Publish now also runs src/cli.ts.",
-        "subjects": [
-          ".github/workflows/docker-publish.yml",
-          "src/cli.ts"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Docker Publish now also builds src/.",
-        "subjects": [
-          ".github/workflows/docker-publish.yml",
-          "src/"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 4 more changes to doors.",
-        "subjects": []
-      },
-      {
-        "kind": "landing",
-        "sentence": ".demo-rk-ops/sources is now written by scripts/repo-knowledge-ops.ts.",
-        "subjects": [
-          ".demo-rk-ops/sources",
-          "scripts/repo-knowledge-ops.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": ".demo-rk-update/sources is now written by scripts/repo-knowledge-update-demo.ts.",
-        "subjects": [
-          ".demo-rk-update/sources",
-          "scripts/repo-knowledge-update-demo.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": ".doc-drift-extract is now written by scripts/doc-drift.mjs.",
-        "subjects": [
-          ".doc-drift-extract",
-          "scripts/doc-drift.mjs"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 143 more new writers and readers of places.",
-        "subjects": []
-      },
-      {
         "kind": "counts",
-        "sentence": "3 files added and 275 changed content, across 9 parts.",
+        "sentence": "Nothing structural changed since 2026-09-30; 1 file changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "13748608a6d25c077bed3f9f599981d3af14b4d5",
-      "generatedAt": "2026-09-24T18:14:29.725Z"
+      "commit": "5bbcb23e5383850ee4b342223e8f4a8783e393e5",
+      "generatedAt": "2026-09-30T20:09:31.645Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [
     {
@@ -230,7 +155,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 2 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "5bbcb23e5383850ee4b342223e8f4a8783e393e5",
+  "commit": "d661ea35d7eb87dcc3ae545f02ac7affd386ffdb",
   "defaultBranch": "main",
   "derived": "13 parts, mostly TypeScript (258 files), JavaScript (16), CSS (2), Astro (1) and HTML (1). Work enters through 9 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run db-cluster and db-cluster-mcp. People import @mcptoolshop/db-cluster.",
   "doors": [
@@ -1008,7 +933,7 @@
   ],
   "engine": "1.24.0",
   "generated": [],
-  "generatedAt": "2026-09-30T19:01:45.862Z",
+  "generatedAt": "2026-09-30T21:48:55.404Z",
   "limits": [
     "17 imports could not be resolved: `dashboard/lib/apply-redaction.d.ts` imports `../../dist/dashboard/dashboard-model.js`, which a build generates; `examples/agent-safe-app-db/index.ts` imports `@mcptoolshop/db-cluster/policy`, which a build generates, twice; `examples/agent-safe-app-db/index.ts` imports `@mcptoolshop/db-cluster/sdk`, which a build generates; and 13 more.",
     "5 writes and 14 reads use paths built at run time and are not named here.",

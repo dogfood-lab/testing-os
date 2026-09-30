@@ -1,18 +1,14 @@
 # bytefit: how it works
 
-Mapped at 2026-09-30 from commit 41121c5 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 13fd265 by Atlas 1.24.0.
 
 ## What this is
 
 6 parts, mostly TypeScript (49 files), CSS (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 5 doors; ci, Deploy site to GitHub Pages, Release, @mcptoolshop/bytefit and bytefit each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run bytefit. People import @mcptoolshop/bytefit.
 
-## What changed since 2026-09-24 (1941e05)
+## What changed since 2026-09-30 (41121c5)
 
-- ci's pull request trigger now also names `codecov.yml`.
-- ci's push trigger now also names `codecov.yml`.
-- ci now also runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more.
-- And 1 more change to a door.
-- 1 file added and 88 changed content, across 5 parts.
+Nothing structural changed since 2026-09-30; 1 file changed content.
 
 ## What comes in
 

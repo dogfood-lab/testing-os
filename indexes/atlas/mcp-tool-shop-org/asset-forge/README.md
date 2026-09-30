@@ -1,16 +1,14 @@
 # asset-forge: how it works
 
-Mapped at 2026-09-30 from commit 2de16f4 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 1077bc0 by Atlas 1.24.0.
 
 ## What this is
 
 7 parts, mostly Rust (32 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 2 doors; the busiest is CI, which reaches 4 parts.
 
-## What changed since 2026-09-24 (2b8956a)
+## What changed since 2026-09-30 (2de16f4)
 
-- export_all (crates/ship-export/Cargo.toml) is a new command. It runs crates/ship-export/examples/export_all.rs.
-- output is now written by crates/ship-export/examples/export_all.rs.
-- No file changed.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

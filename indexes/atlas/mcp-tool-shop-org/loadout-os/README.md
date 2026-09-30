@@ -1,23 +1,14 @@
 # loadout-os: how it works
 
-Mapped at 2026-09-30 from commit 4999e6c by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit a6da6ca by Atlas 1.24.0.
 
 ## What this is
 
 9 parts, mostly Markdown (236 files); code in TypeScript (84), CSS (8), JavaScript (7), Astro (4) and PowerShell (1). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes @mcptoolshop/loadout-os to npm. It deploys a site to GitHub Pages. People run ai-loadout, claude-memories, claude-rules and loadout-os.
 
-## What changed since 2026-09-23 (741a092)
+## What changed since 2026-09-30 (532deee)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- CI now also runs packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts, packages/cli/src/tests/doctor.test.ts and 11 more.
-- And 5 more changes to doors.
-- .claude/CLAUDE.md is now also read by packages/cli/src/tests/split.test.ts.
-- apps/hook/ is now also read by ROADMAP.md.
-- packages/kernel/site/src/content/docs/ is now read by packages/kernel/site/astro.config.mjs.
-- And 10 more new writers and readers of places.
-- .claude was generated and is now authored.
-- 1 file added and 376 changed content, across 9 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

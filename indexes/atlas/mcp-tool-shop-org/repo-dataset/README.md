@@ -1,18 +1,14 @@
 # repo-dataset: how it works
 
-Mapped at 2026-09-30 from commit b3caf9f by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit fdf8c06 by Atlas 1.24.0.
 
 ## What this is
 
 5 parts, mostly TypeScript (78 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run repo-dataset. People import @mcptoolshop/repo-dataset.
 
-## What changed since 2026-09-24 (3665fc1)
+## What changed since 2026-09-30 (b3caf9f)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- CI now also runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more.
-- And 1 more change to a door.
-- 1 file added and 129 changed content, across 5 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

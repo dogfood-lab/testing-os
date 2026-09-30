@@ -1,23 +1,14 @@
 # portlight: how it works
 
-Mapped at 2026-09-30 from commit 26b6267 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 73f9a29 by Atlas 1.24.0.
 
 ## What this is
 
 12 parts, mostly Python (183 files), JavaScript (3), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 6 doors; CI, Release and Release Binaries each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run portlight.
 
-## What changed since 2026-09-25 (7c76f54)
+## What changed since 2026-09-30 (26b6267)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- Release Binaries now also runs src/portlight/app/cli.py, src/portlight/balance/runner.py and src/portlight/stress/invariants.py.
-- And 1 more change to a door.
-- artifacts/balance/balance-report.json is now written by src/portlight/balance/reporting.py.
-- artifacts/balance/balance-report.md is now written by src/portlight/balance/reporting.py.
-- artifacts/stress/stress-report.json is now written by src/portlight/stress/reporting.py.
-- And 1 more new writer or reader of a place.
-- artifacts was authored and is now generated.
-- 1 file added and 3 changed content, across 4 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

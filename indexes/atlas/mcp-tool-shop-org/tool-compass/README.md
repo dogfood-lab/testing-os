@@ -1,19 +1,14 @@
 # tool-compass: how it works
 
-Mapped at 2026-09-30 from commit 9bf87fd by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 98f8498 by Atlas 1.24.0.
 
 ## What this is
 
 8 parts, mostly Python (46 files), JavaScript (4), shell (4), CSS (2), TypeScript (2) and Astro (1). Work enters through 7 doors; the busiest is CI, which reaches 5 parts. It publishes to PyPI, @mcptoolshop/tool-compass to npm, and a container image. It deploys a site to GitHub Pages. People run tool-compass and tool-compass-ui.
 
-## What changed since 2026-09-25 (6f5a233)
+## What changed since 2026-09-30 (9bf87fd)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- Release Binaries now also runs ui.py.
-- And 2 more changes to doors.
-- cli.py is now also read by .github/workflows/release.yml.
-- 1 file added and 1 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

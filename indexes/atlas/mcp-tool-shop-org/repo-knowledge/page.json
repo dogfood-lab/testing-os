@@ -38,102 +38,24 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 1,
-      "changed": 775,
+      "added": 0,
+      "changed": 1,
       "moved": 0,
-      "parts": 10,
+      "parts": 1,
       "removed": 0
     },
     "items": [
       {
-        "kind": "import-removed",
-        "sentence": "src no longer imports the repository root.",
-        "subjects": [
-          "src",
-          "root"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "CI's pull request trigger now also names `codecov.yml`, `eslint.config.js`, `scripts/postbuild.js`, `tsup.config.ts` and `vitest.config.ts`.",
-        "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "CI's push trigger now also names `codecov.yml`, `eslint.config.js`, `scripts/postbuild.js`, `tsup.config.ts` and `vitest.config.ts`.",
-        "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "CI now also builds src/cli.ts, src/index.ts and src/mcp/server.ts.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "src/cli.ts",
-          "src/index.ts",
-          "src/mcp/server.ts"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 4 more changes to doors.",
-        "subjects": []
-      },
-      {
-        "kind": "landing",
-        "sentence": "dist is now written by scripts/postbuild.js.",
-        "subjects": [
-          "dist",
-          "scripts/postbuild.js"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": ".github/workflows/ci.yml is now read by test/build-health.test.ts, test/doctor.test.ts, test/feed.test.ts, test/health-commands.test.ts, test/migration-009.test.ts and test/table.test.ts.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "test/build-health.test.ts",
-          "test/doctor.test.ts",
-          "test/feed.test.ts",
-          "test/health-commands.test.ts",
-          "test/migration-009.test.ts",
-          "test/table.test.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": ".github/workflows/release.yml is now read by test/build-health.test.ts.",
-        "subjects": [
-          ".github/workflows/release.yml",
-          "test/build-health.test.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 12 more new writers and readers of places.",
-        "subjects": []
-      },
-      {
-        "kind": "origin",
-        "sentence": "data was generated and is now authored.",
-        "subjects": [
-          "data"
-        ]
-      },
-      {
         "kind": "counts",
-        "sentence": "1 file added and 775 changed content, across 10 parts.",
+        "sentence": "Nothing structural changed since 2026-09-30; 1 file changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "823601731ae25a1d41917a2d0b05b1ee08ad14de",
-      "generatedAt": "2026-09-23T17:32:34.050Z"
+      "commit": "f0654a0dc611fa59020f2fcd4e19f510691e7a25",
+      "generatedAt": "2026-09-30T20:12:03.944Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [
     {
@@ -217,7 +139,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 3 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "f0654a0dc611fa59020f2fcd4e19f510691e7a25",
+  "commit": "1222602f0b87b3560e4eb044791c50ca68a34cfa",
   "defaultBranch": "main",
   "derived": "11 parts, mostly Markdown (646 files); code in TypeScript (84), JavaScript (10), CSS (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run rk. People import @mcptoolshop/repo-knowledge.",
   "doors": [
@@ -455,7 +377,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-30T19:06:49.350Z",
+  "generatedAt": "2026-09-30T21:52:10.914Z",
   "limits": [
     "1 import could not be resolved: `src/mcp/server.ts` imports `zod`, which is not declared.",
     "3 writes and 15 reads use paths built at run time and are not named here.",

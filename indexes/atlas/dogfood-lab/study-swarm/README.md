@@ -1,14 +1,14 @@
 # study-swarm: how it works
 
-Mapped at 2026-09-30 from commit ab907f0 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 634378f by Atlas 1.24.0.
 
 ## What this is
 
 7 parts, in JavaScript (3 files), CSS (2 files), TypeScript (2 files) and Astro (1 file). Work enters through 4 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run study-swarm.
 
-## What changed since 2026-09-25 (d537ad2)
+## What changed since 2026-09-30 (ab907f0)
 
-Nothing structural changed since 2026-09-25; no file changed.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 
@@ -42,9 +42,9 @@ CI writes nothing this map can see.
 
 - **bin/study-swarm.mjs** and **scripts/smoke.mjs** changed together in 9 of 11 commits, though neither part imports the other.
 
-Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
+Window: 180 days; a pair counts from 3 shared commits, since 1 source file reaches 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -79,6 +79,6 @@ Read those in order to follow one pull request end to end.
 - 1 write and 12 reads go to a path their caller passes, not to this repository.
 - 2 reads go to the directory the command is run in or a path their caller passes, not to this repository.
 - 2 reads go to the directory the command is run in, not to this repository.
-- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

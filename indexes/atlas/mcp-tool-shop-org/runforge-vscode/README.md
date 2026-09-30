@@ -1,20 +1,14 @@
 # runforge-vscode: how it works
 
-Mapped at 2026-09-30 from commit 6c5ebe8 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 533e239 by Atlas 1.24.0.
 
 ## What this is
 
 10 parts, mostly TypeScript (71 files), Python (45), JavaScript (3), CSS (2) and Astro (1). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. It deploys a site to GitHub Pages. People install the runforge extension.
 
-## What changed since 2026-09-24 (d4f816a)
+## What changed since 2026-09-30 (6c5ebe8)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- In src/extension.ts, `activate` lost a step, `isRunning`.
-- In src/extension.ts, `activate` lost a step, `executeRun`.
-- In src/extension.ts, `activate` lost a step, `showRunsPicker`.
-- And 18 more changes to the order of work.
-- 1 file added and 221 changed content, across 9 parts.
+Nothing structural changed since 2026-09-30; 1 file changed content.
 
 ## What comes in
 

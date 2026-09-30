@@ -1,20 +1,14 @@
 # ai-rpg-stage: how it works
 
-Mapped at 2026-09-30 from commit 5e9e75f by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 0c744e3 by Atlas 1.24.0.
 
 ## What this is
 
 12 parts, mostly GDScript (36 files), Python (8), CSS (2), JavaScript (2), TypeScript (2), Astro (1) and shell (1). Work enters through 4 doors; the busiest is ci, which reaches 5 parts. It deploys a site to GitHub Pages. People run the game.
 
-## What changed since 2026-09-24 (ef2f9cb)
+## What changed since 2026-09-30 (5e9e75f)
 
-- ci now also runs tests/test_diorama.gd, tests/test_felt_juice.gd, tests/test_felt_mixer.gd and 8 more.
-- fixtures/ is now written by .github/workflows/ci.yml.
-- .github/upstream-pins.env is now read by .github/workflows/ci.yml.
-- assets/dimetric/ is now also read by assets/dimetric/andon/build_manifest.py.
-- And 1 more new writer or reader of a place.
-- fixtures was authored and is now generated.
-- No file changed.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

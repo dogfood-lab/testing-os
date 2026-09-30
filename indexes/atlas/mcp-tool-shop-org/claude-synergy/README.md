@@ -1,17 +1,14 @@
 # claude-synergy: how it works
 
-Mapped at 2026-09-30 from commit 819f3d3 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit a222e67 by Atlas 1.24.0.
 
 ## What this is
 
 10 parts, mostly Markdown (1273 files) and JSON data (317); code in TypeScript (83), JavaScript (9), CSS (2), Python (2), Astro (1) and shell (1). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. It deploys a site to GitHub Pages. People run claude-synergy-mcp and hk.
 
-## What changed since 2026-09-24 (fb90b80)
+## What changed since 2026-09-30 (819f3d3)
 
-- synergies/ is now read by src/mcp-server.ts.
-- products was generated and is now authored.
-- the repository root was mixed and is now authored.
-- 1 file added and 1701 changed content, across 9 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

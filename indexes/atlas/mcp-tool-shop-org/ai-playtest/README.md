@@ -1,15 +1,14 @@
 # ai-playtest: how it works
 
-Mapped at 2026-09-30 from commit 94e69fc by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 35206f8 by Atlas 1.24.0.
 
 ## What this is
 
 6 parts, mostly TypeScript (34 files), JavaScript (4), CSS (2) and Astro (1). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. It deploys a site to GitHub Pages. ai-playtest is a command of a private package (nothing ships it).
 
-## What changed since 2026-09-29 (47f5e7a)
+## What changed since 2026-09-30 (94e69fc)
 
-- CI now also builds src/cli.ts, src/config.ts, src/coverage.ts and 14 more.
-- No file changed.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

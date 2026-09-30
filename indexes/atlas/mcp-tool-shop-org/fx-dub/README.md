@@ -1,20 +1,14 @@
 # fx-dub: how it works
 
-Mapped at 2026-09-30 from commit 8bb7ee7 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit fe92330 by Atlas 1.24.0.
 
 ## What this is
 
 9 parts, mostly Python (22 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 5 doors; ci and release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to PyPI. It deploys a site to GitHub Pages. People run fxdub-dialogue and fxdub-receipt.
 
-## What changed since 2026-09-25 (ebdab06)
+## What changed since 2026-09-30 (8bb7ee7)
 
-- tests now imports tools.
-- ci now also runs tests/.
-- release now also runs tests/.
-- fxdub-dialogue (pyproject.toml) is a new command. It runs tools/dialogue_receipt.py.
-- And 1 more change to a door.
-- kb/fxdub.db is now also written by kb/build_db.py.
-- No file changed.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

@@ -1,21 +1,14 @@
 # prompt-craft: how it works
 
-Mapped at 2026-09-30 from commit 43f3cfe by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 984cf5d by Atlas 1.24.0.
 
 ## What this is
 
 8 parts, mostly Python (112 files), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 5 doors; the busiest is release, which reaches 5 parts. It publishes to PyPI and @mcptoolshop/prompt-crafter to npm. It deploys a site to GitHub Pages. People run pcraft.
 
-## What changed since 2026-09-25 (cdc0bed)
+## What changed since 2026-09-30 (43f3cfe)
 
-- ci's pull request trigger now also names `codecov.yml`.
-- ci's push trigger now also names `codecov.yml`.
-- ci now also runs tests/.
-- And 4 more changes to doors.
-- src/pcraft/domains/image/subdomains/sprite/poses/turnaround/ is now written by scripts/draw_openpose_plates.py.
-- src/pcraft/domains/image/subdomains/sprite/poses/two-hand-weapon.openpose.png is now written by scripts/draw_openpose_plates.py.
-- src was authored and is now mixed.
-- 1 file added and 3 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

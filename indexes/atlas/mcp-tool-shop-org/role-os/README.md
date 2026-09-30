@@ -1,20 +1,14 @@
 # role-os: how it works
 
-Mapped at 2026-09-30 from commit 64fe05b by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 07450c9 by Atlas 1.24.0.
 
 ## What this is
 
 15 parts, mostly JavaScript (162 files), Python (30), Astro (2), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 3 parts. It publishes to npm. It deploys a site to GitHub Pages. People run roleos.
 
-## What changed since 2026-09-25 (3877c03)
+## What changed since 2026-09-30 (64fe05b)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- dossier/data.js is now read by dossier/dossier.html.
-- tools/conformance-dataset/audit.py is now read by tools/conformance-dataset/build_conformance_dataset.py.
-- tools/conformance-dataset/config.py is now read by tools/conformance-dataset/build_conformance_dataset.py, tools/conformance-dataset/certify_conformance.py, tools/conformance-dataset/conformance_puzzles.py and tools/conformance-dataset/dogfood_conformance.py.
-- And 1 more new writer or reader of a place.
-- 1 file added and 1 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

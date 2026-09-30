@@ -2245,7 +2245,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "2b4003a86030c627cafcba6b096657aa071404468e658537dd08f2171416baf9",
+          "hash": "90c86ac17af2f0728260f55db9f89ff7e7c839f842443600eb86467d230973cb",
           "path": "docs/HANDOFF.md"
         },
         {
@@ -2421,6 +2421,10 @@
           "path": "docs/dispatch-mesh-refusal.md"
         },
         {
+          "hash": "8bc7b2cc87d267aab88ae66cb56a51855a381c9dfc6b9ed826b847be8a451c1b",
+          "path": "docs/dispatch-npm-workspaces.md"
+        },
+        {
           "hash": "34d2b3b14515564c33b20db75bb30f2159bae16dcdb83f63e3b873a097a77ef8",
           "path": "docs/dispatch-s1-soundness.md"
         },
@@ -2463,6 +2467,10 @@
         {
           "hash": "0d4bfc8d4cd79c8e9d189437958e079fc5d85dacf1db07cb68c3bdd2ec7249f5",
           "path": "docs/dispatch-t7c-model.md"
+        },
+        {
+          "hash": "0b1979537ecc1cfc3328373b1eae1072deac93e0d1767cc48fc7bebea45ae3b2",
+          "path": "docs/host-binding.md"
         },
         {
           "hash": "0184ed3b397dde9d332a8180deb69ad556197204cc068a25518fcf58f941dfe8",
@@ -5051,9 +5059,15 @@
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
-      "entryPoints": [],
+      "entryPoints": [
+        "packages/frame/hash.js"
+      ],
       "externals": 0,
       "files": [
+        {
+          "hash": "ceec48cc0638fe892f763967baeef9b49ddac159a486d9cf0c490a88331bd395",
+          "path": "packages/frame/README.md"
+        },
         {
           "exports": [
             "commitFrame"
@@ -5075,6 +5089,10 @@
           ],
           "hash": "64494a5899c3eb5015f56bd7f2005ef650bdbe8fb9cee76fc7da0e627f2463eb",
           "path": "packages/frame/hash.js"
+        },
+        {
+          "hash": "1130c4ed365ac1e220b171ff57d9823f7cf00c2019dbea4cbb418154b96e0dc2",
+          "path": "packages/frame/package.json"
         },
         {
           "hash": "a5c6bb16d40d89bd965a9df3f3280254f4bae4a1d15eb76f046fe093b7d45e0d",
@@ -5159,6 +5177,63 @@
               "name": "productBehaviour"
             }
           ]
+        },
+        {
+          "entry": "holds",
+          "entryRule": 1,
+          "hash": "d47a1db60269c7f48f683a981eec802b9855fdd302e984e38d402abcefa9bfaa",
+          "importOrder": [
+            "packages/host/session.js",
+            "packages/host/server.js",
+            "packages/tick/scene.js",
+            "packages/tick/world.js"
+          ],
+          "importsFiles": [
+            "packages/host/server.js",
+            "packages/host/session.js",
+            "packages/tick/scene.js",
+            "packages/tick/world.js"
+          ],
+          "path": "harness/binding.test.js",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 167,
+                  "name": "worldRecord",
+                  "target": null
+                },
+                {
+                  "line": 168,
+                  "name": "frame",
+                  "target": null
+                },
+                {
+                  "line": 168,
+                  "name": "frameRecord",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "holds"
+            },
+            {
+              "calls": [
+                {
+                  "line": 178,
+                  "name": "listen",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "listen"
+            }
+          ],
+          "testFramework": "node --test"
         },
         {
           "entry": "makeBundle",
@@ -6373,21 +6448,21 @@
                 {
                   "inner": [
                     {
-                      "line": 247,
+                      "line": 266,
                       "name": "createWorld",
                       "target": {
                         "file": "packages/tick/world.js"
                       }
                     },
                     {
-                      "line": 264,
+                      "line": 283,
                       "name": "validateMesh",
                       "target": {
                         "file": "packages/tick/world.js"
                       }
                     },
                     {
-                      "line": 447,
+                      "line": 466,
                       "name": "beliefRefusal",
                       "target": {
                         "file": "packages/tick/beliefs.js"
@@ -8742,7 +8817,7 @@
                 {
                   "inner": [
                     {
-                      "line": 247,
+                      "line": 266,
                       "name": "createWorld",
                       "target": {
                         "file": "packages/tick/world.js"
@@ -8750,7 +8825,7 @@
                       "via": "validateScene"
                     },
                     {
-                      "line": 264,
+                      "line": 283,
                       "name": "validateMesh",
                       "target": {
                         "file": "packages/tick/world.js"
@@ -8758,7 +8833,7 @@
                       "via": "validateScene"
                     },
                     {
-                      "line": 447,
+                      "line": 466,
                       "name": "beliefRefusal",
                       "target": {
                         "file": "packages/tick/beliefs.js"
@@ -9302,10 +9377,15 @@
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [
-        "packages/host/bin/host.js"
+        "packages/host/bin/host.js",
+        "packages/host/session.js"
       ],
       "externals": 0,
       "files": [
+        {
+          "hash": "98428f2021a7041d7e468c3abbb5e3cfb4be0bfd8251bb01e9bd1be68e6b55fa",
+          "path": "packages/host/README.md"
+        },
         {
           "entry": "saveLog",
           "entryRule": 1,
@@ -9328,7 +9408,7 @@
           "sequences": []
         },
         {
-          "hash": "843373ca03a49b7d52591a0d277fc65d76e1c419214518879b168ffa8edb381e",
+          "hash": "88074a4574d9a95c8f903c0837131b23b62c1efa822f9636f8434cac63a518ff",
           "importOrder": [
             "packages/host/view.js",
             "packages/host/session.js",
@@ -9343,6 +9423,10 @@
           ],
           "path": "packages/host/host.test.js",
           "testFramework": "node --test"
+        },
+        {
+          "hash": "7ed5b46be1f534d7c4287d14cf870ec4ea31d6271e3e5f030ad814c6a95f1214",
+          "path": "packages/host/package.json"
         },
         {
           "hash": "2ee179568722298a8e2f72502d984290811d56e657332977c20ece47e88c49dc",
@@ -9367,7 +9451,7 @@
             "createSession",
             "startPump"
           ],
-          "hash": "d97090f1b6464a04be496619bad160541342b75c32444973c34b5da567e3e34c",
+          "hash": "2383abc5bb7a8771c7270d3feb3fcd6dfe0fd2f8cab5780af1dbc5c4efba44b9",
           "importOrder": [
             "packages/tick/tick.js",
             "packages/tick/world.js",
@@ -9431,7 +9515,7 @@
       "testRunners": [
         "node --test"
       ],
-      "testedBy": 2,
+      "testedBy": 3,
       "unresolvedNamed": [
         {
           "path": "packages/host/session.js",
@@ -9496,10 +9580,15 @@
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [
-        "packages/load/bin/load.js"
+        "packages/load/bin/load.js",
+        "packages/load/world.js"
       ],
       "externals": 0,
       "files": [
+        {
+          "hash": "4998d582b81e045709207bcf1b70c51074535882f273a1a48b2689d3a4f04a2e",
+          "path": "packages/load/README.md"
+        },
         {
           "exports": [
             "considerDraft",
@@ -9564,6 +9653,10 @@
           ],
           "path": "packages/load/load.test.js",
           "testFramework": "node --test"
+        },
+        {
+          "hash": "2c1e4e1202937c69020eef9fa0cb0fc1626f59ae9c0065a021efcccaae0543c7",
+          "path": "packages/load/package.json"
         },
         {
           "exports": [
@@ -11509,11 +11602,11 @@
           "path": ".gitattributes"
         },
         {
-          "hash": "c404c8ff340eb0e987aa2f920463407717e8545390ea01ba2b33f3e52d2c7202",
+          "hash": "84b4235286f853900fd253dd4781e98c3bc70b84d22ae4da237d3241c16acd86",
           "path": ".gitignore"
         },
         {
-          "hash": "acb03e29e5225c1fe376b1c0ac9e58cf41ba9bb3df066c46c07e187a0e822414",
+          "hash": "b3d3ee715f9ed25c0fa4a2a8bcfcf3c3de1cd3e9d573278d26653a2dfb9c5704",
           "path": "CHANGELOG.md"
         },
         {
@@ -11521,35 +11614,35 @@
           "path": "LICENSE"
         },
         {
-          "hash": "e455f7edb00acf579af8ee6c2e0e373461fa3fa550a25ef76d795574d8210920",
+          "hash": "7361f2b23d58bcca4524971f25986aaead921948edeef053aa7b974446813035",
           "path": "README.es.md"
         },
         {
-          "hash": "c558834b67b42fa9fadf1d30e2ec43053e1934ad6d7b26ea7a751c936f4e810d",
+          "hash": "133b95fce69b8babc9740292c2eacf77e8e61e2d1bbf161c30759892c67022d0",
           "path": "README.fr.md"
         },
         {
-          "hash": "8ae227ab8cf83c5053f52c12dde48b19ee920cf63f63b479f546baa874d95336",
+          "hash": "5420b4e873c7e3d3ddeb9f4fb2e631e28b6be120e487788e3c53dc5e52528885",
           "path": "README.hi.md"
         },
         {
-          "hash": "ce76333a1687081911bbba08fe861cba666da13c4b6e919f7a2101061f7ea1ce",
+          "hash": "aa5693e5206bef9aaaa580035007b3b9d850a5d91300a81e5448b2891453f257",
           "path": "README.it.md"
         },
         {
-          "hash": "1c404acad2d665aeb403f801dc92f70ee7d833016e76d9878d01bf441a66f582",
+          "hash": "c82e2001b04c9337736a90d52fc7f54e1a8d82be64b4ed52b37d40cdd89457d8",
           "path": "README.ja.md"
         },
         {
-          "hash": "ced1d9a8679db2b8826e635b1be06c3f7486b90ae1cdfb250ae4389bcbf6c720",
+          "hash": "811ccf0377ed5af7994b6f5359724533be3f1dc6dde6386e61c27062f6201f3d",
           "path": "README.md"
         },
         {
-          "hash": "5d9721622bebfa36c410cd3f9dcf6a6edd349439b0047bb74c5007fd0dbfec51",
+          "hash": "a8807054b8433ad876b8e886b8848eb27aa2a6d70b7e7b155ebee21b12440569",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "3cc8b38ff4677ce54bf88e529d2eecbc20d6ec53bf7e2fa5d7c51506b827af51",
+          "hash": "4db58a95469f73023e71d784a7e2a2560f6aa5222b7b9abd042783ae17f25120",
           "path": "README.zh.md"
         },
         {
@@ -11569,15 +11662,15 @@
           "path": "codecov.yml"
         },
         {
-          "hash": "bfa7578b774111fad31d8b3abd937478e7a0ee65e00ace3b448ee8cffb26af9b",
+          "hash": "bb70eb3008182889a6220c73caac7658d5bd86f50d7d50e20cb096e6eb3f78de",
           "path": "package-lock.json"
         },
         {
-          "hash": "406b7445877b78c360cdc2520af780148f388e67fd126a366cd2c407fc24d038",
+          "hash": "590f3ffb4bcd42c613ad8a5f7edb31c9ac2275d9c9324c86c1138c316a7e993b",
           "path": "package.json"
         },
         {
-          "hash": "cbf0771bca0ac13dd7f5cc4aea824198771001a963e43e7c0c2afe45c6988ba9",
+          "hash": "de41890ae8bd47aa24301910a2ccdd7ad22050fc8b4ee997cf9b2d6c71f5187b",
           "path": "tsconfig.json"
         }
       ],
@@ -12552,10 +12645,15 @@
       "dynamicWrites": 0,
       "entryPoints": [
         "packages/tick/bin/play.js",
-        "packages/tick/bin/replay.js"
+        "packages/tick/bin/replay.js",
+        "packages/tick/tick.js"
       ],
       "externals": 0,
       "files": [
+        {
+          "hash": "62eedc4f33bd444f53e21f65ae8d3f610051cca428341d52159329f80d97ff03",
+          "path": "packages/tick/README.md"
+        },
         {
           "entry": "loadHash",
           "entryRule": 4,
@@ -13575,21 +13673,21 @@
                 {
                   "inner": [
                     {
-                      "line": 247,
+                      "line": 266,
                       "name": "createWorld",
                       "target": {
                         "file": "packages/tick/world.js"
                       }
                     },
                     {
-                      "line": 264,
+                      "line": 283,
                       "name": "validateMesh",
                       "target": {
                         "file": "packages/tick/world.js"
                       }
                     },
                     {
-                      "line": 447,
+                      "line": 466,
                       "name": "beliefRefusal",
                       "target": {
                         "file": "packages/tick/beliefs.js"
@@ -13737,6 +13835,10 @@
             }
           ],
           "testFramework": "node --test"
+        },
+        {
+          "hash": "013d758884c8cb2df40893ae591c4cca952df3019ff9a33f144e01549f28ded5",
+          "path": "packages/tick/package.json"
         },
         {
           "entry": "admitIntent",
@@ -14278,7 +14380,7 @@
             "validateHeightfield",
             "validateScene"
           ],
-          "hash": "70732f9bacf02557ef2ece4b6559e95a6e53151f7c662574e685277695e9bdfe",
+          "hash": "d40aef41660a4b4e3490cf5fab6b5a43572a4c3c3df2d44a5cd7f7b5531dc5e5",
           "importsFiles": [
             "packages/tick/beliefs.js",
             "packages/tick/world.js"
@@ -14288,21 +14390,21 @@
             {
               "calls": [
                 {
-                  "line": 247,
+                  "line": 266,
                   "name": "createWorld",
                   "target": {
                     "file": "packages/tick/world.js"
                   }
                 },
                 {
-                  "line": 264,
+                  "line": 283,
                   "name": "validateMesh",
                   "target": {
                     "file": "packages/tick/world.js"
                   }
                 },
                 {
-                  "line": 447,
+                  "line": 466,
                   "name": "beliefRefusal",
                   "target": {
                     "file": "packages/tick/beliefs.js"
@@ -14318,7 +14420,7 @@
             {
               "calls": [
                 {
-                  "line": 447,
+                  "line": 466,
                   "name": "beliefRefusal",
                   "target": {
                     "file": "packages/tick/beliefs.js"
@@ -14334,7 +14436,7 @@
             {
               "calls": [
                 {
-                  "line": 447,
+                  "line": 466,
                   "name": "beliefRefusal",
                   "target": {
                     "file": "packages/tick/beliefs.js"
@@ -14349,7 +14451,7 @@
             {
               "calls": [
                 {
-                  "line": 247,
+                  "line": 266,
                   "name": "createWorld",
                   "target": {
                     "file": "packages/tick/world.js"
@@ -14357,7 +14459,7 @@
                   "via": "validateScene"
                 },
                 {
-                  "line": 264,
+                  "line": 283,
                   "name": "validateMesh",
                   "target": {
                     "file": "packages/tick/world.js"
@@ -14365,7 +14467,7 @@
                   "via": "validateScene"
                 },
                 {
-                  "line": 447,
+                  "line": 466,
                   "name": "beliefRefusal",
                   "target": {
                     "file": "packages/tick/beliefs.js"
@@ -14400,21 +14502,21 @@
                 {
                   "inner": [
                     {
-                      "line": 247,
+                      "line": 266,
                       "name": "createWorld",
                       "target": {
                         "file": "packages/tick/world.js"
                       }
                     },
                     {
-                      "line": 264,
+                      "line": 283,
                       "name": "validateMesh",
                       "target": {
                         "file": "packages/tick/world.js"
                       }
                     },
                     {
-                      "line": 447,
+                      "line": 466,
                       "name": "beliefRefusal",
                       "target": {
                         "file": "packages/tick/beliefs.js"
@@ -15107,7 +15209,7 @@
       "testRunners": [
         "node --test"
       ],
-      "testedBy": 39,
+      "testedBy": 40,
       "unresolvedNamed": [
         {
           "path": "packages/tick/bundle.js",
@@ -15136,7 +15238,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "28cc4afe900cd86c8c940cabbc5a79099e970cb387af9a61af28f215c9cf8d7a",
+          "hash": "6c5b8c9b6d5458bd245470f90b0b6537e9f184390e0e1b4b22256c6069ff185b",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -15146,6 +15248,10 @@
         {
           "hash": "fe1db5f18ca42c6e2363f0860db9c117b03a6bff39b375189f7c9d2f1882b4a1",
           "path": ".github/workflows/pages.yml"
+        },
+        {
+          "hash": "4838237b27847170cd83c5325757c47a5c17a8359c91d5b2a656385c8f8de2c1",
+          "path": ".github/workflows/release.yml"
         }
       ],
       "globs": [
@@ -15190,7 +15296,7 @@
   ],
   "doors": [
     {
-      "checksCount": 31,
+      "checksCount": 32,
       "commands": [
         {
           "dir": "",
@@ -15494,7 +15600,7 @@
         {
           "boundary": "harness",
           "depth": 0,
-          "files": 39
+          "files": 40
         },
         {
           "boundary": "host",
@@ -15545,6 +15651,11 @@
           "path": "harness/behaviour.mjs",
           "runKind": "checks",
           "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "engines",
+          "path": "harness/binding.test.js",
+          "runKind": "executes"
         },
         {
           "job": "engines",
@@ -16031,6 +16142,18 @@
         {
           "job": "engines",
           "matched": true,
+          "path": "tools/stage-release.mjs",
+          "runKind": "checks",
+          "via": "tsc tsconfig.json"
+        },
+        {
+          "job": "engines",
+          "path": "tools/stage-release.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "engines",
+          "matched": true,
           "path": "tools/verdicts.js",
           "runKind": "checks",
           "via": "tsc tsconfig.json"
@@ -16041,7 +16164,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 87,
+      "runsCount": 90,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -16071,7 +16194,7 @@
           "step": "Run the character course and the outcome tests"
         },
         {
-          "files": 47,
+          "files": 49,
           "job": "engines",
           "runner": "node --test",
           "step": "Run the kernel fixture",
@@ -16468,6 +16591,160 @@
         "actions/deploy-pages",
         "actions/setup-node",
         "actions/upload-pages-artifact"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [
+        {
+          "dir": "",
+          "job": "npm",
+          "programs": [
+            "npm"
+          ],
+          "step": "Install pinned npm for OIDC dist-tags"
+        },
+        {
+          "dir": "",
+          "job": "npm",
+          "programs": [
+            "npm"
+          ],
+          "step": "3"
+        },
+        {
+          "dir": "",
+          "job": "npm",
+          "programs": [
+            "node"
+          ],
+          "step": "Build the solver and hold the pin"
+        },
+        {
+          "dir": "",
+          "job": "npm",
+          "programs": [
+            "node"
+          ],
+          "step": "Stage the packages"
+        },
+        {
+          "dir": "",
+          "job": "npm",
+          "programs": [
+            "bash"
+          ],
+          "step": "Publish"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "npm",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
+      "landings": [],
+      "mentions": [],
+      "name": "Release",
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "solver",
+          "depth": 0,
+          "files": 2
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "job": "npm",
+          "path": "solver/build.mjs",
+          "runKind": "executes"
+        },
+        {
+          "job": "npm",
+          "path": "tools/publish-release.sh",
+          "runKind": "executes"
+        },
+        {
+          "job": "npm",
+          "path": "tools/stage-release.mjs",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 3,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [
+        {
+          "event": "release",
+          "types": [
+            "published"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "untrackedLandings": [
+        ".release",
+        ".release/frame",
+        ".release/frame/packages/",
+        ".release/host",
+        ".release/host/packages/",
+        ".release/load",
+        ".release/load/packages/",
+        ".release/tick",
+        ".release/tick/packages/",
+        "solver/dist/"
+      ],
+      "uses": [
+        "Swatinem/rust-cache",
+        "actions/checkout",
+        "actions/setup-node",
+        "dtolnay/rust-toolchain"
       ],
       "usesWorkflowToken": false
     },
@@ -17013,6 +17290,234 @@
       "unshipped": true,
       "uses": [],
       "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "packages/host/package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "host",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "host",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "tick",
+          "depth": 1,
+          "enters": {
+            "file": "packages/tick/scene.js",
+            "from": "packages/host/bin/host.js"
+          },
+          "files": 14
+        },
+        {
+          "boundary": "frame",
+          "depth": 2,
+          "enters": {
+            "file": "packages/frame/hash.js",
+            "from": "packages/tick/admit-world.js"
+          },
+          "files": 2
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "packages/host/bin/host.js",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "packages/load/package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "load",
+      "permissions": [],
+      "programs": [
+        "git"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "load",
+          "depth": 0,
+          "files": 6
+        },
+        {
+          "boundary": "tick",
+          "depth": 1,
+          "enters": {
+            "file": "packages/tick/bundle.js",
+            "from": "packages/load/bin/load.js"
+          },
+          "files": 18
+        },
+        {
+          "boundary": "frame",
+          "depth": 3,
+          "enters": {
+            "file": "packages/frame/hash.js",
+            "from": "packages/tick/admit-world.js"
+          },
+          "files": 2
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "packages/load/bin/load.js",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "packages/tick/package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "play",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "tick",
+          "depth": 0,
+          "files": 13
+        },
+        {
+          "boundary": "frame",
+          "depth": 2,
+          "enters": {
+            "file": "packages/frame/hash.js",
+            "from": "packages/tick/tick.js"
+          },
+          "files": 2
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "packages/tick/bin/play.js",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "packages/tick/package.json",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "replay",
+      "permissions": [],
+      "programs": [
+        "git"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "tick",
+          "depth": 0,
+          "files": 19
+        },
+        {
+          "boundary": "frame",
+          "depth": 3,
+          "enters": {
+            "file": "packages/frame/hash.js",
+            "from": "packages/tick/sessions.js"
+          },
+          "files": 2
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "packages/tick/bin/replay.js",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
     }
   ],
   "edges": [
@@ -17035,6 +17540,12 @@
       "from": "harness",
       "kind": "file",
       "to": "frame"
+    },
+    {
+      "from": "harness",
+      "fromTests": true,
+      "kind": "file",
+      "to": "host"
     },
     {
       "from": "harness",
@@ -17092,10 +17603,160 @@
   ],
   "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "e5618b95f48e42c4df07decad4872f6f5aab4447",
-    "tracked": 925
+    "commit": "06c93679bc1f6b442c727cd4e7729b2f059851d0",
+    "tracked": 940
   },
   "landings": [
+    {
+      "readers": [],
+      "target": ".release",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "tools/stage-release.mjs",
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": ".release/frame",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "tools/stage-release.mjs",
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": ".release/frame/packages",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "tools/stage-release.mjs",
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": ".release/host",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "tools/stage-release.mjs",
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": ".release/host/packages",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "tools/stage-release.mjs",
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": ".release/load",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "tools/stage-release.mjs",
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": ".release/load/packages",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "tools/stage-release.mjs",
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": ".release/tick",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "tools/stage-release.mjs",
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": ".release/tick/packages",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "tools/stage-release.mjs",
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/stage-release.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "LICENSE",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/stage-release.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.md",
+      "writers": []
+    },
     {
       "readers": [
         {
@@ -17105,6 +17766,18 @@
         }
       ],
       "target": "docs/PHASE-2.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "harness/binding.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "docs/host-binding.md",
       "writers": []
     },
     {
@@ -18495,9 +19168,36 @@
           "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tools/stage-release.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/stage-release.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "tools/stage-release.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "tools/stage-release.mjs",
+          "call": "readdirSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages",
       "writers": []
     },
     {
@@ -18532,6 +19232,11 @@
     },
     {
       "readers": [
+        {
+          "by": "package-lock.json",
+          "call": "literal",
+          "confidence": "text"
+        },
         {
           "by": "packages/bench/finding.test.js",
           "call": "literal",
@@ -18603,9 +19308,42 @@
     {
       "readers": [
         {
+          "by": "package-lock.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "packages/frame",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/stage-release.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/frame/frame.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/bench/plants.js",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "tools/stage-release.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "tools/stage-release.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "packages/frame/hash.js",
@@ -18614,13 +19352,59 @@
     {
       "readers": [
         {
+          "by": "tools/stage-release.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/frame/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "package-lock.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "packages/host",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "package-lock.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
           "by": "packages/tick/load-hash.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/stage-release.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
         }
       ],
       "target": "packages/host/bin/host.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/stage-release.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/host/package.json",
       "writers": []
     },
     {
@@ -18643,6 +19427,28 @@
     {
       "readers": [
         {
+          "by": "tools/stage-release.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/host/server.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/stage-release.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/host/session.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/host/server.js",
           "call": "readFileSync",
           "confidence": "ast"
@@ -18654,13 +19460,58 @@
     {
       "readers": [
         {
+          "by": "package-lock.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "packages/load",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/stage-release.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/load/admit.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "harness/sweep.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "package-lock.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "tools/stage-release.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
         }
       ],
       "target": "packages/load/bin/load.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/stage-release.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/load/package.json",
       "writers": []
     },
     {
@@ -18693,6 +19544,17 @@
     {
       "readers": [
         {
+          "by": "tools/stage-release.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/load/world.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/propose/propose.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -18716,6 +19578,11 @@
     },
     {
       "readers": [
+        {
+          "by": "package-lock.json",
+          "call": "literal",
+          "confidence": "text"
+        },
         {
           "by": "packages/propose/propose.test.js",
           "call": "literal",
@@ -18777,6 +19644,11 @@
     {
       "readers": [
         {
+          "by": "package-lock.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
           "by": "packages/host/host.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -18806,6 +19678,12 @@
         },
         {
           "by": "packages/tick/tick.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/stage-release.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -18910,6 +19788,18 @@
         }
       ],
       "target": "packages/tick/memory.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/stage-release.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/tick/package.json",
       "writers": []
     },
     {
@@ -19036,6 +19926,17 @@
           "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tools/stage-release.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "tools/stage-release.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "packages/tick/tick.js",
@@ -19068,9 +19969,26 @@
           "by": "packages/bench/runner.js",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "tools/stage-release.mjs",
+          "call": "literal",
+          "confidence": "ast"
         }
       ],
       "target": "packages/tick/world.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/stage-release.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/tool/guard.js",
       "writers": []
     },
     {
@@ -19172,6 +20090,12 @@
         {
           "by": "packages/load/load.test.js",
           "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/stage-release.test.js",
+          "call": "literal",
           "confidence": "ast",
           "fromTests": true
         }
@@ -19370,6 +20294,17 @@
         {
           "by": "solver/source.test.js",
           "call": "statSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tools/stage-release.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "tools/stage-release.test.js",
+          "call": "existsSync",
           "confidence": "ast",
           "fromTests": true
         }
@@ -19755,6 +20690,33 @@
     {
       "readers": [
         {
+          "by": "tsconfig.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "tools/stage-release.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "docs/dispatch-npm-workspaces.md",
+          "call": "--test",
+          "confidence": "text"
+        },
+        {
+          "by": "tsconfig.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "tools/stage-release.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "tools/review.mjs",
           "call": "readFileSync",
           "confidence": "ast"
@@ -19858,6 +20820,18 @@
           "by": "README.zh.md",
           "call": "--world",
           "confidence": "text"
+        },
+        {
+          "by": "harness/binding.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "harness/binding.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         },
         {
           "by": "harness/restore.test.js",
@@ -19991,7 +20965,7 @@
   "overlaps": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 49,
+  "testFiles": 51,
   "unassigned": [
     {
       "exports": [
@@ -20187,6 +21161,10 @@
       "testFramework": "node --test"
     },
     {
+      "hash": "843f9a4c3815219c0e38569989c0bd77b4c9ea9aedf4b8de3de1a842d3270c49",
+      "path": "tools/publish-release.sh"
+    },
+    {
       "failurePaths": [
         {
           "kind": "catch",
@@ -20249,6 +21227,49 @@
       "path": "tools/review.mjs"
     },
     {
+      "entry": "stageRelease",
+      "entryRule": 1,
+      "exports": [
+        "stageRelease"
+      ],
+      "failurePaths": [
+        {
+          "in": "stageOne",
+          "kind": "throw",
+          "line": 60
+        },
+        {
+          "in": "stageOne",
+          "kind": "throw",
+          "line": 97
+        }
+      ],
+      "hash": "66378990f5c516b0bf6f317515644235f817550a22bbfbce12b60424b9783529",
+      "path": "tools/stage-release.mjs",
+      "sequences": []
+    },
+    {
+      "entry": "pack",
+      "entryRule": 1,
+      "hash": "5e4e11bd28e6a652ba5bdcf4f6c5db9e2f312c741dc2f9bb8e287eeef1f8bd36",
+      "importsFiles": [
+        "tools/stage-release.mjs"
+      ],
+      "names": [
+        "packages/frame/hash.js",
+        "packages/host/bin/host.js",
+        "packages/host/session.js",
+        "packages/host/view.js",
+        "packages/load/bin/load.js",
+        "packages/tick/bin/play.js",
+        "packages/tick/tick.js",
+        "packages/tool/guard.js"
+      ],
+      "path": "tools/stage-release.test.js",
+      "sequences": [],
+      "testFramework": "node --test"
+    },
+    {
       "exports": [
         "combine",
         "parseVerdict",
@@ -20275,5 +21296,11 @@
       "sequences": [],
       "testFramework": "node --test"
     }
+  ],
+  "workspaces": [
+    "packages/frame",
+    "packages/host",
+    "packages/load",
+    "packages/tick"
   ]
 }

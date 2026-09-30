@@ -1,18 +1,14 @@
 # attestia: how it works
 
-Mapped at 2026-09-30 from commit 56da319 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 92c144c by Atlas 1.24.0.
 
 ## What this is
 
 23 parts, mostly TypeScript (407 files), CSS (2), JavaScript (2) and Astro (1). Work enters through 5 doors; the busiest is Publish to GHCR, which reaches 16 parts. It publishes @mcptoolshop/attestia to npm and a container image. It deploys a site to GitHub Pages. People import @mcptoolshop/attestia.
 
-## What changed since 2026-09-24 (245af30)
+## What changed since 2026-09-30 (56da319)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- CI now also builds packages/attestia/src/chain-observer.ts, packages/attestia/src/event-store.ts, packages/attestia/src/index.ts and 10 more.
-- And 5 more changes to doors.
-- 1 file added and 589 changed content, across 22 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

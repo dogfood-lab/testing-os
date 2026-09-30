@@ -1,17 +1,14 @@
 # vocal-synth-engine: how it works
 
-Mapped at 2026-09-30 from commit 231081d by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 907e159 by Atlas 1.24.0.
 
 ## What this is
 
 10 parts, mostly TypeScript (99 files), JavaScript (3), Astro (2), CSS (2), shell (2), HTML (1) and Python (1). Work enters through 15 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run vocal-synth-engine-mcp, vse-analyze, vse-build-preset, vse-compare, vse-gen-vowel-wav, vse-inspect, vse-phonemize, vse-play-score, vse-resynth and vse-score-from-midi. People import @mcptoolshop/vocal-synth-engine.
 
-## What changed since 2026-09-24 (f8fe895)
+## What changed since 2026-09-30 (231081d)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- assets was generated and is now authored.
-- 1 file added and 203 changed content, across 9 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

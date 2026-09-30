@@ -1,19 +1,14 @@
 # prism-verify: how it works
 
-Mapped at 2026-09-30 from commit 94925c6 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 2d54775 by Atlas 1.24.0.
 
 ## What this is
 
 18 parts, mostly Python (200 files), JavaScript (6), CSS (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 9 parts, and CI is followed because a pull request goes through it. It publishes to PyPI and @mcptoolshop/prism-verify to npm. It deploys a site to GitHub Pages. People run prism.
 
-## What changed since 2026-09-25 (a89ace7)
+## What changed since 2026-09-30 (94925c6)
 
-- CI's pull request trigger now also names `codecov.yml`.
-- CI's push trigger now also names `codecov.yml`.
-- prism (npm/package.json) is a new command. It runs npm/bin/prism.js.
-- eval/corpus-familyab-v3 is now written by src/prism/eval/familygen.py.
-- eval/corpus-familyab-v3/FAMILYAB_MANIFEST.json is now written by src/prism/eval/familygen.py.
-- 1 file added and 3 changed content, across 2 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

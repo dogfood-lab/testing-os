@@ -1,22 +1,14 @@
 # storyboard-os: how it works
 
-Mapped at 2026-09-30 from commit 736766f by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 4b01ea3 by Atlas 1.24.0.
 
 ## What this is
 
 14 parts, mostly TypeScript (175 files), Astro (19), JavaScript (6) and CSS (2). Work enters through 9 doors; the busiest is CI, which reaches 11 parts. It publishes @storyboard-os/cinematic-domain (packages/cinematic-storyboard-domain), @storyboard-os/marketing-domain (packages/marketing-storyboard-domain), @storyboard-os/rpg-domain (packages/rpg-storyboard-domain), @storyboard-os/canvas (packages/storyboard-canvas), @storyboard-os/core (packages/storyboard-core) and @storyboard-os/routing (packages/storyboard-routing) to npm. It deploys a site to GitHub Pages. People import @storyboard-os/canvas, @storyboard-os/cinematic-domain, @storyboard-os/core, @storyboard-os/marketing-domain, @storyboard-os/routing and @storyboard-os/rpg-domain.
 
-## What changed since 2026-09-25 (6714e4a)
+## What changed since 2026-09-30 (736766f)
 
-- CI's push trigger now also names `codecov.yml`.
-- Publish to npm no longer runs packages/cinematic-storyboard-domain/package.json, packages/marketing-storyboard-domain/package.json, packages/rpg-storyboard-domain/package.json and 3 more.
-- @storyboard-os/cinematic-domain (packages/cinematic-storyboard-domain/package.json) is a new package. It loads packages/cinematic-storyboard-domain/schema/production-brief.json and packages/cinematic-storyboard-domain/src/index.ts.
-- And 5 more changes to doors.
-- packages/cinematic-storyboard-domain/package.json is now also read by .github/workflows/publish.yml.
-- packages/marketing-storyboard-domain/package.json is now also read by .github/workflows/publish.yml.
-- packages/rpg-storyboard-domain/package.json is now also read by .github/workflows/publish.yml.
-- And 3 more new writers and readers of places.
-- 4 files added and 17 changed content, across 11 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

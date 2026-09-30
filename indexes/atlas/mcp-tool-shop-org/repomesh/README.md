@@ -1,27 +1,14 @@
 # repomesh: how it works
 
-Mapped at 2026-09-30 from commit b6e00d6 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit bcd11b2 by Atlas 1.24.0.
 
 ## What this is
 
 18 parts, mostly JavaScript (175 files), CSS (3), TypeScript (2), Astro (1) and shell (1). Work enters through 11 doors; Release and anchor-xrpl each reach 8 parts, and Release is followed because it comes first by name. It publishes @mcptoolshop/repomesh to npm and a container image. It deploys a site to GitHub Pages. People run repomesh. People import @mcptoolshop/repomesh. Other repositories use the RepoMesh verify-release action.
 
-## What changed since 2026-09-23 (f13ad8e)
+## What changed since 2026-09-30 (b6e00d6)
 
-- repomesh-cli now imports verifiers.
-- RepoMesh verify-release (.github/actions/verify/action.yml) is a new action other repositories use. It runs no file this map can see.
-- anchor-xrpl now also runs packages/repomesh-cli/scripts/build.mjs.
-- anchor-xrpl now also checks anchor/xrpl/config.json, anchor/xrpl/package-lock.json, anchor/xrpl/package.json and 5 more.
-- And 5 more changes to doors.
-- anchor/xrpl/anchor-result.json is now written by anchor/xrpl/scripts/post-anchor.mjs.
-- anchor/xrpl/partition-root.json is now written by anchor/xrpl/scripts/compute-root.mjs.
-- packages/repomesh-cli/dist is now written by packages/repomesh-cli/scripts/build.mjs.
-- And 102 more new writers and readers of places.
-- .github was mixed and is now authored.
-- pages was mixed and is now authored.
-- the repository root was mixed and is now authored.
-- And 1 more origin change.
-- 2 files added and 296 changed content, across 17 parts.
+Nothing structural changed since 2026-09-30; no file changed.
 
 ## What comes in
 

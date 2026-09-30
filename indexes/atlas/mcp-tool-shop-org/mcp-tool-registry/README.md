@@ -1,21 +1,14 @@
 # mcp-tool-registry: how it works
 
-Mapped at 2026-09-30 from commit 2bb195f by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 6062e6d by Atlas 1.24.0.
 
 ## What this is
 
 13 parts, mostly JavaScript (17 files), CSS (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Operations each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People import @mcptoolshop/mcp-tool-registry.
 
-## What changed since 2026-09-25 (4fd9a95)
+## What changed since 2026-09-30 (2bb195f)
 
-- CI now also runs scripts/query.mjs.
-- bundles/*.json is now written by scripts/build-bundles.mjs.
-- dist/REGISTRY_HEALTH.md is now written by scripts/health-report.mjs.
-- dist/capabilities.json is now written by scripts/build-derived.mjs.
-- And 17 more new writers and readers of places.
-- bundles was generated and is now mixed.
-- dist was authored and is now mixed.
-- 1 file changed content, across 1 part.
+Nothing structural changed since 2026-09-30; 1 file changed content.
 
 ## What comes in
 
