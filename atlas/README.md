@@ -1,19 +1,19 @@
 # testing-os: how it works
 
-Mapped at 2026-09-30 from commit fead3b7 by Atlas 1.24.0.
+Mapped at 2026-09-30 from commit 7a63d6e by Atlas 1.24.0.
 
 ## What this is
 
-23 parts, mostly JavaScript (1563 files), TypeScript (214), Python (196), Rust (93), GDScript (33), shell (18), HTML (14), Astro (9), CSS (5), C# (3) and PowerShell (1). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
+23 parts, mostly JavaScript (1572 files), TypeScript (214), Python (196), Rust (93), GDScript (33), shell (18), HTML (14), Astro (9), CSS (5), C# (3) and PowerShell (1). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
 
-## What changed since 2026-09-30 (03cbf16)
+## What changed since 2026-09-30 (9d5eab4)
 
-Nothing structural changed since 2026-09-30; 1 file added and 3 changed content.
+Nothing structural changed since 2026-09-30; 5 files changed content.
 
 ## What comes in
 
-1. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs docker/entrypoint.sh, packages/atlas/cli.js, scripts/build.mjs and 769 more; checks packages/schemas/src/; packs site/public/atlas/hero.webp, site/public/atlas/index.html and site/public/atlas/render.js into an image.
-2. **CI.** On a pull request touching 24 paths; on a push touching 24 paths; or by hand. Runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 768 more; checks packages/schemas/src/.
+1. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs docker/entrypoint.sh, packages/atlas/cli.js, scripts/build.mjs and 774 more; checks packages/schemas/src/; packs site/public/atlas/hero.webp, site/public/atlas/index.html and site/public/atlas/render.js into an image.
+2. **CI.** On a pull request touching 24 paths; on a push touching 24 paths; or by hand. Runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 773 more; checks packages/schemas/src/.
 3. **Ingest dogfood submission.** When a repository sends a `dogfood_submission` event; or by hand. Runs packages/ingest/run.js, packages/portfolio/generate.js, scripts/build.mjs and 1 more; checks packages/schemas/src/.
 4. **self-dogfood.** When the workflow CI completes; or by hand. Runs packages/report/cli.js, scripts/build.mjs and scripts/sync-version.mjs; checks packages/schemas/src/.
 5. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs scripts/check-accent-color.test.mjs, scripts/check-atlas-front-door.test.mjs, site/astro.config.mjs and 5 more.
@@ -41,19 +41,19 @@ Nothing structural changed since 2026-09-30; 1 file added and 3 changed content.
 
 ## Who reads the results
 
-- **README.md** is read by packages/atlas/core/fixture-repo.js and scripts/doc-drift-patterns.json (found by text), and by 24 tests.
+- **README.md** is read by packages/atlas/core/fixture-repo.js and scripts/doc-drift-patterns.json (found by text), and by 25 tests.
 - **docker/Dockerfile** is read by scripts/docker-image.test.mjs (from tests).
 - **indexes/** is read by scripts/atlas-render.mjs and site/public/dashboard/index.html (found by text), and by 6 tests.
-- **package-lock.json** is read by 3 tests.
+- **package-lock.json** is read by 4 tests.
 - **policies/repos/** is read by packages/ingest/load-context.js, packages/portfolio/generate.js and packages/verify/cli.js, and by 8 tests.
 - **records/** is read by packages/findings/README.md (found by text), packages/findings/derive/load-records.js, packages/ingest/rebuild-indexes.js and packages/portfolio/lib/compute-trends.js, and by 12 tests.
 - **reports/dogfood-portfolio.json** is read by 2 tests.
 
 ## The other doors
 
-**Release** runs docker/entrypoint.sh, packages/atlas/cli.js, scripts/build.mjs and 769 more, checks packages/schemas/src/, packs site/public/atlas/hero.webp, site/public/atlas/index.html and site/public/atlas/render.js into an image, writes to README.md, docker/Dockerfile, dogfood/roadmap/, indexes/, package-lock.json, policies/repos/ and records/, and to swarms/control-plane.db, which is not tracked, runs git, publishes workspace packages to npm and a container image, and creates a GitHub release.
+**Release** runs docker/entrypoint.sh, packages/atlas/cli.js, scripts/build.mjs and 774 more, checks packages/schemas/src/, packs site/public/atlas/hero.webp, site/public/atlas/index.html and site/public/atlas/render.js into an image, writes to README.md, docker/Dockerfile, dogfood/roadmap/, indexes/, package-lock.json, policies/repos/ and records/, and to swarms/control-plane.db, which is not tracked, runs git, publishes workspace packages to npm and a container image, and creates a GitHub release.
 
-**CI** runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 768 more, checks packages/schemas/src/, writes to README.md, docker/Dockerfile, dogfood/roadmap/, indexes/, package-lock.json, policies/repos/ and records/, and to swarms/control-plane.db, which is not tracked, runs git, and uploads coverage to Codecov.
+**CI** runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 773 more, checks packages/schemas/src/, writes to README.md, docker/Dockerfile, dogfood/roadmap/, indexes/, package-lock.json, policies/repos/ and records/, and to swarms/control-plane.db, which is not tracked, runs git, and uploads coverage to Codecov.
 
 **self-dogfood** runs packages/report/cli.js, scripts/build.mjs and scripts/sync-version.mjs, checks packages/schemas/src/, writes to README.md, docker/Dockerfile and package-lock.json, and sends a dispatch to dogfood-lab/testing-os.
 
@@ -141,15 +141,15 @@ Read those in order to follow one dogfood submission end to end.
 - 13 files in fixtures use syntax the parser cannot read (fixtures/atlas/grammar-shapes/src/broken.ts, fixtures/atlas/grammars-rust-gdscript/scripts/broken.gd, fixtures/atlas/grammars-rust-gdscript/src/broken.rs and 10 more), so what they import is not known: a bare `&` in JSX text (1) and other syntax (12).
 - 11 writes and 37 reads use paths built at run time and are not named here.
 - 6 writes go to places this repository does not track, so they are not listed as generated.
-- 77 writes and 629 reads go to a path their caller passes, not to this repository.
-- 56 reads go to the directory the command is run in, not to this repository.
+- 77 writes and 634 reads go to a path their caller passes, not to this repository.
+- 57 reads go to the directory the command is run in, not to this repository.
 - 10 writes and 3 reads go to a temporary directory, not to this repository.
 - 2 writes and 8 reads go to the directory the command is run in (.github/, dogfood/, policy.example.yaml and 2 more places) or a path their caller passes, not to this repository.
 - 2 writes and 3 reads go to a temporary directory or a path their caller passes, not to this repository.
 - 29 commands are built at run time and not followed, 20 of them in tests.
 - 1 file belongs to no part: packages/.gitkeep.
 - Readers marked (found by text) come from scanning unparsed files.
-- Release runs or checks 759 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
-- CI runs or checks 755 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
+- Release runs or checks 764 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 764.
+- CI runs or checks 760 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 760.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

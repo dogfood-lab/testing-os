@@ -126,6 +126,8 @@ describe('doors on the page, by the conventions of their tools', () => {
     };
     const { markdown } = buildPage({ structure, statistics: py.statistics, document: py.document, repoName: 'acme/doors-py' });
     has(markdown, '## What comes in', '2. **Nightly.** On a schedule (`0 4 * * 1`), Monday at 04:00 UTC; or by hand. Runs scripts/smoke.py and 249 more.');
+    // The reach is walked from every run (core/index.js), not the recorded list.
+    has(markdown, '## What this map cannot see', '- Nightly runs 250 files and directories; the map records 1 of them, some from every directory, and walks its reach from all 250.');
     assert.equal(runsShown(['a', 'b', 'c', 'd'], 10), 'a, b, c and 7 more');
     assert.equal(runsShown(['a', 'b']), 'a and b');
   });

@@ -1,0 +1,47 @@
+name: Daily sync
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+defaults:
+  run:
+    working-directory: lib
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install
+        uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: npm ci
+      - name: Sync
+        uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: node scripts/sync.js
+          on_retry_command: node scripts/sync.js --reset
+      - name: Build
+        uses: Wandalen/wretry.action@v3
+        with:
+          command: npm run build
+          attempt_limit: 3
+      - name: Report
+        uses: acme/report-action@v1
+        with:
+          run-command: node scripts/report.js --all
+          cache: npm
+      - name: Sync on Windows shell
+        uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
+        with:
+          timeout_minutes: 5
+          max_attempts: 2
+          shell: pwsh
+          command: node scripts/sync.js

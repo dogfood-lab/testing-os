@@ -1262,6 +1262,9 @@ export function findingLines(door) {
     const what = entry.tool ?? entry.lock ?? entry.manifest ?? 'the step';
     lines.push(`Not judged by ${entry.rule}: ${what} in ${checkedStep(entry)}, since ${entry.why}.`);
   }
+  for (const entry of door.unresolvedCommands ?? []) {
+    lines.push(`Not read as a command: in ${checkedStep(entry)}, the input \`${entry.input}\` of ${entry.action} starts ${entry.program}, since ${entry.why}.`);
+  }
   return lines;
 }
 
@@ -1298,6 +1301,7 @@ export function doorDetail(ctx, door) {
       sends: structuredClone(door.sends ?? {}),
       triggers: structuredClone(door.triggers ?? []),
       ...(door.unresolvedChecks?.length > 0 ? { unresolvedChecks: structuredClone(door.unresolvedChecks) } : {}),
+      ...(door.unresolvedCommands?.length > 0 ? { unresolvedCommands: structuredClone(door.unresolvedCommands) } : {}),
     },
     lines,
   };
@@ -3203,7 +3207,7 @@ function limits(ctx, shownText) {
     const recorded = new Set((door.runs ?? []).map((run) => run.path)).size;
     if ((door.runsCount ?? 0) <= recorded) continue;
     const verb = (door.checksCount ?? 0) > 0 ? 'runs or checks' : 'runs';
-    lines.push(`${leadName(door)} ${verb} ${door.runsCount} files and directories; the map records ${recorded} of them, some from every directory, and walks its reach from those.`);
+    lines.push(`${leadName(door)} ${verb} ${door.runsCount} files and directories; the map records ${recorded} of them, some from every directory, and walks its reach from all ${door.runsCount}.`);
   }
   const confidence = ctx.statistics.confidence;
   if (confidence?.level === 'low') {

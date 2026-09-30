@@ -26,12 +26,16 @@ const NOTICE = 640;
 const TEXT_SHARE = 0.3;
 // How many cut lists the first sentence names.
 const NAMED_CUTS = 4;
-// No one entry takes more than this share of the room.
+// No one entry takes more than this share of the room, but the entry a cursor
+// continues a list inside, which takes this one.
 const ENTRY_SHARE = 6;
+const FOCUS_SHARE = 2;
 // The bytes each list may take in one round of the allocation.
 const ROUND_SHARE = 256;
 
-const CURSOR = '^[0-9a-f]{16}:(?:facts|f[0-9]{1,4}|cannotSee|c[0-9]{1,4}[np]|changed|q\\.(?:paths|files)|v\\.(?:fr|rg|st)|p\\.changed):[0-9]{1,7}$';
+// A list's id, and for a list inside one entry of it, the entry's index and
+// the list's key: f3.e5.runs is the runs of the sixth entry of fact list f3.
+const CURSOR = '^[0-9a-f]{16}:(?:facts|f[0-9]{1,4}|cannotSee|c[0-9]{1,4}[np]|changed|q\\.(?:paths|files)|v\\.(?:fr|rg|st)|p\\.changed)(?:\\.e[0-9]{1,5}\\.[A-Za-z]{1,24})?:[0-9]{1,7}$';
 
 /** The arguments every answering tool takes for its size, merged into its input schema. */
 export const SIZE_PROPERTIES = Object.freeze({
@@ -270,20 +274,45 @@ function resultSize(built, sentences, names) {
 
 /**
  * An entry larger than max with its longest lists cut to fit, each cut list
- * marked beside it (<list>Total, <list>Complete false). These lists have no
- * cursor of their own: the entry is one fact, and full: true gives it the
- * room of a larger answer.
+ * marked beside it (<list>Total, <list>Complete false) and given a cursor
+ * (<list>Cursor) that continues it: cursorFor names the list by its key and
+ * the offset it goes on from. focus continues one list of the entry from an
+ * offset, as a cursor asked (<list>From), and is cut first, so the list the
+ * question is about keeps the room.
+ *
+ * @param {unknown} item
+ * @param {number} max
+ * @param {{ cursorFor: (key: string, offset: number) => string, focus?: { key: string, from: number } | null }} options
  */
-function trimEntry(item, max) {
-  if (!item || typeof item !== 'object' || Array.isArray(item) || bytes(item) <= max) return item;
+function trimEntry(item, max, { cursorFor, focus = null }) {
+  if (!item || typeof item !== 'object' || Array.isArray(item)) return item;
   const out = { ...item };
-  const inner = Object.keys(out).filter((key) => Array.isArray(out[key]) && out[key].length > 1).sort((a, b) => bytes(out[b]) - bytes(out[a]));
-  for (const key of inner) {
-    const whole = out[key];
+  const marks = (key, whole, from, shown) => ({
     // An entry that already counts the list (a door's runsCount) keeps that
     // count; otherwise the count goes beside the list.
-    const total = `${key}Count` in out ? {} : { [`${key}Total`]: whole.length };
-    const cut = (n) => ({ ...out, [key]: whole.slice(0, n), ...total, [`${key}Complete`]: false });
+    ...(`${key}Count` in out ? {} : { [`${key}Total`]: whole.length }),
+    [`${key}Complete`]: false,
+    ...(from > 0 ? { [`${key}From`]: from } : {}),
+    ...(from + shown < whole.length ? { [`${key}Cursor`]: cursorFor(key, from + shown) } : {}),
+  });
+  if (focus) {
+    const whole = out[focus.key];
+    const rest = whole.length - focus.from;
+    const cut = (n) => ({ ...out, [focus.key]: whole.slice(focus.from, focus.from + n), ...marks(focus.key, whole, focus.from, n) });
+    let low = 1;
+    let high = rest;
+    while (low < high) {
+      const mid = Math.ceil((low + high) / 2);
+      if (bytes(cut(mid)) <= max) low = mid;
+      else high = mid - 1;
+    }
+    Object.assign(out, cut(low));
+  }
+  if (bytes(out) <= max) return out;
+  const inner = Object.keys(out).filter((key) => key !== focus?.key && Array.isArray(out[key]) && out[key].length > 1).sort((a, b) => bytes(out[b]) - bytes(out[a]));
+  for (const key of inner) {
+    const whole = out[key];
+    const cut = (n) => ({ ...out, [key]: whole.slice(0, n), ...marks(key, whole, 0, n) });
     let low = 1;
     let high = whole.length - 1;
     while (low < high) {
@@ -468,12 +497,25 @@ export function sizeAnswer({ tool, snapshot, args = {}, atlas, answer, sentences
     if (match[2] !== askedDigest) {
       return { error: { code: 'ATLAS_SIDECAR_INVALID_ARGUMENTS', details: ['the cursor was given for another question'], whatToDo: 'pass the cursor with the same tool and the same arguments as the answer that gave it' } };
     }
-    const list = lists.find((entry) => entry.id === match[3]);
+    const within = /^(.+)\.e([0-9]+)\.([A-Za-z]+)$/.exec(match[3]);
+    const list = lists.find((entry) => entry.id === (within ? within[1] : match[3]));
     const from = Number(match[4]);
-    if (!list || from >= list.items.length) {
-      return { error: { code: 'ATLAS_SIDECAR_INVALID_ARGUMENTS', details: ['the cursor names a list this answer does not have'], whatToDo: 'ask again without the cursor' } };
+    if (within) {
+      // A list inside one entry: the entry is shown first in the list that
+      // holds it, with that list continued from the offset.
+      const index = Number(within[2]);
+      const entry = list?.items[index];
+      const whole = entry && typeof entry === 'object' && !Array.isArray(entry) ? entry[within[3]] : undefined;
+      if (!list || list.id === 'facts' || list.id === 'cannotSee' || !Array.isArray(whole) || from < 1 || from >= whole.length) {
+        return { error: { code: 'ATLAS_SIDECAR_INVALID_ARGUMENTS', details: ['the cursor names a list this answer does not have'], whatToDo: 'ask again without the cursor' } };
+      }
+      target = { id: list.id, from: index, list, inner: { key: within[3], from, total: whole.length } };
+    } else {
+      if (!list || from >= list.items.length) {
+        return { error: { code: 'ATLAS_SIDECAR_INVALID_ARGUMENTS', details: ['the cursor names a list this answer does not have'], whatToDo: 'ask again without the cursor' } };
+      }
+      target = { id: list.id, from, list };
     }
-    target = { id: list.id, from, list };
   }
 
   const budget = cap - ENVELOPE;
@@ -481,7 +523,9 @@ export function sizeAnswer({ tool, snapshot, args = {}, atlas, answer, sentences
 
   // An entry too large to share the room (a door that runs hundreds of files)
   // is cut inside before the lists are: its longest lists keep their first
-  // entries, each marked beside it as any cut list is.
+  // entries, each marked beside it as any cut list is, with a cursor that
+  // continues it. The entry a cursor continues a list of takes a larger
+  // share, since it is what the answer is about.
   const room = budget - NOTICE;
   const cutRoot = structuredClone(root);
   const cutLists = listsOf(cutRoot);
@@ -489,7 +533,13 @@ export function sizeAnswer({ tool, snapshot, args = {}, atlas, answer, sentences
     if (list.id === 'facts' || list.id === 'cannotSee') continue;
     const holder = at(cutRoot, list.path.slice(0, -1));
     const key = list.path[list.path.length - 1];
-    holder[key] = holder[key].map((item) => trimEntry(item, Math.floor(room / ENTRY_SHARE)));
+    holder[key] = holder[key].map((item, index) => {
+      const focus = target?.inner && target.id === list.id && target.from === index ? target.inner : null;
+      return trimEntry(item, Math.floor(room / (focus ? FOCUS_SHARE : ENTRY_SHARE)), {
+        cursorFor: (inner, offset) => cursorOf(`${list.id}.e${index}.${inner}`, offset),
+        focus,
+      });
+    });
     list.items = holder[key];
   }
   if (target) target = { ...target, list: cutLists.find((entry) => entry.id === target.id) };
@@ -506,7 +556,13 @@ export function sizeAnswer({ tool, snapshot, args = {}, atlas, answer, sentences
   const built = build(cutRoot, cutLists, keep, cursorOf);
   const cut = cutLists.filter((list) => shows(list, keep) && (keep.get(list.id).from > 0 || keep.get(list.id).count < list.items.length));
   const notice = [];
-  if (target) {
+  if (target?.inner) {
+    const entry = target.list.items[target.from];
+    const shown = keep.get(target.id).count > 0 && !keep.get(target.id).omitFirst ? entry[target.inner.key].length : 0;
+    const end = target.inner.from + shown;
+    const named = ['name', 'path', 'file', 'door'].map((field) => entry[field]).find((value) => typeof value === 'string') ?? `entry ${target.from + 1}`;
+    notice.push(`Atlas: this answer continues ${target.inner.key} of ${named} in ${listName(target.list, cutRoot)} from entry ${target.inner.from + 1}: entries ${target.inner.from + 1} to ${end} of ${target.inner.total}${end < target.inner.total ? '; its cursor fetches the rest' : ', where the list ends'}.`);
+  } else if (target) {
     const own = keep.get(target.id);
     const end = own.from + own.count;
     notice.push(`Atlas: this answer continues ${listName(target.list, cutRoot)} from entry ${own.from + 1}: entries ${own.from + 1} to ${end} of ${target.list.items.length}${end < target.list.items.length ? '; its cursor fetches the rest' : ', where the list ends'}.`);

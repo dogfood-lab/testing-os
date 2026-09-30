@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 import { DOORS, makeRepo } from './fixture-repo.js';
+import * as engine from './index.js';
 import { mapRepository, rereadFiles } from './index.js';
 import { loadsManifest } from './languages.js';
 
@@ -100,5 +101,30 @@ describe('a scoped re-read', () => {
     assert.deepEqual(readings.map((reading) => reading.path), ['tools/fresh.js']);
     assert.deepEqual(importTargets(readings[0].imports), ['lib/verify.js']);
     assert.deepEqual(readings[0].parts, ['tools']);
+  });
+
+  // The change check re-reads each changed file twice, and a cold answer was
+  // twice as slow as it needed to be: a third of a file's reading is the
+  // order of its calls and the other facts only a whole map uses.
+  it('parses a file for what a re-read returns, never for the order of its calls', () => {
+    const counts = engine.PARSE_COUNTS;
+    assert.ok(counts, 'the engine counts its parses');
+    const before = { ...counts };
+    const [reading] = rereadFiles({
+      repoPath: root,
+      boundaries: BOUNDARIES,
+      paths: ['tools/render.js'],
+      content: () => Buffer.from([
+        "import { writeFileSync } from 'node:fs';",
+        "export function render() { writeFileSync('reports/lean.md', 'x'); }",
+        'render();',
+        '',
+      ].join('\n')),
+    });
+    assert.deepEqual(targets(reading.writes), ['reports/lean.md ast']);
+    assert.ok(counts.files > before.files, 'the file was parsed');
+    assert.equal(counts.sequences, before.sequences, 'and its order of calls was not read');
+    mapRepository({ repoPath: root, boundaries: BOUNDARIES });
+    assert.ok(counts.sequences > before.sequences, 'a whole map reads it');
   });
 });

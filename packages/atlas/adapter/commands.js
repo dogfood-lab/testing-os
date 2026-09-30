@@ -68,6 +68,7 @@ function initAt(cwd, argv) {
 // holds, and says so.
 function explainAt(cwd, argv) {
   const repo = repoRoot(cwd);
+  if (repo && !argv.includes('--ref') && unborn(repo)) return noCommit('explain');
   if (repo) return explainCommand(repo, showPrefix(cwd), argv);
   const exported = exportedRoot(cwd);
   if (!exported) return notARepository(cwd, 'explain');
@@ -78,6 +79,7 @@ function explainAt(cwd, argv) {
 // name decides which house rules a suggestion cites.
 function gapsAt(cwd, argv) {
   const repo = repoRoot(cwd);
+  if (repo && !argv.includes('--ref') && unborn(repo)) return noCommit('gaps');
   if (repo) return gapsCommand(repo, showPrefix(cwd), argv, { repository: repositoryName(repo) });
   const exported = exportedRoot(cwd);
   if (!exported) return notARepository(cwd, 'gaps');
@@ -97,6 +99,7 @@ export function mapCommand(cwd, argv = []) {
   if (flags.error) return usage(flags.error);
   const repo = repoRoot(cwd);
   if (!repo) return notARepository(cwd, 'map');
+  if (unborn(repo)) return noCommit('map');
   const origin = flags.name ?? repositoryName(repo);
   if (flags.divergence && !origin) return usage('atlas: --divergence needs an origin URL that names org/repo, or --name');
   let baseline = null;
@@ -117,6 +120,11 @@ export function mapCommand(cwd, argv = []) {
   process.stdout.write(ignoredNotice(boundary));
   const commit = head(repo);
   if (!commit) return usage('atlas: git rev-parse HEAD failed');
+  // The map is of the tracked tree, so it is the same on every clone. What
+  // the working tree holds beside it is named, on stderr so a piped stdout
+  // stays clean, since a flow that writes files and maps before staging them
+  // would otherwise get a map without them and no word of it.
+  process.stderr.write(untrackedWarning(repo));
   const { mapped, artifact, statistics, page } = buildMap({ repo, boundary, commit, origin, previous, baseline });
   writeMap(join(repo, 'atlas'), { artifact, statistics, page });
   let divergenceMs = null;
@@ -204,6 +212,7 @@ export function checkCommand(cwd, argv = []) {
   const strict = argv.includes('--strict');
   const repo = repoRoot(cwd);
   if (!repo) return notARepository(cwd, 'check');
+  if (unborn(repo)) return noCommit('check');
   if (!existsSync(join(repo, 'atlas'))) {
     process.stdout.write('atlas: no atlas/ directory; nothing to check\n');
     return 0;
@@ -300,6 +309,7 @@ export function diffCommand(cwd, argv = []) {
   if (flags.error) return usage(flags.error);
   const repo = repoRoot(cwd);
   if (!repo) return notARepository(cwd, 'diff');
+  if (unborn(repo)) return noCommit('diff');
   const boundary = readBoundaryFile(repo);
   if (!boundary.ok) return failBoundary(boundary);
   // stdout is the markdown or JSON a caller posts or parses as is, so the
@@ -342,6 +352,26 @@ function notARepository(cwd, command) {
   process.stdout.write(formatFailure('ATLAS_NOT_A_REPOSITORY', [`${cwd} is in no git repository`], {
     exitCode: 2,
     whatToDo: `run atlas ${command} inside a git repository${where}`,
+  }));
+  return 2;
+}
+
+/**
+ * Whether the repository has no commit yet: HEAD names a branch that does
+ * not exist. A map is stamped with HEAD and read at HEAD, so there is none to
+ * make or read. init is the one command that runs before a first commit.
+ */
+function unborn(repo) {
+  if (spawnSync('git', ['rev-parse', '--verify', '--quiet', 'HEAD^{commit}'], { cwd: repo, encoding: 'utf8' }).status === 0) return false;
+  return spawnSync('git', ['symbolic-ref', '--quiet', 'HEAD'], { cwd: repo, encoding: 'utf8' }).status === 0;
+}
+
+// explain and gaps given --ref read that ref's map, which a clone that has
+// fetched but never committed can hold, so they are not refused here.
+function noCommit(command) {
+  process.stdout.write(formatFailure('ATLAS_NO_COMMIT', ['HEAD names no commit'], {
+    exitCode: 2,
+    whatToDo: `commit once first (git add -A, then git commit), then run atlas ${command}`,
   }));
   return 2;
 }
@@ -478,6 +508,32 @@ function priorFloor(committed, previous, document) {
   if (shared === parameters.shared) return 'strong';
   if (shared === parameters.fallenShared) return 'fallen';
   return null;
+}
+
+const UNTRACKED_NAMED = 5;
+
+/**
+ * The warning for the files in the working tree git does not track and no
+ * ignore rule covers, or '' when there are none. atlas/ is left out: the map
+ * reads nothing there, and a first map writes it into a tree that does not
+ * track it yet.
+ */
+function untrackedWarning(repo) {
+  const result = spawnSync('git', ['ls-files', '--others', '--exclude-standard', '-z'], { cwd: repo, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  if (result.status !== 0) return '';
+  const paths = result.stdout.split('\0').filter((path) => path !== '' && path !== 'atlas' && !path.startsWith('atlas/')).sort(cmpPaths);
+  if (paths.length === 0) return '';
+  const shown = paths.slice(0, UNTRACKED_NAMED);
+  const rest = paths.length - shown.length;
+  const named = rest > 0 ? `${shown.join(', ')} and ${rest} more`
+    : shown.length === 1 ? shown[0] : `${shown.slice(0, -1).join(', ')} and ${shown.at(-1)}`;
+  const count = paths.length === 1 ? '1 untracked file' : `${paths.length} untracked files`;
+  return formatNotice('ATLAS_MAP_UNTRACKED', [`${count} outside .gitignore: ${named}`], 'git add the files the map should hold and run atlas map again, or add them to .gitignore');
+}
+
+// Code-point order, so the names are listed alike on every platform.
+function cmpPaths(a, b) {
+  return a < b ? -1 : a > b ? 1 : 0;
 }
 
 function committedAtHead(repo, path) {

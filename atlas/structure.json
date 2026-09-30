@@ -95,7 +95,7 @@
           "path": "packages/atlas/LICENSE"
         },
         {
-          "hash": "4723b9bf6de22793a4fd68ea39e4ead64cc8bed5d1356ed85857b5d6e89eb366",
+          "hash": "56c58749aae6322c8017ea6b4103989de875a9bf9634980f5a750296ecdd0129",
           "path": "packages/atlas/README.md"
         },
         {
@@ -105,7 +105,7 @@
             "stepPrograms",
             "unresolvedEntry"
           ],
-          "hash": "170bdd9ccedfe61a07dbbe29206c38bf5d3b2caa01d6aa0a77e9c01bec7d58b6",
+          "hash": "beac43c74085ed95d255702639bacf718bd4ba5b6247e57fccc720e8597e1ed7",
           "importOrder": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/languages.js",
@@ -213,35 +213,35 @@
             {
               "in": "mapCommand",
               "kind": "catch",
-              "line": 111
+              "line": 114
             },
             {
               "in": "checkCommand",
               "kind": "catch",
-              "line": 233
+              "line": 242
             },
             {
               "in": "readBaseline",
               "kind": "catch",
-              "line": 392
+              "line": 422
             },
             {
               "in": "readBaseline",
               "kind": "catch",
-              "line": 399
+              "line": 429
             },
             {
               "in": "manifestName",
               "kind": "catch",
-              "line": 453
+              "line": 483
             },
             {
               "in": "committedJson",
               "kind": "catch",
-              "line": 496
+              "line": 552
             }
           ],
-          "hash": "78fd7e9b539f9dc3605e8e7e77ba3b0d1d0b16765b4ff9fced4a6b01bcbb100e",
+          "hash": "60e2ead24c806925b8e50a30193e3d68fe76605ef9d717366dacc2bf3630cdc0",
           "importOrder": [
             "packages/atlas/core/index.js",
             "packages/atlas/adapter/artifact.js",
@@ -387,7 +387,7 @@
             "formatFailure",
             "formatNotice"
           ],
-          "hash": "0d6d4009a10a9f2878b921581e2621b79d5b0b6a287876f534db74e6c1293e5f",
+          "hash": "7f151593a3da94d802be62a42864834e0f8b4f2d6235b28809e1190c8eba14e1",
           "path": "packages/atlas/adapter/errors.js"
         },
         {
@@ -975,6 +975,17 @@
           "testFramework": "node --test"
         },
         {
+          "hash": "673f9a5f1decab63ed571fe4fcdbe1b774b4b84614b92e6cce0ee9d98e4451d7",
+          "importsFiles": [
+            "packages/atlas/adapter/errors.js"
+          ],
+          "path": "packages/atlas/adapter/no-commit.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
+        },
+        {
           "hash": "cf09f8aa176842634fd93763f45cae61cc0d1925b8843811212d37e315d83ace",
           "importsFiles": [
             "packages/atlas/adapter/errors.js"
@@ -1314,7 +1325,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "3b5481431768921040a2fa09430c6fa4bbc6920e7a269fb37805623d1a1ab628",
+          "hash": "7095d4ddf84951e67a4886c17ce0a23ff40a70767929637e22e3826279b9dc6b",
           "importsFiles": [
             "packages/atlas/adapter/boundary-file.js",
             "packages/atlas/adapter/page.js"
@@ -2698,7 +2709,7 @@
             "worded",
             "words"
           ],
-          "hash": "0b4df3ffafa6d7b25fd7010277a863949f69f5a44e0d0f130d155654780fac08",
+          "hash": "000b06c7e2917f9a9ad25a56e9a88780c17aa3be8d615c79f4797cb5a93fecf8",
           "importOrder": [
             "packages/atlas/core/door-checks.js",
             "packages/atlas/core/history.js",
@@ -3014,6 +3025,20 @@
           "testFramework": "node --test"
         },
         {
+          "hash": "1494af9877771355398a30677bf7bfe3fd322fcdd7ad261f2547a04412a78135",
+          "importsFiles": [
+            "packages/atlas/adapter/errors.js"
+          ],
+          "names": [
+            "packages/ingest/run.js"
+          ],
+          "path": "packages/atlas/adapter/untracked-files.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
+        },
+        {
           "hash": "077fd40c70885c5436f26b8d0d4cca210fc07c95e2920e493037e566eedc4aef",
           "importOrder": [
             "packages/atlas/core/index.js",
@@ -3082,6 +3107,25 @@
             "packages/atlas/adapter/commands.js"
           ],
           "path": "packages/atlas/cli.js"
+        },
+        {
+          "exports": [
+            "actionCommand",
+            "commandProgram"
+          ],
+          "hash": "3e8e9058049b62f1d19ec4d62b8542c631945768791d0b88ebfc3c5a7cb92152",
+          "path": "packages/atlas/core/action-commands.js"
+        },
+        {
+          "hash": "59a65c1b1b980a7b9cf870d7c1a8cd8fba1f23aae3e74ddd5a4a97ee8a8a1ea2",
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js",
+            "packages/atlas/adapter/page.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/core/action-commands.test.js",
+          "testFramework": "node --test"
         },
         {
           "hash": "8fff5e38cc085f082eb2e62692fd3dcfd043a0dd3f221d9182b68834dff1172b",
@@ -3520,21 +3564,22 @@
             {
               "in": "mapDoors",
               "kind": "catch",
-              "line": 67
+              "line": 68
             },
             {
               "in": "localYaml",
               "kind": "catch",
-              "line": 259
+              "line": 263
             },
             {
               "in": "readDoor",
               "kind": "catch",
-              "line": 339
+              "line": 343
             }
           ],
-          "hash": "7cbb8648b768d84df525606612931b542e68411d7bc3d2f54eeac28040d68336",
+          "hash": "a4bd953e27808aa9017af2bf174da54e89995a259b9dd0122c6b0369ab3f2b08",
           "importOrder": [
+            "packages/atlas/core/action-commands.js",
             "packages/atlas/core/commands.js",
             "packages/atlas/core/godot.js",
             "packages/atlas/core/landings.js",
@@ -3544,6 +3589,7 @@
             "packages/atlas/core/text.js"
           ],
           "importsFiles": [
+            "packages/atlas/core/action-commands.js",
             "packages/atlas/core/commands.js",
             "packages/atlas/core/door-checks.js",
             "packages/atlas/core/godot.js",
@@ -3883,7 +3929,7 @@
             "mainOnly",
             "writeGuards"
           ],
-          "hash": "9a16e82b6b5b4ff2b7813598f784eec1458b7cc96921a12d72aad8c98ceafac8",
+          "hash": "400a72fb4ebf96b59b53b17e23597eb8164f5f1ae06813e28b32475bd7678156",
           "path": "packages/atlas/core/guards.js"
         },
         {
@@ -3960,27 +4006,22 @@
             {
               "in": "bytesOf",
               "kind": "catch",
-              "line": 330
+              "line": 334
             },
             {
               "in": "collectIgnored",
               "kind": "catch",
-              "line": 494
+              "line": 498
             },
             {
               "in": "rootManifest",
               "kind": "catch",
-              "line": 602
+              "line": 606
             },
             {
               "in": "repositoryManifests",
               "kind": "catch",
-              "line": 621
-            },
-            {
-              "in": "validateBoundary",
-              "kind": "throw",
-              "line": 720
+              "line": 625
             },
             {
               "in": "validateBoundary",
@@ -3988,37 +4029,42 @@
               "line": 724
             },
             {
-              "in": "listTracked",
+              "in": "validateBoundary",
               "kind": "throw",
-              "line": 747
+              "line": 728
             },
             {
               "in": "listTracked",
               "kind": "throw",
-              "line": 766
+              "line": 751
+            },
+            {
+              "in": "listTracked",
+              "kind": "throw",
+              "line": 770
             },
             {
               "in": "parseStageLine",
               "kind": "throw",
-              "line": 774
+              "line": 778
             },
             {
               "in": "parseStageLine",
               "kind": "throw",
-              "line": 776
+              "line": 780
             },
             {
               "in": "parseFile",
               "kind": "catch",
-              "line": 862
+              "line": 887
             },
             {
               "in": "manifestOf",
               "kind": "catch",
-              "line": 1082
+              "line": 1117
             }
           ],
-          "hash": "f591ac54028f965a2cee9d5193b1fad837a74758e87972e62e3443d5f6d10361",
+          "hash": "6331abeae49ec3519d8f68fb2d2b2b47331762025eb411f437106c0e0e045f07",
           "importOrder": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/doors.js",
@@ -4097,7 +4143,7 @@
             "trackedPlaces",
             "whereSet"
           ],
-          "hash": "fe1dfac4d924febb07964b063565d87ac1a27f62311767ccbe317ffb1e710f12",
+          "hash": "00831d830d53c722a6815a39e593fc95754e432b1d9841ca73d173a0917d6440",
           "importOrder": [
             "packages/atlas/core/entry-points.js",
             "packages/atlas/core/doors.js",
@@ -4205,6 +4251,23 @@
             "packages/atlas/core/index.js"
           ],
           "path": "packages/atlas/core/manifest-reads.test.js",
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "53ab6c257d2c2ce6ed227ade960fe9812855ce6805e2ff2d6aed7a1c05f11acd",
+          "importOrder": [
+            "packages/atlas/core/index.js",
+            "packages/atlas/core/commands.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/adapter/artifact.js"
+          ],
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js",
+            "packages/atlas/core/commands.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/core/many-runs.test.js",
           "testFramework": "node --test"
         },
         {
@@ -4500,7 +4563,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "17aa546c59122b8774adb573f42a2db4ab21875dafd3acb49d6354bde9367ed3",
+          "hash": "26aebd4886795f1db848f4933c37d46f83008c019ecd7bba9e9e20aaac8f8765",
           "importsFiles": [
             "packages/atlas/core/fixture-repo.js",
             "packages/atlas/core/index.js",
@@ -4574,35 +4637,35 @@
             {
               "in": "usableConfig",
               "kind": "catch",
-              "line": 352
+              "line": 359
             },
             {
               "in": "resolveJavaScript",
               "kind": "catch",
-              "line": 414
+              "line": 421
             },
             {
-              "in": "locate",
+              "in": "realOf",
               "kind": "catch",
-              "line": 512
-            },
-            {
-              "in": "trackedSources",
-              "kind": "catch",
-              "line": 563
+              "line": 519
             },
             {
               "in": "trackedSources",
               "kind": "catch",
-              "line": 569
+              "line": 574
+            },
+            {
+              "in": "trackedSources",
+              "kind": "catch",
+              "line": 580
             },
             {
               "in": "sourceRoots",
               "kind": "catch",
-              "line": 876
+              "line": 887
             }
           ],
-          "hash": "0b4f14ad1d122fadf9f01a85bf8cac86d149559f64505bad3279d351e9f02d68",
+          "hash": "c012c2b85818b646f9c66e3ee09225d79a36e4cf68a55793d0591b1945681881",
           "importOrder": [
             "packages/atlas/core/bundles.js",
             "packages/atlas/core/commands.js",
@@ -5198,7 +5261,7 @@
           "reexportsOnly": true
         },
         {
-          "hash": "c69ac67214352e30983f7c3ad75469fd08ccfa81b69fd7ad8fc7ad36dfb1f77f",
+          "hash": "f188f8f86fae7570aca6336409ae236fa7c828d89835224114fa1db742018d99",
           "path": "packages/atlas/package.json"
         },
         {
@@ -5437,6 +5500,14 @@
             "packages/atlas/sidecar/test-client.js"
           ],
           "path": "packages/atlas/sidecar/injection.test.js",
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "c5bfdcf3904d7f88ef078c3b3d614ebf011a13a2a09da82c1f1b50998283d4bf",
+          "importsFiles": [
+            "packages/atlas/sidecar/test-client.js"
+          ],
+          "path": "packages/atlas/sidecar/inner-cursor.test.js",
           "testFramework": "node --test"
         },
         {
@@ -5733,7 +5804,7 @@
             "orderFacts",
             "sizeAnswer"
           ],
-          "hash": "899e047d0658c58c3c553dffebec26d472adb6ec3660eda0f03e227d0a3947de",
+          "hash": "cff763eaae7ec18e2ca5ff217069d9e8c73f3fcaabb492435446b1958edea614",
           "importsFiles": [
             "packages/atlas/sidecar/answer.js",
             "packages/atlas/sidecar/data.js"
@@ -5937,7 +6008,7 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 283,
+          "reads": 288,
           "where": [
             "caller"
           ],
@@ -5987,7 +6058,7 @@
           "writes": 0
         },
         {
-          "reads": 7,
+          "reads": 8,
           "where": [
             "cwd:atlas"
           ],
@@ -6029,13 +6100,13 @@
           "writes": 5
         }
       ],
-      "outsideReads": 330,
+      "outsideReads": 336,
       "outsideWrites": 11,
       "role": "code",
       "testRunners": [
         "node --test"
       ],
-      "testedBy": 281,
+      "testedBy": 286,
       "unresolvedNamed": [
         {
           "path": "packages/atlas/adapter/divergence-envelope.test.js",
@@ -6115,7 +6186,7 @@
           "path": "docs/atlas-page.spec.md"
         },
         {
-          "hash": "bd681475ed9ac6fdb4fa1d6570505ac5bc223e9508ee83bca8204bdbbbac9813",
+          "hash": "fb1f798bf2f18cb632875fea7d5e339b5f7f7a6d437353ef5b53a2d8a8f9f5dc",
           "path": "docs/atlas-pin-bump.md"
         },
         {
@@ -22214,6 +22285,36 @@
           "path": "fixtures/atlas-render/llms.txt"
         },
         {
+          "hash": "2e94ce4bc2b419adc589926a25a5255e7f8760e22dc563b88a05766528893866",
+          "path": "fixtures/atlas/action-commands/.github/workflows/sync.yml"
+        },
+        {
+          "hash": "edcb5d4181a028e0df638376505a06ad1006007d4d262eca2156b24b7b8dbe3e",
+          "path": "fixtures/atlas/action-commands/atlas/boundaries.yaml"
+        },
+        {
+          "exports": [
+            "save"
+          ],
+          "hash": "1afa3a756d73ba29aa63df434050fbfe0b556802925e1756f980024f9c2f8f1d",
+          "path": "fixtures/atlas/action-commands/lib/store.js"
+        },
+        {
+          "hash": "39eb6a467300ebf2187f4881293553339af3f5bb97f3b4fb3e1ef84006436319",
+          "path": "fixtures/atlas/action-commands/package-lock.json"
+        },
+        {
+          "hash": "702367d37c929a6e7556c70b1e25eca2d13af58b5eb194b65f9aad6905bf57b6",
+          "path": "fixtures/atlas/action-commands/package.json"
+        },
+        {
+          "hash": "faf32ffd61a4ae579af11680405a77354d149c121e9f77e1e3d29f7b37411074",
+          "importsFiles": [
+            "fixtures/atlas/action-commands/lib/store.js"
+          ],
+          "path": "fixtures/atlas/action-commands/scripts/sync.js"
+        },
+        {
           "hash": "ee213255244a41190d880cc275f337ebcb420d43cd4f7e1032744dae99186039",
           "path": "fixtures/atlas/action-inputs/.github/actions/gate/action.yml"
         },
@@ -34275,6 +34376,22 @@
           "path": "fixtures/atlas/unshipped-bins/crates/tool/src/main.rs"
         },
         {
+          "hash": "bff59f0adc8f0d1cd5855ade4b9ae54456eb4dc3ca7adabb0bcd372f24dd128f",
+          "path": "fixtures/atlas/untracked-files/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "a888b9df89402a815bdb15d30c5280b090be11655ab4cc2299ce748d44cd6ed4",
+          "path": "fixtures/atlas/untracked-files/.gitignore"
+        },
+        {
+          "hash": "a1944a277b5b1771e38b0b9c4139e86198fb42495533cb3c69f7f9e82613541c",
+          "path": "fixtures/atlas/untracked-files/atlas/boundaries.yaml"
+        },
+        {
+          "hash": "8f3c35a0f5fbdbf0e28ba1e7ba913a0be71291ca893aa79f667665916e77483f",
+          "path": "fixtures/atlas/untracked-files/scripts/run.js"
+        },
+        {
           "hash": "2a9a43d4671357c0679790556c92f3f0452e8ade83176a120213ffd9df842f43",
           "path": "fixtures/atlas/untracked-inputs/README.md"
         },
@@ -35071,11 +35188,11 @@
           "path": "indexes/failing.json"
         },
         {
-          "hash": "6c32dc87c1b3a84f313de5b273149e2628b93634fd863c579051814fab236f8c",
+          "hash": "b82afbd59b633643e2654c3b8ed232e0a7048570017592a5e97361510f177041",
           "path": "indexes/integrity/chain.jsonl"
         },
         {
-          "hash": "6537ede942c7092dcc239510dbbc0b8ba1c795d88d1c2ed8c724f01f8909aa06",
+          "hash": "565a91781240935c63009f61458d3f3fe85294fdb2d285d4920508b8c4662502",
           "path": "indexes/latest-by-repo.json"
         },
         {
@@ -35083,7 +35200,7 @@
           "path": "indexes/stale.json"
         },
         {
-          "hash": "1607bca2160503b527256646392384057b23a90b0dcf454f50a8cb9d469ee006",
+          "hash": "e59de464159a892636bafcf9b6672aa4ec2bced7fcb6286ffd7cddd588ca5e08",
           "path": "indexes/trends.json"
         }
       ],
@@ -38271,6 +38388,10 @@
           "path": "records/dogfood-lab/testing-os/2026/09/30/run-00muogto6v-7svP2esF1LDggg.json"
         },
         {
+          "hash": "e7cccc504cdeb66c4c89bb127f1e6fe4a82342e91334c6c00cfa1ac6ec6bbdce",
+          "path": "records/dogfood-lab/testing-os/2026/09/30/run-00muojy39j-wLkP_jSBRd8leg.json"
+        },
+        {
           "hash": "d80bd628d70f1275786c79da48bfb6da79ef0eb303eceed6fe87960e8c7a308c",
           "path": "records/mcp-tool-shop-org/a11y-demo-site/2026/03/20/run-a11y-demo-site-23329256169-1.json"
         },
@@ -39219,7 +39340,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "1cd745dc1556f195c185026390485314f16c6840f7aa4e9921f69afad75377ce",
+          "hash": "896abfb6a3c0630d2b933716ac24a00c43d53dd9b1a3eb1aebaf8a18426ce455",
           "path": "CHANGELOG.md"
         },
         {
@@ -41852,7 +41973,7 @@
           "path": "site/src/content/docs/handbook/architecture.md"
         },
         {
-          "hash": "0eb0de0f2a3972136ecc244dc1d4e06fb97bfdb4426e9315ac98b89ff6f02268",
+          "hash": "b525a76f11e3ca726949a8b67f6a20ca204253016f0f1f50b57541fcc8d0c64e",
           "path": "site/src/content/docs/handbook/atlas.md"
         },
         {
@@ -41868,7 +41989,7 @@
           "path": "site/src/content/docs/handbook/contracts.md"
         },
         {
-          "hash": "f558b953b1262f5db5b9b1ce81d5481210976c7f8d8925100b6e99130a445df9",
+          "hash": "41c235fa2fe4fd7de516baf85e74af73693c3998e6b7c86f32832e2ecddde784",
           "path": "site/src/content/docs/handbook/error-codes.md"
         },
         {
@@ -43723,7 +43844,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 120
+          "files": 348
         },
         {
           "boundary": "dogfood",
@@ -43733,7 +43854,7 @@
         {
           "boundary": "dogfood-swarm",
           "depth": 0,
-          "files": 86
+          "files": 352
         },
         {
           "boundary": "findings",
@@ -43743,7 +43864,7 @@
         {
           "boundary": "ingest",
           "depth": 0,
-          "files": 31
+          "files": 76
         },
         {
           "boundary": "portfolio",
@@ -43753,7 +43874,7 @@
         {
           "boundary": "report",
           "depth": 0,
-          "files": 17
+          "files": 18
         },
         {
           "boundary": "schemas",
@@ -43763,7 +43884,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 30
+          "files": 73
         },
         {
           "boundary": "site",
@@ -43773,7 +43894,7 @@
         {
           "boundary": "verify",
           "depth": 0,
-          "files": 36
+          "files": 55
         }
       ],
       "readers": [
@@ -43842,6 +43963,13 @@
         },
         {
           "by": "packages/atlas/adapter/test-kinds.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "README.md"
+        },
+        {
+          "by": "packages/atlas/adapter/untracked-files.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true,
@@ -44279,6 +44407,13 @@
           "call": "readFileSync",
           "confidence": "ast",
           "target": "indexes/integrity/chain.jsonl"
+        },
+        {
+          "by": "packages/atlas/core/action-commands.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "package-lock.json"
         },
         {
           "by": "packages/atlas/core/lockfile.js",
@@ -44743,6 +44878,12 @@
         {
           "job": "build-and-test",
           "matched": true,
+          "path": "packages/atlas/core/action-commands.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
           "path": "packages/atlas/core/action-inputs.test.js",
           "runKind": "executes"
         },
@@ -44815,12 +44956,6 @@
         {
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/atlas/core/command-doors.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
           "path": "packages/atlas/sidecar/check-change.test.js",
           "runKind": "executes"
         },
@@ -44863,6 +44998,12 @@
         {
           "job": "build-and-test",
           "matched": true,
+          "path": "packages/atlas/sidecar/inner-cursor.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
           "path": "packages/atlas/sidecar/no-map.test.js",
           "runKind": "executes"
         },
@@ -44888,12 +45029,6 @@
           "job": "build-and-test",
           "matched": true,
           "path": "packages/atlas/sidecar/server.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/sidecar/size.test.js",
           "runKind": "executes"
         },
         {
@@ -45965,7 +46100,8 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 755,
+      "runsCount": 760,
+      "runsCut": true,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -45993,7 +46129,7 @@
         {
           "coverage": true,
           "dir": "packages/atlas",
-          "files": 262,
+          "files": 267,
           "job": "build-and-test",
           "junit": true,
           "runner": "node --test",
@@ -46470,6 +46606,13 @@
           "target": "README.md"
         },
         {
+          "by": "packages/atlas/adapter/untracked-files.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "README.md"
+        },
+        {
           "by": "packages/atlas/core/fixture-repo.js",
           "call": "literal",
           "confidence": "ast",
@@ -46862,6 +47005,13 @@
           "confidence": "ast",
           "fromTests": true,
           "target": "indexes/trends.json"
+        },
+        {
+          "by": "packages/atlas/core/action-commands.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "package-lock.json"
         },
         {
           "by": "packages/atlas/core/lockfile.js",
@@ -47747,7 +47897,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 119
+          "files": 348
         },
         {
           "boundary": "docker",
@@ -47762,7 +47912,7 @@
         {
           "boundary": "dogfood-swarm",
           "depth": 0,
-          "files": 86
+          "files": 352
         },
         {
           "boundary": "findings",
@@ -47772,7 +47922,7 @@
         {
           "boundary": "ingest",
           "depth": 0,
-          "files": 31
+          "files": 76
         },
         {
           "boundary": "portfolio",
@@ -47782,7 +47932,7 @@
         {
           "boundary": "report",
           "depth": 0,
-          "files": 17
+          "files": 18
         },
         {
           "boundary": "schemas",
@@ -47792,7 +47942,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 28
+          "files": 73
         },
         {
           "boundary": "site",
@@ -47802,7 +47952,7 @@
         {
           "boundary": "verify",
           "depth": 0,
-          "files": 35
+          "files": 55
         }
       ],
       "readers": [
@@ -47871,6 +48021,13 @@
         },
         {
           "by": "packages/atlas/adapter/test-kinds.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "README.md"
+        },
+        {
+          "by": "packages/atlas/adapter/untracked-files.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true,
@@ -48308,6 +48465,13 @@
           "call": "readFileSync",
           "confidence": "ast",
           "target": "indexes/integrity/chain.jsonl"
+        },
+        {
+          "by": "packages/atlas/core/action-commands.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "package-lock.json"
         },
         {
           "by": "packages/atlas/core/lockfile.js",
@@ -48772,6 +48936,12 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "packages/atlas/core/action-commands.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "packages/atlas/core/action-inputs.test.js",
           "runKind": "executes"
         },
@@ -48844,12 +49014,6 @@
         {
           "job": "publish",
           "matched": true,
-          "path": "packages/atlas/core/command-doors.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
           "path": "packages/atlas/sidecar/check-change.test.js",
           "runKind": "executes"
         },
@@ -48892,6 +49056,12 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "packages/atlas/sidecar/inner-cursor.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "packages/atlas/sidecar/no-map.test.js",
           "runKind": "executes"
         },
@@ -48917,12 +49087,6 @@
           "job": "publish",
           "matched": true,
           "path": "packages/atlas/sidecar/server.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/sidecar/size.test.js",
           "runKind": "executes"
         },
         {
@@ -49988,7 +50152,8 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 759,
+      "runsCount": 764,
+      "runsCut": true,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -50025,7 +50190,7 @@
         },
         {
           "dir": "packages/atlas",
-          "files": 262,
+          "files": 267,
           "job": "publish",
           "runner": "node --test",
           "step": "Verify (full pre-publish gate)",
@@ -50323,6 +50488,13 @@
           "target": "README.md"
         },
         {
+          "by": "packages/atlas/adapter/untracked-files.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "README.md"
+        },
+        {
           "by": "packages/atlas/core/fixture-repo.js",
           "call": "literal",
           "confidence": "ast",
@@ -50477,6 +50649,13 @@
           "target": "docker/Dockerfile"
         },
         {
+          "by": "packages/atlas/core/action-commands.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "package-lock.json"
+        },
+        {
           "by": "packages/atlas/core/lockfile.js",
           "call": "get",
           "confidence": "weak",
@@ -50601,7 +50780,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 75
+          "files": 76
         }
       ],
       "readers": [],
@@ -51894,8 +52073,8 @@
   ],
   "engine": "1.24.0",
   "generatedFrom": {
-    "commit": "fead3b7d463c6bd701b2cc89a76ef664da188128",
-    "tracked": 4031
+    "commit": "7a63d6e71d633547d10cf66616814eae39d75fb1",
+    "tracked": 4048
   },
   "landings": [
     {
@@ -52218,6 +52397,12 @@
         },
         {
           "by": "packages/atlas/core/expanded-dirs.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/core/many-runs.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -52859,6 +53044,12 @@
         },
         {
           "by": "packages/atlas/adapter/test-kinds.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/adapter/untracked-files.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -53755,6 +53946,18 @@
         }
       ],
       "target": "fixtures/atlas-render/llms.txt",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/core/action-commands.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/action-commands/atlas/boundaries.yaml",
       "writers": []
     },
     {
@@ -55104,6 +55307,12 @@
         },
         {
           "by": "packages/atlas/adapter/lifecycle.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/adapter/no-commit.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -57861,6 +58070,18 @@
     {
       "readers": [
         {
+          "by": "packages/atlas/adapter/untracked-files.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/untracked-files",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/atlas/adapter/page-untracked-inputs.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -58627,6 +58848,12 @@
     },
     {
       "readers": [
+        {
+          "by": "packages/atlas/core/action-commands.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
         {
           "by": "packages/atlas/core/lockfile.js",
           "call": "get",
@@ -64918,7 +65145,7 @@
       "target": "README.md"
     }
   ],
-  "testFiles": 977,
+  "testFiles": 982,
   "unassigned": [
     {
       "hash": "ae8cd9e48976f29e3293dbbe6a4b41aff3f2b9b968fcfb551ce183a0b08ed8cc",

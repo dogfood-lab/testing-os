@@ -592,6 +592,9 @@ function carryDoor(door) {
     runs: door.runs.map(carryRun),
     ...(door.runsCommand != null ? { runsCommand: door.runsCommand } : {}),
     runsCount: door.runsCount,
+    // The recorded runs are cut at RUNS_RECORDED; the reach is walked from
+    // every run all the same.
+    ...(door.runsCut ? { runsCut: true } : {}),
     checksCount: door.checksCount ?? 0,
     secrets: [...door.secrets],
     sends: {
@@ -613,6 +616,9 @@ function carryDoor(door) {
     stages: [...door.stages],
     ...(door.tests?.length > 0 ? { tests: door.tests.map(carryTestRun) } : {}),
     ...(door.unresolvedChecks?.length > 0 ? { unresolvedChecks: door.unresolvedChecks.map((entry) => structuredClone(entry)) } : {}),
+    // The command-shaped inputs of actions not read as a command: the action,
+    // the input and the program it starts, never the text.
+    ...(door.unresolvedCommands?.length > 0 ? { unresolvedCommands: door.unresolvedCommands.map((entry) => ({ ...entry })) } : {}),
     ...(door.unwrittenStages?.length > 0 ? { unwrittenStages: [...door.unwrittenStages] } : {}),
     triggers: door.triggers.map((trigger) => ({ ...trigger })),
     ...(door.untrackedLandings?.length > 0 ? { untrackedLandings: door.untrackedLandings.filter((target) => !inAtlas(target)) } : {}),
