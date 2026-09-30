@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { pageFacts } from '../adapter/page.js';
 import { blobAt, commitOf, distanceFromHead, filesAt, inHistory, isShallow, upstreamOf, upstreamsOf } from './git.js';
 
@@ -16,6 +16,9 @@ import { blobAt, commitOf, distanceFromHead, filesAt, inHistory, isShallow, upst
  */
 
 const FILES = ['structure.json', 'statistics.json', 'page.json'];
+
+/** What an answer from a tree exported without its history says of itself. */
+export const EXPORTED = 'an exported tree: history and freshness not checked';
 const COMMIT = /^[0-9a-f]{40}$/;
 
 function parsed(text) {
@@ -221,6 +224,34 @@ function behindWords({ ahead, behind }) {
   if (behind === 0) return `${commits(ahead)} behind it`;
   if (ahead === 0) return `${commits(behind)} ahead of it`;
   return `${commits(ahead)} behind it and ${behind} ahead`;
+}
+
+/**
+ * The directory at or above dir that holds atlas/structure.json, for a tree
+ * exported without its git history; null when there is none.
+ */
+export function exportedRoot(dir) {
+  let at = resolve(dir);
+  for (;;) {
+    if (existsSync(join(at, 'atlas', 'structure.json'))) return at;
+    const up = dirname(at);
+    if (up === at) return null;
+    at = up;
+  }
+}
+
+/**
+ * The map of an exported tree: atlas/ in a directory that is not a git
+ * repository. It is checked as any map is, except that there is no history
+ * to hold its commit, so neither history nor freshness is checked, and the
+ * snapshot says so.
+ */
+export function readExportedMap(root) {
+  const identity = { id: 'exported', label: 'the exported map' };
+  const read = Object.fromEntries(FILES.map((file) => [file, readJson(join(root, 'atlas', file))]));
+  const map = checked(read, identity, { noMap: 'run Atlas in a git repository, or in a directory holding atlas/structure.json' });
+  if (!map.ok) return map;
+  return { ok: true, snapshot: snapshotOf(read, identity, map.structure, { exported: true }) };
 }
 
 /** The map committed in the checkout, atlas/ in the working tree. */

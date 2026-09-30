@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { isAbsolute, join, posix, relative } from 'node:path';
 import { isOwnTest, isTestFile } from '../core/landings.js';
 import { isRefShaped } from '../sidecar/git.js';
-import { distanceWords, newerUpstream, noMapAdvice, readSnapshotAt, upstreamMap } from '../sidecar/map.js';
+import { distanceWords, EXPORTED, newerUpstream, noMapAdvice, readSnapshotAt, upstreamMap } from '../sidecar/map.js';
 import { formatFailure } from './errors.js';
 import { boundaryRoot, capitalize, collapse, count, cover, entryOrder, externalsLine, installed, list, pageFacts, readerFiles, readerItem, testsClause, under, worded } from './page.js';
 
@@ -462,9 +462,13 @@ export function mapLine(map) {
   // The fetched upstream holds another map the checkout may be behind; it is
   // named with the flag that answers from it, never switched to.
   if (source?.upstream) at += `; ${source.upstream.name} holds a different map, ${distanceWords(source.upstream)}: run with --ref ${source.upstream.name} to answer from it`;
+  if (source?.exported) at += `; ${EXPORTED}`;
   if (!commit) return date ? `Map from ${date}${at}.` : `The map does not say which commit it is from${at}.`;
   return date ? `Map from commit ${commit}, ${date}${at}.` : `Map from commit ${commit}${at}.`;
 }
+
+/** An answer from an exported tree, as the JSON of explain and gaps says so. */
+export const EXPORTED_FIELDS = Object.freeze({ freshnessChecked: false, historyChecked: false });
 
 // A ref as the JSON of explain and gaps carries it.
 export function refFields(ref) {
@@ -709,6 +713,7 @@ export function explainTarget({ structure, statistics = {}, page = null }, { rep
   const { facts, lines } = explainFound(ctx, found, { ...mapCommit(page, statistics, structure), source });
   if (source?.ref) facts.ref = refFields(source.ref);
   if (source?.upstream) facts.upstream = refFields(source.upstream);
+  if (source?.exported) facts.exported = EXPORTED_FIELDS;
   return { ok: true, ctx, found, facts: sortKeys(facts), lines };
 }
 
@@ -724,7 +729,21 @@ export function explainTarget({ structure, statistics = {}, page = null }, { rep
  * @returns {{ ok: true, structure: object, statistics: object|null, page: object|null, source: object|null }
  *   | { ok: false, code: string, details: string[], whatToDo: string }}
  */
-export function readAnswerMap(repo, ref, noMap) {
+export function readAnswerMap(repo, ref, noMap, { exported = false } = {}) {
+  if (exported) {
+    // A tree exported without its history: its atlas/ is all there is, so a
+    // ref cannot be read and freshness cannot be judged.
+    if (ref != null) return { ok: false, code: 'ATLAS_NOT_A_REPOSITORY', details: ['a ref is read from git history, and an exported tree has none'], whatToDo: 'run it again without --ref; here atlas explain and atlas gaps answer from atlas/' };
+    const structure = readJson(join(repo, 'atlas', 'structure.json'));
+    if (!structure.value) return { ok: false, code: noMap, details: ['atlas/structure.json is not valid JSON'], whatToDo: 'export the tree again from a repository whose map is committed' };
+    return {
+      ok: true,
+      structure: structure.value,
+      statistics: readJson(join(repo, 'atlas', 'statistics.json')).value ?? null,
+      page: readJson(join(repo, 'atlas', 'page.json')).value ?? null,
+      source: { exported: true },
+    };
+  }
   if (ref == null) {
     const structure = readJson(join(repo, 'atlas', 'structure.json'));
     if (structure.invalid) return { ok: false, code: noMap, details: ['atlas/structure.json is not valid JSON'], whatToDo: 'run atlas map and commit atlas/' };
@@ -762,13 +781,13 @@ export function readAnswerMap(repo, ref, noMap) {
  * @param {string[]} argv  the arguments after `explain`
  * @returns {number} exit code
  */
-export function explainCommand(repo, prefix, argv) {
+export function explainCommand(repo, prefix, argv, { exported = false } = {}) {
   const args = parseArgs(argv);
   if (args.error) {
     process.stdout.write(`${args.error}\nexit 2\n`);
     return 2;
   }
-  const map = readAnswerMap(repo, args.ref, 'ATLAS_EXPLAIN_NO_MAP');
+  const map = readAnswerMap(repo, args.ref, 'ATLAS_EXPLAIN_NO_MAP', { exported });
   if (!map.ok) {
     process.stdout.write(formatFailure(map.code, map.details, { exitCode: 2, whatToDo: map.whatToDo }));
     return 2;

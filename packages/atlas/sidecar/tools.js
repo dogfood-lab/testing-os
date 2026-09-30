@@ -7,7 +7,7 @@ import { explainAnswer } from './explain-tool.js';
 import { unplainNames } from './data.js';
 import { changedFiles, checkoutState, mapHashes, stateAt } from './freshness.js';
 import { blobAt, head, inHistory, REF_PATTERN, topLevel } from './git.js';
-import { newerUpstream, noMapAdvice, readCommittedMap, readSnapshotAt, upstreamMap } from './map.js';
+import { exportedRoot, newerUpstream, noMapAdvice, readCommittedMap, readExportedMap, readSnapshotAt, upstreamMap } from './map.js';
 import { overviewAnswer } from './overview-tool.js';
 import { reachAnswer } from './reach-tool.js';
 import { createRefresher } from './refresh.js';
@@ -385,6 +385,7 @@ export function createTools({ refresher = createRefresher() } = {}) {
     }
     const repo = repositoryFor(context);
     if (repo.error) return failed(provenance(), repo.error);
+    if (repo.exported) return exportedAnswer(tool, repo, args);
     const ref = tool.refresh ? null : args.ref ?? null;
     const read = ref ? readSnapshotAt(repo.root, ref) : snapshotFor(repo);
     if (tool.refresh) return refreshAnswer(refresher, repo, read.ok ? read.snapshot : null);
@@ -435,6 +436,27 @@ export function createTools({ refresher = createRefresher() } = {}) {
     // Narrowed as asked, most important first, and cut to its size.
     const sized = sizeAnswer({ tool: name, snapshot, args, atlas: provenance({ repo, snapshot, head: state.head, changed, upstream: shown }), answer: result.answer, sentences, names });
     if (sized.error) return failed(provenance({ repo, snapshot, head: state.head, upstream: shown }), sized.error, names);
+    return answered(sized.atlas, sized.answer, sized.sentences, names);
+  }
+
+  /**
+   * An answer for a tree exported without its history: from atlas/ alone,
+   * by the tools that need nothing else. No commit is checked, nothing is
+   * said to have changed after the map, and no file is read again.
+   */
+  function exportedAnswer(tool, repo, args) {
+    if (!MAP_ONLY.includes(tool.name) || args.ref != null) {
+      return failed(provenance({ repo }), exportedRefusal(tool.name, args.ref != null));
+    }
+    const read = readExportedMap(repo.root);
+    if (!read.ok) return failed(provenance({ repo }), read.error);
+    const { snapshot } = read;
+    const result = tool.answer(snapshot, repo, args);
+    if (!result.ok) return failed(provenance({ repo, snapshot }), result.error, unplainNames(snapshot));
+    const names = unplainNames(snapshot, result.answer);
+    const sentences = [...freshnessSentences(snapshot, []), ...result.sentences];
+    const sized = sizeAnswer({ tool: tool.name, snapshot, args, atlas: provenance({ repo, snapshot }), answer: result.answer, sentences, names });
+    if (sized.error) return failed(provenance({ repo, snapshot }), sized.error, names);
     return answered(sized.atlas, sized.answer, sized.sentences, names);
   }
 
@@ -491,11 +513,31 @@ function repositoryFor({ roots = [], cwd }) {
   }
   const root = topLevel(cwd);
   if (root) return { root, from: 'working directory' };
+  // A tree exported without its history still holds its map.
+  for (const dir of roots) {
+    const exported = exportedRoot(dir);
+    if (exported) return { root: exported, from: 'client root', exported: true };
+  }
+  const exported = exportedRoot(cwd);
+  if (exported) return { root: exported, from: 'working directory', exported: true };
   return {
     error: {
       code: 'ATLAS_SIDECAR_NOT_A_REPOSITORY',
       details: [roots.length > 0 ? 'no client root and not the working directory is inside a git repository' : 'the working directory is not inside a git repository'],
-      whatToDo: 'start atlas mcp in the repository to answer for, or offer it as a root',
+      whatToDo: 'start atlas mcp in the repository to answer for, or offer it as a root; outside git, a directory holding atlas/structure.json is answered from as an exported tree',
     },
+  };
+}
+
+// The tools that answer from the map alone, and so answer in an exported tree.
+const MAP_ONLY = ['atlas_overview', 'atlas_explain', 'atlas_reach', 'atlas_test_gaps'];
+
+// A question an exported tree cannot answer: it has no history for a ref, a
+// commit to compare with or a checkout to map.
+function exportedRefusal(name, ref) {
+  return {
+    code: 'ATLAS_NOT_A_REPOSITORY',
+    details: [ref ? 'a ref is read from git history, and an exported tree has none' : `${name} needs a git repository, and this is a tree exported without its history`],
+    whatToDo: `in an exported tree, ${MAP_ONLY.join(', ')} answer from atlas/ without a ref; ${ref ? 'ask without ref' : `run ${name} in a clone of the repository`}`,
   };
 }

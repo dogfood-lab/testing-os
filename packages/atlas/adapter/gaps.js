@@ -1,7 +1,7 @@
 import { isAbsolute, posix, relative } from 'node:path';
 import { isRefShaped } from '../sidecar/git.js';
 import { formatFailure } from './errors.js';
-import { mapLine, readAnswerMap, refFields } from './explain.js';
+import { EXPORTED_FIELDS, mapLine, readAnswerMap, refFields } from './explain.js';
 import { count, list } from './page.js';
 import { SHOWN, testGaps } from './test-gaps.js';
 import { testReachOf } from './test-reach.js';
@@ -16,6 +16,9 @@ import { testReachOf } from './test-reach.js';
  * never maps, writes nothing, and makes no network call; given --ref, it
  * answers from the map that ref holds, read with git.
  */
+
+// A repository as its page names it: owner/name.
+const OWNER_NAME = /^[^/\s]+\/[^/\s]+$/;
 
 function parseArgs(argv) {
   let json = false;
@@ -260,15 +263,16 @@ function mapLineOf(statistics, structure, source) {
  * @param {string} repo the repository root
  * @param {string} prefix where the caller stands, from the root
  * @param {string[]} argv
- * @param {{ repository?: string|null }} [options] owner/name, for the house rules one repository keeps
+ * @param {{ repository?: string|null, exported?: boolean }} [options] owner/name, for the house rules one
+ *   repository keeps; exported for a tree exported without its git history
  */
-export function gapsCommand(repo, prefix, argv, { repository = null } = {}) {
+export function gapsCommand(repo, prefix, argv, { repository = null, exported = false } = {}) {
   const args = parseArgs(argv);
   if (args.error) {
     process.stdout.write(`${args.error}\nexit 2\n`);
     return 2;
   }
-  const map = readAnswerMap(repo, args.ref, 'ATLAS_GAPS_NO_MAP');
+  const map = readAnswerMap(repo, args.ref, 'ATLAS_GAPS_NO_MAP', { exported });
   if (!map.ok) {
     process.stdout.write(formatFailure(map.code, map.details, { exitCode: 2, whatToDo: map.whatToDo }));
     return 2;
@@ -283,11 +287,14 @@ export function gapsCommand(repo, prefix, argv, { repository = null } = {}) {
       return 2;
     }
   }
-  const answer = gapsAnswer(structure.value, { statistics, repository, target });
+  // An exported tree has no origin to name it; its page does.
+  const owned = exported && typeof map.page?.repo === 'string' && OWNER_NAME.test(map.page.repo) ? map.page.repo : repository;
+  const answer = gapsAnswer(structure.value, { statistics, repository: owned, target });
   const shown = {
     ...answer,
     ...(source?.ref ? { ref: refFields(source.ref) } : {}),
     ...(source?.upstream ? { upstream: refFields(source.upstream) } : {}),
+    ...(source?.exported ? { exported: EXPORTED_FIELDS } : {}),
   };
   process.stdout.write(args.json ? `${JSON.stringify(shown, null, 2)}\n` : `${gapsLines(answer, { mapLine: mapLineOf(statistics, structure.value, source) }).join('\n')}\n`);
   return 0;

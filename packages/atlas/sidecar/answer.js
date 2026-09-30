@@ -1,7 +1,7 @@
 import { ENGINE } from '../adapter/engine.js';
 import { ERRORS } from '../adapter/errors.js';
 import { asLine, asText, capStrings } from './data.js';
-import { distanceWords } from './map.js';
+import { distanceWords, EXPORTED } from './map.js';
 
 /**
  * What every answer carries (docs/atlas-sidecar.spec.md, "Every answer
@@ -144,7 +144,13 @@ export function provenance({ repo = null, snapshot = null, head = null, changed 
   if (ref) {
     atlas.ref = { name: ref.name, commit: ref.commit, ahead: ref.ahead, behind: ref.behind, workingTreeCompared: ref.treeCompared === true };
   }
-  if (repo) {
+  if (repo?.exported) {
+    // No history to hold the map's commit and no checkout to compare it with:
+    // the answer says so, and makes no claim of what changed after the map.
+    atlas.checkout = { root: repo.root, rootFrom: repo.from, head: null };
+    atlas.exported = { historyChecked: false, freshnessChecked: false };
+    parts.push(EXPORTED);
+  } else if (repo) {
     atlas.checkout = { root: repo.root, rootFrom: repo.from, head, changed, changedTotal: changed.length };
     if (head) parts.push(`HEAD ${short(head)}`);
     if (changed.length > 0) {
@@ -271,7 +277,13 @@ export const PROVENANCE_SCHEMA = {
         changedTotal: { type: 'integer', minimum: 0 },
         ...cutMarks('changed'),
       },
-      required: ['root', 'rootFrom', 'head', 'changed', 'changedTotal'],
+      // An exported tree has no history, so what changed is not stated.
+      required: ['root', 'rootFrom', 'head'],
+    },
+    exported: {
+      type: 'object',
+      properties: { historyChecked: { type: 'boolean' }, freshnessChecked: { type: 'boolean' } },
+      required: ['historyChecked', 'freshnessChecked'],
     },
     line: { type: 'string' },
   },
