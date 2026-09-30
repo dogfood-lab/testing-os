@@ -9,6 +9,15 @@ on:
   schedule:
     - cron: '0 6 * * 1'
   workflow_dispatch:
+    inputs:
+      # The run refuses to remove more than a few repository folders at once
+      # (scripts/atlas-render.mjs, checkRemovals); a person who means a larger
+      # removal gives its count here. Empty on the weekly schedule.
+      allow_removals:
+        description: 'Repository folders this run may remove, when more than the usual bound are meant'
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: write
@@ -32,3 +41,4 @@ jobs:
       - run: node scripts/atlas-render.mjs
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          ATLAS_RENDER_ALLOW_REMOVALS: ${{ inputs.allow_removals }}

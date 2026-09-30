@@ -47,6 +47,32 @@ const PUBLIC_HEADERS = {
   'x-github-api-version': '2022-11-28',
 };
 
+// A run removes at most this many folders, or this share of those present,
+// whichever is larger, unless ATLAS_RENDER_ALLOW_REMOVALS says more. A
+// listing that succeeds but comes back empty or cut short (an API fault, a
+// token that lost an org) would otherwise blank the public site.
+export const REMOVAL_FLOOR = 3;
+export const REMOVAL_SHARE = 0.1;
+
+function renderError(code, message, hint) {
+  return Object.assign(new Error(message), { code, hint });
+}
+
+/**
+ * The removals a person has allowed this run, from ATLAS_RENDER_ALLOW_REMOVALS:
+ * null when unset or empty, else a whole number. Anything else stops the run
+ * before a repository is cloned.
+ */
+export function removalAllowance(env) {
+  const raw = String(env.ATLAS_RENDER_ALLOW_REMOVALS ?? '').trim();
+  if (raw === '') return null;
+  if (!/^\d+$/.test(raw)) {
+    throw renderError('ATLAS_RENDER_BAD_ALLOWANCE', `ATLAS_RENDER_ALLOW_REMOVALS is ${JSON.stringify(raw)}, not a count of repositories`,
+      'set it to the number of repository folders this run may remove, or leave it empty');
+  }
+  return Number(raw);
+}
+
 function repoRootDefault() {
   return join(dirname(fileURLToPath(import.meta.url)), '..');
 }
@@ -257,6 +283,7 @@ export async function renderFleet(options = {}) {
   const sleep = options.sleep ?? ((ms) => new Promise((resolve) => setTimeout(resolve, ms)));
   const now = options.now ? options.now() : new Date();
   const dryRun = options.dryRun === true;
+  const allowRemovals = removalAllowance(options.env ?? process.env);
   const repoRoot = options.repoRoot ?? repoRootDefault();
   // The job runs the engine in this tree, which changes between releases
   // without the version moving, so the stamp carries the tree's commit too.
@@ -356,7 +383,7 @@ export async function renderFleet(options = {}) {
   if (!dryRun) {
     if (options.writeBranch) {
       const rendered = renderedNow.map((entry) => entry.repo);
-      await options.writeBranch({ state, fleet: fleetDoc, index, outRoot, paths, rendered, onList, date, publicNames, log });
+      await options.writeBranch({ state, fleet: fleetDoc, index, outRoot, paths, rendered, onList, allowRemovals, date, publicNames, log });
     }
     if (changed && options.issues) issue = await publishIssue(options.issues, date, changes);
   }
@@ -405,6 +432,39 @@ function githubIssues(fetchImpl, token) {
   };
 }
 
+// Every owner/repo folder the render branch holds, sorted.
+function repositoryFolders(atlasDir) {
+  if (!existsSync(atlasDir)) return [];
+  const names = [];
+  for (const owner of readdirSync(atlasDir, { withFileTypes: true }).filter((entry) => entry.isDirectory())) {
+    for (const repo of readdirSync(join(atlasDir, owner.name), { withFileTypes: true }).filter((entry) => entry.isDirectory())) {
+      names.push(`${owner.name}/${repo.name}`);
+    }
+  }
+  return names.sort();
+}
+
+/**
+ * Throws ATLAS_RENDER_MASS_REMOVAL, naming every folder the run would have
+ * removed, when the list the fleet is drawn from is empty while the branch
+ * holds folders, or when the removals exceed REMOVAL_FLOOR or REMOVAL_SHARE of
+ * the folders present, whichever is larger. `allowRemovals`, from
+ * ATLAS_RENDER_ALLOW_REMOVALS, lets through a run that removes at most that
+ * many.
+ */
+export function checkRemovals({ present, leaving, listed, allowRemovals = null }) {
+  if (leaving.length === 0) return;
+  const bound = Math.max(REMOVAL_FLOOR, present.length * REMOVAL_SHARE);
+  const empty = listed === 0;
+  if (!empty && leaving.length <= bound) return;
+  if (allowRemovals != null && leaving.length <= allowRemovals) return;
+  const why = empty
+    ? `the list the fleet is drawn from is empty while the branch holds ${present.length} repository folders`
+    : `${leaving.length} of ${present.length} repository folders would be removed, more than the ${Math.floor(bound)} one run may remove`;
+  throw renderError('ATLAS_RENDER_MASS_REMOVAL', `refusing to remove repository folders: ${why}. It would have removed: ${leaving.join(', ')}`,
+    `check that the listing of ${ORGS.join(' and ')} is whole; if these removals are meant, run again with ATLAS_RENDER_ALLOW_REMOVALS=${leaving.length} (the allow_removals input of a manual run)`);
+}
+
 // The two files a render carries from one run to the next: history.json,
 // which it keeps unwritten when the last one could not be read, and
 // divergence.json, which the next render compares against.
@@ -419,20 +479,21 @@ const CARRIED = new Set(['divergence.json', 'history.json']);
  * fleet is drawn from (`onList`: made private, archived, excluded, or its map
  * removed) loses its folder, which would otherwise hold a path outside the
  * public listing and refuse every later commit; one still on the list keeps
- * its folder when its render failed this run. Split from the clone and the
- * push so a fixture branch can take a run.
+ * its folder when its render failed this run. Before anything is written,
+ * the run refuses (checkRemovals) when the list is empty while folders are
+ * present, or when it would remove more than the bound allows. Split from the
+ * clone and the push so a fixture branch can take a run.
  */
-export function writeRenderFiles(work, { state, fleet, index, outRoot, paths, rendered, onList, publicNames, log }) {
+export function writeRenderFiles(work, { state, fleet, index, outRoot, paths, rendered, onList, allowRemovals = null, publicNames, log }) {
   const atlasDir = join(work, 'indexes', 'atlas');
+  const present = repositoryFolders(atlasDir);
+  const leaving = present.filter((name) => !onList.has(name));
+  checkRemovals({ present, leaving, listed: onList.size, allowRemovals });
   mkdirSync(atlasDir, { recursive: true });
-  for (const owner of readdirSync(atlasDir, { withFileTypes: true }).filter((entry) => entry.isDirectory())) {
-    const ownerDir = join(atlasDir, owner.name);
-    for (const repo of readdirSync(ownerDir, { withFileTypes: true }).filter((entry) => entry.isDirectory())) {
-      const name = `${owner.name}/${repo.name}`;
-      if (onList.has(name)) continue;
-      rmSync(join(ownerDir, repo.name), { recursive: true, force: true });
-      log(`removed indexes/atlas/${name}: no longer on the list`);
-    }
+  for (const name of leaving) {
+    rmSync(join(atlasDir, ...name.split('/')), { recursive: true, force: true });
+    log(`removed indexes/atlas/${name}: no longer on the list`);
+    const ownerDir = join(atlasDir, name.split('/')[0]);
     if (readdirSync(ownerDir).length === 0) rmSync(ownerDir, { recursive: true, force: true });
   }
   writeFileSync(join(atlasDir, 'state.json'), `${JSON.stringify(state, null, 2)}\n`);
@@ -490,7 +551,9 @@ async function commitBranch(payload, token) {
 const invoked = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 if (invoked) {
   main().catch((error) => {
-    process.stderr.write(`${error.message}\n`);
+    const lines = [error.code ? `${error.code}: ${error.message}` : error.message];
+    if (error.hint) lines.push(`hint: ${error.hint}`);
+    process.stderr.write(`${lines.join('\n')}\n`);
     process.exit(1);
   });
 }
