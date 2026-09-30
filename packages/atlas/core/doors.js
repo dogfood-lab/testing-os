@@ -163,6 +163,9 @@ export function mapCommandDoors({ repoPath, tracked, spawned, commands, builtFro
       commands: [],
       runs: recorded.kept,
       runsCount: recorded.count,
+      ...(recorded.cut ? { runsCut: true } : {}),
+      // Read by index.js, which walks the reach from every run, then dropped.
+      allRuns: recorded.all,
       checksCount: recorded.checks,
       mentions: [],
       stages: [],
@@ -624,6 +627,9 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
     ...(runtime ? { workingDirs: workingDirs(stepsByJob) } : {}),
     runs: recorded.kept,
     runsCount: recorded.count,
+    ...(recorded.cut ? { runsCut: true } : {}),
+    // Read by index.js, which walks the reach from every run, then dropped.
+    allRuns: recorded.all,
     checksCount: recorded.checks,
     mentions: [...mentions.values()]
       .filter((mention) => !runKeys.has(`${mention.path}\0${mention.job}`) && !underRun(mention.path, mention.job))
@@ -1239,11 +1245,13 @@ function meets(trigger, gate) {
  * a test runner executes. The list keeps RUNS_RECORDED paths:
  * every path the commands name first, then directories a tool's patterns
  * filled, then the files they matched, taken one from each directory in
- * turn so every directory a tool ran keeps a file and the reach walked from
- * the list reaches every part the door runs. `count` is how many distinct
- * paths there are before that cap, so a door that runs a thousand test files
- * says so without carrying them all, and never loses the script it names.
- * `checks` is how many of those paths are only checked, never run.
+ * turn so every directory a tool ran keeps a file. `count` is how many
+ * distinct paths there are before that cap, so a door that runs a thousand
+ * test files says so without carrying them all, and never loses the script it
+ * names; `cut` says the cap left some out. `all` is every run, which the
+ * reach is walked from, so a part only a run past the cap reaches is still
+ * the door's. `checks` is how many of those paths are only checked, never
+ * run.
  */
 function recordedRuns(entries) {
   const directories = entries.filter((entry) => entry.directory);
@@ -1272,7 +1280,7 @@ function recordedRuns(entries) {
   const paths = [...rank.keys()].sort((a, b) => rank.get(a) - rank.get(b) || (turn.get(a) ?? 0) - (turn.get(b) ?? 0)
     || Number(!executed.has(a)) - Number(!executed.has(b)) || compare(a, b));
   const shown = new Set(paths.slice(0, RUNS_RECORDED));
-  return { all, kept: all.filter((entry) => shown.has(entry.path)), count: paths.length, checks: paths.filter((path) => !executed.has(path)).length };
+  return { all, kept: all.filter((entry) => shown.has(entry.path)), count: paths.length, cut: paths.length > shown.size, checks:paths.filter((path) => !executed.has(path)).length };
 }
 
 /**

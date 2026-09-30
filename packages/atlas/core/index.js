@@ -207,13 +207,16 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   for (const file of graph.files.values()) delete file.http;
   for (const door of doors) {
     if (door.parseError) continue;
+    // Every run, not the list the door records: a part only a run past that
+    // list's cap reaches is still the door's.
+    const every = door.allRuns ?? door.runs;
     // A checker reaches the code it reads, so the reach is walked from every
     // run; what the door writes is read only from the files it runs.
-    const walked = walkReach(door.runs.map((run) => run.path), graph);
+    const walked = walkReach(every.map((run) => run.path), graph);
     door.reach = walked.reach;
     // A binary a door builds to ship runs nowhere here, so what it writes is
     // not the door's.
-    const ran = walkReach(door.runs.filter((run) => run.runKind !== 'checks' && !run.built).map((run) => run.path), graph);
+    const ran = walkReach(every.filter((run) => run.runKind !== 'checks' && !run.built).map((run) => run.path), graph);
     door.reachFiles = ran.files;
     // The files each gate's runs reach, so a place only gated work writes
     // is said under that gate (landings.js).
@@ -225,7 +228,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     // file runs it against its own stand-ins, and a package only loaded
     // calls nothing, so neither is the door's reach for this.
     if (door.kind !== 'package') {
-      const runs = door.runs.filter((run) => run.runKind !== 'checks' && !run.built && !isTestFile(run.path)).map((run) => run.path);
+      const runs = every.filter((run) => run.runKind !== 'checks' && !run.built && !isTestFile(run.path)).map((run) => run.path);
       const walkedRuns = walkReach(runs, graph).files;
       if (walkedRuns.some((path) => (graph.files.get(path)?.githubChanges ?? 0) > 0)) door.sends.changesRepositories = true;
       // git and gh the code it runs starts, which change no part here.
@@ -241,7 +244,8 @@ export function mapRepository({ repoPath, boundaries } = {}) {
     delete door.reachFiles;
     delete door.reachByGate;
     delete door.executed;
-    for (const run of door.runs ?? []) delete run.passes;
+    for (const run of door.allRuns ?? door.runs ?? []) delete run.passes;
+    delete door.allRuns;
   }
   const entryPoints = new Map(boundaryList.map((boundary) => [boundary.name, [...boundary.entryPoints].sort()]));
   // A console script names the function it calls, which is that file's entry
@@ -510,7 +514,7 @@ function collectIgnored(repoPath, tracked) {
 // ungated runs under a null gate.
 function gateReach(door, graph) {
   const groups = new Map();
-  for (const run of door.runs ?? []) {
+  for (const run of door.allRuns ?? door.runs ?? []) {
     if (run.runKind === 'checks' || run.built) continue;
     const key = run.when ? JSON.stringify(sortedKeys(run.when)) : '';
     if (!groups.has(key)) groups.set(key, { when: run.when ?? null, paths: [] });

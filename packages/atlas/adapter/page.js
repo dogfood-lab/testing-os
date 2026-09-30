@@ -3203,7 +3203,7 @@ function limits(ctx, shownText) {
     const recorded = new Set((door.runs ?? []).map((run) => run.path)).size;
     if ((door.runsCount ?? 0) <= recorded) continue;
     const verb = (door.checksCount ?? 0) > 0 ? 'runs or checks' : 'runs';
-    lines.push(`${leadName(door)} ${verb} ${door.runsCount} files and directories; the map records ${recorded} of them, some from every directory, and walks its reach from those.`);
+    lines.push(`${leadName(door)} ${verb} ${door.runsCount} files and directories; the map records ${recorded} of them, some from every directory, and walks its reach from all ${door.runsCount}.`);
   }
   const confidence = ctx.statistics.confidence;
   if (confidence?.level === 'low') {
