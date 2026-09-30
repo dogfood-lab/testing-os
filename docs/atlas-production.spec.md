@@ -87,6 +87,8 @@ One finding per lockfile and job, naming the packages: "site/package-lock.json h
 
 **Becoming a gate.** Notices fail `atlas check` by default only after one release in which the fleet check shows each rule within the bar and the Director says so.
 
+**As built (slice AI).** Beyond the label table above, `windows-*-arm` is win32 arm64 and `macos-13` and older, and `-large`, are darwin x64; a label outside the table, or more than one label, is unresolved. Version ranges are compared with `semver`, npm's own implementation, the one dependency this slice adds. A tool is matched only when the step reaches it through a package script, `npx` or `node_modules/.bin`; a bare `vite build` in a step is not matched. The Python form of D1 has its own rule id, `D1-python`. D2 names its packages in the lock's own order. A tracked `.npmrc` with `engine-strict=true` makes D1 read every package the lock installs. A finding on a step inlined from a reusable workflow names the file and no line. `atlas_check_change` treats a changed lockfile as a full-refresh reason.
+
 ## Part 5: the precision bar
 
 As in the test-gap spec. Before a rule ships, it runs over every fleet repository at its default branch, and the coordinator reviews every firing. A rule wrong more than once in ten does not ship. A rule with fewer than 20 firings is judged on all of them and marked provisional. A finding is wrong when the repository contradicts a fact in it, or when the door it names is green for a reason the rule should have seen. The result is committed as `docs/atlas-door-checks.fleet-check.md`.

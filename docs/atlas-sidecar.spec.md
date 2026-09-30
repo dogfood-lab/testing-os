@@ -29,7 +29,7 @@ A seventh tool came with the test-gap slice: `atlas_test_gaps`, what no test rea
 
 The first five answer from the committed map at once (about a second, as `explain` does today). A full map takes 1 min 43 s and a full check 1 min 10 s on this repository (measured 2026-09-26), so nothing interactive waits on one. `atlas_check_change` re-reads only the changed files; target under 5 s for 20 changed files here.
 
-**What `atlas_check_change` can settle.** It recomputes what the changed files import, write and read, and updates who imports what from that. It cannot settle a change to a manifest, a workflow, a configuration file, the boundaries file, or a deleted or renamed file; for those it says a full refresh is needed and does not guess.
+**What `atlas_check_change` can settle.** It recomputes what the changed files import, write and read, and updates who imports what from that. It cannot settle a change to a manifest, a workflow, a configuration file, the boundaries file, or a deleted or renamed file; for those it says a full refresh is needed and does not guess. Since 1.24.0 a lockfile is one of them, and when a workflow, a lockfile or a manifest is among the changed files it also gives the door findings on the doors they touch, read from the tree (`docs/atlas-production.spec.md`, Part 4).
 
 **What `atlas_reach` follows.** It follows `parsed` and `declared` edges as far as they go. It lists `text`, `weak` and `history` facts one step out and never follows them. It lists `unresolved` and `outside` entries where the walk stops, so the asker sees where the map ends.
 
