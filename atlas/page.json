@@ -121,23 +121,37 @@
   "changes": {
     "fileCounts": {
       "added": 1,
-      "changed": 11,
+      "changed": 2,
       "moved": 0,
-      "parts": 6,
+      "parts": 2,
       "removed": 0
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI runs 1 more file than before.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release runs 1 more file than before.",
+        "subjects": [
+          ".github/workflows/release.yml"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; 1 file added and 11 changed content.",
+        "sentence": "1 file added and 2 changed content, across 2 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "126470978d4f74beac7ac0b4897604cf82e7e095",
-      "generatedAt": "2026-09-30T15:52:36.048Z"
+      "commit": "7f84247237ec5f6e0b707821256485aa0951fe9c",
+      "generatedAt": "2026-09-30T16:08:19.601Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -161,9 +175,9 @@
     "Window: 180 days; a pair counts from 10 shared commits, since 39 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 1,
-  "commit": "7f84247237ec5f6e0b707821256485aa0951fe9c",
+  "commit": "96587a7e33c7201be2c5e4bd3b9b1c376b1e0562",
   "defaultBranch": "main",
-  "derived": "23 parts, mostly JavaScript (1539 files), TypeScript (213), Python (195), Rust (93), GDScript (33), shell (18), HTML (14), Astro (8), CSS (5), C# (3) and PowerShell (1). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
+  "derived": "23 parts, mostly JavaScript (1540 files), TypeScript (213), Python (195), Rust (93), GDScript (33), shell (18), HTML (14), Astro (8), CSS (5), C# (3) and PowerShell (1). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
   "doors": [
     {
       "checks": [
@@ -452,8 +466,8 @@
         "scripts/check-handbook-imagery.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 746,
-      "runsMore": 760,
+      "runsCount": 747,
+      "runsMore": 761,
       "sends": [
         "publishes workspace packages to npm and a container image",
         "creates a GitHub release"
@@ -745,8 +759,8 @@
         "scripts/check-lockfile-drift-ci.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 745,
-      "runsMore": 759,
+      "runsCount": 746,
+      "runsMore": 760,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -1409,7 +1423,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-30T16:08:19.601Z",
+  "generatedAt": "2026-09-30T16:21:12.044Z",
   "limits": [
     "4 import sites name declared dependencies that share their names with local modules (datasets, docx and xrpl); they are read as the dependencies, which are not in this repository.",
     "168 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 165 more.",
@@ -1425,8 +1439,8 @@
     "28 commands are built at run time and not followed, 20 of them in tests.",
     "1 file belongs to no part: packages/.gitkeep.",
     "Readers marked (found by text) come from scanning unparsed files.",
-    "Release runs or checks 750 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "CI runs or checks 746 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
+    "Release runs or checks 751 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "CI runs or checks 747 files and directories; the map records 200 of them, some from every directory, and walks its reach from those."
   ],
   "mainDoor": ".github/workflows/ingest.yml",
   "partLabels": {
@@ -1720,9 +1734,9 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 968,
+  "testFiles": 969,
   "testedBy": {
-    "atlas": 272,
+    "atlas": 273,
     "dogfood-swarm": 306,
     "findings": 144,
     "ingest": 85,

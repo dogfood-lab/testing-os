@@ -105,7 +105,7 @@
             "stepPrograms",
             "unresolvedEntry"
           ],
-          "hash": "7704bc9b7a461eaa700e07f3bcb69674b55821f92611c00a8a1bf65c3e19f7a8",
+          "hash": "87905074835bc53ef7ad7076f2035881f5fe163c8c5c91d89eb20df8870e4ec0",
           "importOrder": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/languages.js",
@@ -2791,6 +2791,14 @@
           "spawns": [
             "packages/atlas/cli.js"
           ],
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "693dff3c71960e5ef9e009f1d84a0b5e2ee88fbf8b5493ef9439d3d1883f59aa",
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js"
+          ],
+          "path": "packages/atlas/adapter/step-programs.test.js",
           "testFramework": "node --test"
         },
         {
@@ -5860,7 +5868,7 @@
       "testRunners": [
         "node --test"
       ],
-      "testedBy": 272,
+      "testedBy": 273,
       "unresolvedNamed": [
         {
           "path": "packages/atlas/adapter/divergence-envelope.test.js",
@@ -38697,7 +38705,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "83d785e648f59fb9d62a6db3a371b9c721c5cfed1fc188b60c6aedb1cdd47a63",
+          "hash": "9ef167188af1875e6c3b7b32b6c2311e7567618a53c01b70169257e87d19e285",
           "path": "CHANGELOG.md"
         },
         {
@@ -45148,7 +45156,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 746,
+      "runsCount": 747,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -45176,7 +45184,7 @@
         {
           "coverage": true,
           "dir": "packages/atlas",
-          "files": 254,
+          "files": 255,
           "job": "build-and-test",
           "junit": true,
           "runner": "node --test",
@@ -45426,7 +45434,6 @@
         {
           "job": "ingest",
           "programs": [
-            "attempt",
             "echo",
             "git",
             "sleep"
@@ -46474,7 +46481,6 @@
         {
           "job": "deploy",
           "programs": [
-            "attempt",
             "awk",
             "curl",
             "echo",
@@ -46485,7 +46491,6 @@
         {
           "job": "a11y",
           "programs": [
-            "attempt",
             "cat",
             "echo",
             "npx",
@@ -46609,7 +46614,6 @@
         {
           "job": "publish",
           "programs": [
-            "attempt",
             "echo",
             "mkdir",
             "npm",
@@ -46661,13 +46665,10 @@
           "job": "publish",
           "programs": [
             "1",
-            "attempt",
             "echo",
             "mapfile",
             "node",
             "npm",
-            "published",
-            "skipped",
             "sleep"
           ],
           "step": "Publish public packages to npm (idempotent + resilient)"
@@ -48954,7 +48955,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 750,
+      "runsCount": 751,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -48991,7 +48992,7 @@
         },
         {
           "dir": "packages/atlas",
-          "files": 254,
+          "files": 255,
           "job": "publish",
           "runner": "node --test",
           "step": "Verify (full pre-publish gate)",
@@ -50804,8 +50805,8 @@
   ],
   "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "7f84247237ec5f6e0b707821256485aa0951fe9c",
-    "tracked": 3929
+    "commit": "96587a7e33c7201be2c5e4bd3b9b1c376b1e0562",
+    "tracked": 3930
   },
   "landings": [
     {
@@ -63579,7 +63580,7 @@
       "target": "README.md"
     }
   ],
-  "testFiles": 968,
+  "testFiles": 969,
   "unassigned": [
     {
       "hash": "ae8cd9e48976f29e3293dbbe6a4b41aff3f2b9b968fcfb551ce183a0b08ed8cc",
