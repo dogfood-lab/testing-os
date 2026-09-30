@@ -69,7 +69,7 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 2,
+      "added": 3,
       "changed": 275,
       "moved": 0,
       "parts": 9,
@@ -153,7 +153,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "2 files added and 275 changed content, across 9 parts.",
+        "sentence": "3 files added and 275 changed content, across 9 parts.",
         "subjects": []
       }
     ],
@@ -230,7 +230,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 2 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "fe9bf666d4daa3f214126dd3b29d711e718995e8",
+  "commit": "5bbcb23e5383850ee4b342223e8f4a8783e393e5",
   "defaultBranch": "main",
   "derived": "13 parts, mostly TypeScript (258 files), JavaScript (16), CSS (2), Astro (1) and HTML (1). Work enters through 9 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run db-cluster and db-cluster-mcp. People import @mcptoolshop/db-cluster.",
   "doors": [
@@ -406,7 +406,9 @@
       ],
       "runsCount": 127,
       "runsMore": 124,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request",
@@ -1004,9 +1006,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [],
-  "generatedAt": "2026-09-28T13:15:42.041Z",
+  "generatedAt": "2026-09-30T17:58:37.663Z",
   "limits": [
     "17 imports could not be resolved: `dashboard/lib/apply-redaction.d.ts` imports `../../dist/dashboard/dashboard-model.js`, which a build generates; `examples/agent-safe-app-db/index.ts` imports `@mcptoolshop/db-cluster/policy`, which a build generates, twice; `examples/agent-safe-app-db/index.ts` imports `@mcptoolshop/db-cluster/sdk`, which a build generates; and 13 more.",
     "5 writes and 14 reads use paths built at run time and are not named here.",

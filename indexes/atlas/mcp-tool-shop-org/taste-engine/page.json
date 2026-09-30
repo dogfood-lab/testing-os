@@ -24,13 +24,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "changed": 235,
       "moved": 0,
       "parts": 10,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "landing",
         "sentence": "migrations/ is now read by src/db/migrate.ts.",
@@ -56,7 +70,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "235 files changed content, across 10 parts.",
+        "sentence": "1 file added and 235 changed content, across 10 parts.",
         "subjects": []
       }
     ],
@@ -71,7 +85,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "c87c2843831a453a32bd9fc11c45984e6762e228",
+  "commit": "00527bb4e671ff447487046968fbd215e6dbeb10",
   "defaultBranch": "main",
   "derived": "11 parts, mostly TypeScript (142 files), shell (7), JavaScript (3), CSS (2), Astro (1) and HTML (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. People run taste.",
   "doors": [
@@ -104,11 +118,13 @@
       ],
       "runsCount": 1,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request to main touching 11 paths",
-        "on a push to main touching 11 paths",
+        "on a pull request to main touching 12 paths",
+        "on a push to main touching 12 paths",
         "or by hand"
       ]
     },
@@ -174,9 +190,9 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [],
-  "generatedAt": "2026-09-28T13:23:06.048Z",
+  "generatedAt": "2026-09-30T18:06:09.422Z",
   "limits": [
     "7 reads use paths built at run time and are not named here.",
     "15 writes and 73 reads go to a path their caller passes, not to this repository.",

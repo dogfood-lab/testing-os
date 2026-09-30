@@ -30,13 +30,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "changed": 101,
       "moved": 0,
       "parts": 10,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.",
@@ -48,19 +62,8 @@
       },
       {
         "kind": "door",
-        "sentence": "repomesh-broadcast now also checks package.json.",
-        "subjects": [
-          ".github/workflows/repomesh-broadcast.yml",
-          "package.json"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "shipcheck (package.json) is a new command. It runs bin/shipcheck.mjs.",
-        "subjects": [
-          "package.json",
-          "bin/shipcheck.mjs"
-        ]
+        "sentence": "And 2 more changes to doors.",
+        "subjects": []
       },
       {
         "kind": "landing",
@@ -94,7 +97,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "101 files changed content, across 10 parts.",
+        "sentence": "1 file added and 101 changed content, across 10 parts.",
         "subjects": []
       }
     ],
@@ -109,7 +112,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "838720f99155a0c6e0be6baa92dd87e1504abdb4",
+  "commit": "960400504764966256327f4a0fb89126e1647945",
   "defaultBranch": "main",
   "derived": "10 parts, mostly Markdown (79 files); code in JavaScript (5), CSS (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run shipcheck.",
   "doors": [
@@ -144,12 +147,13 @@
       "runsCount": 2,
       "runsMore": 0,
       "sends": [
+        "uploads coverage to Codecov",
         "sends a dispatch to dogfood-lab/testing-os on main"
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 12 paths",
-        "on a push to main touching 12 paths",
+        "on a pull request touching 13 paths",
+        "on a push to main touching 13 paths",
         "or by hand"
       ]
     },
@@ -294,9 +298,9 @@
       "to": "bin"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [],
-  "generatedAt": "2026-09-28T13:20:58.947Z",
+  "generatedAt": "2026-09-30T18:03:46.481Z",
   "limits": [
     "2 reads use paths built at run time and are not named here.",
     "4 writes and 31 reads go to the directory the command is run in, not to this repository.",

@@ -341,7 +341,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "57abf1a04aa26d467fc8f1236477dffbed82832fe6a930b51bed2f33d06d985f",
+          "hash": "e8a9e445717fc17b8471084eb5a9e0d7538533242f1a67594910fd590f61cbfd",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -1919,6 +1919,10 @@
         {
           "hash": "f97e63d8d8b6586cb3fdd6a7407e3184e9a14eb53e5617d7d211ecb5e05a121b",
           "path": "audit-manifest.json"
+        },
+        {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
         },
         {
           "hash": "c9e9cdfb78c629ecec16791c765aaf100b50cdbdae50466812258ba9df9b303e",
@@ -7316,9 +7320,16 @@
         {
           "job": "test",
           "programs": [
+            "npx"
+          ],
+          "step": "Coverage report for Codecov"
+        },
+        {
+          "job": "test",
+          "programs": [
             "npm"
           ],
-          "step": "5"
+          "step": "8"
         }
       ],
       "elsewhere": [],
@@ -7327,7 +7338,8 @@
       "mentions": [],
       "name": "CI",
       "permissions": [
-        "contents:read"
+        "contents:read",
+        "id-token:write"
       ],
       "pushes": false,
       "reach": [
@@ -7381,8 +7393,10 @@
       "stages": [],
       "tests": [
         {
+          "coverage": true,
           "files": 72,
           "job": "test",
+          "junit": true,
           "runner": "node --test",
           "step": "4",
           "through": [
@@ -7393,7 +7407,7 @@
           "files": 72,
           "job": "test",
           "runner": "node --test",
-          "step": "5",
+          "step": "8",
           "through": [
             "npm run verify"
           ]
@@ -7407,6 +7421,7 @@
             ".github/workflows/**",
             "atlas/**",
             "bin/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "site/astro.config.mjs",
@@ -7425,6 +7440,7 @@
             ".github/workflows/**",
             "atlas/**",
             "bin/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "site/astro.config.mjs",
@@ -7442,7 +7458,10 @@
       ],
       "uses": [
         "actions/checkout",
-        "actions/setup-node"
+        "actions/download-artifact",
+        "actions/setup-node",
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -7761,10 +7780,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "c0ee7203c230fd1277228f27c982ac4707cc0040",
-    "tracked": 625
+    "commit": "64fe05b375eedcfde4fbb7c344f837b5527f5fa8",
+    "tracked": 626
   },
   "landings": [
     {

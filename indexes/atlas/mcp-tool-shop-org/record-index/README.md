@@ -1,6 +1,6 @@
 # record-index: how it works
 
-Mapped at 2026-09-28 from commit b48f7b6 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 2c20d4b by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,12 +8,14 @@ Mapped at 2026-09-28 from commit b48f7b6 by Atlas 1.23.4.
 
 ## What changed since 2026-09-25 (a9a84a2)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - record_index (pyproject.toml) is a new package. It loads record_index/__init__.py.
-- No file changed.
+- 1 file added and 1 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 5 paths; on a push touching 5 paths; or by hand. Runs tests/.
+1. **CI.** On a pull request touching 6 paths; on a push touching 6 paths; or by hand. Runs tests/.
 2. **pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Release.** When a release is published. Checks record_index/.
 4. **record_index** (the package people import). Loads record_index/__init__.py.
@@ -22,6 +24,7 @@ Mapped at 2026-09-28 from commit b48f7b6 by Atlas 1.23.4.
 
 1. The workflow runs tests/ in tests.
 2. That reaches record_index (10 files).
+3. It uploads coverage to Codecov.
 
 ## Who reads the results
 

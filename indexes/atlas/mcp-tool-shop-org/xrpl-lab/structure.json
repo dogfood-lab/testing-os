@@ -9,7 +9,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "e584792ab8520f2a134b48d3ba746c2caaa87a1669d9d698407fff1c7bf3c61a",
+          "hash": "766e34c53a3bed29d64b63631b3b990f761c15326fb16f2b9ea6722c4ff96ea9",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -373,15 +373,19 @@
           "path": "SHIP_GATE.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "7074aa4a84393a56cb9ed6fcc1f5bea6ec612eab2e20efc21a7645cd10a2672b",
           "path": "package.json"
         },
         {
-          "hash": "6248cf63f43d893e5730f6c4a4ef822f71e3b3cff5b2377dc3af95ad07d6a813",
+          "hash": "755e562f20a39cebc55448289fb14523fe0d6104779c8a842da8bc60d3a5dbe6",
           "path": "pyproject.toml"
         },
         {
-          "hash": "dbb276abadb76516bc808f85f21cef2567a1f4b2c68040769ad54496b345e345",
+          "hash": "f34bec67d8adebc6182eb6c420d7fde65299708a3e2574c2332f81ed0ad79753",
           "path": "uv.lock"
         },
         {
@@ -9705,7 +9709,8 @@
       ],
       "name": "CI",
       "permissions": [
-        "contents:read"
+        "contents:read",
+        "id-token:write"
       ],
       "pushes": false,
       "reach": [
@@ -9803,6 +9808,7 @@
             ".github/workflows/**",
             "README.md",
             "atlas/**",
+            "codecov.yml",
             "modules/**",
             "pyproject.toml",
             "site/**",
@@ -9818,6 +9824,7 @@
             ".github/workflows/**",
             "README.md",
             "atlas/**",
+            "codecov.yml",
             "modules/**",
             "pyproject.toml",
             "site/**",
@@ -9833,9 +9840,11 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
         "actions/setup-python",
-        "actions/upload-artifact"
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -10476,10 +10485,10 @@
       "to": "xrpl_lab"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "454f364c2c4c05c2149f8fd23b98123f50a019c2",
-    "tracked": 284
+    "commit": "15a48f1f10d1938ae1a5ec5b45e4bfabdf365182",
+    "tracked": 285
   },
   "landings": [
     {

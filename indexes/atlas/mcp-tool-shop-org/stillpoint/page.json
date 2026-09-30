@@ -1,5 +1,10 @@
 {
-  "authored": [],
+  "authored": [
+    ".claude/",
+    ".github/",
+    "root",
+    "site/"
+  ],
   "breaks": [
     {
       "calledBy": [
@@ -25,13 +30,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "changed": 107,
       "moved": 0,
       "parts": 7,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "CI now also runs packages/ui/vite.config.ts.",
@@ -42,22 +61,8 @@
       },
       {
         "kind": "door",
-        "sentence": "CI no longer runs packages/server/src/engine-manager.test.ts, packages/server/src/presets.test.ts, packages/server/src/state.test.ts and 1 more.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "packages/server/src/engine-manager.test.ts",
-          "packages/server/src/presets.test.ts",
-          "packages/server/src/state.test.ts",
-          "packages/server/src/version-alignment.test.ts"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "stillpoint (apps/desktop/src-tauri/Cargo.toml) is a new desktop app. It runs apps/desktop/src-tauri/src/main.rs.",
-        "subjects": [
-          "apps/desktop/src-tauri/Cargo.toml",
-          "apps/desktop/src-tauri/src/main.rs"
-        ]
+        "sentence": "And 2 more changes to doors.",
+        "subjects": []
       },
       {
         "kind": "landing",
@@ -90,7 +95,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "107 files changed content, across 7 parts.",
+        "sentence": "1 file added and 107 changed content, across 7 parts.",
         "subjects": []
       }
     ],
@@ -105,7 +110,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "c7fbc277057214aea33336843166518ea69f7d9d",
+  "commit": "6054b1b1dfdb91de994b7f227c3baff47388ae48",
   "defaultBranch": "main",
   "derived": "7 parts, mostly TypeScript (26 files), CSS (3), JavaScript (3), Rust (2), Astro (1), HTML (1) and PowerShell (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. stillpoint is a desktop app built from apps/desktop/src-tauri (nothing ships it).",
   "doors": [
@@ -138,11 +143,13 @@
       ],
       "runsCount": 4,
       "runsMore": 1,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 7 paths",
-        "on a push to main touching 7 paths",
+        "on a pull request touching 8 paths",
+        "on a push to main touching 8 paths",
         "or by hand"
       ]
     },
@@ -212,23 +219,8 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [
-    {
-      "addedBy": "dependabot[bot]",
-      "place": ".claude/",
-      "writers": []
-    },
-    {
-      "addedBy": "dependabot[bot]",
-      "place": ".github/",
-      "writers": []
-    },
-    {
-      "addedBy": "dependabot[bot]",
-      "place": "apps/desktop/",
-      "writers": []
-    },
     {
       "place": "apps/desktop/msix/Assets/",
       "writers": [
@@ -252,29 +244,9 @@
       "writers": [
         "apps/desktop/src-tauri/gen-icons.mjs"
       ]
-    },
-    {
-      "addedBy": "dependabot[bot]",
-      "place": "packages/server/",
-      "writers": []
-    },
-    {
-      "addedBy": "dependabot[bot]",
-      "place": "packages/ui/",
-      "writers": []
-    },
-    {
-      "addedBy": "dependabot[bot]",
-      "place": "root",
-      "writers": []
-    },
-    {
-      "addedBy": "dependabot[bot]",
-      "place": "site/",
-      "writers": []
     }
   ],
-  "generatedAt": "2026-09-28T13:22:29.415Z",
+  "generatedAt": "2026-09-30T18:05:30.714Z",
   "limits": [
     "2 writes and 12 reads go to a path their caller passes, not to this repository.",
     "4 test files under `packages/server/src/` are not run by CI on Linux, where the shell expands `**` as one directory level.",

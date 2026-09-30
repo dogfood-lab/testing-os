@@ -13,7 +13,7 @@
           "path": ".github/workflows/pages.yml"
         },
         {
-          "hash": "0ed6bc70109328409ff6e79d3951e2909a2f332a48edff022140bf9073af0075",
+          "hash": "5d76906c929f0880514cc6abcf1888f6dca0748f2e8450c5d2ba4677b88e6622",
           "path": ".github/workflows/verify.yml"
         }
       ],
@@ -7574,11 +7574,15 @@
           "path": "catalog.json"
         },
         {
-          "hash": "4aff222822863dde4cee1dc126afa0e945baa28b45e60a27257f6ff7ddc058fc",
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
+          "hash": "bdef1e372bc1aa5552a30c27ff1519608fb69b96f83a427b3678d025eaafbc65",
           "path": "package-lock.json"
         },
         {
-          "hash": "ffd24339239ec70a01751f920e960e61c05511f96fb2e7ff80114e716a2d06bb",
+          "hash": "be4a158f399f1e225596d673806e8406939c5e931e3c4794d792b1c32cc8cf10",
           "path": "package.json"
         }
       ],
@@ -7993,7 +7997,10 @@
       "landings": [],
       "mentions": [],
       "name": "Verify",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -8051,8 +8058,10 @@
       "stages": [],
       "tests": [
         {
+          "coverage": true,
           "files": 3,
           "job": "verify",
+          "junit": true,
           "runner": "vitest",
           "step": "Run tests",
           "through": [
@@ -8076,7 +8085,10 @@
       ],
       "uses": [
         "actions/checkout",
-        "actions/setup-node"
+        "actions/download-artifact",
+        "actions/setup-node",
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     }
@@ -8089,10 +8101,10 @@
       "to": "scripts"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "923a79252e455ddb1b310e2b01938f7bca211d7c",
-    "tracked": 1904
+    "commit": "dedfb41c6fce37071cb370bbf59beac16286c10d",
+    "tracked": 1905
   },
   "landings": [
     {

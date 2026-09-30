@@ -1,26 +1,26 @@
 # storyboard-os: how it works
 
-Mapped at 2026-09-28 from commit 66b9cce by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 736766f by Atlas 1.23.5.
 
 ## What this is
 
-14 parts, mostly TypeScript (172 files), Astro (19), JavaScript (6) and CSS (2). Work enters through 9 doors; the busiest is CI, which reaches 11 parts. It publishes @storyboard-os/cinematic-domain (packages/cinematic-storyboard-domain), @storyboard-os/marketing-domain (packages/marketing-storyboard-domain), @storyboard-os/rpg-domain (packages/rpg-storyboard-domain), @storyboard-os/canvas (packages/storyboard-canvas), @storyboard-os/core (packages/storyboard-core) and @storyboard-os/routing (packages/storyboard-routing) to npm. It deploys a site to GitHub Pages. People import @storyboard-os/canvas, @storyboard-os/cinematic-domain, @storyboard-os/core, @storyboard-os/marketing-domain, @storyboard-os/routing and @storyboard-os/rpg-domain.
+14 parts, mostly TypeScript (175 files), Astro (19), JavaScript (6) and CSS (2). Work enters through 9 doors; the busiest is CI, which reaches 11 parts. It publishes @storyboard-os/cinematic-domain (packages/cinematic-storyboard-domain), @storyboard-os/marketing-domain (packages/marketing-storyboard-domain), @storyboard-os/rpg-domain (packages/rpg-storyboard-domain), @storyboard-os/canvas (packages/storyboard-canvas), @storyboard-os/core (packages/storyboard-core) and @storyboard-os/routing (packages/storyboard-routing) to npm. It deploys a site to GitHub Pages. People import @storyboard-os/canvas, @storyboard-os/cinematic-domain, @storyboard-os/core, @storyboard-os/marketing-domain, @storyboard-os/routing and @storyboard-os/rpg-domain.
 
 ## What changed since 2026-09-25 (6714e4a)
 
+- CI's push trigger now also names `codecov.yml`.
 - Publish to npm no longer runs packages/cinematic-storyboard-domain/package.json, packages/marketing-storyboard-domain/package.json, packages/rpg-storyboard-domain/package.json and 3 more.
 - @storyboard-os/cinematic-domain (packages/cinematic-storyboard-domain/package.json) is a new package. It loads packages/cinematic-storyboard-domain/schema/production-brief.json and packages/cinematic-storyboard-domain/src/index.ts.
-- @storyboard-os/marketing-domain (packages/marketing-storyboard-domain/package.json) is a new package. It loads packages/marketing-storyboard-domain/schema/campaign-handoff.schema.json and packages/marketing-storyboard-domain/src/index.ts.
-- And 4 more changes to doors.
+- And 5 more changes to doors.
 - packages/cinematic-storyboard-domain/package.json is now also read by .github/workflows/publish.yml.
 - packages/marketing-storyboard-domain/package.json is now also read by .github/workflows/publish.yml.
 - packages/rpg-storyboard-domain/package.json is now also read by .github/workflows/publish.yml.
 - And 3 more new writers and readers of places.
-- No file changed.
+- 4 files added and 17 changed content, across 11 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main; on a push to main touching 11 paths. Runs .github/scripts/check-pack-contents.mjs, .github/scripts/check-site-dist.mjs, apps/cinematic-storyboard/astro.config.mjs and 103 more; builds packages/cinematic-storyboard-domain/src/index.ts, packages/marketing-storyboard-domain/src/index.ts, packages/rpg-storyboard-domain/src/index.ts and 3 more.
+1. **CI.** On a pull request to main; on a push to main touching 12 paths. Runs .github/scripts/check-pack-contents.mjs, .github/scripts/check-site-dist.mjs, apps/cinematic-storyboard/astro.config.mjs and 103 more; builds packages/cinematic-storyboard-domain/src/index.ts, packages/marketing-storyboard-domain/src/index.ts, packages/rpg-storyboard-domain/src/index.ts and 3 more.
 2. **Publish to npm.** When a release is published; or by hand. Runs .github/scripts/check-pack-contents.mjs, apps/cinematic-storyboard/astro.config.mjs, apps/cinematic-storyboard/src/ and 90 more; builds packages/cinematic-storyboard-domain/src/index.ts, packages/marketing-storyboard-domain/src/index.ts, packages/rpg-storyboard-domain/src/index.ts and 3 more.
 3. **Deploy site to GitHub Pages.** On a push to main touching 6 paths; or by hand. Runs .github/scripts/check-site-dist.mjs, site/astro.config.mjs and site/src/.
 4. **@storyboard-os/cinematic-domain** (the package people import). Loads packages/cinematic-storyboard-domain/src/index.ts and packages/cinematic-storyboard-domain/schema/production-brief.json.
@@ -33,6 +33,7 @@ Mapped at 2026-09-28 from commit 66b9cce by Atlas 1.23.4.
 ## What happens through CI
 
 1. The workflow runs .github/scripts/check-pack-contents.mjs and .github/scripts/check-site-dist.mjs in .github, apps/cinematic-storyboard/astro.config.mjs and apps/cinematic-storyboard/src/ in cinematic-storyboard, 13 files in cinematic-storyboard-domain, apps/marketing-storyboard/astro.config.mjs and apps/marketing-storyboard/src/ in marketing-storyboard, 10 files in marketing-storyboard-domain, and 60 files in 6 more parts; it builds packages/cinematic-storyboard-domain/src/index.ts in cinematic-storyboard-domain, packages/marketing-storyboard-domain/src/index.ts in marketing-storyboard-domain, packages/rpg-storyboard-domain/src/index.ts in rpg-storyboard-domain, packages/storyboard-canvas/src/index.ts in storyboard-canvas, packages/storyboard-core/src/index.ts in storyboard-core and packages/storyboard-routing/src/index.ts in storyboard-routing.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 

@@ -8,7 +8,7 @@
   ],
   "breaks": [
     {
-      "doors": 4,
+      "doors": 3,
       "importedBy": [],
       "importedByTests": [],
       "kind": "part",
@@ -36,10 +36,10 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 1,
+      "changed": 2,
       "moved": 0,
-      "parts": 0,
+      "parts": 2,
       "removed": 0
     },
     "items": [
@@ -52,8 +52,30 @@
         ]
       },
       {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release no longer runs bin/sovereign.js.",
+        "subjects": [
+          ".github/workflows/release.yml",
+          "bin/sovereign.js"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "1 file added and 2 changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -68,9 +90,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "b5f1ba51730de2346327de4981d7bc860ad195d5",
+  "commit": "107b2aab0f65a8ee04e0a8796c8d7e916b2227a6",
   "defaultBranch": "main",
-  "derived": "8 parts, mostly JavaScript (52 files), HTML (39), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run sovereign. People import @mcptoolshop/sovereign.",
+  "derived": "8 parts, mostly JavaScript (52 files), HTML (39), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to npm. It deploys a site to GitHub Pages. People run sovereign. People import @mcptoolshop/sovereign.",
   "doors": [
     {
       "checks": [],
@@ -106,11 +128,13 @@
       ],
       "runsCount": 4,
       "runsMore": 1,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request to main touching 7 paths",
-        "on a push to main touching 7 paths",
+        "on a pull request to main touching 8 paths",
+        "on a push to main touching 8 paths",
         "or by hand"
       ]
     },
@@ -125,11 +149,6 @@
       "pushes": false,
       "reach": [
         {
-          "boundary": "bin",
-          "depth": 0,
-          "files": 1
-        },
-        {
           "boundary": "test",
           "depth": 0,
           "files": 4
@@ -141,13 +160,12 @@
         }
       ],
       "runs": [
-        "bin/sovereign.js",
         "test/determinism.test.mjs",
         "test/playability.test.mjs",
         "test/smoke.test.mjs"
       ],
-      "runsCount": 4,
-      "runsMore": 1,
+      "runsCount": 3,
+      "runsMore": 0,
       "sends": [
         "publishes to npm",
         "creates a GitHub release"
@@ -252,9 +270,9 @@
       "to": "tools"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [],
-  "generatedAt": "2026-09-28T13:21:19.614Z",
+  "generatedAt": "2026-09-30T18:04:11.917Z",
   "limits": [
     "10 writes and 9 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",

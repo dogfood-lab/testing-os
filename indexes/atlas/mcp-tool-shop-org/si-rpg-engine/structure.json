@@ -1373,7 +1373,7 @@
           "exports": [
             "apply"
           ],
-          "hash": "ebc9213841d94f9481b65d18fdb2e4076a96d550190d0781c49a4a90499c3160",
+          "hash": "be7122ae11381828a2572577764c33a80e1f0f857babd1156b3f43584930bb3b",
           "path": "packages/bench/plants.js"
         },
         {
@@ -2245,7 +2245,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "4ab72284c717592afb5eb646d84e0dc6ec4939c46fe9e56b68a47469048293cb",
+          "hash": "2b4003a86030c627cafcba6b096657aa071404468e658537dd08f2171416baf9",
           "path": "docs/HANDOFF.md"
         },
         {
@@ -2409,8 +2409,16 @@
           "path": "docs/dispatch-f5-push-mass.md"
         },
         {
+          "hash": "ae81fb55f46e902a671cb58618efeba23e725a6f741f729e35793e9d42a5c40d",
+          "path": "docs/dispatch-host-binding.md"
+        },
+        {
           "hash": "6ee9ebc4e2acfa6119adc8654ccc36e9269e2a2c1d2eb1c324ee58aa4bc9febb",
           "path": "docs/dispatch-mesh-collision.md"
+        },
+        {
+          "hash": "2ee50ccaa441f9465595f661144010652648e2255dff5689caba1282f1e6125c",
+          "path": "docs/dispatch-mesh-refusal.md"
         },
         {
           "hash": "34d2b3b14515564c33b20db75bb30f2159bae16dcdb83f63e3b873a097a77ef8",
@@ -4792,7 +4800,7 @@
           "path": "fixtures/shape-traversal.json"
         },
         {
-          "hash": "210b0d397d3d10e9c5bca4a07bf07ebe2056b98596693542065b90aea4d38fbe",
+          "hash": "9e6820ac946e4cc6caeb66d69375f1b00081d554d94c855df3846ecded5630bb",
           "path": "fixtures/solver.sha256"
         },
         {
@@ -5358,7 +5366,7 @@
           "exports": [
             "capsWorld"
           ],
-          "hash": "f230868cf1d36f002c65722210c5ae0eb41ef9d44046ca714b756639b720a373",
+          "hash": "6b9a33d17394bfad040cf08bcd7b6b37e3f31ade8630a005a37987f475be6928",
           "importsFiles": [
             "packages/frame/hash.js",
             "packages/tick/world.js"
@@ -6372,6 +6380,13 @@
                       }
                     },
                     {
+                      "line": 264,
+                      "name": "validateMesh",
+                      "target": {
+                        "file": "packages/tick/world.js"
+                      }
+                    },
+                    {
                       "line": 447,
                       "name": "beliefRefusal",
                       "target": {
@@ -6967,11 +6982,44 @@
           "path": "harness/law-runs.mjs"
         },
         {
+          "entry": "box",
+          "entryRule": 1,
+          "hash": "252b350087bf433f2e3bfb5eb99798e3f22ab39196e4f7afecb72df6902eb723",
+          "importsFiles": [
+            "packages/tick/world.js"
+          ],
+          "names": [
+            "solver/build.mjs"
+          ],
+          "path": "harness/mesh-refusal.test.js",
+          "sequences": [],
+          "testFramework": "node --test"
+        },
+        {
+          "entry": "drop",
+          "entryRule": 1,
           "hash": "f5719994cb955428fcede33fe09aa9c5eb99f1fa647d263ea6f91726c60734f4",
           "importsFiles": [
             "packages/tick/world.js"
           ],
           "path": "harness/mesh.test.js",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 12,
+                  "name": "createWorld",
+                  "target": {
+                    "file": "packages/tick/world.js"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "drop"
+            }
+          ],
           "testFramework": "node --test"
         },
         {
@@ -8702,6 +8750,14 @@
                       "via": "validateScene"
                     },
                     {
+                      "line": 264,
+                      "name": "validateMesh",
+                      "target": {
+                        "file": "packages/tick/world.js"
+                      },
+                      "via": "validateScene"
+                    },
+                    {
                       "line": 447,
                       "name": "beliefRefusal",
                       "target": {
@@ -9133,7 +9189,7 @@
           "why": "generated"
         }
       ],
-      "unresolvedSites": 9
+      "unresolvedSites": 10
     },
     {
       "dynamicReads": 0,
@@ -11457,7 +11513,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "19352d742556c3198bfd0ae8f1f464d698f12d5a66e18c12da4e658f0dc246c6",
+          "hash": "acb03e29e5225c1fe376b1c0ac9e58cf41ba9bb3df066c46c07e187a0e822414",
           "path": "CHANGELOG.md"
         },
         {
@@ -11465,39 +11521,39 @@
           "path": "LICENSE"
         },
         {
-          "hash": "95878f11c977728b521d9c3c1f937f01b50d184e7e8fe9677798039aaeef1d2d",
+          "hash": "e455f7edb00acf579af8ee6c2e0e373461fa3fa550a25ef76d795574d8210920",
           "path": "README.es.md"
         },
         {
-          "hash": "e4e66f71a2120c6a3149d8f0378a6a01c4b8ed8b158c378be76ddbe11bd62efd",
+          "hash": "c558834b67b42fa9fadf1d30e2ec43053e1934ad6d7b26ea7a751c936f4e810d",
           "path": "README.fr.md"
         },
         {
-          "hash": "ce35463916cb16420f7fab0fdf258b7d3d300417e658e8831f7aa5b1642d7a0c",
+          "hash": "8ae227ab8cf83c5053f52c12dde48b19ee920cf63f63b479f546baa874d95336",
           "path": "README.hi.md"
         },
         {
-          "hash": "13886491de1290273b27468773adcb6ed1667a413ceccf8d8eecbec178bbfd9b",
+          "hash": "ce76333a1687081911bbba08fe861cba666da13c4b6e919f7a2101061f7ea1ce",
           "path": "README.it.md"
         },
         {
-          "hash": "c6143253d2702903e5d30c23473a8ac058c6878bd7ed10e6942d0f780911d434",
+          "hash": "1c404acad2d665aeb403f801dc92f70ee7d833016e76d9878d01bf441a66f582",
           "path": "README.ja.md"
         },
         {
-          "hash": "473a981ac08de7811b901bbf50f1c129ede6367a17fe9981bace4cb95c4516f4",
+          "hash": "ced1d9a8679db2b8826e635b1be06c3f7486b90ae1cdfb250ae4389bcbf6c720",
           "path": "README.md"
         },
         {
-          "hash": "43fee96f393eea426836c52463fc2fe41635569014c10ab316d03a520e591fdf",
+          "hash": "5d9721622bebfa36c410cd3f9dcf6a6edd349439b0047bb74c5007fd0dbfec51",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "f02137c889d593d797a0da6a0942fbc7d382f1733a1fedf4bd7c35a6a3146209",
+          "hash": "3cc8b38ff4677ce54bf88e529d2eecbc20d6ec53bf7e2fa5d7c51506b827af51",
           "path": "README.zh.md"
         },
         {
-          "hash": "199db0006f2bd56196868191f9935af3753355e0b1ce7cdefe6cb1503438c023",
+          "hash": "58b00990e0ef599bcfbcebec78e70bb159343dacdf4b040b90fd229a66ac24b7",
           "path": "SCORECARD.md"
         },
         {
@@ -11509,11 +11565,15 @@
           "path": "SHIP_GATE.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "bfa7578b774111fad31d8b3abd937478e7a0ee65e00ace3b448ee8cffb26af9b",
           "path": "package-lock.json"
         },
         {
-          "hash": "7f44926d4dbf1724c3c1e28b65c2fa3ff6ab82b6d121eb2599cfa463818041ab",
+          "hash": "406b7445877b78c360cdc2520af780148f388e67fd126a366cd2c407fc24d038",
           "path": "package.json"
         },
         {
@@ -11555,7 +11615,7 @@
           "path": "solver/Cargo.toml"
         },
         {
-          "hash": "4d4ec949b6fb907ef6822e4cee366ee8c07d1df7adb216d051c3170666ce955f",
+          "hash": "17dccb67f4d07380d3038e1546badf00587cd013acfb745d425a39776994c09d",
           "path": "solver/FLAGS.md"
         },
         {
@@ -11567,7 +11627,7 @@
           "path": "solver/NOTICE"
         },
         {
-          "hash": "780a9b3768c10520fabb4fd016dc913b8209d895a3b14d5514fd9340df15c253",
+          "hash": "69c6ea37fede7ac28a53a4ee06d14dc03822d7d53b44002fb6384bea0c5fa92f",
           "importsFiles": [
             "solver/lint.mjs"
           ],
@@ -12302,10 +12362,10 @@
             {
               "in": "mode",
               "kind": "err",
-              "line": 87
+              "line": 89
             }
           ],
-          "hash": "16cb92e42b71ef40e57070b233db116693d0fb5c33e7badeff13291ec5da835e",
+          "hash": "51e5fb26a29169c4005801b61fabb825d7ac79e15482588335f8996fb513419b",
           "importsFiles": [
             "solver/src/arena.rs",
             "solver/src/impulses.rs",
@@ -12374,52 +12434,77 @@
               "line": 353
             },
             {
+              "in": "signature",
+              "kind": "err",
+              "line": 381
+            },
+            {
+              "in": "signature",
+              "kind": "err",
+              "line": 394
+            },
+            {
               "in": "held",
               "kind": "err",
-              "line": 664
+              "line": 677
             },
             {
               "in": "switch_in_place",
               "kind": "err",
-              "line": 697
+              "line": 710
             },
             {
               "in": "build_world",
               "kind": "err",
-              "line": 800
+              "line": 813
+            },
+            {
+              "in": "build_world",
+              "kind": "err",
+              "line": 860
+            },
+            {
+              "in": "build_world",
+              "kind": "err",
+              "line": 876
             },
             {
               "in": "integrate",
               "kind": "err",
-              "line": 934
+              "line": 960
             },
             {
               "in": "integrate",
               "kind": "err",
-              "line": 939
+              "line": 965
             },
             {
               "in": "integrate",
               "kind": "err",
-              "line": 946
+              "line": 972
             },
             {
               "in": "integrate",
               "kind": "err",
-              "line": 969
+              "line": 995
+            },
+            {
+              "in": "push_f64",
+              "kind": "err",
+              "line": 1047
             },
             {
               "in": "solver_load",
               "kind": "match-err",
-              "line": 1179
+              "line": 1212
             },
             {
               "in": "solver_step",
               "kind": "match-err",
-              "line": 1187
+              "line": 1220
             }
           ],
-          "hash": "6f5861c064becd917168935c96daf5767e10d0cb797ff6a9aaaa0e69cd0af430",
+          "hash": "11eea88d2c1b7afe7d0d9a6d4a33a66879374c88a14c1e2565dff31a8199cc78",
           "importsFiles": [
             "solver/src/impulses.rs",
             "solver/src/kcc.rs",
@@ -13497,6 +13582,13 @@
                       }
                     },
                     {
+                      "line": 264,
+                      "name": "validateMesh",
+                      "target": {
+                        "file": "packages/tick/world.js"
+                      }
+                    },
+                    {
                       "line": 447,
                       "name": "beliefRefusal",
                       "target": {
@@ -14184,10 +14276,9 @@
             "loadScene",
             "reachedGoal",
             "validateHeightfield",
-            "validateMesh",
             "validateScene"
           ],
-          "hash": "bc94ce3dc27f24450cbba9d34511a706aaf4a7517af84a385431c0ab5f918432",
+          "hash": "70732f9bacf02557ef2ece4b6559e95a6e53151f7c662574e685277695e9bdfe",
           "importsFiles": [
             "packages/tick/beliefs.js",
             "packages/tick/world.js"
@@ -14199,6 +14290,13 @@
                 {
                   "line": 247,
                   "name": "createWorld",
+                  "target": {
+                    "file": "packages/tick/world.js"
+                  }
+                },
+                {
+                  "line": 264,
+                  "name": "validateMesh",
                   "target": {
                     "file": "packages/tick/world.js"
                   }
@@ -14259,6 +14357,14 @@
                   "via": "validateScene"
                 },
                 {
+                  "line": 264,
+                  "name": "validateMesh",
+                  "target": {
+                    "file": "packages/tick/world.js"
+                  },
+                  "via": "validateScene"
+                },
+                {
                   "line": 447,
                   "name": "beliefRefusal",
                   "target": {
@@ -14296,6 +14402,13 @@
                     {
                       "line": 247,
                       "name": "createWorld",
+                      "target": {
+                        "file": "packages/tick/world.js"
+                      }
+                    },
+                    {
+                      "line": 264,
+                      "name": "validateMesh",
                       "target": {
                         "file": "packages/tick/world.js"
                       }
@@ -14861,86 +14974,92 @@
         {
           "exports": [
             "createWorld",
-            "fixtureColliders"
+            "fixtureColliders",
+            "validateMesh"
           ],
           "failurePaths": [
             {
-              "in": "createWorld",
+              "in": "lawRefusal",
               "kind": "throw",
-              "line": 92
+              "line": 44
             },
             {
-              "in": "step",
+              "in": "lawRefusal",
+              "kind": "throw",
+              "line": 46
+            },
+            {
+              "in": "createWorld",
+              "kind": "throw",
+              "line": 128
+            },
+            {
+              "in": "createWorld",
               "kind": "throw",
               "line": 177
             },
             {
               "in": "step",
               "kind": "throw",
-              "line": 186
+              "line": 257
             },
             {
               "in": "mixLoad",
               "kind": "throw",
-              "line": 496
+              "line": 576
             },
             {
               "in": "mixLoad",
               "kind": "throw",
-              "line": 506
+              "line": 586
             },
             {
               "in": "mixLoad",
               "kind": "throw",
-              "line": 521
+              "line": 601
             },
             {
               "in": "mixLoad",
               "kind": "throw",
-              "line": 531
+              "line": 611
             },
             {
               "in": "mixLoad",
               "kind": "throw",
-              "line": 535
+              "line": 615
             },
             {
               "in": "mixLoad",
               "kind": "throw",
-              "line": 544
-            },
-            {
-              "in": "mixLoad",
-              "kind": "throw",
-              "line": 555
+              "line": 624
             },
             {
               "in": "save",
               "kind": "throw",
-              "line": 599
+              "line": 679
             },
             {
               "in": "saveSparse",
               "kind": "throw",
-              "line": 618
+              "line": 698
             },
             {
               "in": "restore",
               "kind": "throw",
-              "line": 670
+              "line": 750
             },
             {
               "in": "restore",
               "kind": "throw",
-              "line": 676
+              "line": 756
             },
             {
               "in": "sleeping",
               "kind": "throw",
-              "line": 926
+              "line": 1006
             }
           ],
-          "hash": "cee90daf8015d4881f61c5a40139c0825ab52ae05821ae5f6b0c9d84fef6e4a9",
+          "hash": "47c8976402488d97b2d12803bedd5d64726e042b91158e4670ebbe82edf0f314",
           "importOrder": [
             "packages/tick/subject.js",
             "packages/tick/minds.js"
@@ -14988,7 +15107,7 @@
       "testRunners": [
         "node --test"
       ],
-      "testedBy": 38,
+      "testedBy": 39,
       "unresolvedNamed": [
         {
           "path": "packages/tick/bundle.js",
@@ -15017,7 +15136,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "0b527e6c6fdbd4834141f1cf0a4c15ea74622296bfd4240a6b39a7d4a47996f9",
+          "hash": "28cc4afe900cd86c8c940cabbc5a79099e970cb387af9a61af28f215c9cf8d7a",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -15071,7 +15190,7 @@
   ],
   "doors": [
     {
-      "checksCount": 32,
+      "checksCount": 31,
       "commands": [
         {
           "job": "engines",
@@ -15128,6 +15247,13 @@
             "node"
           ],
           "step": "Run the character course and the outcome tests"
+        },
+        {
+          "job": "engines",
+          "programs": [
+            "npx"
+          ],
+          "step": "Coverage report for Codecov"
         },
         {
           "job": "engines",
@@ -15246,7 +15372,10 @@
         }
       ],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "programs": [
         "git"
       ],
@@ -15270,7 +15399,7 @@
         {
           "boundary": "harness",
           "depth": 0,
-          "files": 38
+          "files": 39
         },
         {
           "boundary": "host",
@@ -15390,10 +15519,13 @@
         },
         {
           "job": "engines",
-          "matched": true,
+          "path": "harness/mesh-refusal.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "engines",
           "path": "harness/mesh.test.js",
-          "runKind": "checks",
-          "via": "tsc tsconfig.json"
+          "runKind": "executes"
         },
         {
           "job": "engines",
@@ -15814,7 +15946,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 86,
+      "runsCount": 87,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -15836,13 +15968,15 @@
           "step": "Run the law's native tests"
         },
         {
+          "coverage": true,
           "files": 2,
           "job": "engines",
+          "junit": true,
           "runner": "node --test",
           "step": "Run the character course and the outcome tests"
         },
         {
-          "files": 45,
+          "files": 47,
           "job": "engines",
           "runner": "node --test",
           "step": "Run the kernel fixture",
@@ -15857,6 +15991,7 @@
           "paths": [
             ".github/workflows/ci.yml",
             "atlas/**",
+            "codecov.yml",
             "fixtures/**",
             "harness/**",
             "package-lock.json",
@@ -15877,6 +16012,7 @@
           "paths": [
             ".github/workflows/ci.yml",
             "atlas/**",
+            "codecov.yml",
             "fixtures/**",
             "harness/**",
             "package-lock.json",
@@ -15902,6 +16038,7 @@
         "actions/download-artifact",
         "actions/setup-node",
         "actions/upload-artifact",
+        "codecov/codecov-action",
         "dtolnay/rust-toolchain"
       ],
       "usesWorkflowToken": false
@@ -16770,10 +16907,10 @@
       "to": "load"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "8665b7657a7a670a56e518defe2e5cab8bdff3cf",
-    "tracked": 921
+    "commit": "e5618b95f48e42c4df07decad4872f6f5aab4447",
+    "tracked": 925
   },
   "landings": [
     {
@@ -19118,6 +19255,12 @@
     {
       "readers": [
         {
+          "by": "harness/mesh-refusal.test.js",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/bench/law.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -19665,10 +19808,7 @@
   "overlaps": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 48,
-  "testsNotRun": [
-    "harness/mesh.test.js"
-  ],
+  "testFiles": 49,
   "unassigned": [
     {
       "exports": [
@@ -19829,11 +19969,11 @@
         "choose",
         "panelProblems"
       ],
-      "hash": "04daaa164daafcdba1eb08ea3ed3a19088013feb9b1d81f6153d9df55d97f149",
+      "hash": "db20d552cca49457a901abb9fc20cb744b9cc3d87387dca40e23796fcee02ffc",
       "path": "tools/panel.js"
     },
     {
-      "hash": "0bf313286bd3c4c63bc74b46be29e030e0b8cc5542652ef6778b02f2171ebfd1",
+      "hash": "0811b896349dfe887ff8cf72e820ba254f72c10b47aa66bbb9ae5975e9f49bdc",
       "importsFiles": [
         "tools/panel.js"
       ],
@@ -19867,50 +20007,50 @@
       "failurePaths": [
         {
           "kind": "catch",
-          "line": 99
+          "line": 98
         },
         {
           "in": "gather",
           "kind": "catch",
-          "line": 142
+          "line": 141
         },
         {
           "in": "gather",
           "kind": "throw",
-          "line": 147
+          "line": 146
         },
         {
           "in": "gather",
           "kind": "catch",
-          "line": 165
+          "line": 164
         },
         {
           "in": "callOpenRouter",
           "kind": "throw",
-          "line": 185
+          "line": 184
         },
         {
           "in": "callOllama",
           "kind": "throw",
-          "line": 206
+          "line": 205
         },
         {
           "in": "callOllama",
           "kind": "throw",
-          "line": 215
+          "line": 214
         },
         {
           "in": "callOllama",
           "kind": "throw",
-          "line": 224
+          "line": 223
         },
         {
           "in": "review",
           "kind": "catch",
-          "line": 247
+          "line": 246
         }
       ],
-      "hash": "ce26c2898dd22b02c5320790f7a6f0f17d7f34c2ada93442650100dd374b0243",
+      "hash": "833aba4d6cdce081d8e342b92e7408bcb7e1bd8f420e77b060c9ae548cafd62c",
       "importOrder": [
         "tools/panel.js",
         "tools/prompt.js",

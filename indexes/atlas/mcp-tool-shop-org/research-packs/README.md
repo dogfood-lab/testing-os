@@ -1,6 +1,6 @@
 # research-packs: how it works
 
-Mapped at 2026-09-28 from commit 923a792 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit dedfb41 by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-09-28 from commit 923a792 by Atlas 1.23.4.
 
 ## What changed since 2026-09-25 (82aca6d)
 
-Nothing structural changed since 2026-09-25; no file changed.
+Nothing structural changed since 2026-09-25; 1 file added and 3 changed content.
 
 ## What comes in
 
@@ -18,6 +18,7 @@ Nothing structural changed since 2026-09-25; no file changed.
 ## What happens through Verify
 
 1. The workflow runs scripts/verify-pack.mjs in scripts and tests/manifest-schema.test.mjs, tests/summarize-pack.test.mjs and tests/verify-pack.test.mjs in tests.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 

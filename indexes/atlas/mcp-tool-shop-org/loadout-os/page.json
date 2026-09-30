@@ -52,13 +52,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "changed": 376,
       "moved": 0,
       "parts": 9,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "CI now also runs packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts, packages/cli/src/tests/doctor.test.ts and 11 more.",
@@ -82,33 +96,7 @@
       },
       {
         "kind": "door",
-        "sentence": "Release now also runs packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts, packages/cli/src/tests/doctor.test.ts and 9 more.",
-        "subjects": [
-          ".github/workflows/release.yml",
-          "packages/cli/src/tests/console.test.ts",
-          "packages/cli/src/tests/dispatch.test.ts",
-          "packages/cli/src/tests/doctor.test.ts",
-          "packages/cli/src/tests/help.test.ts",
-          "packages/cli/src/tests/hook.test.ts",
-          "packages/cli/src/tests/refresh.test.ts",
-          "packages/cli/src/tests/report.test.ts",
-          "packages/cli/src/tests/split.test.ts",
-          "packages/cli/src/tests/wrapped.test.ts",
-          "packages/kernel/src/tests/",
-          "packages/memories/src/tests/",
-          "packages/rules/src/tests/"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "loadout-os (packages/cli/package.json) is a new command. It runs no file this map can see.",
-        "subjects": [
-          "packages/cli/package.json"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 3 more changes to doors.",
+        "sentence": "And 5 more changes to doors.",
         "subjects": []
       },
       {
@@ -149,7 +137,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "376 files changed content, across 9 parts.",
+        "sentence": "1 file added and 376 changed content, across 9 parts.",
         "subjects": []
       }
     ],
@@ -164,7 +152,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "61d98b601565a5b7eccd66a4baf98a4e1b8c3032",
+  "commit": "4999e6c67b3c9f74559975cf3268452425df659e",
   "defaultBranch": "main",
   "derived": "9 parts, mostly Markdown (236 files); code in TypeScript (84), CSS (8), JavaScript (7), Astro (4) and PowerShell (1). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes @mcptoolshop/loadout-os to npm. It deploys a site to GitHub Pages. People run ai-loadout, claude-memories, claude-rules and loadout-os.",
   "doors": [
@@ -240,12 +228,13 @@
       "runsCount": 12,
       "runsMore": 31,
       "sends": [
+        "uploads coverage to Codecov",
         "deploys the site on a push to main"
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 8 paths",
-        "on a push to main touching 8 paths",
+        "on a pull request touching 9 paths",
+        "on a push to main touching 9 paths",
         "or by hand"
       ]
     },
@@ -528,9 +517,9 @@
       "to": "kernel"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [],
-  "generatedAt": "2026-09-28T13:17:04.809Z",
+  "generatedAt": "2026-09-30T18:00:31.676Z",
   "limits": [
     "6 writes and 10 reads use paths built at run time and are not named here.",
     "2 writes and 26 reads go to the directory the command is run in, not to this repository.",

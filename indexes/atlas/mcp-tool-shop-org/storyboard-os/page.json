@@ -96,13 +96,20 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 4,
+      "changed": 17,
       "moved": 0,
-      "parts": 0,
+      "parts": 11,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "Publish to npm no longer runs packages/cinematic-storyboard-domain/package.json, packages/marketing-storyboard-domain/package.json, packages/rpg-storyboard-domain/package.json and 3 more.",
@@ -127,16 +134,7 @@
       },
       {
         "kind": "door",
-        "sentence": "@storyboard-os/marketing-domain (packages/marketing-storyboard-domain/package.json) is a new package. It loads packages/marketing-storyboard-domain/schema/campaign-handoff.schema.json and packages/marketing-storyboard-domain/src/index.ts.",
-        "subjects": [
-          "packages/marketing-storyboard-domain/package.json",
-          "packages/marketing-storyboard-domain/schema/campaign-handoff.schema.json",
-          "packages/marketing-storyboard-domain/src/index.ts"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 4 more changes to doors.",
+        "sentence": "And 5 more changes to doors.",
         "subjects": []
       },
       {
@@ -170,7 +168,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "4 files added and 17 changed content, across 11 parts.",
         "subjects": []
       }
     ],
@@ -263,9 +261,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 3 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "66b9cce3a15ae75e17b32ab6b1751091aee81da8",
+  "commit": "736766f1f17065fe64a4f3813db0d86d52ee8c72",
   "defaultBranch": "main",
-  "derived": "14 parts, mostly TypeScript (172 files), Astro (19), JavaScript (6) and CSS (2). Work enters through 9 doors; the busiest is CI, which reaches 11 parts. It publishes @storyboard-os/cinematic-domain (packages/cinematic-storyboard-domain), @storyboard-os/marketing-domain (packages/marketing-storyboard-domain), @storyboard-os/rpg-domain (packages/rpg-storyboard-domain), @storyboard-os/canvas (packages/storyboard-canvas), @storyboard-os/core (packages/storyboard-core) and @storyboard-os/routing (packages/storyboard-routing) to npm. It deploys a site to GitHub Pages. People import @storyboard-os/canvas, @storyboard-os/cinematic-domain, @storyboard-os/core, @storyboard-os/marketing-domain, @storyboard-os/routing and @storyboard-os/rpg-domain.",
+  "derived": "14 parts, mostly TypeScript (175 files), Astro (19), JavaScript (6) and CSS (2). Work enters through 9 doors; the busiest is CI, which reaches 11 parts. It publishes @storyboard-os/cinematic-domain (packages/cinematic-storyboard-domain), @storyboard-os/marketing-domain (packages/marketing-storyboard-domain), @storyboard-os/rpg-domain (packages/rpg-storyboard-domain), @storyboard-os/canvas (packages/storyboard-canvas), @storyboard-os/core (packages/storyboard-core) and @storyboard-os/routing (packages/storyboard-routing) to npm. It deploys a site to GitHub Pages. People import @storyboard-os/canvas, @storyboard-os/cinematic-domain, @storyboard-os/core, @storyboard-os/marketing-domain, @storyboard-os/routing and @storyboard-os/rpg-domain.",
   "doors": [
     {
       "builds": [
@@ -403,11 +401,13 @@
       ],
       "runsCount": 58,
       "runsMore": 103,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request to main",
-        "on a push to main touching 11 paths"
+        "on a push to main touching 12 paths"
       ]
     },
     {
@@ -879,9 +879,9 @@
       "to": "storyboard-core"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [],
-  "generatedAt": "2026-09-28T13:22:34.487Z",
+  "generatedAt": "2026-09-30T18:05:36.567Z",
   "limits": [
     "1 read uses a path built at run time and is not named here.",
     "15 reads go to a path their caller passes, not to this repository.",

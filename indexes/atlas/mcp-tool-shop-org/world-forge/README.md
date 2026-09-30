@@ -1,6 +1,6 @@
 # world-forge: how it works
 
-Mapped at 2026-09-28 from commit 2512ab0 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 2512ab0 by Atlas 1.23.5.
 
 ## What this is
 
@@ -80,17 +80,17 @@ Mapped at 2026-09-28 from commit 2512ab0 by Atlas 1.23.4.
 
 ## What tends to change together
 
-- **packages/export-godot/src/export.ts** and **packages/export-godot/src/index.ts** changed together in 12 of 16 commits, inside the export-godot part.
-- **packages/export-unreal/src/export.ts** and **packages/export-unreal/src/index.ts** changed together in 5 of 7 commits, inside the export-unreal part.
-- **packages/schema/src/index.ts** and **packages/schema/src/project.ts** changed together in 7 of 10 commits, inside the schema part.
-- **packages/export-unreal/src/__tests__/export.test.ts** and **packages/export-unreal/src/import.ts** changed together in 8 of 12 commits, inside the export-unreal part.
-- **packages/schema/src/index.ts** and **packages/schema/src/spatial.ts** changed together in 7 of 11 commits, inside the schema part.
+- **packages/export-godot/src/export.ts** and **packages/export-godot/src/index.ts** changed together in 12 of 15 commits, inside the export-godot part.
+- **packages/schema/src/index.ts** and **packages/schema/src/project.ts** changed together in 7 of 9 commits, inside the schema part.
+- **packages/export-unreal/src/__tests__/cli.test.ts** and **packages/export-unreal/src/export.ts** changed together in 4 of 6 commits, inside the export-unreal part.
+- **packages/export-unreal/src/export.ts** and **packages/export-unreal/src/index.ts** changed together in 4 of 6 commits, inside the export-unreal part.
+- **dogfood/worlds/multi-target-proof.ts** and **packages/export-godot/src/index.ts** changed together in 9 of 14 commits, and the dogfood part imports the export-godot part.
 
-5 files changed together with their own tests, as expected.
+4 files changed together with their own tests, as expected.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 15 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 14 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 

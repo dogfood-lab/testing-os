@@ -1,6 +1,6 @@
 # npm-launcher: how it works
 
-Mapped at 2026-09-28 from commit 07c7132 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 7269308 by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,19 +8,19 @@ Mapped at 2026-09-28 from commit 07c7132 by Atlas 1.23.4.
 
 ## What changed since 2026-09-25 (bb50ee9)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - backpropagate (examples/backpropagate/package.json) is a new command. It runs examples/backpropagate/bin/backpropagate.js.
-- sovereignty (examples/sovereignty/package.json) is a new command. It runs examples/sovereignty/bin/sovereignty.js.
-- xrpl-camp (examples/xrpl-camp/package.json) is a new command. It runs examples/xrpl-camp/bin/xrpl-camp.js.
-- And 1 more change to a door.
+- And 3 more changes to doors.
 - examples/backpropagate/LICENSE is now read by .github/workflows/publish-wrapper.yml.
 - examples/backpropagate/README.md is now read by .github/workflows/publish-wrapper.yml.
 - examples/backpropagate/package.json is now read by .github/workflows/publish-wrapper.yml.
 - And 9 more new writers and readers of places.
-- No file changed.
+- 1 file added and 1 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 9 paths; on a push touching 9 paths; or by hand. Runs bin/mcptoolshop-launch.js and test/.
+1. **CI.** On a pull request touching 10 paths; on a push touching 10 paths; or by hand. Runs bin/mcptoolshop-launch.js and test/.
 2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs test/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Publish wrapper.** By hand. Runs no file this map can see.
@@ -35,6 +35,7 @@ Mapped at 2026-09-28 from commit 07c7132 by Atlas 1.23.4.
 
 1. The workflow runs bin/mcptoolshop-launch.js in bin and test/ in test.
 2. That reaches src (8 files).
+3. It uploads coverage to Codecov.
 
 ## Who reads the results
 

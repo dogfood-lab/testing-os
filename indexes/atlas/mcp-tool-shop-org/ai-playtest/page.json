@@ -57,8 +57,8 @@
       }
     ],
     "since": {
-      "commit": "e794ed948b7521688a3f31ab775a8773b8e52880",
-      "generatedAt": "2026-09-25T02:12:54.230Z"
+      "commit": "47f5e7a2f8fec94ecd071053684a15ebf421153e",
+      "generatedAt": "2026-09-29T21:59:32.672Z"
     },
     "unchanged": false
   },
@@ -67,7 +67,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "ddf3c8cb774d8bce12e7740520f23468cf7219e4",
+  "commit": "94e69fcb76b15b0d76c5d547224c06890b1f9912",
   "defaultBranch": "main",
   "derived": "6 parts, mostly TypeScript (34 files), JavaScript (4), CSS (2) and Astro (1). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. It deploys a site to GitHub Pages. ai-playtest is a command of a private package (nothing ships it).",
   "doors": [
@@ -138,11 +138,13 @@
       ],
       "runsCount": 14,
       "runsMore": 11,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 8 paths",
-        "on a push to main touching 8 paths",
+        "on a pull request touching 9 paths",
+        "on a push to main touching 9 paths",
         "or by hand"
       ]
     },
@@ -211,11 +213,10 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [],
-  "generatedAt": "2026-09-28T13:12:48.945Z",
+  "generatedAt": "2026-09-30T17:54:30.363Z",
   "limits": [
-    "1 import could not be resolved: `vitest.config.ts` probes `@vitest/coverage-v8`, which is not declared.",
     "2 writes and 1 read use paths built at run time and are not named here.",
     "11 writes and 8 reads go to a path their caller passes, not to this repository.",
     "1 command is built at run time and not followed.",

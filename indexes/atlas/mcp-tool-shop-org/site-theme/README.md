@@ -1,6 +1,6 @@
 # site-theme: how it works
 
-Mapped at 2026-09-28 from commit c073c90 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 0e0eb2e by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,12 +8,14 @@ Mapped at 2026-09-28 from commit c073c90 by Atlas 1.23.4.
 
 ## What changed since 2026-09-25 (0e76d24)
 
-Nothing structural changed since 2026-09-25; no file changed.
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
+- 1 file added and 3 changed content, across 2 parts.
 
 ## What comes in
 
 1. **@mcptoolshop/site-theme** (the package people import). Loads types/config.ts, cli/front-door/index.mjs, cli/front-door/mcp.mjs and 21 more.
-2. **CI.** On a pull request to main touching 11 paths; on a push to main touching 11 paths; or by hand. Runs cli/init.mjs and tests/; checks types/.
+2. **CI.** On a pull request to main touching 12 paths; on a push to main touching 12 paths; or by hand. Runs cli/init.mjs and tests/; checks types/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Release.** When a release is published; or by hand. Runs tests/; checks types/.
 5. **Dogfood.** On a push to main touching 4 paths; or by hand. On main, it runs cli/init.mjs.
@@ -42,7 +44,7 @@ Nothing structural changed since 2026-09-25; no file changed.
 
 ## The other doors
 
-**CI** runs cli/init.mjs and tests/, checks types/, reaches lib, and runs git.
+**CI** runs cli/init.mjs and tests/, checks types/, reaches lib, runs git, and uploads coverage to Codecov.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, reaches components, lib and types, and deploys the site.
 

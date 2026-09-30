@@ -19,13 +19,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 3,
+      "added": 4,
       "changed": 127,
       "moved": 0,
       "parts": 6,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "CI now also runs src/cache.concurrency.test.ts, src/cache.test.ts, src/codeSpans.test.ts and 18 more.",
@@ -56,44 +70,7 @@
       },
       {
         "kind": "door",
-        "sentence": "Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.",
-        "subjects": [
-          ".github/workflows/pages.yml",
-          "site/astro.config.mjs",
-          "site/src/"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Publish to npm now also runs src/cache.concurrency.test.ts, src/cache.test.ts, src/codeSpans.test.ts and 18 more.",
-        "subjects": [
-          ".github/workflows/publish.yml",
-          "src/cache.concurrency.test.ts",
-          "src/cache.test.ts",
-          "src/codeSpans.test.ts",
-          "src/errors.test.ts",
-          "src/glossary.test.ts",
-          "src/index.test.ts",
-          "src/integration.test.ts",
-          "src/languages.test.ts",
-          "src/ollama.test.ts",
-          "src/polish.test.ts",
-          "src/semaphore.test.ts",
-          "src/translate.test.ts",
-          "src/translateAll.test.ts",
-          "src/translateMarkdown.cache.test.ts",
-          "src/translateMarkdown.codespans.test.ts",
-          "src/translateMarkdown.concurrency.test.ts",
-          "src/translateMarkdown.roundtrip.test.ts",
-          "src/translateMarkdown.test.ts",
-          "src/translateReadme.test.ts",
-          "src/validate.test.ts",
-          "src/version.test.ts"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 2 more changes to doors.",
+        "sentence": "And 4 more changes to doors.",
         "subjects": []
       },
       {
@@ -128,7 +105,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "3 files added and 127 changed content, across 6 parts.",
+        "sentence": "4 files added and 127 changed content, across 6 parts.",
         "subjects": []
       }
     ],
@@ -143,7 +120,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "25e970d9d598fb840baabaa7c0762b2762f88e0e",
+  "commit": "c3305f2f8dbf38151adbf61c4437be0bf0ab5235",
   "defaultBranch": "main",
   "derived": "7 parts, mostly Markdown (71 files); code in TypeScript (39), JavaScript (4), CSS (2) and Astro (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.",
   "doors": [
@@ -191,11 +168,13 @@
       ],
       "runsCount": 21,
       "runsMore": 18,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request to main touching 9 paths",
-        "on a push to main touching 9 paths",
+        "on a pull request to main touching 10 paths",
+        "on a push to main touching 10 paths",
         "or by hand"
       ]
     },
@@ -351,9 +330,9 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [],
-  "generatedAt": "2026-09-28T13:19:14.952Z",
+  "generatedAt": "2026-09-30T18:01:50.022Z",
   "limits": [
     "3 writes and 5 reads use paths built at run time and are not named here.",
     "5 writes and 6 reads go to a path their caller passes, not to this repository.",

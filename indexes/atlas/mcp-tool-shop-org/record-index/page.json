@@ -19,13 +19,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 1,
+      "changed": 1,
       "moved": 0,
-      "parts": 0,
+      "parts": 2,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "record_index (pyproject.toml) is a new package. It loads record_index/__init__.py.",
@@ -36,7 +50,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "1 file added and 1 changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -51,7 +65,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "b48f7b65034c0543d7c549545c392b88bd63e59e",
+  "commit": "2c20d4bed8c8da71378a997e265291cb54b7ad5c",
   "defaultBranch": "main",
   "derived": "6 parts, mostly Python (26 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is CI, which reaches 2 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People import record_index.",
   "doors": [
@@ -81,11 +95,13 @@
       ],
       "runsCount": 1,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 5 paths",
-        "on a push touching 5 paths",
+        "on a pull request touching 6 paths",
+        "on a push touching 6 paths",
         "or by hand"
       ]
     },
@@ -180,9 +196,9 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [],
-  "generatedAt": "2026-09-28T13:19:55.958Z",
+  "generatedAt": "2026-09-30T18:02:32.998Z",
   "limits": [
     "1 import could not be resolved: `tests/test_packaging.py` imports a path built at run time.",
     "1 read uses a path built at run time and is not named here.",

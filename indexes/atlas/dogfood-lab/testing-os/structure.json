@@ -95,16 +95,17 @@
           "path": "packages/atlas/LICENSE"
         },
         {
-          "hash": "b56e95377d160d71ae3e1ff7e487f6e95ac1e5845d395a60e1a5a85d14e1ddeb",
+          "hash": "d134391b07e2b34c787931b28ed54373cac2a6e522789ea21626d406398e3775",
           "path": "packages/atlas/README.md"
         },
         {
           "exports": [
             "buildArtifact",
             "serializeArtifact",
+            "stepPrograms",
             "unresolvedEntry"
           ],
-          "hash": "7af5f34b247b2f266e26b09a31742719ec20c15dcfd063823658de4c65b64e8b",
+          "hash": "87905074835bc53ef7ad7076f2035881f5fe163c8c5c91d89eb20df8870e4ec0",
           "importOrder": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/languages.js",
@@ -212,35 +213,35 @@
             {
               "in": "mapCommand",
               "kind": "catch",
-              "line": 94
+              "line": 108
             },
             {
               "in": "checkCommand",
               "kind": "catch",
-              "line": 213
+              "line": 227
             },
             {
               "in": "readBaseline",
               "kind": "catch",
-              "line": 322
+              "line": 351
             },
             {
               "in": "readBaseline",
               "kind": "catch",
-              "line": 329
+              "line": 358
             },
             {
               "in": "manifestName",
               "kind": "catch",
-              "line": 383
+              "line": 412
             },
             {
               "in": "committedJson",
               "kind": "catch",
-              "line": 426
+              "line": 455
             }
           ],
-          "hash": "71ae9d7b5938c103535565db4269f1b01e4ad6e4cc8269c82a1c6a0202855490",
+          "hash": "a96459244fc3d9b50778b2fbfde6b15f1e9520a875875ee7d6c6a670315e3f24",
           "importOrder": [
             "packages/atlas/core/index.js",
             "packages/atlas/adapter/artifact.js",
@@ -256,6 +257,7 @@
             "packages/atlas/adapter/page.js",
             "packages/atlas/adapter/statistics.js",
             "packages/atlas/adapter/write.js",
+            "packages/atlas/sidecar/map.js",
             "packages/atlas/sidecar/server.js"
           ],
           "importsFiles": [
@@ -273,6 +275,7 @@
             "packages/atlas/adapter/statistics.js",
             "packages/atlas/adapter/write.js",
             "packages/atlas/core/index.js",
+            "packages/atlas/sidecar/map.js",
             "packages/atlas/sidecar/server.js"
           ],
           "path": "packages/atlas/adapter/commands.js"
@@ -357,7 +360,7 @@
           "exports": [
             "formatFailure"
           ],
-          "hash": "d6d6e97a789b408751cb2d6d6a16b3f49d898216056819a415db805597af37e0",
+          "hash": "ec7af8516252664e228cff94444903f26d488ec41f153d7ad4b9237bcb7ab49e",
           "path": "packages/atlas/adapter/errors.js"
         },
         {
@@ -369,7 +372,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "d9e3096eb54fe11d594f511e92e303c74c90f84bca65077fa9892d7a5914cf3f",
+          "hash": "ebc209a5a7d8a2399fd071c25de806bd8a75a33663c354b08615e7e3fee5d81c",
           "path": "packages/atlas/adapter/explain-manifest.test.js",
           "spawns": [
             "packages/atlas/cli.js"
@@ -385,33 +388,55 @@
           "testFramework": "node --test"
         },
         {
+          "hash": "8ec8be5248fca9f5ade8dcf4974ce8924b6383c44c15bf44b36c803d93ac49b8",
+          "importsFiles": [
+            "packages/atlas/sidecar/test-client.js",
+            "packages/atlas/sidecar/test-oracle.js",
+            "packages/atlas/sidecar/tools.js"
+          ],
+          "path": "packages/atlas/adapter/explain-workflow.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
+        },
+        {
           "exports": [
             "explainCommand",
             "explainTarget",
-            "pairFacts"
+            "mapLine",
+            "pairFacts",
+            "readAnswerMap",
+            "refFields"
           ],
           "failurePaths": [
             {
               "in": "readJson",
               "kind": "catch",
-              "line": 45
+              "line": 48
             }
           ],
-          "hash": "9fbc8013cdf5a231334db9f382d8468d9807e8b8043c8d965f56e97fa81e2b45",
+          "hash": "0bc2594f9018fa6906fdf2e8eeb8e0b7b49265bc41c465bd1d6fd2b7c4bf2707",
           "importOrder": [
+            "packages/atlas/core/languages.js",
             "packages/atlas/core/landings.js",
+            "packages/atlas/sidecar/git.js",
+            "packages/atlas/sidecar/map.js",
             "packages/atlas/adapter/errors.js",
             "packages/atlas/adapter/page.js"
           ],
           "importsFiles": [
             "packages/atlas/adapter/errors.js",
             "packages/atlas/adapter/page.js",
-            "packages/atlas/core/landings.js"
+            "packages/atlas/core/landings.js",
+            "packages/atlas/core/languages.js",
+            "packages/atlas/sidecar/git.js",
+            "packages/atlas/sidecar/map.js"
           ],
           "path": "packages/atlas/adapter/explain.js"
         },
         {
-          "hash": "60d90fe566cf70d1168ebcae2df1d51ec039f44042771a8910fabfb37ad56ae9",
+          "hash": "b0a39a63216e92a7030ef350b81ba2dbbfd5ca7f63b0a5c8f4e8d1c59ec6f0d6",
           "names": [
             "packages/ingest/persist.js"
           ],
@@ -767,19 +792,22 @@
             "gapsLines",
             "locate"
           ],
-          "failurePaths": [
-            {
-              "in": "readJson",
-              "kind": "catch",
-              "line": 22
-            }
-          ],
-          "hash": "0bdede9f702e3f2c56f749486364cc09c2eb64298a5d2e7f49da44ba8c8e23be",
-          "importsFiles": [
+          "hash": "4f3ac161533843d403f1907d3b30bda763965694ad3e94f123adf6040c62700a",
+          "importOrder": [
+            "packages/atlas/sidecar/git.js",
             "packages/atlas/adapter/errors.js",
+            "packages/atlas/adapter/explain.js",
             "packages/atlas/adapter/page.js",
             "packages/atlas/adapter/test-gaps.js",
             "packages/atlas/adapter/test-reach.js"
+          ],
+          "importsFiles": [
+            "packages/atlas/adapter/errors.js",
+            "packages/atlas/adapter/explain.js",
+            "packages/atlas/adapter/page.js",
+            "packages/atlas/adapter/test-gaps.js",
+            "packages/atlas/adapter/test-reach.js",
+            "packages/atlas/sidecar/git.js"
           ],
           "path": "packages/atlas/adapter/gaps.js"
         },
@@ -914,6 +942,17 @@
         {
           "hash": "dbc628e3823c3776d528d6925c2924590f29a6432ee9fcbbe1d6a539c23e5024",
           "path": "packages/atlas/adapter/line-endings.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "cf09f8aa176842634fd93763f45cae61cc0d1925b8843811212d37e315d83ace",
+          "importsFiles": [
+            "packages/atlas/adapter/errors.js"
+          ],
+          "path": "packages/atlas/adapter/not-a-repository.test.js",
           "spawns": [
             "packages/atlas/cli.js"
           ],
@@ -2594,6 +2633,7 @@
             "cover",
             "dataOnly",
             "displayName",
+            "doorDetail",
             "doorKey",
             "echoOnly",
             "entryOrder",
@@ -2629,14 +2669,16 @@
             "worded",
             "words"
           ],
-          "hash": "f071dc57ee9b2214bc42f33137adeb62aef3d9834d3d546186530472f6f5f22b",
+          "hash": "86d771e4ca50851c4bb9be898eeae89aa87252feddd595f9fe843a1f43cd9b68",
           "importOrder": [
             "packages/atlas/core/history.js",
             "packages/atlas/core/landings.js",
             "packages/atlas/core/languages.js",
+            "packages/atlas/adapter/artifact.js",
             "packages/atlas/adapter/templates.js"
           ],
           "importsFiles": [
+            "packages/atlas/adapter/artifact.js",
             "packages/atlas/adapter/templates.js",
             "packages/atlas/core/history.js",
             "packages/atlas/core/landings.js",
@@ -2749,6 +2791,14 @@
           "spawns": [
             "packages/atlas/cli.js"
           ],
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "693dff3c71960e5ef9e009f1d84a0b5e2ee88fbf8b5493ef9439d3d1883f59aa",
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js"
+          ],
+          "path": "packages/atlas/adapter/step-programs.test.js",
           "testFramework": "node --test"
         },
         {
@@ -3822,27 +3872,22 @@
             {
               "in": "bytesOf",
               "kind": "catch",
-              "line": 326
+              "line": 330
             },
             {
               "in": "collectIgnored",
               "kind": "catch",
-              "line": 490
+              "line": 494
             },
             {
               "in": "rootManifest",
               "kind": "catch",
-              "line": 598
+              "line": 602
             },
             {
               "in": "repositoryManifests",
               "kind": "catch",
-              "line": 617
-            },
-            {
-              "in": "validateBoundary",
-              "kind": "throw",
-              "line": 716
+              "line": 621
             },
             {
               "in": "validateBoundary",
@@ -3850,37 +3895,42 @@
               "line": 720
             },
             {
-              "in": "listTracked",
+              "in": "validateBoundary",
               "kind": "throw",
-              "line": 743
+              "line": 724
             },
             {
               "in": "listTracked",
               "kind": "throw",
-              "line": 762
+              "line": 747
+            },
+            {
+              "in": "listTracked",
+              "kind": "throw",
+              "line": 766
             },
             {
               "in": "parseStageLine",
               "kind": "throw",
-              "line": 770
+              "line": 774
             },
             {
               "in": "parseStageLine",
               "kind": "throw",
-              "line": 772
+              "line": 776
             },
             {
               "in": "parseFile",
               "kind": "catch",
-              "line": 858
+              "line": 862
             },
             {
               "in": "manifestOf",
               "kind": "catch",
-              "line": 1078
+              "line": 1082
             }
           ],
-          "hash": "0249300aa65ad70e1d390f11d29d5347f5bc56a8b5dee5faba221c5892cf3269",
+          "hash": "f591ac54028f965a2cee9d5193b1fad837a74758e87972e62e3443d5f6d10361",
           "importOrder": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/doors.js",
@@ -4999,7 +5049,7 @@
           "reexportsOnly": true
         },
         {
-          "hash": "af98d43386697c2c87c58c7da45e8fc83e0e73f0930ba2b7092627ae906808ec",
+          "hash": "94eab764a615b4b94473bfa46cc9d9b1c50747188cd9552c31516f5c27b26ecf",
           "path": "packages/atlas/package.json"
         },
         {
@@ -5019,14 +5069,15 @@
             {
               "in": "group",
               "kind": "throw",
-              "line": 42
+              "line": 43
             }
           ],
-          "hash": "0959a69f8e6e2373b200d4daffd9749d721b9ddb90334cf96ad8d1d74e60dbd6",
+          "hash": "aa0e633517c78443517c56e9511bf3b126e6e77660ac95dd26a10d6267a70b74",
           "importsFiles": [
             "packages/atlas/adapter/engine.js",
             "packages/atlas/adapter/errors.js",
-            "packages/atlas/sidecar/data.js"
+            "packages/atlas/sidecar/data.js",
+            "packages/atlas/sidecar/map.js"
           ],
           "path": "packages/atlas/sidecar/answer.js"
         },
@@ -5120,7 +5171,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "0790e4a5f20c71ffd606a193e9bd4e4ef385cdac3fcdd7277c3bb8f31ed1ee58",
+          "hash": "57eb45368bdc6056e9c2aed9a034838a80de49dc1f9f1596b33984234e28d719",
           "importsFiles": [
             "packages/atlas/sidecar/test-client.js"
           ],
@@ -5134,7 +5185,7 @@
           "exports": [
             "explainAnswer"
           ],
-          "hash": "b7358df694075c65b9b8f84eff9d6010ad30c75e0691babf084a58502abb0093",
+          "hash": "810fa17a840bfe5b93e9de09db6fdbe2e7cbec0267ecdc53c764b81297639144",
           "importOrder": [
             "packages/atlas/core/landings.js",
             "packages/atlas/adapter/explain.js",
@@ -5152,19 +5203,33 @@
           "path": "packages/atlas/sidecar/explain-tool.js"
         },
         {
+          "hash": "c12e7f46d858f1791699db4bb38843d7888a7468e0575448bb8875f918db3a72",
+          "importsFiles": [
+            "packages/atlas/core/checkout-state.js",
+            "packages/atlas/sidecar/test-client.js",
+            "packages/atlas/sidecar/test-oracle.js"
+          ],
+          "path": "packages/atlas/sidecar/exported.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
+        },
+        {
           "exports": [
             "changedFiles",
             "checkoutState",
-            "mapHashes"
+            "mapHashes",
+            "stateAt"
           ],
           "failurePaths": [
             {
               "in": "hashAt",
               "kind": "catch",
-              "line": 72
+              "line": 90
             }
           ],
-          "hash": "530d221c5ea3b9029d642c59df29ea630aac503c839bdd52908b3354a77b71fc",
+          "hash": "479e4f5b3b6f9106d28e57479033c14454944f066c4d5fa953821886f02bb191",
           "importsFiles": [
             "packages/atlas/core/text.js",
             "packages/atlas/sidecar/git.js"
@@ -5181,26 +5246,33 @@
         },
         {
           "exports": [
+            "blobAt",
+            "commitOf",
+            "distanceFromHead",
             "filesAt",
             "git",
             "head",
             "inHistory",
+            "isRefShaped",
             "isShallow",
-            "topLevel"
+            "topLevel",
+            "trackedAt",
+            "upstreamOf",
+            "upstreamsOf"
           ],
           "failurePaths": [
             {
               "in": "git",
               "kind": "throw",
-              "line": 29
+              "line": 41
             },
             {
               "in": "topLevel",
               "kind": "catch",
-              "line": 48
+              "line": 60
             }
           ],
-          "hash": "d0d5686d3cdb89bd5fff18d32d7e80b4265b9e75dfff1d5d5670f5f419844040",
+          "hash": "f9cd75ec86a98014406f74d843c1ba10e06a05f27b11d00a73a13d1cd5cd1048",
           "path": "packages/atlas/sidecar/git.js"
         },
         {
@@ -5223,23 +5295,44 @@
         },
         {
           "exports": [
+            "distanceWords",
+            "exportedRoot",
             "formatProblem",
+            "newerUpstream",
+            "noMapAdvice",
             "readCommittedMap",
-            "readSnapshot"
+            "readExportedMap",
+            "readSnapshot",
+            "readSnapshotAt",
+            "upstreamMap"
           ],
           "failurePaths": [
             {
-              "in": "readJson",
+              "in": "parsed",
               "kind": "catch",
-              "line": 24
+              "line": 28
             }
           ],
-          "hash": "962f0b3de9a67253dc8c9af5fbd25ca1185e5b1ead15d3ef2c9ce70479e90ee0",
+          "hash": "ac6be2af7c13197a7d855ba4af7c3b6984014cf5ddfeb72636f32df5c276e559",
           "importsFiles": [
             "packages/atlas/adapter/page.js",
             "packages/atlas/sidecar/git.js"
           ],
           "path": "packages/atlas/sidecar/map.js"
+        },
+        {
+          "hash": "32d5d176419d9abebfb1f7f221ba2f195b96430938bfa3873cc304470a2d2437",
+          "importsFiles": [
+            "packages/atlas/core/checkout-state.js",
+            "packages/atlas/sidecar/refresh.js",
+            "packages/atlas/sidecar/test-client.js",
+            "packages/atlas/sidecar/tools.js"
+          ],
+          "path": "packages/atlas/sidecar/no-map.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
         },
         {
           "exports": [
@@ -5293,12 +5386,25 @@
           "path": "packages/atlas/sidecar/reach-tool.js"
         },
         {
-          "hash": "693c1c97cb2b45f011c2af9a6cb250abccee7ef4c5e2887b68d6b95a88fc5a6c",
+          "hash": "729df702c3f53cf9bf8018625e772f1688539df6b0867f4c5d6ffdb74d37395d",
           "importsFiles": [
             "packages/atlas/core/checkout-state.js",
             "packages/atlas/sidecar/test-client.js"
           ],
           "path": "packages/atlas/sidecar/read-only.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "40d859cb0def065c8633d8245345c0110e54ba5060023a595e487ea0f528e40c",
+          "importsFiles": [
+            "packages/atlas/core/checkout-state.js",
+            "packages/atlas/sidecar/test-client.js",
+            "packages/atlas/sidecar/test-oracle.js"
+          ],
+          "path": "packages/atlas/sidecar/ref.test.js",
           "spawns": [
             "packages/atlas/cli.js"
           ],
@@ -5418,18 +5524,20 @@
             "rereadFacts",
             "trackedPlace"
           ],
-          "hash": "950845c039a1191da43ef15dcd9cac4bac8c9f1e8a5ac57e011a162fc8723dfa",
+          "hash": "eb771d15c738e611cb0c48ef8e7b8b34d2d9a110d7eb94f0c67386e39376e599",
           "importOrder": [
             "packages/atlas/core/index.js",
             "packages/atlas/core/languages.js",
             "packages/atlas/adapter/artifact.js",
-            "packages/atlas/sidecar/answer.js"
+            "packages/atlas/sidecar/answer.js",
+            "packages/atlas/sidecar/git.js"
           ],
           "importsFiles": [
             "packages/atlas/adapter/artifact.js",
             "packages/atlas/core/index.js",
             "packages/atlas/core/languages.js",
-            "packages/atlas/sidecar/answer.js"
+            "packages/atlas/sidecar/answer.js",
+            "packages/atlas/sidecar/git.js"
           ],
           "path": "packages/atlas/sidecar/reread.js"
         },
@@ -5484,7 +5592,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "a3fdcbd1a035617f8f5da9f5a931c2d4e6ef873a1ee75ffb2118c6fa56f909d9",
+          "hash": "e0479934f28dc07c507bd7d4ca3d2c158a898e2b0d0cbaeb819a2525f3dd2b79",
           "importsFiles": [
             "packages/atlas/sidecar/git.js"
           ],
@@ -5512,6 +5620,7 @@
             "mapIn",
             "mappedRepository",
             "modernMeta",
+            "staleClone",
             "startServer"
           ],
           "failurePaths": [
@@ -5531,7 +5640,7 @@
               "line": 113
             }
           ],
-          "hash": "bf6aefef9946c02b320428cfc9b63a0a35d7739e99a3d3c5b830ef55efd73a36",
+          "hash": "c8dd5f552bb25928656404d1c659f464bac8ceec9e6568c286ed34e8aa7df7b0",
           "path": "packages/atlas/sidecar/test-client.js"
         },
         {
@@ -5558,16 +5667,22 @@
           "exports": [
             "assertInventsNothing",
             "committedMap",
-            "explainJson"
+            "explainJson",
+            "mapAt"
           ],
           "failurePaths": [
             {
+              "in": "mapAt",
+              "kind": "throw",
+              "line": 35
+            },
+            {
               "in": "read",
               "kind": "catch",
-              "line": 31
+              "line": 44
             }
           ],
-          "hash": "ebf3ece78d23a2723c8b9154d85a54cfadbe6fd81146abcb80fc1a39f6f7c3a4",
+          "hash": "5bac9c655e068be0e94e47c39bc946c78f5337f8f50bfcb3a8fd94709a4c165f",
           "importsFiles": [
             "packages/atlas/adapter/changes.js"
           ],
@@ -5577,7 +5692,7 @@
           "exports": [
             "createTools"
           ],
-          "hash": "e2e9827cf7f6b5df79a0b5b607dc92ab5cf37a3a98daa9a6ffc145011b0af40f",
+          "hash": "6955905cbb2e84348e3618aef093b6735e355569176b853522bc641826d4ac7d",
           "importOrder": [
             "packages/atlas/sidecar/answer.js",
             "packages/atlas/sidecar/changes-tool.js",
@@ -5632,6 +5747,24 @@
           "testFramework": "node --test"
         },
         {
+          "hash": "3549dd7e1b0eb321935711be1174141004916d4f1b2586979c446c2f829ef174",
+          "importOrder": [
+            "packages/atlas/core/checkout-state.js",
+            "packages/atlas/sidecar/tools.js",
+            "packages/atlas/sidecar/test-client.js"
+          ],
+          "importsFiles": [
+            "packages/atlas/core/checkout-state.js",
+            "packages/atlas/sidecar/test-client.js",
+            "packages/atlas/sidecar/tools.js"
+          ],
+          "path": "packages/atlas/sidecar/upstream.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
+        },
+        {
           "hash": "f8eb8d1ddd14b2fcff662b01959bc73175556fc587c26e3b0ff42876418316f9",
           "path": "packages/atlas/templates/atlas-refresh.yml"
         }
@@ -5644,7 +5777,7 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 274,
+          "reads": 275,
           "where": [
             "caller"
           ],
@@ -5694,14 +5827,14 @@
           "writes": 0
         },
         {
-          "reads": 6,
+          "reads": 7,
           "where": [
             "cwd:atlas"
           ],
           "writes": 0
         },
         {
-          "reads": 8,
+          "reads": 10,
           "where": [
             "cwd:atlas/"
           ],
@@ -5726,16 +5859,16 @@
           "where": [
             "temp"
           ],
-          "writes": 2
+          "writes": 5
         }
       ],
-      "outsideReads": 315,
-      "outsideWrites": 8,
+      "outsideReads": 319,
+      "outsideWrites": 11,
       "role": "code",
       "testRunners": [
         "node --test"
       ],
-      "testedBy": 266,
+      "testedBy": 273,
       "unresolvedNamed": [
         {
           "path": "packages/atlas/adapter/divergence-envelope.test.js",
@@ -5759,7 +5892,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "193a685bb34039c25f58d852334437818a0019559cae32c81687749a94ffa901",
+          "hash": "0c637be1929e8a4e5a681df6668ccc7e095ff08a04576fb735f43a5830504d31",
           "path": "docker/Dockerfile"
         },
         {
@@ -5811,11 +5944,15 @@
           "path": "docs/atlas-page.spec.md"
         },
         {
+          "hash": "814217c265831f0dbd6ba67eff32f24330d21be86e4b53207c3163af36444956",
+          "path": "docs/atlas-production.spec.md"
+        },
+        {
           "hash": "afb91bfc00df49b63b0602902cc02fea9ab83216496df785300bc5797ea9cb1a",
           "path": "docs/atlas-sidecar.dispatch.md"
         },
         {
-          "hash": "c85dd63e95870683da438909a1d8993b681a20a4d4474365b4580d77ebd744b5",
+          "hash": "e0073008329b5d63617cf1fe4a4b50233055cb4456f9e905e7a3fdf6a75ab1f6",
           "path": "docs/atlas-sidecar.spec.md"
         },
         {
@@ -5839,7 +5976,7 @@
           "path": "docs/case-file-contract.md"
         },
         {
-          "hash": "c0d9859e6bd51b1c85d7be7b23981269c58d0081fca1bba4eaf188b64bf0b631",
+          "hash": "3bfeb785e355639d2b2d2de28564923ee15c8ffa73fd9ea205e447031ebc1795",
           "path": "docs/codecov-rollout.md"
         },
         {
@@ -6033,7 +6170,7 @@
           "path": "packages/dogfood-swarm/LICENSE"
         },
         {
-          "hash": "5191f4507ff225a78021506d4494ebd9cc4c370ce1b58d237deea54347429d99",
+          "hash": "0e2641f9634f7ea8dddb7f58424dded109549b50fbfc28adf55fcd876e717231",
           "path": "packages/dogfood-swarm/README.md"
         },
         {
@@ -6656,60 +6793,60 @@
             {
               "in": "parseClosureFormatFlag",
               "kind": "throw",
-              "line": 2541
+              "line": 2542
             },
             {
               "in": "cmdClose",
               "kind": "throw",
-              "line": 2917
+              "line": 2918
             },
             {
               "in": "annotateCanonicalFindingIds",
               "kind": "catch",
-              "line": 3126
+              "line": 3127
             },
             {
               "in": "parseFindingStatusFlag",
               "kind": "throw",
-              "line": 3228
+              "line": 3229
             },
             {
               "in": "parseFindingStatusFlag",
               "kind": "throw",
-              "line": 3237
+              "line": 3238
             },
             {
               "in": "cmdFindings",
               "kind": "throw",
-              "line": 3443
+              "line": 3444
             },
             {
               "in": "cmdFindings",
               "kind": "catch",
-              "line": 3452
+              "line": 3453
             },
             {
               "in": "cmdFindings",
               "kind": "throw",
-              "line": 3459
+              "line": 3460
             },
             {
               "in": "cmdFindings",
               "kind": "throw",
-              "line": 3470
+              "line": 3471
             },
             {
               "in": "isDirectExecution",
               "kind": "catch",
-              "line": 4166
+              "line": 4167
             },
             {
               "in": "main",
               "kind": "catch",
-              "line": 4611
+              "line": 4612
             }
           ],
-          "hash": "c05040d60afa25be4a2601875179e2bb119e575ca39f70eeb2bbe9e89b386793",
+          "hash": "557561f63353ca7e14dea248f38ed766b17e6f709d4fd47278d98b686a31fd7f",
           "importsFiles": [
             "packages/dogfood-swarm/commands/adjudicate.js",
             "packages/dogfood-swarm/commands/clean-claims.js",
@@ -7634,7 +7771,7 @@
                   }
                 },
                 {
-                  "line": 2358,
+                  "line": 2359,
                   "name": "prepare",
                   "target": null,
                   "via": "refuseIfNoIdsExist"
@@ -7684,7 +7821,7 @@
             {
               "calls": [
                 {
-                  "line": 2358,
+                  "line": 2359,
                   "name": "prepare",
                   "target": null
                 }
@@ -7697,20 +7834,20 @@
             {
               "calls": [
                 {
-                  "line": 2434,
+                  "line": 2435,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 2358,
+                  "line": 2359,
                   "name": "prepare",
                   "target": null,
                   "via": "refuseIfNoIdsExist"
                 },
                 {
-                  "line": 2470,
+                  "line": 2471,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -7725,7 +7862,7 @@
             {
               "calls": [
                 {
-                  "line": 2434,
+                  "line": 2435,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -7733,13 +7870,13 @@
                   "via": "disposeFindings"
                 },
                 {
-                  "line": 2358,
+                  "line": 2359,
                   "name": "prepare",
                   "target": null,
                   "via": "refuseIfNoIdsExist"
                 },
                 {
-                  "line": 2470,
+                  "line": 2471,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -7755,7 +7892,7 @@
             {
               "calls": [
                 {
-                  "line": 2434,
+                  "line": 2435,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -7763,13 +7900,13 @@
                   "via": "disposeFindings"
                 },
                 {
-                  "line": 2358,
+                  "line": 2359,
                   "name": "prepare",
                   "target": null,
                   "via": "refuseIfNoIdsExist"
                 },
                 {
-                  "line": 2470,
+                  "line": 2471,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -7785,14 +7922,14 @@
             {
               "calls": [
                 {
-                  "line": 2602,
+                  "line": 2603,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 2641,
+                  "line": 2642,
                   "name": "buildNotes",
                   "target": null
                 }
@@ -7805,28 +7942,28 @@
             {
               "calls": [
                 {
-                  "line": 2706,
+                  "line": 2707,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 2714,
+                  "line": 2715,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 2723,
+                  "line": 2724,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 2729,
+                  "line": 2730,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -7841,7 +7978,7 @@
             {
               "calls": [
                 {
-                  "line": 2602,
+                  "line": 2603,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -7849,14 +7986,14 @@
                   "via": "transitionFindings"
                 },
                 {
-                  "line": 2641,
+                  "line": 2642,
                   "name": "buildNotes",
                   "target": null,
                   "via": "transitionFindings"
                 },
                 {
                   "branch": "report.eligible.length === 0 && report.ineligible.length ==…",
-                  "line": 2798,
+                  "line": 2799,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -7864,27 +8001,27 @@
                 },
                 {
                   "branch": "report.eligible.length === 0 && report.ineligible.length ==…",
-                  "line": 2358,
+                  "line": 2359,
                   "name": "prepare",
                   "target": null,
                   "via": "refuseIfNoIdsExist"
                 },
                 {
-                  "line": 2811,
+                  "line": 2812,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
                   }
                 },
                 {
-                  "line": 2812,
+                  "line": 2813,
                   "name": "join",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/finding-status.js"
                   }
                 },
                 {
-                  "line": 2706,
+                  "line": 2707,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -7892,7 +8029,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2714,
+                  "line": 2715,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -7900,7 +8037,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2723,
+                  "line": 2724,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -7908,7 +8045,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2729,
+                  "line": 2730,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -7924,7 +8061,7 @@
             {
               "calls": [
                 {
-                  "line": 2602,
+                  "line": 2603,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -7932,14 +8069,14 @@
                   "via": "transitionFindings"
                 },
                 {
-                  "line": 2641,
+                  "line": 2642,
                   "name": "buildNotes",
                   "target": null,
                   "via": "transitionFindings"
                 },
                 {
                   "branch": "report.eligible.length === 0 && report.ineligible.length ==…",
-                  "line": 2949,
+                  "line": 2950,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -7947,13 +8084,13 @@
                 },
                 {
                   "branch": "report.eligible.length === 0 && report.ineligible.length ==…",
-                  "line": 2358,
+                  "line": 2359,
                   "name": "prepare",
                   "target": null,
                   "via": "refuseIfNoIdsExist"
                 },
                 {
-                  "line": 2706,
+                  "line": 2707,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -7961,7 +8098,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2714,
+                  "line": 2715,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -7969,7 +8106,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2723,
+                  "line": 2724,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -7977,7 +8114,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2729,
+                  "line": 2730,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -7993,7 +8130,7 @@
             {
               "calls": [
                 {
-                  "line": 2602,
+                  "line": 2603,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -8001,14 +8138,14 @@
                   "via": "transitionFindings"
                 },
                 {
-                  "line": 2641,
+                  "line": 2642,
                   "name": "buildNotes",
                   "target": null,
                   "via": "transitionFindings"
                 },
                 {
                   "branch": "report.eligible.length === 0 && report.ineligible.length ==…",
-                  "line": 3052,
+                  "line": 3053,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -8016,13 +8153,13 @@
                 },
                 {
                   "branch": "report.eligible.length === 0 && report.ineligible.length ==…",
-                  "line": 2358,
+                  "line": 2359,
                   "name": "prepare",
                   "target": null,
                   "via": "refuseIfNoIdsExist"
                 },
                 {
-                  "line": 2706,
+                  "line": 2707,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -8030,7 +8167,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2714,
+                  "line": 2715,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -8038,7 +8175,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2723,
+                  "line": 2724,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -8046,7 +8183,7 @@
                   "via": "formatTransitionReport"
                 },
                 {
-                  "line": 2729,
+                  "line": 2730,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -8062,7 +8199,7 @@
             {
               "calls": [
                 {
-                  "line": 3125,
+                  "line": 3126,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -8077,7 +8214,7 @@
             {
               "calls": [
                 {
-                  "line": 3196,
+                  "line": 3197,
                   "name": "join",
                   "target": {
                     "file": "packages/dogfood-swarm/db/schema.js"
@@ -8093,7 +8230,7 @@
               "calls": [
                 {
                   "branch": "tokens.length === 0",
-                  "line": 3196,
+                  "line": 3197,
                   "name": "join",
                   "target": {
                     "file": "packages/dogfood-swarm/db/schema.js"
@@ -8101,14 +8238,14 @@
                   "via": "statusFilterError"
                 },
                 {
-                  "line": 3233,
+                  "line": 3234,
                   "name": "find",
                   "target": {
                     "file": "packages/dogfood-swarm/db/schema.js"
                   }
                 },
                 {
-                  "line": 3239,
+                  "line": 3240,
                   "name": "filter",
                   "target": {
                     "file": "packages/dogfood-swarm/db/schema.js"
@@ -8123,7 +8260,7 @@
             {
               "calls": [
                 {
-                  "line": 3259,
+                  "line": 3260,
                   "name": "prepare",
                   "target": null
                 }
@@ -8136,49 +8273,49 @@
             {
               "calls": [
                 {
-                  "line": 3332,
+                  "line": 3333,
                   "name": "pad",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
                   }
                 },
                 {
-                  "line": 3337,
+                  "line": 3338,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 3337,
+                  "line": 3338,
                   "name": "pad",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
                   }
                 },
                 {
-                  "line": 3339,
+                  "line": 3340,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 3339,
+                  "line": 3340,
                   "name": "pad",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
                   }
                 },
                 {
-                  "line": 3340,
+                  "line": 3341,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 3340,
+                  "line": 3341,
                   "name": "truncate",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
@@ -8194,7 +8331,7 @@
               "calls": [
                 {
                   "branch": "tokens.length === 0",
-                  "line": 3196,
+                  "line": 3197,
                   "name": "join",
                   "target": {
                     "file": "packages/dogfood-swarm/db/schema.js"
@@ -8202,7 +8339,7 @@
                   "via": "statusFilterError"
                 },
                 {
-                  "line": 3233,
+                  "line": 3234,
                   "name": "find",
                   "target": {
                     "file": "packages/dogfood-swarm/db/schema.js"
@@ -8210,7 +8347,7 @@
                   "via": "parseFindingStatusFlag"
                 },
                 {
-                  "line": 3239,
+                  "line": 3240,
                   "name": "filter",
                   "target": {
                     "file": "packages/dogfood-swarm/db/schema.js"
@@ -8219,7 +8356,7 @@
                 },
                 {
                   "branch": "statusFilter !== undefined",
-                  "line": 3400,
+                  "line": 3401,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -8227,14 +8364,14 @@
                 },
                 {
                   "branch": "statusFilter !== undefined",
-                  "line": 3259,
+                  "line": 3260,
                   "name": "prepare",
                   "target": null,
                   "via": "queryFindingsByStatus"
                 },
                 {
                   "branch": "statusFilter !== undefined",
-                  "line": 3332,
+                  "line": 3333,
                   "name": "pad",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
@@ -8243,7 +8380,7 @@
                 },
                 {
                   "branch": "statusFilter !== undefined",
-                  "line": 3337,
+                  "line": 3338,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -8252,7 +8389,7 @@
                 },
                 {
                   "branch": "statusFilter !== undefined",
-                  "line": 3337,
+                  "line": 3338,
                   "name": "pad",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
@@ -8261,7 +8398,7 @@
                 },
                 {
                   "branch": "statusFilter !== undefined",
-                  "line": 3339,
+                  "line": 3340,
                   "name": "escapePathForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -8270,7 +8407,7 @@
                 },
                 {
                   "branch": "statusFilter !== undefined",
-                  "line": 3339,
+                  "line": 3340,
                   "name": "pad",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
@@ -8279,7 +8416,7 @@
                 },
                 {
                   "branch": "statusFilter !== undefined",
-                  "line": 3340,
+                  "line": 3341,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -8288,7 +8425,7 @@
                 },
                 {
                   "branch": "statusFilter !== undefined",
-                  "line": 3340,
+                  "line": 3341,
                   "name": "truncate",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/history.js"
@@ -8296,28 +8433,28 @@
                   "via": "renderFindingsByStatusText"
                 },
                 {
-                  "line": 3451,
+                  "line": 3452,
                   "name": "findLatestWave",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/findings-digest.js"
                   }
                 },
                 {
-                  "line": 3473,
+                  "line": 3474,
                   "name": "loadDomainOutputs",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/findings-digest.js"
                   }
                 },
                 {
-                  "line": 3474,
+                  "line": 3475,
                   "name": "buildDigestModel",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/findings-digest.js"
                   }
                 },
                 {
-                  "line": 3125,
+                  "line": 3126,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -8325,7 +8462,7 @@
                   "via": "annotateCanonicalFindingIds"
                 },
                 {
-                  "line": 3476,
+                  "line": 3477,
                   "name": "renderDigest",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/findings-render.js"
@@ -8340,7 +8477,7 @@
             {
               "calls": [
                 {
-                  "line": 3504,
+                  "line": 3505,
                   "name": "prepare",
                   "target": null
                 }
@@ -8353,7 +8490,7 @@
             {
               "calls": [
                 {
-                  "line": 3519,
+                  "line": 3520,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
@@ -8361,13 +8498,13 @@
                 },
                 {
                   "branch": "format === 'json'",
-                  "line": 3504,
+                  "line": 3505,
                   "name": "prepare",
                   "target": null,
                   "via": "buildRunsJSON"
                 },
                 {
-                  "line": 3544,
+                  "line": 3545,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -8382,35 +8519,35 @@
             {
               "calls": [
                 {
-                  "line": 3590,
+                  "line": 3591,
                   "name": "openDb",
                   "target": {
                     "file": "packages/dogfood-swarm/db/connection.js"
                   }
                 },
                 {
-                  "line": 3594,
+                  "line": 3595,
                   "name": "queryRecurringFindings",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/queries/cross-run-analytics.js"
                   }
                 },
                 {
-                  "line": 3597,
+                  "line": 3598,
                   "name": "queryPerRepoRunHistory",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/queries/cross-run-analytics.js"
                   }
                 },
                 {
-                  "line": 3610,
+                  "line": 3611,
                   "name": "queryFindingRecurrenceRate",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/queries/cross-run-analytics.js"
                   }
                 },
                 {
-                  "line": 3635,
+                  "line": 3636,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -8418,7 +8555,7 @@
                   "via": "formatTrends"
                 },
                 {
-                  "line": 3642,
+                  "line": 3643,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
@@ -8426,7 +8563,7 @@
                   "via": "formatTrends"
                 },
                 {
-                  "line": 3655,
+                  "line": 3656,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -8442,21 +8579,21 @@
             {
               "calls": [
                 {
-                  "line": 3635,
+                  "line": 3636,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
                   }
                 },
                 {
-                  "line": 3642,
+                  "line": 3643,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 3655,
+                  "line": 3656,
                   "name": "pluralize",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/pluralize.js"
@@ -8472,7 +8609,7 @@
               "calls": [
                 {
                   "branch": "undoRaw !== undefined",
-                  "line": 3752,
+                  "line": 3753,
                   "name": "undoRoadmapCompile",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/roadmap.js"
@@ -8480,7 +8617,7 @@
                 },
                 {
                   "branch": "undoRaw !== undefined",
-                  "line": 3757,
+                  "line": 3758,
                   "name": "formatRoadmapUndo",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/roadmap.js"
@@ -8488,7 +8625,7 @@
                 },
                 {
                   "branch": "sub === 'compile'",
-                  "line": 3761,
+                  "line": 3762,
                   "name": "compileRoadmap",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/roadmap.js"
@@ -8496,21 +8633,21 @@
                 },
                 {
                   "branch": "sub === 'compile'",
-                  "line": 3766,
+                  "line": 3767,
                   "name": "formatRoadmapCompile",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/roadmap.js"
                   }
                 },
                 {
-                  "line": 3781,
+                  "line": 3782,
                   "name": "showRoadmap",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/roadmap.js"
                   }
                 },
                 {
-                  "line": 3786,
+                  "line": 3787,
                   "name": "formatRoadmapShow",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/roadmap.js"
@@ -8525,7 +8662,7 @@
             {
               "calls": [
                 {
-                  "line": 4582,
+                  "line": 4583,
                   "name": "renderPhaseColumns",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/phases.js"
@@ -8566,7 +8703,7 @@
                       "via": "deriveHintForCode"
                     }
                   ],
-                  "line": 4609,
+                  "line": 4610,
                   "name": "renderTopLevelError",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/error-render.js"
@@ -10646,10 +10783,10 @@
             {
               "in": "persist",
               "kind": "catch",
-              "line": 116
+              "line": 114
             }
           ],
-          "hash": "259029775163716db1a3b064ae59046659a8cea0a3d4828cb0fa12bed045c611",
+          "hash": "7c489b79c70d0a5728974297efebadd06db138ea0b5de61fd6dd75a9ee64fb12",
           "importsFiles": [
             "packages/dogfood-swarm/commands/lib/escape-reason.js",
             "packages/dogfood-swarm/db/connection.js",
@@ -10727,14 +10864,14 @@
             {
               "calls": [
                 {
-                  "line": 183,
+                  "line": 181,
                   "name": "escapeReasonForDisplay",
                   "target": {
                     "file": "packages/dogfood-swarm/commands/lib/escape-reason.js"
                   }
                 },
                 {
-                  "line": 200,
+                  "line": 198,
                   "name": "formatAuditStatusLine",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/persist/repoknowledge-bridge.js"
@@ -18423,7 +18560,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "4bc99972e04e42f15af70226ec0650717a369a7e530ca72153b6ccbdbf4c17a1",
+          "hash": "9af40a643c8fb99d84cb9319bf085db4606636d7787039d7d41e254bf9cbbf99",
           "importOrder": [
             "packages/dogfood-swarm/db/connection.js",
             "packages/dogfood-swarm/lib/domains.js",
@@ -18520,7 +18657,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "3fdc7d42591918556fb78dd71482a53d82ac4d8a7403a35439e39f3ebe0d7d9c",
+          "hash": "a40a17248446a0abcc305ab5e9e560dafc0e15a6c462b43bd2af74ea7d9d9f20",
           "path": "packages/dogfood-swarm/package.json"
         },
         {
@@ -18588,10 +18725,10 @@
             },
             {
               "kind": "catch",
-              "line": 381
+              "line": 379
             }
           ],
-          "hash": "ceb05d5cc346f02b32a07e9cc2d6dd41a39f4097aed66934483cf1b513ce1afd",
+          "hash": "dd38d79d1e8b4bd7602e6177708578ed61ff20e764a12f054af1e0b7a2065fee",
           "importOrder": [
             "packages/report/build-submission.js",
             "packages/findings/lib/atomic-write.js",
@@ -21092,7 +21229,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "b658c220af622932158f48addb7d96429ede5104356cfb9b9f351f57c8acb95a",
+          "hash": "593c4d701d7284d609daaf62adcee6c77b02f7695c2d012e553498c6c51bc375",
           "path": "packages/findings/package.json"
         },
         {
@@ -24603,6 +24740,44 @@
         {
           "hash": "e18fdcb68b076a47f2f10348a450663132ae0f2f2c7a9cc208b431cac3892b86",
           "path": "fixtures/atlas/explain-places/tools/summary.js"
+        },
+        {
+          "hash": "7bcc641bb259814bb4aad9c86214314121f5b0302e922cf663120a87cb296f9b",
+          "path": "fixtures/atlas/explain-workflow/.github/workflows/release.yml"
+        },
+        {
+          "hash": "b1dbbd04b9c148b8e473c20ee37679414efb31cfb523225c857921d770f8662a",
+          "path": "fixtures/atlas/explain-workflow/atlas/boundaries.yaml"
+        },
+        {
+          "hash": "da3f7a77349a3567f7c358e3f862055dd40543cdbd50923a03d3ec9279caab98",
+          "path": "fixtures/atlas/explain-workflow/config/settings.yaml"
+        },
+        {
+          "exports": [
+            "total"
+          ],
+          "hash": "e215a7abaa89146a4915e144f99c3ce3070fcba711bdf66b553f55e6df4ec9ab",
+          "path": "fixtures/atlas/explain-workflow/lib/core.js"
+        },
+        {
+          "hash": "07e56c57bf963d2b8cb6ef0b9a68c41b48e9a9f95103aa372fc512b5e26feb5c",
+          "importsFiles": [
+            "fixtures/atlas/explain-workflow/lib/core.js"
+          ],
+          "path": "fixtures/atlas/explain-workflow/lib/core.test.js",
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "d928d159eac6b1cf001ad6f9ca0c1b230e92ea9559d85a67295e61f150498d94",
+          "importsFiles": [
+            "fixtures/atlas/explain-workflow/lib/core.js"
+          ],
+          "path": "fixtures/atlas/explain-workflow/lib/report.js"
+        },
+        {
+          "hash": "c35d9c7916faa2836bf917893c9f72063feaa508ee2117facb4e5c4d8a71f5b0",
+          "path": "fixtures/atlas/explain-workflow/package.json"
         },
         {
           "hash": "b9b8b1eccfe5b2b09168a9b7bc2f08c935b541634c39a3335ff0c47f3452227c",
@@ -34294,7 +34469,7 @@
       "origin": "authored",
       "outsideImports": 3,
       "role": "code",
-      "testedBy": 140,
+      "testedBy": 141,
       "unresolvedNamed": [
         {
           "path": "fixtures/atlas/build-config/scripts/use.mjs",
@@ -34395,19 +34570,19 @@
           "path": "indexes/failing.json"
         },
         {
-          "hash": "8b64754aa995f1f230962df0e8f993b4508c3588497685b964f90a1dcdbac553",
+          "hash": "7e1431ee39838895594720b074f7a41a4bbc08ede946b9c47b62607284a39ed2",
           "path": "indexes/integrity/chain.jsonl"
         },
         {
-          "hash": "3c1b4bce721544ceb80c2564e35b4294b6d72d4d3c3eb03fa72ba82b2e17bc1e",
+          "hash": "32406b54c6600bad9405edf79a6fafccf45a6da6d64a31216cfacd1452c34883",
           "path": "indexes/latest-by-repo.json"
         },
         {
-          "hash": "07fbe6b5dbe50ddfa810eae6a57073927a6542a743e018538a2634f129229a86",
+          "hash": "7f53cb80459f400fe18526ca9edefb0041a0a9e674d63f8d32acfd2a56a7e140",
           "path": "indexes/stale.json"
         },
         {
-          "hash": "dfb95c0348c8737354afc516d41432540055d65c369004efbbcb5e03f678c353",
+          "hash": "60774b66c66f7c07ec6299a93f86d31edf8fb351d93fa7e00532b38a5b25cf36",
           "path": "indexes/trends.json"
         }
       ],
@@ -34436,7 +34611,7 @@
           "path": "packages/ingest/LICENSE"
         },
         {
-          "hash": "db74ee238bf75484db216ebdd7d69b9f528c14e4b9eda1a137237120e0538d44",
+          "hash": "30c511eb703e87fbd9e98d5c707c3060f19fdfec2cda210e4363bddb5cc20bb1",
           "path": "packages/ingest/README.md"
         },
         {
@@ -34709,7 +34884,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "e4024161a93ee79e952a144f76779793f403b3d79509a063260d98e99e3ffd5f",
+          "hash": "5608a7f636365d9db2a216ca87cdfbbe6ac37c58bd18e78e5409e57c0ed51d06",
           "names": [
             "packages/dogfood-swarm/lib/log-stage.js",
             "packages/ingest/anchor/cli.js",
@@ -35404,7 +35579,7 @@
           ]
         },
         {
-          "hash": "e9a19ae2fc39f100d86ac0356fd5c27739b86e84a3ed0c855d4399e6b5289ac3",
+          "hash": "e94bcf69b7fc804037cc484f4fbdc1bb0b5bca3793955c8c37ab6cf726651e17",
           "path": "packages/ingest/package.json"
         },
         {
@@ -35877,22 +36052,22 @@
             },
             {
               "kind": "catch",
-              "line": 982
+              "line": 986
             },
             {
               "kind": "catch",
-              "line": 1165
+              "line": 1169
             },
             {
               "kind": "catch",
-              "line": 1226
+              "line": 1230
             },
             {
               "kind": "catch",
-              "line": 1381
+              "line": 1404
             }
           ],
-          "hash": "e3ce7843283cf912548291cfa007d80c205ce970e8fad88653500a5466b42587",
+          "hash": "7c0f1cd98bfb7f2ecdafbd248ef1f810f943d985ff96c04f91be88bc872f4cb4",
           "importsFiles": [
             "packages/dogfood-swarm/lib/log-stage.js",
             "packages/ingest/anchor/cli.js",
@@ -36328,7 +36503,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "721d615f4fbefe9cb82b87b9093d79df071f6a4f989903c5e1ab8d654177433b",
+          "hash": "c79d9cef10d13ca439c5df224b7ff267a965f853db586bee564decdf91edfbfe",
           "path": "packages/ingest/stageA-seed2-repo-root-override.test.js",
           "spawns": [
             "packages/ingest/run.js"
@@ -36998,7 +37173,7 @@
           "path": "packages/portfolio/lib/tracked-files.js"
         },
         {
-          "hash": "54f53977d271fd3e5d30d31b8a6a9ac839ffb5ca15f835ccc0487fdf15869fbb",
+          "hash": "84d0bc1a7bb89ab46f0d51796e4df2a75f79b3fd4c0eea5747ee38c55bf81198",
           "path": "packages/portfolio/package.json"
         },
         {
@@ -37540,6 +37715,46 @@
         {
           "hash": "ceb73128a5a447cebfe96b3248a7b7c4438fb2edf11cd675d029654dc2392da6",
           "path": "records/dogfood-lab/testing-os/2026/09/27/run-00muj8lpnn-HYdm0gnn05MYFg.json"
+        },
+        {
+          "hash": "d414014c1a2ad85d5939edeb25c7a6c1c00c5ce8c46b4b36f91fca681904d9bb",
+          "path": "records/dogfood-lab/testing-os/2026/09/29/run-00mun4m1wl-OuGeVmYQWqhL9Q.json"
+        },
+        {
+          "hash": "f23c626e0245e9c3ff3cf62ccbfee227cdac983726c403820b11cfe0735dfc7f",
+          "path": "records/dogfood-lab/testing-os/2026/09/29/run-00mun7iu2p-SVVKRSikw6Kvyg.json"
+        },
+        {
+          "hash": "35e89d14b9b056639c0c760b47d18a6e096bb9f81a9ddce0d95d7cc9a74d6d92",
+          "path": "records/dogfood-lab/testing-os/2026/09/29/run-00mun94arh-JIDXc1Q2c9Ui7A.json"
+        },
+        {
+          "hash": "6ca1c12bbcb39a0e986c9ca4aac38c34a7a8a6638c076da5af5665c81f27f63a",
+          "path": "records/dogfood-lab/testing-os/2026/09/29/run-00munab92y-b2QowPSmS91pyg.json"
+        },
+        {
+          "hash": "1561b4c5176617202af6ba6db4020ec51c9db7ade927ab8f133482e5114a559b",
+          "path": "records/dogfood-lab/testing-os/2026/09/29/run-00munaxw94-eL6SPlcWSbrdAw.json"
+        },
+        {
+          "hash": "7143621b05b3f423c59be0c3a617d889263b04d848d0ae84f7b77636da2b3d24",
+          "path": "records/dogfood-lab/testing-os/2026/09/29/run-00munbd09s-jUqkK0R_xSHPMQ.json"
+        },
+        {
+          "hash": "e23420254b8aee0350bd4b25fe8eda1cea66abea305706a52f6dd89e69d1da11",
+          "path": "records/dogfood-lab/testing-os/2026/09/29/run-00munc1l5i-xHrzZxQqY3sOFQ.json"
+        },
+        {
+          "hash": "6463bbba80f1ed664a30050d9c47dce41aaf5324b1c4188940df6378fd8e5aa7",
+          "path": "records/dogfood-lab/testing-os/2026/09/30/run-00mundasde-hNnoU8rOU8eT0g.json"
+        },
+        {
+          "hash": "d36f2c26c7ed53577ce6d00dfdcdcba680c774e3ce07263d626392a36c890174",
+          "path": "records/dogfood-lab/testing-os/2026/09/30/run-00munew5g5-sZSjmdf6VEPIMA.json"
+        },
+        {
+          "hash": "293a7f21b9c5efbcec5b94433d2a08919391d6ff3abcd622d745b709e9ea584b",
+          "path": "records/dogfood-lab/testing-os/2026/09/30/run-00muo9ultk-XGviTLGHv8n5mw.json"
         },
         {
           "hash": "d80bd628d70f1275786c79da48bfb6da79ef0eb303eceed6fe87960e8c7a308c",
@@ -38211,7 +38426,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "08f9e2452e5646e637b0410b1711f6a81375a17251568d5e10bf2895f4135fba",
+          "hash": "7602f9adb59330e88b14ba41f6d584d403edb1fc737fb2a6a9ce53449c48025b",
           "path": "packages/report/package.json"
         },
         {
@@ -38490,11 +38705,11 @@
           "path": ".gitignore"
         },
         {
-          "hash": "d576d54967eeaf1e8999904a04614786b78dd5dfd0314ef4fa47d139c6cf6c4e",
+          "hash": "9ef167188af1875e6c3b7b32b6c2311e7567618a53c01b70169257e87d19e285",
           "path": "CHANGELOG.md"
         },
         {
-          "hash": "98797ac94f4d56d743179e1e88fda06b8f800511153fdfa68f5e00e9afda62da",
+          "hash": "49af199fc07d54ccb5979517358c9a7de9d6cb77fa2362a4eb84197e51c23a10",
           "path": "CLAUDE.md"
         },
         {
@@ -38502,7 +38717,7 @@
           "path": "CONTRIBUTING.md"
         },
         {
-          "hash": "4ffe3815e5bd8c5bd73c97ee6f9b409e11544a4d07236b6b6cb47db329a0a2de",
+          "hash": "01180640604635c90c4b719d6346108734301b46ef6b2b7420c280b3bca84b32",
           "path": "HANDOFF.md"
         },
         {
@@ -38510,39 +38725,39 @@
           "path": "LICENSE"
         },
         {
-          "hash": "b5d9969cf1be0658fd0023e78a3d39578828c5a599683b94ee88c0b7d546cd3e",
+          "hash": "8eb2b03027f175488cbb0bd05425cf65bb9e2853a11d33844eb680126777d80d",
           "path": "README.es.md"
         },
         {
-          "hash": "37439e70e983afb535cce4628f22bb7d90a46a3006fd037a873ee407931922f8",
+          "hash": "4fa8fcc138575d0bf7821e28632e2f7fe8e67ff44f141cfe3ea80fd25e698350",
           "path": "README.fr.md"
         },
         {
-          "hash": "d710a92423fc1390a65594d1e3e494e69bf229e27cc362ba7cb976716e5ee489",
+          "hash": "7da8bf2f8a641f6b6c70f5d76003b5f3114769a550c07ee799c98620f694c586",
           "path": "README.hi.md"
         },
         {
-          "hash": "809b5d7a287b49c1fdcfe771ebf98ab6ddbed693c4fe83e1e4a2b8bab759f41b",
+          "hash": "6ac5df2688159535834ee586b65155df4b3905f73cf38fca2fff8e697495aca9",
           "path": "README.it.md"
         },
         {
-          "hash": "ad5ac4af571339924b9ce6b2023434f0db2368a86ac9db0bf64c2b6268a5e542",
+          "hash": "9b4dcc6b4c55cc4a7e366f317b790204edf9c683da81760d20832c3973ebf1d0",
           "path": "README.ja.md"
         },
         {
-          "hash": "a49eb6bc0c03e9c738a3f98d1b8be551efd3f8d1fc8297ed57b370d254baacde",
+          "hash": "645e4433ee2b7d955ce1608a29f6153df4ab36c9ced530cee9f05cb2018c9613",
           "path": "README.md"
         },
         {
-          "hash": "c0ce57a27151d1de8f1069e6dd220a86deb1f4d99338a12f3a301c3efa5d7c0c",
+          "hash": "9b332b0598b98441a1dd487fc71906657ea5bcf7a84a2005a181400cadef3700",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "99389f3bc59fef92837111f682fdab87281924a5e89c700677dc0c54220ea27c",
+          "hash": "73aa9d1afa9bd61ef5670e61fca61ef25003547ca0f636e993eae3e48878a1ed",
           "path": "README.zh.md"
         },
         {
-          "hash": "74a79637de840e36fbaae1bd8b8b200728d8dbe6c90ff235e46942a07f03efd1",
+          "hash": "56e5218bc9786592fb7a14b3c839233676916a1bc093be72bfd2ab5d8906bc60",
           "path": "SCORECARD.md"
         },
         {
@@ -38550,7 +38765,7 @@
           "path": "SECURITY.md"
         },
         {
-          "hash": "062f15c0a940f31aff8a7fef9a72edb565d723978f9a3f2bfa52d47140392ef6",
+          "hash": "88a8f530b74a902b47d05a06c949a4fd2ca50c263f1bc7e43caeb75ae62a7a66",
           "path": "SHIP_GATE.md"
         },
         {
@@ -38558,11 +38773,11 @@
           "path": "codecov.yml"
         },
         {
-          "hash": "21e289504bc347c35dda50d4b1b468352fcee4563c3c28516bc3d4dd38173fba",
+          "hash": "cc7a2e1dcf4e72c7de04f250eb0bbf0789f730e0e1d1adb8c4d90bf4493bb08c",
           "path": "package-lock.json"
         },
         {
-          "hash": "a6c65a822680ee2adda586750d8035e078d134d1c495899141b29d993b1e2dbf",
+          "hash": "ebb207bc31102c76172f0032eb4766e1e988f468daa1fd95f58b9dacb96cc846",
           "path": "package.json"
         },
         {
@@ -38603,7 +38818,7 @@
           "path": "packages/schemas/README.md"
         },
         {
-          "hash": "653392fa484f50bdd9a81466204ab8daf732fcfda73f1b7fa6e6eeca082f6465",
+          "hash": "a5edd272313f4772eff5307cbe6587771f8b5e7c0b8c6591165d79cfb38ccabb",
           "path": "packages/schemas/package.json"
         },
         {
@@ -40217,7 +40432,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "62b63eabd68a34fa15730df1e996164648903fedcfb5465163c51ab7b8b1e806",
+          "hash": "65d498c0efb5ebff85f6cb9f32fb42af02c50fe78b010f6bc59b57a386c109c7",
           "importsFiles": [
             "scripts/lib/codecov/check.mjs",
             "scripts/lib/codecov/facts.mjs",
@@ -40231,7 +40446,7 @@
           "exports": [
             "main"
           ],
-          "hash": "c1441dacc11af8950005b5f0551d3131f940b30262bc4cdd932a115b1a99efcd",
+          "hash": "c75536b619918848774e875dad4e68e4e043870d6bf5704c45422beaf4c57a96",
           "importsFiles": [
             "scripts/lib/codecov/check.mjs",
             "scripts/lib/codecov/delivered.mjs",
@@ -40243,7 +40458,7 @@
           "path": "scripts/codecov-rollout.mjs"
         },
         {
-          "hash": "9f32bf17b16c9a22e8fb434c96546b820bb9fdc655023e7d3ca3599cb687b7cc",
+          "hash": "e958fddddf69ed213627cc2bd8571647ba95ec023344aa81a0b46992d4370803",
           "importsFiles": [
             "scripts/codecov-rollout.mjs",
             "scripts/lib/codecov/recipe.mjs"
@@ -40258,7 +40473,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "9dbb123d5b2a6dc1c678cca68fee77964d2fa452b19440bb9d26990e37b433c1",
+          "hash": "dc2b992028e62702eb4496577a2a1e2e826862588dd63fc37044b81ab0d66a2e",
           "importsFiles": [
             "scripts/lib/codecov/runners.mjs"
           ],
@@ -40366,7 +40581,7 @@
           "exports": [
             "planRepository"
           ],
-          "hash": "ac076b675c42f8abae9eaf8f05700de180f54d6fb17b38a40275ae07548dfb5c",
+          "hash": "ca19c356a9b184ddb5262443e9dcda6aa55459a2da84399e64b493f9b6e544a5",
           "importsFiles": [
             "scripts/lib/codecov/check.mjs",
             "scripts/lib/codecov/recipe.mjs",
@@ -40386,20 +40601,20 @@
             {
               "in": "readJson",
               "kind": "catch",
-              "line": 65
+              "line": 88
             },
             {
               "in": "readJsonc",
               "kind": "catch",
-              "line": 77
+              "line": 100
             },
             {
               "in": "vitestSettings",
               "kind": "catch",
-              "line": 284
+              "line": 327
             }
           ],
-          "hash": "f1fabad245ab7705f48c3311d711a883b803425c1aba449d0eb9f59292db1fed",
+          "hash": "65d3ef2073217d260d4c0802ab5fc6e2bbf3946000084e7a54bb569d46691d03",
           "importsFiles": [
             "packages/atlas/core/toml.js",
             "scripts/lib/codecov/recipe.mjs",
@@ -40786,7 +41001,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "fe2e0765131d1f1b970f7feab360678b19b54329aac3eb26af61084145f1c0ca",
+          "hash": "8d150f3c36eab6a3c94cb5e90f02c4b434dc8b71bf7948ce13bd5b9e5c80bbf0",
           "path": "scripts/test-floor-allowlist.json"
         }
       ],
@@ -40866,7 +41081,7 @@
           "path": "site/astro.config.mjs"
         },
         {
-          "hash": "0114a0b736d43a65096f3e1cabaee116ccdd81ba99ad690087773a38d25d772c",
+          "hash": "be7a93e0cf7e9b2ccff8c0ac4d384efa71656db657fd3d9dc6b2ad692e86ff07",
           "path": "site/package-lock.json"
         },
         {
@@ -40927,7 +41142,7 @@
           "path": "site/public/logo.png"
         },
         {
-          "hash": "3a7e4f6dd382d1bdfd262dbb12bda9cadf801e8cb06ed8f98c4d2ab50281aa7c",
+          "hash": "1cd935bd69554a3594531bedc6bbf5c9fb6a720d274099a6e98f12c56dab50b6",
           "path": "site/public/screenshots/verify-output.svg"
         },
         {
@@ -40975,15 +41190,15 @@
           "path": "site/src/content/docs/handbook/architecture.md"
         },
         {
-          "hash": "64d9dcc170f0dc9844cbc0a720505dbf4daf362dda6229bf659b9fe874afbd17",
+          "hash": "01c7bd745a3b8b1fdd810b00577a246035121a77b8da631c8c0beb74c67a0b3e",
           "path": "site/src/content/docs/handbook/atlas.md"
         },
         {
-          "hash": "2b1d1d6d12cbabb8bb872d2258addbac814607439644a01ef6b7b96d4c21c7d5",
+          "hash": "7d11ccfd84dc41672431b2466c00638a280bb2b834bdd1acb6f6a6a8c040b51b",
           "path": "site/src/content/docs/handbook/beginners.md"
         },
         {
-          "hash": "52eab3d3ba245bcce2601e9d4084a50c3876592639b4124032671f4ce665eb68",
+          "hash": "d404b4acd1ba2fca2b22773ae5d100f60819a360f63bdb3bb7ff3e5ef5cfea44",
           "path": "site/src/content/docs/handbook/cli-reference.md"
         },
         {
@@ -40991,7 +41206,7 @@
           "path": "site/src/content/docs/handbook/contracts.md"
         },
         {
-          "hash": "a69ae1c751d24b60f62b2b6ee5d5217316716ee8c8e413e2cd6a2dbfc8a6eb50",
+          "hash": "ea82fe5a65ef43b183ad0a47811704ce5b0d1d57814600469a74b0cd0839b250",
           "path": "site/src/content/docs/handbook/error-codes.md"
         },
         {
@@ -41007,7 +41222,7 @@
           "path": "site/src/content/docs/handbook/intelligence-layer.md"
         },
         {
-          "hash": "8fbf2b42f0602c4921af8eb2ea1d9469689304cc54a8602b63e84efd309bb164",
+          "hash": "2f00d8850abf693f0bcb8e544babf07242825d6b389da8c80dcf2736c2982372",
           "path": "site/src/content/docs/handbook/operating-guide.md"
         },
         {
@@ -41986,7 +42201,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "58a75e53a626ff0efda8baa1078e3291d49c1bb499851e38f82a3eb7808cc343",
+          "hash": "865c4a731e6dda432b2e6151f9f4498478eac381eff93452b2188c88ce7405d3",
           "path": "packages/verify/package.json"
         },
         {
@@ -43684,6 +43899,12 @@
         {
           "job": "build-and-test",
           "matched": true,
+          "path": "packages/atlas/adapter/explain-workflow.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
           "path": "packages/atlas/adapter/explain.test.js",
           "runKind": "executes"
         },
@@ -43703,12 +43924,6 @@
           "job": "build-and-test",
           "matched": true,
           "path": "packages/atlas/adapter/gaps.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/adapter/init-data-roles.test.js",
           "runKind": "executes"
         },
         {
@@ -43821,6 +44036,12 @@
         {
           "job": "build-and-test",
           "matched": true,
+          "path": "packages/atlas/sidecar/exported.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
           "path": "packages/atlas/sidecar/freshness.test.js",
           "runKind": "executes"
         },
@@ -43833,7 +44054,19 @@
         {
           "job": "build-and-test",
           "matched": true,
+          "path": "packages/atlas/sidecar/no-map.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
           "path": "packages/atlas/sidecar/read-only.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/atlas/sidecar/ref.test.js",
           "runKind": "executes"
         },
         {
@@ -43852,24 +44085,6 @@
           "job": "build-and-test",
           "matched": true,
           "path": "packages/atlas/sidecar/size.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/sidecar/static.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/sidecar/test-gaps-tool.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/sidecar/tools.test.js",
           "runKind": "executes"
         },
         {
@@ -44941,7 +45156,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 740,
+      "runsCount": 747,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -44969,7 +45184,7 @@
         {
           "coverage": true,
           "dir": "packages/atlas",
-          "files": 248,
+          "files": 255,
           "job": "build-and-test",
           "junit": true,
           "runner": "node --test",
@@ -45219,7 +45434,6 @@
         {
           "job": "ingest",
           "programs": [
-            "attempt",
             "echo",
             "git",
             "sleep"
@@ -46267,7 +46481,6 @@
         {
           "job": "deploy",
           "programs": [
-            "attempt",
             "awk",
             "curl",
             "echo",
@@ -46278,7 +46491,6 @@
         {
           "job": "a11y",
           "programs": [
-            "attempt",
             "cat",
             "echo",
             "npx",
@@ -46402,7 +46614,6 @@
         {
           "job": "publish",
           "programs": [
-            "attempt",
             "echo",
             "mkdir",
             "npm",
@@ -46454,13 +46665,10 @@
           "job": "publish",
           "programs": [
             "1",
-            "attempt",
             "echo",
             "mapfile",
             "node",
             "npm",
-            "published",
-            "skipped",
             "sleep"
           ],
           "step": "Publish public packages to npm (idempotent + resilient)"
@@ -47502,6 +47710,12 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "packages/atlas/adapter/explain-workflow.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "packages/atlas/adapter/explain.test.js",
           "runKind": "executes"
         },
@@ -47515,12 +47729,6 @@
           "job": "publish",
           "matched": true,
           "path": "packages/atlas/adapter/fleet.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/adapter/gaps.test.js",
           "runKind": "executes"
         },
         {
@@ -47633,6 +47841,12 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "packages/atlas/sidecar/exported.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "packages/atlas/sidecar/freshness.test.js",
           "runKind": "executes"
         },
@@ -47645,7 +47859,19 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "packages/atlas/sidecar/no-map.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "packages/atlas/sidecar/read-only.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "packages/atlas/sidecar/ref.test.js",
           "runKind": "executes"
         },
         {
@@ -47664,24 +47890,6 @@
           "job": "publish",
           "matched": true,
           "path": "packages/atlas/sidecar/size.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/sidecar/static.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/sidecar/test-gaps-tool.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/sidecar/tools.test.js",
           "runKind": "executes"
         },
         {
@@ -48747,7 +48955,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 744,
+      "runsCount": 751,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -48784,7 +48992,7 @@
         },
         {
           "dir": "packages/atlas",
-          "files": 248,
+          "files": 255,
           "job": "publish",
           "runner": "node --test",
           "step": "Verify (full pre-publish gate)",
@@ -50595,10 +50803,10 @@
       "to": "schemas"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "f4235bffb496fa784c719b35a30d1149d21e63fe",
-    "tracked": 3905
+    "commit": "030a798be2514492b6a33c2fb0fa3bf83516ef08",
+    "tracked": 3930
   },
   "landings": [
     {
@@ -51202,6 +51410,12 @@
         },
         {
           "by": "packages/atlas/adapter/engine-stamp.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/adapter/explain-workflow.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -53201,6 +53415,29 @@
         }
       ],
       "target": "fixtures/atlas/explain-places/test/ledger.test.js",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/adapter/explain-workflow.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/explain-workflow",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/test-floor-allowlist.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/atlas/explain-workflow/lib/core.test.js",
       "writers": []
     },
     {
@@ -55422,13 +55659,31 @@
           "fromTests": true
         },
         {
+          "by": "packages/atlas/sidecar/exported.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/atlas/sidecar/injection.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
         },
         {
+          "by": "packages/atlas/sidecar/no-map.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/atlas/sidecar/read-only.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/sidecar/ref.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -55441,6 +55696,12 @@
         },
         {
           "by": "packages/atlas/sidecar/tools.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/sidecar/upstream.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -57374,6 +57635,12 @@
         {
           "by": "scripts/check-lockfile-drift.test.mjs",
           "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "scripts/codecov-plan.test.mjs",
+          "call": "literal",
           "confidence": "ast",
           "fromTests": true
         },
@@ -61332,6 +61599,11 @@
           "call": "readdirSync",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "site/src/content/docs/handbook/beginners.md",
+          "call": "cp",
+          "confidence": "text"
         }
       ],
       "target": "policies",
@@ -63308,7 +63580,7 @@
       "target": "README.md"
     }
   ],
-  "testFiles": 960,
+  "testFiles": 969,
   "unassigned": [
     {
       "hash": "ae8cd9e48976f29e3293dbbe6a4b41aff3f2b9b968fcfb551ce183a0b08ed8cc",

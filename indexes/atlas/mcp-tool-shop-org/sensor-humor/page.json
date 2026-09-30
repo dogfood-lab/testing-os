@@ -37,7 +37,7 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "changed": 152,
       "moved": 0,
       "parts": 8,
@@ -45,8 +45,22 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; 152 files changed content.",
+        "sentence": "1 file added and 152 changed content, across 8 parts.",
         "subjects": []
       }
     ],
@@ -54,13 +68,13 @@
       "commit": "6e8ea9a82d220b4f0a6eb197d1176fddc6d8e6f8",
       "generatedAt": "2026-09-24T08:40:36.224Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
       "a": "src/tools/heckle.ts",
       "b": "src/tools/roast.ts",
-      "either": 15,
+      "either": 10,
       "partLabels": [
         "src",
         "src"
@@ -70,12 +84,12 @@
         "src"
       ],
       "relation": "inside",
-      "shared": 13
+      "shared": 8
     },
     {
       "a": "src/ollama.ts",
       "b": "src/tools/catchphrase.ts",
-      "either": 14,
+      "either": 9,
       "partLabels": [
         "src",
         "src"
@@ -85,12 +99,42 @@
         "src"
       ],
       "relation": "inside",
-      "shared": 10
+      "shared": 7
+    },
+    {
+      "a": "src/tools/catchphrase.ts",
+      "b": "src/tools/roast.ts",
+      "either": 9,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 7
+    },
+    {
+      "a": "src/ollama.ts",
+      "b": "src/tools/comic_timing.ts",
+      "either": 11,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 8
     },
     {
       "a": "src/tools/comic_timing.ts",
       "b": "src/tools/roast.ts",
-      "either": 17,
+      "either": 11,
       "partLabels": [
         "src",
         "src"
@@ -100,46 +144,16 @@
         "src"
       ],
       "relation": "inside",
-      "shared": 12
-    },
-    {
-      "a": "src/tools/catchphrase.ts",
-      "b": "src/tools/roast.ts",
-      "either": 15,
-      "partLabels": [
-        "src",
-        "src"
-      ],
-      "parts": [
-        "src",
-        "src"
-      ],
-      "relation": "inside",
-      "shared": 10
-    },
-    {
-      "a": "src/tools/catchphrase.ts",
-      "b": "src/tools/comic_timing.ts",
-      "either": 16,
-      "partLabels": [
-        "src",
-        "src"
-      ],
-      "parts": [
-        "src",
-        "src"
-      ],
-      "relation": "inside",
-      "shared": 10
+      "shared": 8
     }
   ],
   "changesTogetherNote": [
-    "1 file changed together with its own test, as expected.",
+    "3 files changed together with their own tests, as expected.",
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 11 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 3 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
-  "changesTogetherWithTests": 1,
-  "commit": "53be69f8bd3e3aca26a8cde1aa9e8f0b36f0cd84",
+  "changesTogetherWithTests": 3,
+  "commit": "a2c192732c8bc55db7976a21e904730698aa0a78",
   "defaultBranch": "main",
   "derived": "8 parts, mostly TypeScript (86 files), JavaScript (3), CSS (2), Astro (1), Python (1) and shell (1). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run sensor-humor.",
   "doors": [
@@ -285,12 +299,13 @@
       "runsCount": 27,
       "runsMore": 24,
       "sends": [
+        "uploads coverage to Codecov",
         "scans for secrets with TruffleHog"
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 12 paths",
-        "on a push touching 12 paths",
+        "on a pull request touching 13 paths",
+        "on a push touching 13 paths",
         "or by hand"
       ]
     },
@@ -394,7 +409,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [
     {
       "place": "swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/citation-receipt.json",
@@ -409,7 +424,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-28T13:20:56.293Z",
+  "generatedAt": "2026-09-30T18:03:43.914Z",
   "limits": [
     "1 import could not be resolved: `swarms/mcp-tool-shop-org--sensor-humor/evidence/study-swarm-feature-pass-2026-09/run-gate.mjs` imports `../../../../E:/AI/role-os/src/verify-citations.mjs`, which is not in this repository.",
     "2 writes use paths built at run time and are not named here.",

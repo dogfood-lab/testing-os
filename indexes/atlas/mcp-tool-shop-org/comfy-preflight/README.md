@@ -1,6 +1,6 @@
 # comfy-preflight: how it works
 
-Mapped at 2026-09-28 from commit 855e57c by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit d8e4911 by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,13 +8,15 @@ Mapped at 2026-09-28 from commit 855e57c by Atlas 1.23.4.
 
 ## What changed since 2026-09-25 (93d683c)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - CI now also runs tests/.
-- Release now also runs tests/.
-- No file changed.
+- And 1 more change to a door.
+- 1 file added and 3 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 9 paths; on a push touching 9 paths; or by hand. Runs verify.py and tests/; checks src/.
+1. **CI.** On a pull request touching 10 paths; on a push touching 10 paths; or by hand. Runs verify.py and tests/; checks src/.
 2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs verify.py and tests/; builds src/comfy_preflight/cli.py; checks src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **comfy-preflight** (a command people run, from package.json). Runs bin/comfy-preflight.js.
@@ -23,6 +25,7 @@ Mapped at 2026-09-28 from commit 855e57c by Atlas 1.23.4.
 ## What happens through CI
 
 1. The workflow runs verify.py in the repository root and tests/ in tests; it checks src/ in src.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 

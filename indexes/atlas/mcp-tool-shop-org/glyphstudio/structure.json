@@ -9,7 +9,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "7c506c0c825a0471b9265a15d39c078adff264db300a657bc364a389b5366d6a",
+          "hash": "f0ea8b385f2d925953b860d2aa5ac913b450a2182191bbe300563ec11877ad15",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -6124,7 +6124,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "67dade21ce00e74b79b802f64768419a8373a0a7000684b0f23c7600f22bd15d",
+          "hash": "279e54ee13e9d77a986776a7b691a60852c9ec25ecff3340999ea7255a62e162",
           "path": "packages/domain/package.json"
         },
         {
@@ -6745,7 +6745,7 @@
           "path": "packages/mcp-sprite-server/fixtures/output/.gitignore"
         },
         {
-          "hash": "da8d8e48760c1279ea88927522f6fe013f945063f9a8e530cb4d50f995499331",
+          "hash": "aaf4285456b80097b30bcc66f7d848973f6eeec24d374c7e8c87f8f7e1b7ced2",
           "path": "packages/mcp-sprite-server/package.json"
         },
         {
@@ -7751,6 +7751,10 @@
           "path": "TOOL-ENHANCEMENT-BRIEF.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "eba477cb4d81aad6878a98b29d76cd82c078ecfd5b27db509b9197aff92e9755",
           "path": "llm-sync-drive.yaml"
         },
@@ -7759,7 +7763,7 @@
           "path": "package.json"
         },
         {
-          "hash": "46fa238a8e7039eb8987f324346e58a3b2140bb4732037e9e9e90d44a931bf36",
+          "hash": "72b174141d774f3386fe2ccfc6f40f681933ee958b35bd66eaff3f1d20a10c23",
           "path": "pnpm-lock.yaml"
         },
         {
@@ -8151,7 +8155,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "d8246a00f4e4f40627ee7ff304f4739c9418519b9fbd3c4ec3dc00fe82072a7a",
+          "hash": "3f65585f40cb74aeb74b2900f91237829ad6e6416bc17bbc09bc3090f853ed62",
           "path": "packages/state/package.json"
         },
         {
@@ -10525,7 +10529,10 @@
       ],
       "mentions": [],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -11456,9 +11463,11 @@
       "stages": [],
       "tests": [
         {
+          "coverage": true,
           "dir": "packages/domain",
           "files": 5,
           "job": "test",
+          "junit": true,
           "runner": "vitest",
           "step": "Test packages",
           "through": [
@@ -11466,9 +11475,11 @@
           ]
         },
         {
+          "coverage": true,
           "dir": "packages/state",
           "files": 93,
           "job": "test",
+          "junit": true,
           "runner": "vitest",
           "step": "Test packages",
           "through": [
@@ -11476,9 +11487,11 @@
           ]
         },
         {
+          "coverage": true,
           "dir": "packages/mcp-sprite-server",
           "files": 23,
           "job": "test",
+          "junit": true,
           "runner": "vitest",
           "step": "Test packages",
           "through": [
@@ -11495,6 +11508,7 @@
           "paths": [
             ".github/workflows/ci.yml",
             "atlas/**",
+            "codecov.yml",
             "package.json",
             "packages/**",
             "pnpm-lock.yaml",
@@ -11511,6 +11525,7 @@
           "paths": [
             ".github/workflows/ci.yml",
             "atlas/**",
+            "codecov.yml",
             "package.json",
             "packages/**",
             "pnpm-lock.yaml",
@@ -11525,7 +11540,10 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
+        "actions/upload-artifact",
+        "codecov/codecov-action",
         "pnpm/action-setup"
       ],
       "usesWorkflowToken": false
@@ -11767,10 +11785,10 @@
       "to": "domain"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "67678351f3646a253815501776980898dc612ef6",
-    "tracked": 850
+    "commit": "fdf655be3efd8c3a809142b0b762b59d5c43135f",
+    "tracked": 851
   },
   "landings": [
     {

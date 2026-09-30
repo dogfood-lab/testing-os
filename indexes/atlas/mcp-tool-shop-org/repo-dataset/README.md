@@ -1,6 +1,6 @@
 # repo-dataset: how it works
 
-Mapped at 2026-09-28 from commit 4198db5 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit b3caf9f by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,13 +8,15 @@ Mapped at 2026-09-28 from commit 4198db5 by Atlas 1.23.4.
 
 ## What changed since 2026-09-24 (3665fc1)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - CI now also runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more.
-- Publish now also runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more.
-- 129 files changed content, across 5 parts.
+- And 1 more change to a door.
+- 1 file added and 129 changed content, across 5 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 8 paths; on a push touching 8 paths; or by hand. Runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more; builds src/.
+1. **CI.** On a pull request touching 9 paths; on a push touching 9 paths; or by hand. Runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Publish.** When a release is published. Runs src/tests/extractors/code.test.ts, src/tests/extractors/commits.test.ts, src/tests/extractors/docs.test.ts and 11 more; builds src/.
 4. **@mcptoolshop/repo-dataset** (the package people import). Loads src/index.ts.
@@ -23,6 +25,7 @@ Mapped at 2026-09-28 from commit 4198db5 by Atlas 1.23.4.
 ## What happens through CI
 
 1. The workflow runs 14 files in src; it builds src/ in src.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 

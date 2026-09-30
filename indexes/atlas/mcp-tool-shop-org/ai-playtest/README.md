@@ -1,25 +1,26 @@
 # ai-playtest: how it works
 
-Mapped at 2026-09-28 from commit ddf3c8c by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 94e69fc by Atlas 1.23.5.
 
 ## What this is
 
 6 parts, mostly TypeScript (34 files), JavaScript (4), CSS (2) and Astro (1). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. It deploys a site to GitHub Pages. ai-playtest is a command of a private package (nothing ships it).
 
-## What changed since 2026-09-25 (e794ed9)
+## What changed since 2026-09-29 (47f5e7a)
 
 - CI now also builds src/cli.ts, src/config.ts, src/coverage.ts and 14 more.
 - No file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs src/cli.test.ts, src/coverage.test.ts, src/critic.test.ts and 11 more; builds src/cli.ts, src/config.ts, src/coverage.ts and 14 more; checks CHANGELOG.md, LICENSE and src/.
+1. **CI.** On a pull request touching 9 paths; on a push to main touching 9 paths; or by hand. Runs src/cli.test.ts, src/coverage.test.ts, src/critic.test.ts and 11 more; builds src/cli.ts, src/config.ts, src/coverage.ts and 14 more; checks CHANGELOG.md, LICENSE and src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **ai-playtest** (a command of a private package, which nothing ships). Runs src/cli.ts.
 
 ## What happens through CI
 
 1. The workflow runs 10 files in src and 4 files in test; it builds 17 files in src; it checks CHANGELOG.md and LICENSE in the repository root and src/ in src.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -69,7 +70,6 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 1 import could not be resolved: `vitest.config.ts` probes `@vitest/coverage-v8`, which is not declared.
 - 2 writes and 1 read use paths built at run time and are not named here.
 - 11 writes and 8 reads go to a path their caller passes, not to this repository.
 - 1 command is built at run time and not followed.

@@ -1,6 +1,6 @@
 # repomesh: how it works
 
-Mapped at 2026-09-28 from commit 8843b88 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit b6e00d6 by Atlas 1.23.5.
 
 ## What this is
 
@@ -21,7 +21,7 @@ Mapped at 2026-09-28 from commit 8843b88 by Atlas 1.23.4.
 - pages was mixed and is now authored.
 - the repository root was mixed and is now authored.
 - And 1 more origin change.
-- 1 file added and 296 changed content, across 17 parts.
+- 2 files added and 296 changed content, across 17 parts.
 
 ## What comes in
 

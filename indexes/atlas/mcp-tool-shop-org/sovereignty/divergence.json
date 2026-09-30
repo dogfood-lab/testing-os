@@ -1,12 +1,25 @@
 {
   "repo": "mcp-tool-shop-org/sovereignty",
   "generated_from": {
-    "commit_sha": "8bed6b624294b05e8ec37d74ba9cff50a47d4229"
+    "commit_sha": "83f9b40eba1ef98f18c978316208899b5e450860"
   },
-  "generated_at": "2026-09-28T13:21:28.114Z",
+  "generated_at": "2026-09-30T18:04:24.851Z",
   "shared_commit_floor": 3,
   "confidence": "low",
   "rows": [
+    {
+      "id": "mcp-tool-shop-org/sovereignty|file-moved|sov_cli|sov_cli/errors.py",
+      "rule": "file-moved",
+      "value": 0.5,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-30T18:04:24.851Z",
+      "last_seen": "2026-09-30T18:04:24.851Z",
+      "boundary": "sov_cli",
+      "file": "sov_cli/errors.py",
+      "partner_boundary": "sov_transport"
+    },
     {
       "id": "mcp-tool-shop-org/sovereignty|file-moved|sov_engine|sov_engine/hashing.py",
       "rule": "file-moved",
@@ -15,7 +28,7 @@
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:57.387Z",
-      "last_seen": "2026-09-28T13:21:28.114Z",
+      "last_seen": "2026-09-30T18:04:24.851Z",
       "boundary": "sov_engine",
       "file": "sov_engine/hashing.py",
       "partner_boundary": "tests"
@@ -28,10 +41,21 @@
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:57.387Z",
-      "last_seen": "2026-09-28T13:21:28.114Z",
+      "last_seen": "2026-09-30T18:04:24.851Z",
       "boundary": "tests",
       "file": "tests/test_proofs.py",
       "partner_boundary": "sov_engine"
+    },
+    {
+      "id": "mcp-tool-shop-org/sovereignty|leaks|sov_cli",
+      "rule": "leaks",
+      "value": 0.5,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-30T18:04:24.851Z",
+      "last_seen": "2026-09-30T18:04:24.851Z",
+      "boundary": "sov_cli"
     },
     {
       "id": "mcp-tool-shop-org/sovereignty|leaks|sov_engine",
@@ -41,7 +65,7 @@
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:57.387Z",
-      "last_seen": "2026-09-28T13:21:28.114Z",
+      "last_seen": "2026-09-30T18:04:24.851Z",
       "boundary": "sov_engine"
     },
     {
@@ -52,8 +76,22 @@
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:57.387Z",
-      "last_seen": "2026-09-28T13:21:28.114Z",
+      "last_seen": "2026-09-30T18:04:24.851Z",
       "boundary": "tests"
+    },
+    {
+      "id": "mcp-tool-shop-org/sovereignty|two-may-be-one|sov_cli|sov_transport",
+      "rule": "two-may-be-one",
+      "value": 0.5,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-09-30T18:04:24.851Z",
+      "last_seen": "2026-09-30T18:04:24.851Z",
+      "boundaries": [
+        "sov_cli",
+        "sov_transport"
+      ]
     },
     {
       "id": "mcp-tool-shop-org/sovereignty|two-may-be-one|sov_engine|tests",
@@ -63,7 +101,7 @@
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-09-25T08:05:57.387Z",
-      "last_seen": "2026-09-28T13:21:28.114Z",
+      "last_seen": "2026-09-30T18:04:24.851Z",
       "boundaries": [
         "sov_engine",
         "tests"

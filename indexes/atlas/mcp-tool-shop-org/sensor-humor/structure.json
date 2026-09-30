@@ -9,7 +9,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "c3c2a1ece7987826a99c950f1ec760ec95bb0c842552906b61058e4204b051df",
+          "hash": "700e05bfcf425f0a8c598c5ab77d3bbadc42bc8608ae8073364a3534f0b57ca8",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -139,15 +139,19 @@
           "path": "SHIP_GATE.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "4ff65e320a530ee6a3e54fb92761ebf5ce99c6893f6c95b2035c61eb79a257a5",
           "path": "logo.png"
         },
         {
-          "hash": "590c43643db1ed435dc3a5f3a07f269095c9453b78c4a642fc193fb22cc16e66",
+          "hash": "b986f1a6f30a7d4c11d06b891b6cf885171fdd529fdd0f8c05d11c25bcab73e4",
           "path": "package-lock.json"
         },
         {
-          "hash": "a277206c2fba8b5daeb55f7bb3dc0112b60c5685f05f0c9d81bf13fb579e4deb",
+          "hash": "441f43f81f7f82a295daf981f150aa1371f6ba0913ad7b4390a2b26037b52a6e",
           "path": "package.json"
         },
         {
@@ -2075,7 +2079,10 @@
         }
       ],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -2309,8 +2316,10 @@
       "tests": [
         {
           "config": "vitest.config.ts",
+          "coverage": true,
           "files": 26,
           "job": "build-and-test",
+          "junit": true,
           "runner": "vitest",
           "step": "5",
           "through": [
@@ -2326,6 +2335,7 @@
             ".npmignore",
             "CHANGELOG.md",
             "atlas/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "site/astro.config.mjs",
@@ -2343,6 +2353,7 @@
             ".npmignore",
             "CHANGELOG.md",
             "atlas/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "site/astro.config.mjs",
@@ -2359,7 +2370,10 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
+        "actions/upload-artifact",
+        "codecov/codecov-action",
         "trufflesecurity/trufflehog"
       ],
       "usesWorkflowToken": false
@@ -3024,10 +3038,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "53be69f8bd3e3aca26a8cde1aa9e8f0b36f0cd84",
-    "tracked": 153
+    "commit": "a2c192732c8bc55db7976a21e904730698aa0a78",
+    "tracked": 154
   },
   "landings": [
     {

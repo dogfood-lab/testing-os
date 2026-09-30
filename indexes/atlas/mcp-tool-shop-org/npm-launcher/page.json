@@ -36,13 +36,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 1,
+      "changed": 1,
       "moved": 0,
-      "parts": 0,
+      "parts": 2,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "backpropagate (examples/backpropagate/package.json) is a new command. It runs examples/backpropagate/bin/backpropagate.js.",
@@ -53,23 +67,7 @@
       },
       {
         "kind": "door",
-        "sentence": "sovereignty (examples/sovereignty/package.json) is a new command. It runs examples/sovereignty/bin/sovereignty.js.",
-        "subjects": [
-          "examples/sovereignty/package.json",
-          "examples/sovereignty/bin/sovereignty.js"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "xrpl-camp (examples/xrpl-camp/package.json) is a new command. It runs examples/xrpl-camp/bin/xrpl-camp.js.",
-        "subjects": [
-          "examples/xrpl-camp/package.json",
-          "examples/xrpl-camp/bin/xrpl-camp.js"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 1 more change to a door.",
+        "sentence": "And 3 more changes to doors.",
         "subjects": []
       },
       {
@@ -103,7 +101,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "1 file added and 1 changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -118,7 +116,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "07c7132c09eb143dfc0cbe1bbdedd3668eb4e8f0",
+  "commit": "72693084398b899e847ba6d753e74fbb32fc0984",
   "defaultBranch": "main",
   "derived": "10 parts, mostly JavaScript (15 files), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 10 doors; the busiest is CI, which reaches 3 parts. It publishes @mcptoolshop/npm-launcher, @mcptoolshop/backpropagate (examples/backpropagate), @mcptoolshop/sovereignty (examples/sovereignty), @mcptoolshop/xrpl-camp (examples/xrpl-camp) and @mcptoolshop/xrpl-lab (examples/xrpl-lab) to npm. It deploys a site to GitHub Pages. People run backpropagate, mcptoolshop-launch, sovereignty, xrpl-camp and xrpl-lab. People import @mcptoolshop/npm-launcher.",
   "doors": [
@@ -154,11 +152,13 @@
       ],
       "runsCount": 2,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 9 paths",
-        "on a push touching 9 paths",
+        "on a pull request touching 10 paths",
+        "on a push touching 10 paths",
         "or by hand"
       ]
     },
@@ -427,9 +427,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [],
-  "generatedAt": "2026-09-28T13:19:02.876Z",
+  "generatedAt": "2026-09-30T18:01:37.746Z",
   "limits": [
     "3 reads use paths built at run time and are not named here.",
     "4 writes and 5 reads go to a path their caller passes, not to this repository.",

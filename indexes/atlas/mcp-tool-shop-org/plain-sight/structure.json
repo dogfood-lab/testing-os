@@ -9,7 +9,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "f34297b9b4b0da59a44b72e72e08d9f9561d7c78a1db218be0ff8141d027f58f",
+          "hash": "4537b2bc5b16de3defc6a8620efbbee1b2483f31ea591f7eaae03626c50883aa",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -92,7 +92,11 @@
           "path": "SHIP_GATE.md"
         },
         {
-          "hash": "ac81a6daf605967d22fcae889738c8009359c956a67ac37add84e9aab6b668a7",
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
+          "hash": "8796222de0776277ec3cdfe1760b66860145d2d51f765b9cbdf5da65d21be58f",
           "path": "pyproject.toml"
         },
         {
@@ -1197,9 +1201,6 @@
       "outsideReads": 2,
       "outsideWrites": 2,
       "role": "code",
-      "testRunners": [
-        "pytest"
-      ],
       "testedBy": 3,
       "unresolvedSites": 0
     },
@@ -1265,9 +1266,6 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
-      "testRunners": [
-        "pytest"
-      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -1319,18 +1317,16 @@
       "landings": [],
       "mentions": [],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
           "boundary": "src",
           "depth": 0,
-          "files": 5
-        },
-        {
-          "boundary": "tests",
-          "depth": 0,
-          "files": 3
+          "files": 4
         }
       ],
       "readers": [],
@@ -1344,17 +1340,9 @@
           "job": "test",
           "path": "src/plain_sight/server.py",
           "runKind": "executes"
-        },
-        {
-          "directory": true,
-          "job": "test",
-          "matched": true,
-          "path": "tests/",
-          "runKind": "executes",
-          "via": "pytest pyproject.toml"
         }
       ],
-      "runsCount": 3,
+      "runsCount": 2,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -1370,8 +1358,9 @@
       "tests": [
         {
           "config": "pyproject.toml",
-          "files": 3,
+          "files": 0,
           "job": "test",
+          "junit": true,
           "runner": "pytest",
           "step": "Run edge-case tests"
         }
@@ -1382,6 +1371,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "pyproject.toml",
             "site/astro.config.mjs",
             "site/package-lock.json",
@@ -1395,6 +1385,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "pyproject.toml",
             "site/astro.config.mjs",
             "site/package-lock.json",
@@ -1409,8 +1400,11 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
-        "actions/setup-python"
+        "actions/setup-python",
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -1597,10 +1591,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "8042d12eb1a3174c84b3d46346957f2f4f2c4088",
-    "tracked": 45
+    "commit": "cf9b6eb4108561e4d9558c6a583f04556e72d607",
+    "tracked": 46
   },
   "landings": [
     {
@@ -1733,5 +1727,9 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 3,
+  "testsNotRun": [
+    "tests/test_dogfood.py",
+    "tests/test_edge_cases.py"
+  ],
   "unassigned": []
 }

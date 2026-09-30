@@ -62,10 +62,10 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 1,
+      "changed": 1,
       "moved": 0,
-      "parts": 0,
+      "parts": 2,
       "removed": 0
     },
     "items": [
@@ -108,7 +108,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "1 file added and 1 changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -201,7 +201,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 8 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 1,
-  "commit": "8b16ae0a42ca1d8c0a9f6d9efa8247953dbeab2d",
+  "commit": "b40b7a6d7a6e60e0da065820d5d3706caa53073e",
   "defaultBranch": "main",
   "derived": "10 parts, mostly JSON data (242 files); code in TypeScript (148), Python (5), JavaScript (4), CSS (2) and Astro (1). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run bp. People import @mcptoolshop/backprop-trace.",
   "doors": [
@@ -346,7 +346,9 @@
       ],
       "runsCount": 105,
       "runsMore": 102,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
         "on a pull request to main",
@@ -705,7 +707,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [
     {
       "place": "fixtures/bad/",
@@ -978,7 +980,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-28T13:14:31.553Z",
+  "generatedAt": "2026-09-30T17:57:07.615Z",
   "limits": [
     "1 import site names a declared dependency that shares its name with a local module (jax); it is read as the dependency, which is not in this repository.",
     "15 writes and 11 reads use paths built at run time and are not named here.",

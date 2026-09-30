@@ -13,7 +13,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "9bf111cea4ca9def71a4288abf689ffd10f92e2d889569979c2fd0333469e8a7",
+          "hash": "779efa90c259df45410a2b63cfcbf038735e30b914e991528db1cdf6c77dd9e6",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -83,7 +83,7 @@
       "outsideReads": 1,
       "role": "code",
       "testRunners": [
-        "node"
+        "node --test"
       ],
       "testedBy": 1,
       "testedThroughSpawn": true,
@@ -472,11 +472,15 @@
           "path": "SHIP_GATE.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "256512930404982b3248742f625624eb394af19b1334c0b974ba9c7b16c3e6c5",
           "path": "package-lock.json"
         },
         {
-          "hash": "f561507f4d4b3d27f5ab89f98f0c7a0dec46d63707266d6b49161c890bde46c8",
+          "hash": "db7170bb8096fd0f4cde5b99bf423542a3a6353582f090b0565dddea0539deb6",
           "path": "package.json"
         },
         {
@@ -660,7 +664,7 @@
       "origin": "authored",
       "role": "test",
       "testRunners": [
-        "node"
+        "node --test"
       ],
       "testedBy": 0,
       "unresolvedSites": 0
@@ -1049,7 +1053,7 @@
       "origin": "authored",
       "role": "code",
       "testRunners": [
-        "node"
+        "node --test"
       ],
       "testedBy": 1,
       "unresolvedSites": 0
@@ -1083,6 +1087,13 @@
         {
           "job": "test",
           "programs": [
+            "npx"
+          ],
+          "step": "Coverage report for Codecov"
+        },
+        {
+          "job": "test",
+          "programs": [
             "npm"
           ],
           "step": "npm pack dry-run"
@@ -1093,13 +1104,6 @@
             "node"
           ],
           "step": "Verify CLI flags"
-        },
-        {
-          "job": "test",
-          "programs": [
-            "npm"
-          ],
-          "step": "Coverage (Node 20 only)"
         }
       ],
       "elsewhere": [],
@@ -1108,7 +1112,8 @@
       "mentions": [],
       "name": "CI",
       "permissions": [
-        "contents:read"
+        "contents:read",
+        "id-token:write"
       ],
       "pushes": false,
       "reach": [
@@ -1170,22 +1175,14 @@
       "stages": [],
       "tests": [
         {
+          "coverage": true,
           "files": 3,
           "job": "test",
-          "runner": "node",
+          "junit": true,
+          "runner": "node --test",
           "step": "Smoke tests",
           "through": [
             "npm test"
-          ]
-        },
-        {
-          "coverage": true,
-          "files": 1,
-          "job": "test",
-          "runner": "node",
-          "step": "Coverage (Node 20 only)",
-          "through": [
-            "npm run coverage"
           ]
         }
       ],
@@ -1199,6 +1196,7 @@
             ".github/workflows/**",
             "atlas/**",
             "bin/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "release/**",
@@ -1214,6 +1212,7 @@
             ".github/workflows/**",
             "atlas/**",
             "bin/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "release/**",
@@ -1226,8 +1225,10 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
-        "actions/upload-artifact"
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -1418,11 +1419,6 @@
       "pushes": false,
       "reach": [
         {
-          "boundary": "bin",
-          "depth": 0,
-          "files": 1
-        },
-        {
           "boundary": "test",
           "depth": 0,
           "files": 4
@@ -1441,12 +1437,6 @@
       "runs": [
         {
           "job": "release",
-          "path": "bin/sovereign.js",
-          "runKind": "executes",
-          "via": "test/smoke.test.mjs"
-        },
-        {
-          "job": "release",
           "path": "test/determinism.test.mjs",
           "runKind": "executes"
         },
@@ -1461,7 +1451,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 4,
+      "runsCount": 3,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -1489,7 +1479,7 @@
         {
           "files": 3,
           "job": "release",
-          "runner": "node",
+          "runner": "node --test",
           "step": "Smoke tests",
           "through": [
             "npm test"
@@ -1604,10 +1594,10 @@
       "to": "tools"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "b5f1ba51730de2346327de4981d7bc860ad195d5",
-    "tracked": 159
+    "commit": "107b2aab0f65a8ee04e0a8796c8d7e916b2227a6",
+    "tracked": 160
   },
   "landings": [
     {

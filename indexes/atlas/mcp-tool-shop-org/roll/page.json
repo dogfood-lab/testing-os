@@ -26,7 +26,7 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 1,
+      "added": 2,
       "changed": 92,
       "moved": 0,
       "parts": 5,
@@ -34,8 +34,22 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-24; 1 file added and 92 changed content.",
+        "sentence": "2 files added and 92 changed content, across 5 parts.",
         "subjects": []
       }
     ],
@@ -43,14 +57,14 @@
       "commit": "97f0f4fccef27deabc592dad429bb8af6c1caee9",
       "generatedAt": "2026-09-24T08:42:51.187Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
-    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+    "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "fbec7b5a99b2eefbd01efe431ff1c1dcc07e5a03",
+  "commit": "ced7dd138c9f1aabf54a4d5ca1bbcf745d3e6598",
   "defaultBranch": "main",
   "derived": "5 parts, mostly TypeScript (58 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 7 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run roll, roll-bridge and roll-mcp. People import @mcptoolshop/roll.",
   "doors": [
@@ -84,11 +98,13 @@
       ],
       "runsCount": 2,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 10 paths",
-        "on a push touching 10 paths",
+        "on a pull request touching 11 paths",
+        "on a push touching 11 paths",
         "or by hand"
       ]
     },
@@ -279,12 +295,12 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [],
-  "generatedAt": "2026-09-28T13:20:45.914Z",
+  "generatedAt": "2026-09-30T18:03:33.077Z",
   "limits": [
     "2 reads go to a path their caller passes, not to this repository.",
-    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {

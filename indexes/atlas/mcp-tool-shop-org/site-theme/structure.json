@@ -256,7 +256,7 @@
           "path": ".github/workflows/ci-docs.yml"
         },
         {
-          "hash": "d09f48960518826e0e1b8b7033ee2b320148e1af9c65d46a5e43e4d076f0125f",
+          "hash": "e0bb192c2859bfe71d4962095c85474123639b8ebd5f705d077260a37e1d1e60",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -1696,11 +1696,15 @@
           "path": "biome.json"
         },
         {
-          "hash": "66d042ae1d7ac35c0646880aeed773053edf4a9a05016cc4f7df469742d3945f",
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
+          "hash": "8ad1bbd04bae7f7289e59b599a1e3b40ad31a3b8cfb400c66eb10f9bcfdbd35e",
           "path": "package-lock.json"
         },
         {
-          "hash": "0dc2d5fdab6db9337f0b0e3ba30015a45a82b85ff877ba907c696bbbc206cb97",
+          "hash": "2e7728a37f8a863c595724b73b9fced174bbfa5edeb27222b7814a0e7e764a01",
           "path": "package.json"
         },
         {
@@ -2910,7 +2914,10 @@
       "landings": [],
       "mentions": [],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "programs": [
         "git"
       ],
@@ -2980,8 +2987,10 @@
       "stages": [],
       "tests": [
         {
+          "coverage": true,
           "files": 27,
           "job": "lint-and-test",
+          "junit": true,
           "runner": "vitest",
           "step": "Test",
           "through": [
@@ -2999,6 +3008,7 @@
             ".github/workflows/**",
             "atlas/**",
             "cli/**",
+            "codecov.yml",
             "components/**",
             "package-lock.json",
             "package.json",
@@ -3018,6 +3028,7 @@
             ".github/workflows/**",
             "atlas/**",
             "cli/**",
+            "codecov.yml",
             "components/**",
             "package-lock.json",
             "package.json",
@@ -3034,7 +3045,10 @@
       ],
       "uses": [
         "actions/checkout",
-        "actions/setup-node"
+        "actions/download-artifact",
+        "actions/setup-node",
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -3711,10 +3725,10 @@
       "to": "lib"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "c073c90832782d0bc818ab9a322b1f9e9df4932e",
-    "tracked": 269
+    "commit": "0e0eb2edce8b953d9bfe6eaf18b0ad6f5d519f15",
+    "tracked": 270
   },
   "landings": [
     {

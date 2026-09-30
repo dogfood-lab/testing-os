@@ -9,7 +9,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "9fac7f07abf151d9b42bcbeed860cb26fcc56b771c9590c418b5adc047dd620b",
+          "hash": "22c9637a150fdd1716ab77e8a5ecb7d9ed8b69d2a66393fa21797f264c24156a",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -464,6 +464,10 @@
         {
           "hash": "a60e3e32d2462484b91ce9d65919414a0f67c7f76a885b892922c4ea85dfb5ff",
           "path": "SECURITY.md"
+        },
+        {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
         },
         {
           "hash": "bb660df45c412bfc86a63a80704c00e513cdaad400b66fc23c2c6770eb814101",
@@ -1330,7 +1334,10 @@
       "landings": [],
       "mentions": [],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -1374,6 +1381,7 @@
         {
           "files": 16,
           "job": "test",
+          "junit": true,
           "runner": "pytest",
           "step": "Run the suite"
         }
@@ -1384,6 +1392,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "pyproject.toml",
             "record_index/**",
             "tests/**"
@@ -1394,6 +1403,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "pyproject.toml",
             "record_index/**",
             "tests/**"
@@ -1405,8 +1415,11 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
-        "actions/setup-python"
+        "actions/setup-python",
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -1627,10 +1640,10 @@
       "to": "record_index"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "b48f7b65034c0543d7c549545c392b88bd63e59e",
-    "tracked": 81
+    "commit": "2c20d4bed8c8da71378a997e265291cb54b7ad5c",
+    "tracked": 82
   },
   "landings": [
     {

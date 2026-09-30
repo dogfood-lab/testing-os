@@ -57,13 +57,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 652,
+      "added": 1,
+      "changed": 653,
       "moved": 0,
       "parts": 14,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "glyphstudio (apps/desktop/src-tauri/Cargo.toml) is a new desktop app. It runs apps/desktop/src-tauri/src/main.rs.",
@@ -110,7 +124,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "652 files changed content, across 14 parts.",
+        "sentence": "1 file added and 653 changed content, across 14 parts.",
         "subjects": []
       }
     ],
@@ -125,7 +139,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "67678351f3646a253815501776980898dc612ef6",
+  "commit": "fdf655be3efd8c3a809142b0b762b59d5c43135f",
   "defaultBranch": "main",
   "derived": "15 parts, mostly TypeScript (424 files), Rust (46), JavaScript (20), CSS (4), Astro (1) and HTML (1). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It deploys a site to GitHub Pages. glyphstudio is a desktop app built from apps/desktop/src-tauri (nothing ships it).",
   "doors": [
@@ -292,11 +306,13 @@
       ],
       "runsCount": 120,
       "runsMore": 118,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request to main touching 8 paths",
-        "on a push to main touching 8 paths",
+        "on a pull request to main touching 9 paths",
+        "on a push to main touching 9 paths",
         "or by hand"
       ]
     },
@@ -402,7 +418,7 @@
       "to": "domain"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [
     {
       "place": "apps/desktop/src-tauri/gen/schemas/",
@@ -573,7 +589,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-28T13:16:56.973Z",
+  "generatedAt": "2026-09-30T18:00:24.835Z",
   "limits": [
     "17 imports could not be resolved: `scripts/critique-sprite.mjs` imports a path built at run time; `scripts/critique-sprite.mjs` loads `fast-png` when it is installed, which is not declared; `scripts/dogfood-43-creature.mjs` imports a path built at run time; and 14 more.",
     "59 writes and 10 reads use paths built at run time and are not named here.",

@@ -63,13 +63,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 1,
+      "changed": 3,
       "moved": 0,
-      "parts": 0,
+      "parts": 2,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "ci's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "ci's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "ci now also runs tests/.",
@@ -80,24 +94,7 @@
       },
       {
         "kind": "door",
-        "sentence": "ci now also checks src/ and src/pcraft/.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "src/",
-          "src/pcraft/"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "release now also runs tests/.",
-        "subjects": [
-          ".github/workflows/release.yml",
-          "tests/"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "And 2 more changes to doors.",
+        "sentence": "And 4 more changes to doors.",
         "subjects": []
       },
       {
@@ -125,7 +122,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "1 file added and 3 changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -152,21 +149,6 @@
       "shared": 6
     },
     {
-      "a": "tests/test_verify_legs.py",
-      "b": "verify.py",
-      "either": 9,
-      "partLabels": [
-        "tests",
-        "the repository root"
-      ],
-      "parts": [
-        "tests",
-        "root"
-      ],
-      "relation": "a-imports-b",
-      "shared": 7
-    },
-    {
       "a": "src/pcraft/core/gate/checkpoint.py",
       "b": "tests/test_feat_checkpoint.py",
       "either": 7,
@@ -180,6 +162,21 @@
       ],
       "relation": "b-imports-a",
       "shared": 5
+    },
+    {
+      "a": "tests/test_verify_legs.py",
+      "b": "verify.py",
+      "either": 10,
+      "partLabels": [
+        "tests",
+        "the repository root"
+      ],
+      "parts": [
+        "tests",
+        "root"
+      ],
+      "relation": "a-imports-b",
+      "shared": 7
     },
     {
       "a": "src/pcraft/core/contract/loader.py",
@@ -218,7 +215,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 12 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 1,
-  "commit": "c800db5353d1f55a46d0f30ac96dda91dc341364",
+  "commit": "43f3cfe48aabc2c12a31954563cfc823abd21295",
   "defaultBranch": "main",
   "derived": "8 parts, mostly Python (112 files), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 5 doors; the busiest is release, which reaches 5 parts. It publishes to PyPI and @mcptoolshop/prompt-crafter to npm. It deploys a site to GitHub Pages. People run pcraft.",
   "doors": [
@@ -326,11 +323,13 @@
       ],
       "runsCount": 2,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 9 paths",
-        "on a push touching 9 paths",
+        "on a pull request touching 10 paths",
+        "on a push touching 10 paths",
         "or by hand"
       ]
     },
@@ -453,7 +452,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [
     {
       "place": "src/pcraft/domains/image/subdomains/sprite/poses/turnaround/",
@@ -468,7 +467,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-28T13:19:38.085Z",
+  "generatedAt": "2026-09-30T18:02:16.546Z",
   "limits": [
     "8 imports could not be resolved: `src/pcraft/domains/image/scaffold.py` imports a path built at run time; `src/pcraft/domains/image/subdomains/sprite/calibrate.py` imports a path built at run time; `tests/test_amend_cli.py` imports a path built at run time; and 5 more.",
     "5 writes and 4 reads use paths built at run time and are not named here.",

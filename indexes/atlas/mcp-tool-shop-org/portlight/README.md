@@ -1,6 +1,6 @@
 # portlight: how it works
 
-Mapped at 2026-09-28 from commit 9b02494 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 26b6267 by Atlas 1.23.5.
 
 ## What this is
 
@@ -17,7 +17,7 @@ Mapped at 2026-09-28 from commit 9b02494 by Atlas 1.23.4.
 - artifacts/stress/stress-report.json is now written by src/portlight/stress/reporting.py.
 - And 1 more new writer or reader of a place.
 - artifacts was authored and is now generated.
-- 1 file added and 1 changed content, across 2 parts.
+- 1 file added and 3 changed content, across 4 parts.
 
 ## What comes in
 

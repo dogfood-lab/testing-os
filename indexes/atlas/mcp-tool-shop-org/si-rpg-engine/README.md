@@ -1,26 +1,25 @@
 # si-rpg-engine: how it works
 
-Mapped at 2026-09-28 from commit 8665b76 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit e5618b9 by Atlas 1.23.5.
 
 ## What this is
 
 Deterministic 3D RPG tick: the model proposes, a checker admits, and the host draws committed frames. (written by a person)
 
-17 parts, mostly JSON data (615 files) and Markdown (100); code in JavaScript (137), Rust (6), TypeScript (3), CSS (2), shell (2), Astro (1) and HTML (1). Work enters through 10 doors; the busiest is CI, which reaches 9 parts. It deploys a site to GitHub Pages. bench, host, load, play, propose, replay and write-golden are commands of a private package (nothing ships them).
+17 parts, mostly JSON data (615 files) and Markdown (102); code in JavaScript (138), Rust (6), TypeScript (3), CSS (2), shell (2), Astro (1) and HTML (1). Work enters through 10 doors; the busiest is CI, which reaches 9 parts. It deploys a site to GitHub Pages. bench, host, load, play, propose, replay and write-golden are commands of a private package (nothing ships them).
 
-## What changed since 2026-09-27 (aa90e00)
+## What changed since 2026-09-30 (bfa4538)
 
-- CI now also runs harness/step-up-121.test.js, solver/build.rs, solver/src/kcc.rs and 1 more.
-- CI now also checks harness/mesh.test.js.
+- CI now also runs solver/build.rs, solver/src/kcc.rs and solver/src/rapier_law.rs.
 - solver/dist is now also written by .github/workflows/ci.yml.
 - fixtures/behavior-1c.json is now also read by harness/corpus.mjs.
 - fixtures/behavior-3d.json is now also read by harness/corpus.mjs.
 - And 17 more new writers and readers of places.
-- 4 files added and 379 changed content, across 17 parts.
+- 1 file added and 1 changed content, across 1 part.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs harness/bundle.mjs, harness/bundle.test.js, harness/caps.test.js and 51 more; checks fixtures/golden-arith.txt, fixtures/golden.txt, harness/arith.mjs and 105 more.
+1. **CI.** On a pull request touching 13 paths; on a push to main touching 13 paths; or by hand. Runs harness/bundle.mjs, harness/bundle.test.js, harness/caps.test.js and 53 more; checks fixtures/golden-arith.txt, fixtures/golden.txt, harness/arith.mjs and 104 more.
 2. **Corpus.** On a schedule (`17 6 * * 1`), Monday at 06:17 UTC; or by hand. Runs harness/corpus.mjs and solver/build.mjs.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **propose** (a command of a private package, which nothing ships). Runs packages/propose/bin/propose.js.
@@ -33,14 +32,14 @@ Deterministic 3D RPG tick: the model proposes, a checker admits, and the host dr
 
 ## What happens through CI
 
-1. The workflow runs 10 files in bench, 21 files in harness, packages/host/host.test.js in host, packages/load/load.test.js in load, packages/propose/propose.test.js and packages/propose/record.test.js in propose, and 19 files in 6 more places; it checks fixtures/golden-arith.txt and fixtures/golden.txt in fixtures, 17 files in harness, packages/bench/ in bench, packages/frame/frame.js, packages/frame/hash.js and packages/frame/types.d.ts in frame, packages/host/ in host, and 51 files in 8 more places.
+1. The workflow runs 10 files in bench, 23 files in harness, packages/host/host.test.js in host, packages/load/load.test.js in load, packages/propose/propose.test.js and packages/propose/record.test.js in propose, and 19 files in 6 more places; it checks fixtures/golden-arith.txt and fixtures/golden.txt in fixtures, 16 files in harness, packages/bench/ in bench, packages/frame/frame.js, packages/frame/hash.js and packages/frame/types.d.ts in frame, packages/host/ in host, and 51 files in 8 more places.
    1. Inside harness/bundle.mjs, `makeBundle` does, in order: `withRecords` and `captureBundle` (tick).
    2. Inside harness/course.test.js, `stepRun` does, in order: `recordRun` and `createWorld` (tick).
    3. Inside harness/outcome.test.js, `translatedRun` does, in order: `productInit`, `recordRun`, `createWorld` (tick), `sleepWatch` and `applyProductAct`.
    4. Inside harness/restore.test.js, `plantedRerun` does, in order: `replayTo`, `events.mjs` (4 steps), `replayTo`, `createWorld` (tick), `createHasher` (frame), `endLine` and `endLine`.
    5. Inside harness/soundness.test.js, `evict` does, in order: `createWorld` (tick) and `createHasher` (frame).
    6. Inside harness/sweep.test.js, `sweepOf` does, in order: `loadScene` (tick) and `sweep.js` (load, 3 steps).
-   7. **`loadScene`** (tick) runs, in order: `createWorld` and `beliefRefusal`.
+   7. **`loadScene`** (tick) runs, in order: `createWorld`, `validateMesh` and `beliefRefusal`.
    8. **`sweep`** (load) runs, in order: `loadIntentRules` (tick), `createWorld`, `createMemory`, `createRestorableTick` and `worldFloor`.
    9. Inside packages/bench/finding.test.js, `run` does, in order: `copyCheckout`, `plants.js` (3 steps) and `runBench`.
    10. **`runBench`** runs, in order: `samePath`, `oneTreePerProcess`, `listFiles`, `readAnchors`, `trees.js` (4 steps) and `build.js` (4 steps).
@@ -83,6 +82,7 @@ Deterministic 3D RPG tick: the model proposes, a checker admits, and the host dr
    26. **`createTick`** runs, in order: `createHasher` (frame), `installMinds`, `mixMinds` and `commitFrame`.
 2. It writes to solver/dist/, which is not tracked.
 3. It runs git.
+4. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -167,7 +167,7 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 18 imports could not be resolved: `harness/bundle.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/caps.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/corpus.mjs` imports `../solver/dist/solver.mjs`, which a build generates; and 15 more.
+- 19 imports could not be resolved: `harness/bundle.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/caps.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/corpus.mjs` imports `../solver/dist/solver.mjs`, which a build generates; and 16 more.
 - 2 writes and 7 reads use paths built at run time and are not named here.
 - 2 writes go to places this repository does not track, so they are not listed as generated.
 - 37 writes and 83 reads go to a path their caller passes, not to this repository.

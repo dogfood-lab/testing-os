@@ -1,6 +1,6 @@
 # xrpl-camp: how it works
 
-Mapped at 2026-09-28 from commit 8af7371 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit eaa4028 by Atlas 1.23.5.
 
 ## What this is
 
@@ -9,19 +9,19 @@ Mapped at 2026-09-28 from commit 8af7371 by Atlas 1.23.4.
 ## What changed since 2026-09-23 (d3e4b7d)
 
 - bin no longer imports the repository root.
-- CI's pull request trigger now also names `atlas/**`.
-- CI's push trigger now also names `atlas/**`.
+- CI's pull request trigger now also names `atlas/**` and `codecov.yml`.
+- CI's push trigger now also names `atlas/**` and `codecov.yml`.
 - Publish now also runs docker-entrypoint.sh and xrpl_camp/cli.py.
 - And 2 more changes to doors.
 - CHANGELOG.md is now read by tests/test_version.py.
 - README.md is now read by pyproject.toml.
 - bin/xrpl-camp.js is now read by tests/test_version.py.
 - And 3 more new writers and readers of places.
-- 77 files changed content, across 6 parts.
+- 1 file added and 78 changed content, across 7 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 11 paths; on a push touching 11 paths; or by hand. Runs scripts/check-versions.sh, scripts/verify.sh and tests/; checks bin/xrpl-camp.js and xrpl_camp/.
+1. **CI.** On a pull request touching 12 paths; on a push touching 12 paths; or by hand. Runs scripts/check-versions.sh and scripts/verify.sh; checks bin/xrpl-camp.js, xrpl_camp/ and tests/.
 2. **Publish.** When a tag matching `v*` is pushed; or by hand. On a tag push, it runs docker-entrypoint.sh, scripts/verify-pypi-publish.sh and xrpl_camp/cli.py; builds xrpl_camp/__main__.py; checks xrpl_camp/; packs LICENSE, README.md and pyproject.toml into an image.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Release (npm).** When a tag matching `v*` is pushed; or by hand. Runs scripts/check-versions.sh.
@@ -31,7 +31,8 @@ Mapped at 2026-09-28 from commit 8af7371 by Atlas 1.23.4.
 
 ## What happens through CI
 
-1. The workflow runs scripts/check-versions.sh and scripts/verify.sh in scripts and tests/ in tests; it checks bin/xrpl-camp.js in bin and xrpl_camp/ in xrpl_camp.
+1. The workflow runs scripts/check-versions.sh and scripts/verify.sh in scripts; it checks bin/xrpl-camp.js in bin, tests/ in tests and xrpl_camp/ in xrpl_camp.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -90,7 +91,7 @@ People write the repository root, scripts/ and site/. Nothing in this repository
 
 xrpl_camp/cli.py → xrpl_camp/errors.py
 
-Read those in order to follow one run of xrpl-camp end to end. This path follows xrpl-camp (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.
+Read those in order to follow one run of xrpl-camp end to end. This path follows xrpl-camp (a command people run, from pyproject.toml) from its entry, since CI only checks code.
 
 ## What this map cannot see
 

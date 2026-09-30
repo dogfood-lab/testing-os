@@ -1,6 +1,6 @@
 # taste-engine: how it works
 
-Mapped at 2026-09-28 from commit c87c284 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 00527bb by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,20 +8,23 @@ Mapped at 2026-09-28 from commit c87c284 by Atlas 1.23.4.
 
 ## What changed since 2026-09-24 (ac181ee)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - migrations/ is now read by src/db/migrate.ts.
 - src/workbench/ui/app.js is now read by src/workbench/ui/index.html.
 - canon was generated and is now authored.
-- 235 files changed content, across 10 parts.
+- 1 file added and 235 changed content, across 10 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 11 paths; on a push to main touching 11 paths; or by hand. Runs test/; builds src/.
+1. **CI.** On a pull request to main touching 12 paths; on a push to main touching 12 paths; or by hand. Runs test/; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **taste** (a command people run). Runs src/cli/index.ts.
 
 ## What happens through CI
 
 1. The workflow runs test/ in test; it builds src/ in src.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 

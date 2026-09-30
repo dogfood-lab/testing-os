@@ -9,7 +9,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "ac1cbf532cb0f26bed99f1f3bf6cf0b1bb0a3302cfd3bba73141d3dd7ec0e5ec",
+          "hash": "85b3cfc073fa8edcbb4e1ae7b2c43fa65caaaaaf72ba8a1c9ebcfb09e894d546",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -1034,6 +1034,10 @@
           "path": "SHIP_GATE.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "0b237c1c69f46daf0f852a4c845de1530e0993eea60da4cabd18ebe2a301511d",
           "path": "package-lock.json"
         },
@@ -1050,7 +1054,7 @@
           "path": "tsconfig.test.json"
         },
         {
-          "hash": "23e285f65d12ac98c0655d8833a8cc808aef72572714efe8f2e87bcf6b91a08a",
+          "hash": "6fca081b7a6ff69d4ada8de57216f3aff42e39349be18f13c78eb1a5d149a11e",
           "path": "vitest.config.ts"
         }
       ],
@@ -8105,7 +8109,10 @@
         }
       ],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "programs": [
         "git"
       ],
@@ -8793,9 +8800,7 @@
         }
       ],
       "runsCount": 94,
-      "secrets": [
-        "CODECOV_TOKEN"
-      ],
+      "secrets": [],
       "sends": {
         "deploysPages": false,
         "dispatchesTo": [],
@@ -8827,6 +8832,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package.json",
             "scripts/**",
             "site/astro.config.mjs",
@@ -8844,6 +8850,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package.json",
             "scripts/**",
             "site/astro.config.mjs",
@@ -8862,7 +8869,9 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
+        "actions/upload-artifact",
         "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
@@ -9878,10 +9887,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "55ff274cb62e0ae50b50bab77bb06e68426de98c",
-    "tracked": 496
+    "commit": "e3798b17871cbd88a80f57fbfcfabfc9568a4ad9",
+    "tracked": 497
   },
   "landings": [
     {

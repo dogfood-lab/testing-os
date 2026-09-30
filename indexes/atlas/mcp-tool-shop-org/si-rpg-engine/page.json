@@ -105,30 +105,21 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 4,
-      "changed": 379,
+      "added": 1,
+      "changed": 1,
       "moved": 0,
-      "parts": 17,
+      "parts": 1,
       "removed": 0
     },
     "items": [
       {
         "kind": "door",
-        "sentence": "CI now also runs harness/step-up-121.test.js, solver/build.rs, solver/src/kcc.rs and 1 more.",
+        "sentence": "CI now also runs solver/build.rs, solver/src/kcc.rs and solver/src/rapier_law.rs.",
         "subjects": [
           ".github/workflows/ci.yml",
-          "harness/step-up-121.test.js",
           "solver/build.rs",
           "solver/src/kcc.rs",
           "solver/src/rapier_law.rs"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "CI now also checks harness/mesh.test.js.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "harness/mesh.test.js"
         ]
       },
       {
@@ -162,13 +153,13 @@
       },
       {
         "kind": "counts",
-        "sentence": "4 files added and 379 changed content, across 17 parts.",
+        "sentence": "1 file added and 1 changed content, across 1 part.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "aa90e0026358de8508117fbf3a725953fa39164c",
-      "generatedAt": "2026-09-27T00:44:51.979Z"
+      "commit": "bfa453817bf90dab8fe3f30994b4ae802de5ae14",
+      "generatedAt": "2026-09-30T17:07:27.658Z"
     },
     "unchanged": false
   },
@@ -255,9 +246,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 19 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "8665b7657a7a670a56e518defe2e5cab8bdff3cf",
+  "commit": "e5618b95f48e42c4df07decad4872f6f5aab4447",
   "defaultBranch": "main",
-  "derived": "17 parts, mostly JSON data (615 files) and Markdown (100); code in JavaScript (137), Rust (6), TypeScript (3), CSS (2), shell (2), Astro (1) and HTML (1). Work enters through 10 doors; the busiest is CI, which reaches 9 parts. It deploys a site to GitHub Pages. bench, host, load, play, propose, replay and write-golden are commands of a private package (nothing ships them).",
+  "derived": "17 parts, mostly JSON data (615 files) and Markdown (102); code in JavaScript (138), Rust (6), TypeScript (3), CSS (2), shell (2), Astro (1) and HTML (1). Work enters through 10 doors; the busiest is CI, which reaches 9 parts. It deploys a site to GitHub Pages. bench, host, load, play, propose, replay and write-golden are commands of a private package (nothing ships them).",
   "doors": [
     {
       "checks": [
@@ -269,7 +260,6 @@
         "harness/corpus.mjs",
         "harness/events.mjs",
         "harness/law-runs.mjs",
-        "harness/mesh.test.js",
         "harness/minds-scene.mjs",
         "harness/plant-throw.mjs",
         "harness/product-run.mjs",
@@ -294,8 +284,8 @@
         "tools/review.mjs",
         "tools/verdicts.js"
       ],
-      "checksCount": 32,
-      "checksMore": 105,
+      "checksCount": 31,
+      "checksMore": 104,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -323,7 +313,7 @@
         {
           "boundary": "harness",
           "depth": 0,
-          "files": 38
+          "files": 39
         },
         {
           "boundary": "host",
@@ -360,6 +350,8 @@
         "harness/course.test.js",
         "harness/first-difference.js",
         "harness/golden-gate.test.js",
+        "harness/mesh-refusal.test.js",
+        "harness/mesh.test.js",
         "harness/outcome.test.js",
         "harness/product.test.js",
         "harness/push.test.js",
@@ -407,13 +399,15 @@
         "solver/src/kcc.rs",
         "solver/src/rapier_law.rs"
       ],
-      "runsCount": 54,
-      "runsMore": 51,
-      "sends": [],
+      "runsCount": 56,
+      "runsMore": 53,
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 12 paths",
-        "on a push to main touching 12 paths",
+        "on a pull request touching 13 paths",
+        "on a push to main touching 13 paths",
         "or by hand"
       ],
       "untracked": "solver/dist/, which is not tracked"
@@ -850,7 +844,7 @@
       "to": "load"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [
     {
       "block": true,
@@ -892,9 +886,9 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-28T13:21:08.422Z",
+  "generatedAt": "2026-09-30T18:03:58.025Z",
   "limits": [
-    "18 imports could not be resolved: `harness/bundle.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/caps.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/corpus.mjs` imports `../solver/dist/solver.mjs`, which a build generates; and 15 more.",
+    "19 imports could not be resolved: `harness/bundle.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/caps.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/corpus.mjs` imports `../solver/dist/solver.mjs`, which a build generates; and 16 more.",
     "2 writes and 7 reads use paths built at run time and are not named here.",
     "2 writes go to places this repository does not track, so they are not listed as generated.",
     "37 writes and 83 reads go to a path their caller passes, not to this repository.",
@@ -1105,6 +1099,12 @@
               "part": "tick",
               "partLabel": "tick",
               "phrase": "`createWorld`"
+            },
+            {
+              "name": "validateMesh",
+              "part": "tick",
+              "partLabel": "tick",
+              "phrase": "`validateMesh`"
             },
             {
               "name": "beliefRefusal",
@@ -1871,7 +1871,7 @@
   ],
   "summary": "Deterministic 3D RPG tick: the model proposes, a checker admits, and the host draws committed frames.",
   "summaryFrom": "person",
-  "testFiles": 48,
+  "testFiles": 49,
   "testedBy": {
     "bench": 11,
     "frame": 17,
@@ -1879,7 +1879,7 @@
     "load": 4,
     "propose": 2,
     "solver": 4,
-    "tick": 38
+    "tick": 39
   },
   "unnamedWrites": 2,
   "unread": [

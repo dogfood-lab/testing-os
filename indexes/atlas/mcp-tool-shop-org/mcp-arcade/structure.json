@@ -13,7 +13,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "9f73dc208fcf829b33e96872e4c20876dddcba5882c4545785a38a3f794ab253",
+          "hash": "a02f391366e4af950399fa30e7da762a613c26729ea7753173698b5521a92bfd",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -223,7 +223,11 @@
           "path": "SHIP_GATE.md"
         },
         {
-          "hash": "812b3ea573f61f816de5056107105530afb05cc0c88e5c6f8471708a4ceff3d4",
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
+          "hash": "967cb1a2d2d79631d578475bc92d6c1617979d59fb0e5b6e74e207c6c49aa1c2",
           "path": "pyproject.toml"
         }
       ],
@@ -3260,7 +3264,7 @@
           "programs": [
             "mcp-arcade"
           ],
-          "step": "4"
+          "step": "6"
         }
       ],
       "elsewhere": [],
@@ -3268,7 +3272,10 @@
       "landings": [],
       "mentions": [],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -3330,6 +3337,7 @@
           "config": "pyproject.toml",
           "files": 17,
           "job": "test",
+          "junit": true,
           "runner": "pytest",
           "step": "3"
         }
@@ -3343,6 +3351,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "pyproject.toml",
             "site/astro.config.mjs",
             "site/package-lock.json",
@@ -3359,6 +3368,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "pyproject.toml",
             "site/astro.config.mjs",
             "site/package-lock.json",
@@ -3373,8 +3383,11 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
-        "actions/setup-python"
+        "actions/setup-python",
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -3656,10 +3669,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "f2c68a5b8f38d83e84e504dea6c3ab5cf1c0f709",
-    "tracked": 103
+    "commit": "7c8960e5ca2bcb39a96a1c211e13b19052d4ce51",
+    "tracked": 104
   },
   "landings": [
     {

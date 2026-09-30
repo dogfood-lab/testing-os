@@ -1,6 +1,6 @@
 # mcp-arcade: how it works
 
-Mapped at 2026-09-28 from commit f2c68a5 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 7c8960e by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,11 +8,13 @@ Mapped at 2026-09-28 from commit f2c68a5 by Atlas 1.23.4.
 
 ## What changed since 2026-09-25 (0c17273)
 
-Nothing structural changed since 2026-09-25; no file changed.
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
+- 1 file added and 2 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 8 paths; on a push to main touching 8 paths; or by hand. Runs src/mcp_arcade/cli.py and tests/; checks src/.
+1. **CI.** On a pull request to main touching 9 paths; on a push to main touching 9 paths; or by hand. Runs src/mcp_arcade/cli.py and tests/; checks src/.
 2. **Release.** When a release is published; or by hand. Runs tests/; checks src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **mcp-arcade** (a command people run). Runs src/mcp_arcade/cli.py.
@@ -20,6 +22,7 @@ Nothing structural changed since 2026-09-25; no file changed.
 ## What happens through CI
 
 1. The workflow runs src/mcp_arcade/cli.py in src and tests/ in tests; it checks src/ in src.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -44,9 +47,9 @@ CI writes nothing this map can see.
 
 1 file changed together with its own test, as expected.
 
-Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
+Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -78,6 +81,6 @@ Read those in order to follow one pull request end to end.
 
 - 2 writes and 2 reads use paths built at run time and are not named here.
 - 5 writes and 6 reads go to a path their caller passes, not to this repository.
-- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

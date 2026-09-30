@@ -1,20 +1,23 @@
 # sovereign: how it works
 
-Mapped at 2026-09-28 from commit b5f1ba5 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 107b2aa by Atlas 1.23.5.
 
 ## What this is
 
-8 parts, mostly JavaScript (52 files), HTML (39), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run sovereign. People import @mcptoolshop/sovereign.
+8 parts, mostly JavaScript (52 files), HTML (39), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to npm. It deploys a site to GitHub Pages. People run sovereign. People import @mcptoolshop/sovereign.
 
 ## What changed since 2026-09-25 (87de092)
 
 - test now imports tools.
-- No file changed.
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
+- Release no longer runs bin/sovereign.js.
+- 1 file added and 2 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 7 paths; on a push to main touching 7 paths; or by hand. Runs bin/sovereign.js, test/determinism.test.mjs, test/playability.test.mjs and 1 more.
-2. **Release.** When a tag matching `v*` is pushed. Runs bin/sovereign.js, test/determinism.test.mjs, test/playability.test.mjs and 1 more.
+1. **CI.** On a pull request to main touching 8 paths; on a push to main touching 8 paths; or by hand. Runs bin/sovereign.js, test/determinism.test.mjs, test/playability.test.mjs and 1 more.
+2. **Release.** When a tag matching `v*` is pushed. Runs test/determinism.test.mjs, test/playability.test.mjs and test/smoke.test.mjs.
 3. **Deploy GitHub Pages.** On a push to main; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/sovereign** (the package people import). Loads bin/sovereign.js.
 5. **sovereign** (a command people run). Runs bin/sovereign.js.
@@ -23,6 +26,7 @@ Mapped at 2026-09-28 from commit b5f1ba5 by Atlas 1.23.4.
 
 1. The workflow runs bin/sovereign.js in bin and test/determinism.test.mjs, test/playability.test.mjs and test/smoke.test.mjs in test.
 2. That reaches tools (1 file).
+3. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -30,7 +34,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Release** runs bin/sovereign.js, test/determinism.test.mjs, test/playability.test.mjs and 1 more, reaches tools, publishes to npm, and creates a GitHub release.
+**Release** runs test/determinism.test.mjs, test/playability.test.mjs and test/smoke.test.mjs, reaches tools, publishes to npm, and creates a GitHub release.
 
 **Deploy GitHub Pages** runs site/astro.config.mjs and site/src/, writes to site/dist, which is not tracked, and deploys the site.
 
@@ -40,7 +44,7 @@ CI writes nothing this map can see.
 
 ## What breaks what
 
-- **bin** is imported by no other part and sits on the path of 4 doors.
+- **bin** is imported by no other part and sits on the path of 3 doors.
 - **tools** is imported only from tests, by 1 part (test), and sits on the path of 2 doors.
 - **test** is imported by no other part and sits on the path of 2 doors.
 

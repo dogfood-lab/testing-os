@@ -13,7 +13,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "597c3b41042dae4e5a3d75519c5dab3091098cc1324f22d5877fd9e1a6dd14a0",
+          "hash": "0ddd083f9e75416ec7d738ee95b9aac901d62c1d3b7d69147097729f65b5c3ad",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -710,6 +710,10 @@
           "path": "SHIP_GATE.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "a95bebe049c5f49f01ddaffdf92fa87d4091fad6b87c97e0e21fea22fd6de3e7",
           "path": "db-cluster-feature-pass-FEAT-S1.appendix.json"
         },
@@ -722,11 +726,11 @@
           "path": "db-cluster-feature-pass-FEAT-S1.md"
         },
         {
-          "hash": "c5421ef80d45cc8db069e8b9819a44ac50f2d4c5974ff7f055883c70be9b7c86",
+          "hash": "3e0c6139dfdcde2e20d5ce3e5f76d2bcdc5e351674740d61ccb781185999750c",
           "path": "package-lock.json"
         },
         {
-          "hash": "3b5d13108786bf100f8f5b60afd8199931327ac7aea722fb9c957df5bd28d7a6",
+          "hash": "ec56732590253b5e4076893a377f0fdf7c28da457b022d1c08329372b531a414",
           "path": "package.json"
         },
         {
@@ -7766,7 +7770,8 @@
       ],
       "name": "CI",
       "permissions": [
-        "contents:read"
+        "contents:read",
+        "id-token:write"
       ],
       "pushes": false,
       "reach": [
@@ -8729,8 +8734,10 @@
       "tests": [
         {
           "config": "vitest.config.ts",
+          "coverage": true,
           "files": 127,
           "job": "test",
+          "junit": true,
           "runner": "vitest",
           "step": "7",
           "through": [
@@ -8754,7 +8761,10 @@
       ],
       "uses": [
         "actions/checkout",
-        "actions/setup-node"
+        "actions/download-artifact",
+        "actions/setup-node",
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -11454,10 +11464,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "fe9bf666d4daa3f214126dd3b29d711e718995e8",
-    "tracked": 452
+    "commit": "5bbcb23e5383850ee4b342223e8f4a8783e393e5",
+    "tracked": 453
   },
   "landings": [
     {

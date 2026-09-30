@@ -1,6 +1,6 @@
 # claude-guardian: how it works
 
-Mapped at 2026-09-28 from commit b484cb2 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit b484cb2 by Atlas 1.23.5.
 
 ## What this is
 
@@ -67,15 +67,11 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-- **.claude/** is written by dependabot[bot], which added every file in it.
-- **docs/** is written by dependabot[bot], which added every file in it.
-- **site/** is written by dependabot[bot], which added every file in it.
-- **src/** is written by dependabot[bot], which added every file in it.
-- **tests/** is written by dependabot[bot], which added every file in it.
+Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/ and the repository root; 1 write with a path built at run time may land here.
+People write .claude/, .github/, docs/, the repository root and site/; 1 write with a path built at run time may land here.
 
 ## Where to start
 

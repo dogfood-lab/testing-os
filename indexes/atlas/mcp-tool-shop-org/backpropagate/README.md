@@ -1,23 +1,23 @@
 # backpropagate: how it works
 
-Mapped at 2026-09-28 from commit 822ec5d by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 6b829c8 by Atlas 1.23.5.
 
 ## What this is
 
-11 parts, mostly Python (125 files), shell (5), Astro (2), CSS (2), JavaScript (2) and TypeScript (2). Work enters through 12 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. It deploys a site to GitHub Pages. People run backprop and backpropagate.
+11 parts, mostly Python (128 files), shell (6), Astro (2), CSS (2), JavaScript (2) and TypeScript (2). Work enters through 12 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. It deploys a site to GitHub Pages. People run backprop and backpropagate.
 
-## What changed since 2026-09-23 (34a7862)
+## What changed since 2026-09-30 (9bb2f01)
 
-- CI's push trigger now also names `codecov.yml`.
 - Pages deploy now also runs site/astro.config.mjs and site/src/.
 - Post-Publish Smoke now also runs backpropagate/cli.py.
-- And 5 more changes to doors.
+- Publish now also runs backpropagate/cli.py.
+- And 4 more changes to doors.
 - .github/workflows/ci.yml is now read by docs/ci-gates-triage-plan.md.
 - README.md is now also read by pyproject.toml and tests/test_model_card.py.
 - backpropagate/ is now also read by CONTRIBUTING.md, pyproject.toml, scripts/check_doc_drift.py and tests/test_error_codes_catalog.py.
 - And 15 more new writers and readers of places.
 - .github was generated and is now authored.
-- 1 file added and 247 changed content, across 10 parts.
+- 2 files added, 1 removed and 250 changed content, across 10 parts.
 
 ## What comes in
 
@@ -78,7 +78,7 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-- **backpropagate/cli.py** and **backpropagate/trainer.py** changed together in 28 of 52 commits, inside the backpropagate part.
+- **backpropagate/cli.py** and **backpropagate/trainer.py** changed together in 29 of 54 commits, inside the backpropagate part.
 
 2 files changed together with their own tests, as expected.
 
@@ -113,9 +113,9 @@ Read those in order to follow one run of backprop end to end. This path follows 
 ## What this map cannot see
 
 - 40 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.
-- 5 imports could not be resolved: `backpropagate/trainer.py` imports a path built at run time; `tests/test_fp8_smoke.py` imports a path built at run time; `tests/test_kto_smoke.py` imports a path built at run time; and 2 more.
+- 6 imports could not be resolved: `backpropagate/trainer.py` imports a path built at run time; `tests/test_fp8_smoke.py` imports a path built at run time; `tests/test_golden_path_smoke.py` imports a path built at run time; and 3 more.
 - 6 writes and 10 reads use paths built at run time and are not named here.
-- 17 writes and 53 reads go to a path their caller passes, not to this repository.
+- 17 writes and 54 reads go to a path their caller passes, not to this repository.
 - 1 write goes to the home directory (AppData/, Library/ and backpropagate/) or a path its caller passes, not to this repository.
 - 1 read goes to the directory the command is run in, not to this repository.
 - 1 read goes to the home directory (.cache/), not to this repository.

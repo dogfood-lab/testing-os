@@ -25,7 +25,7 @@
           "path": ".github/ISSUE_TEMPLATE/publish-failure.md"
         },
         {
-          "hash": "ab10b8baa7c4dd9351470320bb42c26a2844e37f4b4a0a26ed6cc45ced27f2bc",
+          "hash": "7c8cbae5a857eef8c9d007f53f478cfd750f1a80d2c099790e1ffdf64fbf871c",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -249,7 +249,7 @@
           "path": "app/index.html"
         },
         {
-          "hash": "ff9f13783fce2aaa7b37735732352a04761282e16c9dd05a6f6f31bb33288630",
+          "hash": "655c25555b70f8c82a083df4dbfe18895eac69d3b7f14d25593f76ccb7e486e3",
           "path": "app/package.json"
         },
         {
@@ -1697,7 +1697,7 @@
           "path": "app/vite.config.ts"
         },
         {
-          "hash": "72f173ef186d13fd13b83cfba5c23e80b5c878c97c1e507ad55e552261f5240e",
+          "hash": "e2eff16c117a4c8e2f8fd9b17835af36e525540b758c83da673745c5a0af4c46",
           "path": "app/vitest.config.ts"
         }
       ],
@@ -3471,11 +3471,15 @@
           "path": "SHIP_GATE.md"
         },
         {
-          "hash": "8b5533fb5c1c1dec1acb08c7a5b1f4c702b2cfa4053cac5614129ba612fc3065",
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
+          "hash": "a9455b3b0f1da651730dd483ef295f64e455d0a1c41e90094ea63ff5f5b49522",
           "path": "package-lock.json"
         },
         {
-          "hash": "2ac7c141cd743437312955ebab405f85cff2ad2468721c07f8fe58d2809fa599",
+          "hash": "3efe9516e0151a6ddd8fc8def036c0359e9f8d32a5fc66f081e3697888d9ce56",
           "path": "package.json"
         },
         {
@@ -3487,7 +3491,7 @@
           "path": "verify.sh"
         },
         {
-          "hash": "2fa91f8b43db86ac5632e3b2ccad2afdafc8e7ea9f1c606ab1687beec1393c97",
+          "hash": "f937a07da0fdf0e3533c26487c4dfdb2873e0dfa4570056789fcfafa44e6e159",
           "path": "vitest.config.ts"
         }
       ],
@@ -4400,7 +4404,8 @@
       "name": "CI",
       "permissions": [
         "contents:read",
-        "contents:write"
+        "contents:write",
+        "id-token:write"
       ],
       "pushes": false,
       "reach": [
@@ -5277,6 +5282,7 @@
             "app/**",
             "artifacts/**",
             "atlas/**",
+            "codecov.yml",
             "fixtures/**",
             "package-lock.json",
             "package.json",
@@ -5295,6 +5301,7 @@
             "app/**",
             "artifacts/**",
             "atlas/**",
+            "codecov.yml",
             "fixtures/**",
             "package-lock.json",
             "package.json",
@@ -5322,7 +5329,10 @@
       "uses": [
         "Swatinem/rust-cache",
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
+        "actions/upload-artifact",
+        "codecov/codecov-action",
         "dtolnay/rust-toolchain",
         "softprops/action-gh-release"
       ],
@@ -5531,10 +5541,10 @@
       "to": "storage"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "e2ce19a5099a1e2fba8c13c8bac76019e0db761a",
-    "tracked": 345
+    "commit": "138def5496c67b45129ec25790a154f7351a36df",
+    "tracked": 346
   },
   "landings": [
     {

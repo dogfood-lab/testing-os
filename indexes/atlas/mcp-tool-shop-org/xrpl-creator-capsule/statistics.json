@@ -28,12 +28,12 @@
         "importsAndCoChanges": [],
         "importsOnly": []
       },
-      "cohesion": 1,
+      "cohesion": null,
       "cohesionDropped": false,
       "confidence": "low",
       "highWater": null,
       "name": "app",
-      "qualifyingSourceCommits": 20,
+      "qualifyingSourceCommits": 11,
       "rebaseline": null
     },
     {
@@ -49,27 +49,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "artifacts",
-      "qualifyingSourceCommits": 5,
-      "rebaseline": null
-    },
-    {
-      "breakage": {
-        "coChangesOnly": [
-          "core"
-        ],
-        "collapsed": false,
-        "confidence": "low",
-        "importsAndCoChanges": [],
-        "importsOnly": [
-          "artifacts"
-        ]
-      },
-      "cohesion": 0,
-      "cohesionDropped": false,
-      "confidence": "low",
-      "highWater": null,
-      "name": "cli",
-      "qualifyingSourceCommits": 15,
+      "qualifyingSourceCommits": 2,
       "rebaseline": null
     },
     {
@@ -77,22 +57,39 @@
         "coChangesOnly": [],
         "collapsed": false,
         "confidence": "low",
-        "importsAndCoChanges": [
-          "cli"
-        ],
+        "importsAndCoChanges": [],
+        "importsOnly": [
+          "artifacts"
+        ]
+      },
+      "cohesion": null,
+      "cohesionDropped": false,
+      "confidence": "low",
+      "highWater": null,
+      "name": "cli",
+      "qualifyingSourceCommits": 8,
+      "rebaseline": null
+    },
+    {
+      "breakage": {
+        "coChangesOnly": [],
+        "collapsed": false,
+        "confidence": "low",
+        "importsAndCoChanges": [],
         "importsOnly": [
           "app",
           "artifacts",
+          "cli",
           "xaman",
           "xrpl"
         ]
       },
-      "cohesion": 0,
+      "cohesion": null,
       "cohesionDropped": false,
       "confidence": "low",
       "highWater": null,
       "name": "core",
-      "qualifyingSourceCommits": 11,
+      "qualifyingSourceCommits": 4,
       "rebaseline": null
     },
     {
@@ -140,7 +137,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "root",
-      "qualifyingSourceCommits": 3,
+      "qualifyingSourceCommits": 2,
       "rebaseline": null
     },
     {
@@ -156,7 +153,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "site",
-      "qualifyingSourceCommits": 4,
+      "qualifyingSourceCommits": 2,
       "rebaseline": null
     },
     {
@@ -176,7 +173,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "storage",
-      "qualifyingSourceCommits": 3,
+      "qualifyingSourceCommits": 1,
       "rebaseline": null
     },
     {
@@ -194,7 +191,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "xaman",
-      "qualifyingSourceCommits": 7,
+      "qualifyingSourceCommits": 5,
       "rebaseline": null
     },
     {
@@ -214,7 +211,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "xrpl",
-      "qualifyingSourceCommits": 10,
+      "qualifyingSourceCommits": 5,
       "rebaseline": null
     }
   ],
@@ -242,23 +239,23 @@
         "path": ".github/ISSUE_TEMPLATE/publish-failure.md"
       },
       {
-        "commits": 15,
-        "lines": 244,
+        "commits": 13,
+        "lines": 420,
         "path": ".github/workflows/ci.yml"
       },
       {
-        "commits": 2,
-        "lines": 58,
+        "commits": 1,
+        "lines": 50,
         "path": ".github/workflows/pages.yml"
       },
       {
-        "commits": 6,
+        "commits": 2,
         "lines": 14,
         "path": ".gitignore"
       },
       {
-        "commits": 4,
-        "lines": 99,
+        "commits": 3,
+        "lines": 97,
         "path": "CHANGELOG.md"
       },
       {
@@ -267,43 +264,43 @@
         "path": "LICENSE"
       },
       {
-        "commits": 4,
-        "lines": 435,
+        "commits": 2,
+        "lines": 277,
         "path": "README.es.md"
       },
       {
-        "commits": 4,
-        "lines": 373,
+        "commits": 2,
+        "lines": 283,
         "path": "README.fr.md"
       },
       {
-        "commits": 4,
-        "lines": 389,
+        "commits": 2,
+        "lines": 299,
         "path": "README.hi.md"
       },
       {
-        "commits": 4,
-        "lines": 442,
+        "commits": 2,
+        "lines": 280,
         "path": "README.it.md"
       },
       {
-        "commits": 4,
-        "lines": 381,
+        "commits": 2,
+        "lines": 291,
         "path": "README.ja.md"
       },
       {
-        "commits": 5,
-        "lines": 284,
+        "commits": 2,
+        "lines": 182,
         "path": "README.md"
       },
       {
-        "commits": 4,
-        "lines": 373,
+        "commits": 2,
+        "lines": 283,
         "path": "README.pt-BR.md"
       },
       {
-        "commits": 4,
-        "lines": 411,
+        "commits": 2,
+        "lines": 267,
         "path": "README.zh.md"
       },
       {
@@ -317,8 +314,8 @@
         "path": "SECURITY.md"
       },
       {
-        "commits": 2,
-        "lines": 84,
+        "commits": 1,
+        "lines": 82,
         "path": "SHIP_GATE.md"
       },
       {
@@ -367,8 +364,8 @@
         "path": "app/bridge-worker.test.ts"
       },
       {
-        "commits": 8,
-        "lines": 3202,
+        "commits": 6,
+        "lines": 3200,
         "path": "app/bridge-worker.ts"
       },
       {
@@ -377,8 +374,8 @@
         "path": "app/index.html"
       },
       {
-        "commits": 7,
-        "lines": 52,
+        "commits": 6,
+        "lines": 44,
         "path": "app/package.json"
       },
       {
@@ -702,12 +699,12 @@
         "path": "app/src-tauri/permissions/desktop-commands.toml"
       },
       {
-        "commits": 6,
-        "lines": 1544,
+        "commits": 5,
+        "lines": 1508,
         "path": "app/src-tauri/src/commands.rs"
       },
       {
-        "commits": 5,
+        "commits": 4,
         "lines": 103,
         "path": "app/src-tauri/src/lib.rs"
       },
@@ -717,13 +714,13 @@
         "path": "app/src-tauri/src/main.rs"
       },
       {
-        "commits": 8,
-        "lines": 75,
+        "commits": 4,
+        "lines": 67,
         "path": "app/src-tauri/tauri.conf.json"
       },
       {
-        "commits": 6,
-        "lines": 97,
+        "commits": 3,
+        "lines": 75,
         "path": "app/src/App.tsx"
       },
       {
@@ -757,8 +754,8 @@
         "path": "app/src/bridge/engine.test.ts"
       },
       {
-        "commits": 9,
-        "lines": 661,
+        "commits": 7,
+        "lines": 655,
         "path": "app/src/bridge/engine.ts"
       },
       {
@@ -772,13 +769,13 @@
         "path": "app/src/components/CloseWarningGate.tsx"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 36,
         "path": "app/src/components/ReleaseChamber.tsx"
       },
       {
-        "commits": 2,
-        "lines": 115,
+        "commits": 1,
+        "lines": 97,
         "path": "app/src/components/Sidebar.tsx"
       },
       {
@@ -787,13 +784,13 @@
         "path": "app/src/components/TitleBar.test.tsx"
       },
       {
-        "commits": 6,
-        "lines": 360,
+        "commits": 3,
+        "lines": 354,
         "path": "app/src/components/TitleBar.tsx"
       },
       {
-        "commits": 3,
-        "lines": 372,
+        "commits": 1,
+        "lines": 228,
         "path": "app/src/components/panels/AccessPanel.tsx"
       },
       {
@@ -802,13 +799,13 @@
         "path": "app/src/components/panels/GovernancePanel.test.tsx"
       },
       {
-        "commits": 5,
-        "lines": 1176,
+        "commits": 3,
+        "lines": 972,
         "path": "app/src/components/panels/GovernancePanel.tsx"
       },
       {
-        "commits": 2,
-        "lines": 203,
+        "commits": 1,
+        "lines": 153,
         "path": "app/src/components/panels/ManifestPanel.tsx"
       },
       {
@@ -817,8 +814,8 @@
         "path": "app/src/components/panels/MintPanel.test.tsx"
       },
       {
-        "commits": 8,
-        "lines": 310,
+        "commits": 5,
+        "lines": 258,
         "path": "app/src/components/panels/MintPanel.tsx"
       },
       {
@@ -827,8 +824,8 @@
         "path": "app/src/components/panels/PanelShell.test.tsx"
       },
       {
-        "commits": 9,
-        "lines": 690,
+        "commits": 7,
+        "lines": 668,
         "path": "app/src/components/panels/PanelShell.tsx"
       },
       {
@@ -837,12 +834,12 @@
         "path": "app/src/components/panels/RecoveryPanel.test.tsx"
       },
       {
-        "commits": 5,
-        "lines": 579,
+        "commits": 3,
+        "lines": 429,
         "path": "app/src/components/panels/RecoveryPanel.tsx"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 135,
         "path": "app/src/components/panels/VerifyPanel.tsx"
       },
@@ -857,13 +854,13 @@
         "path": "app/src/components/studio/CreateReleasePage.tsx"
       },
       {
-        "commits": 6,
-        "lines": 992,
+        "commits": 5,
+        "lines": 946,
         "path": "app/src/components/studio/PublishPage.tsx"
       },
       {
-        "commits": 2,
-        "lines": 199,
+        "commits": 1,
+        "lines": 185,
         "path": "app/src/components/studio/RecoveryPage.tsx"
       },
       {
@@ -882,8 +879,8 @@
         "path": "app/src/components/studio/StudioShell.test.tsx"
       },
       {
-        "commits": 6,
-        "lines": 334,
+        "commits": 5,
+        "lines": 330,
         "path": "app/src/components/studio/StudioShell.tsx"
       },
       {
@@ -892,7 +889,7 @@
         "path": "app/src/components/studio/StudioSidebar.tsx"
       },
       {
-        "commits": 4,
+        "commits": 3,
         "lines": 216,
         "path": "app/src/components/studio/TestAccessPage.tsx"
       },
@@ -937,23 +934,23 @@
         "path": "app/src/state/release-timeout.test.tsx"
       },
       {
-        "commits": 4,
-        "lines": 523,
+        "commits": 3,
+        "lines": 521,
         "path": "app/src/state/release-trust.test.tsx"
       },
       {
-        "commits": 5,
-        "lines": 570,
+        "commits": 4,
+        "lines": 566,
         "path": "app/src/state/release.test.tsx"
       },
       {
-        "commits": 15,
-        "lines": 3099,
+        "commits": 10,
+        "lines": 2957,
         "path": "app/src/state/release.tsx"
       },
       {
-        "commits": 6,
-        "lines": 551,
+        "commits": 5,
+        "lines": 545,
         "path": "app/src/state/session.test.ts"
       },
       {
@@ -962,13 +959,13 @@
         "path": "app/src/state/session.ts"
       },
       {
-        "commits": 6,
-        "lines": 987,
+        "commits": 5,
+        "lines": 983,
         "path": "app/src/state/studio.test.tsx"
       },
       {
-        "commits": 6,
-        "lines": 622,
+        "commits": 5,
+        "lines": 616,
         "path": "app/src/state/studio.tsx"
       },
       {
@@ -987,8 +984,8 @@
         "path": "app/src/styles.css"
       },
       {
-        "commits": 3,
-        "lines": 101,
+        "commits": 2,
+        "lines": 99,
         "path": "app/src/support/bundle.ts"
       },
       {
@@ -997,8 +994,8 @@
         "path": "app/tsconfig.json"
       },
       {
-        "commits": 2,
-        "lines": 14,
+        "commits": 1,
+        "lines": 12,
         "path": "app/tsconfig.node.json"
       },
       {
@@ -1007,8 +1004,8 @@
         "path": "app/vite.config.ts"
       },
       {
-        "commits": 1,
-        "lines": 10,
+        "commits": 3,
+        "lines": 36,
         "path": "app/vitest.config.ts"
       },
       {
@@ -1197,6 +1194,11 @@
         "path": "atlas/structure.json"
       },
       {
+        "commits": 2,
+        "lines": 36,
+        "path": "codecov.yml"
+      },
+      {
         "commits": 1,
         "lines": 225,
         "path": "docs/handbook.md"
@@ -1262,18 +1264,18 @@
         "path": "fixtures/sample-release.json"
       },
       {
-        "commits": 8,
-        "lines": 5252,
+        "commits": 6,
+        "lines": 6688,
         "path": "package-lock.json"
       },
       {
-        "commits": 8,
-        "lines": 38,
+        "commits": 6,
+        "lines": 32,
         "path": "package.json"
       },
       {
-        "commits": 4,
-        "lines": 26,
+        "commits": 1,
+        "lines": 22,
         "path": "packages/cli/package.json"
       },
       {
@@ -1307,8 +1309,8 @@
         "path": "packages/cli/src/bin.test.ts"
       },
       {
-        "commits": 12,
-        "lines": 1235,
+        "commits": 7,
+        "lines": 1209,
         "path": "packages/cli/src/bin.ts"
       },
       {
@@ -1447,8 +1449,8 @@
         "path": "packages/cli/src/commands/verify-release.test.ts"
       },
       {
-        "commits": 6,
-        "lines": 517,
+        "commits": 5,
+        "lines": 509,
         "path": "packages/cli/src/commands/verify-release.ts"
       },
       {
@@ -1462,7 +1464,7 @@
         "path": "packages/cli/src/commands/xaman-flow.ts"
       },
       {
-        "commits": 3,
+        "commits": 1,
         "lines": 8,
         "path": "packages/cli/src/index.ts"
       },
@@ -1482,13 +1484,13 @@
         "path": "packages/cli/src/test-support/run-bin.ts"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 15,
         "path": "packages/cli/tsconfig.json"
       },
       {
-        "commits": 2,
-        "lines": 24,
+        "commits": 1,
+        "lines": 22,
         "path": "packages/core/package.json"
       },
       {
@@ -1557,18 +1559,18 @@
         "path": "packages/core/src/governance-validate.ts"
       },
       {
-        "commits": 2,
-        "lines": 107,
+        "commits": 1,
+        "lines": 105,
         "path": "packages/core/src/hash.test.ts"
       },
       {
-        "commits": 3,
-        "lines": 68,
+        "commits": 1,
+        "lines": 66,
         "path": "packages/core/src/hash.ts"
       },
       {
-        "commits": 5,
-        "lines": 96,
+        "commits": 1,
+        "lines": 94,
         "path": "packages/core/src/index.ts"
       },
       {
@@ -1612,13 +1614,13 @@
         "path": "packages/core/src/receipt-schema.ts"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 164,
         "path": "packages/core/src/receipt-validate.test.ts"
       },
       {
-        "commits": 4,
-        "lines": 83,
+        "commits": 3,
+        "lines": 81,
         "path": "packages/core/src/receipt-validate.ts"
       },
       {
@@ -1677,8 +1679,8 @@
         "path": "packages/core/tsconfig.json"
       },
       {
-        "commits": 2,
-        "lines": 23,
+        "commits": 1,
+        "lines": 21,
         "path": "packages/storage/package.json"
       },
       {
@@ -1702,7 +1704,7 @@
         "path": "packages/storage/src/fs-store.ts"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 6,
         "path": "packages/storage/src/index.ts"
       },
@@ -1727,8 +1729,8 @@
         "path": "packages/storage/tsconfig.json"
       },
       {
-        "commits": 2,
-        "lines": 24,
+        "commits": 1,
+        "lines": 22,
         "path": "packages/xaman/package.json"
       },
       {
@@ -1752,7 +1754,7 @@
         "path": "packages/xaman/src/payloads.test.ts"
       },
       {
-        "commits": 4,
+        "commits": 3,
         "lines": 135,
         "path": "packages/xaman/src/payloads.ts"
       },
@@ -1777,8 +1779,8 @@
         "path": "packages/xaman/tsconfig.json"
       },
       {
-        "commits": 3,
-        "lines": 25,
+        "commits": 1,
+        "lines": 23,
         "path": "packages/xrpl/package.json"
       },
       {
@@ -1802,7 +1804,7 @@
         "path": "packages/xrpl/src/check-holder.ts"
       },
       {
-        "commits": 9,
+        "commits": 7,
         "lines": 46,
         "path": "packages/xrpl/src/index.ts"
       },
@@ -1822,8 +1824,8 @@
         "path": "packages/xrpl/src/mint.test.ts"
       },
       {
-        "commits": 6,
-        "lines": 455,
+        "commits": 5,
+        "lines": 453,
         "path": "packages/xrpl/src/mint.ts"
       },
       {
@@ -1842,8 +1844,8 @@
         "path": "packages/xrpl/src/read-nft.test.ts"
       },
       {
-        "commits": 6,
-        "lines": 197,
+        "commits": 5,
+        "lines": 195,
         "path": "packages/xrpl/src/read-nft.ts"
       },
       {
@@ -1852,8 +1854,8 @@
         "path": "packages/xrpl/src/verify-minter.test.ts"
       },
       {
-        "commits": 7,
-        "lines": 206,
+        "commits": 5,
+        "lines": 200,
         "path": "packages/xrpl/src/verify-minter.ts"
       },
       {
@@ -1862,13 +1864,13 @@
         "path": "packages/xrpl/src/wallet.test.ts"
       },
       {
-        "commits": 6,
-        "lines": 209,
+        "commits": 5,
+        "lines": 207,
         "path": "packages/xrpl/src/wallet.ts"
       },
       {
-        "commits": 2,
-        "lines": 15,
+        "commits": 1,
+        "lines": 13,
         "path": "packages/xrpl/tsconfig.json"
       },
       {
@@ -1892,43 +1894,43 @@
         "path": "site/src/content.config.ts"
       },
       {
-        "commits": 3,
-        "lines": 98,
+        "commits": 1,
+        "lines": 94,
         "path": "site/src/content/docs/handbook/architecture.md"
       },
       {
-        "commits": 2,
-        "lines": 237,
+        "commits": 1,
+        "lines": 235,
         "path": "site/src/content/docs/handbook/beginners.md"
       },
       {
-        "commits": 3,
-        "lines": 119,
+        "commits": 1,
+        "lines": 115,
         "path": "site/src/content/docs/handbook/contracts.md"
       },
       {
-        "commits": 4,
-        "lines": 74,
+        "commits": 2,
+        "lines": 66,
         "path": "site/src/content/docs/handbook/getting-started.md"
       },
       {
-        "commits": 2,
-        "lines": 51,
+        "commits": 1,
+        "lines": 49,
         "path": "site/src/content/docs/handbook/index.md"
       },
       {
-        "commits": 3,
-        "lines": 215,
+        "commits": 1,
+        "lines": 211,
         "path": "site/src/content/docs/handbook/reference.md"
       },
       {
-        "commits": 3,
-        "lines": 129,
+        "commits": 1,
+        "lines": 125,
         "path": "site/src/content/docs/handbook/release-lifecycle.md"
       },
       {
-        "commits": 3,
-        "lines": 76,
+        "commits": 1,
+        "lines": 72,
         "path": "site/src/content/docs/handbook/security.md"
       },
       {
@@ -1957,7 +1959,7 @@
         "path": "site/tsconfig.json"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 26,
         "path": "tsconfig.json"
       },
@@ -1967,8 +1969,8 @@
         "path": "verify.sh"
       },
       {
-        "commits": 3,
-        "lines": 25,
+        "commits": 4,
+        "lines": 53,
         "path": "vitest.config.ts"
       }
     ]
@@ -1977,61 +1979,11 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-09-28T13:23:39.987Z",
+  "generatedAt": "2026-09-30T18:06:56.309Z",
   "generatedFrom": {
-    "commit": "e2ce19a5099a1e2fba8c13c8bac76019e0db761a"
+    "commit": "138def5496c67b45129ec25790a154f7351a36df"
   },
-  "pairs": [
-    {
-      "a": "app/bridge-worker.ts",
-      "b": "app/src/bridge/engine.ts",
-      "either": 7,
-      "shared": 5,
-      "strength": 0.714286
-    },
-    {
-      "a": "app/src/bridge/engine.ts",
-      "b": "app/src/components/panels/MintPanel.tsx",
-      "either": 7,
-      "shared": 4,
-      "strength": 0.571429
-    },
-    {
-      "a": "app/src/bridge/engine.ts",
-      "b": "app/src/state/release.tsx",
-      "either": 10,
-      "shared": 6,
-      "strength": 0.6
-    },
-    {
-      "a": "app/src/components/panels/MintPanel.tsx",
-      "b": "app/src/components/panels/PanelShell.tsx",
-      "either": 6,
-      "shared": 4,
-      "strength": 0.666667
-    },
-    {
-      "a": "app/src/components/panels/MintPanel.tsx",
-      "b": "app/src/state/release.tsx",
-      "either": 10,
-      "shared": 5,
-      "strength": 0.5
-    },
-    {
-      "a": "app/src/components/panels/PanelShell.tsx",
-      "b": "app/src/state/release.tsx",
-      "either": 10,
-      "shared": 5,
-      "strength": 0.5
-    },
-    {
-      "a": "packages/cli/src/bin.ts",
-      "b": "packages/core/src/index.ts",
-      "either": 9,
-      "shared": 5,
-      "strength": 0.555556
-    }
-  ],
+  "pairs": [],
   "parameters": {
     "appliedChangesetLimit": 50,
     "changeset": 50,
@@ -2042,16 +1994,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-09-24T01:54:04-07:00",
-    "inScopeFiles": 350,
+    "headDate": "2026-09-29T16:48:32-07:00",
+    "inScopeFiles": 351,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 74,
+    "qualifyingCommits": 43,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-03-28T08:54:04.000Z",
+    "since": "2026-04-02T23:48:32.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",
@@ -2067,7 +2019,7 @@
     ],
     "sourceFileReach": 20,
     "sourceFileRise": 25,
-    "sourceFilesReachingStrongFloor": 1,
+    "sourceFilesReachingStrongFloor": 0,
     "strength": 0.5,
     "windowDays": 180
   },

@@ -1,6 +1,6 @@
 # claude-rpg: how it works
 
-Mapped at 2026-09-28 from commit 55ff274 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit e3798b1 by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,14 +8,16 @@ Mapped at 2026-09-28 from commit 55ff274 by Atlas 1.23.4.
 
 ## What changed since 2026-09-24 (d22db12)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - dogfood/tuning/ is now written by test/helpers/living-world-matrix.ts.
 - src/game.ts is now also read by src/game.test.ts.
 - dogfood was authored and is now mixed.
-- 493 files changed content, across 8 parts.
+- 1 file added and 493 changed content, across 8 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 12 paths; on a push touching 12 paths; or by hand. Runs src/action-interpreter.test.ts, src/bin-defenses.test.ts, src/character/builder.test.ts and 118 more; checks src/ and test/. On a pull request, it also runs scripts/check-critical-coverage.mjs.
+1. **CI.** On a pull request touching 13 paths; on a push touching 13 paths; or by hand. Runs src/action-interpreter.test.ts, src/bin-defenses.test.ts, src/character/builder.test.ts and 118 more; checks src/ and test/. On a pull request, it also runs scripts/check-critical-coverage.mjs.
 2. **Release.** When a tag matching `v*` is pushed. Runs src/action-interpreter.test.ts, src/bin-defenses.test.ts, src/character/builder.test.ts and 118 more; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/claude-rpg** (the package people import). Loads src/index.ts.

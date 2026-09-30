@@ -1,6 +1,6 @@
 # stillpoint: how it works
 
-Mapped at 2026-09-28 from commit c7fbc27 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 6054b1b by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,24 +8,26 @@ Mapped at 2026-09-28 from commit c7fbc27 by Atlas 1.23.4.
 
 ## What changed since 2026-09-24 (26647ad)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - CI now also runs packages/ui/vite.config.ts.
-- CI no longer runs packages/server/src/engine-manager.test.ts, packages/server/src/presets.test.ts, packages/server/src/state.test.ts and 1 more.
-- stillpoint (apps/desktop/src-tauri/Cargo.toml) is a new desktop app. It runs apps/desktop/src-tauri/src/main.rs.
+- And 2 more changes to doors.
 - apps/desktop/msix/layout/ is now written by apps/desktop/msix/build-msix.ps1.
 - apps/desktop/msix/layout/Assets/ is now written by apps/desktop/msix/build-msix.ps1.
 - apps/desktop/src-tauri/gen/schemas/ is now written by apps/desktop/src-tauri/build.rs.
 - And 18 more new writers and readers of places.
-- 107 files changed content, across 7 parts.
+- 1 file added and 107 changed content, across 7 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 7 paths; on a push to main touching 7 paths; or by hand. Runs packages/server/src/routes/api.test.ts, packages/server/src/routes/events.test.ts, packages/ui/src/ and 1 more.
+1. **CI.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs packages/server/src/routes/api.test.ts, packages/server/src/routes/events.test.ts, packages/ui/src/ and 1 more.
 2. **Deploy site to GitHub Pages.** On a pull request touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **stillpoint** (a desktop app built from apps/desktop/src-tauri, which nothing ships). Runs apps/desktop/src-tauri/src/main.rs.
 
 ## What happens through CI
 
 1. The workflow runs packages/server/src/routes/api.test.ts and packages/server/src/routes/events.test.ts in server and packages/ui/src/ and packages/ui/vite.config.ts in ui.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -65,21 +67,14 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-- **.claude/** is written by dependabot[bot], which added every file in it.
-- **.github/** is written by dependabot[bot], which added every file in it.
-- **apps/desktop/** is written by dependabot[bot], which added every file in it.
 - **apps/desktop/msix/Assets/** is written by apps/desktop/msix/gen-assets.mjs.
 - **apps/desktop/msix/layout/** is written by apps/desktop/msix/build-msix.ps1.
 - **apps/desktop/src-tauri/gen/schemas/** is written by apps/desktop/src-tauri/build.rs (a build script).
 - **apps/desktop/src-tauri/icons/** is written by apps/desktop/src-tauri/gen-icons.mjs.
-- **packages/server/** is written by dependabot[bot], which added every file in it.
-- **packages/ui/** is written by dependabot[bot], which added every file in it.
-- **the repository root** is written by dependabot[bot], which added every file in it.
-- **site/** is written by dependabot[bot], which added every file in it.
 
 ## Hand-authored
 
-No configuration or documentation part is left to people alone.
+People write .claude/, .github/, the repository root and site/. Nothing in this repository writes to them.
 
 ## Where to start
 

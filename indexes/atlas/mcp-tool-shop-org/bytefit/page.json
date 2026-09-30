@@ -18,13 +18,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "changed": 88,
       "moved": 0,
       "parts": 5,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "ci's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "ci's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "door",
         "sentence": "ci now also runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more.",
@@ -50,30 +64,12 @@
       },
       {
         "kind": "door",
-        "sentence": "Release now also runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more.",
-        "subjects": [
-          ".github/workflows/release.yml",
-          "src/tests/catalog.test.ts",
-          "src/tests/cli.test.ts",
-          "src/tests/docs-drift.test.ts",
-          "src/tests/emit.test.ts",
-          "src/tests/footprint.test.ts",
-          "src/tests/gguf-safety.test.ts",
-          "src/tests/gguf.test.ts",
-          "src/tests/gqa.test.ts",
-          "src/tests/headroom.test.ts",
-          "src/tests/hf.test.ts",
-          "src/tests/placement.test.ts",
-          "src/tests/plan.test.ts",
-          "src/tests/probe.test.ts",
-          "src/tests/quant-risk.test.ts",
-          "src/tests/quant.test.ts",
-          "src/tests/roofline.test.ts"
-        ]
+        "sentence": "And 1 more change to a door.",
+        "subjects": []
       },
       {
         "kind": "counts",
-        "sentence": "88 files changed content, across 5 parts.",
+        "sentence": "1 file added and 88 changed content, across 5 parts.",
         "subjects": []
       }
     ],
@@ -165,7 +161,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 2 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "0f920ecd9b8ffb02f94c9e064759dc09a08c7ae4",
+  "commit": "41121c5a428d3dfd34ec01bfe7b83d278d546104",
   "defaultBranch": "main",
   "derived": "6 parts, mostly TypeScript (49 files), CSS (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 5 doors; ci, Deploy site to GitHub Pages, Release, @mcptoolshop/bytefit and bytefit each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run bytefit. People import @mcptoolshop/bytefit.",
   "doors": [
@@ -208,11 +204,13 @@
       ],
       "runsCount": 16,
       "runsMore": 13,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 9 paths",
-        "on a push touching 9 paths",
+        "on a pull request touching 10 paths",
+        "on a push touching 10 paths",
         "or by hand"
       ]
     },
@@ -352,9 +350,9 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [],
-  "generatedAt": "2026-09-28T13:15:03.664Z",
+  "generatedAt": "2026-09-30T17:57:49.628Z",
   "limits": [
     "3 reads go to a path their caller passes, not to this repository.",
     "1 write and 1 read go to a temporary directory or a path their caller passes, not to this repository.",

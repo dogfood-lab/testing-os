@@ -65,13 +65,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 1,
+      "changed": 1,
       "moved": 0,
-      "parts": 0,
+      "parts": 2,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "landing",
         "sentence": "dossier/data.js is now read by dossier/dossier.html.",
@@ -106,7 +120,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "1 file added and 1 changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -153,7 +167,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 1 source file reaches 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "c0ee7203c230fd1277228f27c982ac4707cc0040",
+  "commit": "64fe05b375eedcfde4fbb7c344f837b5527f5fa8",
   "defaultBranch": "main",
   "derived": "15 parts, mostly JavaScript (162 files), Python (30), Astro (2), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 3 parts. It publishes to npm. It deploys a site to GitHub Pages. People run roleos.",
   "doors": [
@@ -189,11 +203,13 @@
       ],
       "runsCount": 2,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 13 paths",
-        "on a push touching 13 paths",
+        "on a pull request touching 14 paths",
+        "on a push touching 14 paths",
         "or by hand"
       ]
     },
@@ -310,7 +326,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [
     {
       "place": ".claude/role-os/tool-contracts.json",
@@ -376,7 +392,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-28T13:20:42.670Z",
+  "generatedAt": "2026-09-30T18:03:29.462Z",
   "limits": [
     "3 imports could not be resolved: `test/knowledge-integration.test.mjs` imports a path built at run time, 3 times.",
     "16 writes and 14 reads use paths built at run time and are not named here.",

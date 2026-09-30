@@ -39,13 +39,27 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "changed": 493,
       "moved": 0,
       "parts": 8,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "CI's pull request trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "CI's push trigger now also names `codecov.yml`.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
       {
         "kind": "landing",
         "sentence": "dogfood/tuning/ is now written by test/helpers/living-world-matrix.ts.",
@@ -71,7 +85,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "493 files changed content, across 8 parts.",
+        "sentence": "1 file added and 493 changed content, across 8 parts.",
         "subjects": []
       }
     ],
@@ -87,7 +101,7 @@
     "Window: 180 days; a pair counts from 10 shared commits, since 27 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 7,
-  "commit": "55ff274cb62e0ae50b50bab77bb06e68426de98c",
+  "commit": "e3798b17871cbd88a80f57fbfcfabfc9568a4ad9",
   "defaultBranch": "main",
   "derived": "8 parts, mostly TypeScript (218 files), JavaScript (3), CSS (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run claude-rpg. People import @mcptoolshop/claude-rpg.",
   "doors": [
@@ -237,8 +251,8 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 12 paths",
-        "on a push touching 12 paths",
+        "on a pull request touching 13 paths",
+        "on a push touching 13 paths",
         "or by hand"
       ]
     },
@@ -481,7 +495,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [
     {
       "fromRoot": true,
@@ -491,7 +505,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-28T13:15:15.734Z",
+  "generatedAt": "2026-09-30T17:58:06.152Z",
   "limits": [
     "2 imports could not be resolved: `src/character/packs.test.ts` imports a path built at run time; `src/cli/terminal-ui-audit.test.ts` imports a path built at run time.",
     "5 writes and 15 reads go to a path their caller passes, not to this repository.",

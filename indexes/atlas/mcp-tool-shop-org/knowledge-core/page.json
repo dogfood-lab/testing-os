@@ -19,7 +19,7 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "changed": 56,
       "moved": 0,
       "parts": 6,
@@ -28,14 +28,14 @@
     "items": [
       {
         "kind": "door",
-        "sentence": "CI's pull request trigger now also names `atlas/**`.",
+        "sentence": "CI's pull request trigger now also names `atlas/**` and `codecov.yml`.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
       },
       {
         "kind": "door",
-        "sentence": "CI's push trigger now also names `atlas/**`.",
+        "sentence": "CI's push trigger now also names `atlas/**` and `codecov.yml`.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
@@ -72,7 +72,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "56 files changed content, across 6 parts.",
+        "sentence": "1 file added and 56 changed content, across 6 parts.",
         "subjects": []
       }
     ],
@@ -87,7 +87,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "f7dfb2efc4649fd8b6a2a17034113a6e18cb503d",
+  "commit": "a03320f4ddf50042b1393acba618c8d22c7774bf",
   "defaultBranch": "main",
   "derived": "6 parts, mostly TypeScript (17 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages.",
   "doors": [
@@ -119,11 +119,13 @@
       ],
       "runsCount": 1,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 9 paths",
-        "on a push touching 9 paths",
+        "on a pull request touching 10 paths",
+        "on a push touching 10 paths",
         "or by hand"
       ]
     },
@@ -190,9 +192,9 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [],
-  "generatedAt": "2026-09-28T13:17:00.932Z",
+  "generatedAt": "2026-09-30T18:00:27.775Z",
   "limits": [
     "6 reads go to a path their caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."

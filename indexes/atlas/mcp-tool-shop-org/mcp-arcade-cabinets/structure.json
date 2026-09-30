@@ -9,7 +9,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "8981173c5f2a807f25177906c866c71dbd71c90b4e6970b4e3112f6d03998e33",
+          "hash": "47d453811f262e80c7ce9f5ff55c878048591bd3ce253e3b29d98c23e917ff97",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -43,7 +43,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "56f83a2eb874c38295f9299e1816f1ef074684e1826f909462c1d2105d938ea7",
+          "hash": "c11bd81b04da0a2d295aeabfeb3959488346cbbacaf58e4119b90a3d499ea104",
           "path": "packages/cabinet-server/package.json"
         },
         {
@@ -84,6 +84,13 @@
             "createCabinet",
             "tapeLine",
             "viewLines"
+          ],
+          "failurePaths": [
+            {
+              "in": "createCabinet",
+              "kind": "throw",
+              "line": 404
+            }
           ],
           "hash": "bc0027d526208ab85088d2541c85b7806915f12baad83fae2b0cb2d2f743ea47",
           "importsFiles": [
@@ -133,6 +140,48 @@
             "seatRetryWait",
             "warmUp"
           ],
+          "failurePaths": [
+            {
+              "in": "seatPrompt",
+              "kind": "throw",
+              "line": 58
+            },
+            {
+              "in": "statusError",
+              "kind": "catch",
+              "line": 160
+            },
+            {
+              "in": "chatOnce",
+              "kind": "catch",
+              "line": 203
+            },
+            {
+              "in": "chatOnce",
+              "kind": "throw",
+              "line": 204
+            },
+            {
+              "in": "chatOnce",
+              "kind": "throw",
+              "line": 207
+            },
+            {
+              "in": "chatOnce",
+              "kind": "catch",
+              "line": 212
+            },
+            {
+              "in": "chatOnce",
+              "kind": "throw",
+              "line": 213
+            },
+            {
+              "in": "chatOnce",
+              "kind": "throw",
+              "line": 215
+            }
+          ],
           "hash": "9d314d561665ab0fe7c658ebf967af6ecfdc7af3a6112aab2cf7bde7072fb2be",
           "importOrder": [
             "packages/ghost-on-the-menu/src/index.ts",
@@ -157,6 +206,23 @@
             "loadContract",
             "toolDef",
             "vibeToolDef"
+          ],
+          "failurePaths": [
+            {
+              "in": "fail",
+              "kind": "throw",
+              "line": 139
+            },
+            {
+              "in": "defOf",
+              "kind": "throw",
+              "line": 396
+            },
+            {
+              "in": "enumIn",
+              "kind": "throw",
+              "line": 402
+            }
           ],
           "hash": "0b7d88de39dda9a02146fd525c0aa42a03d1e4211fb2427deb35f4fba012b3e5",
           "importsFiles": [
@@ -237,6 +303,33 @@
             "askEndlessFor",
             "endlessPrompt",
             "parseRequest"
+          ],
+          "failurePaths": [
+            {
+              "in": "endlessPrompt",
+              "kind": "throw",
+              "line": 90
+            },
+            {
+              "in": "parseRequest",
+              "kind": "catch",
+              "line": 206
+            },
+            {
+              "in": "askClaudeEndless",
+              "kind": "catch",
+              "line": 280
+            },
+            {
+              "in": "askClaudeEndless",
+              "kind": "throw",
+              "line": 281
+            },
+            {
+              "in": "askEndlessFor",
+              "kind": "throw",
+              "line": 319
+            }
           ],
           "hash": "1995306300d8abc962049facb8fc5dd2855eead0dab3c29e977ff54b3ec79cc8",
           "importsFiles": [
@@ -392,6 +485,13 @@
           "exports": [
             "loadPersonas"
           ],
+          "failurePaths": [
+            {
+              "in": "fail",
+              "kind": "throw",
+              "line": 97
+            }
+          ],
           "hash": "0de0bb791f6a633ea68df8093213c95136dba6feb9de8eaf7197a4a0216749eb",
           "importsFiles": [
             "packages/cabinet-server/personas.json",
@@ -406,6 +506,28 @@
             "askSayFor",
             "sayPrompt",
             "sayTier"
+          ],
+          "failurePaths": [
+            {
+              "in": "sayPrompt",
+              "kind": "throw",
+              "line": 56
+            },
+            {
+              "in": "askClaude",
+              "kind": "catch",
+              "line": 158
+            },
+            {
+              "in": "askClaude",
+              "kind": "throw",
+              "line": 159
+            },
+            {
+              "in": "askSay",
+              "kind": "throw",
+              "line": 190
+            }
           ],
           "hash": "2373174606473c483b948a865b4573a2bd2b7435f0b93a2b354b972cf279c2ec",
           "importOrder": [
@@ -431,6 +553,13 @@
         {
           "exports": [
             "createScriptedSeat"
+          ],
+          "failurePaths": [
+            {
+              "in": "createScriptedSeat",
+              "kind": "throw",
+              "line": 39
+            }
           ],
           "hash": "7ef7539fce61a03cf134dadf262c8e8175efe39701d9850385c6270331578e32",
           "importOrder": [
@@ -467,7 +596,14 @@
             "vibeTagged",
             "vibeVersionLine"
           ],
-          "hash": "b700a026059f715d6a10243693c3cbc2ddca44132ca2a8ef196eb0e9b2ae9876",
+          "failurePaths": [
+            {
+              "in": "checkVibeCatalogListing",
+              "kind": "catch",
+              "line": 93
+            }
+          ],
+          "hash": "1663ee50d264a8bb3cbaafab9051c88b896c8601a3204eef36d68b9a6ecc1b45",
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "packages/vibe-typer/src/play.ts",
@@ -504,7 +640,39 @@
             "voiceNoteFor",
             "voiceNotes"
           ],
-          "hash": "58fecfe38a1a8b651f25ea618b7fe1beb2f18b3a8a3de55798f965cda42446f3",
+          "failurePaths": [
+            {
+              "in": "listTapesDir",
+              "kind": "catch",
+              "line": 81
+            },
+            {
+              "in": "listTapesDir",
+              "kind": "catch",
+              "line": 92
+            },
+            {
+              "in": "checkCatalogListing",
+              "kind": "catch",
+              "line": 148
+            },
+            {
+              "in": "headlessRound",
+              "kind": "throw",
+              "line": 254
+            },
+            {
+              "in": "headlessRound",
+              "kind": "throw",
+              "line": 259
+            },
+            {
+              "in": "voiceUrlOf",
+              "kind": "catch",
+              "line": 454
+            }
+          ],
+          "hash": "047749d574524fb2319dc232da4fa873b767c867dbf7ffec009555116e403f12",
           "importsFiles": [
             "packages/cabinet-server/src/cabinet.ts",
             "packages/cabinet-server/src/contract.ts",
@@ -895,6 +1063,13 @@
             "guardStep",
             "isStuck"
           ],
+          "failurePaths": [
+            {
+              "in": "guardStep",
+              "kind": "catch",
+              "line": 74
+            }
+          ],
           "hash": "4f107cc9784197137a7f5ecfc2ce35175af741f89ba8d7350d740c6cdff50963",
           "path": "packages/cabinet-server/src/step-guard.ts"
         },
@@ -910,6 +1085,13 @@
             "sayReason",
             "splitNotes",
             "tooLong"
+          ],
+          "failurePaths": [
+            {
+              "in": "createVibeCabinet",
+              "kind": "throw",
+              "line": 426
+            }
           ],
           "hash": "b42ff2e2c03fd2ea9404e6c1a88dbbe55c1b46e0659f96a0b33423fd7514388d",
           "importOrder": [
@@ -955,6 +1137,13 @@
         {
           "exports": [
             "vibeSeatPrompt"
+          ],
+          "failurePaths": [
+            {
+              "in": "vibeSeatPrompt",
+              "kind": "throw",
+              "line": 39
+            }
           ],
           "hash": "eabf71b2c347361e7a60aab15708b43bf0fe47ed9b656dd159bec8c40f7b1eba",
           "importsFiles": [
@@ -1003,6 +1192,28 @@
             "speakLine",
             "voiceHealth",
             "voiceOutcomes"
+          ],
+          "failurePaths": [
+            {
+              "in": "readError",
+              "kind": "catch",
+              "line": 99
+            },
+            {
+              "in": "voiceHealth",
+              "kind": "catch",
+              "line": 143
+            },
+            {
+              "in": "speakLine",
+              "kind": "catch",
+              "line": 196
+            },
+            {
+              "in": "speakLine",
+              "kind": "catch",
+              "line": 206
+            }
           ],
           "hash": "44b8d30dbb7dfa1203eef7d8faef3d6a80c93a751e01e92702e7ca11037ac92f",
           "importsFiles": [
@@ -1059,7 +1270,8 @@
             "packages/ghost-on-the-menu/src/play.ts",
             "packages/tape-core/src/index.ts"
           ],
-          "path": "packages/cabinet-server/test/cabinet.test.ts"
+          "path": "packages/cabinet-server/test/cabinet.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "5a95abc933c548f85492ca57539407f846a87ae50a9b1deb6f6eb7a9d0eae5db",
@@ -1073,7 +1285,8 @@
             "packages/cabinet-server/src/gate.ts",
             "packages/vibe-typer/src/index.ts"
           ],
-          "path": "packages/cabinet-server/test/contract.test.ts"
+          "path": "packages/cabinet-server/test/contract.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "26bf04b24439b4b8820ce09e5a1c6e4d3649fd5767bee0b88208eb617e35f978",
@@ -1081,14 +1294,16 @@
             "packages/cabinet-server/src/endless.ts",
             "packages/cabinet-server/src/gate.ts"
           ],
-          "path": "packages/cabinet-server/test/endless.test.ts"
+          "path": "packages/cabinet-server/test/endless.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "74af546ed3a8bdb091a7510341b07d08d01e73fb550764bc79bf0994f057a752",
           "importsFiles": [
             "packages/cabinet-server/src/gate.ts"
           ],
-          "path": "packages/cabinet-server/test/gate.test.ts"
+          "path": "packages/cabinet-server/test/gate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2ca5d85685f59595fa4f58cdaae816c5c3e120a072ac4c04ffb961bdcd7a0d93",
@@ -1097,7 +1312,11 @@
             "packages/cabinet-server/src/gate.ts",
             "packages/cabinet-server/src/personas.ts"
           ],
-          "path": "packages/cabinet-server/test/personas.test.ts"
+          "names": [
+            "packages/ghost-on-the-menu/src/patterns.ts"
+          ],
+          "path": "packages/cabinet-server/test/personas.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "894b115f0cf8bb5924e9adb40904379293215842083d73ab10e501527fce5b22",
@@ -1119,7 +1338,8 @@
             "packages/cabinet-server/src/seeds.ts",
             "packages/ghost-on-the-menu/src/index.ts"
           ],
-          "path": "packages/cabinet-server/test/say.test.ts"
+          "path": "packages/cabinet-server/test/say.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "478be0eda20b4c2fd5f7f5dc2ecdff73bf593dc9bb60e8c1eba5eb54629e1310",
@@ -1133,7 +1353,8 @@
             "packages/ghost-on-the-menu/src/play.ts",
             "packages/ghost-on-the-menu/src/types.ts"
           ],
-          "path": "packages/cabinet-server/test/scripted-play.test.ts"
+          "path": "packages/cabinet-server/test/scripted-play.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c03aa7fbd9c9b55bdd986c02d23cd87cba08c0adf0606d883b3f6f309390304b",
@@ -1142,7 +1363,8 @@
             "packages/cabinet-server/src/client.ts",
             "packages/cabinet-server/src/gate.ts"
           ],
-          "path": "packages/cabinet-server/test/seat.test.ts"
+          "path": "packages/cabinet-server/test/seat.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "22ad267110fe13d9c24607382715ebca23dc1bcf8baaaf422820f66cdc982b80",
@@ -1160,14 +1382,16 @@
             "packages/cabinet-server/src/server-vibe.ts",
             "packages/cabinet-server/src/server.ts"
           ],
-          "path": "packages/cabinet-server/test/server.test.ts"
+          "path": "packages/cabinet-server/test/server.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "fda0a054172638daabfad88fc75f5f9d2a3f4c9522d330729cf93987c5f53dca",
           "importsFiles": [
             "packages/cabinet-server/src/step-guard.ts"
           ],
-          "path": "packages/cabinet-server/test/step-guard.test.ts"
+          "path": "packages/cabinet-server/test/step-guard.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "646dd89234caf1ee2166c13ae19cef4080c3c1c2506fc85a9f3c96c77a7e0790",
@@ -1187,7 +1411,13 @@
             "packages/ghost-on-the-menu/src/types.ts",
             "packages/vibe-typer/src/play.ts"
           ],
-          "path": "packages/cabinet-server/test/surfaces.test.ts"
+          "names": [
+            "packages/ghost-on-the-menu/src/play.ts",
+            "scripts/play.mjs",
+            "scripts/transcript.mjs"
+          ],
+          "path": "packages/cabinet-server/test/surfaces.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "39696ba7402786789420b007ae150427bc51af09b7d1406397c19b9d355f9bee",
@@ -1205,7 +1435,8 @@
             "packages/vibe-typer/src/index.ts",
             "packages/vibe-typer/src/play.ts"
           ],
-          "path": "packages/cabinet-server/test/vibe-cabinet.test.ts"
+          "path": "packages/cabinet-server/test/vibe-cabinet.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a820a365b3855b05a8403cbd089d714fbb2b8885ab0e9a0cba1c90fd82094a5e",
@@ -1225,7 +1456,8 @@
             "packages/cabinet-server/src/server.ts",
             "packages/vibe-typer/src/index.ts"
           ],
-          "path": "packages/cabinet-server/test/vibe-server.test.ts"
+          "path": "packages/cabinet-server/test/vibe-server.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1797764704a7deadd7dfe0617075030b49715b04d68005cd0786419b5a691d5a",
@@ -1239,7 +1471,8 @@
             "packages/cabinet-server/src/voice-words.ts",
             "packages/cabinet-server/src/voice.ts"
           ],
-          "path": "packages/cabinet-server/test/voice-vibe.test.ts"
+          "path": "packages/cabinet-server/test/voice-vibe.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2eefa2eefadfe031feed32da0bd7eef80da8f91a343884ed11199012423794e1",
@@ -1255,7 +1488,8 @@
             "packages/cabinet-server/src/voice-words.ts",
             "packages/cabinet-server/src/voice.ts"
           ],
-          "path": "packages/cabinet-server/test/voice.test.ts"
+          "path": "packages/cabinet-server/test/voice.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d28ca0c511a389f31e7e97d29a6a730d90d8bb0166108b7ed77b9443b2fb2f36",
@@ -1269,6 +1503,9 @@
           "hash": "4e526cf042aac7c306c44d89b485cf6e4355433d8ff6177bfb836d1c2d9abd3d",
           "path": "packages/cabinet-server/tsconfig.json"
         }
+      ],
+      "frameworks": [
+        "mcp"
       ],
       "globs": [
         "packages/cabinet-server/**"
@@ -1294,6 +1531,9 @@
       ],
       "outsideReads": 3,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 23,
       "unresolvedSites": 0
     },
@@ -1306,12 +1546,20 @@
       "externals": 0,
       "files": [
         {
-          "hash": "2f6f91c1fad66c6ce489636963ef4ae8b154c58817fd8731c6a65d8d7ebc69bc",
+          "hash": "7d8b5aa3faae7cabe74a0bc3872ac9f18a24ff0451860ffd77437cfdac258b7e",
           "path": "apps/cabinets/index.html"
         },
         {
-          "hash": "66d5dfe8da99e57172a850c5d4ddc62381d516dc1a66811e66222f5e442513bf",
+          "hash": "7a27ac057ef548e0bf7e6e26a68a28b386e749aa53e0860d2a497d79e35df97b",
           "path": "apps/cabinets/package.json"
+        },
+        {
+          "hash": "1a110c611c41cdbabc2fde08cf4848bdf7a8ef0508f054570e975d6992a85397",
+          "path": "apps/cabinets/public/card.svg"
+        },
+        {
+          "hash": "db3c76ae1d22efa9f6c9a1cf3d8b1f45a5e94210d34e4b518006018e7d3d097d",
+          "path": "apps/cabinets/public/favicon.svg"
         },
         {
           "hash": "996461bd604f01ce3840337424b40829617adf2d0766562ce986160fa7e12a6c",
@@ -1472,6 +1720,10 @@
         {
           "hash": "a2022db92c096209df301161cde6eec9689461c48a1e85a749d122288fdf5d84",
           "path": "apps/cabinets/public/keys/topre/key_08.wav"
+        },
+        {
+          "hash": "30f793aaf002e49e896b5d09e10f6fc806f6b1304518250711744a2cfdfde414",
+          "path": "apps/cabinets/public/manifest.json"
         },
         {
           "hash": "0231b1fd30500b250cd97ac7aaba771297b83bb9cb850a57d4f0f618321ab544",
@@ -1918,6 +2170,18 @@
             "cutSheet",
             "inkBox"
           ],
+          "failurePaths": [
+            {
+              "in": "inkBox",
+              "kind": "throw",
+              "line": 72
+            },
+            {
+              "in": "inkBox",
+              "kind": "throw",
+              "line": 78
+            }
+          ],
           "hash": "889b4bba870fd857ce085a300863614f9e2fa7430d16c1c90e5db98541b904ca",
           "importsFiles": [
             "apps/cabinets/scripts/slice-tiles.mjs"
@@ -1938,6 +2202,23 @@
             "cutSheet",
             "fitAspect",
             "frameBox"
+          ],
+          "failurePaths": [
+            {
+              "in": "fitAspect",
+              "kind": "throw",
+              "line": 70
+            },
+            {
+              "in": "fitAspect",
+              "kind": "throw",
+              "line": 89
+            },
+            {
+              "in": "cutSheet",
+              "kind": "throw",
+              "line": 184
+            }
           ],
           "hash": "11e9b2a3588348545950aa1fcfb97b4e5413cf738057e9d2ef6fd6024d0fa61a",
           "importOrder": [
@@ -1963,6 +2244,48 @@
             "sliceSheet",
             "squareOf"
           ],
+          "failurePaths": [
+            {
+              "in": "decodePng",
+              "kind": "throw",
+              "line": 115
+            },
+            {
+              "in": "decodePng",
+              "kind": "throw",
+              "line": 131
+            },
+            {
+              "in": "decodePng",
+              "kind": "throw",
+              "line": 132
+            },
+            {
+              "in": "decodePng",
+              "kind": "throw",
+              "line": 134
+            },
+            {
+              "in": "decodePng",
+              "kind": "throw",
+              "line": 141
+            },
+            {
+              "in": "decodePng",
+              "kind": "throw",
+              "line": 157
+            },
+            {
+              "in": "findCells",
+              "kind": "throw",
+              "line": 248
+            },
+            {
+              "in": "findCells",
+              "kind": "throw",
+              "line": 260
+            }
+          ],
           "hash": "a823cbcbe7954237d622bdd0b5299ddf11ff074c7148c8edee9bdbfbff33aa11",
           "path": "apps/cabinets/scripts/slice-tiles.mjs"
         },
@@ -1987,7 +2310,89 @@
             "writePrefs",
             "writeStoredBags"
           ],
-          "hash": "b3ae0b639bca006bb1b34b7f17995253cae0c962fbb53833b81679afe89e6e40",
+          "failurePaths": [
+            {
+              "in": "songBag",
+              "kind": "catch",
+              "line": 182
+            },
+            {
+              "in": "nextSongKey",
+              "kind": "catch",
+              "line": 195
+            },
+            {
+              "in": "readStoredBags",
+              "kind": "catch",
+              "line": 244
+            },
+            {
+              "in": "writeStoredBags",
+              "kind": "catch",
+              "line": 252
+            },
+            {
+              "in": "readPrefs",
+              "kind": "catch",
+              "line": 285
+            },
+            {
+              "in": "rawPrefs",
+              "kind": "catch",
+              "line": 305
+            },
+            {
+              "in": "writePrefs",
+              "kind": "catch",
+              "line": 313
+            },
+            {
+              "in": "forgetTape",
+              "kind": "catch",
+              "line": 332
+            },
+            {
+              "in": "goFull",
+              "kind": "catch",
+              "line": 1127
+            },
+            {
+              "in": "wakeAudio",
+              "kind": "catch",
+              "line": 1337
+            },
+            {
+              "in": "ensureAudio",
+              "kind": "catch",
+              "line": 1363
+            },
+            {
+              "in": "ensureAudio",
+              "kind": "catch",
+              "line": 1374
+            },
+            {
+              "in": "zoneDown",
+              "kind": "catch",
+              "line": 1494
+            },
+            {
+              "in": "askSay",
+              "kind": "catch",
+              "line": 1756
+            },
+            {
+              "in": "askSay",
+              "kind": "throw",
+              "line": 1757
+            },
+            {
+              "in": "askSay",
+              "kind": "throw",
+              "line": 1760
+            }
+          ],
+          "hash": "433795eb481b73dd8b0c8b5f6c13a0534d7b55322dee2b46544af7b46ee52378",
           "importOrder": [
             "packages/cabinet-server/src/browser.ts",
             "packages/ghost-on-the-menu/src/index.ts",
@@ -2010,7 +2415,24 @@
           "exports": [
             "vibeMenu"
           ],
-          "hash": "8f794d38d796d1099814d8dc22af4be1f69588958eb8a035d940da6fefd3c52a",
+          "failurePaths": [
+            {
+              "in": "recentShifts",
+              "kind": "catch",
+              "line": 98
+            },
+            {
+              "in": "rememberShift",
+              "kind": "catch",
+              "line": 107
+            },
+            {
+              "in": "guard",
+              "kind": "catch",
+              "line": 446
+            }
+          ],
+          "hash": "1ee271e67012cafb552449376691d07a21bc43e4af908bbcff0b258478c7b353",
           "importOrder": [
             "packages/ghost-on-the-menu/src/index.ts",
             "packages/tape-core/src/index.ts",
@@ -2039,6 +2461,13 @@
           "exports": [
             "coarsePointer"
           ],
+          "failurePaths": [
+            {
+              "in": "coarsePointer",
+              "kind": "catch",
+              "line": 20
+            }
+          ],
           "hash": "aa3552115d171a3d0fec8b8c6a7769dc8dfcee7e640e2234102598fe8f3a445e",
           "path": "apps/cabinets/src/pointer.ts"
         },
@@ -2046,6 +2475,13 @@
           "exports": [
             "probeSeatModels",
             "probeSeatName"
+          ],
+          "failurePaths": [
+            {
+              "in": "probeSeatModels",
+              "kind": "catch",
+              "line": 64
+            }
           ],
           "hash": "1a5e3b4a9fd3f37e25bf1804a52c2dd9a8cd237d73494917cb28477dc173ed2c",
           "importsFiles": [
@@ -2068,6 +2504,53 @@
             "isTheme",
             "isVibeTrackKey"
           ],
+          "failurePaths": [
+            {
+              "in": "stopQuietly",
+              "kind": "catch",
+              "line": 425
+            },
+            {
+              "in": "load",
+              "kind": "throw",
+              "line": 469
+            },
+            {
+              "in": "setBed",
+              "kind": "catch",
+              "line": 540
+            },
+            {
+              "in": "dropTrack",
+              "kind": "catch",
+              "line": 595
+            },
+            {
+              "in": "startTrack",
+              "kind": "catch",
+              "line": 623
+            },
+            {
+              "in": "stopTracks",
+              "kind": "catch",
+              "line": 639
+            },
+            {
+              "in": "stepTracks",
+              "kind": "catch",
+              "line": 704
+            },
+            {
+              "in": "play",
+              "kind": "throw",
+              "line": 976
+            },
+            {
+              "in": "close",
+              "kind": "catch",
+              "line": 1053
+            }
+          ],
           "hash": "daa8873672423eff25c69fd0759b107c3c95a577a17f39d44ffd9e35ed24bf4b",
           "importsFiles": [
             "apps/cabinets/src/typer-cues.ts"
@@ -2087,6 +2570,13 @@
             "cuesFor",
             "rateFor",
             "shakeFor"
+          ],
+          "failurePaths": [
+            {
+              "in": "cueFor",
+              "kind": "throw",
+              "line": 131
+            }
           ],
           "hash": "4b7196337c773c10925db7798db44935f97c810c9e1b9af41f895dc6f9dd23b9",
           "importsFiles": [
@@ -2131,7 +2621,74 @@
             "readWeak",
             "writeVibePrefs"
           ],
-          "hash": "6bad7932a9372f2bc57dc03c281eee2566c0bcd364ad9f6ce4e3a00b25d5e02e",
+          "failurePaths": [
+            {
+              "in": "readVibePrefs",
+              "kind": "catch",
+              "line": 408
+            },
+            {
+              "in": "rawVibePrefs",
+              "kind": "catch",
+              "line": 427
+            },
+            {
+              "in": "writeVibePrefs",
+              "kind": "catch",
+              "line": 435
+            },
+            {
+              "in": "forgetVibePick",
+              "kind": "catch",
+              "line": 456
+            },
+            {
+              "in": "readWeak",
+              "kind": "catch",
+              "line": 476
+            },
+            {
+              "in": "writeWeak",
+              "kind": "catch",
+              "line": 501
+            },
+            {
+              "in": "wakeAudio",
+              "kind": "catch",
+              "line": 1283
+            },
+            {
+              "in": "ensureAudio",
+              "kind": "catch",
+              "line": 1314
+            },
+            {
+              "in": "ensureAudio",
+              "kind": "catch",
+              "line": 1320
+            },
+            {
+              "in": "stopTake",
+              "kind": "catch",
+              "line": 1387
+            },
+            {
+              "in": "askSeat",
+              "kind": "catch",
+              "line": 2143
+            },
+            {
+              "in": "askSeat",
+              "kind": "throw",
+              "line": 2144
+            },
+            {
+              "in": "askSeat",
+              "kind": "throw",
+              "line": 2147
+            }
+          ],
+          "hash": "75859b3be1d5904a0852da4395a50304f7d400b1f07a92508442b9d1440744d4",
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "apps/cabinets/src/pointer.ts",
@@ -2162,7 +2719,8 @@
             "apps/cabinets/scripts/cut-avatar.mjs",
             "apps/cabinets/scripts/slice-tiles.mjs"
           ],
-          "path": "apps/cabinets/test/avatar-cut.test.ts"
+          "path": "apps/cabinets/test/avatar-cut.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8363b343d017bf412c8dfe602bb86b1688d52bf7133081cab001ef2882fe35c4",
@@ -2170,7 +2728,8 @@
             "apps/cabinets/scripts/cut-banner.mjs",
             "apps/cabinets/scripts/slice-tiles.mjs"
           ],
-          "path": "apps/cabinets/test/banner-cut.test.ts"
+          "path": "apps/cabinets/test/banner-cut.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "456f3663e9f9c2e20324514613afa80c6330c46d898a40736ec7bf7b2a37ae58",
@@ -2182,7 +2741,8 @@
             "apps/cabinets/src/typer-audio.ts",
             "packages/ghost-on-the-menu/src/index.ts"
           ],
-          "path": "apps/cabinets/test/bed-length.test.ts"
+          "path": "apps/cabinets/test/bed-length.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d5740ebc7f09d431cdb87d01fa837497afdffa78b79eb6c9f3b934d747046d02",
@@ -2194,7 +2754,8 @@
             "apps/cabinets/vite.config.ts",
             "packages/launcher/src/allow.ts"
           ],
-          "path": "apps/cabinets/test/dev-allowlists.test.ts"
+          "path": "apps/cabinets/test/dev-allowlists.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "78c10c32c656fa58e5aabb2ff9a76aef5548ea5593c4150d89089d92158b2167",
@@ -2210,10 +2771,11 @@
             "apps/cabinets/src/tapes.ts",
             "packages/ghost-on-the-menu/src/index.ts"
           ],
-          "path": "apps/cabinets/test/ghost-menu.test.ts"
+          "path": "apps/cabinets/test/ghost-menu.test.ts",
+          "testFramework": "vitest"
         },
         {
-          "hash": "68bcb0a9f4bc166cc38390e014492b3836e1f2ebdfe8d2c15c5feff1bcf6f152",
+          "hash": "9a9e9b89945975ccb38ef3e7cbf096a5216def9c30182e838b78ba68c90660d9",
           "importOrder": [
             "packages/ghost-on-the-menu/src/index.ts",
             "apps/cabinets/src/tapes.ts",
@@ -2224,7 +2786,8 @@
             "apps/cabinets/src/tapes.ts",
             "packages/ghost-on-the-menu/src/index.ts"
           ],
-          "path": "apps/cabinets/test/ghost-mount.test.ts"
+          "path": "apps/cabinets/test/ghost-mount.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "b5baf9d659c72e991f526230a33df0cfe47d67f51f76c644404a0526ef7adc77",
@@ -2238,7 +2801,8 @@
             "apps/cabinets/src/typer-cues.ts",
             "packages/vibe-typer/src/index.ts"
           ],
-          "path": "apps/cabinets/test/typer-audio.test.ts"
+          "path": "apps/cabinets/test/typer-audio.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f337b7fb94aa6f730d224d78c28b81d0f50c64cf293c2c6203f59d30e01ca139",
@@ -2252,7 +2816,8 @@
             "apps/cabinets/src/typer-cards.ts",
             "packages/vibe-typer/src/index.ts"
           ],
-          "path": "apps/cabinets/test/typer-cards.test.ts"
+          "path": "apps/cabinets/test/typer-cards.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "f761e56ac8ccee2a3b4a480ad56f58bab11271625a7fb8d41c9c1046a2b8df93",
@@ -2264,17 +2829,19 @@
             "apps/cabinets/src/typer-cues.ts",
             "packages/vibe-typer/src/index.ts"
           ],
-          "path": "apps/cabinets/test/typer-cues.test.ts"
+          "path": "apps/cabinets/test/typer-cues.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "458fd358c7076b85e904831e84aabe3ac4ca82b285033b6912962ced4992fb1f",
           "importsFiles": [
             "apps/cabinets/src/typer-keys.ts"
           ],
-          "path": "apps/cabinets/test/typer-keys.test.ts"
+          "path": "apps/cabinets/test/typer-keys.test.ts",
+          "testFramework": "vitest"
         },
         {
-          "hash": "6b33373c5dbe01d6f9adbfc9ebbcbd7ac89717e06dcf22060007dac4b1c5964b",
+          "hash": "568d61729bb0edb1c23216cc76125b528b46e8e67d07a6bf0ab64a21993e2210",
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "apps/cabinets/src/vibe-typer.ts",
@@ -2287,7 +2854,8 @@
             "apps/cabinets/src/vibe-typer.ts",
             "packages/vibe-typer/src/index.ts"
           ],
-          "path": "apps/cabinets/test/typer-menu.test.ts"
+          "path": "apps/cabinets/test/typer-menu.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "dc919473669de392ac910dd66f4b0d68fdee93b9c13f012b197db8606945443a",
@@ -2305,7 +2873,8 @@
             "packages/cabinet-server/src/browser.ts",
             "packages/vibe-typer/src/index.ts"
           ],
-          "path": "apps/cabinets/test/typer-mount.test.ts"
+          "path": "apps/cabinets/test/typer-mount.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d2daaf60e8b2385e57f63f05ecb7b72129f4e3bcb1849d79fdb71b54ea531b12",
@@ -2319,7 +2888,8 @@
             "apps/cabinets/src/typer-tiles.ts",
             "packages/vibe-typer/src/index.ts"
           ],
-          "path": "apps/cabinets/test/typer-tiles.test.ts"
+          "path": "apps/cabinets/test/typer-tiles.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8c0b2c7a45cba7160cafa7c72d15ea70d466b314364c4084cce0eaa4bc74a880",
@@ -2333,6 +2903,22 @@
             "parseSeatView",
             "pathOnly",
             "restAfter"
+          ],
+          "failurePaths": [
+            {
+              "in": "configureServer",
+              "kind": "catch",
+              "line": 294
+            },
+            {
+              "in": "configureServer",
+              "kind": "catch",
+              "line": 446
+            },
+            {
+              "kind": "throw",
+              "line": 529
+            }
           ],
           "hash": "edb0678157b6782238db7fcac3968d6c1c62353f80bdff959ff33091cdb6c0ea",
           "importsFiles": [
@@ -2349,16 +2935,19 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 15,
+          "reads": 16,
           "where": [
             "caller"
           ],
           "writes": 4
         }
       ],
-      "outsideReads": 15,
+      "outsideReads": 16,
       "outsideWrites": 4,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 13,
       "unresolvedSites": 0
     },
@@ -2371,11 +2960,11 @@
       "externals": 0,
       "files": [
         {
-          "hash": "db5a78068e3f895bd23d40b796350a771e1b5fb926d0f2a9f92b6682b7240db1",
+          "hash": "57723b407f8029b29cf4b06251b50f589bf1a16192717a78d2851c9a7b1638eb",
           "path": "catalog/server.vibe.yaml"
         },
         {
-          "hash": "2d23d84b72b12410cad0e91b7ea612984b657b9f6c897d5ac343aabdef9a9eb4",
+          "hash": "851e46a0eeff61e17d239530a48c0fc7c97ae4f59db71916c5b9336ff4f024cb",
           "path": "catalog/server.yaml"
         },
         {
@@ -3090,6 +3679,10 @@
           "path": "docs/cabinet-voice.review.md"
         },
         {
+          "hash": "460340a55b5f04ef16feeef66abbb4ca2ad83b521a513ddc899cdf2e1d7ac58b",
+          "path": "docs/deferred-next.md"
+        },
+        {
           "hash": "3acb04a908073c084eda1129fd381184f0909dd01c8565a0826fba797a943448",
           "path": "docs/dogfood-swarm.md"
         },
@@ -3501,8 +4094,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 1,
-      "dynamicSpawnsInTests": 1,
+      "dynamicSpawns": 27,
+      "dynamicSpawnsInTests": 27,
       "dynamicWrites": 0,
       "entryPoints": [
         "packages/ghost-on-the-menu/src/index.ts"
@@ -3518,7 +4111,7 @@
           "path": "packages/ghost-on-the-menu/README.md"
         },
         {
-          "hash": "b140623fa61394206729ba5590e025c1e7e8b32fe9d14586d59182380d3b9a10",
+          "hash": "498c70a8d4b4773933ed26d8af75509b9266a4c8d5550a8a5f764908ee5a5289",
           "path": "packages/ghost-on-the-menu/package.json"
         },
         {
@@ -3562,7 +4155,7 @@
           "path": "packages/ghost-on-the-menu/patterns/shift.json"
         },
         {
-          "hash": "ef91d0dfa9083c3dfef84d34b10b87f8859884e6adcfc418ec89db3040060fe8",
+          "hash": "93a4d7d37dadd9990572a42816cd57d33377d2137bd25cf03e237dfc17b3aec1",
           "path": "packages/ghost-on-the-menu/patterns/voice.json"
         },
         {
@@ -3575,6 +4168,68 @@
             "bar",
             "barSeconds",
             "sfx"
+          ],
+          "failurePaths": [
+            {
+              "in": "bedRefused",
+              "kind": "catch",
+              "line": 556
+            },
+            {
+              "in": "bringIn",
+              "kind": "catch",
+              "line": 579
+            },
+            {
+              "in": "bringIn",
+              "kind": "catch",
+              "line": 599
+            },
+            {
+              "in": "bringIn",
+              "kind": "catch",
+              "line": 604
+            },
+            {
+              "in": "silenceOscs",
+              "kind": "catch",
+              "line": 635
+            },
+            {
+              "in": "silenceOscs",
+              "kind": "catch",
+              "line": 643
+            },
+            {
+              "in": "silenceOscs",
+              "kind": "catch",
+              "line": 648
+            },
+            {
+              "in": "restoreBuses",
+              "kind": "catch",
+              "line": 666
+            },
+            {
+              "in": "schedule",
+              "kind": "catch",
+              "line": 688
+            },
+            {
+              "in": "setMuted",
+              "kind": "catch",
+              "line": 910
+            },
+            {
+              "in": "setMuted",
+              "kind": "catch",
+              "line": 924
+            },
+            {
+              "in": "setMuted",
+              "kind": "catch",
+              "line": 929
+            }
           ],
           "hash": "81714d76740d860126a69b6ca8ab3dfbe7e34e5352b462bf36041dc1a428f007",
           "path": "packages/ghost-on-the-menu/src/audio.ts"
@@ -3610,6 +4265,28 @@
             "reachWord",
             "runEndless",
             "widenStep"
+          ],
+          "failurePaths": [
+            {
+              "in": "endlessPlan",
+              "kind": "throw",
+              "line": 509
+            },
+            {
+              "in": "endlessPlan",
+              "kind": "throw",
+              "line": 514
+            },
+            {
+              "in": "runEndless",
+              "kind": "throw",
+              "line": 785
+            },
+            {
+              "in": "runEndless",
+              "kind": "throw",
+              "line": 803
+            }
           ],
           "hash": "4744cc8090278b74e3b525eb8cb21adcb3644d66e61b127d718dfdb9ee5aa3cf",
           "importOrder": [
@@ -3701,7 +4378,14 @@
             "voiceWaveKey",
             "waveProgress"
           ],
-          "hash": "b9b87611d602d9bbf20463a61c28f94445d4d5b876d091c07bd3b4e2716ae374",
+          "failurePaths": [
+            {
+              "in": "fail",
+              "kind": "throw",
+              "line": 500
+            }
+          ],
+          "hash": "86f33ff2d6993c91f0fa9cd0fdd6350b4bb0ef8814e0611a70eb8fd813c4fec8",
           "importOrder": [
             "packages/ghost-on-the-menu/src/pilot.ts",
             "packages/ghost-on-the-menu/src/types.ts",
@@ -3755,6 +4439,158 @@
             "stickWord",
             "voicePrompt"
           ],
+          "failurePaths": [
+            {
+              "in": "pilotPrompt",
+              "kind": "throw",
+              "line": 63
+            },
+            {
+              "in": "voicePrompt",
+              "kind": "throw",
+              "line": 98
+            },
+            {
+              "in": "voicePrompt",
+              "kind": "throw",
+              "line": 105
+            },
+            {
+              "in": "readCapped",
+              "kind": "throw",
+              "line": 357
+            },
+            {
+              "in": "readCapped",
+              "kind": "throw",
+              "line": 369
+            },
+            {
+              "in": "readCapped",
+              "kind": "catch",
+              "line": 375
+            },
+            {
+              "in": "cappedField",
+              "kind": "throw",
+              "line": 391
+            },
+            {
+              "in": "generate",
+              "kind": "catch",
+              "line": 432
+            },
+            {
+              "in": "generate",
+              "kind": "throw",
+              "line": 433
+            },
+            {
+              "in": "generate",
+              "kind": "throw",
+              "line": 436
+            },
+            {
+              "in": "generate",
+              "kind": "throw",
+              "line": 438
+            },
+            {
+              "in": "generate",
+              "kind": "throw",
+              "line": 446
+            },
+            {
+              "in": "generate",
+              "kind": "catch",
+              "line": 450
+            },
+            {
+              "in": "generate",
+              "kind": "throw",
+              "line": 454
+            },
+            {
+              "in": "generate",
+              "kind": "throw",
+              "line": 456
+            },
+            {
+              "in": "generate",
+              "kind": "throw",
+              "line": 457
+            },
+            {
+              "in": "generate",
+              "kind": "throw",
+              "line": 458
+            },
+            {
+              "in": "generate",
+              "kind": "catch",
+              "line": 468
+            },
+            {
+              "in": "generate",
+              "kind": "throw",
+              "line": 469
+            },
+            {
+              "in": "generate",
+              "kind": "throw",
+              "line": 473
+            },
+            {
+              "in": "generate",
+              "kind": "throw",
+              "line": 474
+            },
+            {
+              "in": "ask",
+              "kind": "throw",
+              "line": 492
+            },
+            {
+              "in": "ask",
+              "kind": "catch",
+              "line": 506
+            },
+            {
+              "in": "ask",
+              "kind": "throw",
+              "line": 508
+            },
+            {
+              "in": "nextPrompt",
+              "kind": "throw",
+              "line": 566
+            },
+            {
+              "in": "askNextIntents",
+              "kind": "catch",
+              "line": 598
+            },
+            {
+              "in": "askNextIntents",
+              "kind": "catch",
+              "line": 603
+            },
+            {
+              "in": "askOllamaLine",
+              "kind": "catch",
+              "line": 628
+            },
+            {
+              "in": "askOllamaLine",
+              "kind": "catch",
+              "line": 632
+            },
+            {
+              "in": "askOllamaLine",
+              "kind": "throw",
+              "line": 636
+            }
+          ],
           "hash": "672c3ac71819b0a56d810c6d4d1620dd21f7ecad1c29abb9131833348ee2537d",
           "path": "packages/ghost-on-the-menu/src/pilot.ts"
         },
@@ -3768,6 +4604,43 @@
             "play",
             "playTape",
             "tellIds"
+          ],
+          "failurePaths": [
+            {
+              "in": "play",
+              "kind": "catch",
+              "line": 456
+            },
+            {
+              "in": "play",
+              "kind": "catch",
+              "line": 470
+            },
+            {
+              "in": "play",
+              "kind": "catch",
+              "line": 486
+            },
+            {
+              "in": "play",
+              "kind": "catch",
+              "line": 497
+            },
+            {
+              "in": "play",
+              "kind": "catch",
+              "line": 503
+            },
+            {
+              "in": "playTape",
+              "kind": "catch",
+              "line": 593
+            },
+            {
+              "in": "playTape",
+              "kind": "catch",
+              "line": 647
+            }
           ],
           "hash": "52924571c856cff80e087a6b7c363a9c3772b11ea19924e4ae5f9d9b67b7b5c2",
           "importsFiles": [
@@ -4100,7 +4973,7 @@
             "makeTextCtx",
             "renderRound"
           ],
-          "hash": "5cbd07d231611674d4437475619d0ef657b1ea7e1deac9b315c73f4dfe8eb306",
+          "hash": "2f9cf500fb6529321c3e7d6da8da718e38dfcce6f7e7d92a2fe3817591b52265",
           "importsFiles": [
             "packages/ghost-on-the-menu/src/types.ts"
           ],
@@ -4125,6 +4998,23 @@
             "shiftTitle",
             "valueFromWords",
             "wordsFromValue"
+          ],
+          "failurePaths": [
+            {
+              "in": "drawShift",
+              "kind": "throw",
+              "line": 209
+            },
+            {
+              "in": "rankOf",
+              "kind": "throw",
+              "line": 237
+            },
+            {
+              "in": "encodeShift",
+              "kind": "throw",
+              "line": 267
+            }
           ],
           "hash": "79b808e1601d655221eb5a0843e695d40267a6e3031f3e5b31516993c14d62ef",
           "importOrder": [
@@ -4151,7 +5041,14 @@
             "stepRound",
             "watchSaid"
           ],
-          "hash": "8dfe9bf693d9dc89f92606a846acf1977ab3ec8e070718195f7a30bb1e8456c7",
+          "failurePaths": [
+            {
+              "in": "pickPath",
+              "kind": "throw",
+              "line": 205
+            }
+          ],
+          "hash": "ba8bbf1cf11cbaf3bc112f1755f22d0ab0e054c9f55b0ce89b336520b3bd2252",
           "importOrder": [
             "packages/ghost-on-the-menu/src/patterns.ts",
             "packages/ghost-on-the-menu/src/types.ts",
@@ -4171,7 +5068,7 @@
             "kindOfAtom",
             "sanitizeCaption"
           ],
-          "hash": "42fda506fbc83055f0abe59ca0e0687f2900c83efe7a740a3597aaeb37a23308",
+          "hash": "82278a163def4459c4a42e97dfea2fb8e8dbbe726a5f0c742db04b1b18bbea25",
           "importsFiles": [
             "packages/ghost-on-the-menu/src/patterns.ts",
             "packages/ghost-on-the-menu/src/pilot.ts"
@@ -4183,7 +5080,8 @@
           "importsFiles": [
             "packages/ghost-on-the-menu/src/audio.ts"
           ],
-          "path": "packages/ghost-on-the-menu/test/audio.test.ts"
+          "path": "packages/ghost-on-the-menu/test/audio.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "eb3cb160d3f93db3b0a3fcd875af1a24c9bde3cf62e8f0bd286d1d0a6fb7c2c7",
@@ -4199,7 +5097,8 @@
             "packages/ghost-on-the-menu/src/shift.ts",
             "packages/tape-core/src/index.ts"
           ],
-          "path": "packages/ghost-on-the-menu/test/band.test.ts"
+          "path": "packages/ghost-on-the-menu/test/band.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "7e9734c1512fe3e24ef75f5e122b87373a13be9dd2d964347115bbd8ec71b700",
@@ -4219,7 +5118,8 @@
             "scripts/sit.mjs",
             "scripts/sweep.mjs"
           ],
-          "path": "packages/ghost-on-the-menu/test/cli.test.ts"
+          "path": "packages/ghost-on-the-menu/test/cli.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "df34c75bdebafe3a3d6d412b9d122223915e96cf61a0f59a429536975b6d8eaf",
@@ -4228,7 +5128,8 @@
             "packages/ghost-on-the-menu/src/sim.ts",
             "packages/ghost-on-the-menu/src/types.ts"
           ],
-          "path": "packages/ghost-on-the-menu/test/cues.test.ts"
+          "path": "packages/ghost-on-the-menu/test/cues.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "682482c8718c2519357ab656b13baa19c40b25f7af27e32d9f444462c6f17160",
@@ -4248,7 +5149,8 @@
             "packages/ghost-on-the-menu/src/types.ts",
             "packages/tape-core/src/index.ts"
           ],
-          "path": "packages/ghost-on-the-menu/test/endless.test.ts"
+          "path": "packages/ghost-on-the-menu/test/endless.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "a1446cc313d27eb3978a1f70082fed5ebaeee1a886a20353205494c69835212d",
@@ -4262,14 +5164,16 @@
             "packages/ghost-on-the-menu/src/patterns.ts",
             "packages/tape-core/src/index.ts"
           ],
-          "path": "packages/ghost-on-the-menu/test/label.test.ts"
+          "path": "packages/ghost-on-the-menu/test/label.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e6f6b0adb6d2d1b75129a96ba325439e9b44eb5ce44efcf3a5c788c50875c86a",
           "importsFiles": [
             "packages/ghost-on-the-menu/src/patterns.ts"
           ],
-          "path": "packages/ghost-on-the-menu/test/patterns.test.ts"
+          "path": "packages/ghost-on-the-menu/test/patterns.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8a72a435fb50b643dbf37ef1060d3a8b93523d43ac100e26a16bbb92cb40eabf",
@@ -4277,7 +5181,8 @@
             "packages/ghost-on-the-menu/src/patterns.ts",
             "packages/ghost-on-the-menu/src/pilot.ts"
           ],
-          "path": "packages/ghost-on-the-menu/test/pilot.test.ts"
+          "path": "packages/ghost-on-the-menu/test/pilot.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e3b1d8c2b4173e1bbaa90de2be0422df28cfc91386dd9982bc6d376533863187",
@@ -4289,7 +5194,8 @@
             "packages/ghost-on-the-menu/src/play.ts",
             "packages/tape-core/src/index.ts"
           ],
-          "path": "packages/ghost-on-the-menu/test/play.test.ts"
+          "path": "packages/ghost-on-the-menu/test/play.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "190bbeaf974d4df02993fbef3cef03132615b290027eb66a2880642c145b23a9",
@@ -4303,7 +5209,8 @@
             "packages/ghost-on-the-menu/src/patterns.ts",
             "packages/tape-core/src/index.ts"
           ],
-          "path": "packages/ghost-on-the-menu/test/prepass.test.ts"
+          "path": "packages/ghost-on-the-menu/test/prepass.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "fe0d33ec535b6d59931e35a52a73be8d343a652c1b1b1b07d31edb1213ea6ecb",
@@ -4319,22 +5226,25 @@
             "packages/ghost-on-the-menu/src/types.ts",
             "packages/tape-core/src/index.ts"
           ],
-          "path": "packages/ghost-on-the-menu/test/range.test.ts"
+          "path": "packages/ghost-on-the-menu/test/range.test.ts",
+          "testFramework": "vitest"
         },
         {
-          "hash": "f73541f0107132bb5ddb6f5ac4cd321dd76b272146925264fa0ebfc5369b5181",
+          "hash": "ab7418ba2be5ffaed18b2038c636fe78398608e07400a18a33fb3502b7831e1d",
           "importsFiles": [
             "packages/ghost-on-the-menu/src/index.ts",
             "packages/ghost-on-the-menu/src/types.ts"
           ],
-          "path": "packages/ghost-on-the-menu/test/render.test.ts"
+          "path": "packages/ghost-on-the-menu/test/render.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "3f35da46f1e0f8cee21c91484283b10ff5e0ec2c2f9e37245aa16b2ebd350a37",
           "importsFiles": [
             "packages/ghost-on-the-menu/src/index.ts"
           ],
-          "path": "packages/ghost-on-the-menu/test/scaffold.test.ts"
+          "path": "packages/ghost-on-the-menu/test/scaffold.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "ff615d5223b983a07a20439ed88292da9ec2bb6760e48cecb5097311fcebfcfe",
@@ -4352,7 +5262,8 @@
             "packages/ghost-on-the-menu/src/types.ts",
             "packages/tape-core/src/index.ts"
           ],
-          "path": "packages/ghost-on-the-menu/test/shift.test.ts"
+          "path": "packages/ghost-on-the-menu/test/shift.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "bbcb75bf2a1ac74bcf2f8c49bed734d07b9131a938a52f2bcebf6736c25cc3f1",
@@ -4372,7 +5283,8 @@
             "packages/ghost-on-the-menu/src/types.ts",
             "packages/tape-core/src/index.ts"
           ],
-          "path": "packages/ghost-on-the-menu/test/sim.test.ts"
+          "path": "packages/ghost-on-the-menu/test/sim.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "fea9cfcb057785994121b5c0768b9912cbcae898ce8c2c6c3ff57dd78ae99ee5",
@@ -4396,12 +5308,15 @@
       ],
       "outsideReads": 26,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 31,
       "unresolvedSites": 0
     },
     {
       "dynamicReads": 5,
-      "dynamicSpawns": 1,
+      "dynamicSpawns": 2,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 1,
       "entryPoints": [
@@ -4414,11 +5329,11 @@
           "path": "packages/launcher/LICENSE"
         },
         {
-          "hash": "f81cf2b4fbb466938a9a4fac3d0405fad1d92f25cb17dad742c8526abdc2c940",
+          "hash": "c2c86200249679826ca951f0efb6df034aa5752a3c4e4328c9f81e2d0b243577",
           "path": "packages/launcher/README.md"
         },
         {
-          "hash": "af3ad9e6262ae1bf7cb05a4a5b779ea598628311f2aa9240a56313edf7387372",
+          "hash": "fb8ab2fc55c4da12b9e408ecef937611f20edc37cc380ce1df39ddcca807dfa1",
           "path": "packages/launcher/package.json"
         },
         {
@@ -4434,6 +5349,18 @@
             "pack",
             "parsePackArgs"
           ],
+          "failurePaths": [
+            {
+              "in": "weigh",
+              "kind": "catch",
+              "line": 233
+            },
+            {
+              "in": "present",
+              "kind": "catch",
+              "line": 242
+            }
+          ],
           "hash": "a9ab5cf047483dbdb0cca2b98f8cb40a82203c33c2ede073249d06664be04814",
           "path": "packages/launcher/scripts/build.mjs",
           "sequences": []
@@ -4445,8 +5372,22 @@
             "restAfter",
             "upstreamFor"
           ],
-          "hash": "d43c01161c28723f0b8f59dc4bb3bd7544550d40f3e4131b0ada603606a1c0fa",
+          "hash": "29a4a0cecd6463850def164a8ac0b33150cbd04a1d0b07260df1a63d1c5b16cf",
           "path": "packages/launcher/src/allow.ts"
+        },
+        {
+          "exports": [
+            "checkMcp"
+          ],
+          "failurePaths": [
+            {
+              "in": "checkMcp",
+              "kind": "catch",
+              "line": 73
+            }
+          ],
+          "hash": "6dc750bc9ddae749fed1f708788ad4896cf9db51d2b083401ab734c6a63a4382",
+          "path": "packages/launcher/src/check.ts"
         },
         {
           "entry": "main",
@@ -4457,28 +5398,39 @@
             "checkSeats",
             "claudeAsked",
             "claudeLines",
-            "exitAfter",
-            "floorIn",
-            "forwardSignals",
             "main",
             "mcpIgnored",
             "mcpStartLines",
             "missingLines",
             "movedPortLine",
-            "nodeFloorHalt",
-            "nodeMajor",
-            "openBrowser",
             "parseArgs",
             "sayTrouble",
             "seatLines",
             "serveOpts",
-            "version",
-            "versionExit",
-            "versionIn"
+            "version"
           ],
-          "hash": "80499c83787543eca57d570610918dfc6bc7d1d56c0b5c899973c9328a5f3ca5",
+          "failurePaths": [
+            {
+              "in": "bundledTapes",
+              "kind": "catch",
+              "line": 257
+            },
+            {
+              "in": "bugsIn",
+              "kind": "catch",
+              "line": 272
+            },
+            {
+              "in": "runPlay",
+              "kind": "catch",
+              "line": 459
+            }
+          ],
+          "hash": "f8319941e520c78cf575b17695d3010a6f12ab83649c89d080e387c6f629e5ca",
           "importsFiles": [
             "packages/cabinet-server/src/tool-names.ts",
+            "packages/launcher/src/check.ts",
+            "packages/launcher/src/core.ts",
             "packages/launcher/src/serve.ts"
           ],
           "path": "packages/launcher/src/cli.ts",
@@ -4486,7 +5438,7 @@
             {
               "calls": [
                 {
-                  "line": 168,
+                  "line": 181,
                   "name": "checkSeatUrl",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
@@ -4501,23 +5453,26 @@
             {
               "calls": [
                 {
-                  "line": 432,
-                  "name": "on",
-                  "target": null
+                  "line": 306,
+                  "name": "versionIn",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  }
                 }
               ],
               "exported": true,
               "invokedAtTopLevel": false,
               "isDefaultExport": false,
-              "name": "forwardSignals"
+              "name": "version"
             },
             {
               "calls": [
                 {
-                  "line": 432,
-                  "name": "on",
-                  "target": null,
-                  "via": "forwardSignals"
+                  "line": 381,
+                  "name": "forwardSignals",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  }
                 }
               ],
               "exported": false,
@@ -4528,7 +5483,46 @@
             {
               "calls": [
                 {
-                  "line": 168,
+                  "line": 409,
+                  "name": "checkMcp",
+                  "target": {
+                    "file": "packages/launcher/src/check.ts"
+                  }
+                },
+                {
+                  "line": 409,
+                  "name": "TOOL_NAMES",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/cabinet-server/src/tool-names.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "runCheck"
+            },
+            {
+              "calls": [
+                {
+                  "line": 306,
+                  "name": "versionIn",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  },
+                  "via": "version"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "serveOpts"
+            },
+            {
+              "calls": [
+                {
+                  "line": 181,
                   "name": "checkSeatUrl",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
@@ -4537,31 +5531,46 @@
                 },
                 {
                   "branch": "bad",
-                  "line": 585,
+                  "line": 444,
                   "name": "seatHaltLines",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
                   }
                 },
                 {
-                  "line": 596,
+                  "line": 306,
+                  "name": "versionIn",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  },
+                  "via": "version"
+                },
+                {
+                  "line": 455,
                   "name": "createCabinetServer",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
                   }
                 },
                 {
-                  "line": 599,
+                  "line": 458,
                   "name": "listenFrom",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
                   }
                 },
                 {
-                  "line": 601,
+                  "line": 460,
                   "name": "listenLines",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
+                  }
+                },
+                {
+                  "line": 474,
+                  "name": "openBrowser",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
                   }
                 }
               ],
@@ -4573,14 +5582,74 @@
             {
               "calls": [
                 {
-                  "branch": "args.mode === 'mcp'",
-                  "line": 432,
-                  "name": "on",
-                  "target": null,
-                  "via": "forwardSignals"
+                  "line": 488,
+                  "name": "nodeFloorHalt",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  }
                 },
                 {
-                  "line": 168,
+                  "line": 488,
+                  "name": "NODE_FLOOR",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  }
+                },
+                {
+                  "branch": "args.mode === 'version'",
+                  "line": 306,
+                  "name": "versionIn",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  },
+                  "via": "version"
+                },
+                {
+                  "branch": "args.mode === 'version'",
+                  "line": 500,
+                  "name": "versionExit",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  }
+                },
+                {
+                  "branch": "args.mode === 'mcp'",
+                  "inner": [
+                    {
+                      "line": 115,
+                      "name": "on",
+                      "target": null
+                    }
+                  ],
+                  "line": 381,
+                  "name": "forwardSignals",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  },
+                  "via": "runMcp"
+                },
+                {
+                  "branch": "args.mode === 'check'",
+                  "line": 409,
+                  "name": "checkMcp",
+                  "target": {
+                    "file": "packages/launcher/src/check.ts"
+                  },
+                  "via": "runCheck"
+                },
+                {
+                  "branch": "args.mode === 'check'",
+                  "line": 409,
+                  "name": "TOOL_NAMES",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/cabinet-server/src/tool-names.ts"
+                  },
+                  "via": "runCheck"
+                },
+                {
+                  "line": 181,
                   "name": "checkSeatUrl",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
@@ -4589,7 +5658,7 @@
                 },
                 {
                   "branch": "bad",
-                  "line": 585,
+                  "line": 444,
                   "name": "seatHaltLines",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
@@ -4599,24 +5668,24 @@
                 {
                   "inner": [
                     {
-                      "line": 1067,
+                      "line": 1135,
                       "name": "onTrouble",
                       "target": null
                     },
                     {
-                      "line": 333,
+                      "line": 336,
                       "name": "setHeader",
                       "target": null,
                       "via": "sendJson"
                     },
                     {
-                      "line": 334,
+                      "line": 337,
                       "name": "end",
                       "target": null,
                       "via": "sendJson"
                     }
                   ],
-                  "line": 596,
+                  "line": 455,
                   "name": "createCabinetServer",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
@@ -4626,19 +5695,19 @@
                 {
                   "inner": [
                     {
-                      "line": 1156,
+                      "line": 1224,
                       "name": "once",
                       "target": null,
                       "via": "attempt"
                     },
                     {
-                      "line": 1158,
+                      "line": 1226,
                       "name": "listen",
                       "target": null,
                       "via": "attempt"
                     }
                   ],
-                  "line": 599,
+                  "line": 458,
                   "name": "listenFrom",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
@@ -4646,10 +5715,18 @@
                   "via": "runPlay"
                 },
                 {
-                  "line": 601,
+                  "line": 460,
                   "name": "listenLines",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
+                  },
+                  "via": "runPlay"
+                },
+                {
+                  "line": 474,
+                  "name": "openBrowser",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
                   },
                   "via": "runPlay"
                 }
@@ -4662,9 +5739,64 @@
           ]
         },
         {
+          "entry": "floorIn",
+          "entryRule": 1,
+          "exports": [
+            "exitAfter",
+            "floorIn",
+            "forwardSignals",
+            "nodeFloorHalt",
+            "nodeMajor",
+            "openBrowser",
+            "versionExit",
+            "versionIn"
+          ],
+          "failurePaths": [
+            {
+              "in": "versionIn",
+              "kind": "catch",
+              "line": 22
+            },
+            {
+              "in": "floorIn",
+              "kind": "catch",
+              "line": 44
+            },
+            {
+              "in": "openBrowser",
+              "kind": "catch",
+              "line": 92
+            }
+          ],
+          "hash": "f59cd3b679823192b56c84e64960676adef2e35d7f174065613cf3488a516396",
+          "path": "packages/launcher/src/core.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 115,
+                  "name": "on",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "forwardSignals"
+            }
+          ]
+        },
+        {
           "exports": [
             "resolveUnder",
             "typeFor"
+          ],
+          "failurePaths": [
+            {
+              "in": "resolveUnder",
+              "kind": "catch",
+              "line": 61
+            }
           ],
           "hash": "23f0cca570619ee0f7e466fdb72068167e02203c837dcd2f32bdaf3d5157eed7",
           "path": "packages/launcher/src/files.ts"
@@ -4696,7 +5828,54 @@
             "seatWatch",
             "troubleLine"
           ],
-          "hash": "ac71463e859ae91289e20cac01596253ca3b7a96b81b19577bbc10edc988d655",
+          "failurePaths": [
+            {
+              "in": "checkSeatUrl",
+              "kind": "catch",
+              "line": 224
+            },
+            {
+              "in": "serveFile",
+              "kind": "catch",
+              "line": 530
+            },
+            {
+              "in": "proxy",
+              "kind": "catch",
+              "line": 634
+            },
+            {
+              "in": "handleSay",
+              "kind": "catch",
+              "line": 725
+            },
+            {
+              "in": "handleSay",
+              "kind": "catch",
+              "line": 771
+            },
+            {
+              "in": "handleEndless",
+              "kind": "catch",
+              "line": 852
+            },
+            {
+              "in": "handleEndless",
+              "kind": "catch",
+              "line": 880
+            },
+            {
+              "in": "probeUp",
+              "kind": "catch",
+              "line": 930
+            },
+            {
+              "in": "probeOllama",
+              "kind": "catch",
+              "line": 948
+            }
+          ],
+          "hash": "b14565ee0050f4d52d499df0929ae19b494068a00750662649ce4c6144750a48",
           "importsFiles": [
             "packages/launcher/src/allow.ts",
             "packages/launcher/src/files.ts"
@@ -4706,12 +5885,12 @@
             {
               "calls": [
                 {
-                  "line": 333,
+                  "line": 336,
                   "name": "setHeader",
                   "target": null
                 },
                 {
-                  "line": 334,
+                  "line": 337,
                   "name": "end",
                   "target": null
                 }
@@ -4724,12 +5903,12 @@
             {
               "calls": [
                 {
-                  "line": 344,
+                  "line": 347,
                   "name": "setHeader",
                   "target": null
                 },
                 {
-                  "line": 345,
+                  "line": 348,
                   "name": "end",
                   "target": null
                 }
@@ -4742,13 +5921,13 @@
             {
               "calls": [
                 {
-                  "line": 333,
+                  "line": 336,
                   "name": "setHeader",
                   "target": null,
                   "via": "sendJson"
                 },
                 {
-                  "line": 334,
+                  "line": 337,
                   "name": "end",
                   "target": null,
                   "via": "sendJson"
@@ -4762,12 +5941,12 @@
             {
               "calls": [
                 {
-                  "line": 365,
+                  "line": 368,
                   "name": "setHeader",
                   "target": null
                 },
                 {
-                  "line": 334,
+                  "line": 337,
                   "name": "end",
                   "target": null,
                   "via": "sendJson"
@@ -4781,12 +5960,12 @@
             {
               "calls": [
                 {
-                  "line": 373,
+                  "line": 376,
                   "name": "setHeader",
                   "target": null
                 },
                 {
-                  "line": 334,
+                  "line": 337,
                   "name": "end",
                   "target": null,
                   "via": "sendJson"
@@ -4800,13 +5979,13 @@
             {
               "calls": [
                 {
-                  "line": 333,
+                  "line": 336,
                   "name": "setHeader",
                   "target": null,
                   "via": "sendJson"
                 },
                 {
-                  "line": 334,
+                  "line": 337,
                   "name": "end",
                   "target": null,
                   "via": "sendJson"
@@ -4820,13 +5999,13 @@
             {
               "calls": [
                 {
-                  "line": 333,
+                  "line": 336,
                   "name": "setHeader",
                   "target": null,
                   "via": "sendJson"
                 },
                 {
-                  "line": 334,
+                  "line": 337,
                   "name": "end",
                   "target": null,
                   "via": "sendJson"
@@ -4840,13 +6019,13 @@
             {
               "calls": [
                 {
-                  "line": 333,
+                  "line": 336,
                   "name": "setHeader",
                   "target": null,
                   "via": "sendJson"
                 },
                 {
-                  "line": 334,
+                  "line": 337,
                   "name": "end",
                   "target": null,
                   "via": "sendJson"
@@ -4860,13 +6039,13 @@
             {
               "calls": [
                 {
-                  "line": 333,
+                  "line": 336,
                   "name": "setHeader",
                   "target": null,
                   "via": "sendJson"
                 },
                 {
-                  "line": 334,
+                  "line": 337,
                   "name": "end",
                   "target": null,
                   "via": "sendJson"
@@ -4880,7 +6059,7 @@
             {
               "calls": [
                 {
-                  "line": 475,
+                  "line": 478,
                   "name": "on",
                   "target": null
                 }
@@ -4893,7 +6072,7 @@
             {
               "calls": [
                 {
-                  "line": 510,
+                  "line": 513,
                   "name": "resolveUnder",
                   "target": {
                     "file": "packages/launcher/src/files.ts"
@@ -4901,34 +6080,34 @@
                 },
                 {
                   "branch": "!file",
-                  "line": 344,
+                  "line": 347,
                   "name": "setHeader",
                   "target": null,
                   "via": "sendText"
                 },
                 {
                   "branch": "!file",
-                  "line": 345,
+                  "line": 348,
                   "name": "end",
                   "target": null,
                   "via": "sendText"
                 },
                 {
-                  "line": 519,
+                  "line": 522,
                   "name": "resolveUnder",
                   "target": {
                     "file": "packages/launcher/src/files.ts"
                   }
                 },
                 {
-                  "line": 532,
+                  "line": 535,
                   "name": "typeFor",
                   "target": {
                     "file": "packages/launcher/src/files.ts"
                   }
                 },
                 {
-                  "line": 532,
+                  "line": 535,
                   "name": "setHeader",
                   "target": null
                 }
@@ -4942,58 +6121,58 @@
               "calls": [
                 {
                   "branch": "Number.isFinite(declared) && declared > PROXY_MAX_BYTES",
-                  "line": 333,
+                  "line": 336,
                   "name": "setHeader",
                   "target": null,
                   "via": "sendJson"
                 },
                 {
                   "branch": "Number.isFinite(declared) && declared > PROXY_MAX_BYTES",
-                  "line": 334,
+                  "line": 337,
                   "name": "end",
                   "target": null,
                   "via": "sendJson"
                 },
                 {
                   "branch": "Number.isFinite(declared) && declared > PROXY_MAX_BYTES",
-                  "line": 572,
+                  "line": 575,
                   "name": "resume",
                   "target": null
                 },
                 {
-                  "line": 475,
+                  "line": 478,
                   "name": "on",
                   "target": null,
                   "via": "readBody"
                 },
                 {
-                  "line": 604,
+                  "line": 607,
                   "name": "answering",
                   "target": null
                 },
                 {
-                  "line": 607,
+                  "line": 610,
                   "name": "setHeader",
                   "target": null
                 },
                 {
                   "branch": "!upstream.body",
-                  "line": 609,
+                  "line": 612,
                   "name": "end",
                   "target": null
                 },
                 {
-                  "line": 618,
+                  "line": 621,
                   "name": "on",
                   "target": null
                 },
                 {
-                  "line": 636,
+                  "line": 639,
                   "name": "trouble",
                   "target": null
                 },
                 {
-                  "line": 642,
+                  "line": 645,
                   "name": "end",
                   "target": null
                 }
@@ -5006,18 +6185,18 @@
             {
               "calls": [
                 {
-                  "line": 1067,
+                  "line": 1135,
                   "name": "onTrouble",
                   "target": null
                 },
                 {
-                  "line": 333,
+                  "line": 336,
                   "name": "setHeader",
                   "target": null,
                   "via": "sendJson"
                 },
                 {
-                  "line": 334,
+                  "line": 337,
                   "name": "end",
                   "target": null,
                   "via": "sendJson"
@@ -5031,13 +6210,13 @@
             {
               "calls": [
                 {
-                  "line": 1156,
+                  "line": 1224,
                   "name": "once",
                   "target": null,
                   "via": "attempt"
                 },
                 {
-                  "line": 1158,
+                  "line": 1226,
                   "name": "listen",
                   "target": null,
                   "via": "attempt"
@@ -5055,7 +6234,8 @@
           "importsFiles": [
             "packages/launcher/src/allow.ts"
           ],
-          "path": "packages/launcher/test/allow.test.ts"
+          "path": "packages/launcher/test/allow.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "58666e9af78516adbb31368d7696c5e74b390239f18e0e75b42018c2d475b1e1",
@@ -5065,35 +6245,40 @@
             "packages/launcher/src/levers.ts",
             "packages/launcher/src/serve.ts"
           ],
-          "path": "packages/launcher/test/cli.test.ts"
+          "path": "packages/launcher/test/cli.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "864ee66b16fb3ce401f75e94d67ecd3adbc2e622daf8086d0193736093e45898",
           "importsFiles": [
             "packages/launcher/src/files.ts"
           ],
-          "path": "packages/launcher/test/files.test.ts"
+          "path": "packages/launcher/test/files.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "d508b29ecf3b7dc922707579bd39adb3369fbde4460aa9a484f8fb9f89f4aff5",
           "importsFiles": [
             "packages/launcher/scripts/build.mjs"
           ],
-          "path": "packages/launcher/test/pack-gate.test.ts"
+          "path": "packages/launcher/test/pack-gate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "quotedBlocks"
           ],
           "hash": "23bf914d68b5b90a818ae36112b5331db249a20d09157fc3d6894e7762efc2f3",
-          "path": "packages/launcher/test/release-workflow.test.ts"
+          "path": "packages/launcher/test/release-workflow.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "cf9fef276347c95a2bc513e4ab2cc04470fd21587551fb07c1dc7c688045ec22",
           "importsFiles": [
             "packages/launcher/src/serve.ts"
           ],
-          "path": "packages/launcher/test/serve.test.ts"
+          "path": "packages/launcher/test/serve.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "fea9cfcb057785994121b5c0768b9912cbcae898ce8c2c6c3ff57dd78ae99ee5",
@@ -5117,6 +6302,9 @@
       ],
       "outsideReads": 2,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 9,
       "unresolvedNamed": [
         {
@@ -5133,8 +6321,8 @@
       "unresolvedSites": 2
     },
     {
-      "dynamicReads": 3,
-      "dynamicSpawns": 1,
+      "dynamicReads": 1,
+      "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [
@@ -5147,14 +6335,20 @@
           "path": "packages/launcher-vibe-typer/LICENSE"
         },
         {
-          "hash": "9b58920be344f3736db19f14e3f6f6d22cf4f5497f7a6aee943fef98bd6b6392",
+          "hash": "d930cb4b4412a560f0d9bae9277195b3f5a25ec8cc6507dda6a0dd28c7abffc4",
           "path": "packages/launcher-vibe-typer/README.md"
         },
         {
-          "hash": "34ed3a5b6466b1b58cba9134600202f5b29eca9bedc08cccc0cdd364a33c6c0b",
+          "hash": "e97aff331ed927af42d5022f483a62890bf97df0c3856ca11f3cf139f3f8652f",
           "path": "packages/launcher-vibe-typer/package.json"
         },
         {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 38
+            }
+          ],
           "hash": "811219702304a66a663d94bfeb844e0e4326433c2236c2bdae9bf60814ea3c3d",
           "importsFiles": [
             "packages/launcher/scripts/build.mjs"
@@ -5168,27 +6362,39 @@
             "badArgLines",
             "bugsIn",
             "checkSeats",
-            "exitAfter",
-            "floorIn",
-            "forwardSignals",
             "main",
             "mcpIgnored",
             "mcpStartLines",
             "missingLines",
             "movedPortLine",
             "nodeFloorHalt",
-            "nodeMajor",
-            "openBrowser",
             "parseArgs",
             "sayTrouble",
             "seatLines",
-            "version",
-            "versionExit",
-            "versionIn"
+            "version"
           ],
-          "hash": "4f4ada074e84a183ef26b1c6c32c6fafe1ce4e6fed11a232b1b69938d008380f",
+          "failurePaths": [
+            {
+              "in": "bugsIn",
+              "kind": "catch",
+              "line": 230
+            },
+            {
+              "in": "bundledTapes",
+              "kind": "catch",
+              "line": 268
+            },
+            {
+              "in": "runPlay",
+              "kind": "catch",
+              "line": 429
+            }
+          ],
+          "hash": "4069fbd4442370c7d8c39eb46fd5e6c491efc28c47b0aa679ee5e6fb1eee9246",
           "importsFiles": [
             "packages/cabinet-server/src/tool-names.ts",
+            "packages/launcher/src/check.ts",
+            "packages/launcher/src/core.ts",
             "packages/launcher/src/serve.ts"
           ],
           "path": "packages/launcher-vibe-typer/src/cli.ts",
@@ -5196,7 +6402,7 @@
             {
               "calls": [
                 {
-                  "line": 136,
+                  "line": 148,
                   "name": "checkSeatUrl",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
@@ -5211,23 +6417,41 @@
             {
               "calls": [
                 {
-                  "line": 440,
-                  "name": "on",
-                  "target": null
+                  "line": 215,
+                  "name": "versionIn",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  }
                 }
               ],
               "exported": true,
               "invokedAtTopLevel": false,
               "isDefaultExport": false,
-              "name": "forwardSignals"
+              "name": "version"
             },
             {
               "calls": [
                 {
-                  "line": 440,
-                  "name": "on",
-                  "target": null,
-                  "via": "forwardSignals"
+                  "line": 293,
+                  "name": "nodeMajor",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "nodeFloorHalt"
+            },
+            {
+              "calls": [
+                {
+                  "line": 343,
+                  "name": "forwardSignals",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  }
                 }
               ],
               "exported": false,
@@ -5238,7 +6462,30 @@
             {
               "calls": [
                 {
-                  "line": 136,
+                  "line": 371,
+                  "name": "checkMcp",
+                  "target": {
+                    "file": "packages/launcher/src/check.ts"
+                  }
+                },
+                {
+                  "line": 371,
+                  "name": "VIBE_TOOL_NAMES",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/cabinet-server/src/tool-names.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "runCheck"
+            },
+            {
+              "calls": [
+                {
+                  "line": 148,
                   "name": "checkSeatUrl",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
@@ -5247,31 +6494,46 @@
                 },
                 {
                   "branch": "bad",
-                  "line": 501,
+                  "line": 388,
                   "name": "seatHaltLines",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
                   }
                 },
                 {
-                  "line": 512,
+                  "line": 215,
+                  "name": "versionIn",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  },
+                  "via": "version"
+                },
+                {
+                  "line": 399,
                   "name": "createCabinetServer",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
                   }
                 },
                 {
-                  "line": 540,
+                  "line": 428,
                   "name": "listenFrom",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
                   }
                 },
                 {
-                  "line": 542,
+                  "line": 430,
                   "name": "listenLines",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
+                  }
+                },
+                {
+                  "line": 444,
+                  "name": "openBrowser",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
                   }
                 }
               ],
@@ -5283,14 +6545,75 @@
             {
               "calls": [
                 {
-                  "branch": "args.mode === 'mcp'",
-                  "line": 440,
-                  "name": "on",
-                  "target": null,
-                  "via": "forwardSignals"
+                  "line": 293,
+                  "name": "nodeMajor",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  },
+                  "via": "nodeFloorHalt"
                 },
                 {
-                  "line": 136,
+                  "line": 458,
+                  "name": "NODE_FLOOR",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  }
+                },
+                {
+                  "branch": "args.mode === 'version'",
+                  "line": 215,
+                  "name": "versionIn",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  },
+                  "via": "version"
+                },
+                {
+                  "branch": "args.mode === 'version'",
+                  "line": 470,
+                  "name": "versionExit",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  }
+                },
+                {
+                  "branch": "args.mode === 'mcp'",
+                  "inner": [
+                    {
+                      "line": 115,
+                      "name": "on",
+                      "target": null
+                    }
+                  ],
+                  "line": 343,
+                  "name": "forwardSignals",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
+                  },
+                  "via": "runMcp"
+                },
+                {
+                  "branch": "args.mode === 'check'",
+                  "line": 371,
+                  "name": "checkMcp",
+                  "target": {
+                    "file": "packages/launcher/src/check.ts"
+                  },
+                  "via": "runCheck"
+                },
+                {
+                  "branch": "args.mode === 'check'",
+                  "line": 371,
+                  "name": "VIBE_TOOL_NAMES",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/cabinet-server/src/tool-names.ts"
+                  },
+                  "via": "runCheck"
+                },
+                {
+                  "line": 148,
                   "name": "checkSeatUrl",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
@@ -5299,7 +6622,7 @@
                 },
                 {
                   "branch": "bad",
-                  "line": 501,
+                  "line": 388,
                   "name": "seatHaltLines",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
@@ -5309,24 +6632,24 @@
                 {
                   "inner": [
                     {
-                      "line": 1067,
+                      "line": 1135,
                       "name": "onTrouble",
                       "target": null
                     },
                     {
-                      "line": 333,
+                      "line": 336,
                       "name": "setHeader",
                       "target": null,
                       "via": "sendJson"
                     },
                     {
-                      "line": 334,
+                      "line": 337,
                       "name": "end",
                       "target": null,
                       "via": "sendJson"
                     }
                   ],
-                  "line": 512,
+                  "line": 399,
                   "name": "createCabinetServer",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
@@ -5336,19 +6659,19 @@
                 {
                   "inner": [
                     {
-                      "line": 1156,
+                      "line": 1224,
                       "name": "once",
                       "target": null,
                       "via": "attempt"
                     },
                     {
-                      "line": 1158,
+                      "line": 1226,
                       "name": "listen",
                       "target": null,
                       "via": "attempt"
                     }
                   ],
-                  "line": 540,
+                  "line": 428,
                   "name": "listenFrom",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
@@ -5356,10 +6679,18 @@
                   "via": "runPlay"
                 },
                 {
-                  "line": 542,
+                  "line": 430,
                   "name": "listenLines",
                   "target": {
                     "file": "packages/launcher/src/serve.ts"
+                  },
+                  "via": "runPlay"
+                },
+                {
+                  "line": 444,
+                  "name": "openBrowser",
+                  "target": {
+                    "file": "packages/launcher/src/core.ts"
                   },
                   "via": "runPlay"
                 }
@@ -5383,14 +6714,16 @@
             "packages/launcher-vibe-typer/src/cli.ts",
             "packages/launcher/src/levers.ts"
           ],
-          "path": "packages/launcher-vibe-typer/test/cli.test.ts"
+          "path": "packages/launcher-vibe-typer/test/cli.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "8b5f884fd017f84faa45971e7ab0e87a522fa8b28ac50d04b58aa63e144594e5",
           "importsFiles": [
             "packages/launcher/src/serve.ts"
           ],
-          "path": "packages/launcher-vibe-typer/test/serve.test.ts"
+          "path": "packages/launcher-vibe-typer/test/serve.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "bad11facaadb80f2c11f1c6f0c24cbf0a7eeaa395e14a560c3e058eef54e51b2",
@@ -5404,6 +6737,9 @@
       "name": "launcher-vibe-typer",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 3,
       "unresolvedSites": 0
     },
@@ -5424,7 +6760,7 @@
           "path": ".gitattributes"
         },
         {
-          "hash": "68d303bd5115532323392573a60ebedd7106b562064b322db5ed3851c48e3e25",
+          "hash": "d47fabba19911c7844d60c1443d8b57dae737ecda546f6d832a5a0ae38d6e2b7",
           "path": ".gitignore"
         },
         {
@@ -5436,7 +6772,7 @@
           "path": ".prettierrc"
         },
         {
-          "hash": "d13d81524fd4c062034d3993ae026195df216c826738fff468a26b8d9a06b36d",
+          "hash": "2d67067dd3afd7e8679414807d144e591d901f3d30f9cb74e2cedeb182d61fc5",
           "path": "CHANGELOG.md"
         },
         {
@@ -5444,11 +6780,11 @@
           "path": "CLAUDE.md"
         },
         {
-          "hash": "b4e9e5e7f128e50950794d45661fa9f6428e9f731a32b23c0c13913a8e8f0bf5",
+          "hash": "4f5c291bdcddf53d8f12d8e172ada098cda42947de36063daf6dac2b2e934909",
           "path": "Dockerfile"
         },
         {
-          "hash": "f6396a62f03d4a6658597c428a69481f710069a81be5280652e6394ea568012a",
+          "hash": "fb93a1775cedee6d3a43ef0ef92d9d0ab8322b7cd72aac9d4e79f1662d88e229",
           "path": "HANDOFF.md"
         },
         {
@@ -5456,40 +6792,36 @@
           "path": "LICENSE"
         },
         {
-          "hash": "378ffa39da96a79a2e266220cd57b2027ed81bc846461c6148bcd187bb9549c1",
+          "hash": "c3a781a24eabe843ab6f3e8450dd507be166e8d45ad3241efa28242d289638e0",
           "path": "README.es.md"
         },
         {
-          "hash": "b1a13a722097a743914e529acf7a46d288c29dcbd10a683965af700547d71b75",
+          "hash": "8a88999ccb4de3a9f9a8372f9c150ebca13fd5b75579acd6fa3ad78a03d42e84",
           "path": "README.fr.md"
         },
         {
-          "hash": "ae00148dc0abb1e0b6255947a87945a6699c20876e8ab081c3f364020036641f",
+          "hash": "dc3e1b3b6feac501c7e50d04f8926275f09da6704f80fb4761d81a9360d85a9a",
           "path": "README.hi.md"
         },
         {
-          "hash": "680ad30d242dabe933106c4219415c25d739a53cf2a9b6e5688667b9556e09a5",
+          "hash": "ac8e9efde14dfd06b539ceb315de084d31176679b6d59588093a2dde85d2080a",
           "path": "README.it.md"
         },
         {
-          "hash": "3e1f50b1ab70e752188132f49e99428280b5956acb076634da9b6656cd935180",
+          "hash": "73d16e34f929c033bda70cff6352159240753ceb967272271a368aa8e5b2b092",
           "path": "README.ja.md"
         },
         {
-          "hash": "140d5d968547d860d6a8674b012fc2503ff9a1edd8f6591d382d203375bf0d80",
+          "hash": "5b868810fe1f97bddb5ec0658ac4cf50a75b53b846660b05ffc7ed86037be3a9",
           "path": "README.md"
         },
         {
-          "hash": "386962e8fc47a4233aef1e6d9a1e3b3f2eb947ad6db904a9dffe3840a87ec3f3",
+          "hash": "db2491ed754bd0915fee01a2f6b04d5e0dfc74226060b52a24e3c0e69f5821db",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "4621e1bb52256e8191f06f9fc807aa372e26634437eb0806cef50f861beabc70",
+          "hash": "00fd638cdd58035154c2f37856eef1ddf0661459154c22ae4abf2f583100fbdf",
           "path": "README.zh.md"
-        },
-        {
-          "hash": "b104ea78faf19b627c2a01bdd17b9e6f28dbb1ee7178a314ec5cd17eaa0a1d36",
-          "path": "SCORECARD.md"
         },
         {
           "hash": "d7eacdc57845619d46c996cfd3bec5b2b2a9cf5758f1ddba391d9a88d45adeeb",
@@ -5500,15 +6832,19 @@
           "path": "SHIP_GATE.md"
         },
         {
+          "hash": "558cadee76a07fe31e00c0562edf365f4b6d1d96e95ad3deb748dbb9a72e910b",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "1bcf5f23cf078e853d12cb0da9f5a019f7b52f208d38f30d2684df201efe87a3",
           "path": "eslint.config.js"
         },
         {
-          "hash": "9451dee17b7b416b5b5143c3ad12b22f7321d2a669011921c075940f40d3aceb",
+          "hash": "d0ee609fc7c9b2e1323163d70c606c1f62ae0c5ae0e20f9f25ab6a0e8c8a6e11",
           "path": "package.json"
         },
         {
-          "hash": "0f26bd03894f0aac5fbd90d026d9be4a5ff67d000456bb7c190064337524a8d4",
+          "hash": "66c0e3600f672a2e2a08f90620bf0e70dd68e995392feb0bd90ab0abb3034708",
           "path": "pnpm-lock.yaml"
         },
         {
@@ -5520,7 +6856,7 @@
           "path": "tsconfig.base.json"
         },
         {
-          "hash": "7093ce3aff40525b164f47100145b83a6e851f1498fe29dfdf1cf7acad90e62d",
+          "hash": "517c5df69f07fd79183fe152a74f9a7c7ca2c22b65bc33538e3434432fee9914",
           "path": "vitest.config.ts"
         }
       ],
@@ -5537,8 +6873,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 2,
-      "dynamicSpawnsInTests": 1,
+      "dynamicSpawns": 11,
+      "dynamicSpawnsInTests": 10,
       "dynamicWrites": 2,
       "entryPoints": [],
       "externals": 0,
@@ -5561,6 +6897,67 @@
             "splice",
             "tile"
           ],
+          "failurePaths": [
+            {
+              "in": "raw_bpm",
+              "kind": "raise",
+              "line": 184
+            },
+            {
+              "in": "bar_grid",
+              "kind": "raise",
+              "line": 204
+            },
+            {
+              "in": "bar_grid",
+              "kind": "raise",
+              "line": 207
+            },
+            {
+              "in": "plan_for",
+              "kind": "raise",
+              "line": 295
+            },
+            {
+              "in": "content_end",
+              "kind": "raise",
+              "line": 305
+            },
+            {
+              "in": "content_end",
+              "kind": "raise",
+              "line": 309
+            },
+            {
+              "in": "loop_repeats",
+              "kind": "raise",
+              "line": 322
+            },
+            {
+              "in": "arrange_loop",
+              "kind": "raise",
+              "line": 349
+            },
+            {
+              "in": "arrange_loop",
+              "kind": "raise",
+              "line": 372
+            },
+            {
+              "in": "arrange",
+              "kind": "raise",
+              "line": 482
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 526
+            },
+            {
+              "kind": "raise",
+              "line": 560
+            }
+          ],
           "hash": "f5a219e7870ec49487e05e6da1e5c6a5af81d12794ac310c3378fab16453f143",
           "path": "scripts/beds/arrange.py"
         },
@@ -5570,6 +6967,27 @@
             "measure",
             "rung_for",
             "write_at"
+          ],
+          "failurePaths": [
+            {
+              "in": "rung_for",
+              "kind": "raise",
+              "line": 96
+            },
+            {
+              "in": "measure",
+              "kind": "raise",
+              "line": 183
+            },
+            {
+              "in": "measure",
+              "kind": "raise",
+              "line": 198
+            },
+            {
+              "kind": "raise",
+              "line": 258
+            }
           ],
           "hash": "6eb57b3341357c69b0bdab97cb6571e06cb5b89d7c5fac44c25680b14097265e",
           "path": "scripts/beds/encode.py"
@@ -5585,6 +7003,12 @@
             "read",
             "true_peak_db"
           ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 365
+            }
+          ],
           "hash": "da4c98fcfb07c4415d67f83a122fe2cc3e3f096fef74292a513d4c1bedf52573",
           "path": "scripts/beds/master.py"
         },
@@ -5596,6 +7020,21 @@
             "strip_captions",
             "verdict_for"
           ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 58
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 243
+            },
+            {
+              "kind": "raise",
+              "line": 298
+            }
+          ],
           "hash": "0c4ce49cc04debb24ebc068fb2c47081613461bbd15242b0d5b2b8067a668713",
           "path": "scripts/beds/words.py"
         },
@@ -5605,6 +7044,73 @@
             "parseTapeFile",
             "parseTimes",
             "runFrames"
+          ],
+          "failurePaths": [
+            {
+              "in": "tapeRoster",
+              "kind": "catch",
+              "line": 24
+            },
+            {
+              "in": "parseTimes",
+              "kind": "throw",
+              "line": 49
+            },
+            {
+              "in": "parseTimes",
+              "kind": "throw",
+              "line": 53
+            },
+            {
+              "in": "parseTimes",
+              "kind": "throw",
+              "line": 55
+            },
+            {
+              "in": "parseTimes",
+              "kind": "throw",
+              "line": 56
+            },
+            {
+              "in": "hex",
+              "kind": "throw",
+              "line": 79
+            },
+            {
+              "in": "runFrames",
+              "kind": "throw",
+              "line": 92
+            },
+            {
+              "in": "parseTapeFile",
+              "kind": "catch",
+              "line": 119
+            },
+            {
+              "in": "parseTapeFile",
+              "kind": "throw",
+              "line": 120
+            },
+            {
+              "in": "parseTapeFile",
+              "kind": "catch",
+              "line": 124
+            },
+            {
+              "in": "parseTapeFile",
+              "kind": "throw",
+              "line": 125
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 154
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 180
+            }
           ],
           "hash": "4c694e319a227ba1d949737d72ed8c3ab5acfdbba2278a6a402e308cc08c9a82",
           "importOrder": [
@@ -5620,6 +7126,38 @@
         {
           "exports": [
             "bundleModule"
+          ],
+          "failurePaths": [
+            {
+              "in": "bundleModule",
+              "kind": "catch",
+              "line": 41
+            },
+            {
+              "in": "bundleModule",
+              "kind": "throw",
+              "line": 42
+            },
+            {
+              "in": "bundleModule",
+              "kind": "catch",
+              "line": 48
+            },
+            {
+              "in": "bundleModule",
+              "kind": "throw",
+              "line": 49
+            },
+            {
+              "in": "bundleModule",
+              "kind": "catch",
+              "line": 53
+            },
+            {
+              "in": "bundleModule",
+              "kind": "throw",
+              "line": 54
+            }
           ],
           "hash": "1222fad9cc036ed7ad84df729cdd95567ae9292d4be4ea6830785e6878f93303",
           "importsFiles": [
@@ -5639,6 +7177,43 @@
             "requirePort",
             "runMain"
           ],
+          "failurePaths": [
+            {
+              "in": "runMain",
+              "kind": "catch",
+              "line": 44
+            },
+            {
+              "in": "isMain",
+              "kind": "catch",
+              "line": 63
+            },
+            {
+              "in": "isMain",
+              "kind": "catch",
+              "line": 69
+            },
+            {
+              "in": "readJsonFile",
+              "kind": "catch",
+              "line": 144
+            },
+            {
+              "in": "readJsonFile",
+              "kind": "throw",
+              "line": 145
+            },
+            {
+              "in": "readJsonFile",
+              "kind": "catch",
+              "line": 149
+            },
+            {
+              "in": "readJsonFile",
+              "kind": "throw",
+              "line": 150
+            }
+          ],
           "hash": "37107b34c17cac792eb6a34f98ed61c8adf009f28cd90b71f1988b1825d74a2f",
           "path": "scripts/lib/cli.mjs"
         },
@@ -5651,6 +7226,23 @@
             "tapeRoster",
             "typerScreenHit",
             "whyFailed"
+          ],
+          "failurePaths": [
+            {
+              "in": "listTapeNames",
+              "kind": "catch",
+              "line": 66
+            },
+            {
+              "in": "playTyper",
+              "kind": "catch",
+              "line": 270
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 363
+            }
           ],
           "hash": "5fc524878e41d10eeddd3f6fcf86537738b72c17df6f1dfb0adfad03723e0648",
           "importsFiles": [
@@ -5778,6 +7370,23 @@
             "reasonLine",
             "spread"
           ],
+          "failurePaths": [
+            {
+              "in": "askOne",
+              "kind": "catch",
+              "line": 458
+            },
+            {
+              "in": "turn",
+              "kind": "catch",
+              "line": 616
+            },
+            {
+              "in": "turn",
+              "kind": "catch",
+              "line": 633
+            }
+          ],
           "hash": "ee51638d4e1bf9395f93f8a95d0fe0b4def9087027044e3e77e469b38a1e4aa7",
           "importsFiles": [
             "scripts/lib/cli.mjs"
@@ -5801,6 +7410,43 @@
             "tapeRoster",
             "timeoutToScriptLine"
           ],
+          "failurePaths": [
+            {
+              "in": "listTapeNames",
+              "kind": "catch",
+              "line": 90
+            },
+            {
+              "in": "parseTapeFile",
+              "kind": "catch",
+              "line": 133
+            },
+            {
+              "in": "parseTapeFile",
+              "kind": "throw",
+              "line": 134
+            },
+            {
+              "in": "parseTapeFile",
+              "kind": "catch",
+              "line": 138
+            },
+            {
+              "in": "parseTapeFile",
+              "kind": "throw",
+              "line": 139
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 277
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 319
+            }
+          ],
           "hash": "1d39203e4a178a1b1f81ece52edbabb38c2cbcf2ff6ecbcb795352c85096b2bf",
           "importsFiles": [
             "scripts/lib/cli.mjs",
@@ -5812,6 +7458,43 @@
           "exports": [
             "endLabel",
             "parseTapeFile"
+          ],
+          "failurePaths": [
+            {
+              "in": "parseTapeFile",
+              "kind": "catch",
+              "line": 26
+            },
+            {
+              "in": "parseTapeFile",
+              "kind": "throw",
+              "line": 27
+            },
+            {
+              "in": "parseTapeFile",
+              "kind": "catch",
+              "line": 31
+            },
+            {
+              "in": "parseTapeFile",
+              "kind": "throw",
+              "line": 32
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 80
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 93
+            },
+            {
+              "in": "main",
+              "kind": "catch",
+              "line": 100
+            }
           ],
           "hash": "8c23a6622e606a973748ed3595fcf1167917da3272c09da9ad2978e87a0d32fd",
           "importOrder": [
@@ -5829,23 +7512,71 @@
           "importsFiles": [
             "scripts/lib/cli.mjs"
           ],
-          "path": "scripts/test/cli-lib.test.mjs"
+          "names": [
+            "scripts/film.mjs",
+            "scripts/play.mjs"
+          ],
+          "path": "scripts/test/cli-lib.test.mjs",
+          "testFramework": "vitest"
         },
         {
-          "hash": "5bc48022d659bd223e2db9d4474caf7582ca5cb8b5978d7d314571f9f0a4e9f6",
+          "hash": "d04fa1bf6f14912fece3f8d3202c491600d8291624e36002dd565a872f09dbaa",
           "importsFiles": [
             "scripts/film.mjs",
             "scripts/play.mjs",
             "scripts/transcript.mjs",
             "scripts/voice.mjs"
           ],
-          "path": "scripts/test/runners.test.mjs"
+          "path": "scripts/test/runners.test.mjs",
+          "testFramework": "vitest"
         },
         {
           "exports": [
             "chatRow",
             "leaksIn",
             "toastRow"
+          ],
+          "failurePaths": [
+            {
+              "in": "runVibeLevel",
+              "kind": "throw",
+              "line": 140
+            },
+            {
+              "in": "runVibeLevel",
+              "kind": "catch",
+              "line": 152
+            },
+            {
+              "in": "runVibeLevel",
+              "kind": "throw",
+              "line": 153
+            },
+            {
+              "in": "runVibeLevel",
+              "kind": "throw",
+              "line": 181
+            },
+            {
+              "in": "ghostEndless",
+              "kind": "catch",
+              "line": 268
+            },
+            {
+              "in": "ghostEndless",
+              "kind": "throw",
+              "line": 269
+            },
+            {
+              "in": "ghost",
+              "kind": "catch",
+              "line": 333
+            },
+            {
+              "in": "ghost",
+              "kind": "throw",
+              "line": 334
+            }
           ],
           "hash": "21cf3af4c736db7ee4282d0a8ea7b29481ee6084d141fce18a3f30009a3fa22b",
           "importOrder": [
@@ -5864,6 +7595,53 @@
           "exports": [
             "lineFor",
             "voiceFor"
+          ],
+          "failurePaths": [
+            {
+              "in": "jsonBody",
+              "kind": "catch",
+              "line": 54
+            },
+            {
+              "in": "jsonBody",
+              "kind": "throw",
+              "line": 55
+            },
+            {
+              "in": "voiceFor",
+              "kind": "throw",
+              "line": 64
+            },
+            {
+              "in": "lineFor",
+              "kind": "throw",
+              "line": 75
+            },
+            {
+              "in": "check",
+              "kind": "catch",
+              "line": 88
+            },
+            {
+              "in": "check",
+              "kind": "catch",
+              "line": 115
+            },
+            {
+              "in": "check",
+              "kind": "catch",
+              "line": 123
+            },
+            {
+              "in": "check",
+              "kind": "catch",
+              "line": 150
+            },
+            {
+              "in": "check",
+              "kind": "catch",
+              "line": 168
+            }
           ],
           "hash": "d8e26ce82f81fdd73f18ddf1dc0d4926c30f77fb36ea0d7e1156a68cc49ccdf8",
           "importsFiles": [
@@ -5951,6 +7729,9 @@
       "outsideReads": 16,
       "outsideWrites": 9,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 8,
       "unresolvedNamed": [
         {
@@ -5988,7 +7769,7 @@
           "path": "site/package-lock.json"
         },
         {
-          "hash": "9c39e620ebae2c5718ecd8c6188bd3451409a614ec8f5308dc15d5fd886e5b91",
+          "hash": "cf987ba3ed7a7abcfc191b724a469b624463baef7ae2fa2c6afe39ac3289498b",
           "path": "site/package.json"
         },
         {
@@ -6050,7 +7831,7 @@
         },
         {
           "constantOnly": true,
-          "hash": "2811891bf583194defb7e0940bc695980c3486600c5453cf751edd5e6f995bf1",
+          "hash": "e7b792458b32c1a69b0798409c05600eee556639ecf38cc52798776e9d4bd73b",
           "path": "site/src/site-config.ts"
         },
         {
@@ -6087,7 +7868,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "27ef18747f8f6b4e7e0270376a63b54be0d83ca38b95b4b95cf9751b23caa611",
+          "hash": "c987efbef080bf13158ebc57851277a4176212aac1acc78ecd93ab9cac4e1497",
           "path": "packages/tape-core/package.json"
         },
         {
@@ -6099,6 +7880,33 @@
             "implied",
             "meanBrier",
             "reliability"
+          ],
+          "failurePaths": [
+            {
+              "in": "implied",
+              "kind": "throw",
+              "line": 32
+            },
+            {
+              "in": "implied",
+              "kind": "throw",
+              "line": 35
+            },
+            {
+              "in": "brierMulti",
+              "kind": "throw",
+              "line": 62
+            },
+            {
+              "in": "brier",
+              "kind": "throw",
+              "line": 103
+            },
+            {
+              "in": "reliability",
+              "kind": "throw",
+              "line": 137
+            }
           ],
           "hash": "9ee5f8fc7acce08c54eea0c28daeabdf77819d6e07b80620f156e46aec06abef",
           "importsFiles": [
@@ -6129,6 +7937,143 @@
           "exports": [
             "loadTape"
           ],
+          "failurePaths": [
+            {
+              "in": "walkForbidden",
+              "kind": "throw",
+              "line": 51
+            },
+            {
+              "in": "req",
+              "kind": "throw",
+              "line": 59
+            },
+            {
+              "in": "asString",
+              "kind": "throw",
+              "line": 65
+            },
+            {
+              "in": "asString",
+              "kind": "throw",
+              "line": 67
+            },
+            {
+              "in": "asStringOrNull",
+              "kind": "throw",
+              "line": 76
+            },
+            {
+              "in": "asHeaderString",
+              "kind": "throw",
+              "line": 89
+            },
+            {
+              "in": "asHeaderString",
+              "kind": "throw",
+              "line": 94
+            },
+            {
+              "in": "asHeaderString",
+              "kind": "throw",
+              "line": 101
+            },
+            {
+              "in": "asBoolean",
+              "kind": "throw",
+              "line": 111
+            },
+            {
+              "in": "asFiniteNumber",
+              "kind": "throw",
+              "line": 117
+            },
+            {
+              "in": "asFact",
+              "kind": "throw",
+              "line": 124
+            },
+            {
+              "in": "loadContainer",
+              "kind": "throw",
+              "line": 131
+            },
+            {
+              "in": "loadSeat",
+              "kind": "throw",
+              "line": 140
+            },
+            {
+              "in": "assertAtomId",
+              "kind": "throw",
+              "line": 150
+            },
+            {
+              "in": "loadAtom",
+              "kind": "throw",
+              "line": 155
+            },
+            {
+              "in": "loadRow",
+              "kind": "throw",
+              "line": 166
+            },
+            {
+              "in": "loadFact",
+              "kind": "throw",
+              "line": 181
+            },
+            {
+              "in": "loadList",
+              "kind": "throw",
+              "line": 200
+            },
+            {
+              "in": "loadList",
+              "kind": "throw",
+              "line": 202
+            },
+            {
+              "in": "assertTapeGraph",
+              "kind": "throw",
+              "line": 208
+            },
+            {
+              "in": "assertTapeGraph",
+              "kind": "throw",
+              "line": 209
+            },
+            {
+              "in": "assertTapeGraph",
+              "kind": "throw",
+              "line": 213
+            },
+            {
+              "in": "assertTapeGraph",
+              "kind": "throw",
+              "line": 219
+            },
+            {
+              "in": "assertTapeGraph",
+              "kind": "throw",
+              "line": 222
+            },
+            {
+              "in": "assertTapeGraph",
+              "kind": "throw",
+              "line": 228
+            },
+            {
+              "in": "loadTape",
+              "kind": "throw",
+              "line": 235
+            },
+            {
+              "in": "loadTape",
+              "kind": "throw",
+              "line": 239
+            }
+          ],
           "hash": "1ffa4263bcec47f3c35a2752f9d5201b82c0ddbc260af90a55f6761434f31b37",
           "importsFiles": [
             "packages/tape-core/src/types.ts"
@@ -6140,6 +8085,13 @@
             "allFactSentences",
             "formatFactForReveal"
           ],
+          "failurePaths": [
+            {
+              "in": "formatFactForReveal",
+              "kind": "throw",
+              "line": 18
+            }
+          ],
           "hash": "f54f0e03e1b55cb11c7b0d0175cc8842407e576b7acf10e1bdea474d4a71296d",
           "importsFiles": [
             "packages/tape-core/src/types.ts"
@@ -6150,6 +8102,23 @@
           "exports": [
             "factFor",
             "sliceByAtom"
+          ],
+          "failurePaths": [
+            {
+              "in": "sliceByAtom",
+              "kind": "throw",
+              "line": 7
+            },
+            {
+              "in": "sliceByAtom",
+              "kind": "throw",
+              "line": 12
+            },
+            {
+              "in": "factFor",
+              "kind": "throw",
+              "line": 22
+            }
           ],
           "hash": "664f53424b2e2dd891af7dc0a8c01751bb7ca8ed50a167e1f6acb166d5beb2ea",
           "importsFiles": [
@@ -6166,14 +8135,16 @@
           "importsFiles": [
             "packages/tape-core/src/index.ts"
           ],
-          "path": "packages/tape-core/test/calibration.test.ts"
+          "path": "packages/tape-core/test/calibration.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "df0adb15b2a110c56d0eb74d5dd24290db4757d12120d74363d23cf51b3be91a",
           "importsFiles": [
             "packages/tape-core/src/index.ts"
           ],
-          "path": "packages/tape-core/test/reveal.test.ts"
+          "path": "packages/tape-core/test/reveal.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "69cebccc8753ec5f713c093c1bb4eae0fffd1223de40c6233d67d5d0004840f4",
@@ -6181,14 +8152,16 @@
             "packages/tape-core/src/index.ts",
             "packages/tape-core/src/load.ts"
           ],
-          "path": "packages/tape-core/test/schema.test.ts"
+          "path": "packages/tape-core/test/schema.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "774b3513136c59cc39759a72484cb85937dc8e1d008c09cc94d450db57ac9820",
           "importsFiles": [
             "packages/tape-core/src/index.ts"
           ],
-          "path": "packages/tape-core/test/slice.test.ts"
+          "path": "packages/tape-core/test/slice.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "fea9cfcb057785994121b5c0768b9912cbcae898ce8c2c6c3ff57dd78ae99ee5",
@@ -6212,6 +8185,9 @@
       ],
       "outsideReads": 1,
       "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
       "testedBy": 27,
       "unresolvedSites": 0
     },
@@ -6426,7 +8402,7 @@
           "path": "packages/vibe-typer/authoring/2026-09-17-041119373-snippet-reactions.json"
         },
         {
-          "hash": "17be812ea00d8fc7eddca0315440d015e18687edd8863ce29df54e7f593c5246",
+          "hash": "e169e0502b2e74c283be49d61c2b280b4768d1d36014e9197b1dcde24bfe3c2b",
           "path": "packages/vibe-typer/package.json"
         },
         {
@@ -6434,7 +8410,7 @@
           "path": "packages/vibe-typer/patterns/agent.json"
         },
         {
-          "hash": "395a3e104649c909aab0639c12328aaf9810b2a989fff53b976b6bcfe55e1033",
+          "hash": "c66f277d1b7765e3822d73268d6c5a7d4a3cf630d00cf9a14909d6cbb80c20cf",
           "path": "packages/vibe-typer/patterns/cabinet.json"
         },
         {
@@ -6522,10 +8498,294 @@
             "voiceExemplars",
             "writerLookupNames"
           ],
+          "failurePaths": [
+            {
+              "in": "parseCandidates",
+              "kind": "throw",
+              "line": 85
+            },
+            {
+              "in": "parseCandidates",
+              "kind": "throw",
+              "line": 86
+            },
+            {
+              "in": "tryParse",
+              "kind": "catch",
+              "line": 93
+            },
+            {
+              "in": "tryParse",
+              "kind": "catch",
+              "line": 97
+            },
+            {
+              "in": "parseArgv",
+              "kind": "throw",
+              "line": 369
+            },
+            {
+              "in": "parseArgv",
+              "kind": "throw",
+              "line": 373
+            },
+            {
+              "in": "parseArgv",
+              "kind": "throw",
+              "line": 380
+            },
+            {
+              "in": "parseArgv",
+              "kind": "throw",
+              "line": 389
+            },
+            {
+              "in": "numberFlag",
+              "kind": "throw",
+              "line": 407
+            }
+          ],
           "hash": "d65cff0d41841c0f11638c9c7a315ae23ce975de91211b41b46e9f1391255555",
           "path": "packages/vibe-typer/scripts/author-lib.mjs"
         },
         {
+          "failurePaths": [
+            {
+              "in": "loadPackage",
+              "kind": "catch",
+              "line": 368
+            },
+            {
+              "in": "loadPackage",
+              "kind": "throw",
+              "line": 369
+            },
+            {
+              "in": "loadPackage",
+              "kind": "catch",
+              "line": 374
+            },
+            {
+              "in": "readJson",
+              "kind": "throw",
+              "line": 386
+            },
+            {
+              "in": "readJson",
+              "kind": "catch",
+              "line": 389
+            },
+            {
+              "in": "readJson",
+              "kind": "throw",
+              "line": 390
+            },
+            {
+              "in": "levelProduct",
+              "kind": "throw",
+              "line": 419
+            },
+            {
+              "in": "parseSpec",
+              "kind": "throw",
+              "line": 433
+            },
+            {
+              "in": "parseSpec",
+              "kind": "throw",
+              "line": 437
+            },
+            {
+              "in": "parseSpec",
+              "kind": "throw",
+              "line": 439
+            },
+            {
+              "in": "callOllama",
+              "kind": "catch",
+              "line": 470
+            },
+            {
+              "in": "callOllama",
+              "kind": "throw",
+              "line": 471
+            },
+            {
+              "in": "callOllama",
+              "kind": "catch",
+              "line": 481
+            },
+            {
+              "in": "callOllama",
+              "kind": "throw",
+              "line": 492
+            },
+            {
+              "in": "callOllama",
+              "kind": "catch",
+              "line": 514
+            },
+            {
+              "in": "callOllama",
+              "kind": "throw",
+              "line": 517
+            },
+            {
+              "in": "callOllama",
+              "kind": "throw",
+              "line": 525
+            },
+            {
+              "in": "callOpenRouter",
+              "kind": "throw",
+              "line": 531
+            },
+            {
+              "in": "callOpenRouter",
+              "kind": "catch",
+              "line": 552
+            },
+            {
+              "in": "callOpenRouter",
+              "kind": "throw",
+              "line": 553
+            },
+            {
+              "in": "callOpenRouter",
+              "kind": "throw",
+              "line": 557
+            },
+            {
+              "in": "callOpenRouter",
+              "kind": "catch",
+              "line": 565
+            },
+            {
+              "in": "callOpenRouter",
+              "kind": "throw",
+              "line": 566
+            },
+            {
+              "in": "callOpenRouter",
+              "kind": "throw",
+              "line": 569
+            },
+            {
+              "in": "callOpenRouter",
+              "kind": "throw",
+              "line": 573
+            },
+            {
+              "in": "callModel",
+              "kind": "catch",
+              "line": 609
+            },
+            {
+              "in": "callModel",
+              "kind": "throw",
+              "line": 621
+            },
+            {
+              "in": "readVoice",
+              "kind": "throw",
+              "line": 700
+            },
+            {
+              "in": "readVoice",
+              "kind": "throw",
+              "line": 703
+            },
+            {
+              "in": "askSlot",
+              "kind": "catch",
+              "line": 1142
+            },
+            {
+              "in": "askSlot",
+              "kind": "catch",
+              "line": 1153
+            },
+            {
+              "in": "commandSample",
+              "kind": "throw",
+              "line": 1199
+            },
+            {
+              "in": "commandSample",
+              "kind": "throw",
+              "line": 1204
+            },
+            {
+              "in": "commandSample",
+              "kind": "throw",
+              "line": 1214
+            },
+            {
+              "in": "commandRun",
+              "kind": "throw",
+              "line": 1592
+            },
+            {
+              "in": "commandRun",
+              "kind": "throw",
+              "line": 1596
+            },
+            {
+              "in": "slotSnippetReactions",
+              "kind": "throw",
+              "line": 2575
+            },
+            {
+              "in": "slotSnippetReactions",
+              "kind": "catch",
+              "line": 2597
+            },
+            {
+              "in": "slotSnippetReactions",
+              "kind": "catch",
+              "line": 2615
+            },
+            {
+              "in": "writerIndex",
+              "kind": "catch",
+              "line": 3040
+            },
+            {
+              "in": "commandEdit",
+              "kind": "throw",
+              "line": 3129
+            },
+            {
+              "in": "commandEdit",
+              "kind": "throw",
+              "line": 3146
+            },
+            {
+              "in": "commandEdit",
+              "kind": "throw",
+              "line": 3164
+            },
+            {
+              "in": "commandEdit",
+              "kind": "throw",
+              "line": 3185
+            },
+            {
+              "in": "commandEdit",
+              "kind": "catch",
+              "line": 3212
+            },
+            {
+              "in": "commandEdit",
+              "kind": "catch",
+              "line": 3269
+            },
+            {
+              "in": "main",
+              "kind": "throw",
+              "line": 3645
+            }
+          ],
           "hash": "6b66a3a3b0943284ad48bc6eca28ed6d81a7839b6efe025368b06fb70f3c05ed",
           "importsFiles": [
             "packages/vibe-typer/scripts/author-lib.mjs"
@@ -6539,14 +8799,40 @@
             "asTitle",
             "plan"
           ],
+          "failurePaths": [
+            {
+              "in": "andonPool",
+              "kind": "throw",
+              "line": 170
+            },
+            {
+              "in": "andonPool",
+              "kind": "throw",
+              "line": 176
+            }
+          ],
           "hash": "32a39b1169b036a032a39377a352243e1f5443ad3799588b190e19ce5bcd6fca",
           "path": "packages/vibe-typer/scripts/normalize-lines.mjs"
         },
         {
+          "failurePaths": [
+            {
+              "in": "existingAuthored",
+              "kind": "catch",
+              "line": 106
+            }
+          ],
           "hash": "3a76fc9398f907effffb30ce4f35c682fc8d195c1a6cbc62b16821bcdf17f644",
           "path": "packages/vibe-typer/scripts/port-corpus.mjs"
         },
         {
+          "failurePaths": [
+            {
+              "in": "loadPackage",
+              "kind": "catch",
+              "line": 140
+            }
+          ],
           "hash": "ef370b73766159d1c12ebc8882b3227b20714689d914a4202e2503f46d6f8146",
           "path": "packages/vibe-typer/scripts/sweep-levels.mjs"
         },
@@ -6557,6 +8843,13 @@
             "gateCode",
             "productFault",
             "reasonText"
+          ],
+          "failurePaths": [
+            {
+              "in": "gateCode",
+              "kind": "throw",
+              "line": 420
+            }
           ],
           "hash": "64c5598a0c43cfe463c02c381e39b2d3b1af612bc7c8317bf10819f2fb0f6dfd",
           "importsFiles": [
@@ -6598,6 +8891,13 @@
             "surprisal",
             "weakWeight",
             "withIntegration"
+          ],
+          "failurePaths": [
+            {
+              "in": "fail",
+              "kind": "throw",
+              "line": 51
+            }
           ],
           "hash": "ce84370861473aa64472053f997c82bc235722a68ec896b44da6ec79224d0750",
           "importOrder": [
@@ -6689,7 +8989,14 @@
             "printableLevelId",
             "wasMoved"
           ],
-          "hash": "32df2f3b27eec987b94b7f252e12bebbd56d342f17ac4b876781c94e308f4ae0",
+          "failurePaths": [
+            {
+              "in": "planLevel",
+              "kind": "throw",
+              "line": 346
+            }
+          ],
+          "hash": "c574238a671829a2da7868b23334739c01ac1ebb2d47506fd288310090ac5c4b",
           "importsFiles": [
             "packages/vibe-typer/src/corpus.ts",
             "packages/vibe-typer/src/difficulty.ts",
@@ -6722,7 +9029,14 @@
             "namesAPiece",
             "tierContext"
           ],
-          "hash": "af1ca414ce19d66112b193732ae80f72666697033589281ee7dd63163aac97a3",
+          "failurePaths": [
+            {
+              "in": "fail",
+              "kind": "throw",
+              "line": 441
+            }
+          ],
+          "hash": "5518f73c45ce8a5480c2976fa2f8a3a2637628759b2438ffe544911f0c6fcc38",
           "importOrder": [
             "packages/vibe-typer/src/types.ts",
             "packages/vibe-typer/patterns/cabinet.json",
@@ -6760,6 +9074,33 @@
             "seedFromTape",
             "typistBot"
           ],
+          "failurePaths": [
+            {
+              "in": "integrationFrom",
+              "kind": "catch",
+              "line": 151
+            },
+            {
+              "in": "integrationFrom",
+              "kind": "catch",
+              "line": 159
+            },
+            {
+              "in": "integrationFrom",
+              "kind": "throw",
+              "line": 170
+            },
+            {
+              "in": "play",
+              "kind": "catch",
+              "line": 370
+            },
+            {
+              "in": "play",
+              "kind": "catch",
+              "line": 380
+            }
+          ],
           "hash": "dcf006f9b92e1bb4e135bb0bd54b46356c0eb23edb7ecbf64bbe6a023de82e52",
           "importOrder": [
             "packages/tape-core/src/index.ts",
@@ -6791,7 +9132,34 @@
             "weakDigestOf",
             "weakFromDigest"
           ],
-          "hash": "b7fe39b48e7664c9d4926184e95e805322b4738477e60335a46f96f410bf6651",
+          "failurePaths": [
+            {
+              "in": "mintRunCode",
+              "kind": "throw",
+              "line": 189
+            },
+            {
+              "in": "mintRunCode",
+              "kind": "throw",
+              "line": 191
+            },
+            {
+              "in": "mintRunCode",
+              "kind": "throw",
+              "line": 195
+            },
+            {
+              "in": "mintRunCode",
+              "kind": "throw",
+              "line": 199
+            },
+            {
+              "in": "mintRunCode",
+              "kind": "throw",
+              "line": 202
+            }
+          ],
+          "hash": "25a8ccccbbdb404eced2e39fbbdc02dd21824016eefd605084792ac1acabd407",
           "importsFiles": [
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/seed.ts",
@@ -6851,7 +9219,39 @@
             "suppliedProductOf",
             "syncOf"
           ],
-          "hash": "8130e577ebd645d6df3ddf308cae0ad31df169c80fe77c15b3705b740d949527",
+          "failurePaths": [
+            {
+              "in": "createRun",
+              "kind": "throw",
+              "line": 689
+            },
+            {
+              "in": "createRun",
+              "kind": "throw",
+              "line": 701
+            },
+            {
+              "in": "createRun",
+              "kind": "throw",
+              "line": 707
+            },
+            {
+              "in": "createRun",
+              "kind": "throw",
+              "line": 754
+            },
+            {
+              "in": "createRun",
+              "kind": "throw",
+              "line": 756
+            },
+            {
+              "in": "stepRun",
+              "kind": "throw",
+              "line": 1319
+            }
+          ],
+          "hash": "1d401c3745fe9abb150f5849fdf5377f0cd35609738dbbfd3a50c012a492003d",
           "importOrder": [
             "packages/vibe-typer/src/corpus.ts",
             "packages/vibe-typer/src/context.ts",
@@ -6901,7 +9301,11 @@
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/spelling.ts"
           ],
-          "path": "packages/vibe-typer/test/author.test.ts"
+          "names": [
+            "packages/vibe-typer/scripts/author.mjs"
+          ],
+          "path": "packages/vibe-typer/test/author.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "039a49c4d3add325606a18e3cf648088217f46761002048496d295456c300caf",
@@ -6919,7 +9323,8 @@
             "packages/vibe-typer/src/types.ts",
             "packages/vibe-typer/test/helpers.ts"
           ],
-          "path": "packages/vibe-typer/test/band.test.ts"
+          "path": "packages/vibe-typer/test/band.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "26976b8f1926bb74710e3dcefa640e25e94dbebdf8b5a50bf51983989cc05799",
@@ -6939,7 +9344,8 @@
             "packages/vibe-typer/src/spelling.ts",
             "packages/vibe-typer/src/types.ts"
           ],
-          "path": "packages/vibe-typer/test/codegate.test.ts"
+          "path": "packages/vibe-typer/test/codegate.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "122dd03bb9b8bac115a2f48cb95ea784f307adf78a83df768354ae4d4ba13e33",
@@ -6948,7 +9354,8 @@
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/sim.ts"
           ],
-          "path": "packages/vibe-typer/test/context.test.ts"
+          "path": "packages/vibe-typer/test/context.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c87644f6aa875f6defa6dbd501351c166fbef00411dba5fa704a41c5e0f943ce",
@@ -6956,7 +9363,8 @@
             "packages/vibe-typer/src/corpus.ts",
             "packages/vibe-typer/src/patterns.ts"
           ],
-          "path": "packages/vibe-typer/test/corpus.test.ts"
+          "path": "packages/vibe-typer/test/corpus.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "c9bc985b2ba0b672dc597e6496772b5930c0ff3cc8c38a4e8832c5bb98f132ad",
@@ -6966,7 +9374,8 @@
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/types.ts"
           ],
-          "path": "packages/vibe-typer/test/difficulty.test.ts"
+          "path": "packages/vibe-typer/test/difficulty.test.ts",
+          "testFramework": "vitest"
         },
         {
           "exports": [
@@ -7012,7 +9421,8 @@
             "packages/vibe-typer/src/seed.ts",
             "packages/vibe-typer/src/types.ts"
           ],
-          "path": "packages/vibe-typer/test/level.test.ts"
+          "path": "packages/vibe-typer/test/level.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "e854688aaeb9efe128f02442a1f7c5e89d1d1c805bd72075cd7a6efedea5daca",
@@ -7022,7 +9432,8 @@
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/types.ts"
           ],
-          "path": "packages/vibe-typer/test/lines-neutral.test.ts"
+          "path": "packages/vibe-typer/test/lines-neutral.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "46b360156fe5329dc698e4b27952dda037444a4d78b27f7c72c1a4d4c8cae023",
@@ -7038,14 +9449,16 @@
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/types.ts"
           ],
-          "path": "packages/vibe-typer/test/lines.test.ts"
+          "path": "packages/vibe-typer/test/lines.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "da5e1eb4c0b2a7d4ab745c341eb1f8621ae7a4837fe7e018cf955a9177e88729",
           "importsFiles": [
             "packages/vibe-typer/scripts/normalize-lines.mjs"
           ],
-          "path": "packages/vibe-typer/test/normalize.test.ts"
+          "path": "packages/vibe-typer/test/normalize.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "1e81849998aa6661a7e8f98fb5bad8c068e77380fdea0d3eff4bf8438903150b",
@@ -7073,10 +9486,14 @@
             "packages/vibe-typer/src/corpus.ts",
             "packages/vibe-typer/src/patterns.ts"
           ],
-          "path": "packages/vibe-typer/test/patterns.test.ts"
+          "names": [
+            "packages/ghost-on-the-menu/src/patterns.ts"
+          ],
+          "path": "packages/vibe-typer/test/patterns.test.ts",
+          "testFramework": "vitest"
         },
         {
-          "hash": "a38beb69790f0472189c226e431f47a57d10c500553fde625d9c6cdbad702813",
+          "hash": "84b1db79eeaff1191e77ab1fc8d9b9e63aa5918ae4e56b0f73556e82054eb050",
           "importOrder": [
             "packages/vibe-typer/src/play.ts",
             "packages/vibe-typer/src/level.ts",
@@ -7091,7 +9508,11 @@
             "packages/vibe-typer/src/play.ts",
             "scripts/play.mjs"
           ],
-          "path": "packages/vibe-typer/test/play.test.ts"
+          "path": "packages/vibe-typer/test/play.test.ts",
+          "spawns": [
+            "scripts/play.mjs"
+          ],
+          "testFramework": "vitest"
         },
         {
           "hash": "9ecada7c5f09c23814455a7de682328075e804eeffec1614d3e144c906bf5816",
@@ -7099,14 +9520,23 @@
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/score.ts"
           ],
-          "path": "packages/vibe-typer/test/score.test.ts"
+          "path": "packages/vibe-typer/test/score.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "28e11068e5ac487fa3de9f224cdcef62bbadbfa129bd0efed65b3f0c99b4ab3e",
-          "path": "packages/vibe-typer/test/scripts.test.ts"
+          "names": [
+            "scripts/transcript.mjs"
+          ],
+          "path": "packages/vibe-typer/test/scripts.test.ts",
+          "spawns": [
+            "packages/vibe-typer/scripts/author.mjs",
+            "packages/vibe-typer/scripts/sweep-levels.mjs"
+          ],
+          "testFramework": "vitest"
         },
         {
-          "hash": "e0c4d891abd61e2b8db9635e73dae7be7bd40cb208825a472a8770ee80a5782e",
+          "hash": "4e7d19831ebfe6d21529d33d7e1d2cb6ab212b0cf58dd4eb0a29ebfff48db6d9",
           "importOrder": [
             "packages/vibe-typer/src/play.ts",
             "packages/vibe-typer/src/patterns.ts",
@@ -7129,14 +9559,24 @@
             "packages/vibe-typer/src/types.ts",
             "packages/vibe-typer/test/helpers.ts"
           ],
-          "path": "packages/vibe-typer/test/sim.test.ts"
+          "path": "packages/vibe-typer/test/sim.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "9ba3eb366ed53a7b383b325059b7a3c943060d8a987cd6b3f5fa9ab11830ec3b",
           "importsFiles": [
             "packages/vibe-typer/src/spelling.ts"
           ],
-          "path": "packages/vibe-typer/test/spelling.test.ts"
+          "names": [
+            "apps/cabinets/src/main.ts",
+            "apps/cabinets/src/typer-audio.ts",
+            "apps/cabinets/src/typer-cues.ts",
+            "apps/cabinets/src/typer-keys.ts",
+            "apps/cabinets/src/vibe-typer.ts",
+            "packages/vibe-typer/src/lines.ts"
+          ],
+          "path": "packages/vibe-typer/test/spelling.test.ts",
+          "testFramework": "vitest"
         },
         {
           "hash": "2ca7c53c26597b3d4ba09e3b4abed999eace6b5bb7595170b3b39cd620c7125a",
@@ -7168,7 +9608,10 @@
       "outsideReads": 47,
       "outsideWrites": 4,
       "role": "code",
-      "testedBy": 32,
+      "testRunners": [
+        "vitest"
+      ],
+      "testedBy": 33,
       "unresolvedNamed": [
         {
           "path": "packages/vibe-typer/scripts/author.mjs",
@@ -7207,13 +9650,96 @@
           "importsFiles": [
             "voice/worker.py"
           ],
-          "path": "voice/tests/test_worker.py"
+          "path": "voice/tests/test_worker.py",
+          "testFramework": "unittest"
         },
         {
           "exports": [
             "cast_hint",
             "cast_kinds",
             "main"
+          ],
+          "failurePaths": [
+            {
+              "in": "cast_kinds",
+              "kind": "except",
+              "line": 98
+            },
+            {
+              "in": "_cuda_dirs",
+              "kind": "except",
+              "line": 124
+            },
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 143
+            },
+            {
+              "in": "_load_asr",
+              "kind": "except",
+              "line": 172
+            },
+            {
+              "in": "_load_asr",
+              "kind": "raise",
+              "line": 174
+            },
+            {
+              "in": "_cached",
+              "kind": "except",
+              "line": 194
+            },
+            {
+              "in": "_evict",
+              "kind": "except",
+              "line": 295
+            },
+            {
+              "in": "do_GET",
+              "kind": "except",
+              "line": 405
+            },
+            {
+              "in": "do_POST",
+              "kind": "except",
+              "line": 428
+            },
+            {
+              "in": "do_POST",
+              "kind": "except",
+              "line": 435
+            },
+            {
+              "in": "do_POST",
+              "kind": "except",
+              "line": 446
+            },
+            {
+              "in": "do_POST",
+              "kind": "except",
+              "line": 460
+            },
+            {
+              "in": "process_request",
+              "kind": "except",
+              "line": 499
+            },
+            {
+              "in": "process_request",
+              "kind": "raise",
+              "line": 501
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 581
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 594
+            }
           ],
           "hash": "5b5b4d4cb6dafee3d286254fc5f0f24ee56b0025d27bf0d95cb703f243936cb2",
           "path": "voice/worker.py"
@@ -7412,7 +9938,8 @@
       ],
       "name": "CI",
       "permissions": [
-        "contents:read"
+        "contents:read",
+        "id-token:write"
       ],
       "pushes": false,
       "reach": [
@@ -7434,7 +9961,7 @@
         {
           "boundary": "launcher",
           "depth": 0,
-          "files": 14
+          "files": 16
         },
         {
           "boundary": "launcher-vibe-typer",
@@ -7893,6 +10420,19 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "coverage": true,
+          "files": 73,
+          "job": "check",
+          "runner": "vitest",
+          "step": "Test",
+          "through": [
+            "pnpm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -7907,6 +10447,7 @@
             "apps/**",
             "atlas/**",
             "catalog/**",
+            "codecov.yml",
             "eslint.config.js",
             "fixtures/**",
             "package.json",
@@ -7935,6 +10476,7 @@
             "apps/**",
             "atlas/**",
             "catalog/**",
+            "codecov.yml",
             "eslint.config.js",
             "fixtures/**",
             "package.json",
@@ -7953,7 +10495,10 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
+        "actions/upload-artifact",
+        "codecov/codecov-action",
         "docker/setup-buildx-action",
         "docker/setup-qemu-action",
         "pnpm/action-setup"
@@ -8043,9 +10588,7 @@
             "mktemp",
             "node",
             "read",
-            "sprite_count",
             "tr",
-            "track_count",
             "wc"
           ],
           "step": "Require /play/ in the dist"
@@ -8125,7 +10668,7 @@
         {
           "boundary": "launcher",
           "depth": 0,
-          "files": 13
+          "files": 15
         },
         {
           "boundary": "launcher-vibe-typer",
@@ -8683,6 +11226,18 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 73,
+          "job": "build",
+          "runner": "vitest",
+          "step": "Test",
+          "through": [
+            "pnpm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "pull_request",
@@ -8904,7 +11459,7 @@
         {
           "boundary": "launcher",
           "depth": 0,
-          "files": 13
+          "files": 15
         },
         {
           "boundary": "launcher-vibe-typer",
@@ -9257,6 +11812,19 @@
         "releases": false
       },
       "stages": [],
+      "tests": [
+        {
+          "config": "vitest.config.ts",
+          "files": 73,
+          "job": "publish",
+          "runner": "vitest",
+          "step": "Verify",
+          "through": [
+            "pnpm run verify",
+            "pnpm test"
+          ]
+        }
+      ],
       "triggers": [
         {
           "event": "release",
@@ -9368,10 +11936,10 @@
           "boundary": "launcher",
           "depth": 1,
           "enters": {
-            "file": "packages/launcher/src/serve.ts",
+            "file": "packages/launcher/src/check.ts",
             "from": "packages/launcher-vibe-typer/src/cli.ts"
           },
-          "files": 3
+          "files": 5
         }
       ],
       "readers": [],
@@ -9413,7 +11981,7 @@
         {
           "boundary": "launcher",
           "depth": 0,
-          "files": 4
+          "files": 6
         },
         {
           "boundary": "cabinet-server",
@@ -9530,10 +12098,10 @@
       "to": "tape-core"
     }
   ],
-  "engine": "1.23.0",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "745115cd1f0653a4e243b189e2cd0f749f795dc1",
-    "tracked": 751
+    "commit": "c01c274dde0c021eba60b7f6d9db23283d7d72b0",
+    "tracked": 757
   },
   "landings": [
     {
@@ -9616,6 +12184,17 @@
         }
       ],
       "target": "apps/cabinets/index.html",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "apps/cabinets/public/manifest.json",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "apps/cabinets/public/favicon.svg",
       "writers": []
     },
     {
@@ -11316,6 +13895,12 @@
           "call": "readFileSync",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "scripts/test/runners.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "fixtures/tapes/naive-ndjson.tape.json",
@@ -12373,6 +14958,9 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 76,
+  "testsNotRun": [
+    "voice/tests/test_worker.py"
+  ],
   "unassigned": [],
   "unseen": [
     {
@@ -12392,5 +14980,14 @@
       ],
       "kind": "shipped"
     }
+  ],
+  "workspaces": [
+    "apps/cabinets",
+    "packages/cabinet-server",
+    "packages/ghost-on-the-menu",
+    "packages/launcher",
+    "packages/launcher-vibe-typer",
+    "packages/tape-core",
+    "packages/vibe-typer"
   ]
 }

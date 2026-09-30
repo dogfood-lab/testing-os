@@ -1,6 +1,6 @@
 # xrpl-creator-capsule: how it works
 
-Mapped at 2026-09-28 from commit e2ce19a by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 138def5 by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,20 +8,20 @@ Mapped at 2026-09-28 from commit e2ce19a by Atlas 1.23.4.
 
 ## What changed since 2026-09-24 (1f7eeff)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - CI now also runs app/src-tauri/build.rs and app/src-tauri/src/commands.rs.
-- CI now also builds app/src-tauri/src/main.rs.
-- CI now also checks app/src-tauri/src/lib.rs.
-- And 2 more changes to doors.
+- And 4 more changes to doors.
 - app/src-tauri/gen/schemas/ is now written by app/src-tauri/build.rs.
 - app/src-tauri/icons/128x128.png is now read by app/src-tauri/tauri.conf.json.
 - app/src-tauri/icons/128x128@2x.png is now read by app/src-tauri/tauri.conf.json.
 - And 8 more new writers and readers of places.
 - app was authored and is now mixed.
-- 263 files changed content, across 12 parts.
+- 1 file added and 263 changed content, across 12 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 13 paths; on a push touching 13 paths; when a release is published; or by hand. Runs app/scripts/bundle-bridge.mjs, verify.sh, app/bridge-worker-access.test.ts and 111 more; builds app/src-tauri/src/main.rs, packages/cli/src/, packages/core/src/ and 33 more; checks app/bridge-worker-commands.ts, app/bridge-worker.ts, app/src-tauri/src/lib.rs and 5 more.
+1. **CI.** On a pull request touching 14 paths; on a push touching 14 paths; when a release is published; or by hand. Runs app/scripts/bundle-bridge.mjs, verify.sh, app/bridge-worker-access.test.ts and 111 more; builds app/src-tauri/src/main.rs, packages/cli/src/, packages/core/src/ and 33 more; checks app/bridge-worker-commands.ts, app/bridge-worker.ts, app/src-tauri/src/lib.rs and 5 more.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **capsule-desktop** (the desktop app people install). Runs app/src-tauri/src/main.rs.
 
@@ -30,7 +30,8 @@ Mapped at 2026-09-28 from commit e2ce19a by Atlas 1.23.4.
 1. The workflow runs 65 files in app, verify.sh in the repository root, 4 files in artifacts, 22 files in cli, 8 files in core, and 14 files in 3 more parts; it checks app/bridge-worker-commands.ts, app/bridge-worker.ts and app/src-tauri/src/lib.rs in app and artifacts/ in artifacts.
 2. It writes to app/src-tauri/gen/schemas/.
 3. It also writes to app/src-tauri/resources/, which is not tracked.
-4. It builds app/src-tauri/src/main.rs, packages/cli/src/, packages/core/src/, packages/storage/src/, packages/xaman/src/ and packages/xrpl/src/ into MSI and NSIS installers and uploads them to the release, on a release event.
+4. It uploads coverage to Codecov.
+5. It builds app/src-tauri/src/main.rs, packages/cli/src/, packages/core/src/, packages/storage/src/, packages/xaman/src/ and packages/xrpl/src/ into MSI and NSIS installers and uploads them to the release, on a release event.
 
 ## Who reads the results
 
@@ -53,15 +54,9 @@ Mapped at 2026-09-28 from commit e2ce19a by Atlas 1.23.4.
 
 ## What tends to change together
 
-- **app/bridge-worker.ts** and **app/src/bridge/engine.ts** changed together in 5 of 7 commits, inside the app part.
-- **app/src/components/panels/MintPanel.tsx** and **app/src/components/panels/PanelShell.tsx** changed together in 4 of 6 commits, inside the app part.
-- **app/src/bridge/engine.ts** and **app/src/state/release.tsx** changed together in 6 of 10 commits, inside the app part.
-- **app/src/bridge/engine.ts** and **app/src/components/panels/MintPanel.tsx** changed together in 4 of 7 commits, inside the app part.
-- **packages/cli/src/bin.ts** and **packages/core/src/index.ts** changed together in 5 of 9 commits, and the cli part imports the core part.
+No two source files changed together often enough to name.
 
-Confidence is low: fewer than 25 source files reach 10 revisions in the window.
-
-Window: 180 days; a pair counts from 3 shared commits, since 1 source file reaches 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 

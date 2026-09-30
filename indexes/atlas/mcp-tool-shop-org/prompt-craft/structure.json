@@ -9,7 +9,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "8d3cc0e69cc5df5e867f451e2826bb21cd5f4383c2f849e9239c508cd1ff2b2c",
+          "hash": "bd695caf7e6301854d2a73a691209cfe8d7b7c5f357f5b7cfd69b9331f5f3db1",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -200,11 +200,15 @@
           "path": "STANDARDS.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "d1f76860ef4f26a13dc8937487d4d902d03d44db6773cb76451fd8d12fdbf265",
           "path": "grok.md"
         },
         {
-          "hash": "75847430f3db55f1af2bd039bd8496b149b64df20ed87ddaf92bce02656a6f8e",
+          "hash": "43e9e3f89f0b6f8d9ec6f28eacd1789be4d91b4dbef88443dd29ec8996c30f71",
           "path": "pyproject.toml"
         },
         {
@@ -257,14 +261,14 @@
             {
               "in": "main",
               "kind": "raise",
-              "line": 425
+              "line": 437
             },
             {
               "kind": "raise",
-              "line": 486
+              "line": 498
             }
           ],
-          "hash": "cb27ed42733fd34f75faee06a3638b9f804b3f6e2837163e4d4d5f891685c0ec",
+          "hash": "4af0ba36bb8b25697083eb48f62e5d62f5a28d50f95b7cc1572d163a425db4dc",
           "path": "verify.py",
           "sequences": []
         }
@@ -10249,7 +10253,10 @@
       "landings": [],
       "mentions": [],
       "name": "ci",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -10337,6 +10344,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "pyproject.toml",
             "site/astro.config.mjs",
             "site/package-lock.json",
@@ -10351,6 +10359,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "pyproject.toml",
             "site/astro.config.mjs",
             "site/package-lock.json",
@@ -10366,8 +10375,11 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
-        "actions/setup-python"
+        "actions/setup-python",
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -10834,10 +10846,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "c800db5353d1f55a46d0f30ac96dda91dc341364",
-    "tracked": 183
+    "commit": "43f3cfe48aabc2c12a31954563cfc823abd21295",
+    "tracked": 184
   },
   "landings": [
     {

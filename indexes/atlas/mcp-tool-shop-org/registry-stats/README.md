@@ -1,6 +1,6 @@
 # registry-stats: how it works
 
-Mapped at 2026-09-28 from commit ccdcd13 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit ccdcd13 by Atlas 1.23.5.
 
 ## What this is
 

@@ -1,25 +1,29 @@
 # ai-eyes-mcp: how it works
 
-Mapped at 2026-09-28 from commit 4fba7a2 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 1199865 by Atlas 1.23.5.
 
 ## What this is
 
-6 parts, mostly Python (11 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. People run ai-eyes-mcp.
+6 parts, mostly Python (11 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 3 doors; CI, Deploy site to GitHub Pages and ai-eyes-mcp each reach 1 part, and CI is followed because a pull request goes through it. It deploys a site to GitHub Pages. People run ai-eyes-mcp.
 
 ## What changed since 2026-09-25 (f8d83a6)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - CI now also runs src/ai_eyes_mcp/__init__.py, src/ai_eyes_mcp/engine.py and src/ai_eyes_mcp/server.py.
-- No file changed.
+- And 1 more change to a door.
+- 1 file added and 2 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 6 paths; on a push touching 6 paths; or by hand. Runs src/ai_eyes_mcp/__init__.py, src/ai_eyes_mcp/engine.py, src/ai_eyes_mcp/server.py and 7 more.
+1. **CI.** On a pull request touching 7 paths; on a push touching 7 paths; or by hand. Runs src/ai_eyes_mcp/__init__.py, src/ai_eyes_mcp/engine.py and src/ai_eyes_mcp/server.py.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **ai-eyes-mcp** (a command people run). Runs src/ai_eyes_mcp/server.py.
 
 ## What happens through CI
 
-1. The workflow runs src/ai_eyes_mcp/__init__.py, src/ai_eyes_mcp/engine.py and src/ai_eyes_mcp/server.py in src and tests/ in tests.
+1. The workflow runs src/ai_eyes_mcp/__init__.py, src/ai_eyes_mcp/engine.py and src/ai_eyes_mcp/server.py in src.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -44,6 +48,8 @@ Window: 180 days; a pair counts from 3 shared commits, since 3 source files reac
 ## What no test touches
 
 Every code part is imported by at least one test.
+
+6 test files run in no workflow: tests/test_ci_gates.py, tests/test_edge_cases.py, tests/test_engine_ci.py and 3 more.
 
 verify.sh runs in no workflow.
 

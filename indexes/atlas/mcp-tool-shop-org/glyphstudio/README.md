@@ -1,6 +1,6 @@
 # glyphstudio: how it works
 
-Mapped at 2026-09-28 from commit 6767835 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit fdf655b by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,17 +8,19 @@ Mapped at 2026-09-28 from commit 6767835 by Atlas 1.23.4.
 
 ## What changed since 2026-09-24 (cfb8917)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - glyphstudio (apps/desktop/src-tauri/Cargo.toml) is a new desktop app. It runs apps/desktop/src-tauri/src/main.rs.
 - apps/desktop/src-tauri/gen/schemas/ is now written by apps/desktop/src-tauri/build.rs.
 - docs/dogfood/stage44-quality/*-post-*x*.png is now written by scripts/dogfood-44-quality.mjs.
 - docs/dogfood/stage44-quality/*-pre-*x*.png is now written by scripts/dogfood-44-quality.mjs.
 - And 3 more new writers and readers of places.
 - desktop was authored and is now mixed.
-- 652 files changed content, across 14 parts.
+- 1 file added and 653 changed content, across 14 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 8 paths; on a push to main touching 8 paths; or by hand. Runs packages/domain/src/ciGates.test.ts, packages/domain/src/shortcutManifest.test.ts, packages/domain/src/sizeProfile.test.ts and 118 more; checks packages/domain/src/, packages/mcp-sprite-server/src/ and packages/state/src/.
+1. **CI.** On a pull request to main touching 9 paths; on a push to main touching 9 paths; or by hand. Runs packages/domain/src/ciGates.test.ts, packages/domain/src/shortcutManifest.test.ts, packages/domain/src/sizeProfile.test.ts and 118 more; checks packages/domain/src/, packages/mcp-sprite-server/src/ and packages/state/src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Dogfood.** By hand. Runs no file this map can see.
 4. **glyphstudio** (a desktop app built from apps/desktop/src-tauri, which nothing ships). Runs apps/desktop/src-tauri/src/main.rs.
@@ -28,6 +30,7 @@ Mapped at 2026-09-28 from commit 6767835 by Atlas 1.23.4.
 1. The workflow runs 5 files in domain, 23 files in mcp-sprite-server, and 93 files in state; it checks packages/domain/src/ in domain, packages/mcp-sprite-server/src/ in mcp-sprite-server and packages/state/src/ in state.
 2. That reaches api-contract (4 files).
 3. It writes to docs/benchmark-assets/, examples/benchmark-assets/ and packages/mcp-sprite-server/fixtures/golden/.
+4. It uploads coverage to Codecov.
 
 ## Who reads the results
 

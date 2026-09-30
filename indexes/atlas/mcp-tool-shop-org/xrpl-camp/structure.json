@@ -13,7 +13,7 @@
           "path": ".github/freshness-report.md"
         },
         {
-          "hash": "5ac0850df1a2a12e8344be53da9cd34762c7dba6a50429010483dd770261d9b2",
+          "hash": "cca5095d183b338ca5ea1156968442c061889ec02e9fa075635fd0c2c0bb5045",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -145,6 +145,10 @@
           "path": "SHIP_GATE.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "273ae9644bb4b4e5b73c8e535f8933716f1295c1df7d204a2fe826a66a052c17",
           "path": "docker-entrypoint.sh"
         },
@@ -153,7 +157,7 @@
           "path": "package.json"
         },
         {
-          "hash": "b2ca842579d6c2f784e4b82390c6401cf69a6524c598b4d3995975a4141e6b19",
+          "hash": "c4c6e9177d7a4b491b7a66bc7464a95cc8f940ed403dc93d8f081d4f7f3e9321",
           "path": "pyproject.toml"
         }
       ],
@@ -188,7 +192,7 @@
           "path": "scripts/verify-pypi-publish.sh"
         },
         {
-          "hash": "6d939c1aeaf7ca9c03fc3c9e8f9268003d6ebeb9e4373243936de34cc3a8c929",
+          "hash": "b106a3c647e84e4f98c4ab390336ae8bf5a17eb1c1be8b8b43172ffc5dc4eef1",
           "path": "scripts/verify.sh"
         }
       ],
@@ -953,9 +957,6 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
-      "testRunners": [
-        "pytest"
-      ],
       "testedBy": 0,
       "unresolvedSites": 0
     },
@@ -8083,9 +8084,6 @@
       "outsideReads": 9,
       "outsideWrites": 5,
       "role": "code",
-      "testRunners": [
-        "pytest"
-      ],
       "testedBy": 19,
       "unresolvedNamed": [
         {
@@ -8099,7 +8097,7 @@
   ],
   "doors": [
     {
-      "checksCount": 2,
+      "checksCount": 3,
       "commands": [
         {
           "job": "lint-and-test",
@@ -8199,7 +8197,8 @@
       "mentions": [],
       "name": "CI",
       "permissions": [
-        "contents:read"
+        "contents:read",
+        "id-token:write"
       ],
       "pushes": false,
       "reach": [
@@ -8244,9 +8243,10 @@
         {
           "directory": true,
           "job": "lint-and-test",
+          "matched": true,
           "path": "tests/",
-          "runKind": "executes",
-          "via": "scripts/verify.sh"
+          "runKind": "checks",
+          "via": "scripts/verify.sh → ruff"
         },
         {
           "directory": true,
@@ -8272,7 +8272,7 @@
       "tests": [
         {
           "config": "pyproject.toml",
-          "files": 21,
+          "files": 0,
           "job": "lint-and-test",
           "runner": "pytest",
           "step": "Verify (lint + test + build + smoke)",
@@ -8293,6 +8293,7 @@
             ".github/workflows/**",
             "atlas/**",
             "bin/**",
+            "codecov.yml",
             "package.json",
             "pyproject.toml",
             "scripts/**",
@@ -8309,6 +8310,7 @@
             ".github/workflows/**",
             "atlas/**",
             "bin/**",
+            "codecov.yml",
             "package.json",
             "pyproject.toml",
             "scripts/**",
@@ -8325,8 +8327,11 @@
       ],
       "uses": [
         "actions/checkout",
+        "actions/download-artifact",
         "actions/setup-node",
-        "astral-sh/setup-uv"
+        "actions/upload-artifact",
+        "astral-sh/setup-uv",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -9003,10 +9008,10 @@
       "to": "xrpl_camp"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "8af7371876e940ba47b35af0bb39e9080d541074",
-    "tracked": 85
+    "commit": "eaa4028bdb0dbdf39f54bc1137b98716c83146fd",
+    "tracked": 86
   },
   "landings": [
     {
@@ -9133,17 +9138,6 @@
     {
       "readers": [
         {
-          "by": "scripts/verify.sh",
-          "call": "literal",
-          "confidence": "text"
-        }
-      ],
-      "target": "tests",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
           "by": "scripts/check-versions.sh",
           "call": "literal",
           "confidence": "text"
@@ -9163,5 +9157,25 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 29,
+  "testsNotRun": [
+    "tests/test_certificate.py",
+    "tests/test_cli.py",
+    "tests/test_cli_behaviour.py",
+    "tests/test_dry_run.py",
+    "tests/test_errors.py",
+    "tests/test_failure_gate.py",
+    "tests/test_features.py",
+    "tests/test_lessons.py",
+    "tests/test_live_testnet.py",
+    "tests/test_models.py",
+    "tests/test_proof_pack.py",
+    "tests/test_seed_guard.py",
+    "tests/test_state_hygiene.py",
+    "tests/test_transport.py",
+    "tests/test_transport_contract.py",
+    "tests/test_version.py",
+    "tests/test_wallet.py",
+    "tests/test_xrpl_models.py"
+  ],
   "unassigned": []
 }

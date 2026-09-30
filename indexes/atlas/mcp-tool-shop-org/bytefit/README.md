@@ -1,6 +1,6 @@
 # bytefit: how it works
 
-Mapped at 2026-09-28 from commit 0f920ec by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 41121c5 by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,13 +8,15 @@ Mapped at 2026-09-28 from commit 0f920ec by Atlas 1.23.4.
 
 ## What changed since 2026-09-24 (1941e05)
 
+- ci's pull request trigger now also names `codecov.yml`.
+- ci's push trigger now also names `codecov.yml`.
 - ci now also runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more.
-- Release now also runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more.
-- 88 files changed content, across 5 parts.
+- And 1 more change to a door.
+- 1 file added and 88 changed content, across 5 parts.
 
 ## What comes in
 
-1. **ci.** On a pull request touching 9 paths; on a push touching 9 paths; or by hand. Runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more; builds src/.
+1. **ci.** On a pull request touching 10 paths; on a push touching 10 paths; or by hand. Runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Release.** When a tag matching `v*` is pushed. Runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more; builds src/.
 4. **@mcptoolshop/bytefit** (the package people import). Loads src/index.ts.
@@ -23,6 +25,7 @@ Mapped at 2026-09-28 from commit 0f920ec by Atlas 1.23.4.
 ## What happens through ci
 
 1. The workflow runs 16 files in src; it builds src/ in src.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 

@@ -33,7 +33,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "root",
-      "qualifyingSourceCommits": 2,
+      "qualifyingSourceCommits": 3,
       "rebaseline": null
     },
     {
@@ -83,7 +83,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "tests",
-      "qualifyingSourceCommits": 12,
+      "qualifyingSourceCommits": 13,
       "rebaseline": null
     }
   ],
@@ -91,8 +91,8 @@
     "definition": "commits is how many commits in the window touch the file, including merges and commits dropped from coupling. lines is added plus deleted in those commits.",
     "files": [
       {
-        "commits": 11,
-        "lines": 118,
+        "commits": 13,
+        "lines": 304,
         "path": ".github/workflows/ci.yml"
       },
       {
@@ -199,6 +199,11 @@
         "commits": 2,
         "lines": 10772,
         "path": "atlas/structure.json"
+      },
+      {
+        "commits": 2,
+        "lines": 36,
+        "path": "codecov.yml"
       },
       {
         "commits": 5,
@@ -431,8 +436,8 @@
         "path": "tests/analyze-correctness.test.ts"
       },
       {
-        "commits": 2,
-        "lines": 204,
+        "commits": 4,
+        "lines": 214,
         "path": "tests/analyze-cost.test.ts"
       },
       {
@@ -576,23 +581,23 @@
         "path": "tsconfig.test.json"
       },
       {
-        "commits": 3,
-        "lines": 33,
+        "commits": 5,
+        "lines": 53,
         "path": "vitest.config.ts"
       }
     ]
   },
   "confidence": {
     "level": "low",
-    "reason": "fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions"
+    "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-09-28T13:20:45.914Z",
+  "generatedAt": "2026-09-30T18:03:33.077Z",
   "generatedFrom": {
-    "commit": "fbec7b5a99b2eefbd01efe431ff1c1dcc07e5a03"
+    "commit": "ced7dd138c9f1aabf54a4d5ca1bbcf745d3e6598"
   },
   "pairs": [],
   "parameters": {
-    "appliedChangesetLimit": 24.5,
+    "appliedChangesetLimit": 24.75,
     "changeset": 50,
     "changesetFraction": 0.25,
     "cohesionDrop": 0.2,
@@ -600,17 +605,17 @@
     "fallenShared": 3,
     "floor": "fallen",
     "floorHeld": false,
-    "floorTrigger": "both",
-    "headDate": "2026-09-27T20:50:41-04:00",
-    "inScopeFiles": 98,
+    "floorTrigger": "revision-depth",
+    "headDate": "2026-09-29T15:24:57-07:00",
+    "inScopeFiles": 99,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 28,
+    "qualifyingCommits": 31,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-01T00:50:41.000Z",
+    "since": "2026-04-02T22:24:57.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",

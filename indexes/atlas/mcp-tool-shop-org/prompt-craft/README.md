@@ -1,6 +1,6 @@
 # prompt-craft: how it works
 
-Mapped at 2026-09-28 from commit c800db5 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 43f3cfe by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,19 +8,19 @@ Mapped at 2026-09-28 from commit c800db5 by Atlas 1.23.4.
 
 ## What changed since 2026-09-25 (cdc0bed)
 
+- ci's pull request trigger now also names `codecov.yml`.
+- ci's push trigger now also names `codecov.yml`.
 - ci now also runs tests/.
-- ci now also checks src/ and src/pcraft/.
-- release now also runs tests/.
-- And 2 more changes to doors.
+- And 4 more changes to doors.
 - src/pcraft/domains/image/subdomains/sprite/poses/turnaround/ is now written by scripts/draw_openpose_plates.py.
 - src/pcraft/domains/image/subdomains/sprite/poses/two-hand-weapon.openpose.png is now written by scripts/draw_openpose_plates.py.
 - src was authored and is now mixed.
-- No file changed.
+- 1 file added and 3 changed content, across 2 parts.
 
 ## What comes in
 
 1. **release.** When a release is published; or by hand. Runs tests/ and verify.py; checks src/. On a run by hand with dry_run false, it also runs npm/bin/pcraft.mjs.
-2. **ci.** On a pull request touching 9 paths; on a push touching 9 paths; or by hand. Runs tests/ and verify.py; checks src/.
+2. **ci.** On a pull request touching 10 paths; on a push touching 10 paths; or by hand. Runs tests/ and verify.py; checks src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **pcraft** (a command people run, from pyproject.toml). Runs src/pcraft/cli/__init__.py.
 5. **pcraft** (a command people run, from npm/package.json). Runs npm/bin/pcraft.mjs.
@@ -38,7 +38,7 @@ release writes nothing this map can see.
 
 ## The other doors
 
-**ci** runs tests/ and verify.py, checks src/, and reaches scripts.
+**ci** runs tests/ and verify.py, checks src/, reaches scripts, and uploads coverage to Codecov.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -57,8 +57,8 @@ release writes nothing this map can see.
 ## What tends to change together
 
 - **src/pcraft/core/receipt/asset_record.py** and **tests/test_receipt_replay.py** changed together in 6 of 7 commits, and the tests part imports the src part.
-- **tests/test_verify_legs.py** and **verify.py** changed together in 7 of 9 commits, and the tests part imports the repository root.
 - **src/pcraft/core/gate/checkpoint.py** and **tests/test_feat_checkpoint.py** changed together in 5 of 7 commits, and the tests part imports the src part.
+- **tests/test_verify_legs.py** and **verify.py** changed together in 7 of 10 commits, and the tests part imports the repository root.
 - **src/pcraft/core/contract/loader.py** and **tests/test_amend_contract.py** changed together in 8 of 12 commits, and the tests part imports the src part.
 - **src/pcraft/core/gate/exit_contract.py** and **tests/test_gate_exit.py** changed together in 6 of 9 commits, and the tests part imports the src part.
 

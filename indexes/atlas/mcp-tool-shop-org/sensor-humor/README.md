@@ -1,6 +1,6 @@
 # sensor-humor: how it works
 
-Mapped at 2026-09-28 from commit 53be69f by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit a2c1927 by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,12 +8,14 @@ Mapped at 2026-09-28 from commit 53be69f by Atlas 1.23.4.
 
 ## What changed since 2026-09-24 (6e8ea9a)
 
-Nothing structural changed since 2026-09-24; 152 files changed content.
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
+- 1 file added and 152 changed content, across 8 parts.
 
 ## What comes in
 
 1. **Release.** When a tag matching `v*` is pushed. Runs scripts/check-pack.mjs, src/index.ts, tests/capture.test.ts and 25 more; builds src/; packs package-lock.json, package.json, tsconfig.build.json and 1 more into an image.
-2. **CI.** On a pull request touching 12 paths; on a push touching 12 paths; or by hand. Runs scripts/check-pack.mjs, tests/capture.test.ts, tests/character-voice-schema.test.ts and 24 more; builds src/.
+2. **CI.** On a pull request touching 13 paths; on a push touching 13 paths; or by hand. Runs scripts/check-pack.mjs, tests/capture.test.ts, tests/character-voice-schema.test.ts and 24 more; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/sensor-humor** (the package's entry, which runs the command sensor-humor; it is not a library). Loads src/index.ts.
 5. **sensor-humor** (a command people run). Runs src/index.ts.
@@ -30,7 +32,7 @@ Release writes nothing this map can see.
 
 ## The other doors
 
-**CI** runs scripts/check-pack.mjs, tests/capture.test.ts, tests/character-voice-schema.test.ts and 24 more, builds src/, and scans for secrets with TruffleHog.
+**CI** runs scripts/check-pack.mjs, tests/capture.test.ts, tests/character-voice-schema.test.ts and 24 more, builds src/, uploads coverage to Codecov, and scans for secrets with TruffleHog.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -46,17 +48,17 @@ Release writes nothing this map can see.
 
 ## What tends to change together
 
-- **src/tools/heckle.ts** and **src/tools/roast.ts** changed together in 13 of 15 commits, inside the src part.
-- **src/ollama.ts** and **src/tools/catchphrase.ts** changed together in 10 of 14 commits, inside the src part.
-- **src/tools/comic_timing.ts** and **src/tools/roast.ts** changed together in 12 of 17 commits, inside the src part.
-- **src/tools/catchphrase.ts** and **src/tools/roast.ts** changed together in 10 of 15 commits, inside the src part.
-- **src/tools/catchphrase.ts** and **src/tools/comic_timing.ts** changed together in 10 of 16 commits, inside the src part.
+- **src/tools/heckle.ts** and **src/tools/roast.ts** changed together in 8 of 10 commits, inside the src part.
+- **src/ollama.ts** and **src/tools/catchphrase.ts** changed together in 7 of 9 commits, inside the src part.
+- **src/tools/catchphrase.ts** and **src/tools/roast.ts** changed together in 7 of 9 commits, inside the src part.
+- **src/ollama.ts** and **src/tools/comic_timing.ts** changed together in 8 of 11 commits, inside the src part.
+- **src/tools/comic_timing.ts** and **src/tools/roast.ts** changed together in 8 of 11 commits, inside the src part.
 
-1 file changed together with its own test, as expected.
+3 files changed together with their own tests, as expected.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 11 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 3 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 

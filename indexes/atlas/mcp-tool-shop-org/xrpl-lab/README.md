@@ -1,6 +1,6 @@
 # xrpl-lab: how it works
 
-Mapped at 2026-09-28 from commit 454f364 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 15a48f1 by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,12 +8,14 @@ Mapped at 2026-09-28 from commit 454f364 by Atlas 1.23.4.
 
 ## What changed since 2026-09-25 (0b2dd2f)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - Smoke Test (Testnet) now also runs xrpl_lab/transport/xrpl_testnet.py.
-- No file changed.
+- 1 file added and 3 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 10 paths; on a push touching 10 paths; or by hand. Runs tests/, site/src/lib/artifacts-panels.test.ts and site/src/lib/dashboard-ui.test.ts; checks xrpl_lab/.
+1. **CI.** On a pull request touching 11 paths; on a push touching 11 paths; or by hand. Runs tests/, site/src/lib/artifacts-panels.test.ts and site/src/lib/dashboard-ui.test.ts; checks xrpl_lab/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Release Binaries.** When a release is published; when the workflow Release completes; or by hand. Builds xrpl_lab/__main__.py.
 4. **Smoke Test (Testnet).** By hand. Runs xrpl_lab/transport/xrpl_testnet.py.
@@ -26,6 +28,7 @@ Mapped at 2026-09-28 from commit 454f364 by Atlas 1.23.4.
 
 1. The workflow runs site/src/lib/artifacts-panels.test.ts and site/src/lib/dashboard-ui.test.ts in the site and tests/ in tests; it checks xrpl_lab/ in xrpl_lab.
 2. That reaches scripts (1 file).
+3. It uploads coverage to Codecov.
 
 ## Who reads the results
 

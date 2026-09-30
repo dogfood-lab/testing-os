@@ -1,6 +1,6 @@
 # repo-knowledge: how it works
 
-Mapped at 2026-09-28 from commit f0654a0 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit f0654a0 by Atlas 1.23.5.
 
 ## What this is
 

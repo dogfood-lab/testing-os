@@ -1,6 +1,6 @@
 # role-os: how it works
 
-Mapped at 2026-09-28 from commit c0ee720 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 64fe05b by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,15 +8,17 @@ Mapped at 2026-09-28 from commit c0ee720 by Atlas 1.23.4.
 
 ## What changed since 2026-09-25 (3877c03)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - dossier/data.js is now read by dossier/dossier.html.
 - tools/conformance-dataset/audit.py is now read by tools/conformance-dataset/build_conformance_dataset.py.
 - tools/conformance-dataset/config.py is now read by tools/conformance-dataset/build_conformance_dataset.py, tools/conformance-dataset/certify_conformance.py, tools/conformance-dataset/conformance_puzzles.py and tools/conformance-dataset/dogfood_conformance.py.
 - And 1 more new writer or reader of a place.
-- No file changed.
+- 1 file added and 1 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 13 paths; on a push touching 13 paths; or by hand. Runs bin/roleos.mjs and test/.
+1. **CI.** On a pull request touching 14 paths; on a push touching 14 paths; or by hand. Runs bin/roleos.mjs and test/.
 2. **Release.** When a release is published; or by hand. Runs test/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **roleos** (a command people run). Runs bin/roleos.mjs.
@@ -25,6 +27,7 @@ Mapped at 2026-09-28 from commit c0ee720 by Atlas 1.23.4.
 
 1. The workflow runs bin/roleos.mjs in bin and test/ in test.
 2. That reaches src (70 files).
+3. It uploads coverage to Codecov.
 
 ## Who reads the results
 

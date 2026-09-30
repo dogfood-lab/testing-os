@@ -1,6 +1,6 @@
 # roll: how it works
 
-Mapped at 2026-09-28 from commit fbec7b5 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit ced7dd1 by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,11 +8,13 @@ Mapped at 2026-09-28 from commit fbec7b5 by Atlas 1.23.4.
 
 ## What changed since 2026-09-24 (97f0f4f)
 
-Nothing structural changed since 2026-09-24; 1 file added and 92 changed content.
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
+- 2 files added and 92 changed content, across 5 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 10 paths; on a push touching 10 paths; or by hand. Runs src/bin.ts and tests/; builds src/.
+1. **CI.** On a pull request touching 11 paths; on a push touching 11 paths; or by hand. Runs src/bin.ts and tests/; builds src/.
 2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/roll** (the package people import). Loads src/index.ts, src/bridge/handler.ts and src/tables/engine.ts.
@@ -23,6 +25,7 @@ Nothing structural changed since 2026-09-24; 1 file added and 92 changed content
 ## What happens through CI
 
 1. The workflow runs src/bin.ts in src and tests/ in tests; it builds src/ in src.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -51,7 +54,7 @@ CI writes nothing this map can see.
 
 No two source files changed together often enough to name.
 
-Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
+Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -82,6 +85,6 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 2 reads go to a path their caller passes, not to this repository.
-- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

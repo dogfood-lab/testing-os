@@ -1,6 +1,6 @@
 # backprop-trace: how it works
 
-Mapped at 2026-09-28 from commit 8b16ae0 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit b40b7a6 by Atlas 1.23.5.
 
 ## What this is
 
@@ -13,7 +13,7 @@ Mapped at 2026-09-28 from commit 8b16ae0 by Atlas 1.23.4.
 - fixtures/bad/*.meta.json is now written by scripts/build-pytorch-helper-fixtures.mjs.
 - fixtures/external/pytorch.helper-emitted.adamw.sidecar.jsonl is now written by scripts/generate-pytorch-helper-goldens.py.
 - And 10 more new writers and readers of places.
-- No file changed.
+- 1 file added and 1 changed content, across 2 parts.
 
 ## What comes in
 
@@ -28,6 +28,7 @@ Mapped at 2026-09-28 from commit 8b16ae0 by Atlas 1.23.4.
 ## What happens through ci
 
 1. The workflow runs 105 files in test; it builds src/ in src; it checks fixtures/mazur.golden.jsonl in fixtures and test/ in test.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 

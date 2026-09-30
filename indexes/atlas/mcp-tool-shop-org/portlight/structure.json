@@ -10698,11 +10698,12 @@
           "exports": [
             "check_all_invariants"
           ],
-          "hash": "5c96fb6a7cd8f15638b2009a7255b67b37577eaf47b60b7410be5e0ce10756a1",
+          "hash": "a9a342409a2dc4d18492fb615182459d692d8506d71bd5fee0790f2fe3ccbddc",
           "importOrder": [
             "src/portlight/stress/types.py",
             "src/portlight/app/session.py",
             "src/portlight/content/upgrades.py",
+            "src/portlight/engine/economy.py",
             "src/portlight/engine/ship_stats.py",
             "src/portlight/content/infrastructure.py",
             "src/portlight/engine/models.py"
@@ -10711,6 +10712,7 @@
             "src/portlight/app/session.py",
             "src/portlight/content/infrastructure.py",
             "src/portlight/content/upgrades.py",
+            "src/portlight/engine/economy.py",
             "src/portlight/engine/models.py",
             "src/portlight/engine/ship_stats.py",
             "src/portlight/stress/types.py"
@@ -10767,14 +10769,21 @@
                   }
                 },
                 {
-                  "line": 70,
+                  "line": 74,
+                  "name": "cargo_weight",
+                  "target": {
+                    "file": "src/portlight/engine/economy.py"
+                  }
+                },
+                {
+                  "line": 75,
                   "name": "resolve_cargo_capacity",
                   "target": {
                     "file": "src/portlight/engine/ship_stats.py"
                   }
                 },
                 {
-                  "line": 70,
+                  "line": 75,
                   "name": "UPGRADES",
                   "passed": true,
                   "target": {
@@ -10782,7 +10791,7 @@
                   }
                 },
                 {
-                  "line": 71,
+                  "line": 76,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -10798,7 +10807,7 @@
               "calls": [
                 {
                   "branch": "slot.stock_current < 0",
-                  "line": 83,
+                  "line": 88,
                   "name": "InvariantResult",
                   "over": "port.market",
                   "target": {
@@ -10806,7 +10815,7 @@
                   }
                 },
                 {
-                  "line": 89,
+                  "line": 94,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -10821,7 +10830,7 @@
             {
               "calls": [
                 {
-                  "line": 105,
+                  "line": 110,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -10837,7 +10846,7 @@
               "calls": [
                 {
                   "branch": "c.delivered_quantity > c.required_quantity",
-                  "line": 117,
+                  "line": 122,
                   "name": "InvariantResult",
                   "over": "s.board.active",
                   "target": {
@@ -10845,7 +10854,7 @@
                   }
                 },
                 {
-                  "line": 123,
+                  "line": 128,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -10861,7 +10870,7 @@
               "calls": [
                 {
                   "branch": "not w.active and w.inventory",
-                  "line": 138,
+                  "line": 143,
                   "name": "InvariantResult",
                   "over": "s.infra.warehouses",
                   "target": {
@@ -10869,7 +10878,7 @@
                   }
                 },
                 {
-                  "line": 144,
+                  "line": 149,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -10885,7 +10894,7 @@
               "calls": [
                 {
                   "branch": "used > w.capacity",
-                  "line": 158,
+                  "line": 163,
                   "name": "InvariantResult",
                   "over": "s.infra.warehouses",
                   "target": {
@@ -10893,7 +10902,7 @@
                   }
                 },
                 {
-                  "line": 164,
+                  "line": 169,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -10909,7 +10918,7 @@
               "calls": [
                 {
                   "branch": "policy.total_paid_out > policy.coverage_cap",
-                  "line": 188,
+                  "line": 193,
                   "name": "InvariantResult",
                   "over": "s.infra.policies",
                   "target": {
@@ -10917,7 +10926,7 @@
                   }
                 },
                 {
-                  "line": 203,
+                  "line": 208,
                   "name": "get",
                   "target": {
                     "file": "src/portlight/content/infrastructure.py"
@@ -10925,7 +10934,7 @@
                 },
                 {
                   "branch": "claim.payout > cap",
-                  "line": 208,
+                  "line": 213,
                   "name": "InvariantResult",
                   "over": "s.infra.claims",
                   "target": {
@@ -10933,7 +10942,7 @@
                   }
                 },
                 {
-                  "line": 214,
+                  "line": 219,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -10949,7 +10958,7 @@
               "calls": [
                 {
                   "branch": "not cred or not cred.active",
-                  "line": 229,
+                  "line": 234,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -10957,14 +10966,14 @@
                 },
                 {
                   "branch": "cred.outstanding > cred.credit_limit",
-                  "line": 235,
+                  "line": 240,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
                   }
                 },
                 {
-                  "line": 241,
+                  "line": 246,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -10980,7 +10989,7 @@
               "calls": [
                 {
                   "branch": "not cred",
-                  "line": 252,
+                  "line": 257,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -10988,14 +10997,14 @@
                 },
                 {
                   "branch": "cred.defaults >= 3 and cred.active",
-                  "line": 259,
+                  "line": 264,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
                   }
                 },
                 {
-                  "line": 265,
+                  "line": 270,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -11011,14 +11020,14 @@
               "calls": [
                 {
                   "branch": "len(ids) != len(set(ids))",
-                  "line": 281,
+                  "line": 286,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
                   }
                 },
                 {
-                  "line": 287,
+                  "line": 292,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -11034,14 +11043,14 @@
               "calls": [
                 {
                   "branch": "len(ids) != len(set(ids))",
-                  "line": 298,
+                  "line": 303,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
                   }
                 },
                 {
-                  "line": 304,
+                  "line": 309,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -11057,14 +11066,14 @@
               "calls": [
                 {
                   "branch": "len(firsts) > 1",
-                  "line": 315,
+                  "line": 320,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
                   }
                 },
                 {
-                  "line": 321,
+                  "line": 326,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -11080,7 +11089,7 @@
               "calls": [
                 {
                   "branch": "ship.crew != ship.roster.total",
-                  "line": 337,
+                  "line": 342,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -11088,7 +11097,7 @@
                 },
                 {
                   "branch": "r and r.total > 0 and owned.ship.crew != r.total",
-                  "line": 346,
+                  "line": 351,
                   "name": "InvariantResult",
                   "over": "s.captain.fleet",
                   "target": {
@@ -11096,7 +11105,7 @@
                   }
                 },
                 {
-                  "line": 352,
+                  "line": 357,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -11111,14 +11120,14 @@
             {
               "calls": [
                 {
-                  "line": 359,
+                  "line": 364,
                   "name": "max_fleet_size",
                   "target": {
                     "file": "src/portlight/engine/models.py"
                   }
                 },
                 {
-                  "line": 361,
+                  "line": 366,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -11134,7 +11143,7 @@
               "calls": [
                 {
                   "branch": "ship and len(ship.upgrades) > ship.upgrade_slots",
-                  "line": 373,
+                  "line": 378,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -11142,7 +11151,7 @@
                 },
                 {
                   "branch": "len(owned.ship.upgrades) > owned.ship.upgrade_slots",
-                  "line": 381,
+                  "line": 386,
                   "name": "InvariantResult",
                   "over": "s.captain.fleet",
                   "target": {
@@ -11150,7 +11159,7 @@
                   }
                 },
                 {
-                  "line": 387,
+                  "line": 392,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -11166,14 +11175,14 @@
               "calls": [
                 {
                   "branch": "val < 0",
-                  "line": 398,
+                  "line": 403,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
                   }
                 },
                 {
-                  "line": 404,
+                  "line": 409,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -11188,7 +11197,7 @@
             {
               "calls": [
                 {
-                  "line": 409,
+                  "line": 414,
                   "name": "InvariantResult",
                   "target": {
                     "file": "src/portlight/stress/types.py"
@@ -11451,7 +11460,7 @@
           "testFramework": "pytest"
         },
         {
-          "hash": "e1f8c6d6653c425ab51401f9f1ec234522c72026b7262027298632590fd268b9",
+          "hash": "b338c3ec47147869e25b42af10c86c10fc15677b3cc58af6babf69a8fb8a7b9f",
           "importsFiles": [
             "src/portlight/app/session.py",
             "src/portlight/engine/campaign.py",
@@ -13599,9 +13608,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "9b02494cca9cd8f58c4531c41f75be02c9720e43",
+    "commit": "26b6267d76105b20ab1b8c4ebe3c6602c1d63a01",
     "tracked": 264
   },
   "landings": [

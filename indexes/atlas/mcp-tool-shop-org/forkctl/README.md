@@ -1,6 +1,6 @@
 # forkctl: how it works
 
-Mapped at 2026-09-28 from commit 72e9d21 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 55f9f76 by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,11 +8,13 @@ Mapped at 2026-09-28 from commit 72e9d21 by Atlas 1.23.4.
 
 ## What changed since 2026-09-24 (31ad2f4)
 
-Nothing structural changed since 2026-09-24; no file changed.
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
+- 1 file added and 3 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 11 paths; on a push to main touching 11 paths; or by hand. Runs tests/assess.test.ts, tests/audit.test.ts, tests/backend-hardening.test.ts and 47 more; builds src/.
+1. **CI.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs tests/assess.test.ts, tests/audit.test.ts, tests/backend-hardening.test.ts and 47 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **forkctl** (a command people run). Runs src/cli.ts.
 4. **forkctl-mcp** (a command people run). Runs src/server.ts.
@@ -21,6 +23,7 @@ Nothing structural changed since 2026-09-24; no file changed.
 ## What happens through CI
 
 1. The workflow runs 50 files in tests; it builds src/ in src.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 

@@ -9,7 +9,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "d6647e8b96c94e2a36a8a7153e884d7873a45b9c343ea7ab04595cc6633ec8b9",
+          "hash": "4cc659729e805c8d9ad5e4aaa538d2e02c6851bed6b95f57f823ab8d92ae429a",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -96,6 +96,10 @@
           "path": "SHIP_GATE.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "120eaaa4757f8a666e4e5feb0c017671d4a145b3c669935456f320385c380399",
           "path": "package-lock.json"
         },
@@ -112,7 +116,7 @@
           "path": "tsconfig.test.json"
         },
         {
-          "hash": "2719e434c1f7eb77f1cffb041078d1c6f9f337134729ca2b602a90197cee780f",
+          "hash": "a5b65f23556c697aa798fd045b83eb3487515cf3178c3d52c2481343f3e4c7a5",
           "path": "vitest.config.ts"
         }
       ],
@@ -5213,7 +5217,7 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "e9af43db1eb447a6bf20f454d5d446f2819fe119f5497c834e67f1374e57c30b",
+          "hash": "be07e4b13f0b60ff8e6e5014613265d60b393a1708248700cbb05aed4748a53c",
           "importOrder": [
             "src/parser/parser.ts",
             "src/analyze/distribution.ts",
@@ -5620,7 +5624,7 @@
           "programs": [
             "node"
           ],
-          "step": "6"
+          "step": "8"
         }
       ],
       "elsewhere": [],
@@ -5633,7 +5637,10 @@
         }
       ],
       "name": "CI",
-      "permissions": [],
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
       "pushes": false,
       "reach": [
         {
@@ -5704,6 +5711,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "site/astro.config.mjs",
@@ -5719,6 +5727,7 @@
           "paths": [
             ".github/workflows/**",
             "atlas/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "site/astro.config.mjs",
@@ -5735,7 +5744,10 @@
       ],
       "uses": [
         "actions/checkout",
-        "actions/setup-node"
+        "actions/download-artifact",
+        "actions/setup-node",
+        "actions/upload-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -6197,10 +6209,10 @@
       "to": "src"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "fbec7b5a99b2eefbd01efe431ff1c1dcc07e5a03",
-    "tracked": 93
+    "commit": "ced7dd138c9f1aabf54a4d5ca1bbcf745d3e6598",
+    "tracked": 94
   },
   "landings": [
     {

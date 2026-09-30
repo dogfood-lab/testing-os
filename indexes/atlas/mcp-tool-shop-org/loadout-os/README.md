@@ -1,6 +1,6 @@
 # loadout-os: how it works
 
-Mapped at 2026-09-28 from commit 61d98b6 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 4999e6c by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,20 +8,20 @@ Mapped at 2026-09-28 from commit 61d98b6 by Atlas 1.23.4.
 
 ## What changed since 2026-09-23 (741a092)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - CI now also runs packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts, packages/cli/src/tests/doctor.test.ts and 11 more.
-- Release now also runs packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts, packages/cli/src/tests/doctor.test.ts and 9 more.
-- loadout-os (packages/cli/package.json) is a new command. It runs no file this map can see.
-- And 3 more changes to doors.
+- And 5 more changes to doors.
 - .claude/CLAUDE.md is now also read by packages/cli/src/tests/split.test.ts.
 - apps/hook/ is now also read by ROADMAP.md.
 - packages/kernel/site/src/content/docs/ is now read by packages/kernel/site/astro.config.mjs.
 - And 10 more new writers and readers of places.
 - .claude was generated and is now authored.
-- 376 files changed content, across 9 parts.
+- 1 file added and 376 changed content, across 9 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts, packages/cli/src/tests/doctor.test.ts and 31 more; builds packages/cli/src/, packages/kernel/src/, packages/memories/src/ and 17 more. On a push to main, it also runs site/astro.config.mjs and site/src/.
+1. **CI.** On a pull request touching 9 paths; on a push to main touching 9 paths; or by hand. Runs packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts, packages/cli/src/tests/doctor.test.ts and 31 more; builds packages/cli/src/, packages/kernel/src/, packages/memories/src/ and 17 more. On a push to main, it also runs site/astro.config.mjs and site/src/.
 2. **Release.** When a tag matching `v*` is pushed. Runs packages/cli/esbuild.config.mjs, packages/cli/src/tests/console.test.ts, packages/cli/src/tests/dispatch.test.ts and 32 more; builds packages/cli/src/, packages/kernel/src/, packages/memories/src/ and 17 more.
 3. **claude-memories** (a command people run). Runs packages/memories/src/cli.ts.
 4. **claude-rules** (a command people run). Runs packages/rules/src/cli.ts.
@@ -32,7 +32,8 @@ Mapped at 2026-09-28 from commit 61d98b6 by Atlas 1.23.4.
 
 1. The workflow runs 9 files in cli, packages/kernel/src/tests/ in kernel, packages/memories/src/tests/ in memories, and packages/rules/src/tests/ in rules; it builds packages/cli/src/ in cli, packages/kernel/src/ in kernel, packages/memories/src/ in memories and packages/rules/src/ in rules.
 2. On a push to main, it also runs site/astro.config.mjs and site/src/.
-3. It deploys the site on a push to main.
+3. It uploads coverage to Codecov.
+4. It deploys the site on a push to main.
 
 ## Who reads the results
 

@@ -1,6 +1,6 @@
 # db-cluster: how it works
 
-Mapped at 2026-09-28 from commit fe9bf66 by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 5bbcb23 by Atlas 1.23.5.
 
 ## What this is
 
@@ -18,7 +18,7 @@ Mapped at 2026-09-28 from commit fe9bf66 by Atlas 1.23.4.
 - .demo-rk-update/sources is now written by scripts/repo-knowledge-update-demo.ts.
 - .doc-drift-extract is now written by scripts/doc-drift.mjs.
 - And 143 more new writers and readers of places.
-- 2 files added and 275 changed content, across 9 parts.
+- 3 files added and 275 changed content, across 9 parts.
 
 ## What comes in
 
@@ -37,6 +37,7 @@ Mapped at 2026-09-28 from commit fe9bf66 by Atlas 1.23.4.
 1. The workflow runs 127 files in test; it builds src/ in src; it checks examples/ in examples.
 2. That reaches dashboard (1 file) and scripts (6 files).
 3. It writes to examples/dogfood-project-memory/.db-cluster, which is not tracked.
+4. It uploads coverage to Codecov.
 
 ## Who reads the results
 

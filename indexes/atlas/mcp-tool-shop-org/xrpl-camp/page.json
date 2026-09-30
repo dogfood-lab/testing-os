@@ -34,10 +34,10 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 77,
+      "added": 1,
+      "changed": 78,
       "moved": 0,
-      "parts": 6,
+      "parts": 7,
       "removed": 0
     },
     "items": [
@@ -51,14 +51,14 @@
       },
       {
         "kind": "door",
-        "sentence": "CI's pull request trigger now also names `atlas/**`.",
+        "sentence": "CI's pull request trigger now also names `atlas/**` and `codecov.yml`.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
       },
       {
         "kind": "door",
-        "sentence": "CI's push trigger now also names `atlas/**`.",
+        "sentence": "CI's push trigger now also names `atlas/**` and `codecov.yml`.",
         "subjects": [
           ".github/workflows/ci.yml"
         ]
@@ -108,7 +108,7 @@
       },
       {
         "kind": "counts",
-        "sentence": "77 files changed content, across 6 parts.",
+        "sentence": "1 file added and 78 changed content, across 7 parts.",
         "subjects": []
       }
     ],
@@ -155,16 +155,17 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "8af7371876e940ba47b35af0bb39e9080d541074",
+  "commit": "eaa4028bdb0dbdf39f54bc1137b98716c83146fd",
   "defaultBranch": "main",
   "derived": "7 parts, mostly Python (31 files), shell (5), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 7 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. It deploys a site to GitHub Pages. People run xrpl-camp.",
   "doors": [
     {
       "checks": [
         "bin/xrpl-camp.js",
-        "xrpl_camp/"
+        "xrpl_camp/",
+        "tests/"
       ],
-      "checksCount": 2,
+      "checksCount": 3,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
@@ -195,16 +196,17 @@
       ],
       "runs": [
         "scripts/check-versions.sh",
-        "scripts/verify.sh",
-        "tests/"
+        "scripts/verify.sh"
       ],
-      "runsCount": 3,
+      "runsCount": 2,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 11 paths",
-        "on a push touching 11 paths",
+        "on a pull request touching 12 paths",
+        "on a push touching 12 paths",
         "or by hand"
       ]
     },
@@ -423,7 +425,7 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generated": [
     {
       "place": ".github/freshness-report.md",
@@ -432,7 +434,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-28T13:23:35.508Z",
+  "generatedAt": "2026-09-30T18:06:46.860Z",
   "limits": [
     "1 import could not be resolved: `xrpl_camp/cli.py` imports a path built at run time.",
     "6 reads use paths built at run time and are not named here.",
@@ -459,7 +461,7 @@
     "xrpl_camp/cli.py",
     "xrpl_camp/errors.py"
   ],
-  "startReason": "This path follows xrpl-camp (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.",
+  "startReason": "This path follows xrpl-camp (a command people run, from pyproject.toml) from its entry, since CI only checks code.",
   "summary": null,
   "summaryFrom": null,
   "testFiles": 29,

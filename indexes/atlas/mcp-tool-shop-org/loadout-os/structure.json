@@ -32,7 +32,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "435953b92fad562a3d29092dbb7631e9334ef42edf744aafca5fb2442dbf78de",
+          "hash": "b0ff6860b4fb1840b6ad1cb008ed66815e6136c7c11d27ad3dc97486d6dc12ac",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -989,7 +989,7 @@
           "path": "packages/kernel/logo.png"
         },
         {
-          "hash": "70177b341254a8f6029e94c49e320bcd0e234a62e086ea9ba34fdd8ddd9cad36",
+          "hash": "42d886d7b7651c1aadb21a2ba38e47d331bacb209d8cc9acb50f48f654c444bd",
           "path": "packages/kernel/package.json"
         },
         {
@@ -2004,7 +2004,7 @@
           "path": "packages/memories/logo.png"
         },
         {
-          "hash": "6e4b5af16f30dec6875ff1d2839a93e7431bdaa1f1ea7f23b3fd281e3e5a1d33",
+          "hash": "169db77618b46f98557f11a4113ccd0549ab83bc907632ff6156488f51ee8e65",
           "path": "packages/memories/package.json"
         },
         {
@@ -2910,6 +2910,10 @@
           "path": "SHIP_GATE.md"
         },
         {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "codecov.yml"
+        },
+        {
           "hash": "b386ec309af2773368ddc7038ff82a6432918d8ca24b2b7913c19eb0f7443480",
           "path": "logo.png"
         },
@@ -2922,7 +2926,7 @@
           "path": "package.json"
         },
         {
-          "hash": "3a3f73bee38aa37d52a0977524fdaa085f48070c33e88daab989ddf4a397edb9",
+          "hash": "8c1a14f2c0a6a0e4947f0d59b3cd0c811009066f518a0b538eedfcf688c28413",
           "path": "tsconfig.base.json"
         }
       ],
@@ -3200,7 +3204,7 @@
           "path": "packages/rules/logo.png"
         },
         {
-          "hash": "5867444093cb318fef2711494155b398f3082cb18d29723968ba9d1d594f46eb",
+          "hash": "16cfc23b30a9f876ec57bdd7fe8533e133b132483abb97d3ff360b5f5ef1edbc",
           "path": "packages/rules/package.json"
         },
         {
@@ -4827,9 +4831,16 @@
         {
           "job": "build-and-test",
           "programs": [
+            "npx"
+          ],
+          "step": "Coverage report for Codecov"
+        },
+        {
+          "job": "build-and-test",
+          "programs": [
             "npm"
           ],
-          "step": "6"
+          "step": "9"
         },
         {
           "job": "deploy-pages",
@@ -5058,9 +5069,11 @@
       "stages": [],
       "tests": [
         {
+          "coverage": true,
           "dir": "packages/kernel",
           "files": 10,
           "job": "build-and-test",
+          "junit": true,
           "runner": "node --test",
           "step": "5",
           "through": [
@@ -5069,9 +5082,11 @@
           ]
         },
         {
+          "coverage": true,
           "dir": "packages/memories",
           "files": 8,
           "job": "build-and-test",
+          "junit": true,
           "runner": "node --test",
           "step": "5",
           "through": [
@@ -5080,9 +5095,11 @@
           ]
         },
         {
+          "coverage": true,
           "dir": "packages/rules",
           "files": 7,
           "job": "build-and-test",
+          "junit": true,
           "runner": "node --test",
           "step": "5",
           "through": [
@@ -5091,9 +5108,11 @@
           ]
         },
         {
+          "coverage": true,
           "dir": "packages/cli",
           "files": 9,
           "job": "build-and-test",
+          "junit": true,
           "runner": "node --test",
           "step": "5",
           "through": [
@@ -5109,6 +5128,7 @@
             ".github/workflows/**",
             "apps/**",
             "atlas/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "packages/**",
@@ -5125,6 +5145,7 @@
             ".github/workflows/**",
             "apps/**",
             "atlas/**",
+            "codecov.yml",
             "package-lock.json",
             "package.json",
             "packages/**",
@@ -5139,8 +5160,11 @@
       "uses": [
         "actions/checkout",
         "actions/deploy-pages",
+        "actions/download-artifact",
         "actions/setup-node",
-        "actions/upload-pages-artifact"
+        "actions/upload-artifact",
+        "actions/upload-pages-artifact",
+        "codecov/codecov-action"
       ],
       "usesWorkflowToken": false
     },
@@ -5669,10 +5693,10 @@
       "to": "kernel"
     }
   ],
-  "engine": "1.23.4",
+  "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "61d98b601565a5b7eccd66a4baf98a4e1b8c3032",
-    "tracked": 381
+    "commit": "4999e6c67b3c9f74559975cf3268452425df659e",
+    "tracked": 382
   },
   "landings": [
     {

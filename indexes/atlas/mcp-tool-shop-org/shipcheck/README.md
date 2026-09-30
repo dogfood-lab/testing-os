@@ -1,6 +1,6 @@
 # shipcheck: how it works
 
-Mapped at 2026-09-28 from commit 838720f by Atlas 1.23.4.
+Mapped at 2026-09-30 from commit 9604005 by Atlas 1.23.5.
 
 ## What this is
 
@@ -8,18 +8,19 @@ Mapped at 2026-09-28 from commit 838720f by Atlas 1.23.4.
 
 ## What changed since 2026-09-23 (875a8ae)
 
+- CI's pull request trigger now also names `codecov.yml`.
+- CI's push trigger now also names `codecov.yml`.
 - Deploy site to GitHub Pages now also runs site/astro.config.mjs and site/src/.
-- repomesh-broadcast now also checks package.json.
-- shipcheck (package.json) is a new command. It runs bin/shipcheck.mjs.
+- And 2 more changes to doors.
 - CHANGELOG.md is now also read by test/version.test.mjs.
 - LICENSE is now also read by test/shipcheck.test.mjs.
 - README.md is now also read by test/front-door.test.mjs and test/shipcheck.test.mjs.
 - And 7 more new writers and readers of places.
-- 101 files changed content, across 10 parts.
+- 1 file added and 101 changed content, across 10 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs bin/shipcheck.mjs and test/.
+1. **CI.** On a pull request touching 13 paths; on a push to main touching 13 paths; or by hand. Runs bin/shipcheck.mjs and test/.
 2. **Release.** When a release is published; or by hand. Runs bin/shipcheck.mjs and test/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **repomesh-broadcast.** When a release is published. Checks package.json.
@@ -29,7 +30,8 @@ Mapped at 2026-09-28 from commit 838720f by Atlas 1.23.4.
 
 1. The workflow runs bin/shipcheck.mjs in bin and test/ in test.
 2. It runs git.
-3. It sends a dispatch to dogfood-lab/testing-os on main.
+3. It uploads coverage to Codecov.
+4. It sends a dispatch to dogfood-lab/testing-os on main.
 
 ## Who reads the results
 
