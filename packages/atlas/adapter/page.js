@@ -2494,13 +2494,63 @@ function isIndex(path) {
 }
 
 // The file a file's entry first calls into inside a part, when the map
-// recorded its order of work.
-function firstCallInto(ctx, path, part) {
+// recorded its order of work. Through an index, only a call the index hands
+// on counts: a file the entry imports itself is reached without it.
+function firstCallInto(ctx, path, part, index = null) {
   const file = ctx.fileOf.get(path);
   const root = (file?.sequences ?? []).find((sequence) => sequence.name === file.entry);
-  const call = (root?.calls ?? []).find((item) => !item.passed && item.target?.file && ctx.boundaryOf.get(item.target.file) === part);
+  const direct = new Set(index == null ? [] : (file?.importsFiles ?? []).filter((target) => target !== index));
+  const call = (root?.calls ?? []).find((item) => !item.passed && item.target?.file && ctx.boundaryOf.get(item.target.file) === part && !direct.has(item.target.file));
   return call?.target.file ?? null;
 }
+
+/**
+ * The files the functions a file calls in another file call in turn: the
+ * work `from` asks of `path`, a lazy import inside the called function among
+ * it (launch() in a package's __init__.py importing .ui when it runs). Each
+ * is a call `path` makes, so each is an arrow from it.
+ */
+function askedOf(ctx, from, path) {
+  const file = from == null ? null : ctx.fileOf.get(from);
+  if (!file) return [];
+  const root = (file.sequences ?? []).find((sequence) => sequence.name === file.entry);
+  const calls = root ? root.calls ?? [] : (file.sequences ?? []).flatMap((sequence) => sequence.calls ?? []);
+  const found = [];
+  for (const call of calls) {
+    if (call.passed || call.target?.file !== path) continue;
+    for (const inner of call.inner ?? []) if (!inner.passed && inner.target?.file && !found.includes(inner.target.file)) found.push(inner.target.file);
+  }
+  return found;
+}
+
+/**
+ * The files from `root` to `target` by the imports the map recorded inside
+ * one part, the nearest way, `target` last and `root` left out; none when no
+ * way is found within a few hops, so no arrow is drawn the map did not record.
+ */
+function importPath(ctx, root, target, part) {
+  const cameFrom = new Map([[root, null]]);
+  let level = [root];
+  for (let hop = 0; hop < IMPORT_HOPS && level.length > 0 && !cameFrom.has(target); hop += 1) {
+    const nextLevel = [];
+    for (const path of level) {
+      for (const other of [...(ctx.fileOf.get(path)?.importsFiles ?? [])].sort(cmp)) {
+        if (cameFrom.has(other) || (ctx.boundaryOf.get(other) ?? null) !== part) continue;
+        cameFrom.set(other, path);
+        nextLevel.push(other);
+      }
+    }
+    level = nextLevel;
+  }
+  if (!cameFrom.has(target)) return [];
+  const out = [];
+  for (let at = target; at != null && at !== root; at = cameFrom.get(at)) out.unshift(at);
+  return out;
+}
+
+// How far importPath looks for the modules between a library's root and a
+// module of it.
+const IMPORT_HOPS = 4;
 
 /**
  * The files a file's entry calls, in the order it calls them: the calls it
@@ -2736,7 +2786,7 @@ function startHere(ctx, main, first = null) {
       break;
     }
   }
-  if (current == null) return { chain: [], words: [] };
+  if (current == null) return { chain: [], words: [], beside: [] };
   add(current);
   const reached = new Set((main.reach ?? []).map((entry) => entry.boundary));
   const breadth = new Map((main.reach ?? []).map((entry) => [entry.boundary, entry.files]));
@@ -2757,6 +2807,13 @@ function startHere(ctx, main, first = null) {
     }
     return null;
   };
+  // The files a step calls that the path does not go through, by the file
+  // that calls them.
+  const beside = [];
+  // A file goes on when it has a step of its own to take: a place it writes
+  // that ends the path, or a file it imports that is not on the path yet.
+  const goesOn = (file) => ending(file) != null || (ctx.fileOf.get(file)?.importsFiles ?? [])
+    .some((other) => other !== file && !chain.includes(other) && ctx.fileOf.has(other) && readable(other) && !isTestFile(other));
   const next = (path) => {
     const part = ctx.boundaryOf.get(path) ?? null;
     // A Rust binary that uses its own package's library goes into it at its
@@ -2789,30 +2846,40 @@ function startHere(ctx, main, first = null) {
       const reaching = tied.filter((target) => parts.get(target) === most);
       return reaching.length === 1 ? reaching[0] : null;
     }
-    // Inside its own part the path follows the order of work of the file it
-    // entered the part by, past a package index that only hands names on:
-    // the next file that file's entry calls, which is how a reader of the
-    // entry meets them.
-    const entered = chain.find((entry) => (ctx.boundaryOf.get(entry) ?? null) === part && ctx.fileOf.has(entry)
-      && !isIndex(entry) && !ctx.fileOf.get(entry)?.reexportsOnly) ?? path;
-    // An arrow is an import or a call of the file before it: the entry's
-    // calls are followed in order, but with no calls recorded its import list
-    // is no order of work, so only what the current file imports goes next
-    // (slice AC's fallback listed cli.py's imports as if each led on).
-    const byCalls = calledFiles(ctx, entered, { imports: false }).length > 0;
-    const owner = byCalls ? entered : path;
-    const found = [];
-    for (const target of calledFiles(ctx, owner)) {
-      if ((ctx.boundaryOf.get(target) ?? null) !== part || !ctx.fileOf.has(target) || isTestFile(target) || !readable(target)) continue;
-      const file = working(ctx, target, owner);
-      if (file != null && !chain.includes(file) && !found.includes(file)) found.push(file);
+    // Inside its own part every arrow is an import or a call of the file
+    // before it (1.22.0 followed the entry's calls in order, so a helper the
+    // entry called first read as leading to the next file it called). The
+    // work the file before asks of this one comes first: the calls made
+    // inside the functions it calls here, a lazy import among them. Then
+    // this file's own order of work. Of the files either names, the path
+    // goes through the first that goes on, and the others are listed beside
+    // the file that calls them, not chained.
+    const inPart = (paths) => {
+      const found = [];
+      for (const target of paths) {
+        if ((ctx.boundaryOf.get(target) ?? null) !== part || !ctx.fileOf.has(target) || isTestFile(target) || !readable(target)) continue;
+        const file = working(ctx, target, path);
+        if (file != null && file !== path && !chain.includes(file) && !found.includes(file)) found.push(file);
+      }
+      return found;
+    };
+    const before = chain[chain.indexOf(path) - 1] ?? null;
+    const byCalls = inPart([...askedOf(ctx, before, path), ...calledFiles(ctx, path, { imports: false })]);
+    if (byCalls.length > 0) {
+      const chosen = byCalls.find(goesOn) ?? byCalls[0];
+      const others = byCalls.filter((file) => file !== chosen);
+      if (others.length > 0) beside.push({ from: path, files: others });
+      return chosen;
     }
-    if (byCalls) return found[0] ?? null;
-    // By imports alone, a file that goes on inside the part comes first, in
-    // the order imported; a package's __init__.py that goes nowhere is no
-    // step, since it holds what the package exports, not the work.
-    const goesOn = (file) => (ctx.fileOf.get(file)?.importsFiles ?? []).some((other) => other !== file && !chain.includes(other) && (ctx.boundaryOf.get(other) ?? null) === part && !isTestFile(other));
-    return found.find(goesOn) ?? found.find((file) => !/(^|\/)__init__\.py$/.test(file)) ?? null;
+    // With no calls recorded, an import list is no order of work, so only
+    // what the current file imports goes next (slice AC's fallback listed
+    // cli.py's imports as if each led on): a file that goes on inside the
+    // part first, in the order imported; a package's __init__.py that goes
+    // nowhere is no step, since it holds what the package exports, not the
+    // work.
+    const found = inPart(calledFiles(ctx, path));
+    const inside = (file) => (ctx.fileOf.get(file)?.importsFiles ?? []).some((other) => other !== file && !chain.includes(other) && (ctx.boundaryOf.get(other) ?? null) === part && !isTestFile(other));
+    return found.find(inside) ?? found.find((file) => !/(^|\/)__init__\.py$/.test(file)) ?? null;
   };
   // Of the files a binary uses through its library, and the files those use
   // in the same part, the first that imports another part, the one the door
@@ -2828,9 +2895,9 @@ function startHere(ctx, main, first = null) {
     const second = inPart([...new Set(first.flatMap((target) => ctx.fileOf.get(target)?.importsFiles ?? []))]);
     for (const level of [first, second]) {
       const found = level.filter((target) => reach(target) > 0).sort((a, b) => reach(b) - reach(a) || cmp(a, b))[0];
-      if (found) return found;
+      if (found) return importPath(ctx, root, found, part).filter((file) => !chain.includes(file));
     }
-    return null;
+    return [];
   };
   for (let step = 0; step < START_STEPS; step += 1) {
     const end = ending(current);
@@ -2859,15 +2926,17 @@ function startHere(ctx, main, first = null) {
     if (following === ctx.fileOf.get(current)?.library) {
       // The library's root declares its modules; the path goes through it
       // to the module the binary uses that goes on into another part.
+      // The root reaches that module through the modules that declare it
+      // (lib.rs, then commands/mod.rs, then commands/planner.rs), each an
+      // arrow the map recorded.
       const through = intoLibrary(current, following);
-      if (through != null) {
-        add(through);
-        following = through;
-      }
+      for (const file of through) add(file);
+      if (through.length > 0) following = through.at(-1);
     } else if (isIndex(following)) {
       // A package index that only hands a name on is followed to the file the
-      // entry's call reaches through it, since that is where the work is.
-      const through = firstCallInto(ctx, current, ctx.boundaryOf.get(following));
+      // entry's call reaches through it, since that is where the work is. A
+      // file the entry imports itself is not reached through the index.
+      const through = firstCallInto(ctx, current, ctx.boundaryOf.get(following), following);
       if (through && (ctx.fileOf.get(following)?.importsFiles ?? []).includes(through) && readable(through) && !chain.includes(through)) {
         add(through);
         following = through;
@@ -2875,7 +2944,11 @@ function startHere(ctx, main, first = null) {
     }
     current = following;
   }
-  return { chain, words: [...chain] };
+  // A file listed beside the path is one it does not go through; one the
+  // path reached later by another arrow is on it.
+  const also = beside.map((entry) => ({ from: entry.from, files: entry.files.filter((file) => !chain.includes(file)) }))
+    .filter((entry) => entry.files.length > 0 && chain.includes(entry.from));
+  return { chain, words: [...chain], beside: also };
 }
 
 /**
@@ -3010,7 +3083,29 @@ function heldNoun(door) {
   return when.event === 'pull_request' || also.length === 0 ? from : `${also.join(', ')}, or ${from}`;
 }
 
-function startSection(words, main, readable, reason = null) {
+// A file named beside the path lists this many of the other files it calls,
+// the rest counted.
+const BESIDE_SHOWN = 4;
+
+/**
+ * What the page says of the files a step calls that the path does not go
+ * through: "Beside the path, src/cli.js also calls src/run.js and
+ * src/report.js." Each is a sibling of the file the path goes on to, not a
+ * step after it.
+ *
+ * @param {Array<{ from: string, files: string[] }>} beside
+ * @returns {string[]}
+ */
+export function besideLines(beside) {
+  return (beside ?? []).map((entry) => {
+    const shown = entry.files.length > BESIDE_SHOWN
+      ? `${entry.files.slice(0, BESIDE_SHOWN).join(', ')} and ${count(entry.files.length - BESIDE_SHOWN, 'more file')}`
+      : list(entry.files);
+    return `Beside the path, ${entry.from} also calls ${shown}.`;
+  });
+}
+
+function startSection(words, main, readable, reason = null, beside = []) {
   if (!main) {
     const why = readable ? 'No door runs a file this map can see' : 'No door was found';
     return ['## Where to start', `${why}, so there is no path through this repository to follow.`].join('\n\n');
@@ -3024,7 +3119,8 @@ function startSection(words, main, readable, reason = null) {
     return ['## Where to start', reason ? `${single} ${reason}` : single].join('\n\n');
   }
   const read = `Read those in order to follow one ${noun}${comma} end to end.`;
-  return ['## Where to start', words.join(' → '), reason ? `${read} ${reason}` : read].join('\n\n');
+  const also = besideLines(beside);
+  return ['## Where to start', words.join(' → '), reason ? `${read} ${reason}` : read, ...(also.length > 0 ? [also.join(' ')] : [])].join('\n\n');
 }
 
 /**
@@ -3707,7 +3803,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
   // A pull request's door that runs no code the map can follow leaves the
   // path to the busiest door, as before a pull request's door was preferred.
   let starting = startDoor(ctx, main);
-  let start = { chain: [], words: [] };
+  let start = { chain: [], words: [], beside: [] };
   let reason = null;
   // A pull request that runs only tests enters the code through what the
   // tests import, which is no way a person uses it; the path follows the
@@ -3785,7 +3881,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     duplicatesSection(duplicated),
     generatedSection(ctx, generatedItems, sharedPlaces),
     authoredSection(ctx, authoredBoundaries, sharedPlaces),
-    startSection(start.words, starting, ctx.doors.some((door) => !door.parseError), reason),
+    startSection(start.words, starting, ctx.doors.some((door) => !door.parseError), reason, start.beside),
     limitsSection(limitLines),
   );
   const markdown = `${sections.join('\n\n')}\n`;
@@ -3817,6 +3913,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     repo: String(repoName ?? ''),
     sequences: found,
     startDoor: starting ? doorKey(starting) : null,
+    ...(start.beside?.length > 0 ? { startBeside: start.beside.map((entry) => ({ files: [...entry.files], from: entry.from })) } : {}),
     startHere: start.chain,
     ...(reason ? { startReason: reason } : {}),
     ...(starting && start.chain.length === 0 ? { startNote: noPath(starting) } : {}),

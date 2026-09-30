@@ -31,8 +31,9 @@ describe('where to start reading a Rust command whose CI only tests it', () => {
 
   it('reads a file cargo test runs for its own unit tests as a test, so the path follows the command', () => {
     assert.equal(data.startDoor, 'Cargo.toml#mile');
-    // Inside the part, the path goes on to the module main calls into.
-    assert.deepEqual(data.startHere, ['src/main.rs', 'src/lib.rs', 'src/game.rs']);
+    // Inside the part, the path goes on to the module main calls into, and
+    // from there to the module that one uses.
+    assert.deepEqual(data.startHere, ['src/main.rs', 'src/lib.rs', 'src/game.rs', 'src/state.rs']);
     // CI only tests it, so nothing here ships the binary.
     assert.equal(data.startReason, 'This path follows mile (a command built from the repository root, which nothing ships) from its entry, since CI runs only tests.');
   });
