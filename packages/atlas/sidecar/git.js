@@ -100,6 +100,24 @@ export function distanceFromHead(root, commit) {
   return Number.isInteger(ahead) && Number.isInteger(behind) ? { ahead, behind } : null;
 }
 
+/**
+ * The fetched upstream of this checkout, as this clone already holds it: the
+ * current branch's upstream (@{u}), else the remote's default (origin/HEAD),
+ * else none. Nothing is fetched, so it is as fresh as the last fetch.
+ *
+ * @returns {{ name: string, commit: string } | null}
+ */
+export function upstreamOf(root) {
+  for (const spec of ['@{u}', 'origin/HEAD']) {
+    const named = git(root, ['rev-parse', '--abbrev-ref', '--symbolic-full-name', spec]);
+    const name = named.ok ? String(named.stdout).trim() : '';
+    if (!name || !isRefShaped(name)) continue;
+    const commit = commitOf(root, name);
+    if (commit) return { name, commit };
+  }
+  return null;
+}
+
 /** The id git keeps a file under at a commit or ref, or null when it holds none there. */
 export function blobAt(root, rev, path) {
   const result = git(root, ['rev-parse', '--verify', '--quiet', '--end-of-options', `${rev}:${path}`]);

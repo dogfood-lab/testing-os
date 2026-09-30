@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { isAbsolute, join, posix, relative } from 'node:path';
 import { isOwnTest, isTestFile } from '../core/landings.js';
 import { isRefShaped } from '../sidecar/git.js';
-import { distanceWords, readSnapshotAt } from '../sidecar/map.js';
+import { distanceWords, newerUpstream, readSnapshotAt, upstreamMap } from '../sidecar/map.js';
 import { formatFailure } from './errors.js';
 import { boundaryRoot, capitalize, collapse, count, cover, entryOrder, externalsLine, installed, list, pageFacts, readerFiles, readerItem, testsClause, under, worded } from './page.js';
 
@@ -458,9 +458,17 @@ export function mapLine(map) {
   const source = map.source ?? null;
   const commit = map.commit.slice(0, 7);
   const date = map.generatedAt.slice(0, 10);
-  const at = source?.ref ? `, read at ${source.ref.name}, ${distanceWords(source.ref)}` : '';
+  let at = source?.ref ? `, read at ${source.ref.name}, ${distanceWords(source.ref)}` : '';
+  // The fetched upstream holds another map the checkout may be behind; it is
+  // named with the flag that answers from it, never switched to.
+  if (source?.upstream) at += `; ${source.upstream.name} holds a different map, ${distanceWords(source.upstream)}: run with --ref ${source.upstream.name} to answer from it`;
   if (!commit) return date ? `Map from ${date}${at}.` : `The map does not say which commit it is from${at}.`;
   return date ? `Map from commit ${commit}, ${date}${at}.` : `Map from commit ${commit}${at}.`;
+}
+
+// A ref as the JSON of explain and gaps carries it.
+export function refFields(ref) {
+  return { ahead: ref.ahead, behind: ref.behind, commit: ref.commit, name: ref.name };
 }
 
 // What a part imports and what imports it, at part grain, and what it could
@@ -699,7 +707,8 @@ export function explainTarget({ structure, statistics = {}, page = null }, { rep
     };
   }
   const { facts, lines } = explainFound(ctx, found, { ...mapCommit(page, statistics, structure), source });
-  if (source?.ref) facts.ref = { ahead: source.ref.ahead, behind: source.ref.behind, commit: source.ref.commit, name: source.ref.name };
+  if (source?.ref) facts.ref = refFields(source.ref);
+  if (source?.upstream) facts.upstream = refFields(source.upstream);
   return { ok: true, ctx, found, facts: sortKeys(facts), lines };
 }
 
@@ -721,12 +730,13 @@ export function readAnswerMap(repo, ref, noMap) {
     if (!structure.value) {
       return { ok: false, code: noMap, details: [structure.absent ? 'atlas/structure.json is absent' : 'atlas/structure.json is not valid JSON'], whatToDo: 'run atlas map and commit atlas/' };
     }
+    const upstream = upstreamMap(repo);
     return {
       ok: true,
       structure: structure.value,
       statistics: readJson(join(repo, 'atlas', 'statistics.json')).value ?? null,
       page: readJson(join(repo, 'atlas', 'page.json')).value ?? null,
-      source: null,
+      source: newerUpstream(upstream) ? { upstream } : null,
     };
   }
   const read = readSnapshotAt(repo, ref);

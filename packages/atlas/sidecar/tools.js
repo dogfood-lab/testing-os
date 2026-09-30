@@ -7,7 +7,7 @@ import { explainAnswer } from './explain-tool.js';
 import { unplainNames } from './data.js';
 import { changedFiles, checkoutState, mapHashes, stateAt } from './freshness.js';
 import { blobAt, head, inHistory, REF_PATTERN, topLevel } from './git.js';
-import { readCommittedMap, readSnapshotAt } from './map.js';
+import { newerUpstream, readCommittedMap, readSnapshotAt, upstreamMap } from './map.js';
 import { overviewAnswer } from './overview-tool.js';
 import { reachAnswer } from './reach-tool.js';
 import { createRefresher } from './refresh.js';
@@ -404,8 +404,13 @@ export function createTools({ refresher = createRefresher() } = {}) {
       snapshot.ref.treeCompared = true;
     }
     const state = ref && !tool.readsTree ? stateAt(repo.root, snapshot.commit, snapshot.ref.commit) : checkoutState(repo.root, snapshot.commit);
+    // Asked of the checkout's own map, an answer says when the fetched
+    // upstream holds another map the checkout may be behind, and names the
+    // ref to pass; it never switches to it by itself.
+    const upstream = ref ? null : upstreamMap(repo.root);
+    const shown = newerUpstream(upstream) ? upstream : null;
     const result = tool.answer(snapshot, repo, args);
-    if (!result.ok) return failed(provenance({ repo, snapshot, head: state.head }), result.error, unplainNames(snapshot));
+    if (!result.ok) return failed(provenance({ repo, snapshot, head: state.head, upstream: shown }), result.error, unplainNames(snapshot));
     const known = mapHashes(snapshot.structure);
     const files = [...result.files, ...pathsIn(result.answer, known)];
     const changed = changedFiles(repo.root, snapshot, state, files);
@@ -428,8 +433,8 @@ export function createTools({ refresher = createRefresher() } = {}) {
     // name a sentence keeps is quoted though its entry was cut.
     const names = unplainNames(snapshot, result.answer);
     // Narrowed as asked, most important first, and cut to its size.
-    const sized = sizeAnswer({ tool: name, snapshot, args, atlas: provenance({ repo, snapshot, head: state.head, changed }), answer: result.answer, sentences, names });
-    if (sized.error) return failed(provenance({ repo, snapshot, head: state.head }), sized.error, names);
+    const sized = sizeAnswer({ tool: name, snapshot, args, atlas: provenance({ repo, snapshot, head: state.head, changed, upstream: shown }), answer: result.answer, sentences, names });
+    if (sized.error) return failed(provenance({ repo, snapshot, head: state.head, upstream: shown }), sized.error, names);
     return answered(sized.atlas, sized.answer, sized.sentences, names);
   }
 

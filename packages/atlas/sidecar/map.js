@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pageFacts } from '../adapter/page.js';
-import { commitOf, distanceFromHead, filesAt, inHistory, isShallow } from './git.js';
+import { blobAt, commitOf, distanceFromHead, filesAt, inHistory, isShallow, upstreamOf } from './git.js';
 
 /**
  * The map an answer is read from, checked before any answer is given: each
@@ -152,6 +152,38 @@ export function distanceWords({ ahead, behind }) {
   if (behind === 0) return `${commits(ahead)} ahead of this checkout`;
   if (ahead === 0) return `${commits(behind)} behind this checkout`;
   return `${commits(ahead)} ahead of this checkout and ${behind} behind it`;
+}
+
+/**
+ * The map on this checkout's fetched upstream (sidecar/git.js upstreamOf),
+ * set against the one committed at HEAD by the ids git keeps them under, not
+ * by their contents. Null when the checkout has no upstream.
+ *
+ * @returns {{ name: string, commit: string, ahead: number|null, behind: number|null, holdsMap: boolean, differs: boolean } | null}
+ */
+export function upstreamMap(root) {
+  const upstream = upstreamOf(root);
+  if (!upstream) return null;
+  const theirs = blobAt(root, upstream.commit, 'atlas/structure.json');
+  const ours = blobAt(root, 'HEAD', 'atlas/structure.json');
+  const distance = distanceFromHead(root, upstream.commit);
+  return {
+    name: upstream.name,
+    commit: upstream.commit,
+    ahead: distance?.ahead ?? null,
+    behind: distance?.behind ?? null,
+    holdsMap: theirs != null,
+    differs: theirs != null && theirs !== ours,
+  };
+}
+
+/**
+ * Whether an answer should say that the upstream holds another map: it holds
+ * one that is not the checkout's, and commits the checkout does not have, so
+ * its map may be the newer. Atlas never switches to it by itself.
+ */
+export function newerUpstream(upstream) {
+  return upstream != null && upstream.differs && (upstream.ahead ?? 0) > 0;
 }
 
 /** The map committed in the checkout, atlas/ in the working tree. */

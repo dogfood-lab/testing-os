@@ -123,11 +123,13 @@ const CHANGED_NAMED = 3;
 /**
  * The provenance an answer carries: the engine answering, the map (which
  * snapshot, its commit, date and the engine that made it), and the checkout
- * (its root, HEAD, and each file in the answer that changed after the map).
+ * (its root, HEAD, and each file in the answer that changed after the map);
+ * and, when the checkout's fetched upstream holds another map it may be
+ * behind, that upstream and the ref to pass for it.
  *
- * @param {{ repo?: { root: string, from: string }|null, snapshot?: object|null, head?: string|null, changed?: object[] }} input
+ * @param {{ repo?: { root: string, from: string }|null, snapshot?: object|null, head?: string|null, changed?: object[], upstream?: object|null }} input
  */
-export function provenance({ repo = null, snapshot = null, head = null, changed = [] } = {}) {
+export function provenance({ repo = null, snapshot = null, head = null, changed = [], upstream = null } = {}) {
   const atlas = { engine: ENGINE };
   const parts = [`Atlas ${ENGINE}`];
   const ref = snapshot?.ref ?? null;
@@ -151,6 +153,10 @@ export function provenance({ repo = null, snapshot = null, head = null, changed 
       const more = changed.length > CHANGED_NAMED ? ` and ${changed.length - CHANGED_NAMED} more files changed after the map` : '';
       parts.push(`${named.join('; ')}${more}`);
     }
+  }
+  if (upstream) {
+    atlas.upstream = { name: upstream.name, commit: upstream.commit, ahead: upstream.ahead, behind: upstream.behind, mapDiffers: true };
+    parts.push(`${upstream.name} holds a different map, ${distanceWords(upstream)}: ask with ref ${upstream.name} to answer from it`);
   }
   atlas.line = parts.join(' · ');
   return atlas;
@@ -234,6 +240,19 @@ export const PROVENANCE_SCHEMA = {
         workingTreeCompared: { type: 'boolean' },
       },
       required: ['name', 'commit', 'ahead', 'behind', 'workingTreeCompared'],
+    },
+    // The checkout's fetched upstream, when it holds a map other than the
+    // checkout's and commits the checkout does not have.
+    upstream: {
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+        commit: { type: 'string' },
+        ahead: { type: ['integer', 'null'], minimum: 0 },
+        behind: { type: ['integer', 'null'], minimum: 0 },
+        mapDiffers: { type: 'boolean' },
+      },
+      required: ['name', 'commit', 'ahead', 'behind', 'mapDiffers'],
     },
     checkout: {
       type: 'object',

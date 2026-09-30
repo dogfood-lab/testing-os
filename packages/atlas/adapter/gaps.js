@@ -1,7 +1,7 @@
 import { isAbsolute, posix, relative } from 'node:path';
 import { isRefShaped } from '../sidecar/git.js';
 import { formatFailure } from './errors.js';
-import { mapLine, readAnswerMap } from './explain.js';
+import { mapLine, readAnswerMap, refFields } from './explain.js';
 import { count, list } from './page.js';
 import { SHOWN, testGaps } from './test-gaps.js';
 import { testReachOf } from './test-reach.js';
@@ -284,7 +284,11 @@ export function gapsCommand(repo, prefix, argv, { repository = null } = {}) {
     }
   }
   const answer = gapsAnswer(structure.value, { statistics, repository, target });
-  const shown = source?.ref ? { ...answer, ref: { name: source.ref.name, commit: source.ref.commit, ahead: source.ref.ahead, behind: source.ref.behind } } : answer;
+  const shown = {
+    ...answer,
+    ...(source?.ref ? { ref: refFields(source.ref) } : {}),
+    ...(source?.upstream ? { upstream: refFields(source.upstream) } : {}),
+  };
   process.stdout.write(args.json ? `${JSON.stringify(shown, null, 2)}\n` : `${gapsLines(answer, { mapLine: mapLineOf(statistics, structure.value, source) }).join('\n')}\n`);
   return 0;
 }
