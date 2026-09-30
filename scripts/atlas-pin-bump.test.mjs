@@ -26,7 +26,7 @@ function temporary(prefix) {
 }
 
 function gitAt(cwd) {
-  return (...args) => execFileSync('git', args, { cwd, encoding: 'utf8' }).trim();
+  return (...args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 }
 
 /**
@@ -155,5 +155,94 @@ describe('atlas-pin-bump check', () => {
     const { code, out } = await run(['check', plain]);
     assert.equal(code, 1);
     assert.match(out, /! PIN_BUMP_NOT_A_CLONE {2}/);
+  });
+});
+
+// The engine the tests run: the npx call answered by this workspace's own
+// build, whose version is the target, so no test reaches the network.
+function localEngine(calls = []) {
+  return (command, args, cwd) => {
+    calls.push({ command, args, cwd });
+    assert.deepEqual([command, ...args.slice(0, 2)], ['npx', '--yes', `@dogfood-lab/atlas@${TARGET}`]);
+    const result = spawnSync(process.execPath, [CLI, ...args.slice(2)], { cwd, encoding: 'utf8' });
+    return { status: result.status ?? 1, stdout: result.stdout ?? '', stderr: result.stderr ?? '' };
+  };
+}
+
+function snapshot(git) {
+  return { status: git('status', '--porcelain'), head: git('rev-parse', 'HEAD'), refs: git('for-each-ref', '--format=%(refname) %(objectname)') };
+}
+
+const escaped = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+describe('atlas-pin-bump plan', () => {
+  it('shows the pins moved and the map made again as a diff, and writes nothing to the clone', async () => {
+    const { root, git } = fleetClone();
+    const before = snapshot(git);
+    const calls = [];
+    const { code, out } = await run(['plan', root], { exec: localEngine(calls) });
+    assert.equal(code, 0, out);
+    assert.deepEqual(snapshot(git), before);
+    assert.match(out, /\ndiff --git a\/\.github\/workflows\/ci\.yml b\/\.github\/workflows\/ci\.yml\n/);
+    assert.match(out, new RegExp(`\\n- {8}run: npx --yes @dogfood-lab/atlas@1\\.14\\.0 check\\n\\+ {8}run: npx --yes @dogfood-lab/atlas@${escaped(TARGET)} check\\n`));
+    assert.match(out, new RegExp(`\\n- {2}"engine": "1\\.14\\.0",\\n\\+ {2}"engine": "${escaped(TARGET)}",\\n`));
+    assert.match(out, new RegExp(`\\n-- summary\\n {3}pin {4}\\.github/workflows/ci\\.yml:${PIN_LINE} {2}1\\.14\\.0 -> ${escaped(TARGET)}\\n {3}map {4}made by 1\\.14\\.0 -> made by ${escaped(TARGET)}\\n`));
+    assert.match(out, /\n {3}doors {2}2 -> 2\n {3}parts {2}4 -> 4; 1 read differently\n {3}files {2}atlas\/README\.md, atlas\/page\.json, atlas\/statistics\.json, atlas\/structure\.json\n/);
+    assert.deepEqual(calls.map((call) => call.args.at(-1)), ['map', 'check']);
+    for (const call of calls) {
+      assert.notEqual(resolve(call.cwd), resolve(root), 'the map is made in a temporary clone, never in the clone');
+      assert.equal(call.cwd.split(/[\\/]/).at(-1), 'fleet', 'the temporary clone keeps the clone\'s name');
+    }
+  });
+
+  it('names the notices atlas check at the target prints on the result', async () => {
+    const { root } = fleetClone();
+    const { code, out } = await run(['plan', root], { exec: localEngine() });
+    assert.equal(code, 0);
+    assert.match(out, new RegExp(`\\n-- notices from atlas check at ${escaped(TARGET)}: 1\\n {3}ATLAS_DOOR_TOOLCHAIN {2}[^\\n]+\\n {5}what changed: {3}Deploy site pins Node 20 and runs astro build; astro 7\\.3\\.3 requires Node >=22\\.12\\.0 and refuses to start\\.\\n`));
+  });
+
+  it('prints each plan as JSON', async () => {
+    const { root } = fleetClone({ engine: null });
+    const { code, out } = await run(['plan', '--json', root], { exec: localEngine() });
+    assert.equal(code, 0);
+    const [each] = JSON.parse(out);
+    assert.equal(each.verdict, 'ready');
+    assert.equal(each.target, TARGET);
+    assert.match(each.diff, /^diff --git /);
+    assert.deepEqual(each.summary.engine, { before: null, after: TARGET });
+    assert.deepEqual(each.summary.pins, [{ file: WORKFLOW, line: PIN_LINE, from: '1.14.0', to: TARGET }]);
+    assert.ok(each.changed.some((entry) => entry.status === 'M' && entry.path === WORKFLOW));
+    assert.equal(each.notices.length, 1);
+    assert.match(each.tree, /^[0-9a-f]{40,64}$/);
+    assert.equal(each.temp, undefined);
+  });
+
+  it('runs no engine for a clone that is done, or one that needs a person', async () => {
+    const calls = [];
+    const done = fleetClone({ pin: TARGET, engine: 'as-made' });
+    const person = fleetClone({ map: false });
+    const { code, out } = await run(['plan', done.root, person.root], { exec: localEngine(calls) });
+    assert.equal(code, 1);
+    assert.match(out, new RegExp(`: done on ${escaped(TARGET)}\\n`));
+    assert.match(out, /: needs a person\n[\s\S]*! PIN_BUMP_NO_MAP /);
+    assert.deepEqual(calls, []);
+  });
+
+  it('leaves a clone to a person, with the engine\'s words, when the map cannot be made', async () => {
+    const { root, git } = fleetClone();
+    const before = snapshot(git);
+    const { code, out } = await run(['plan', root], { exec: () => ({ status: 2, stdout: 'ATLAS_BOUNDARY_FILE_INVALID  The boundary file is not valid.\n', stderr: '' }) });
+    assert.equal(code, 1);
+    assert.match(out, new RegExp(`! PIN_BUMP_ENGINE_FAILED {2}atlas map \\(@dogfood-lab/atlas@${escaped(TARGET)}\\) exited 2:\\nATLAS_BOUNDARY_FILE_INVALID`));
+    assert.deepEqual(snapshot(git), before);
+  });
+
+  it('takes only an exact version as the target', async () => {
+    for (const version of ['latest', '^1.24.0', '1.24', 'v1.24.0', '1.24.0-rc.1']) {
+      const { code, out } = await run(['plan', '--version', version, '.']);
+      assert.equal(code, 2, version);
+      assert.match(out, /is not an exact version such as 1\.24\.0/);
+    }
   });
 });
