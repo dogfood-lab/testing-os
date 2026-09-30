@@ -36,7 +36,8 @@ before(async () => {
   writeFileSync(join(stale.work, 'lib', 'core.js'), "import { writeFileSync } from 'node:fs';\nimport { label } from './other.js';\n\nexport function record(state) {\n  writeFileSync('data/state.json', `${label(state)}\\n`);\n}\n");
   commitAll(stale.work, 'core labels the state');
   later = git(stale.work, ['rev-parse', 'HEAD']);
-  const rewritten = git(stale.work, ['commit-tree', `${stale.tip}^{tree}`, '-m', 'rewritten']);
+  // The identity is given here, as commitAll gives it: a CI runner has none.
+  const rewritten = git(stale.work, ['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit-tree', `${stale.tip}^{tree}`, '-m', 'rewritten']);
   git(stale.work, ['push', '-q', stale.remote, 'later', `${rewritten}:refs/heads/rewritten`]);
   git(stale.clone, ['fetch', '-q', 'origin']);
   appendFileSync(join(stale.clone, 'lib', 'other.js'), '// edited, not committed\n');
