@@ -51,14 +51,14 @@ describe('landings per file', () => {
   it('reduces a template literal to the tracked directory its head spells out', () => {
     assert.deepEqual(
       file('tools/ingest.js').writes.filter((write) => write.call === 'writeFileSync'),
-      [{ target: 'records', call: 'writeFileSync', confidence: 'ast' }],
+      [{ target: 'records', call: 'writeFileSync', confidence: 'ast', names: 'records/*.json' }],
     );
   });
 
   it('lands a rename on its destination, and a literal that names nothing tracked nowhere', () => {
     assert.deepEqual(file('tools/ingest.js').writes, [
       { target: 'indexes/latest.json', call: 'renameSync', confidence: 'ast' },
-      { target: 'records', call: 'writeFileSync', confidence: 'ast' },
+      { target: 'records', call: 'writeFileSync', confidence: 'ast', names: 'records/*.json' },
     ]);
     assert.equal(file('tools/ingest.js').dynamicWrites, 0);
   });

@@ -355,7 +355,7 @@ function placeFacts(ctx, found) {
   for (const { landing, relation } of related) {
     for (const entry of landing.writers) {
       const place = ctx.place(landing.target);
-      writtenBy.set(`${entry.by}\0${place}`, { by: entry.by, place, relation });
+      writtenBy.set(`${entry.by}\0${place}`, { by: entry.by, ...(landing.writesInto ? { into: true } : {}), place, relation });
     }
   }
   const writers = new Set([...writtenBy.values()].map((entry) => entry.by));
@@ -383,15 +383,22 @@ function placeFacts(ctx, found) {
 }
 
 // "lib/ledger.js (into store/ledger/)", "tools/rebuild.js (which writes
-// indexes/)", or the path alone when it writes the place itself.
+// indexes/)", or the path alone when it writes the place itself. A writer of
+// a directory that only puts files into it beside others (core/landings.js
+// writtenInto) "writes files into" it, and of that directory explained
+// itself writes "files in it": it does not write the rest.
 function writerText(entries) {
-  const exact = entries.some((entry) => entry.relation === 'exact');
+  const exact = entries.filter((entry) => entry.relation === 'exact');
   const into = entries.filter((entry) => entry.relation === 'inside').map((entry) => entry.place);
-  const holding = entries.filter((entry) => entry.relation === 'parent').map((entry) => entry.place);
+  const holding = entries.filter((entry) => entry.relation === 'parent');
+  const whole = holding.filter((entry) => !entry.into).map((entry) => entry.place);
+  const partly = holding.filter((entry) => entry.into).map((entry) => entry.place);
   const notes = [];
   if (into.length > 0) notes.push(`into ${list(into)}`);
-  if (holding.length > 0) notes.push(`which writes ${list(holding)}`);
-  return exact || notes.length === 0 ? entries[0].by : `${entries[0].by} (${notes.join('; ')})`;
+  if (whole.length > 0) notes.push(`which writes ${list(whole)}`);
+  if (partly.length > 0) notes.push(`which writes files into ${list(partly)}`);
+  if (exact.length > 0) return exact.every((entry) => entry.into) ? `${entries[0].by} (files in it)` : entries[0].by;
+  return notes.length === 0 ? entries[0].by : `${entries[0].by} (${notes.join('; ')})`;
 }
 
 function placeLines(ctx, place) {

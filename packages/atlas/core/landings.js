@@ -3,7 +3,7 @@ import picomatch from 'picomatch';
 import { boundaryRoot } from './entry-points.js';
 import { isWorkflow } from './doors.js';
 import { mainOnly, writeGuards } from './guards.js';
-import { loadsManifest } from './languages.js';
+import { isCodePath, loadsManifest } from './languages.js';
 import { isTestFile } from './test-names.js';
 
 // The destination argument of each write call. A rename or copy lands on its
@@ -789,8 +789,9 @@ export function astLandings(language, root, path, places) {
     // process.cwd() and checked in. It lands there, marked fromCwd, and is
     // not counted as the caller's.
     const rooted = kind === 'write' ? all.filter((value) => value.anchor === 'cwd' && value.text !== '').map((value) => [value, cwdPlace(value, call, places)]) : [];
-    for (const [, target] of rooted) {
-      if (target != null) list.push({ target, call, confidence: 'ast', fromCwd: true, ...(unless.length > 0 ? { unless } : {}) });
+    for (const [value, target] of rooted) {
+      const names = target == null ? null : namesInto(value, target, call, places);
+      if (target != null) list.push({ target, call, confidence: 'ast', fromCwd: true, ...(names != null ? { names } : {}), ...(unless.length > 0 ? { unless } : {}) });
     }
     const settled = new Set(rooted.filter(([, target]) => target != null).map(([value]) => value));
     // Until the imported function is read, its return is a root the engine
@@ -1109,8 +1110,12 @@ export function settleParamPaths(files, places) {
         // in, which from there names a place this repository tracks, is the
         // committed output of a run from the root (astLandings has it so for
         // a write made there): an argparse default of artifacts/balance.
-        const fromRoot = pending.kind === 'write' ? found.cwd.map((value) => cwdPlace(value, pending.call, places)).filter((target) => target != null) : [];
-        for (const target of fromRoot) entries.push({ target, call: pending.call, confidence: 'ast', fromCwd: true, ...(pending.unless?.length > 0 ? { unless: [...pending.unless] } : {}) });
+        const cwdTargets = pending.kind === 'write' ? found.cwd.map((value) => [value, cwdPlace(value, pending.call, places)]).filter(([, target]) => target != null) : [];
+        const fromRoot = cwdTargets.map(([, target]) => target);
+        for (const [value, target] of cwdTargets) {
+          const names = namesInto(value, target, pending.call, places);
+          entries.push({ target, call: pending.call, confidence: 'ast', fromCwd: true, ...(names != null ? { names } : {}), ...(pending.unless?.length > 0 ? { unless: [...pending.unless] } : {}) });
+        }
         const settledCwd = fromRoot.length > 0 && found.places.length === 0 && !found.unread && [...found.where].every((key) => key.startsWith('cwd'));
         theirs ||= found.outside && !settledCwd;
         for (const key of found.where) where.add(key);
@@ -1387,8 +1392,67 @@ function untrackedInput(text) {
   return /\.[A-Za-z0-9]+$/.test(path);
 }
 
+/**
+ * The names a write gives the files it makes in a tracked directory, as a
+ * glob, when it names them at run time right under the directory it spells:
+ * kb/* for KB_DIR / rel, one star for each part read at run time. Null for
+ * any other write, and for a maker, which makes the directory and no file in
+ * it.
+ */
+function namesInto(value, target, call, places) {
+  if (!value.open || value.tail == null || DIRECTORY_MAKERS.has(call) || !places.dirs.has(target)) return null;
+  let text = value.text.replaceAll('\\', '/');
+  while (text.startsWith('./')) text = text.slice(2);
+  if (text.slice(0, Math.max(text.lastIndexOf('/'), 0)) !== target) return null;
+  return `${globText(text)}${value.tail}`;
+}
+
+/**
+ * The tracked directories code writes files into by names read at run time
+ * where not every tracked file under the directory is one those writes
+ * make: a generator's output beside the pages people write, or beside the
+ * generator itself. Each maps to whether a path under it is one the writes
+ * make: a file some writer names whole or by its shape, or one a name read
+ * at run time can be. A name that spells nothing (kb/*) is no program, so
+ * code in the directory is not its output.
+ *
+ * @param {Map<string, Map<string, Set<string>|null>>} namesOf by directory, each writer's names, null for a writer of the whole directory
+ * @param {Map<string, Map<string, object>>} writers
+ * @param {{ files: Set<string>, dirs: Set<string> }} places
+ * @returns {Map<string, (path: string) => boolean>}
+ */
+function writtenInto(namesOf, writers, places) {
+  const out = new Map();
+  for (const [target, byWriter] of namesOf) {
+    const sets = [...byWriter.values()];
+    if (sets.length === 0 || sets.some((set) => set == null)) continue;
+    // The names given in the directory and in each written directory under
+    // it (records/_rejected/ under records/), and those written whole.
+    const nested = [...namesOf].filter(([other]) => other === target || other.startsWith(`${target}/`));
+    const whole = nested.filter(([, other]) => [...other.values()].some((set) => set == null)).map(([other]) => `${other}/`);
+    const names = [...new Set(nested.flatMap(([, other]) => [...other.values()].filter((set) => set != null).flatMap((set) => [...set])))].sort()
+      .map((glob) => ({ isMatch: picomatch(glob, { dot: true }), free: FREE_NAME.test(glob) }));
+    const shapes = [...writers.keys()].filter((other) => other.includes('*') && other.startsWith(`${target}/`)).map((other) => picomatch(other, { dot: true }));
+    const written = (path) => writers.has(path) && ![...writers.get(path).values()].every((entry) => entry.stamps);
+    const makes = (path) => written(path) || whole.some((dir) => path.startsWith(dir)) || shapes.some((isMatch) => isMatch(path))
+      || names.some(({ isMatch, free }) => isMatch(path) && !(free && isCodePath(path)));
+    for (const path of places.files) {
+      if (path.startsWith(`${target}/`) && !PLACEHOLDER.test(path) && !makes(path)) {
+        out.set(target, makes);
+        break;
+      }
+    }
+  }
+  return out;
+}
+
+// A name whose last part is read whole at run time spells no kind of file.
+const FREE_NAME = /(^|\/)\*{1,2}$/;
+
 function landingEntry(target, call, value, places, { settled = false } = {}) {
   const entry = { target, call, confidence: confidenceOf(value, target, places) };
+  const names = namesInto(value, target, call, places);
+  if (names != null) entry.names = names;
   if (value.defaultOf) entry.defaultOf = value.defaultOf;
   // A path built from the file's own location with its tail read at run
   // time, which attachLandings keeps for a test when tracked files have its shape.
@@ -2867,9 +2931,10 @@ function shapedLikeNothing(value, call, places) {
 // The tracked place a write under the working directory names from there:
 // the file or directory its whole path spells, or, for a path with a name
 // read at run time (.multi-claude/drill/logs/run-N.log), the tracked
-// directory it spells whole, when tracked files there have the path's shape.
-// A directory a maker makes is evidence of the writes into it, not output of
-// its own.
+// directory it spells whole, when tracked files there have the path's shape,
+// or those files alone when the directory holds others beside them
+// (trackedShape). A directory a maker makes is evidence of the writes into
+// it, not output of its own.
 function cwdPlace(value, call, places) {
   if (DIRECTORY_MAKERS.has(call)) return null;
   const spelled = posix.normalize(value.text.replaceAll('\\', '/') || '.').replace(/^\.\//, '');
@@ -2877,7 +2942,8 @@ function cwdPlace(value, call, places) {
     if (value.tail == null || !spelled.includes('/')) return null;
     const dir = spelled.slice(0, spelled.lastIndexOf('/'));
     const relative = { text: value.text, open: true, tail: value.tail };
-    return places.dirs.has(dir) && !shapedLikeNothing(relative, call, places) ? dir : null;
+    if (!places.dirs.has(dir) || shapedLikeNothing(relative, call, places)) return null;
+    return trackedShape(relative, places) ?? dir;
   }
   const target = spelled.replace(/\/+$/, '');
   return places.files.has(target) || places.dirs.has(target) ? target : null;
@@ -2886,19 +2952,22 @@ function cwdPlace(value, call, places) {
 // Where a write shaped like no tracked file goes: the readable head and the
 // first unread segment (swarms/*), a place no one tracks.
 // The pattern an open path names right under a tracked directory, when its
-// name has a spelled part, tracked files have that shape and the directory
-// holds others beside them: bundles/*.json beside bundles/rules/. A
-// directory whose every file has the shape is the place itself.
+// name has a spelled part, before the part read at run time or after it,
+// tracked files have that shape and the directory holds others beside them:
+// bundles/*.json beside bundles/rules/, dogfood/tuning/matrix-*.json beside
+// the hand-written notes there. A directory whose every file has the shape
+// is the place itself.
 function trackedShape(value, places) {
-  if (!value.open || value.tail == null || value.tail.includes('/') || value.tail.replace(/\*/g, '') === '') return null;
+  if (!value.open || value.tail == null || value.tail.includes('/')) return null;
   let text = value.text.replaceAll('\\', '/');
   while (text.startsWith('./')) text = text.slice(2);
-  if (!text.endsWith('/')) return null;
+  const head = text.slice(0, text.lastIndexOf('/') + 1);
+  if (head === '' || `${text.slice(head.length)}${value.tail}`.replace(/\*/g, '') === '') return null;
   const isMatch = picomatch(`${globText(text)}${value.tail}`, { dot: true });
   let shaped = false;
   let other = false;
   for (const path of places.files) {
-    if (!path.startsWith(text)) continue;
+    if (!path.startsWith(head)) continue;
     if (isMatch(path)) shaped = true;
     else other = true;
   }
@@ -3371,6 +3440,9 @@ export function attachLandings({ files, doors, boundaries, places }) {
     if (!map.has(target)) map.set(target, new Map());
     map.get(target).set(canonicalEntry(entry), entry);
   };
+  // The names each writer gives what it writes into a tracked directory, by
+  // directory and writer; null for a writer that writes the directory whole.
+  const namesOf = new Map();
   for (const file of [...own, ...tests]) {
     for (const write of file.writes) {
       const entry = { by: file.path, confidence: write.confidence, ...(write.fromCwd ? { fromCwd: true } : {}), ...(file.readsUntracked ? { untrackedInputs: true } : {}) };
@@ -3385,6 +3457,12 @@ export function attachLandings({ files, doors, boundaries, places }) {
         entry.stamps = true;
       }
       add(writers, write.target, entry);
+      if (places.dirs.has(write.target) && !DIRECTORY_MAKERS.has(write.call)) {
+        if (!namesOf.has(write.target)) namesOf.set(write.target, new Map());
+        const byWriter = namesOf.get(write.target);
+        const known = byWriter.has(file.path) ? byWriter.get(file.path) : new Set();
+        byWriter.set(file.path, known == null || write.names == null ? null : known.add(write.names));
+      }
     }
   }
   // What git add stages is what a commit may carry, not a write: a place is
@@ -3457,7 +3535,8 @@ export function attachLandings({ files, doors, boundaries, places }) {
   // stamps (a version line); people write the rest, so it never makes its
   // part generated.
   const stamped = new Set([...strong].filter((target) => [...writers.get(target).values()].every((entry) => entry.stamps)));
-  const output = (path) => [...strong].some((target) => path === target || path.startsWith(`${target}/`));
+  const into = writtenInto(namesOf, writers, places);
+  const output = (path) => [...strong].some((target) => path === target || (path.startsWith(`${target}/`) && (!into.has(target) || into.get(target)(path))));
   for (const file of own) {
     const generated = file.reads.some((read) => read.confidence === 'text') && output(file.path);
     for (const read of file.reads) {
@@ -3553,12 +3632,15 @@ export function attachLandings({ files, doors, boundaries, places }) {
     }
   }
 
-  for (const boundary of boundaries) boundary.origin = originOf(boundary, strong, stamped, places);
+  for (const boundary of boundaries) boundary.origin = originOf(boundary, strong, stamped, places, into);
 
   return [...new Set([...writers.keys(), ...readers.keys()])].sort(compare).map((target) => {
     const landing = { target, writers: sortedValues(writers.get(target)), readers: sortedValues(readers.get(target)) };
     if (spans.has(target)) landing.spans = spans.get(target);
     if (untracked.has(target)) landing.tracked = false;
+    // Its writers write files into it, beside tracked files they do not
+    // make: the directory is not theirs, only those files.
+    if (into.has(target) && writers.has(target)) landing.writesInto = true;
     return landing;
   });
 }
@@ -3653,7 +3735,7 @@ const PLACEHOLDER = /(^|\/)\.(gitkeep|keep)$/;
 // root or every one of its files is written, a placeholder aside, and none of
 // its own files write: a directory of written files beside a .gitkeep is
 // generated as surely as one whose files are all tracked.
-function originOf(boundary, written, stamped, places) {
+function originOf(boundary, written, stamped, places, into = new Map()) {
   const paths = boundary.files.map((file) => file.path);
   const root = boundaryRoot(boundary.globs);
   const holds = picomatch(boundary.globs, { dot: true });
@@ -3665,7 +3747,9 @@ function originOf(boundary, written, stamped, places) {
   });
   if (inside.length === 0) return 'authored';
   const content = paths.filter((path) => !PLACEHOLDER.test(path));
-  const made = (path) => written.has(path) && !stamped.has(path);
+  // A directory written only by files put into it, beside others, is not
+  // made whole (writtenInto).
+  const made = (path) => written.has(path) && !stamped.has(path) && !into.has(path);
   const covered = (root !== '' && made(root)) || (paths.length > 0 && content.every(made));
   const writesItself = boundary.files.some((file) => !isTestMaterial(file.path) && (file.writes?.length ?? 0) > 0);
   return covered && !writesItself ? 'generated' : 'mixed';

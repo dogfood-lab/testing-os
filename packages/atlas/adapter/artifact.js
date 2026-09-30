@@ -504,6 +504,7 @@ function carryLandings(landings) {
       target: landing.target,
       ...(landing.tracked === false ? { tracked: false } : {}),
       writers: landing.writers.filter((entry) => !inAtlas(entry.by)).map(carryWriter),
+      ...(landing.writesInto ? { writesInto: true } : {}),
     }))
     .filter((landing) => landing.readers.length > 0 || landing.writers.length > 0);
 }

@@ -18,14 +18,19 @@ after(() => {
 });
 
 describe('a template inside the directory its reader writes', () => {
-  it('is named as the file people write', () => {
+  // The month pages' names spell SN_, which the template's does not: the
+  // write lands on the pages of that shape, and the template is no part of
+  // it. A template with the shape of the output is named as the file people
+  // write (fixtures/atlas/written-into, site/).
+  it('is left out of what the reader writes when the pages it writes have a shape the template has not', () => {
     const root = makeRepo(FIXTURE);
     roots.push(root);
     const boundaries = [{ name: 'scripts', globs: ['scripts/**'], role: 'code' }, { name: 'viewer', globs: ['viewer/**'], role: 'site' }];
     const structure = buildArtifact(mapRepository({ repoPath: root, boundaries }), '0'.repeat(40));
     const { markdown, json } = buildPage({ structure, statistics: {}, document: {}, repoName: 'fixture/template-source' });
-    assert.ok(markdown.includes('- **viewer/** is written by scripts/build_viewer.py, except viewer/template.html, which it reads and people write.'), markdown);
-    assert.deepEqual(JSON.parse(json).generated.find((item) => item.place === 'viewer/').sources, ['viewer/template.html']);
+    assert.ok(markdown.includes('- **viewer/SN_*.html** is written by scripts/build_viewer.py.'), markdown);
+    assert.ok(!markdown.includes('**viewer/** is written'), markdown);
+    assert.equal(JSON.parse(json).generated.find((item) => item.place === 'viewer/'), undefined);
   });
 });
 
