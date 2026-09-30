@@ -4,6 +4,7 @@ import { isSourcePath } from '../core/history.js';
 import { isTestFile, isTestMaterial, ownTestPair } from '../core/landings.js';
 import { isCodePath, languageOf } from '../core/languages.js';
 import { stepPrograms } from './artifact.js';
+import { runnerMayRun } from './test-gaps.js';
 import { isImagePath } from './templates.js';
 
 /**
@@ -1266,7 +1267,24 @@ export function findingLines(door) {
   for (const entry of door.unresolvedCommands ?? []) {
     lines.push(`Not read as a command: in ${checkedStep(entry)}, the input \`${entry.input}\` of ${entry.action} starts ${entry.program}, since ${entry.why}.`);
   }
+  for (const entry of door.unresolvedExpressions ?? []) lines.push(expressionLine(entry));
   return lines;
+}
+
+/**
+ * What explain says of an expression standing in a step's command, which
+ * Actions spells out before the shell runs: one that adds only flags is read
+ * as absent; one that may add words leaves the files of the run it is in
+ * unlisted.
+ *
+ * @param {{ job: string, step: string, adds: 'flags'|'words' }} entry
+ * @returns {string}
+ */
+export function expressionLine(entry) {
+  const what = entry.adds === 'flags'
+    ? 'it adds only flags, so the command is read without it'
+    : 'it may add words this map cannot read, so the files a runner it is handed to runs are not listed';
+  return `Not read as part of a command: in ${checkedStep(entry)}, an expression Actions spells out before the shell runs; ${what}.`;
 }
 
 /**
@@ -1303,6 +1321,7 @@ export function doorDetail(ctx, door) {
       triggers: structuredClone(door.triggers ?? []),
       ...(door.unresolvedChecks?.length > 0 ? { unresolvedChecks: structuredClone(door.unresolvedChecks) } : {}),
       ...(door.unresolvedCommands?.length > 0 ? { unresolvedCommands: structuredClone(door.unresolvedCommands) } : {}),
+      ...(door.unresolvedExpressions?.length > 0 ? { unresolvedExpressions: structuredClone(door.unresolvedExpressions) } : {}),
     },
     lines,
   };
@@ -2233,7 +2252,12 @@ function unrunTests(ctx) {
   const named = (path) => /(\.(test|spec)\.[cm]?[jt]sx?|(^|\/)test_[^/]*\.py|_test\.py)$/.test(path);
   // A script a conftest.py keeps out of collection is no test.
   const ignored = new Set(ctx.structure.collectIgnored ?? []);
-  const left = [...ctx.fileOf.keys()].filter((path) => named(path) && !ignored.has(path) && !/(^|\/)(fixtures|__fixtures__|testdata)\//.test(path) && !ran(path)).sort(cmp);
+  // A runner named from its command alone lists none of the files it runs
+  // (playwright test over the directory its configuration names): a test
+  // file it may run is not one no workflow runs, as testsNotRun has it.
+  const unlisted = [...new Set(workflows.flatMap((door) => (door.tests ?? []).filter((run) => run.runner != null && run.files == null).map((run) => run.runner)))];
+  const mayRun = (path) => unlisted.some((runner) => runnerMayRun(runner, path, ctx.fileOf.get(path)?.testFramework ?? null));
+  const left = [...ctx.fileOf.keys()].filter((path) => named(path) && !ignored.has(path) && !/(^|\/)(fixtures|__fixtures__|testdata)\//.test(path) && !ran(path) && !mayRun(path)).sort(cmp);
   // A gate script at the root (verify.sh) that no workflow runs is a check
   // only a person runs, which a reader of CI would assume it covers.
   const gates = [...ctx.fileOf.keys()].filter((path) => /^(?:verify|check|gate)(?:[-_.][^/]*)?\.(?:sh|bash|ps1|py|mjs|js)$/.test(path) && !ran(path)

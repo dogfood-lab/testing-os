@@ -1,0 +1,13 @@
+name: CI
+on:
+  pull_request:
+env:
+  COVERAGE_LEG: 'true'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -e ".[dev]"
+      - name: Test
+        run: pytest -m "not slow" -v ${{ env.COVERAGE_LEG == 'true' && '--cov=app --cov-report=term --cov-report=xml' || '' }} --junitxml=junit.xml

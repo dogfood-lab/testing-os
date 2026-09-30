@@ -620,6 +620,9 @@ function carryDoor(door) {
     // The command-shaped inputs of actions not read as a command: the action,
     // the input and the program it starts, never the text.
     ...(door.unresolvedCommands?.length > 0 ? { unresolvedCommands: door.unresolvedCommands.map((entry) => ({ ...entry })) } : {}),
+    // The expressions standing in a step's commands, by step and by what
+    // they can add, never the text.
+    ...(door.unresolvedExpressions?.length > 0 ? { unresolvedExpressions: door.unresolvedExpressions.map((entry) => ({ ...entry })) } : {}),
     ...(door.unwrittenStages?.length > 0 ? { unwrittenStages: [...door.unwrittenStages] } : {}),
     triggers: door.triggers.map((trigger) => ({ ...trigger })),
     ...(door.untrackedLandings?.length > 0 ? { untrackedLandings: door.untrackedLandings.filter((target) => !inAtlas(target)) } : {}),

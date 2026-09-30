@@ -1,0 +1,10 @@
+[project]
+name = "app"
+version = "0.1.0"
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: needs a model on disk"]
