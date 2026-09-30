@@ -1,6 +1,6 @@
 # backpropagate: how it works
 
-Mapped at 2026-09-30 from commit 8544aef by Atlas 1.23.5.
+Mapped at 2026-09-30 from commit 06fc582 by Atlas 1.24.0.
 
 ## What this is
 
@@ -78,7 +78,7 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-- **backpropagate/cli.py** and **backpropagate/trainer.py** changed together in 29 of 55 commits, inside the backpropagate part.
+- **backpropagate/cli.py** and **backpropagate/trainer.py** changed together in 29 of 56 commits, inside the backpropagate part.
 
 2 files changed together with their own tests, as expected.
 

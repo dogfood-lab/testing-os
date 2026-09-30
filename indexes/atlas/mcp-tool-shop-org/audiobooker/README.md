@@ -1,6 +1,6 @@
 # audiobooker: how it works
 
-Mapped at 2026-09-30 from commit 6fcd238 by Atlas 1.23.5.
+Mapped at 2026-09-30 from commit 6fcd238 by Atlas 1.24.0.
 
 ## What this is
 

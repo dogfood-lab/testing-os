@@ -9772,6 +9772,7 @@
       "checksCount": 29,
       "commands": [
         {
+          "dir": "",
           "job": "check",
           "programs": [
             "npx"
@@ -9779,6 +9780,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "check",
           "programs": [
             "echo",
@@ -9788,6 +9790,7 @@
           "step": "Env files stay ignored"
         },
         {
+          "dir": "",
           "job": "check",
           "programs": [
             "pnpm"
@@ -9795,6 +9798,7 @@
           "step": "Install"
         },
         {
+          "dir": "",
           "job": "check",
           "programs": [
             "pnpm"
@@ -9802,6 +9806,7 @@
           "step": "Audit"
         },
         {
+          "dir": "",
           "job": "check",
           "programs": [
             "pnpm"
@@ -9809,6 +9814,7 @@
           "step": "Lint"
         },
         {
+          "dir": "",
           "job": "check",
           "programs": [
             "pnpm"
@@ -9816,6 +9822,7 @@
           "step": "Typecheck"
         },
         {
+          "dir": "",
           "job": "check",
           "programs": [
             "pnpm"
@@ -9823,6 +9830,7 @@
           "step": "Test"
         },
         {
+          "dir": "",
           "job": "check",
           "programs": [
             "pnpm"
@@ -9830,6 +9838,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "check",
           "programs": [
             "pnpm"
@@ -9837,6 +9846,7 @@
           "step": "Play-through"
         },
         {
+          "dir": "",
           "job": "check",
           "programs": [
             "python3"
@@ -9844,6 +9854,7 @@
           "step": "Voice worker syntax"
         },
         {
+          "dir": "",
           "job": "check",
           "programs": [
             "echo"
@@ -9851,6 +9862,7 @@
           "step": "Job summary"
         },
         {
+          "dir": "",
           "job": "check",
           "programs": [
             "echo"
@@ -9858,6 +9870,7 @@
           "step": "Next local command"
         },
         {
+          "dir": "",
           "job": "catalog",
           "programs": [
             "awk",
@@ -9870,6 +9883,7 @@
           "step": "Catalog contract"
         },
         {
+          "dir": "",
           "job": "catalog",
           "programs": [
             "2",
@@ -9883,6 +9897,7 @@
           "step": "Hub digest pin"
         },
         {
+          "dir": "",
           "job": "catalog",
           "programs": [
             "1",
@@ -9893,6 +9908,7 @@
           "step": "Build Catalog image"
         },
         {
+          "dir": "",
           "job": "catalog",
           "programs": [
             "2",
@@ -9905,6 +9921,7 @@
           "step": "Run Catalog image over stdio"
         },
         {
+          "dir": "",
           "job": "catalog",
           "programs": [
             "echo"
@@ -9912,6 +9929,7 @@
           "step": "Job summary"
         },
         {
+          "dir": "",
           "job": "catalog",
           "programs": [
             "echo"
@@ -9921,6 +9939,69 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "check",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "catalog",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -10509,6 +10590,7 @@
       "checksCount": 16,
       "commands": [
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "pnpm"
@@ -10516,6 +10598,7 @@
           "step": "Install the workspace"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "pnpm"
@@ -10523,6 +10606,7 @@
           "step": "Lint"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "pnpm"
@@ -10530,6 +10614,7 @@
           "step": "Typecheck"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "pnpm"
@@ -10537,6 +10622,7 @@
           "step": "Test"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "pnpm"
@@ -10544,6 +10630,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "pnpm"
@@ -10551,6 +10638,7 @@
           "step": "Build the game into the site at /play/"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "pnpm"
@@ -10558,6 +10646,7 @@
           "step": "Play-through"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -10565,6 +10654,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -10572,6 +10662,7 @@
           "step": "Audit site lockfile"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -10579,6 +10670,7 @@
           "step": "Build site"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "cat",
@@ -10594,6 +10686,7 @@
           "step": "Require /play/ in the dist"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "echo",
@@ -10606,6 +10699,7 @@
           "step": "Job summary"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "echo"
@@ -10613,6 +10707,7 @@
           "step": "Next local command"
         },
         {
+          "dir": "",
           "job": "deploy",
           "programs": [
             "echo"
@@ -10638,6 +10733,56 @@
               "main"
             ]
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],
@@ -11297,6 +11442,7 @@
       "checksCount": 17,
       "commands": [
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "node",
@@ -11305,6 +11451,7 @@
           "step": "npm with Trusted Publishing"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "pnpm"
@@ -11312,6 +11459,7 @@
           "step": "Install"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -11320,6 +11468,7 @@
           "step": "One version across the repo, and it matches the tag"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "pnpm"
@@ -11327,6 +11476,7 @@
           "step": "Verify"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "pnpm"
@@ -11334,6 +11484,7 @@
           "step": "Build both packages"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -11342,6 +11493,7 @@
           "step": "Both built bins run"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "2",
@@ -11355,6 +11507,7 @@
           "step": "Both seats list their own tools"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "cd",
@@ -11365,6 +11518,7 @@
           "step": "Both tarballs carry their cabinet and no sources"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "1",
@@ -11376,6 +11530,7 @@
           "step": "Publish both"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "cd",
@@ -11384,6 +11539,7 @@
           "step": "Dry run both"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo"
@@ -11391,6 +11547,7 @@
           "step": "Job summary"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo"
@@ -11417,6 +11574,37 @@
               "dry_run": false
             }
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
         }
       ],
       "landings": [],
@@ -12098,7 +12286,7 @@
       "to": "tape-core"
     }
   ],
-  "engine": "1.23.5",
+  "engine": "1.24.0",
   "generatedFrom": {
     "commit": "c01c274dde0c021eba60b7f6d9db23283d7d72b0",
     "tracked": 757
