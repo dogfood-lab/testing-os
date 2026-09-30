@@ -126,7 +126,7 @@ describe('what the sidecar can do, read from its code', () => {
     }
     // And so is what reads a door's runtime and checks it
     // (docs/atlas-production.spec.md, acceptance 9).
-    for (const module of ['core/runtime.js']) {
+    for (const module of ['core/runtime.js', 'core/lockfile.js', 'core/door-checks.js']) {
       assert.ok([...MODULES.keys()].map(name).includes(module), `the command line reaches ${module}`);
     }
   });

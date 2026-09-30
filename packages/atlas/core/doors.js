@@ -5,6 +5,7 @@ import { parse, parseDocument } from 'yaml';
 import { better, cleanDir, commandLines, readCommands, readContainer, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
 import { godotProjects } from './godot.js';
 import { isTestFile } from './landings.js';
+import { checkDoor } from './door-checks.js';
 import { jobRuntime } from './runtime.js';
 import { runsAProgram } from './step-programs.js';
 import { storedText } from './text.js';
@@ -369,7 +370,14 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
   // The runtime each job declares (core/runtime.js), for a workflow's own
   // jobs; an action runs in the job of whoever uses it.
   const runtimes = [];
-  const written = runtime ? writtenScalars(text, doc) : null;
+  // The steps of each job that run commands, with the programs each starts,
+  // for the door checks (core/door-checks.js).
+  const stepsByJob = new Map();
+  const at = positions(text, doc);
+  const written = (job, body, step, path) => {
+    const node = at.node(job, body, step, path);
+    return node != null && typeof node.source === 'string' ? node.source : null;
+  };
   const workflowDir = workingDirectory(doc.defaults);
   const workflowEnv = envOf(doc.env);
   const workflowSet = setEnvOf(doc.env);
@@ -418,7 +426,12 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
     // The run texts of the job's steps so far, where a later step's run-time
     // directory is assigned.
     const jobTexts = [];
-    if (runtime) runtimes.push(jobRuntime({ name: job, body, steps, repo, selfPath, source: (step, path) => (jobThrough.length > 0 ? null : written(job, body, step, path)) }));
+    if (runtime) {
+      const declared = jobRuntime({ name: job, body, steps, repo, selfPath, source: (step, path) => (jobThrough.length > 0 ? null : written(job, body, step, path)) });
+      for (const entry of declared.setup ?? []) entry.line = at.line(job, body, steps[entry.index]);
+      runtimes.push(declared);
+      stepsByJob.set(job, []);
+    }
     const shipped ={ job, body, platforms, gate, builds: new Set(), targets: new Set(), artifacts: [], downloads: false, uploads: [], packs: false };
     shipping.push(shipped);
     steps.forEach((step, index) => {
@@ -479,6 +492,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
       const stepTests = [];
       const stepRan = new Set();
       const stepEnds = [];
+      const stepInvocations = [];
       for (const rawDir of rawDirs) {
         const ownDir = own(rawDir);
         const start = ownDir == null ? { here: false, dir: String(rawDir ?? ''), clone: null } : placeOf({ here: true, dir: '' }, ownDir, clones, repo, lookup);
@@ -512,6 +526,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
         const named = readCommands(expandEnv(step.run, lookup), dir, repo, platforms, { through: [...jobThrough, ...(step[REACHED_THROUGH] ?? [])], env: written });
         stepTests.push(...named.tests);
         stepEnds.push(...named.ends);
+        stepInvocations.push(...named.invocations);
         for (const entry of named.runs.values()) if (entry.runKind === 'executes' && !entry.built && !entry.directory) stepRan.add(entry.path);
         for (const entry of named.shellMissed) {
           const key = `${entry.base}\0${entry.platform}`;
@@ -527,6 +542,10 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
           if (entry.builds) shipped.builds.add(entry.path);
         }
         for (const path of named.mentions) mentions.set(`${path}\0${job}`, { path, job });
+      }
+      if (runtime && stepInvocations.length > 0) {
+        const from = [...jobThrough, ...(step[REACHED_THROUGH] ?? [])].at(-1);
+        stepsByJob.get(job).push({ index, step: name, line: at.line(job, body, step), ...(from != null ? { file: from } : {}), invocations: stepInvocations });
       }
       for (const run of stepTests) {
         const { paths, dir, leftOut, ...fields } = run;
@@ -558,6 +577,9 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
   const testScripts = [...new Set([...runs.values()].map((run) => run.testScript).filter((dir) => dir != null))].sort();
   for (const run of runs.values()) delete run.testScript;
   const recorded = recordedRuns([...runs.values()]);
+  // The two checks on a door, from its runtime and the lock each step
+  // installs from or runs a tool of.
+  const checked = runtime ? checkDoor({ file, jobs: runtimes, steps: stepsByJob, repo }) : null;
   const runKeys = new Set(recorded.all.map((run) => `${run.path}\0${run.job}`));
   const underRun = (path, job) => recorded.all.some((run) => run.job === job && run.directory && path.startsWith(run.path));
   const byPathThenJob = (a, b) => compare(a.path, b.path) || compare(a.job, b.job);
@@ -581,6 +603,8 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
     usesWorkflowToken: /\bgithub\.token\b|\bsecrets\.GITHUB_TOKEN\b/.test(text),
     commands,
     ...(runtime ? { jobs: runtimes } : {}),
+    ...(checked?.findings.length > 0 ? { findings: checked.findings } : {}),
+    ...(checked?.unresolved.length > 0 ? { unresolvedChecks: checked.unresolved } : {}),
     runs: recorded.kept,
     runsCount: recorded.count,
     checksCount: recorded.checks,
@@ -1899,24 +1923,43 @@ function otherCheckout(action, input) {
 }
 
 /**
- * The text a scalar of a workflow's own step was written as, which parsing
- * loses for a number (node-version: 22.10 parses as 22.1): given the job, its
- * body, a step of it and the path under the step, the scalar's source, or
- * null for a step that is not the workflow's own (one inlined from a
- * composite action) or a value that is not a scalar. The document is parsed
- * again with its positions only when a value is asked for. With no step, the
- * path is under the job itself (strategy.matrix.node.1).
+ * Where a workflow's own jobs and steps were written, from the document
+ * parsed again with its positions, only when asked. node(job, body, step,
+ * path) is the node under a step, or with no step under the job itself
+ * (strategy.matrix.node.1); its source is the text a scalar was written as,
+ * which parsing loses for a number (node-version: 22.10 parses as 22.1).
+ * line(job, body, step) is the line a step starts on. Both are null for a
+ * job or step that is not the workflow's own (one inlined from a reusable
+ * workflow or a composite action).
  */
-function writtenScalars(text, doc) {
+function positions(text, doc) {
   let document = null;
-  return (job, body, step, path) => {
+  let starts = null;
+  const node = (job, body, step, path = []) => {
     if (!isMapping(doc.jobs) || doc.jobs[job] !== body) return null;
     const index = step == null ? null : Array.isArray(body.steps) ? body.steps.indexOf(step) : -1;
     if (index === -1) return null;
     document ??= parseDocument(text);
-    const node = document.getIn(['jobs', job, ...(index == null ? [] : ['steps', index]), ...path], true);
-    return node != null && typeof node.source === 'string' ? node.source : null;
+    return document.getIn(['jobs', job, ...(index == null ? [] : ['steps', index]), ...path], true) ?? null;
   };
+  const line = (job, body, step) => {
+    const found = node(job, body, step);
+    if (!Array.isArray(found?.range)) return null;
+    if (!starts) {
+      starts = [0];
+      for (let i = text.indexOf('\n'); i !== -1; i = text.indexOf('\n', i + 1)) starts.push(i + 1);
+    }
+    const offset = found.range[0];
+    let low = 0;
+    let high = starts.length - 1;
+    while (low < high) {
+      const middle = Math.ceil((low + high) / 2);
+      if (starts[middle] <= offset) low = middle;
+      else high = middle - 1;
+    }
+    return low + 1;
+  };
+  return { node, line };
 }
 
 function rawWorkingDirectory(defaults) {
