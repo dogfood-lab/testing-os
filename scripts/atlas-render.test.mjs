@@ -587,6 +587,70 @@ describe('files the render no longer writes', () => {
   });
 });
 
+describe('a repository that leaves the list', () => {
+  const LEAVING = 'dogfood-lab/leaving';
+  const STAYING = ['mcp-tool-shop-org/shipcheck', 'mcp-tool-shop-org/widgets'];
+  const RENDERED = ['README.md', 'divergence.json', 'history.json', 'page.json', 'statistics.json', 'structure.json'];
+
+  function listed(name, change = {}) {
+    return { full_name: name, visibility: 'public', archived: false, default_branch: 'main', ...change };
+  }
+
+  // Every file and directory under the branch's indexes/atlas, relative to it.
+  function entriesUnder(dir, base = dir) {
+    const found = [];
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const abs = join(dir, entry.name);
+      found.push(abs.slice(base.length + 1).replaceAll('\\', '/') + (entry.isDirectory() ? '/' : ''));
+      if (entry.isDirectory()) found.push(...entriesUnder(abs, base));
+    }
+    return found.sort();
+  }
+
+  // A render of three repositories onto an empty branch, then a second run
+  // over what it left, in which the third has left the list the given way.
+  async function renderTwice(t, second) {
+    const tree = mkdtempSync(join(tmpdir(), 'atlas-render-leaving-'));
+    t.after(() => rmSync(tree, { recursive: true, force: true }));
+    const org = STAYING.map((name) => listed(name));
+    const first = harness(t, { lab: [listed(LEAVING)], org, branch: tree });
+    await first.runFleet({ dryRun: false, writeBranch: (payload) => writeRenderFiles(tree, payload) });
+    assert.ok(existsSync(join(tree, 'indexes', 'atlas', ...LEAVING.split('/'), 'page.json')), 'the first run renders all three');
+    const again = harness(t, { org, branch: tree, ...second });
+    const result = await again.runFleet({ dryRun: false, writeBranch: (payload) => writeRenderFiles(tree, payload) });
+    return { tree, result };
+  }
+
+  const ways = [
+    ['is made private', { lab: [listed(LEAVING, { visibility: 'private' })] }],
+    ['is archived', { lab: [listed(LEAVING, { archived: true })] }],
+    ['removes its map', { lab: [listed(LEAVING)], heads: { [LEAVING]: 'f'.repeat(40) }, notMapped: true }],
+    ['is excluded', { lab: [listed(LEAVING)], exclude: `${LEAVING}\n` }],
+  ];
+  for (const [how, second] of ways) {
+    it(`loses its folder, its fleet row and its index line when it ${how}, and nothing stale is left`, async (t) => {
+      const { tree, result } = await renderTwice(t, second);
+      const atlas = join(tree, 'indexes', 'atlas');
+      assert.deepEqual(entriesUnder(atlas), [
+        'fleet.json',
+        'llms.txt',
+        'mcp-tool-shop-org/',
+        ...STAYING.flatMap((name) => [`${name.split('/')[1]}/`, ...RENDERED.map((file) => `${name.split('/')[1]}/${file}`)])
+          .map((path) => `mcp-tool-shop-org/${path}`),
+        'state.json',
+      ].sort(), 'the two that stay, as the first run wrote them, and the files beside the fleet');
+      assert.deepEqual(JSON.parse(readFileSync(join(atlas, 'fleet.json'), 'utf8')).repositories.map((row) => row.repo), STAYING);
+      assert.equal(readFileSync(join(atlas, 'llms.txt'), 'utf8').includes(LEAVING), false);
+      assert.ok(result.logs.includes(`removed indexes/atlas/${LEAVING}: no longer on the list`), result.logs.join('\n'));
+    });
+  }
+
+  it('keeps the folder of a repository still on the list whose render failed this run', async (t) => {
+    const { tree } = await renderTwice(t, { lab: [listed(LEAVING)], heads: { [LEAVING]: 'f'.repeat(40) }, cloneFails: true });
+    assert.deepEqual(readdirSync(join(tree, 'indexes', 'atlas', ...LEAVING.split('/'))).sort(), RENDERED);
+  });
+});
+
 describe('exclude file', () => {
   it('ignores comments and blank lines', () => {
     assert.deepEqual([...readExclusions('# note\n\nowner/repo\n')], ['owner/repo']);

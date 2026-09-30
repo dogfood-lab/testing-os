@@ -340,6 +340,7 @@ export async function renderFleet(options = {}) {
   }
   const keep = (name) => publicNames.has(name) && !excluded.has(name) && !state.rendered[name]?.notMapped;
   const fleet = mergeFleet(previousFleet?.repositories, renderedNow, keep, now);
+  const onList = new Set([...publicNames].filter(keep));
   const date = now.toISOString().slice(0, 10);
   const paths = ['indexes/atlas/state.json', 'indexes/atlas/fleet.json', 'indexes/atlas/llms.txt'];
   for (const entry of renderedNow) {
@@ -355,7 +356,7 @@ export async function renderFleet(options = {}) {
   if (!dryRun) {
     if (options.writeBranch) {
       const rendered = renderedNow.map((entry) => entry.repo);
-      await options.writeBranch({ state, fleet: fleetDoc, index, outRoot, paths, rendered, date, publicNames, log });
+      await options.writeBranch({ state, fleet: fleetDoc, index, outRoot, paths, rendered, onList, date, publicNames, log });
     }
     if (changed && options.issues) issue = await publishIssue(options.issues, date, changes);
   }
@@ -414,12 +415,26 @@ const CARRIED = new Set(['divergence.json', 'history.json']);
  * fleet and its agent index beside it, then every render over what the branch
  * held. In a repository the run rendered, a file it neither wrote (`paths`)
  * nor carries was written by an earlier engine and is removed; a repository
- * the run skipped keeps what it has. Split from the clone and the push so a
- * fixture branch can take a run.
+ * the run skipped keeps what it has. A repository no longer on the list the
+ * fleet is drawn from (`onList`: made private, archived, excluded, or its map
+ * removed) loses its folder, which would otherwise hold a path outside the
+ * public listing and refuse every later commit; one still on the list keeps
+ * its folder when its render failed this run. Split from the clone and the
+ * push so a fixture branch can take a run.
  */
-export function writeRenderFiles(work, { state, fleet, index, outRoot, paths, rendered, publicNames, log }) {
+export function writeRenderFiles(work, { state, fleet, index, outRoot, paths, rendered, onList, publicNames, log }) {
   const atlasDir = join(work, 'indexes', 'atlas');
   mkdirSync(atlasDir, { recursive: true });
+  for (const owner of readdirSync(atlasDir, { withFileTypes: true }).filter((entry) => entry.isDirectory())) {
+    const ownerDir = join(atlasDir, owner.name);
+    for (const repo of readdirSync(ownerDir, { withFileTypes: true }).filter((entry) => entry.isDirectory())) {
+      const name = `${owner.name}/${repo.name}`;
+      if (onList.has(name)) continue;
+      rmSync(join(ownerDir, repo.name), { recursive: true, force: true });
+      log(`removed indexes/atlas/${name}: no longer on the list`);
+    }
+    if (readdirSync(ownerDir).length === 0) rmSync(ownerDir, { recursive: true, force: true });
+  }
   writeFileSync(join(atlasDir, 'state.json'), `${JSON.stringify(state, null, 2)}\n`);
   writeFileSync(join(atlasDir, 'fleet.json'), `${JSON.stringify(fleet, null, 2)}\n`);
   writeFileSync(join(atlasDir, 'llms.txt'), index);
