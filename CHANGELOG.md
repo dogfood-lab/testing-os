@@ -2,9 +2,9 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.24.0] — 2026-09-30
 
-Atlas answers from where it is asked: from a fetched ref, from a tree exported without its history, and about a workflow file as the door it is (`docs/atlas-production.spec.md`, Part 1).
+Atlas answers from where it is asked, and says what will break a workflow before it runs. It answers from a fetched ref, from a tree exported without its history, and about a workflow file as the door it is (`docs/atlas-production.spec.md`, Part 1). It records each job's runtime and checks two things on it, shown as notices: a Node pin that the tool a step runs does not accept, and a lockfile that holds no native binding for the platform a job installs it on (Parts 2 to 5). Both checks were run over the 79 fleet repositories before they shipped (`docs/atlas-door-checks.fleet-check.md`).
 
 ### Added
 - **`--ref <ref>` on `atlas explain` and `atlas gaps`, and `ref` on every sidecar tool but `atlas_refresh`.** The map is read at a ref the clone already holds, such as `origin/main`, with git read commands and no fetch; files in the answer are read at that ref. The map's commit must be in the ref's history. The provenance names the ref, its commit and how far it is from the checkout ("map 7fe13cd from origin/main, 3 commits ahead of this checkout"), and "changed after the map" is judged between the map's commit and the ref, with a sentence saying the working tree was not compared. `atlas_check_change` takes a ref only when the checkout holds the commit that map was made from. Two new codes: `ATLAS_REF_UNKNOWN` and `ATLAS_REF_MAP_FOREIGN`.
@@ -25,6 +25,7 @@ Atlas answers from where it is asked: from a fetched ref, from a tree exported w
 
 ### Fixed
 - **Shell arithmetic names no program.** A step's script is kept in the map as the programs it runs. A variable inside `$(( ))` or a `(( ))` command was read as one, so a retry loop's `sleep $((attempt * 5))` recorded a program called `attempt`, and the new workflow explain would have printed "runs attempt". Arithmetic is now set aside before the script is split into commands; a subshell inside a command substitution, which also opens with two parentheses, is still read. Maps change only where a step used arithmetic.
+- **The container runs `gaps`.** The image's entrypoint passes Atlas verbs to the CLI by name, and `gaps`, added in 1.23.4, was not on its list, so `docker run … ghcr.io/dogfood-lab/atlas gaps` tried to run a program called `gaps` and failed. It is on the list now.
 
 ## [1.23.5] — 2026-09-29
 
