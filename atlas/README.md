@@ -1,20 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-09-30 from commit b46a5cf by Atlas 1.23.5.
+Mapped at 2026-09-30 from commit d8435ae by Atlas 1.23.5.
 
 ## What this is
 
 23 parts, mostly JavaScript (1552 files), TypeScript (214), Python (196), Rust (93), GDScript (33), shell (18), HTML (14), Astro (9), CSS (5), C# (3) and PowerShell (1). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
 
-## What changed since 2026-09-30 (e84ad73)
+## What changed since 2026-09-30 (b46a5cf)
 
-- CI runs 7 more files than before.
-- Release runs 7 more files than before.
-- .github/workflows/pages.yml is now also read by packages/atlas/adapter/door-findings-map.test.js, packages/atlas/adapter/door-notices.test.js, packages/atlas/core/door-lockfile.test.js and packages/atlas/core/door-toolchain.test.js.
-- README.md is now also read by packages/atlas/core/lockfile.test.js.
-- fixtures/atlas/ is now also read by packages/atlas/adapter/door-findings-map.test.js and packages/atlas/adapter/door-notices.test.js.
-- And 11 more new writers and readers of places.
-- 79 files added and 24 changed content, across 5 parts.
+Nothing structural changed since 2026-09-30; 1 file added and 6 changed content.
 
 ## What comes in
 
@@ -100,7 +94,7 @@ Mapped at 2026-09-30 from commit b46a5cf by Atlas 1.23.5.
 
 1 file changed together with its own test, as expected.
 
-Window: 180 days; a pair counts from 10 shared commits, since 40 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do.
+Window: 180 days; a pair counts from 10 shared commits, since 41 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do.
 
 ## What no test touches
 
