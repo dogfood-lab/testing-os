@@ -203,11 +203,18 @@ function createContext(repoPath, tracked, trackedLower, boundaryByFile) {
   const fileSystem = new enhancedResolve.CachedInputFileSystem(fs, 4000);
   const resolvers = new Map();
   const declared = new Map();
+  const reals = new Map();
   let python = null;
   return {
     repo,
     tracked,
     trackedLower,
+    // A file's real path, once per resolution: many imports land on one file,
+    // and the disk does not change while a map is read.
+    realPath(absPath) {
+      if (!reals.has(absPath)) reals.set(absPath, realOf(absPath));
+      return reals.get(absPath);
+    },
     boundaryByFile,
     workspaces,
     declared: (dir) => declaredPackages(view, dir, declared),
@@ -505,13 +512,17 @@ function classifyAbsolute(ctx, absPath) {
   return { outcome: 'unresolved', reason: 'not-tracked' };
 }
 
-function locate(ctx, absPath) {
-  let real = absPath;
+// A path with its links followed, or the path itself when it names nothing.
+function realOf(absPath) {
   try {
-    real = realpathSync(absPath);
+    return realpathSync(absPath);
   } catch {
-    real = absPath;
+    return absPath;
   }
+}
+
+function locate(ctx, absPath) {
+  const real = ctx.realPath ? ctx.realPath(absPath) : realOf(absPath);
   const rel = relative(ctx.repo, real).replaceAll('\\', '/');
   if (!rel || rel.startsWith('../') || isAbsolute(rel)) return { outside: true, rel };
   if (ctx.tracked.has(rel)) return { rel, tracked: rel };

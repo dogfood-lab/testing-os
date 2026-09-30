@@ -2292,19 +2292,23 @@ function propertyName(key) {
   return null;
 }
 
+// Every name assigned in the scope with what it is assigned, in the walk's
+// order, read in one walk of the scope for all the names asked of it.
 function assignedIn(scope, name, ctx) {
-  const id = `${key(scope)}:${name}`;
+  const id = key(scope);
   if (!ctx.assignments.has(id)) {
-    const rights = [];
+    const byName = new Map();
     walk(scope, (node) => {
       if (node.type !== 'assignment_expression') return;
       const left = node.childForFieldName('left');
       const right = node.childForFieldName('right');
-      if (left?.type === 'identifier' && left.text === name && right) rights.push(right);
+      if (left?.type !== 'identifier' || !right) return;
+      if (!byName.has(left.text)) byName.set(left.text, []);
+      byName.get(left.text).push(right);
     });
-    ctx.assignments.set(id, rights);
+    ctx.assignments.set(id, byName);
   }
-  return ctx.assignments.get(id);
+  return ctx.assignments.get(id).get(name) ?? [];
 }
 
 function moduleSpecifier(node) {
@@ -2388,20 +2392,42 @@ function returnsJs(name, from, ctx, depth) {
   return [];
 }
 
+// The functions each block of a tree declares, by name, read once per block:
+// a file asks for them at every call it follows, and the parser hands out
+// every child anew on each access.
+const FUNCTIONS = new WeakMap();
+
 function findFunction(scope, name) {
-  for (const statement of scope.namedChildren) {
-    const declaration = statement.type === 'export_statement' ? statement.childForFieldName('declaration') : statement;
-    if (!declaration) continue;
-    if (declaration.type === 'function_declaration' && declaration.childForFieldName('name')?.text === name) return declaration;
-    if (declaration.type === 'lexical_declaration' || declaration.type === 'variable_declaration') {
-      for (const declarator of declaration.namedChildren) {
-        if (declarator.type !== 'variable_declarator' || declarator.childForFieldName('name')?.text !== name) continue;
-        const value = declarator.childForFieldName('value');
-        if (value && JS_FUNCTIONS.has(value.type)) return value;
+  let byScope = FUNCTIONS.get(scope.tree);
+  if (!byScope) {
+    byScope = new Map();
+    FUNCTIONS.set(scope.tree, byScope);
+  }
+  const id = key(scope);
+  let declared = byScope.get(id);
+  if (!declared) {
+    // The first declaration of each name in the block's order, as a search
+    // for one name would find it.
+    declared = new Map();
+    for (const statement of scope.namedChildren) {
+      const declaration = statement.type === 'export_statement' ? statement.childForFieldName('declaration') : statement;
+      if (!declaration) continue;
+      if (declaration.type === 'function_declaration') {
+        const named = declaration.childForFieldName('name')?.text;
+        if (named != null && !declared.has(named)) declared.set(named, declaration);
+      }
+      if (declaration.type === 'lexical_declaration' || declaration.type === 'variable_declaration') {
+        for (const declarator of declaration.namedChildren) {
+          if (declarator.type !== 'variable_declarator') continue;
+          const named = declarator.childForFieldName('name')?.text;
+          const value = declarator.childForFieldName('value');
+          if (named != null && value && JS_FUNCTIONS.has(value.type) && !declared.has(named)) declared.set(named, value);
+        }
       }
     }
+    byScope.set(id, declared);
   }
-  return null;
+  return declared.get(name) ?? null;
 }
 
 function returnExpressions(body, returnType, nested) {

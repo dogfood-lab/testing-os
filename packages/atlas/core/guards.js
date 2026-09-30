@@ -262,6 +262,7 @@ function perNode(cache, node, lang, find) {
 
 const CONDITION_FLAGS = new WeakMap();
 const DECLARATIONS = new WeakMap();
+const BLOCK_DECLARATORS = new WeakMap();
 
 // The flags a condition tests, followed from no name already on the way.
 function conditionFlags(condition, lang) {
@@ -320,16 +321,27 @@ function scriptBinding(node, visiting) {
 function scriptDeclarator(node) {
   for (let scope = node.parent; scope; scope = scope.parent) {
     if (!JS_BLOCKS.has(scope.type)) continue;
-    for (const statement of scope.namedChildren) {
-      const declaration = statement.type === 'export_statement' ? statement.childForFieldName('declaration') : statement;
-      if (declaration?.type !== 'lexical_declaration' && declaration?.type !== 'variable_declaration') continue;
-      for (const declarator of declaration.namedChildren) {
-        if (declarator.type !== 'variable_declarator' || declarator.childForFieldName('name')?.text !== node.text) continue;
-        return { id: `${declarator.startIndex}:${declarator.endIndex}`, value: declarator.childForFieldName('value') };
-      }
-    }
+    const found = perNode(BLOCK_DECLARATORS, scope, SCRIPT, () => blockDeclarators(scope)).get(node.text);
+    if (found) return found;
   }
   return null;
+}
+
+// The first declarator of each name a block declares, in the block's order,
+// read once per block: every identifier under it asks the same block.
+function blockDeclarators(scope) {
+  const out = new Map();
+  for (const statement of scope.namedChildren) {
+    const declaration = statement.type === 'export_statement' ? statement.childForFieldName('declaration') : statement;
+    if (declaration?.type !== 'lexical_declaration' && declaration?.type !== 'variable_declaration') continue;
+    for (const declarator of declaration.namedChildren) {
+      if (declarator.type !== 'variable_declarator') continue;
+      const named = declarator.childForFieldName('name')?.text;
+      if (named == null || out.has(named)) continue;
+      out.set(named, { id: `${declarator.startIndex}:${declarator.endIndex}`, value: declarator.childForFieldName('value') });
+    }
+  }
+  return out;
 }
 
 function pythonBinding(node, visiting) {

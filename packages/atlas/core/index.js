@@ -455,7 +455,7 @@ function describeCached(repoPath, path, raw, attributes, places, sinks) {
     const facts = new Map();
     const spawned = new Map();
     const builds = new Map();
-    const file = describeFile(repoPath, path, places, facts, spawned, attributes, builds, raw);
+    const file = describeFile(repoPath, path, places, facts, spawned, attributes, builds, raw, { reread: true });
     entry = structuredClone({ file, fact: facts.get(path), spawned: spawned.get(path), builds: builds.get(path) });
     if (READINGS.size >= READINGS_KEPT) READINGS.delete(READINGS.keys().next().value);
   }
@@ -800,7 +800,9 @@ function symlinkTarget(repoPath, oid) {
 // A file is read as git stores it (text.js), so what is hashed and parsed is
 // the same on a checkout with either line ending. raw is the file's content
 // from somewhere other than the working tree, a committed version of it.
-function describeFile(repoPath, path, places, facts, spawned, attributes, builds, raw = null) {
+// reread is a reading for rereadFiles, which returns imports, landings,
+// spawns and failure paths alone (parseFile).
+function describeFile(repoPath, path, places, facts, spawned, attributes, builds, raw = null, { reread = false } = {}) {
   const bytes = storedBytes(raw ?? readFileSync(join(repoPath, path)), attributes);
   const hash = createHash('sha256').update(bytes).digest('hex');
   // An Astro file's frontmatter (the --- fenced script at its top) is
@@ -815,7 +817,7 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
   // text (core/mentions.js).
   const shellNames = language == null && namesFiles(path) && isShellScript(path) ? shellWords(bytes.toString('utf8')) : [];
   if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places), ...(shellNames.length > 0 ? { mentions: shellNames } : {}) };
-  const extracted = parseFile(language, path, front ?? bytes.toString('utf8'), places);
+  const extracted = parseFile(language, path, front ?? bytes.toString('utf8'), places, { reread });
   if (extracted.parseError) {
     const syntax = extracted.unreadSyntax ? { unreadSyntax: extracted.unreadSyntax } : {};
     return { path, hash, language, parseError: true, ...syntax, imports: [], ...noLandings() };
@@ -846,7 +848,26 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
 
 // One parse serves every reading of a file: its imports, its landings, the
 // order of the calls it makes and the commands it hands a child process.
-function parseFile(language, path, original, places) {
+// A re-read (rereadFiles) returns what a file imports, writes, reads and
+// spawns and its failure paths, and nothing else, so it skips the readings
+// only the whole map uses: the order of calls, the HTTP routes, the builds,
+// the API writes and the rest. They are a third of the time a file takes,
+// and the change check reads each changed file twice before it answers.
+const REREAD_SKIPS = {
+  sequence: { functions: [], topLevel: [], reexports: [] },
+  githubChanges: 0,
+  noStatements: false,
+  startsOnLoad: false,
+  holds: null,
+  http: null,
+  builds: [],
+  mentions: [],
+};
+
+export const PARSE_COUNTS = { files: 0, sequences: 0 };
+
+function parseFile(language, path, original, places, { reread = false } = {}) {
+  PARSE_COUNTS.files += 1;
   let tree;
   let typeSites = [];
   // The grammar stops at a raw NUL byte wherever it is, a comment or a
@@ -871,6 +892,16 @@ function parseFile(language, path, original, places) {
     if (tree.rootNode.hasError) return { parseError: true, imports: [], unreadSyntax: unreadSyntax(tree.rootNode, source) };
     if (!SCRIPT_LANGUAGES.has(language) && language !== 'python') return nativeReadings(language, tree.rootNode);
     const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : [...collectScript(tree.rootNode, path), ...typeSites];
+    if (reread) {
+      return {
+        ...REREAD_SKIPS,
+        imports,
+        landings: astLandings(language, tree.rootNode, path, places),
+        spawned: language === 'python' ? pythonSpawns(tree.rootNode) : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
+        failurePaths: failurePaths(language, tree.rootNode),
+      };
+    }
+    PARSE_COUNTS.sequences += 1;
     return {
       imports,
       landings: astLandings(language, tree.rootNode, path, places),
