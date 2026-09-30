@@ -1169,6 +1169,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npx"
@@ -1176,6 +1177,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npm"
@@ -1183,6 +1185,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npm"
@@ -1190,6 +1193,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npx"
@@ -1197,6 +1201,7 @@
           "step": "5"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npm"
@@ -1204,6 +1209,7 @@
           "step": "6"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npx"
@@ -1211,6 +1217,7 @@
           "step": "Coverage report for Codecov"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npm"
@@ -1220,6 +1227,53 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -1357,6 +1411,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -1364,6 +1419,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -1371,6 +1427,7 @@
           "step": "Audit site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -1393,6 +1450,56 @@
           "when": {
             "event": "push"
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],

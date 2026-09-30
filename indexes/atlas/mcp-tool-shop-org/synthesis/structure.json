@@ -1640,6 +1640,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npx"
@@ -1647,6 +1648,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -1654,6 +1656,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -1661,6 +1664,7 @@
           "step": "Verify (test + build + eval + report schema)"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -1668,6 +1672,7 @@
           "step": "Check eval_report schema gold instances"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -1675,6 +1680,7 @@
           "step": "Eval planted-RED pack"
         },
         {
+          "dir": "",
           "job": "lint",
           "programs": [
             "npm"
@@ -1682,6 +1688,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "lint",
           "programs": [
             "npm"
@@ -1691,6 +1698,70 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22.x",
+                  "range": ">=22.0.0 <23.0.0-0"
+                },
+                {
+                  "from": "24.x",
+                  "range": ">=24.0.0 <25.0.0-0"
+                }
+              ],
+              "step": "Use Node.js ${{ matrix.node-version }}",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node-version }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "lint",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22.x",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Use Node.js",
+              "uses": "actions/setup-node",
+              "version": "22.x"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -1842,6 +1913,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -1849,6 +1921,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -1858,6 +1931,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -1932,6 +2055,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1939,6 +2063,7 @@
           "step": "Upgrade npm for Trusted Publishing"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1946,6 +2071,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1953,6 +2079,7 @@
           "step": "Verify (test + build + eval)"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -1961,6 +2088,7 @@
           "step": "Assert package version matches GitHub release tag"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "node",
@@ -1971,6 +2099,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

@@ -5647,6 +5647,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npx"
@@ -5654,6 +5655,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -5661,6 +5663,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "1",
@@ -5671,6 +5674,7 @@
           "step": "npm audit (advisory — does not fail the build)"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -5678,6 +5682,7 @@
           "step": "5"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -5685,6 +5690,7 @@
           "step": "6"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -5692,6 +5698,7 @@
           "step": "7"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -5701,6 +5708,57 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build-and-test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                },
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node-version }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -5859,6 +5917,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -5866,6 +5925,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -5893,6 +5953,56 @@
             "byHand": true,
             "event": "push"
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],
@@ -5979,6 +6089,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -5987,6 +6098,7 @@
           "step": "Resolve version"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -5994,6 +6106,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -6001,6 +6114,7 @@
           "step": "Verify (build + typecheck + lint + test)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -6008,6 +6122,7 @@
           "step": "Generate SBOM"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -6019,6 +6134,7 @@
           "step": "Install npm >=11.5 in sandbox for OIDC trusted publishing"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "2",
@@ -6028,6 +6144,7 @@
           "step": "Guard — package.json version equals tag version"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -6035,6 +6152,7 @@
           "step": "Publish to npm with provenance (OIDC Trusted Publisher)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "1",
@@ -6046,6 +6164,7 @@
           "step": "Create GitHub release (if not exists)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "gh"
@@ -6072,6 +6191,37 @@
             "event": "push",
             "tags": true
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
         }
       ],
       "landings": [],

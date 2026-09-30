@@ -6983,6 +6983,7 @@
       "checksCount": 2,
       "commands": [
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npx"
@@ -6990,6 +6991,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "uv"
@@ -6997,6 +6999,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "uv"
@@ -7004,6 +7007,7 @@
           "step": "5"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "uv"
@@ -7011,6 +7015,7 @@
           "step": "6"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "uv"
@@ -7018,6 +7023,7 @@
           "step": "7"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "uv"
@@ -7027,6 +7033,53 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node for Atlas",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -7153,6 +7206,17 @@
           "event": "workflow_dispatch"
         }
       ],
+      "unresolvedChecks": [
+        {
+          "job": "test",
+          "manifest": "pyproject.toml",
+          "requires": ">=3.11",
+          "rule": "D1-python",
+          "step": "5",
+          "tool": "uv sync",
+          "why": "no setup-python step before it"
+        }
+      ],
       "uses": [
         "actions/checkout",
         "actions/download-artifact",
@@ -7167,6 +7231,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -7174,6 +7239,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -7183,6 +7249,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -7257,6 +7373,7 @@
       "checksCount": 2,
       "commands": [
         {
+          "dir": "",
           "job": "pypi",
           "programs": [
             "echo",
@@ -7266,6 +7383,7 @@
           "step": "Verify the tag matches pyproject version"
         },
         {
+          "dir": "",
           "job": "pypi",
           "programs": [
             "uv"
@@ -7273,6 +7391,7 @@
           "step": "Build sdist + wheel"
         },
         {
+          "dir": "",
           "job": "pypi",
           "programs": [
             "uvx"
@@ -7280,6 +7399,7 @@
           "step": "Check distribution metadata"
         },
         {
+          "dir": "",
           "job": "build-binaries",
           "programs": [
             "uv"
@@ -7287,6 +7407,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "build-binaries",
           "programs": [
             "uv"
@@ -7294,6 +7415,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "build-binaries",
           "programs": [
             "uv"
@@ -7301,6 +7423,7 @@
           "step": "Install prism + PyInstaller"
         },
         {
+          "dir": "",
           "job": "build-binaries",
           "programs": [
             "echo",
@@ -7310,11 +7433,13 @@
           "step": "Build binary"
         },
         {
+          "dir": "",
           "job": "build-binaries",
           "programs": [],
           "step": "Smoke-test the binary"
         },
         {
+          "dir": "",
           "job": "release-binaries",
           "programs": [
             "cat",
@@ -7324,6 +7449,7 @@
           "step": "Generate checksums"
         },
         {
+          "dir": "",
           "job": "npm",
           "programs": [
             "echo",
@@ -7332,6 +7458,7 @@
           "step": "Verify the npm wrapper version matches the tag"
         },
         {
+          "dir": "",
           "job": "npm",
           "programs": [
             "echo",
@@ -7341,6 +7468,7 @@
           "step": "Verify the launcher derives its binary pin (no hard-coded version)"
         },
         {
+          "dir": "",
           "job": "npm",
           "programs": [
             "echo",
@@ -7352,6 +7480,7 @@
           "step": "Install npm >= 11.5 for OIDC trusted-publishing auth"
         },
         {
+          "dir": "npm",
           "job": "npm",
           "programs": [
             "npm"
@@ -7361,6 +7490,103 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "pypi",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "build-binaries",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            },
+            {
+              "labels": [
+                "macos-latest"
+              ],
+              "platform": {
+                "cpu": "arm64",
+                "os": "darwin"
+              }
+            },
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "release-binaries",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "npm",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "3",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -7491,6 +7717,17 @@
         },
         {
           "event": "workflow_dispatch"
+        }
+      ],
+      "unresolvedChecks": [
+        {
+          "job": "build-binaries",
+          "manifest": "pyproject.toml",
+          "requires": ">=3.11",
+          "rule": "D1-python",
+          "step": "Install prism + PyInstaller",
+          "tool": "uv pip",
+          "why": "no setup-python step before it"
         }
       ],
       "uses": [

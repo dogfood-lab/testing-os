@@ -3198,6 +3198,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npx"
@@ -3205,6 +3206,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -3212,6 +3214,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "cat",
@@ -3223,6 +3226,7 @@
           "step": "Verify better-sqlite3 native build"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -3230,6 +3234,7 @@
           "step": "Supply-chain audit (npm audit, high severity)"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -3237,6 +3242,7 @@
           "step": "Verify TypeScript types"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -3244,6 +3250,7 @@
           "step": "Run test suite"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -3251,6 +3258,7 @@
           "step": "Build distributable output"
         },
         {
+          "dir": "",
           "job": "package-verify",
           "programs": [
             "npm"
@@ -3258,6 +3266,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "package-verify",
           "programs": [
             "npm"
@@ -3265,6 +3274,7 @@
           "step": "Build distributable output"
         },
         {
+          "dir": "",
           "job": "package-verify",
           "programs": [
             "echo",
@@ -3274,6 +3284,7 @@
           "step": "Inspect tarball via npm pack --dry-run"
         },
         {
+          "dir": "",
           "job": "package-verify",
           "programs": [
             "node"
@@ -3281,6 +3292,7 @@
           "step": "Assert no forbidden paths in tarball"
         },
         {
+          "dir": "",
           "job": "package-verify",
           "programs": [
             "node"
@@ -3288,6 +3300,7 @@
           "step": "Assert required dist entry points are in tarball"
         },
         {
+          "dir": "",
           "job": "package-verify",
           "programs": [
             "cd",
@@ -3300,6 +3313,82 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "verify",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node.js 22",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "package-verify",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node.js 22",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -3717,6 +3806,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "echo"
@@ -3724,6 +3814,7 @@
           "step": "Guard — skip if no site/ directory"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -3731,6 +3822,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -3740,6 +3832,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node.js 22",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",

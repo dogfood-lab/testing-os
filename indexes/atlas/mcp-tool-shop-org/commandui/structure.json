@@ -2593,6 +2593,7 @@
       "checksCount": 2,
       "commands": [
         {
+          "dir": "",
           "job": "check-and-test",
           "programs": [
             "npx"
@@ -2600,6 +2601,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "check-and-test",
           "programs": [
             "sudo"
@@ -2607,6 +2609,7 @@
           "step": "Install system dependencies"
         },
         {
+          "dir": "",
           "job": "check-and-test",
           "programs": [
             "cargo"
@@ -2614,6 +2617,7 @@
           "step": "Cargo check (crates)"
         },
         {
+          "dir": "",
           "job": "check-and-test",
           "programs": [
             "cargo"
@@ -2623,6 +2627,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "check-and-test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node for the Atlas check",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -2811,6 +2846,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -2818,6 +2854,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -2827,6 +2864,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -2901,6 +2988,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "build-windows",
           "programs": [
             "pnpm"
@@ -2908,6 +2996,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "build-windows",
           "programs": [
             "pnpm"
@@ -2931,6 +3020,36 @@
           "when": {
             "event": "release"
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build-windows",
+          "runsOn": [
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
         }
       ],
       "landings": [

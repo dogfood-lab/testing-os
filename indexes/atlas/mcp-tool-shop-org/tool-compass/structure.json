@@ -7941,6 +7941,7 @@
       "checksCount": 19,
       "commands": [
         {
+          "dir": "",
           "job": "lint",
           "programs": [
             "bash"
@@ -7948,6 +7949,7 @@
           "step": "Check for stale org/user URLs"
         },
         {
+          "dir": "",
           "job": "lint",
           "programs": [
             "echo",
@@ -7957,6 +7959,7 @@
           "step": "Verify SCORECARD is in sync"
         },
         {
+          "dir": "",
           "job": "lint",
           "programs": [
             "echo",
@@ -7968,6 +7971,7 @@
           "step": "Verify metrics surface (Four Golden Signals)"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npx"
@@ -7975,6 +7979,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pip",
@@ -7983,6 +7988,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pytest"
@@ -7990,6 +7996,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pytest"
@@ -7997,6 +8004,7 @@
           "step": "Run tests with coverage"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pip-audit"
@@ -8004,6 +8012,7 @@
           "step": "Run pip-audit (report only)"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pip-audit"
@@ -8011,6 +8020,7 @@
           "step": "Audit dependencies for vulnerabilities"
         },
         {
+          "dir": "npm",
           "job": "npm-wrapper",
           "programs": [
             "npm"
@@ -8018,6 +8028,7 @@
           "step": "Install and test npm wrapper"
         },
         {
+          "dir": "",
           "job": "nightly-fuzz",
           "programs": [
             "pip",
@@ -8026,6 +8037,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "nightly-fuzz",
           "programs": [
             "pytest"
@@ -8033,6 +8045,7 @@
           "step": "Run Hypothesis (nightly profile)"
         },
         {
+          "dir": "",
           "job": "integration",
           "programs": [
             "pip",
@@ -8041,6 +8054,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "integration",
           "programs": [
             "curl",
@@ -8055,6 +8069,7 @@
           "step": "Install pinned Ollama"
         },
         {
+          "dir": "",
           "job": "integration",
           "programs": [
             "pytest"
@@ -8062,6 +8077,7 @@
           "step": "Run integration tests"
         },
         {
+          "dir": "",
           "job": "docker",
           "programs": [
             "cleanup",
@@ -8075,6 +8091,7 @@
           "step": "Smoke run"
         },
         {
+          "dir": "site",
           "job": "pages-build",
           "programs": [
             "npm"
@@ -8082,6 +8099,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "pages-build",
           "programs": [
             "npm"
@@ -8108,6 +8126,253 @@
             ],
             "event": "push"
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "lint",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python (pre-commit)",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            },
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python ${{ matrix.python-version }}",
+              "uses": "actions/setup-python",
+              "version": "${{ matrix.python-version }}"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node for Atlas",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "npm-wrapper",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "nightly-fuzz",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "integration",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "docker",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "pages-build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "pages-deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],
@@ -8542,6 +8807,7 @@
       "checksCount": 18,
       "commands": [
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "pip",
@@ -8550,6 +8816,7 @@
           "step": "Install build tools"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "python"
@@ -8557,6 +8824,7 @@
           "step": "Build package"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "twine"
@@ -8564,6 +8832,7 @@
           "step": "Check package with twine"
         },
         {
+          "dir": "",
           "job": "docker",
           "programs": [
             "cut",
@@ -8572,6 +8841,7 @@
           "step": "Resolve release version"
         },
         {
+          "dir": "",
           "job": "release-smoke",
           "programs": [
             "echo"
@@ -8579,6 +8849,7 @@
           "step": "Derive version (strip leading v)"
         },
         {
+          "dir": "",
           "job": "release-smoke",
           "programs": [
             "1",
@@ -8592,6 +8863,7 @@
           "step": "PyPI smoke — install + --version matches tag"
         },
         {
+          "dir": "",
           "job": "release-smoke",
           "programs": [
             "1",
@@ -8604,6 +8876,101 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/publish.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "pypi"
+          },
+          "name": "publish-pypi",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "docker",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "release-smoke",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Publish",
@@ -8831,6 +9198,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "pip",
@@ -8839,6 +9207,7 @@
           "step": "Install package[ui] + PyInstaller"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "echo"
@@ -8846,6 +9215,7 @@
           "step": "Resolve version"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "echo",
@@ -8856,11 +9226,13 @@
           "step": "Build single-file binary"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [],
           "step": "Smoke test binary"
         },
         {
+          "dir": "",
           "job": "attach",
           "programs": [
             "cat",
@@ -8873,6 +9245,71 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release-binaries.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            },
+            {
+              "labels": [
+                "macos-latest"
+              ],
+              "platform": {
+                "cpu": "arm64",
+                "os": "darwin"
+              }
+            },
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "attach",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Release Binaries",
@@ -8957,6 +9394,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "echo",
@@ -8965,6 +9403,7 @@
           "step": "Verify tag matches npm/package.json version"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "echo",
@@ -8973,6 +9412,7 @@
           "step": "Verify tag matches pyproject.toml version"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "echo",
@@ -8981,6 +9421,7 @@
           "step": "Verify npm/bin/tool-compass.js references the tag"
         },
         {
+          "dir": "npm",
           "job": "verify",
           "programs": [
             "npm"
@@ -8988,6 +9429,7 @@
           "step": "Install npm wrapper dependencies"
         },
         {
+          "dir": "npm",
           "job": "verify",
           "programs": [
             "npm"
@@ -8995,6 +9437,7 @@
           "step": "npm pack dry-run (verify shape)"
         },
         {
+          "dir": "",
           "job": "create-release",
           "programs": [
             "1",
@@ -9006,6 +9449,7 @@
           "step": "Create GitHub Release (idempotent)"
         },
         {
+          "dir": "",
           "job": "binaries/build",
           "programs": [
             "pip",
@@ -9014,6 +9458,7 @@
           "step": "Install package[ui] + PyInstaller"
         },
         {
+          "dir": "",
           "job": "binaries/build",
           "programs": [
             "echo"
@@ -9021,6 +9466,7 @@
           "step": "Resolve version"
         },
         {
+          "dir": "",
           "job": "binaries/build",
           "programs": [
             "echo",
@@ -9031,11 +9477,13 @@
           "step": "Build single-file binary"
         },
         {
+          "dir": "",
           "job": "binaries/build",
           "programs": [],
           "step": "Smoke test binary"
         },
         {
+          "dir": "",
           "job": "binaries/attach",
           "programs": [
             "cat",
@@ -9046,6 +9494,7 @@
           "step": "Generate checksums"
         },
         {
+          "dir": "",
           "job": "publish-npm",
           "programs": [
             "echo",
@@ -9057,6 +9506,7 @@
           "step": "Install npm 11.5.2 in sandbox for OIDC trusted-publishing auth"
         },
         {
+          "dir": "",
           "job": "publish-npm",
           "programs": [
             "echo",
@@ -9067,6 +9517,7 @@
           "step": "Verify GitHub Release binaries and checksums exist"
         },
         {
+          "dir": "npm",
           "job": "publish-npm",
           "programs": [
             "npm"
@@ -9074,6 +9525,7 @@
           "step": "Install npm wrapper dependencies"
         },
         {
+          "dir": "npm",
           "job": "publish-npm",
           "programs": [
             "npm"
@@ -9083,6 +9535,156 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "verify",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Setup Python for pyproject version check",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "create-release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "binaries/build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            },
+            {
+              "labels": [
+                "macos-latest"
+              ],
+              "platform": {
+                "cpu": "arm64",
+                "os": "darwin"
+              }
+            },
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "binaries/attach",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "publish-npm",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

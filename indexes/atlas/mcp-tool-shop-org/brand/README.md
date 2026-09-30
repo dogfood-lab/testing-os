@@ -1,10 +1,10 @@
 # brand: how it works
 
-Mapped at 2026-09-30 from commit 6617af0 by Atlas 1.23.5.
+Mapped at 2026-09-30 from commit b3a0324 by Atlas 1.23.5.
 
 ## What this is
 
-11 parts, mostly images (255 files) and Markdown (60); code in TypeScript (40), JavaScript (8), Astro (2), CSS (2) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run brand.
+11 parts, mostly images (256 files) and Markdown (60); code in TypeScript (40), JavaScript (8), Astro (2), CSS (2) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run brand.
 
 ## What changed since 2026-09-23 (82d3e54)
 
@@ -15,10 +15,10 @@ Mapped at 2026-09-30 from commit 6617af0 by Atlas 1.23.5.
 - README.ja.md is now read by tests/migrate.test.ts.
 - README.md is now also read by tests/audit.test.ts, tests/json-output.test.ts, tests/migrate-journal.test.ts and tests/migrate.test.ts.
 - README.zh.md is now read by tests/migrate.test.ts.
-- And 243 more new writers and readers of places.
+- And 244 more new writers and readers of places.
 - logos was generated and is now authored.
 - src/cli.ts now starts at `main`; it started at `withGlobals`.
-- 5 files added and 100 changed content, across 9 parts.
+- 6 files added and 100 changed content, across 9 parts.
 
 ## What comes in
 

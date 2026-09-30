@@ -3724,6 +3724,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npx"
@@ -3731,6 +3732,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "pnpm"
@@ -3738,6 +3740,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "pnpm"
@@ -3745,6 +3748,7 @@
           "step": "Audit production dependencies"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "pnpm"
@@ -3752,6 +3756,7 @@
           "step": "Build packages"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "pnpm"
@@ -3759,6 +3764,7 @@
           "step": "Packed-tarball contents proof"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "pnpm"
@@ -3766,6 +3772,7 @@
           "step": "Typecheck packages + apps"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "pnpm"
@@ -3773,6 +3780,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "pnpm"
@@ -3780,6 +3788,7 @@
           "step": "Build app"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "pnpm"
@@ -3787,6 +3796,7 @@
           "step": "Build site"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "pnpm"
@@ -3796,6 +3806,53 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "verify",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -4471,6 +4528,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "pnpm"
@@ -4478,6 +4536,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "pnpm"
@@ -4485,6 +4544,7 @@
           "step": "Build site"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "pnpm"
@@ -4494,6 +4554,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -4583,6 +4693,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -4591,6 +4702,7 @@
           "step": "Validate tag input"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "pnpm"
@@ -4598,6 +4710,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "pnpm"
@@ -4605,6 +4718,7 @@
           "step": "Verify build before publish (trust-but-verify)"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "pnpm"
@@ -4612,6 +4726,7 @@
           "step": "Packed-tarball contents proof"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -4620,6 +4735,7 @@
           "step": "Tag-vs-version consistency check"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -4631,6 +4747,7 @@
           "step": "Generate CycloneDX SBOM"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "1",
@@ -4640,6 +4757,7 @@
           "step": "Attach SBOM to GitHub release"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -4649,6 +4767,7 @@
           "step": "Publish @storyboard-os/core"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -4658,6 +4777,7 @@
           "step": "Publish @storyboard-os/routing"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -4667,6 +4787,7 @@
           "step": "Publish @storyboard-os/rpg-domain"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -4676,6 +4797,7 @@
           "step": "Publish @storyboard-os/canvas"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -4685,6 +4807,7 @@
           "step": "Publish @storyboard-os/marketing-domain"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -4694,6 +4817,7 @@
           "step": "Publish @storyboard-os/cinematic-domain"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -4705,6 +4829,40 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/publish.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "npm-publish"
+          },
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "3",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

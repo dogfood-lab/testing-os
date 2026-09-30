@@ -11052,6 +11052,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "hermetic",
           "programs": [
             "npx"
@@ -11059,6 +11060,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "hermetic",
           "programs": [
             "python"
@@ -11066,6 +11068,7 @@
           "step": "install pinned test deps"
         },
         {
+          "dir": "",
           "job": "hermetic",
           "programs": [
             "python"
@@ -11073,6 +11076,7 @@
           "step": "hermetic set"
         },
         {
+          "dir": "",
           "job": "hermetic",
           "programs": [
             "python"
@@ -11080,6 +11084,7 @@
           "step": "dependency scan - python (published surface)"
         },
         {
+          "dir": "",
           "job": "hermetic",
           "programs": [
             "npm"
@@ -11089,6 +11094,48 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "hermetic",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node for the Atlas check",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "ci",
@@ -11174,6 +11221,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -11181,6 +11229,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -11190,6 +11239,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -11264,6 +11363,7 @@
       "checksCount": 2,
       "commands": [
         {
+          "dir": "",
           "job": "binaries",
           "programs": [
             "python"
@@ -11271,6 +11371,7 @@
           "step": "Install the package and PyInstaller"
         },
         {
+          "dir": "",
           "job": "binaries",
           "programs": [
             "pyinstaller"
@@ -11278,6 +11379,7 @@
           "step": "Build the single-file binary"
         },
         {
+          "dir": "",
           "job": "binaries",
           "programs": [
             "ls",
@@ -11287,6 +11389,7 @@
           "step": "Name it by the launcher's convention"
         },
         {
+          "dir": "",
           "job": "binaries",
           "programs": [
             "chmod"
@@ -11294,6 +11397,7 @@
           "step": "Smoke-test the binary before it can ever reach a user"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -11303,6 +11407,7 @@
           "step": "Verify tag matches every declared version"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "cat",
@@ -11312,6 +11417,7 @@
           "step": "Generate checksums"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "python"
@@ -11319,6 +11425,7 @@
           "step": "Build sdist + wheel"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "1",
@@ -11332,6 +11439,7 @@
           "step": "Verify the wheel runs from a clean venv"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "gh"
@@ -11339,6 +11447,7 @@
           "step": "Cut the GitHub Release with binaries + dists"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -11350,6 +11459,7 @@
           "step": "Install npm >=11.5 in a sandbox for OIDC"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -11357,6 +11467,7 @@
           "step": "npm pack dry-run (verify tarball shape)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -11366,6 +11477,86 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "binaries",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            },
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

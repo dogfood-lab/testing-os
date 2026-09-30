@@ -9637,6 +9637,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "npx"
@@ -9644,6 +9645,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "pip",
@@ -9652,6 +9654,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "1",
@@ -9661,6 +9664,7 @@
           "step": "Lint with ruff"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "pytest"
@@ -9668,6 +9672,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "python",
@@ -9676,6 +9681,7 @@
           "step": "Lock file integrity (uv lock --check)"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "pip-audit",
@@ -9684,6 +9690,7 @@
           "step": "Dependency audit (pip-audit)"
         },
         {
+          "dir": "site",
           "job": "site-test",
           "programs": [
             "npm"
@@ -9691,6 +9698,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "site-test",
           "programs": [
             "npm"
@@ -9700,6 +9708,97 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "lint-and-test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                },
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python ${{ matrix.python-version }}",
+              "uses": "actions/setup-python",
+              "version": "${{ matrix.python-version }}"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node for Atlas",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "site-test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -9852,6 +9951,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -9859,6 +9959,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -9868,6 +9969,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -9942,6 +10093,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -9950,6 +10102,7 @@
           "step": "Verify tag matches pyproject.toml version"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "python"
@@ -9959,6 +10112,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/publish-pypi.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -10034,6 +10218,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "uv"
@@ -10041,6 +10226,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "uv"
@@ -10048,6 +10234,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "uv"
@@ -10055,6 +10242,7 @@
           "step": "Install dependencies + PyInstaller"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "echo"
@@ -10062,6 +10250,7 @@
           "step": "Set path separator"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "echo",
@@ -10071,6 +10260,7 @@
           "step": "Build binary"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "cat",
@@ -10082,6 +10272,49 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release-binaries.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            },
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Release Binaries",
@@ -10142,6 +10375,17 @@
           ]
         }
       ],
+      "unresolvedChecks": [
+        {
+          "job": "build",
+          "manifest": "pyproject.toml",
+          "requires": ">=3.11",
+          "rule": "D1-python",
+          "step": "Install dependencies + PyInstaller",
+          "tool": "uv pip",
+          "why": "no setup-python step before it"
+        }
+      ],
       "uses": [
         "actions/checkout",
         "actions/download-artifact",
@@ -10155,6 +10399,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -10166,6 +10411,7 @@
           "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -10174,6 +10420,7 @@
           "step": "Verify tag matches package.json version"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -10182,6 +10429,7 @@
           "step": "Verify tag matches pyproject.toml version"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "node"
@@ -10189,6 +10437,7 @@
           "step": "Verify tag matches bin/xrpl-lab.js launch config"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -10196,6 +10445,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -10203,6 +10453,7 @@
           "step": "npm pack dry-run (verify tarball shape)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -10210,6 +10461,7 @@
           "step": "Publish to npm with provenance (OIDC trusted publisher)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "1",
@@ -10223,6 +10475,48 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                }
+              ],
+              "step": "Setup Python for pyproject version check",
+              "uses": "actions/setup-python",
+              "version": "3.11"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -10297,6 +10591,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "testnet-smoke",
           "programs": [
             "pip",
@@ -10305,6 +10600,7 @@
           "step": "Install xrpl-lab"
         },
         {
+          "dir": "",
           "job": "testnet-smoke",
           "programs": [
             "1",
@@ -10314,6 +10610,7 @@
           "step": "Run smoke test"
         },
         {
+          "dir": "",
           "job": "testnet-smoke",
           "programs": [
             "cat",
@@ -10324,6 +10621,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/smoke.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "testnet-smoke",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python 3.12",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Smoke Test (Testnet)",

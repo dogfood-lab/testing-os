@@ -28637,6 +28637,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npx"
@@ -28644,6 +28645,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "node"
@@ -28653,6 +28655,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "verify",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -28730,6 +28763,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -28737,6 +28771,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -28746,6 +28781,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -28820,6 +28905,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -28831,6 +28917,7 @@
           "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "-v",
@@ -28843,6 +28930,7 @@
           "step": "Resolve tag -> package slug + version (+ remote-tag preflight)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -28866,6 +28954,7 @@
           "step": "Publish to npm with provenance (OIDC trusted publisher, idempotent)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "1",
@@ -28877,6 +28966,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22.14.0",
+                  "range": "22.14.0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22.14.0"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

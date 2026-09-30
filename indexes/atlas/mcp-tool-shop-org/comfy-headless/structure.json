@@ -3249,6 +3249,7 @@
       "checksCount": 2,
       "commands": [
         {
+          "dir": "",
           "job": "lint",
           "programs": [
             "pip",
@@ -3257,6 +3258,7 @@
           "step": "Install linters"
         },
         {
+          "dir": "",
           "job": "lint",
           "programs": [
             "ruff"
@@ -3264,6 +3266,7 @@
           "step": "Run ruff"
         },
         {
+          "dir": "",
           "job": "lint",
           "programs": [
             "ruff"
@@ -3271,6 +3274,7 @@
           "step": "Check formatting"
         },
         {
+          "dir": "",
           "job": "lint",
           "programs": [
             "mypy"
@@ -3278,6 +3282,7 @@
           "step": "Run type checking"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npx"
@@ -3285,6 +3290,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pip",
@@ -3293,6 +3299,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pytest"
@@ -3300,6 +3307,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "",
           "job": "pip-audit",
           "programs": [
             "pip",
@@ -3308,6 +3316,7 @@
           "step": "Install pip-audit"
         },
         {
+          "dir": "",
           "job": "pip-audit",
           "programs": [
             "echo",
@@ -3316,6 +3325,7 @@
           "step": "Run pip-audit on core dependencies"
         },
         {
+          "dir": "",
           "job": "pip-audit",
           "programs": [
             "pip",
@@ -3326,6 +3336,142 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "lint",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.11"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                },
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python ${{ matrix.python-version }}",
+              "uses": "actions/setup-python",
+              "version": "${{ matrix.python-version }}"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node for Atlas",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "pip-audit",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.11"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "secret-scan",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -3446,6 +3592,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -3453,6 +3600,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -3462,6 +3610,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -3536,6 +3734,7 @@
       "checksCount": 4,
       "commands": [
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "pip",
@@ -3544,6 +3743,7 @@
           "step": "Install build dependencies"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "python"
@@ -3551,6 +3751,7 @@
           "step": "Build package"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "twine"
@@ -3558,6 +3759,7 @@
           "step": "Check package"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "python"
@@ -3565,6 +3767,7 @@
           "step": "Test import"
         },
         {
+          "dir": "",
           "job": "test-install",
           "programs": [
             "pip"
@@ -3572,6 +3775,7 @@
           "step": "Install from wheel"
         },
         {
+          "dir": "",
           "job": "test-install",
           "programs": [
             "python"
@@ -3579,6 +3783,7 @@
           "step": "Test import"
         },
         {
+          "dir": "",
           "job": "test-install",
           "programs": [
             "comfy-headless"
@@ -3616,6 +3821,105 @@
               "dry_run": false
             }
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.11"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "test-install",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                },
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python ${{ matrix.python-version }}",
+              "uses": "actions/setup-python",
+              "version": "${{ matrix.python-version }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "pypi"
+          },
+          "name": "publish-pypi",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "docker",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],

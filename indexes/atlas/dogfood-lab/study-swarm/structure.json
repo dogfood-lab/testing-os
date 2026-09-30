@@ -1182,6 +1182,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npx"
@@ -1189,6 +1190,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "node"
@@ -1196,6 +1198,7 @@
           "step": "Smoke-test the CLI"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "echo",
@@ -1213,6 +1216,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "verify",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -1321,6 +1355,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -1328,6 +1363,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -1337,6 +1373,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -1411,6 +1497,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -1422,6 +1509,7 @@
           "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -1430,6 +1518,7 @@
           "step": "Verify tag matches package.json version"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "node"
@@ -1437,6 +1526,7 @@
           "step": "Smoke-test the CLI"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -1452,6 +1542,7 @@
           "step": "Verify the PACKED tarball is runnable (gates a files-allowlist regression)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -1461,6 +1552,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

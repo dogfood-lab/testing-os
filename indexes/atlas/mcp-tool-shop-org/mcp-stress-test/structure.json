@@ -2047,6 +2047,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "lint",
           "programs": [
             "pip"
@@ -2054,6 +2055,7 @@
           "step": "Install linters"
         },
         {
+          "dir": "",
           "job": "lint",
           "programs": [
             "ruff"
@@ -2061,6 +2063,7 @@
           "step": "Check formatting"
         },
         {
+          "dir": "",
           "job": "lint",
           "programs": [
             "ruff"
@@ -2068,6 +2071,7 @@
           "step": "Check linting"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npx"
@@ -2075,6 +2079,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pip"
@@ -2082,6 +2087,7 @@
           "step": "Install package"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pytest"
@@ -2089,6 +2095,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "mcp-stress"
@@ -2096,6 +2103,7 @@
           "step": "Test CLI"
         },
         {
+          "dir": "",
           "job": "typecheck",
           "programs": [
             "pip"
@@ -2103,6 +2111,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "typecheck",
           "programs": [
             "pyright"
@@ -2110,6 +2119,7 @@
           "step": "Run Pyright"
         },
         {
+          "dir": "",
           "job": "pip-audit",
           "programs": [
             "pip"
@@ -2117,6 +2127,7 @@
           "step": "Install package"
         },
         {
+          "dir": "",
           "job": "pip-audit",
           "programs": [
             "pip",
@@ -2127,6 +2138,155 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "lint",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                },
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python ${{ matrix.python-version }}",
+              "uses": "actions/setup-python",
+              "version": "${{ matrix.python-version }}"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node for the Atlas check",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "typecheck",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "pip-audit",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -2251,6 +2411,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -2258,6 +2419,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -2283,6 +2445,56 @@
             ],
             "event": "push"
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],
@@ -2369,6 +2581,7 @@
       "checksCount": 4,
       "commands": [
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "pip",
@@ -2377,6 +2590,7 @@
           "step": "Install build tools"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "python"
@@ -2384,6 +2598,7 @@
           "step": "Build package"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "twine"
@@ -2391,6 +2606,7 @@
           "step": "Check package"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pip",
@@ -2399,6 +2615,7 @@
           "step": "Install package"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pytest"
@@ -2406,6 +2623,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "",
           "job": "package-smoke",
           "programs": [
             ".venv-wheel/bin/mcp-stress",
@@ -2415,6 +2633,7 @@
           "step": "Smoke-test wheel"
         },
         {
+          "dir": "",
           "job": "package-smoke",
           "programs": [
             ".venv-sdist/bin/mcp-stress",
@@ -2424,6 +2643,7 @@
           "step": "Smoke-test sdist"
         },
         {
+          "dir": "",
           "job": "release-assets",
           "programs": [
             "gh"
@@ -2476,6 +2696,131 @@
               "publish_pypi": true
             }
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "step": "Set up Python",
+              "unresolved": "expression",
+              "uses": "actions/setup-python",
+              "version": "${{ env.PYTHON_DEFAULT }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "step": "Set up Python",
+              "unresolved": "expression",
+              "uses": "actions/setup-python",
+              "version": "${{ env.PYTHON_DEFAULT }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "package-smoke",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "step": "Set up Python",
+              "unresolved": "expression",
+              "uses": "actions/setup-python",
+              "version": "${{ env.PYTHON_DEFAULT }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "pypi"
+          },
+          "name": "publish-pypi",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "release-assets",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "docker",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],
@@ -2636,6 +2981,26 @@
         },
         {
           "event": "workflow_dispatch"
+        }
+      ],
+      "unresolvedChecks": [
+        {
+          "job": "test",
+          "manifest": "pyproject.toml",
+          "requires": ">=3.11",
+          "rule": "D1-python",
+          "step": "Install package",
+          "tool": "pip install",
+          "why": "expression"
+        },
+        {
+          "job": "test",
+          "manifest": "pyproject.toml",
+          "requires": ">=3.11",
+          "rule": "D1-python",
+          "step": "Run tests",
+          "tool": "pytest",
+          "why": "expression"
         }
       ],
       "uses": [

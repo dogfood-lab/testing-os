@@ -2752,6 +2752,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "echo"
@@ -2759,6 +2760,7 @@
           "step": "0"
         },
         {
+          "dir": "",
           "job": "validate-templates",
           "programs": [
             "echo"
@@ -2768,6 +2770,40 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci-docs.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "lint-and-test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "validate-templates",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI (docs gate)",
@@ -2819,6 +2855,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "npx"
@@ -2826,6 +2863,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "npm"
@@ -2833,6 +2871,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "npm"
@@ -2840,6 +2879,7 @@
           "step": "Dependency audit"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "cat",
@@ -2851,6 +2891,7 @@
           "step": "Secret scan"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "npm"
@@ -2858,6 +2899,7 @@
           "step": "Typecheck"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "npm"
@@ -2865,6 +2907,7 @@
           "step": "Lint"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "npm"
@@ -2872,6 +2915,7 @@
           "step": "Test"
         },
         {
+          "dir": "",
           "job": "validate-templates",
           "programs": [
             "echo",
@@ -2880,6 +2924,7 @@
           "step": "Create temp project"
         },
         {
+          "dir": "",
           "job": "validate-templates",
           "programs": [
             "cd",
@@ -2888,6 +2933,7 @@
           "step": "Scaffold with template"
         },
         {
+          "dir": "",
           "job": "validate-templates",
           "programs": [
             "npm"
@@ -2911,6 +2957,82 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "lint-and-test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "validate-templates",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -3056,6 +3178,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "dogfood",
           "programs": [
             "npm"
@@ -3063,6 +3186,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "dogfood",
           "programs": [
             "echo",
@@ -3071,6 +3195,7 @@
           "step": "Step: scaffold-template"
         },
         {
+          "dir": "",
           "job": "dogfood",
           "programs": [
             "echo",
@@ -3080,6 +3205,7 @@
           "step": "Step: list-templates"
         },
         {
+          "dir": "",
           "job": "dogfood",
           "programs": [
             "echo"
@@ -3087,6 +3213,7 @@
           "step": "Step: verify-output"
         },
         {
+          "dir": "",
           "job": "dogfood",
           "programs": [
             "echo"
@@ -3094,6 +3221,7 @@
           "step": "Determine overall verdict"
         },
         {
+          "dir": "",
           "job": "dogfood",
           "programs": [
             "cat",
@@ -3105,6 +3233,7 @@
           "step": "Build submission"
         },
         {
+          "dir": "",
           "job": "dogfood",
           "programs": [
             "1",
@@ -3134,6 +3263,37 @@
               "main"
             ]
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "dogfood",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
         }
       ],
       "landings": [],
@@ -3206,6 +3366,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -3213,6 +3374,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -3222,6 +3384,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -3323,6 +3535,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -3334,6 +3547,7 @@
           "step": "Install npm >= 11.5 in sandbox for OIDC trusted-publishing auth"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -3341,6 +3555,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -3349,6 +3564,7 @@
           "step": "Verify release tag matches package.json version"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -3356,6 +3572,7 @@
           "step": "Typecheck"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -3363,6 +3580,7 @@
           "step": "Test"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -3370,6 +3588,7 @@
           "step": "npm pack dry-run (verify tarball shape)"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -3379,6 +3598,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

@@ -4167,6 +4167,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "npx"
@@ -4174,6 +4175,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "npm"
@@ -4181,6 +4183,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "npm"
@@ -4188,6 +4191,7 @@
           "step": "Lint"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "npm"
@@ -4195,6 +4199,7 @@
           "step": "Test"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "npm"
@@ -4202,6 +4207,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "npm"
@@ -4209,6 +4215,7 @@
           "step": "Security audit"
         },
         {
+          "dir": "",
           "job": "cockpit-tests",
           "programs": [
             "npm"
@@ -4216,6 +4223,7 @@
           "step": "Install root dependencies"
         },
         {
+          "dir": "",
           "job": "cockpit-tests",
           "programs": [
             "npm"
@@ -4223,6 +4231,7 @@
           "step": "Install cockpit dependencies"
         },
         {
+          "dir": "",
           "job": "cockpit-tests",
           "programs": [
             "npx"
@@ -4230,6 +4239,7 @@
           "step": "Install Playwright browsers (chromium only)"
         },
         {
+          "dir": "",
           "job": "cockpit-tests",
           "programs": [
             "npm"
@@ -4237,6 +4247,7 @@
           "step": "Run cockpit smoke tests"
         },
         {
+          "dir": "",
           "job": "bench-gate",
           "programs": [
             "npm"
@@ -4244,6 +4255,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "bench-gate",
           "programs": [
             "npm"
@@ -4251,6 +4263,7 @@
           "step": "Run benches"
         },
         {
+          "dir": "",
           "job": "bench-gate",
           "programs": [
             "npm"
@@ -4260,6 +4273,124 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "lint-and-test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            },
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                },
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node-version }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "cockpit-tests",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "bench-gate",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -4640,6 +4771,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "dogfood",
           "programs": [
             "npm"
@@ -4647,6 +4779,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "dogfood",
           "programs": [
             "npm"
@@ -4654,6 +4787,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "dogfood",
           "programs": [
             "1",
@@ -4669,6 +4803,7 @@
           "step": "Run scenario"
         },
         {
+          "dir": "",
           "job": "dogfood",
           "programs": [
             "echo"
@@ -4676,6 +4811,7 @@
           "step": "Determine overall verdict"
         },
         {
+          "dir": "",
           "job": "dogfood",
           "programs": [
             "cat",
@@ -4687,6 +4823,7 @@
           "step": "Build submission"
         },
         {
+          "dir": "",
           "job": "dogfood",
           "programs": [
             "1",
@@ -4715,6 +4852,37 @@
               "main"
             ]
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "dogfood",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
         }
       ],
       "landings": [],
@@ -4805,6 +4973,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -4812,6 +4981,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -4821,6 +4991,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -4895,6 +5115,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -4902,6 +5123,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -4909,6 +5131,7 @@
           "step": "Lint"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -4916,6 +5139,7 @@
           "step": "Test"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -4923,6 +5147,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "bash"
@@ -4930,6 +5155,7 @@
           "step": "Verify gate"
         },
         {
+          "dir": "",
           "job": "ship",
           "programs": [
             "npm"
@@ -4937,6 +5163,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "ship",
           "programs": [
             "npm"
@@ -4944,6 +5171,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "ship",
           "programs": [
             "echo",
@@ -4952,6 +5180,7 @@
           "step": "Tag-vs-package.json version equality"
         },
         {
+          "dir": "",
           "job": "ship",
           "programs": [
             "npm"
@@ -4959,6 +5188,7 @@
           "step": "Publish to npm with provenance"
         },
         {
+          "dir": "",
           "job": "ship",
           "programs": [
             "awk",
@@ -4968,6 +5198,7 @@
           "step": "Extract CHANGELOG entry"
         },
         {
+          "dir": "",
           "job": "ship",
           "programs": [
             "gh"
@@ -4977,6 +5208,66 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "verify",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "ship",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

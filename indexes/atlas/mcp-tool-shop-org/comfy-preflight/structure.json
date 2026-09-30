@@ -2120,6 +2120,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npx"
@@ -2127,6 +2128,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "python"
@@ -2134,6 +2136,7 @@
           "step": "Install"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "python"
@@ -2141,6 +2144,7 @@
           "step": "Verify (suite x3 modes, build, clean-venv smoke)"
         },
         {
+          "dir": "",
           "job": "audit",
           "programs": [
             "cat",
@@ -2153,6 +2157,97 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                },
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "${{ matrix.python-version }}"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node for Atlas",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "audit",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -2280,6 +2375,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -2287,6 +2383,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -2296,6 +2393,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -2370,6 +2517,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "binaries",
           "programs": [
             "python"
@@ -2377,6 +2525,7 @@
           "step": "Install the package with the mcp extra, and PyInstaller"
         },
         {
+          "dir": "",
           "job": "binaries",
           "programs": [
             "pyinstaller"
@@ -2384,6 +2533,7 @@
           "step": "Build the single-file binary"
         },
         {
+          "dir": "",
           "job": "binaries",
           "programs": [
             "ls",
@@ -2393,6 +2543,7 @@
           "step": "Name it by the launcher's convention"
         },
         {
+          "dir": "",
           "job": "binaries",
           "programs": [
             "1",
@@ -2407,6 +2558,7 @@
           "step": "Smoke-test the binary before it can ever reach a user"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -2416,6 +2568,7 @@
           "step": "Verify tag matches every declared version"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "cat",
@@ -2425,6 +2578,7 @@
           "step": "Generate checksums"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "python"
@@ -2432,6 +2586,7 @@
           "step": "Verify"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "1",
@@ -2441,6 +2596,7 @@
           "step": "Cut the GitHub Release with binaries + dists"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -2452,6 +2608,7 @@
           "step": "Install npm >=11.5 in a sandbox for OIDC"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -2459,6 +2616,7 @@
           "step": "npm pack dry-run (verify tarball shape)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -2468,6 +2626,86 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "binaries",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            },
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

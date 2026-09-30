@@ -8100,6 +8100,7 @@
       "checksCount": 3,
       "commands": [
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "uv"
@@ -8107,6 +8108,7 @@
           "step": "Set up Python ${{ matrix.python-version }}"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "npx"
@@ -8114,6 +8116,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "uv"
@@ -8121,6 +8124,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "uv"
@@ -8128,6 +8132,7 @@
           "step": "Dependency vulnerability scan"
         },
         {
+          "dir": "",
           "job": "lint-and-test",
           "programs": [
             "bash"
@@ -8135,6 +8140,7 @@
           "step": "Verify (lint + test + build + smoke)"
         },
         {
+          "dir": "",
           "job": "canary",
           "programs": [
             "uv"
@@ -8142,6 +8148,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "canary",
           "programs": [
             "uv"
@@ -8149,6 +8156,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "canary",
           "programs": [
             "uv"
@@ -8156,6 +8164,7 @@
           "step": "CLI smoke"
         },
         {
+          "dir": "",
           "job": "npm-check",
           "programs": [
             "node"
@@ -8163,6 +8172,7 @@
           "step": "Syntax check launcher"
         },
         {
+          "dir": "",
           "job": "npm-check",
           "programs": [
             "npm"
@@ -8170,6 +8180,7 @@
           "step": "Install npm dependencies (resolves @mcptoolshop/npm-launcher)"
         },
         {
+          "dir": "",
           "job": "npm-check",
           "programs": [
             "npm"
@@ -8177,6 +8188,7 @@
           "step": "Packaging dry run"
         },
         {
+          "dir": "",
           "job": "npm-check",
           "programs": [
             "node"
@@ -8184,6 +8196,7 @@
           "step": "Launcher smoke test (real download + checksum + exec)"
         },
         {
+          "dir": "",
           "job": "npm-check",
           "programs": [
             "bash"
@@ -8193,6 +8206,98 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "lint-and-test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node for the Atlas check",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "canary",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "npm-check",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -8325,6 +8430,26 @@
           "event": "workflow_dispatch"
         }
       ],
+      "unresolvedChecks": [
+        {
+          "job": "canary",
+          "manifest": "pyproject.toml",
+          "requires": ">=3.11,<3.14",
+          "rule": "D1-python",
+          "step": "3",
+          "tool": "uv sync",
+          "why": "no setup-python step before it"
+        },
+        {
+          "job": "lint-and-test",
+          "manifest": "pyproject.toml",
+          "requires": ">=3.11,<3.14",
+          "rule": "D1-python",
+          "step": "Install dependencies",
+          "tool": "uv sync",
+          "why": "no setup-python step before it"
+        }
+      ],
       "uses": [
         "actions/checkout",
         "actions/download-artifact",
@@ -8339,6 +8464,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "check",
           "programs": [
             "bash"
@@ -8346,6 +8472,7 @@
           "step": "Run freshness check"
         },
         {
+          "dir": "",
           "job": "check",
           "programs": [
             "date",
@@ -8358,6 +8485,24 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/freshness-check.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "check",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [
         ".github/freshness-report.md"
       ],
@@ -8423,6 +8568,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -8430,6 +8576,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -8439,6 +8586,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -8513,6 +8710,7 @@
       "checksCount": 4,
       "commands": [
         {
+          "dir": "",
           "job": "build-binaries",
           "programs": [
             "uv"
@@ -8520,6 +8718,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "build-binaries",
           "programs": [
             "uv"
@@ -8527,6 +8726,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "build-binaries",
           "programs": [
             "uv"
@@ -8534,6 +8734,7 @@
           "step": "Install dependencies + PyInstaller"
         },
         {
+          "dir": "",
           "job": "build-binaries",
           "programs": [
             "echo",
@@ -8543,6 +8744,7 @@
           "step": "Build binary"
         },
         {
+          "dir": "",
           "job": "github-release",
           "programs": [
             "cat",
@@ -8552,6 +8754,7 @@
           "step": "Generate checksums"
         },
         {
+          "dir": "",
           "job": "publish-pypi",
           "programs": [
             "pip"
@@ -8559,6 +8762,7 @@
           "step": "Install build tools"
         },
         {
+          "dir": "",
           "job": "publish-pypi",
           "programs": [
             "python"
@@ -8566,6 +8770,7 @@
           "step": "Build package"
         },
         {
+          "dir": "",
           "job": "publish-pypi",
           "programs": [
             "bash"
@@ -8573,6 +8778,7 @@
           "step": "Verify PyPI actually serves this version"
         },
         {
+          "dir": "",
           "job": "docker",
           "programs": [
             "awk",
@@ -8583,6 +8789,7 @@
           "step": "Verify the pushed image runs"
         },
         {
+          "dir": "",
           "job": "release-outcome",
           "programs": [
             "echo"
@@ -8615,6 +8822,122 @@
             "event": "push",
             "tags": true
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build-binaries",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            },
+            {
+              "labels": [
+                "macos-latest"
+              ],
+              "platform": {
+                "cpu": "arm64",
+                "os": "darwin"
+              }
+            },
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "github-release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "pypi"
+          },
+          "name": "publish-pypi",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "docker",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "release-outcome",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],
@@ -8768,6 +9091,17 @@
           "event": "workflow_dispatch"
         }
       ],
+      "unresolvedChecks": [
+        {
+          "job": "build-binaries",
+          "manifest": "pyproject.toml",
+          "requires": ">=3.11,<3.14",
+          "rule": "D1-python",
+          "step": "Install dependencies + PyInstaller",
+          "tool": "uv pip",
+          "why": "no setup-python step before it"
+        }
+      ],
       "uses": [
         "actions/checkout",
         "actions/download-artifact",
@@ -8785,6 +9119,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "npm-publish",
           "programs": [
             "echo",
@@ -8794,6 +9129,7 @@
           "step": "Install npm >= 11.5 for OIDC"
         },
         {
+          "dir": "",
           "job": "npm-publish",
           "programs": [
             "echo",
@@ -8803,6 +9139,7 @@
           "step": "Confirm the npm in use can do OIDC"
         },
         {
+          "dir": "",
           "job": "npm-publish",
           "programs": [
             "bash",
@@ -8812,6 +9149,7 @@
           "step": "Verify the tag matches every version surface"
         },
         {
+          "dir": "",
           "job": "npm-publish",
           "programs": [
             "echo",
@@ -8822,6 +9160,7 @@
           "step": "Wait for the release binaries this launcher will fetch"
         },
         {
+          "dir": "",
           "job": "npm-publish",
           "programs": [
             "npm"
@@ -8829,6 +9168,7 @@
           "step": "6"
         },
         {
+          "dir": "",
           "job": "npm-publish",
           "programs": [
             "npm"
@@ -8836,6 +9176,7 @@
           "step": "Publish to npm (OIDC trusted publishing, no token)"
         },
         {
+          "dir": "",
           "job": "npm-publish",
           "programs": [
             "echo",
@@ -8848,6 +9189,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "npm-publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

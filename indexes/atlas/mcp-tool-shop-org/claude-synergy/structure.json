@@ -9866,6 +9866,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -9873,6 +9874,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -9882,6 +9884,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -9956,6 +10008,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -9963,6 +10016,7 @@
           "step": "Install pnpm"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -9974,6 +10028,7 @@
           "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -9982,6 +10037,7 @@
           "step": "Verify tag matches package.json version"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "pnpm"
@@ -9989,6 +10045,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "pnpm"
@@ -9996,6 +10053,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "pnpm"
@@ -10003,6 +10061,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -10010,6 +10069,7 @@
           "step": "npm pack dry-run (verify shape)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -10017,6 +10077,7 @@
           "step": "Publish to npm with provenance (OIDC trusted publisher)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "gh"
@@ -10026,6 +10087,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -10147,6 +10239,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "sync",
           "programs": [
             "npm"
@@ -10154,6 +10247,7 @@
           "step": "Install pnpm"
         },
         {
+          "dir": "",
           "job": "sync",
           "programs": [
             "pnpm"
@@ -10161,6 +10255,7 @@
           "step": "Build CLI"
         },
         {
+          "dir": "",
           "job": "sync",
           "programs": [
             "node"
@@ -10168,6 +10263,7 @@
           "step": "Refresh top-level summaries"
         },
         {
+          "dir": "",
           "job": "sync",
           "programs": [
             "date",
@@ -10178,6 +10274,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/sync.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "sync",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Daily sync",
@@ -10256,6 +10383,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npx"
@@ -10263,6 +10391,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -10270,6 +10399,7 @@
           "step": "Install pnpm"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pnpm"
@@ -10277,6 +10407,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pnpm"
@@ -10284,6 +10415,7 @@
           "step": "Dependency audit"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pnpm"
@@ -10291,6 +10423,7 @@
           "step": "Typecheck"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pnpm"
@@ -10300,6 +10433,53 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/test.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Tests",

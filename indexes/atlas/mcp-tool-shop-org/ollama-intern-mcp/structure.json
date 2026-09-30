@@ -7211,6 +7211,7 @@
       "checksCount": 4,
       "commands": [
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npx"
@@ -7218,6 +7219,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "echo",
@@ -7226,6 +7228,7 @@
           "step": "Assert Node major version (20.x or 22.x)"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -7233,6 +7236,7 @@
           "step": "Install (npm ci, from the committed lockfile)"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -7240,6 +7244,7 @@
           "step": "5"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -7247,6 +7252,7 @@
           "step": "6"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -7254,6 +7260,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "1",
@@ -7268,6 +7275,7 @@
           "step": "Run tests (ubuntu/20 — records the pass count)"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "node"
@@ -7275,6 +7283,7 @@
           "step": "Doc markers in sync (sync-docs:check)"
         },
         {
+          "dir": "",
           "job": "audit",
           "programs": [
             "echo",
@@ -7283,6 +7292,7 @@
           "step": "Assert Node major version (20.x or 22.x)"
         },
         {
+          "dir": "",
           "job": "audit",
           "programs": [
             "npm"
@@ -7290,6 +7300,7 @@
           "step": "Install (npm ci, from the committed lockfile)"
         },
         {
+          "dir": "",
           "job": "audit",
           "programs": [
             "npm"
@@ -7297,6 +7308,7 @@
           "step": "Dependency audit (production)"
         },
         {
+          "dir": "",
           "job": "lockfile-sync",
           "programs": [
             "npm"
@@ -7304,6 +7316,7 @@
           "step": "npm ci against the committed lockfile (fails on desync)"
         },
         {
+          "dir": "",
           "job": "lockfile-sync",
           "programs": [
             "npm"
@@ -7311,6 +7324,7 @@
           "step": "Build (docgen reads schemas from dist)"
         },
         {
+          "dir": "",
           "job": "lockfile-sync",
           "programs": [
             "npm"
@@ -7318,6 +7332,7 @@
           "step": "Tool docs match a fresh docgen (schema change without regen fails)"
         },
         {
+          "dir": "",
           "job": "lockfile-sync",
           "programs": [
             "echo",
@@ -7328,6 +7343,7 @@
           "step": "Pack the tarball a user would install"
         },
         {
+          "dir": "",
           "job": "lockfile-sync",
           "programs": [
             "1",
@@ -7343,6 +7359,7 @@
           "step": "Install the tarball and run the binary (no Ollama, no API key)"
         },
         {
+          "dir": "",
           "job": "cloud-smoke",
           "programs": [
             "npm"
@@ -7350,6 +7367,7 @@
           "step": "Install (npm ci, from the committed lockfile)"
         },
         {
+          "dir": "",
           "job": "cloud-smoke",
           "programs": [
             "npm"
@@ -7357,6 +7375,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "cloud-smoke",
           "programs": [
             "awk",
@@ -7368,6 +7387,7 @@
           "step": "Cloud doctor probe (reachable: yes)"
         },
         {
+          "dir": "",
           "job": "cloud-smoke",
           "programs": [
             "echo",
@@ -7378,6 +7398,169 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "verify",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            },
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                },
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "audit",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "lockfile-sync",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "docker-build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "cloud-smoke",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [
         "site/src/content/docs/handbook/tools.md"
       ],
@@ -7952,6 +8135,24 @@
       "commands": [],
       "elsewhere": [],
       "file": ".github/workflows/codeql.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "analyze",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CodeQL",
@@ -8010,6 +8211,24 @@
       "commands": [],
       "elsewhere": [],
       "file": ".github/workflows/dependency-review.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "dependency-review",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Dependency Review",
@@ -8052,6 +8271,7 @@
       "checksCount": 3,
       "commands": [
         {
+          "dir": "",
           "job": "drift",
           "programs": [
             "echo",
@@ -8060,6 +8280,7 @@
           "step": "Resolve package.json version"
         },
         {
+          "dir": "",
           "job": "drift",
           "programs": [
             "echo",
@@ -8069,6 +8290,7 @@
           "step": "Check CHANGELOG entry exists for current version"
         },
         {
+          "dir": "",
           "job": "drift",
           "programs": [
             "echo",
@@ -8077,6 +8299,7 @@
           "step": "Check release notes do not contain TBD dates"
         },
         {
+          "dir": "",
           "job": "drift",
           "programs": [
             "echo",
@@ -8087,6 +8310,7 @@
           "step": "Check README/HANDOFF test count matches TEST_COUNT marker"
         },
         {
+          "dir": "",
           "job": "drift",
           "programs": [
             "echo",
@@ -8099,6 +8323,24 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/doc-drift.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "drift",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -8515,6 +8757,18 @@
           "event": "workflow_dispatch"
         }
       ],
+      "unresolvedChecks": [
+        {
+          "job": "drift",
+          "package": "vitest",
+          "requires": "^20.0.0 || ^22.0.0 || >=24.0.0",
+          "rule": "D1",
+          "step": "Check doc version/count markers (sync-docs:check)",
+          "tool": "vitest run",
+          "version": "4.1.8",
+          "why": "no setup-node step before it"
+        }
+      ],
       "uses": [
         "actions/checkout"
       ],
@@ -8524,6 +8778,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "echo",
@@ -8532,6 +8787,7 @@
           "step": "Assert Node major version (20.x or 22.x)"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -8539,6 +8795,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -8548,6 +8805,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -8622,6 +8929,7 @@
       "checksCount": 4,
       "commands": [
         {
+          "dir": "",
           "job": "npm",
           "programs": [
             "echo",
@@ -8630,6 +8938,7 @@
           "step": "Resolve version"
         },
         {
+          "dir": "",
           "job": "npm",
           "programs": [
             "echo",
@@ -8638,6 +8947,7 @@
           "step": "Verify tag matches package.json"
         },
         {
+          "dir": "",
           "job": "npm",
           "programs": [
             "npm"
@@ -8645,6 +8955,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "npm",
           "programs": [
             "npm"
@@ -8652,6 +8963,7 @@
           "step": "Verify (typecheck + build + test)"
         },
         {
+          "dir": "",
           "job": "npm",
           "programs": [
             "cd",
@@ -8662,6 +8974,7 @@
           "step": "Install npm >=11.5 for OIDC trusted publishing"
         },
         {
+          "dir": "",
           "job": "npm",
           "programs": [
             "npm"
@@ -8669,6 +8982,7 @@
           "step": "Publish to npm (dry-run)"
         },
         {
+          "dir": "",
           "job": "npm",
           "programs": [
             "1",
@@ -8679,6 +8993,7 @@
           "step": "Publish to npm (live)"
         },
         {
+          "dir": "",
           "job": "npm",
           "programs": [
             "awk",
@@ -8688,6 +9003,7 @@
           "step": "Extract CHANGELOG section"
         },
         {
+          "dir": "",
           "job": "npm",
           "programs": [
             "1",
@@ -8731,6 +9047,53 @@
               "dry_run": false
             }
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "npm",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "docker",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],

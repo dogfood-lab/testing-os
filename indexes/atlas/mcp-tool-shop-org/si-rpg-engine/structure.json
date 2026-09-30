@@ -15193,6 +15193,7 @@
       "checksCount": 31,
       "commands": [
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "npm"
@@ -15200,6 +15201,7 @@
           "step": "Install dev dependencies"
         },
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "npm"
@@ -15207,6 +15209,7 @@
           "step": "Audit dependencies"
         },
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "echo"
@@ -15214,6 +15217,7 @@
           "step": "Where failures write bundles"
         },
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "node"
@@ -15221,6 +15225,7 @@
           "step": "Rebuild the solver and check its digest"
         },
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "node"
@@ -15228,6 +15233,7 @@
           "step": "Lint the pinned binary"
         },
         {
+          "dir": "solver",
           "job": "engines",
           "programs": [
             "cargo"
@@ -15235,6 +15241,7 @@
           "step": "Run the law's native tests"
         },
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "npm"
@@ -15242,6 +15249,7 @@
           "step": "Check the kernel contract"
         },
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "node"
@@ -15249,6 +15257,7 @@
           "step": "Run the character course and the outcome tests"
         },
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "npx"
@@ -15256,6 +15265,7 @@
           "step": "Coverage report for Codecov"
         },
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "jsvu",
@@ -15264,6 +15274,7 @@
           "step": "Install pinned engines"
         },
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "compare",
@@ -15276,6 +15287,7 @@
           "step": "Compare each engine to the golden hash"
         },
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "echo",
@@ -15285,6 +15297,7 @@
           "step": "Trace the product scene under every engine"
         },
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "npm"
@@ -15292,6 +15305,7 @@
           "step": "Run the kernel fixture"
         },
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "npm"
@@ -15299,6 +15313,7 @@
           "step": "Check the golden behaviour numbers"
         },
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "npx"
@@ -15306,6 +15321,7 @@
           "step": "Check the Atlas map"
         },
         {
+          "dir": "",
           "job": "engines",
           "programs": [
             "cp",
@@ -15314,6 +15330,7 @@
           "step": "Collect the x64 artifacts for the ARM lane"
         },
         {
+          "dir": "",
           "job": "arm",
           "programs": [
             "cp",
@@ -15324,6 +15341,7 @@
           "step": "Install the x64 solver module and check its bytes"
         },
         {
+          "dir": "",
           "job": "arm",
           "programs": [
             "echo",
@@ -15333,6 +15351,7 @@
           "step": "Compare node on ARM64 to the golden hashes"
         },
         {
+          "dir": "",
           "job": "arm",
           "programs": [
             "echo",
@@ -15344,6 +15363,82 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "engines",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "arm",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-24.04-arm"
+              ],
+              "platform": {
+                "cpu": "arm64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -16047,6 +16142,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "corpus",
           "programs": [
             "npm"
@@ -16054,6 +16150,7 @@
           "step": "Install dev dependencies"
         },
         {
+          "dir": "",
           "job": "corpus",
           "programs": [
             "node"
@@ -16061,6 +16158,7 @@
           "step": "Rebuild the solver and check its digest"
         },
         {
+          "dir": "",
           "job": "corpus",
           "programs": [
             "1",
@@ -16072,6 +16170,7 @@
           "step": "Replay the corpus and sweep the worlds"
         },
         {
+          "dir": "",
           "job": "corpus",
           "programs": [
             "node"
@@ -16079,6 +16178,7 @@
           "step": "Write the corpus's own bundles from this build"
         },
         {
+          "dir": "",
           "job": "corpus",
           "programs": [
             "cat",
@@ -16092,6 +16192,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/corpus.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "corpus",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [
         "fixtures/sweep/verdicts.json"
       ],
@@ -16208,6 +16339,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -16215,6 +16347,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -16224,6 +16357,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",

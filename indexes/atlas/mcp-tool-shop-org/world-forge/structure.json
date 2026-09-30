@@ -11608,6 +11608,7 @@
       "checksCount": 16,
       "commands": [
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npx"
@@ -11615,6 +11616,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -11622,6 +11624,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -11629,6 +11632,7 @@
           "step": "Dependency audit"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -11636,6 +11640,7 @@
           "step": "5"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -11643,6 +11648,7 @@
           "step": "6"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -11650,6 +11656,7 @@
           "step": "Dogfood typecheck"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -11657,6 +11664,7 @@
           "step": "Version + documented-count drift gate"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "node"
@@ -11664,6 +11672,7 @@
           "step": "Pack contents (SHIP_GATE D)"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npx"
@@ -11671,6 +11680,7 @@
           "step": "Re-run suite with coverage"
         },
         {
+          "dir": "",
           "job": "e2e",
           "programs": [
             "npm"
@@ -11678,6 +11688,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "e2e",
           "programs": [
             "npm"
@@ -11685,6 +11696,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "e2e",
           "programs": [
             "npx"
@@ -11692,6 +11704,7 @@
           "step": "Install Playwright Chromium"
         },
         {
+          "dir": "",
           "job": "e2e",
           "programs": [
             "npm"
@@ -11699,6 +11712,7 @@
           "step": "Playwright e2e"
         },
         {
+          "dir": "",
           "job": "e2e",
           "programs": [
             "echo"
@@ -11706,6 +11720,7 @@
           "step": "Point operator at Playwright artifacts"
         },
         {
+          "dir": "site",
           "job": "site-build",
           "programs": [
             "npm"
@@ -11713,6 +11728,7 @@
           "step": "Install site deps"
         },
         {
+          "dir": "site",
           "job": "site-build",
           "programs": [
             "npm"
@@ -11720,6 +11736,7 @@
           "step": "Dependency audit"
         },
         {
+          "dir": "site",
           "job": "site-build",
           "programs": [
             "npm"
@@ -11729,6 +11746,115 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build-and-test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                },
+                {
+                  "from": "24",
+                  "range": ">=24.0.0 <25.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node-version }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "e2e",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "24",
+                  "range": ">=24.0.0 <25.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "24"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "site-build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "24",
+                  "range": ">=24.0.0 <25.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "24"
+            }
+          ]
+        }
+      ],
       "landings": [
         "docs/c0-alignment/export-table.json",
         "docs/c0-alignment/export-table.md",
@@ -12494,6 +12620,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -12501,6 +12628,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -12508,6 +12636,7 @@
           "step": "Dependency audit"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -12515,6 +12644,7 @@
           "step": "Build site"
         },
         {
+          "dir": "",
           "job": "deploy",
           "programs": [
             "curl",
@@ -12546,6 +12676,56 @@
             "byHand": true,
             "event": "push"
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "24",
+                  "range": ">=24.0.0 <25.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "24"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],
@@ -12643,6 +12823,7 @@
       "checksCount": 16,
       "commands": [
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "sed"
@@ -12650,6 +12831,7 @@
           "step": "Strip _authToken from npmrc so OIDC can exchange"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -12661,6 +12843,7 @@
           "step": "Install npm 11.6.2 in sandbox for OIDC trusted-publishing auth"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -12668,6 +12851,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -12675,6 +12859,7 @@
           "step": "Dependency audit"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -12683,6 +12868,7 @@
           "step": "Verify release tag matches package.json version"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -12690,6 +12876,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -12697,6 +12884,7 @@
           "step": "Test"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -12704,6 +12892,7 @@
           "step": "Dogfood typecheck"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -12711,6 +12900,7 @@
           "step": "Version + documented-count drift gate"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npx"
@@ -12718,6 +12908,7 @@
           "step": "Install Playwright Chromium"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -12725,6 +12916,7 @@
           "step": "Playwright e2e"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo"
@@ -12732,6 +12924,7 @@
           "step": "Point operator at Playwright artifacts"
         },
         {
+          "dir": "packages/schema",
           "job": "publish",
           "programs": [
             "1",
@@ -12749,6 +12942,7 @@
           "step": "Publish if not already on the registry"
         },
         {
+          "dir": "packages/export-ai-rpg",
           "job": "publish",
           "programs": [
             "1",
@@ -12766,6 +12960,7 @@
           "step": "Publish if not already on the registry"
         },
         {
+          "dir": "packages/export-unreal",
           "job": "publish",
           "programs": [
             "1",
@@ -12783,6 +12978,7 @@
           "step": "Publish if not already on the registry"
         },
         {
+          "dir": "packages/export-godot",
           "job": "publish",
           "programs": [
             "1",
@@ -12800,6 +12996,7 @@
           "step": "Publish if not already on the registry"
         },
         {
+          "dir": "packages/renderer-2d",
           "job": "publish",
           "programs": [
             "1",
@@ -12817,6 +13014,7 @@
           "step": "Publish if not already on the registry"
         },
         {
+          "dir": "packages/editor",
           "job": "publish",
           "programs": [
             "1",
@@ -12834,6 +13032,7 @@
           "step": "Publish if not already on the registry"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "cd",
@@ -12847,6 +13046,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [
         "docs/c0-alignment/export-table.json",
         "docs/c0-alignment/export-table.md",

@@ -6970,6 +6970,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "action",
           "programs": [
             "0",
@@ -7017,6 +7018,7 @@
       "checksCount": 8,
       "commands": [
         {
+          "dir": "",
           "job": "anchor",
           "programs": [
             "cat",
@@ -7028,6 +7030,7 @@
           "step": "Compute partition root"
         },
         {
+          "dir": "",
           "job": "anchor",
           "programs": [
             "docker"
@@ -7035,6 +7038,7 @@
           "step": "Build anchor image"
         },
         {
+          "dir": "",
           "job": "anchor",
           "programs": [
             "1",
@@ -7045,6 +7049,7 @@
           "step": "Post anchor to XRPL"
         },
         {
+          "dir": "",
           "job": "anchor",
           "programs": [
             "mkdir",
@@ -7053,6 +7058,7 @@
           "step": "Emit anchor event"
         },
         {
+          "dir": "",
           "job": "anchor",
           "programs": [
             "echo",
@@ -7061,6 +7067,7 @@
           "step": "Check for anchor event"
         },
         {
+          "dir": "",
           "job": "anchor",
           "programs": [
             "cat",
@@ -7074,6 +7081,7 @@
           "step": "Append anchor event to ledger via PR"
         },
         {
+          "dir": "",
           "job": "anchor",
           "programs": [
             "echo",
@@ -7084,6 +7092,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/anchor-xrpl.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "anchor",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [
         "anchor/xrpl/manifests",
         "ledger/events/events.jsonl",
@@ -7839,6 +7878,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "attest-and-check",
           "programs": [
             "npm"
@@ -7846,6 +7886,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "attest-and-check",
           "programs": [
             "echo",
@@ -7855,6 +7896,7 @@
           "step": "Run attestor"
         },
         {
+          "dir": "",
           "job": "attest-and-check",
           "programs": [
             "echo",
@@ -7863,6 +7905,7 @@
           "step": "Run license verifier"
         },
         {
+          "dir": "",
           "job": "attest-and-check",
           "programs": [
             "echo",
@@ -7871,6 +7914,7 @@
           "step": "Run security verifier"
         },
         {
+          "dir": "",
           "job": "attest-and-check",
           "programs": [
             "echo",
@@ -7879,6 +7923,7 @@
           "step": "Run reproducibility verifier"
         },
         {
+          "dir": "",
           "job": "attest-and-check",
           "programs": [
             "echo",
@@ -7887,6 +7932,7 @@
           "step": "Run policy checks"
         },
         {
+          "dir": "",
           "job": "attest-and-check",
           "programs": [
             "echo",
@@ -7895,6 +7941,7 @@
           "step": "Andon — halt on any verifier crash"
         },
         {
+          "dir": "",
           "job": "attest-and-check",
           "programs": [
             "count_jsonl",
@@ -7904,6 +7951,7 @@
           "step": "Check for new events"
         },
         {
+          "dir": "",
           "job": "attest-and-check",
           "programs": [
             "echo",
@@ -7912,6 +7960,7 @@
           "step": "Check for existing attestor PR"
         },
         {
+          "dir": "",
           "job": "attest-and-check",
           "programs": [
             "cat",
@@ -7924,6 +7973,7 @@
           "step": "Append events to ledger via PR"
         },
         {
+          "dir": "",
           "job": "attest-and-check",
           "programs": [
             "echo",
@@ -7934,6 +7984,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/attestor-ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "attest-and-check",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [
         "ledger/events/events.jsonl",
         "registry/anchors.json",
@@ -8475,6 +8556,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "validate-ledger",
           "programs": [
             "npx"
@@ -8482,6 +8564,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "ledger",
           "job": "validate-ledger",
           "programs": [
             "npm"
@@ -8489,6 +8572,7 @@
           "step": "Install ledger deps"
         },
         {
+          "dir": "",
           "job": "validate-ledger",
           "programs": [
             "echo",
@@ -8498,6 +8582,7 @@
           "step": "Extract base ledger from main (fail-closed)"
         },
         {
+          "dir": "ledger",
           "job": "validate-ledger",
           "programs": [
             "npm"
@@ -8505,6 +8590,7 @@
           "step": "Validate append-only + schema + signature + uniqueness"
         },
         {
+          "dir": "",
           "job": "validate-ledger",
           "programs": [
             "echo"
@@ -8514,6 +8600,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ledger-ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "validate-ledger",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -8596,6 +8713,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "build-and-deploy",
           "programs": [
             "node"
@@ -8603,6 +8721,7 @@
           "step": "Build anchor index"
         },
         {
+          "dir": "",
           "job": "build-and-deploy",
           "programs": [
             "node"
@@ -8610,6 +8729,7 @@
           "step": "Build badges"
         },
         {
+          "dir": "",
           "job": "build-and-deploy",
           "programs": [
             "node"
@@ -8617,6 +8737,7 @@
           "step": "Build snippets"
         },
         {
+          "dir": "",
           "job": "build-and-deploy",
           "programs": [
             "node"
@@ -8624,6 +8745,7 @@
           "step": "Build metrics"
         },
         {
+          "dir": "",
           "job": "build-and-deploy",
           "programs": [
             "node"
@@ -8631,6 +8753,7 @@
           "step": "Build timeline"
         },
         {
+          "dir": "",
           "job": "build-and-deploy",
           "programs": [
             "cp",
@@ -8640,6 +8763,7 @@
           "step": "Build registry explorer"
         },
         {
+          "dir": "",
           "job": "build-and-deploy",
           "programs": [
             "node"
@@ -8647,6 +8771,7 @@
           "step": "Build stats"
         },
         {
+          "dir": "site",
           "job": "build-and-deploy",
           "programs": [
             "npm"
@@ -8654,6 +8779,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build-and-deploy",
           "programs": [
             "npm"
@@ -8663,6 +8789,40 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages-ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "build-and-deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [
         "registry/anchors.json",
         "registry/badges",
@@ -9051,6 +9211,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "build-registry",
           "programs": [
             "node"
@@ -9058,6 +9219,7 @@
           "step": "Validate profile snapshots"
         },
         {
+          "dir": "",
           "job": "build-registry",
           "programs": [
             "node"
@@ -9065,6 +9227,7 @@
           "step": "Build registry (all indexes)"
         },
         {
+          "dir": "",
           "job": "build-registry",
           "programs": [
             "date",
@@ -9077,6 +9240,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/registry-ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build-registry",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [
         "registry/anchors.json",
         "registry/badges",
@@ -9501,6 +9695,7 @@
           "step": "Install dependencies (workspace root)"
         },
         {
+          "dir": "packages/repomesh-cli",
           "job": "publish",
           "programs": [
             "echo",
@@ -9509,6 +9704,7 @@
           "step": "Verify release tag matches package.json version"
         },
         {
+          "dir": "packages/repomesh-cli",
           "job": "publish",
           "programs": [
             "node"
@@ -9516,6 +9712,7 @@
           "step": "Build (src -> dist)"
         },
         {
+          "dir": "packages/repomesh-cli",
           "job": "publish",
           "programs": [
             "node"
@@ -9523,6 +9720,7 @@
           "step": "Test"
         },
         {
+          "dir": "packages/repomesh-cli",
           "job": "publish",
           "programs": [
             "npm"
@@ -9537,6 +9735,7 @@
           "step": "Audit production dependencies"
         },
         {
+          "dir": "packages/repomesh-cli",
           "job": "publish",
           "programs": [
             "npm"
@@ -9544,6 +9743,7 @@
           "step": "Publish to npm with provenance (OIDC trusted publisher)"
         },
         {
+          "dir": "packages/repomesh-cli",
           "job": "image",
           "programs": [
             "echo",
@@ -9553,6 +9753,7 @@
           "step": "Image tags"
         },
         {
+          "dir": "",
           "job": "image",
           "programs": [
             "docker",
@@ -9561,6 +9762,7 @@
           "step": "Log in to GHCR"
         },
         {
+          "dir": "",
           "job": "image",
           "programs": [
             "docker"
@@ -9570,6 +9772,53 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "image",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -9781,6 +10030,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "broadcast",
           "programs": [
             "npm"
@@ -9788,6 +10038,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "broadcast",
           "programs": [
             "npm"
@@ -9795,6 +10046,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "broadcast",
           "programs": [
             "cat",
@@ -9805,6 +10057,7 @@
           "step": "Hash artifacts"
         },
         {
+          "dir": "",
           "job": "broadcast",
           "programs": [
             "awk",
@@ -9816,6 +10069,7 @@
           "step": "Generate SBOM"
         },
         {
+          "dir": "",
           "job": "broadcast",
           "programs": [
             "awk",
@@ -9826,6 +10080,7 @@
           "step": "Generate provenance"
         },
         {
+          "dir": "",
           "job": "broadcast",
           "programs": [
             "echo",
@@ -9834,6 +10089,7 @@
           "step": "Upload attestation assets"
         },
         {
+          "dir": "",
           "job": "broadcast",
           "programs": [
             "cat",
@@ -9842,6 +10098,7 @@
           "step": "Create signed event"
         },
         {
+          "dir": "",
           "job": "broadcast",
           "programs": [
             "cat",
@@ -9865,6 +10122,37 @@
         }
       ],
       "file": ".github/workflows/repomesh-broadcast.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "broadcast",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -9940,6 +10228,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "watch",
           "programs": [
             "cd",
@@ -9948,6 +10237,7 @@
           "step": "Install XRPL client"
         },
         {
+          "dir": "",
           "job": "watch",
           "programs": [
             "cat",
@@ -9957,6 +10247,7 @@
           "step": "Compare rippled and amendments to the baseline"
         },
         {
+          "dir": "",
           "job": "watch",
           "programs": [
             "cat",
@@ -9969,6 +10260,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/xrpl-watch.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "watch",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

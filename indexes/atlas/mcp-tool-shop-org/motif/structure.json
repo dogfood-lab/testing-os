@@ -6647,6 +6647,7 @@
       "checksCount": 2,
       "commands": [
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "npx"
@@ -6654,6 +6655,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "pnpm"
@@ -6661,6 +6663,7 @@
           "step": "Install"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "pnpm"
@@ -6668,6 +6671,7 @@
           "step": "Audit dependencies"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "pnpm"
@@ -6675,6 +6679,7 @@
           "step": "Lint"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "pnpm"
@@ -6682,6 +6687,7 @@
           "step": "Typecheck"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "pnpm"
@@ -6689,6 +6695,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "pnpm"
@@ -6696,6 +6703,7 @@
           "step": "Test with coverage"
         },
         {
+          "dir": "",
           "job": "security-audit",
           "programs": [
             "pnpm"
@@ -6703,6 +6711,7 @@
           "step": "Install"
         },
         {
+          "dir": "",
           "job": "security-audit",
           "programs": [
             "pnpm"
@@ -6710,6 +6719,7 @@
           "step": "Audit all dependencies"
         },
         {
+          "dir": "",
           "job": "security-audit",
           "programs": [
             "npx"
@@ -6719,6 +6729,82 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "ci",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "security-audit",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -7315,6 +7401,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -7322,6 +7409,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -7331,6 +7419,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -7405,6 +7543,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "pnpm"
@@ -7412,6 +7551,7 @@
           "step": "Install"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "pnpm"
@@ -7419,6 +7559,7 @@
           "step": "Typecheck"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "pnpm"
@@ -7426,6 +7567,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "pnpm"
@@ -7433,6 +7575,7 @@
           "step": "Test"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "cd",
@@ -7447,6 +7590,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

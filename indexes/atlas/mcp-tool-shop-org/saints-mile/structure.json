@@ -4681,6 +4681,7 @@
       "checksCount": 2,
       "commands": [
         {
+          "dir": "",
           "job": "check-test",
           "programs": [
             "npx"
@@ -4688,6 +4689,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "check-test",
           "programs": [
             "cargo"
@@ -4695,6 +4697,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "check-test",
           "programs": [
             "cargo"
@@ -4704,6 +4707,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "check-test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node for the Atlas check",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -5129,6 +5163,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -5136,6 +5171,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -5145,6 +5181,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -5219,6 +5305,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "validate",
           "programs": [
             "echo"
@@ -5226,6 +5313,7 @@
           "step": "Extract expected version from tag"
         },
         {
+          "dir": "",
           "job": "validate",
           "programs": [
             "echo",
@@ -5236,6 +5324,7 @@
           "step": "Validate Cargo.toml version matches tag"
         },
         {
+          "dir": "",
           "job": "validate",
           "programs": [
             "echo",
@@ -5244,6 +5333,7 @@
           "step": "Validate CHANGELOG.md has entry for this version"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "cargo"
@@ -5251,6 +5341,7 @@
           "step": "Build release binary"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "cargo",
@@ -5261,6 +5352,7 @@
           "step": "Rename binary"
         },
         {
+          "dir": "",
           "job": "msix",
           "programs": [
             "cargo"
@@ -5268,6 +5360,7 @@
           "step": "Build release binary"
         },
         {
+          "dir": "",
           "job": "msix",
           "programs": [
             "node"
@@ -5275,6 +5368,7 @@
           "step": "Generate MSIX assets"
         },
         {
+          "dir": "",
           "job": "msix",
           "programs": [
             "Copy-Item",
@@ -5288,6 +5382,7 @@
           "step": "Build MSIX"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "cat",
@@ -5301,6 +5396,7 @@
           "step": "Generate checksums"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "gh"
@@ -5308,6 +5404,7 @@
           "step": "Upload to latest release (workflow_dispatch)"
         },
         {
+          "dir": "",
           "job": "publish-crate",
           "programs": [
             "cargo"
@@ -5332,6 +5429,105 @@
           "when": {
             "event": "release"
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "validate",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            },
+            {
+              "labels": [
+                "macos-latest"
+              ],
+              "platform": {
+                "cpu": "arm64",
+                "os": "darwin"
+              }
+            },
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "msix",
+          "runsOn": [
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "publish-crate",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [

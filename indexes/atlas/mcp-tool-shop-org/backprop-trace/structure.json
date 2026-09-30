@@ -6975,6 +6975,7 @@
       "checksCount": 2,
       "commands": [
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npx"
@@ -6982,6 +6983,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pnpm"
@@ -6989,6 +6991,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pnpm"
@@ -6996,6 +6999,7 @@
           "step": "5"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pnpm"
@@ -7003,6 +7007,7 @@
           "step": "6"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "pnpm"
@@ -7010,6 +7015,7 @@
           "step": "7"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npx"
@@ -7017,6 +7023,7 @@
           "step": "Coverage report for Codecov"
         },
         {
+          "dir": "",
           "job": "byte-equal",
           "programs": [
             "pnpm"
@@ -7024,6 +7031,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "byte-equal",
           "programs": [
             "pnpm"
@@ -7031,6 +7039,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "byte-equal",
           "programs": [
             "pnpm"
@@ -7038,6 +7047,7 @@
           "step": "5"
         },
         {
+          "dir": "",
           "job": "byte-equal",
           "programs": [
             "2",
@@ -7047,6 +7057,7 @@
           "step": "verify mazur.generated.jsonl matches golden"
         },
         {
+          "dir": "",
           "job": "audit",
           "programs": [
             "pnpm"
@@ -7054,6 +7065,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "audit",
           "programs": [
             "pnpm"
@@ -7061,6 +7073,7 @@
           "step": "dependency audit (prod — blocking)"
         },
         {
+          "dir": "",
           "job": "audit",
           "programs": [
             "pnpm"
@@ -7068,6 +7081,7 @@
           "step": "dependency audit (full tree incl. devDeps — visible, non-blocking)"
         },
         {
+          "dir": "",
           "job": "torch-e2e",
           "programs": [
             "python"
@@ -7075,6 +7089,7 @@
           "step": "install CPU torch (pinned)"
         },
         {
+          "dir": "",
           "job": "torch-e2e",
           "programs": [
             "pnpm"
@@ -7082,6 +7097,7 @@
           "step": "5"
         },
         {
+          "dir": "",
           "job": "torch-e2e",
           "programs": [
             "pnpm"
@@ -7089,6 +7105,7 @@
           "step": "6"
         },
         {
+          "dir": "",
           "job": "torch-e2e",
           "programs": [
             "node"
@@ -7096,6 +7113,7 @@
           "step": "torch-gated live-helper end-to-end test"
         },
         {
+          "dir": "",
           "job": "jax-e2e",
           "programs": [
             "python"
@@ -7103,6 +7121,7 @@
           "step": "install CPU jax (pinned)"
         },
         {
+          "dir": "",
           "job": "jax-e2e",
           "programs": [
             "pnpm"
@@ -7110,6 +7129,7 @@
           "step": "5"
         },
         {
+          "dir": "",
           "job": "jax-e2e",
           "programs": [
             "pnpm"
@@ -7117,6 +7137,7 @@
           "step": "6"
         },
         {
+          "dir": "",
           "job": "jax-e2e",
           "programs": [
             "node"
@@ -7130,6 +7151,211 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "changes",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22.x",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "byte-equal",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22.x",
+                  "range": ">=22.0.0 <23.0.0-0"
+                },
+                {
+                  "from": "22.21.1",
+                  "range": "22.21.1"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "audit",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22.x",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22.x"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "torch-e2e",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22.x",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22.x"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "3",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "jax-e2e",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22.x",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22.x"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "3",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -8583,6 +8809,24 @@
       "commands": [],
       "elsewhere": [],
       "file": ".github/workflows/codeql.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "analyze",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "codeql",
@@ -8637,6 +8881,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "pack-smoke",
           "programs": [
             "pnpm"
@@ -8644,6 +8889,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "pack-smoke",
           "programs": [
             "pnpm"
@@ -8651,6 +8897,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "pack-smoke",
           "programs": [
             "pnpm"
@@ -8660,6 +8907,46 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pack-smoke.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "pack-smoke",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            },
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22.x",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22.x"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -8737,6 +9024,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -8744,6 +9032,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -8753,6 +9042,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22.x",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22.x"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -8827,6 +9166,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "pnpm"
@@ -8834,6 +9174,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "pnpm"
@@ -8841,6 +9182,7 @@
           "step": "Verify gate"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "pnpm"
@@ -8848,6 +9190,7 @@
           "step": "Pack-install smoke"
         },
         {
+          "dir": "",
           "job": "ship",
           "programs": [
             "pnpm"
@@ -8855,6 +9198,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "ship",
           "programs": [
             "pnpm"
@@ -8862,6 +9206,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "ship",
           "programs": [
             "echo",
@@ -8870,6 +9215,7 @@
           "step": "Tag-vs-package.json version equality"
         },
         {
+          "dir": "",
           "job": "ship",
           "programs": [
             "npm"
@@ -8877,6 +9223,7 @@
           "step": "Upgrade npm for OIDC trusted publishing (>= 11.5.1)"
         },
         {
+          "dir": "",
           "job": "ship",
           "programs": [
             "npm"
@@ -8884,6 +9231,7 @@
           "step": "Publish to npm with Sigstore provenance"
         },
         {
+          "dir": "",
           "job": "ship",
           "programs": [
             "awk",
@@ -8893,6 +9241,7 @@
           "step": "Extract CHANGELOG entry"
         },
         {
+          "dir": "",
           "job": "ship",
           "programs": [
             "gh"
@@ -8902,6 +9251,66 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "verify",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22.x",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22.x"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "ship",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22.x",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22.x"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

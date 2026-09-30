@@ -7713,6 +7713,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npx"
@@ -7720,6 +7721,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -7727,6 +7729,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -7734,6 +7737,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -7741,6 +7745,7 @@
           "step": "5"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -7748,6 +7753,7 @@
           "step": "6"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -7757,6 +7763,66 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            },
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                },
+                {
+                  "from": "24",
+                  "range": ">=24.0.0 <25.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -8772,6 +8838,7 @@
       "checksCount": 6,
       "commands": [
         {
+          "dir": "",
           "job": "docker",
           "programs": [
             "echo",
@@ -8782,6 +8849,24 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/docker-publish.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "docker",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Docker Publish",
@@ -8906,6 +8991,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -8913,6 +8999,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -8940,6 +9027,56 @@
             "byHand": true,
             "event": "push"
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],
@@ -9026,6 +9163,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "gate",
           "programs": [
             "npm"
@@ -9033,6 +9171,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "gate",
           "programs": [
             "npm"
@@ -9040,6 +9179,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "gate",
           "programs": [
             "node"
@@ -9047,6 +9187,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "gate",
           "programs": [
             "npx"
@@ -9056,6 +9197,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release-gate.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "gate",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Release Gate",
@@ -10073,6 +10245,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -10084,6 +10257,7 @@
           "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -10092,6 +10266,7 @@
           "step": "Verify tag matches package.json version"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -10099,6 +10274,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -10106,6 +10282,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -10113,6 +10290,7 @@
           "step": "Lint"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -10120,6 +10298,7 @@
           "step": "Test"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -10127,6 +10306,7 @@
           "step": "npm pack dry-run (verify shape)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -10134,6 +10314,7 @@
           "step": "Publish to npm with provenance (OIDC trusted publisher)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "gh"
@@ -10143,6 +10324,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -11165,6 +11377,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "smoke",
           "programs": [
             "npm"
@@ -11172,6 +11385,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "smoke",
           "programs": [
             "npm"
@@ -11179,6 +11393,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "smoke",
           "programs": [
             "npm"
@@ -11186,6 +11401,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "smoke",
           "programs": [
             "node"
@@ -11195,6 +11411,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/smoke-install.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "smoke",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Smoke Install",

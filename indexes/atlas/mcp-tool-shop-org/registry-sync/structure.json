@@ -1644,6 +1644,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npx"
@@ -1651,6 +1652,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -1658,6 +1660,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -1665,6 +1668,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -1672,6 +1676,7 @@
           "step": "5"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "node"
@@ -1679,6 +1684,7 @@
           "step": "8"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -1686,6 +1692,7 @@
           "step": "9"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -1695,6 +1702,53 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -1818,6 +1872,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -1825,6 +1880,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -1834,6 +1890,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -1908,6 +2014,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1915,6 +2022,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1922,6 +2030,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1929,6 +2038,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1938,6 +2048,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/publish.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Publish",

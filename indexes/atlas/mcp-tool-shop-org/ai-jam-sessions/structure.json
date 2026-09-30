@@ -26954,6 +26954,7 @@
       "checksCount": 70,
       "commands": [
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "npx"
@@ -26961,6 +26962,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "pnpm"
@@ -26968,6 +26970,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "pnpm"
@@ -26975,6 +26978,7 @@
           "step": "Typecheck"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "pnpm"
@@ -26982,6 +26986,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "pnpm"
@@ -26989,6 +26994,7 @@
           "step": "Test"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "pnpm"
@@ -26996,6 +27002,7 @@
           "step": "Test with coverage"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "pnpm"
@@ -27003,6 +27010,7 @@
           "step": "Smoke"
         },
         {
+          "dir": "",
           "job": "pnpm10-install",
           "programs": [
             "pnpm"
@@ -27010,6 +27018,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "pnpm10-install",
           "programs": [
             "pnpm"
@@ -27017,6 +27026,7 @@
           "step": "Typecheck"
         },
         {
+          "dir": "",
           "job": "pnpm10-install",
           "programs": [
             "pnpm"
@@ -27024,6 +27034,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "pnpm10-install",
           "programs": [
             "pnpm"
@@ -27031,6 +27042,7 @@
           "step": "Test"
         },
         {
+          "dir": "",
           "job": "docker-image",
           "programs": [
             "docker"
@@ -27038,6 +27050,7 @@
           "step": "Build image (no push)"
         },
         {
+          "dir": "",
           "job": "docker-image",
           "programs": [
             "docker",
@@ -27047,6 +27060,7 @@
           "step": "Library is 15 loaded / 94 unfetched"
         },
         {
+          "dir": "",
           "job": "docker-image",
           "programs": [
             "docker"
@@ -27054,6 +27068,7 @@
           "step": "Journal survives a second container on the same volume"
         },
         {
+          "dir": "",
           "job": "dep-audit",
           "programs": [
             "pnpm"
@@ -27061,6 +27076,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "dep-audit",
           "programs": [
             "pnpm"
@@ -27068,6 +27084,7 @@
           "step": "Audit dependencies"
         },
         {
+          "dir": "",
           "job": "plugin-validate",
           "programs": [
             "node"
@@ -27075,6 +27092,7 @@
           "step": "Check plugin.json / marketplace.json version parity with package.json"
         },
         {
+          "dir": "apps/cockpit",
           "job": "cockpit",
           "programs": [
             "pnpm"
@@ -27082,6 +27100,7 @@
           "step": "Install cockpit dependencies"
         },
         {
+          "dir": "apps/cockpit",
           "job": "cockpit",
           "programs": [
             "pnpm"
@@ -27089,6 +27108,7 @@
           "step": "Typecheck"
         },
         {
+          "dir": "apps/cockpit",
           "job": "cockpit",
           "programs": [
             "pnpm"
@@ -27098,6 +27118,176 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "ci",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                },
+                {
+                  "from": "24",
+                  "range": ">=24.0.0 <25.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node-version }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "pnpm10-install",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "docker-image",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "dep-audit",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "plugin-validate",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "cockpit",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -30931,6 +31121,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -30938,6 +31129,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -30945,6 +31137,7 @@
           "step": "Build site"
         },
         {
+          "dir": "apps/cockpit",
           "job": "build",
           "programs": [
             "pnpm"
@@ -30952,6 +31145,7 @@
           "step": "Install cockpit dependencies"
         },
         {
+          "dir": "apps/cockpit",
           "job": "build",
           "programs": [
             "pnpm"
@@ -30959,6 +31153,7 @@
           "step": "Build cockpit under the site base path"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "cp",
@@ -30969,6 +31164,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -31077,6 +31322,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "draft-only",
@@ -31089,6 +31335,7 @@
           "step": "Validate inputs (irreversible-action gate)"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "basename",
@@ -31101,6 +31348,7 @@
           "step": "Resolve dataset package"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "pnpm"
@@ -31108,6 +31356,7 @@
           "step": "6"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "cd",
@@ -31118,6 +31367,7 @@
           "step": "Verify package checksums"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -31130,6 +31380,7 @@
           "step": "Verify release gate (sealed Slice-21 baseline and sources from git history)"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -31138,6 +31389,7 @@
           "step": "Verify execution-verification receipt (cut-time standing gate)"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "pnpm"
@@ -31145,6 +31397,7 @@
           "step": "Verify library evidence (no public record without a licence)"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "cd",
@@ -31159,6 +31412,7 @@
           "step": "Build .tar.gz and .zip archives"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -31168,6 +31422,7 @@
           "step": "Build Zenodo metadata payload"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "curl",
@@ -31180,6 +31435,7 @@
           "step": "Create Zenodo deposit (DRAFT)"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "basename",
@@ -31191,6 +31447,7 @@
           "step": "Upload archives to Zenodo bucket"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "cat",
@@ -31201,6 +31458,7 @@
           "step": "Set Zenodo deposit metadata"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "cat",
@@ -31211,6 +31469,7 @@
           "step": "Publish Zenodo deposit (MINTS DOI)"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "pip"
@@ -31218,6 +31477,7 @@
           "step": "Install huggingface_hub"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "cat",
@@ -31228,6 +31488,7 @@
           "step": "Push dataset to HuggingFace"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -31272,6 +31533,48 @@
               "confirm_irreversible": "yes-mint-doi"
             }
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "4",
+              "uses": "actions/setup-node",
+              "version": "22"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "5",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
         }
       ],
       "landings": [],
@@ -31361,6 +31664,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "push",
           "programs": [
             "echo",
@@ -31370,6 +31674,7 @@
           "step": "Validate hf_repo_id input"
         },
         {
+          "dir": "",
           "job": "push",
           "programs": [
             "gh",
@@ -31378,6 +31683,7 @@
           "step": "Download release asset"
         },
         {
+          "dir": "",
           "job": "push",
           "programs": [
             "echo",
@@ -31386,6 +31692,7 @@
           "step": "Verify asset sha256 (integrity across the release hop)"
         },
         {
+          "dir": "",
           "job": "push",
           "programs": [
             "basename",
@@ -31399,6 +31706,7 @@
           "step": "Extract"
         },
         {
+          "dir": "",
           "job": "push",
           "programs": [
             "pip"
@@ -31406,6 +31714,7 @@
           "step": "Install huggingface_hub"
         },
         {
+          "dir": "",
           "job": "push",
           "programs": [
             "echo",
@@ -31414,6 +31723,7 @@
           "step": "Push adapters to HuggingFace"
         },
         {
+          "dir": "",
           "job": "push",
           "programs": [
             "echo"
@@ -31423,6 +31733,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/push-adapters-hf.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "push",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "4",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Push jam-actions adapters to HuggingFace",
@@ -31464,6 +31805,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "push",
           "programs": [
             "echo",
@@ -31473,6 +31815,7 @@
           "step": "Validate hf_repo_id input"
         },
         {
+          "dir": "",
           "job": "push",
           "programs": [
             "cat",
@@ -31484,6 +31827,7 @@
           "step": "Verify dataset package is intact"
         },
         {
+          "dir": "",
           "job": "push",
           "programs": [
             "200",
@@ -31500,6 +31844,7 @@
           "step": "Refuse to overwrite a card edited on HuggingFace"
         },
         {
+          "dir": "",
           "job": "push",
           "programs": [
             "pip"
@@ -31507,6 +31852,7 @@
           "step": "Install huggingface_hub"
         },
         {
+          "dir": "",
           "job": "push",
           "programs": [
             "cat",
@@ -31517,6 +31863,7 @@
           "step": "Push dataset to HuggingFace"
         },
         {
+          "dir": "",
           "job": "push",
           "programs": [
             "echo"
@@ -31526,6 +31873,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/push-jam-actions-v0-hf.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "push",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -31573,6 +31951,7 @@
       "checksCount": 10,
       "commands": [
         {
+          "dir": "",
           "job": "publish-npm",
           "programs": [
             "pnpm"
@@ -31580,6 +31959,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "publish-npm",
           "programs": [
             "pnpm"
@@ -31587,6 +31967,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "publish-npm",
           "programs": [
             "pnpm"
@@ -31594,6 +31975,7 @@
           "step": "5"
         },
         {
+          "dir": "",
           "job": "publish-npm",
           "programs": [
             "ls",
@@ -31602,6 +31984,7 @@
           "step": "Verify tarball contents"
         },
         {
+          "dir": "",
           "job": "publish-npm",
           "programs": [
             "1",
@@ -31612,6 +31995,7 @@
           "step": "Publish to npm with Sigstore provenance"
         },
         {
+          "dir": "",
           "job": "publish-docker",
           "programs": [
             "echo",
@@ -31622,6 +32006,53 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish-npm",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "24",
+                  "range": ">=24.0.0 <25.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "24"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "publish-docker",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -33971,6 +34402,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "edit",
           "programs": [
             "echo",
@@ -33980,6 +34412,7 @@
           "step": "Validate inputs (irreversible-action gate)"
         },
         {
+          "dir": "",
           "job": "edit",
           "programs": [
             "curl",
@@ -33991,6 +34424,7 @@
           "step": "Validate the edit file"
         },
         {
+          "dir": "",
           "job": "edit",
           "programs": [
             "cat",
@@ -34002,6 +34436,7 @@
           "step": "Fetch the published record (public API, no token)"
         },
         {
+          "dir": "",
           "job": "edit",
           "programs": [
             "cat",
@@ -34013,6 +34448,7 @@
           "step": "Fetch the deposition metadata (token)"
         },
         {
+          "dir": "",
           "job": "edit",
           "programs": [
             "echo"
@@ -34020,6 +34456,7 @@
           "step": "Preview stops here"
         },
         {
+          "dir": "",
           "job": "edit",
           "programs": [
             "201",
@@ -34033,6 +34470,7 @@
           "step": "Edit, replace metadata, publish"
         },
         {
+          "dir": "",
           "job": "edit",
           "programs": [
             "curl",
@@ -34046,6 +34484,24 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/zenodo-edit-record.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "edit",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Zenodo edit record metadata",

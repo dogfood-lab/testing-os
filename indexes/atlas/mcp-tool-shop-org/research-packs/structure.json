@@ -7867,6 +7867,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -7874,6 +7875,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -7883,6 +7885,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -7957,6 +8009,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npx"
@@ -7964,6 +8017,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -7971,6 +8025,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -7978,6 +8033,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "node"
@@ -7985,6 +8041,7 @@
           "step": "Verify all packages"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -7994,6 +8051,96 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/verify.yml",
+      "findings": [
+        {
+          "job": "verify",
+          "lines": [
+            {
+              "file": ".github/workflows/verify.yml",
+              "line": 34
+            },
+            {
+              "file": ".github/workflows/verify.yml",
+              "line": 43
+            },
+            {
+              "file": "package-lock.json",
+              "line": 1213
+            }
+          ],
+          "package": "vitest",
+          "pinnedBy": {
+            "step": "Setup Node.js",
+            "version": "20"
+          },
+          "pins": [
+            "20"
+          ],
+          "requires": "^22.12.0 || ^24.0.0 || >=26.0.0",
+          "rule": "D1",
+          "step": "Run tests",
+          "tool": "vitest run",
+          "version": "5.0.0"
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "verify",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "Setup Node.js",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Verify",

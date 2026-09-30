@@ -12162,6 +12162,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "npx"
@@ -12169,6 +12170,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "pip",
@@ -12177,6 +12179,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "ruff"
@@ -12184,6 +12187,7 @@
           "step": "Ruff check"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "python"
@@ -12191,6 +12195,7 @@
           "step": "Import gate"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "pytest"
@@ -12198,6 +12203,7 @@
           "step": "Run tests with coverage"
         },
         {
+          "dir": "",
           "job": "ci",
           "programs": [
             "audiobooker"
@@ -12205,6 +12211,7 @@
           "step": "Test CLI"
         },
         {
+          "dir": "",
           "job": "typecheck",
           "programs": [
             "pip",
@@ -12213,6 +12220,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "typecheck",
           "programs": [
             "python"
@@ -12220,6 +12228,7 @@
           "step": "CI policy assertions"
         },
         {
+          "dir": "",
           "job": "typecheck",
           "programs": [
             "python"
@@ -12227,6 +12236,7 @@
           "step": "Pyright type-check"
         },
         {
+          "dir": "",
           "job": "dep-audit",
           "programs": [
             "pip"
@@ -12234,6 +12244,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "dep-audit",
           "programs": [
             "pip-audit"
@@ -12243,6 +12254,130 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "ci",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.10",
+                  "range": ">=3.10.0 <3.11.0-0"
+                },
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                },
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python ${{ matrix.python-version }}",
+              "uses": "actions/setup-python",
+              "version": "${{ matrix.python-version }}"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node for Atlas",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "typecheck",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "dep-audit",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        }
+      ],
       "landings": [
         "tools/pyright_baseline.txt"
       ],
@@ -12479,6 +12614,7 @@
       "checksCount": 4,
       "commands": [
         {
+          "dir": "",
           "job": "build-and-push",
           "programs": [
             "echo",
@@ -12502,6 +12638,24 @@
           "when": {
             "event": "release"
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build-and-push",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],
@@ -12613,6 +12767,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -12620,6 +12775,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -12629,6 +12785,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -12703,6 +12909,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "dispatch-notice",
           "programs": [
             "echo"
@@ -12710,6 +12917,7 @@
           "step": "Dispatch does not publish"
         },
         {
+          "dir": "",
           "job": "preflight",
           "programs": [
             "echo",
@@ -12719,6 +12927,7 @@
           "step": "Verify tag matches pyproject.toml and npm/package.json"
         },
         {
+          "dir": "",
           "job": "preflight",
           "programs": [
             "echo",
@@ -12729,6 +12938,7 @@
           "step": "Build sdist and wheel (pinned frontend) and twine check"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "1",
@@ -12739,6 +12949,7 @@
           "step": "Confirm preflight dist"
         },
         {
+          "dir": "",
           "job": "publish-npm",
           "programs": [
             "echo",
@@ -12750,6 +12961,7 @@
           "step": "Install pinned npm in a sandbox for OIDC trusted publishing"
         },
         {
+          "dir": "",
           "job": "publish-npm",
           "programs": [
             "echo",
@@ -12758,6 +12970,7 @@
           "step": "Verify tag matches npm/package.json version"
         },
         {
+          "dir": "",
           "job": "publish-npm",
           "programs": [
             "cp"
@@ -12765,6 +12978,7 @@
           "step": "Stage the changelog into the launcher package"
         },
         {
+          "dir": "npm",
           "job": "publish-npm",
           "programs": [
             "npm"
@@ -12791,6 +13005,101 @@
           "when": {
             "event": "release"
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "dispatch-notice",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "preflight",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "pypi"
+          },
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "publish-npm",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
         }
       ],
       "landings": [],
@@ -12877,6 +13186,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "action",
           "programs": [
             "sudo"
@@ -12884,6 +13194,7 @@
           "step": "Install FFmpeg"
         },
         {
+          "dir": "",
           "job": "action",
           "programs": [
             "echo",
@@ -12892,6 +13203,7 @@
           "step": "Install audiobooker"
         },
         {
+          "dir": "",
           "job": "action",
           "programs": [
             "audiobooker",

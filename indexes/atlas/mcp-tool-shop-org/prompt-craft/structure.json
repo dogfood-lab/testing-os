@@ -10213,6 +10213,7 @@
       "checksCount": 2,
       "commands": [
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npx"
@@ -10220,6 +10221,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "python"
@@ -10227,6 +10229,7 @@
           "step": "install (editable, dev extra)"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "python"
@@ -10234,6 +10237,7 @@
           "step": "verify"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "python"
@@ -10241,6 +10245,7 @@
           "step": "install pip-audit"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "python"
@@ -10250,6 +10255,68 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "verify",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                },
+                {
+                  "from": "3.13",
+                  "range": ">=3.13.0 <3.14.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "${{ matrix.python-version }}"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node for Atlas",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "ci",
@@ -10387,6 +10454,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -10394,6 +10462,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -10403,6 +10472,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -10477,6 +10596,7 @@
       "checksCount": 2,
       "commands": [
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "python"
@@ -10484,6 +10604,7 @@
           "step": "Install"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "python"
@@ -10491,6 +10612,7 @@
           "step": "Verify"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "python"
@@ -10498,6 +10620,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "python"
@@ -10505,6 +10628,7 @@
           "step": "Check metadata"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "echo",
@@ -10514,6 +10638,7 @@
           "step": "The version in the tag must equal the version in the package"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "echo"
@@ -10521,6 +10646,7 @@
           "step": "Dry run stops here -- nothing was published"
         },
         {
+          "dir": "",
           "job": "npm",
           "programs": [
             "npm"
@@ -10528,6 +10654,7 @@
           "step": "Upgrade npm for OIDC"
         },
         {
+          "dir": "npm",
           "job": "npm",
           "programs": [
             "npm"
@@ -10535,6 +10662,7 @@
           "step": "Launcher self-test"
         },
         {
+          "dir": "npm",
           "job": "npm",
           "programs": [
             "1",
@@ -10565,6 +10693,88 @@
               "dry_run": false
             }
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "verify",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.13",
+                  "range": ">=3.13.0 <3.14.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "3.13"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "release"
+          },
+          "name": "pypi",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "release"
+          },
+          "name": "npm",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
         }
       ],
       "landings": [],

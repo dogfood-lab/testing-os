@@ -1064,6 +1064,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npx"
@@ -1071,6 +1072,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -1078,6 +1080,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -1085,6 +1088,7 @@
           "step": "Smoke tests"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npx"
@@ -1092,6 +1096,7 @@
           "step": "Coverage report for Codecov"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "npm"
@@ -1099,6 +1104,7 @@
           "step": "npm pack dry-run"
         },
         {
+          "dir": "",
           "job": "test",
           "programs": [
             "node"
@@ -1108,6 +1114,101 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "findings": [
+        {
+          "job": "test",
+          "legs": 2,
+          "lines": [
+            {
+              "file": ".github/workflows/ci.yml",
+              "line": 65
+            },
+            {
+              "file": ".github/workflows/ci.yml",
+              "line": 87
+            },
+            {
+              "file": "package-lock.json",
+              "line": 358
+            }
+          ],
+          "package": "c8",
+          "pinnedBy": {
+            "step": "Setup Node",
+            "version": "${{ matrix.node }}"
+          },
+          "pins": [
+            "18"
+          ],
+          "requires": "^20.19.0 || ^22.12.0 || >=23",
+          "rule": "D1",
+          "step": "Coverage report for Codecov",
+          "tool": "c8 report",
+          "version": "12.0.0"
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node 22 for Atlas",
+              "uses": "actions/setup-node",
+              "version": "22"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "18",
+                  "range": ">=18.0.0 <19.0.0-0"
+                },
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -1236,6 +1337,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -1243,6 +1345,7 @@
           "step": "Install site deps"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -1250,6 +1353,7 @@
           "step": "Build site"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "cp",
@@ -1260,6 +1364,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy GitHub Pages",
@@ -1334,6 +1488,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -1345,6 +1500,7 @@
           "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -1353,6 +1509,7 @@
           "step": "Verify tag matches package.json version"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -1360,6 +1517,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -1367,6 +1525,7 @@
           "step": "Smoke tests"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -1374,6 +1533,7 @@
           "step": "npm pack dry-run (verify shape)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "cd",
@@ -1384,6 +1544,7 @@
           "step": "Build release zip"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -1391,6 +1552,7 @@
           "step": "Publish to npm with provenance (OIDC trusted publisher)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "gh"
@@ -1400,6 +1562,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

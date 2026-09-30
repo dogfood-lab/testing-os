@@ -2107,6 +2107,7 @@
       "checksCount": 3,
       "commands": [
         {
+          "dir": "",
           "job": "quality-gates",
           "programs": [
             "npx"
@@ -2114,6 +2115,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "quality-gates",
           "programs": [
             "npm"
@@ -2121,6 +2123,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "quality-gates",
           "programs": [
             "npm"
@@ -2128,6 +2131,7 @@
           "step": "Lint"
         },
         {
+          "dir": "",
           "job": "quality-gates",
           "programs": [
             "npm"
@@ -2135,6 +2139,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "",
           "job": "quality-gates",
           "programs": [
             "npm"
@@ -2142,6 +2147,7 @@
           "step": "Compile (production)"
         },
         {
+          "dir": "",
           "job": "dep-audit",
           "programs": [
             "npm"
@@ -2151,6 +2157,77 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "quality-gates",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node for the Atlas check",
+              "uses": "actions/setup-node",
+              "version": "22"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "Setup Node.js",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "dep-audit",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -2322,6 +2399,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -2329,6 +2407,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -2338,6 +2417,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -2412,6 +2541,7 @@
       "checksCount": 3,
       "commands": [
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npm"
@@ -2419,6 +2549,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npm"
@@ -2426,6 +2557,7 @@
           "step": "Lint"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npm"
@@ -2433,6 +2565,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npm"
@@ -2440,6 +2573,7 @@
           "step": "Compile (production)"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "echo",
@@ -2448,6 +2582,7 @@
           "step": "Verify tag matches package.json version"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "echo",
@@ -2457,6 +2592,7 @@
           "step": "Verify CHANGELOG has entry for this version"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npx"
@@ -2464,6 +2600,7 @@
           "step": "Package VSIX"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "echo",
@@ -2472,6 +2609,7 @@
           "step": "Get version"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "sha256sum"
@@ -2479,6 +2617,7 @@
           "step": "Generate SHA256"
         },
         {
+          "dir": "",
           "job": "publish_marketplace",
           "programs": [
             "npm"
@@ -2486,6 +2625,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "publish_marketplace",
           "programs": [
             "npx"
@@ -2493,6 +2633,7 @@
           "step": "Package VSIX"
         },
         {
+          "dir": "",
           "job": "publish_marketplace",
           "programs": [
             "echo",
@@ -2532,6 +2673,66 @@
           "when": {
             "event": "workflow_dispatch"
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "Setup Node.js",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "publish_marketplace",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "Setup Node.js",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
         }
       ],
       "landings": [],

@@ -9330,6 +9330,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npx"
@@ -9337,6 +9338,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "pnpm"
@@ -9344,6 +9346,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "pnpm"
@@ -9351,6 +9354,7 @@
           "step": "Build"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "pnpm"
@@ -9358,6 +9362,7 @@
           "step": "Typecheck"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "pnpm"
@@ -9365,6 +9370,7 @@
           "step": "Test with coverage"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "1",
@@ -9375,6 +9381,7 @@
           "step": "Dependency vulnerability scan"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "pnpm"
@@ -9384,6 +9391,57 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build-and-test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                },
+                {
+                  "from": "24",
+                  "range": ">=24.0.0 <25.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node-version }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -10615,6 +10673,24 @@
       "commands": [],
       "elsewhere": [],
       "file": ".github/workflows/docker.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build-and-push",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Publish to GHCR",
@@ -11112,6 +11188,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -11119,6 +11196,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -11128,6 +11206,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -11202,6 +11330,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "npm"
@@ -11209,6 +11338,7 @@
           "step": "Install pnpm"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -11220,6 +11350,7 @@
           "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "echo",
@@ -11228,6 +11359,7 @@
           "step": "Verify tag matches packages/attestia/package.json version"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "pnpm"
@@ -11235,6 +11367,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "pnpm"
@@ -11242,6 +11375,7 @@
           "step": "Build all packages (incl. the bundle)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "pnpm"
@@ -11249,6 +11383,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "packages/attestia",
           "job": "release",
           "programs": [
             "echo",
@@ -11258,6 +11393,7 @@
           "step": "Strip workspace-only devDependencies from the published manifest"
         },
         {
+          "dir": "packages/attestia",
           "job": "release",
           "programs": [
             "npm"
@@ -11265,6 +11401,7 @@
           "step": "npm pack dry-run (verify tarball shape)"
         },
         {
+          "dir": "packages/attestia",
           "job": "release",
           "programs": [
             "npm"
@@ -11272,6 +11409,7 @@
           "step": "Publish to npm with provenance (OIDC trusted publisher)"
         },
         {
+          "dir": "",
           "job": "release",
           "programs": [
             "gh"
@@ -11281,6 +11419,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

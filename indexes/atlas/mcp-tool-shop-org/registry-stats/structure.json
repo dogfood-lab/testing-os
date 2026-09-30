@@ -1764,6 +1764,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "build-test",
           "programs": [
             "npm"
@@ -1771,6 +1772,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "build-test",
           "programs": [
             "npm"
@@ -1778,6 +1780,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "build-test",
           "programs": [
             "npm"
@@ -1785,6 +1788,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "build-test",
           "programs": [
             "npm"
@@ -1792,6 +1796,7 @@
           "step": "5"
         },
         {
+          "dir": "",
           "job": "build-test",
           "programs": [
             "npm"
@@ -1801,6 +1806,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build-test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -1936,6 +1972,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "refresh",
           "programs": [
             "npm"
@@ -1943,6 +1980,7 @@
           "step": "Install library dependencies"
         },
         {
+          "dir": "",
           "job": "refresh",
           "programs": [
             "npm"
@@ -1950,6 +1988,7 @@
           "step": "Build library"
         },
         {
+          "dir": "site",
           "job": "refresh",
           "programs": [
             "npm"
@@ -1957,6 +1996,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "refresh",
           "programs": [
             "npm"
@@ -1964,6 +2004,7 @@
           "step": "Fetch live stats"
         },
         {
+          "dir": "",
           "job": "refresh",
           "programs": [
             "node"
@@ -1971,6 +2012,7 @@
           "step": "Verify stats freshness"
         },
         {
+          "dir": "",
           "job": "refresh",
           "programs": [
             "npm"
@@ -1978,6 +2020,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "",
           "job": "refresh",
           "programs": [
             "echo",
@@ -1988,6 +2031,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/daily-refresh.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "refresh",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [
         "site/public/data/packages.json",
         "site/public/data/stats.json",
@@ -2178,6 +2252,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "build-msix",
           "programs": [
             "dotnet"
@@ -2185,6 +2260,7 @@
           "step": "Install MAUI workload"
         },
         {
+          "dir": "",
           "job": "build-msix",
           "programs": [
             "dotnet"
@@ -2192,6 +2268,7 @@
           "step": "Run desktop tests"
         },
         {
+          "dir": "",
           "job": "build-msix",
           "programs": [
             "cd",
@@ -2200,6 +2277,7 @@
           "step": "Build web assets"
         },
         {
+          "dir": "",
           "job": "build-msix",
           "programs": [
             "-CertStoreLocation",
@@ -2218,6 +2296,7 @@
           "step": "Generate self-signed cert (CI)"
         },
         {
+          "dir": "",
           "job": "build-msix",
           "programs": [
             "dotnet"
@@ -2225,6 +2304,7 @@
           "step": "Publish (Release MSIX, unsigned)"
         },
         {
+          "dir": "",
           "job": "build-msix",
           "programs": [
             "-Descending",
@@ -2238,6 +2318,7 @@
           "step": "Sign MSIX with signtool"
         },
         {
+          "dir": "",
           "job": "build-msix",
           "programs": [
             "-not",
@@ -2251,6 +2332,36 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/desktop-ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build-msix",
+          "runsOn": [
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [
         "site/public/data/packages.json",
         "site/public/data/stats.json",
@@ -2430,6 +2541,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npx"
@@ -2437,6 +2549,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npm"
@@ -2444,6 +2557,7 @@
           "step": "Install library dependencies"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npm"
@@ -2451,6 +2565,7 @@
           "step": "Build library"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -2458,6 +2573,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -2465,6 +2581,7 @@
           "step": "Audit site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -2472,6 +2589,7 @@
           "step": "Fetch live stats"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "echo",
@@ -2480,6 +2598,7 @@
           "step": "Commit fresh stats back to repo (best-effort)"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -2508,6 +2627,56 @@
               "pull_request"
             ]
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landingGates": [
@@ -2715,6 +2884,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -2722,6 +2892,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -2729,6 +2900,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -2736,6 +2908,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -2743,6 +2916,7 @@
           "step": "Upgrade npm for Trusted Publishing (>= 11.5.1)"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -2752,6 +2926,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {

@@ -3707,6 +3707,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "quality-gates",
           "programs": [
             "npx"
@@ -3714,6 +3715,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "quality-gates",
           "programs": [
             "pip"
@@ -3721,6 +3723,7 @@
           "step": "Install Python deps for ml_runner boundary tests"
         },
         {
+          "dir": "",
           "job": "quality-gates",
           "programs": [
             "npm"
@@ -3728,6 +3731,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "quality-gates",
           "programs": [
             "npm"
@@ -3735,6 +3739,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "",
           "job": "quality-gates",
           "programs": [
             "npx"
@@ -3742,6 +3747,7 @@
           "step": "Run tests with coverage"
         },
         {
+          "dir": "",
           "job": "quality-gates",
           "programs": [
             "npm"
@@ -3749,6 +3755,7 @@
           "step": "Compile (production)"
         },
         {
+          "dir": "",
           "job": "quality-gates",
           "programs": [
             "npx"
@@ -3756,6 +3763,7 @@
           "step": "Package VSIX"
         },
         {
+          "dir": "",
           "job": "dep-audit",
           "programs": [
             "npm"
@@ -3763,6 +3771,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "dep-audit",
           "programs": [
             "npm"
@@ -3770,6 +3779,7 @@
           "step": "Run npm audit"
         },
         {
+          "dir": "",
           "job": "extension-host-smoke",
           "programs": [
             "pip"
@@ -3777,6 +3787,7 @@
           "step": "Install Python deps for ml_runner subprocess"
         },
         {
+          "dir": "",
           "job": "extension-host-smoke",
           "programs": [
             "npm"
@@ -3784,6 +3795,7 @@
           "step": "Install Node dependencies"
         },
         {
+          "dir": "",
           "job": "extension-host-smoke",
           "programs": [
             "sudo"
@@ -3791,6 +3803,7 @@
           "step": "Install Xvfb (headless display for Extension Host)"
         },
         {
+          "dir": "",
           "job": "extension-host-smoke",
           "programs": [
             "xvfb-run"
@@ -3800,6 +3813,137 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "quality-gates",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                },
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node.js ${{ matrix.node-version }}",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node-version }}"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Setup Python",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "dep-audit",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "Setup Node.js",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "extension-host-smoke",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "Setup Node.js",
+              "uses": "actions/setup-node",
+              "version": "20"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Setup Python",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "CI",
@@ -4192,6 +4336,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -4199,6 +4344,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -4208,6 +4354,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -4282,6 +4478,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npm"
@@ -4289,6 +4486,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npm"
@@ -4296,6 +4494,7 @@
           "step": "Run tests"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npm"
@@ -4303,6 +4502,7 @@
           "step": "Compile (production)"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "echo",
@@ -4311,6 +4511,7 @@
           "step": "Verify tag matches package.json version"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "npx"
@@ -4318,6 +4519,7 @@
           "step": "Package VSIX"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "echo",
@@ -4326,6 +4528,7 @@
           "step": "Get version"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "sha256sum"
@@ -4333,6 +4536,7 @@
           "step": "Generate SHA256"
         },
         {
+          "dir": "",
           "job": "publish_marketplace",
           "programs": [
             "npm"
@@ -4340,6 +4544,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "publish_marketplace",
           "programs": [
             "npx"
@@ -4347,6 +4552,7 @@
           "step": "Package VSIX"
         },
         {
+          "dir": "",
           "job": "publish_marketplace",
           "programs": [
             "echo",
@@ -4386,6 +4592,66 @@
           "when": {
             "event": "workflow_dispatch"
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "Setup Node.js",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "publish_marketplace",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "Setup Node.js",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
         }
       ],
       "landings": [],

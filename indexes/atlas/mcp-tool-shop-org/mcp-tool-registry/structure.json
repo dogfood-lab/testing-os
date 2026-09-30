@@ -942,6 +942,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "validate",
           "programs": [
             "npx"
@@ -949,6 +950,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "validate",
           "programs": [
             "npm"
@@ -956,6 +958,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "validate",
           "programs": [
             "npm"
@@ -963,6 +966,7 @@
           "step": "5"
         },
         {
+          "dir": "",
           "job": "validate",
           "programs": [
             "npm"
@@ -970,6 +974,7 @@
           "step": "6"
         },
         {
+          "dir": "",
           "job": "validate",
           "programs": [
             "npm"
@@ -977,6 +982,7 @@
           "step": "7"
         },
         {
+          "dir": "",
           "job": "validate",
           "programs": [
             "npm"
@@ -984,6 +990,7 @@
           "step": "8"
         },
         {
+          "dir": "",
           "job": "validate",
           "programs": [
             "npm"
@@ -991,6 +998,7 @@
           "step": "9"
         },
         {
+          "dir": "",
           "job": "validate",
           "programs": [
             "npm"
@@ -998,6 +1006,7 @@
           "step": "10"
         },
         {
+          "dir": "",
           "job": "dep-audit",
           "programs": [
             "npm"
@@ -1005,6 +1014,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "ecosystem",
           "programs": [
             "npm"
@@ -1012,6 +1022,7 @@
           "step": "Install Dependencies"
         },
         {
+          "dir": "",
           "job": "ecosystem",
           "programs": [
             "npm"
@@ -1019,6 +1030,7 @@
           "step": "Build Registry Artifacts"
         },
         {
+          "dir": "",
           "job": "ecosystem",
           "programs": [
             "npm"
@@ -1026,6 +1038,7 @@
           "step": "Verify Site Build"
         },
         {
+          "dir": "",
           "job": "ecosystem",
           "programs": [
             "echo"
@@ -1035,6 +1048,106 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "validate",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node for the Atlas check",
+              "uses": "actions/setup-node",
+              "version": "22"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "3",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "dep-audit",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "ecosystem",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        }
+      ],
       "landingGates": [
         {
           "target": "bundles/*.json",
@@ -1349,6 +1462,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -1356,6 +1470,7 @@
           "step": "Install Dependencies"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -1363,6 +1478,7 @@
           "step": "Build Derived Data"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "npm"
@@ -1370,6 +1486,7 @@
           "step": "Smoke Test Registry Artifacts"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1377,6 +1494,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1384,6 +1502,7 @@
           "step": "Run validation"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1391,6 +1510,7 @@
           "step": "Build derived data"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1398,6 +1518,7 @@
           "step": "Build bundles"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1405,6 +1526,7 @@
           "step": "Publish to npm"
         },
         {
+          "dir": "",
           "job": "create-submission-pr",
           "programs": [
             "node"
@@ -1412,6 +1534,7 @@
           "step": "Submission Guard"
         },
         {
+          "dir": "",
           "job": "create-submission-pr",
           "programs": [
             "git"
@@ -1419,6 +1542,7 @@
           "step": "Create Branch"
         },
         {
+          "dir": "",
           "job": "create-submission-pr",
           "programs": [
             "node"
@@ -1426,6 +1550,7 @@
           "step": "Patch Registry"
         },
         {
+          "dir": "",
           "job": "create-submission-pr",
           "programs": [
             "npm"
@@ -1433,6 +1558,7 @@
           "step": "Format Code (Prettier)"
         },
         {
+          "dir": "",
           "job": "create-submission-pr",
           "programs": [
             "echo",
@@ -1441,6 +1567,7 @@
           "step": "Commit Changes"
         },
         {
+          "dir": "",
           "job": "create-submission-pr",
           "programs": [
             "git"
@@ -1480,6 +1607,95 @@
           "when": {
             "event": "release"
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "verify",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "create-submission-pr",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "20",
+                  "range": ">=20.0.0 <21.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "20"
+            }
+          ]
         }
       ],
       "landingGates": [
@@ -1853,6 +2069,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -1860,6 +2077,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -1869,6 +2087,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -1943,6 +2211,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1950,6 +2219,7 @@
           "step": "Install dependencies"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1957,6 +2227,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -1964,6 +2235,7 @@
           "step": "4"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -1974,6 +2246,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/publish.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [
         "dist/REGISTRY_HEALTH.md",
         "dist/registry.report.json"

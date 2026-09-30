@@ -43819,6 +43819,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "site",
           "job": "site-build",
           "programs": [
             "npm"
@@ -43826,6 +43827,7 @@
           "step": "scan site dependencies"
         },
         {
+          "dir": "site",
           "job": "site-build",
           "programs": [
             "npm"
@@ -43833,6 +43835,7 @@
           "step": "install site dependencies"
         },
         {
+          "dir": "site",
           "job": "site-build",
           "programs": [
             "npm"
@@ -43840,6 +43843,7 @@
           "step": "build site"
         },
         {
+          "dir": "",
           "job": "python-tests",
           "programs": [
             "echo",
@@ -43848,6 +43852,7 @@
           "step": "release.yml rehearsal STATUS must be recorded"
         },
         {
+          "dir": "",
           "job": "python-tests",
           "programs": [
             "python"
@@ -43855,6 +43860,7 @@
           "step": "install test dependencies"
         },
         {
+          "dir": "",
           "job": "python-tests",
           "programs": [
             "python"
@@ -43862,6 +43868,7 @@
           "step": "audit Python dependencies"
         },
         {
+          "dir": "",
           "job": "python-tests",
           "programs": [
             "echo",
@@ -43872,6 +43879,7 @@
           "step": "install a licence-verified font for the sheet composers"
         },
         {
+          "dir": "",
           "job": "python-tests",
           "programs": [
             "python"
@@ -43879,6 +43887,7 @@
           "step": "run tests"
         },
         {
+          "dir": "",
           "job": "python-tests",
           "programs": [
             "python"
@@ -43886,6 +43895,7 @@
           "step": "run tests under -O (gates must still raise)"
         },
         {
+          "dir": "",
           "job": "python-tests",
           "programs": [
             "basename",
@@ -43898,6 +43908,7 @@
           "step": "build the package and run it from a clean install"
         },
         {
+          "dir": "",
           "job": "python-tests",
           "programs": [
             "python"
@@ -43905,6 +43916,7 @@
           "step": "refuse a classifier PyPI does not have"
         },
         {
+          "dir": "npm",
           "job": "python-tests",
           "programs": [
             "echo",
@@ -43916,6 +43928,7 @@
           "step": "pack the npm package and run it from a clean install"
         },
         {
+          "dir": "",
           "job": "launcher",
           "programs": [
             "npx"
@@ -43923,6 +43936,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "npm",
           "job": "launcher",
           "programs": [
             "npm"
@@ -43930,6 +43944,7 @@
           "step": "launcher self-test"
         },
         {
+          "dir": "npm",
           "job": "launcher",
           "programs": [
             "echo",
@@ -43943,6 +43958,103 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "site-build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "python-tests",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                },
+                {
+                  "from": "3.13",
+                  "range": ">=3.13.0 <3.14.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "${{ matrix.python-version }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "launcher",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "18",
+                  "range": ">=18.0.0 <19.0.0-0"
+                },
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node-version }}"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [
         {
@@ -44231,6 +44343,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -44238,6 +44351,7 @@
           "step": "scan site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -44245,6 +44359,7 @@
           "step": "install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -44269,6 +44384,56 @@
               "main"
             ]
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],
@@ -44345,6 +44510,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "echo",
@@ -44354,6 +44520,7 @@
           "step": "The version in the tag must equal the version in the package"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "echo"
@@ -44361,6 +44528,7 @@
           "step": "The two workflows must read the same visibility"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "echo",
@@ -44370,6 +44538,7 @@
           "step": "A pre-release must not reach either registry"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "python"
@@ -44377,6 +44546,7 @@
           "step": "Install"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "python"
@@ -44384,6 +44554,7 @@
           "step": "audit Python dependencies"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "echo",
@@ -44394,6 +44565,7 @@
           "step": "install a licence-verified font for the sheet composers"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "python"
@@ -44401,6 +44573,7 @@
           "step": "Suite"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "python"
@@ -44408,6 +44581,7 @@
           "step": "Suite under -O"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "basename",
@@ -44420,6 +44594,7 @@
           "step": "build the package and run it from a clean install"
         },
         {
+          "dir": "",
           "job": "verify",
           "programs": [
             "python"
@@ -44427,6 +44602,7 @@
           "step": "refuse a classifier PyPI does not have"
         },
         {
+          "dir": "npm",
           "job": "verify",
           "programs": [
             "echo",
@@ -44438,6 +44614,7 @@
           "step": "pack the npm package and run it from a clean install"
         },
         {
+          "dir": "",
           "job": "npm",
           "programs": [
             "npm"
@@ -44445,6 +44622,7 @@
           "step": "Upgrade npm for OIDC"
         },
         {
+          "dir": "npm",
           "job": "npm",
           "programs": [
             "1",
@@ -44475,6 +44653,88 @@
               "rehearse": false
             }
           }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "verify",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.13",
+                  "range": ">=3.13.0 <3.14.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "3.13"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "release"
+          },
+          "name": "pypi",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "release"
+          },
+          "name": "npm",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
         }
       ],
       "landings": [],

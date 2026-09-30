@@ -545,6 +545,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "action",
           "programs": [
             "node"
@@ -599,6 +600,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "catalog-consistency",
           "programs": [
             "node"
@@ -608,6 +610,69 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/docs-quality.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "markdownlint",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "link-check",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "catalog-consistency",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Docs Quality",
@@ -679,6 +744,7 @@
       "checksCount": 13,
       "commands": [
         {
+          "dir": "",
           "job": "check-org-standards",
           "programs": [
             "npx"
@@ -686,6 +752,7 @@
           "step": "Atlas check"
         },
         {
+          "dir": "",
           "job": "check-org-standards",
           "programs": [
             "basename",
@@ -695,6 +762,7 @@
           "step": "Check for forbidden 'master' branch references in workflows"
         },
         {
+          "dir": "",
           "job": "check-org-standards",
           "programs": [
             "echo",
@@ -703,6 +771,7 @@
           "step": "Check action version floors"
         },
         {
+          "dir": "",
           "job": "check-org-standards",
           "programs": [
             "echo",
@@ -711,6 +780,7 @@
           "step": "Check org-level docs integrity"
         },
         {
+          "dir": "",
           "job": "check-org-standards",
           "programs": [
             "echo"
@@ -718,6 +788,7 @@
           "step": "Check release policy docs"
         },
         {
+          "dir": "",
           "job": "check-org-repos",
           "programs": [
             "base64",
@@ -736,6 +807,7 @@
           "step": "Scan all org repos for regressions"
         },
         {
+          "dir": "",
           "job": "check-org-repos",
           "programs": [
             "cat"
@@ -745,6 +817,53 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/org-guard.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "check-org-standards",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "check-org-repos",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Org Drift Guard",
@@ -880,6 +999,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -887,6 +1007,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -896,6 +1017,56 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
