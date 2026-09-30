@@ -104,8 +104,8 @@
     "atlas-fleet": "./bin/atlas-fleet.js"
   },
   "scripts": {
-    "test": "node --test --test-concurrency=1 \"*.test.js\" \"core/*.test.js\" \"adapter/*.test.js\" \"sidecar/*.test.js\"",
-    "test:parallel": "node --test --test-concurrency=8 \"*.test.js\" \"core/*.test.js\" \"adapter/*.test.js\" \"sidecar/*.test.js\""
+    "test": "node --test --import=../../scripts/lib/git-test-env.mjs --test-concurrency=1 \"*.test.js\" \"core/*.test.js\" \"adapter/*.test.js\" \"sidecar/*.test.js\"",
+    "test:parallel": "node --test --import=../../scripts/lib/git-test-env.mjs --test-concurrency=8 \"*.test.js\" \"core/*.test.js\" \"adapter/*.test.js\" \"sidecar/*.test.js\""
   },
   "publishConfig": {
     "access": "public"

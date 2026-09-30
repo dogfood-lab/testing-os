@@ -13,7 +13,7 @@
     "./lib/*": "./lib/*"
   },
   "scripts": {
-    "test": "node --test \"*.test.js\" \"lib/*.test.js\""
+    "test": "node --test --import=../../scripts/lib/git-test-env.mjs \"*.test.js\" \"lib/*.test.js\""
   },
   "files": [
     "cli.js",
