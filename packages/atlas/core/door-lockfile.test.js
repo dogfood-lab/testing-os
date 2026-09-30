@@ -73,6 +73,14 @@ describe('D2 on a lock written on Windows', () => {
     assert.deepEqual(findings('watcher.yml'), []);
   });
 
+  it('does not judge npm install, which may add the missing binding, and says why', () => {
+    // Measured on the fleet, 2026-09-30: a Pages door running `npm install`
+    // on ubuntu-latest from a Windows-written lock deployed green three
+    // times, so npm install repairs what npm ci installs as written.
+    assert.deepEqual(findings('install.yml'), []);
+    assert.deepEqual(door('install.yml').unresolvedChecks, [{ rule: 'D2', job: 'build', step: 'Install', lock: 'site/package-lock.json', why: 'npm install may add a missing binding at install time; only npm ci installs the lock as written' }]);
+  });
+
   it('gives no finding on a self-hosted runner, and lists it unresolved', () => {
     assert.deepEqual(findings('own.yml'), []);
     assert.deepEqual(door('own.yml').unresolvedChecks, [{ rule: 'D2', job: 'build', step: 'Install', lock: 'site/package-lock.json', runsOn: ['self-hosted', 'linux'], why: 'self-hosted' }]);

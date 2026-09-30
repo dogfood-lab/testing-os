@@ -70,7 +70,7 @@ Guards: a pin of `20` means any 20.x, so `^20.19.0 || >=22.12.0` does not fire. 
 Sentence, for a tool on the known list (Astro, Next.js): "Deploy site pins Node 20 and runs astro build; astro 7.3.3 requires Node >=22.12.0 and refuses to start." For any other tool: "… declares Node >=X", with no claim about failure. The same rule for Python (`setup-python` against the repository's own `requires-python`) is built second and ships only if the fleet check supports it.
 
 **D2, lockfile platform.** Fires when all hold:
-- a step runs `npm ci` or `npm install` in a directory with a tracked `package-lock.json`, in a job whose platform is known;
+- a step runs `npm ci` in a directory with a tracked `package-lock.json`, in a job whose platform is known (`npm install` is not judged, and said so: the fleet check found it adds the missing binding at install time);
 - a lock entry lists optional bindings, at least one listed binding is present with `os` and `cpu`, at least one is missing, and no present binding matches the job's platform.
 
 Guards: a parent whose only listed binding is for another system (`fsevents`) does not fire, because no present sibling proves the pattern. `wasm32` bindings never count as a match or a miss. Only the parent's own listed children are judged. musl or gnu is read from the binding's name.

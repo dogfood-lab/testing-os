@@ -13,8 +13,9 @@ import { pep440Range } from './runtime.js';
  * pin can resolve to. Its Python form (D1-python) holds a setup-python pin
  * against the requires-python of the package a step installs or tests.
  *
- * D2, lockfile platform. A step runs npm ci or npm install in a directory
- * with a tracked package-lock.json, in a job whose platform is known, and
+ * D2, lockfile platform. A step runs npm ci in a directory with a tracked
+ * package-lock.json (npm install is not judged, since it may add the
+ * missing binding), in a job whose platform is known, and
  * the lock holds an entry listing optional bindings of which at least one is
  * present with its os and cpu, at least one is missing, and none present
  * matches the job's platform: a lock written on another system that dropped
@@ -40,6 +41,12 @@ const REFUSES = new Map([
 const NOT_A_TOOL = new Set(['node', 'nodejs', 'npm', 'npx', 'pnpm', 'yarn', 'corepack', 'bun', 'deno', 'sh', 'bash']);
 
 const NPM_INSTALLS = new Set(['ci', 'clean-install', 'ic', 'install-clean', 'isntall-clean', 'install', 'i', 'in', 'ins', 'inst', 'insta', 'instal', 'isnt', 'isnta', 'isntal', 'isntall', 'add']);
+// The install forms that install the lock as written. `npm install` may add
+// a binding the lock lacks for the platform it runs on: measured on the
+// fleet (2026-09-30), a Pages door running it on ubuntu-latest from a lock
+// written on Windows deployed green, so D2 judges only these.
+const NPM_CI = new Set(['ci', 'clean-install', 'ic', 'install-clean', 'isntall-clean']);
+const NPM_INSTALL_UNJUDGED = 'npm install may add a missing binding at install time; only npm ci installs the lock as written';
 // The npm flags that take a value, so the value is not taken for a package.
 const NPM_VALUE_FLAGS = new Set(['--prefix', '-w', '--workspace', '--omit', '--include', '--registry', '--cache', '--loglevel', '--userconfig', '--install-strategy', '--before', '--tag']);
 
@@ -76,6 +83,10 @@ function lockfilePlatform({ file, job, step, repo, findings, unresolved, install
     const found = dir == null ? null : lockFor(repo, dir);
     if (!found || installed.has(found.path)) continue;
     installed.add(found.path);
+    if (!NPM_CI.has(positionals(run.args)[0])) {
+      unresolved.push({ rule: 'D2', job: job.name, step: step.step, lock: found.path, why: NPM_INSTALL_UNJUDGED });
+      continue;
+    }
     if (!found.lock.ok) {
       unresolved.push({ rule: 'D2', job: job.name, step: step.step, lock: found.path, why: found.lock.unresolved });
       continue;

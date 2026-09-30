@@ -855,7 +855,7 @@ A notice: a workflow job pins a runtime version that the tool one of its steps r
 A notice: a lockfile a workflow installs from holds no native binding for the job's platform.
 :::
 
-- **Trigger:** a step runs `npm ci` or `npm install` in a directory with a tracked `package-lock.json`, on a GitHub-hosted runner, and a lock entry lists optional native bindings of which at least one is present, at least one is missing, and none present is for the job's platform: a lock written on another system that dropped this one's binding (npm/cli issue 4828). A package that only ever ships one platform (`fsevents`) does not fire, and `wasm32` builds never count. One notice per lockfile and job, naming the packages.
+- **Trigger:** a step runs `npm ci` in a directory with a tracked `package-lock.json`, on a GitHub-hosted runner (`npm install` is not judged, since it may add the missing binding at install time), and a lock entry lists optional native bindings of which at least one is present, at least one is missing, and none present is for the job's platform: a lock written on another system that dropped this one's binding (npm/cli issue 4828). A package that only ever ships one platform (`fsevents`) does not fire, and `wasm32` builds never count. One notice per lockfile and job, naming the packages.
 - **Operator action:** rewrite the lockfile with npm 11.3.0 or later, the release that carries the fix, so it lists every platform's binding.
 
 ### `ATLAS_MAP_ENGINE_OLDER`
