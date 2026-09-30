@@ -65,6 +65,14 @@ describe('every tool reads only', () => {
         ['atlas_test_gaps', { path: 'lib/core.js' }],
         ['atlas_test_gaps', { path: 'lib' }],
         ['atlas_explain', { path: 'lib/core.js', cursor: '0000000000000000:f0:1' }],
+        // The same questions answered from the map a ref holds.
+        ['atlas_overview', { ref: 'HEAD' }],
+        ['atlas_explain', { path: 'lib/core.js', ref: 'HEAD' }],
+        ['atlas_reach', { paths: ['lib/core.js'], ref: 'HEAD~0' }],
+        ['atlas_changes', { since: 'HEAD~1', ref: 'HEAD' }],
+        ['atlas_check_change', { ref: 'HEAD' }],
+        ['atlas_test_gaps', { path: 'lib', ref: 'HEAD' }],
+        ['atlas_explain', { path: 'lib/core.js', ref: 'no-such-ref' }],
       ];
       for (const [name, args] of calls) {
         await client.callTool({ name, arguments: args });
