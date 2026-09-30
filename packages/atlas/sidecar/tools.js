@@ -7,7 +7,7 @@ import { explainAnswer } from './explain-tool.js';
 import { unplainNames } from './data.js';
 import { changedFiles, checkoutState, mapHashes, stateAt } from './freshness.js';
 import { blobAt, head, inHistory, REF_PATTERN, topLevel } from './git.js';
-import { newerUpstream, readCommittedMap, readSnapshotAt, upstreamMap } from './map.js';
+import { newerUpstream, noMapAdvice, readCommittedMap, readSnapshotAt, upstreamMap } from './map.js';
 import { overviewAnswer } from './overview-tool.js';
 import { reachAnswer } from './reach-tool.js';
 import { createRefresher } from './refresh.js';
@@ -388,7 +388,7 @@ export function createTools({ refresher = createRefresher() } = {}) {
     const ref = tool.refresh ? null : args.ref ?? null;
     const read = ref ? readSnapshotAt(repo.root, ref) : snapshotFor(repo);
     if (tool.refresh) return refreshAnswer(refresher, repo, read.ok ? read.snapshot : null);
-    if (!read.ok) return failed(provenance({ repo, head: head(repo.root) }), read.error);
+    if (!read.ok) return failed(provenance({ repo, head: head(repo.root) }), ref ? read.error : withNoMapAdvice(repo.root, read.error));
     const { snapshot } = read;
     if (ref && tool.readsTree) {
       // The working tree is compared with the map at the ref only when the
@@ -467,6 +467,19 @@ function pathsIn(answer, known) {
   };
   for (const factGroup of answer.facts ?? []) visit(factGroup.items);
   return out;
+}
+
+// A checkout with no map is told first of a fetched ref that holds one, then
+// of atlas_refresh, and last of a map made and committed here: a clone a few
+// commits behind is not a repository without a map.
+function withNoMapAdvice(root, error) {
+  if (error.code !== 'ATLAS_SIDECAR_NO_MAP') return error;
+  const { steps, offered } = noMapAdvice(root, { passRef: (name) => `ask again with ref ${name}`, refresh: true });
+  return {
+    ...error,
+    details: [...error.details, ...(offered ? [`${offered.name} (${offered.commit.slice(0, 7)}) holds a map`] : [])],
+    whatToDo: steps.join('; else '),
+  };
 }
 
 // The repository an answer is about: the first client root inside one, else

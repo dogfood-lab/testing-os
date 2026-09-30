@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { isAbsolute, join, posix, relative } from 'node:path';
 import { isOwnTest, isTestFile } from '../core/landings.js';
 import { isRefShaped } from '../sidecar/git.js';
-import { distanceWords, newerUpstream, readSnapshotAt, upstreamMap } from '../sidecar/map.js';
+import { distanceWords, newerUpstream, noMapAdvice, readSnapshotAt, upstreamMap } from '../sidecar/map.js';
 import { formatFailure } from './errors.js';
 import { boundaryRoot, capitalize, collapse, count, cover, entryOrder, externalsLine, installed, list, pageFacts, readerFiles, readerItem, testsClause, under, worded } from './page.js';
 
@@ -727,8 +727,16 @@ export function explainTarget({ structure, statistics = {}, page = null }, { rep
 export function readAnswerMap(repo, ref, noMap) {
   if (ref == null) {
     const structure = readJson(join(repo, 'atlas', 'structure.json'));
-    if (!structure.value) {
-      return { ok: false, code: noMap, details: [structure.absent ? 'atlas/structure.json is absent' : 'atlas/structure.json is not valid JSON'], whatToDo: 'run atlas map and commit atlas/' };
+    if (structure.invalid) return { ok: false, code: noMap, details: ['atlas/structure.json is not valid JSON'], whatToDo: 'run atlas map and commit atlas/' };
+    if (structure.absent) {
+      // A clone behind a remote that holds a map is told of that map first.
+      const { steps, offered } = noMapAdvice(repo, { passRef: (name) => `run it again with --ref ${name}`, refresh: false });
+      return {
+        ok: false,
+        code: noMap,
+        details: ['atlas/structure.json is absent', ...(offered ? [`${offered.name} (${offered.commit.slice(0, 7)}) holds a map`] : [])],
+        whatToDo: steps.join('; else '),
+      };
     }
     const upstream = upstreamMap(repo);
     return {

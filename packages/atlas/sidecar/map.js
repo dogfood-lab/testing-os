@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pageFacts } from '../adapter/page.js';
-import { blobAt, commitOf, distanceFromHead, filesAt, inHistory, isShallow, upstreamOf } from './git.js';
+import { blobAt, commitOf, distanceFromHead, filesAt, inHistory, isShallow, upstreamOf, upstreamsOf } from './git.js';
 
 /**
  * The map an answer is read from, checked before any answer is given: each
@@ -184,6 +184,43 @@ export function upstreamMap(root) {
  */
 export function newerUpstream(upstream) {
   return upstream != null && upstream.differs && (upstream.ahead ?? 0) > 0;
+}
+
+/**
+ * What to do when the checkout has no map, in order: a fetched upstream that
+ * holds one, with the ref to pass and how far behind it the checkout is;
+ * then, for the sidecar, atlas_refresh, which writes only its cache and maps
+ * only a checkout with a boundary file (without one it fails, so it is not
+ * offered); last, the boundary file and a map committed here.
+ *
+ * @param {string} root
+ * @param {{ passRef: (name: string) => string, refresh: boolean }} how passRef words passing a ref
+ *   ("ask with ref origin/main", "run it again with --ref origin/main"); refresh offers atlas_refresh
+ * @returns {{ steps: string[], offered: object|null }}
+ */
+export function noMapAdvice(root, { passRef, refresh }) {
+  const steps = [];
+  let offered = null;
+  for (const upstream of upstreamsOf(root)) {
+    if (!blobAt(root, upstream.commit, 'atlas/structure.json')) continue;
+    const distance = distanceFromHead(root, upstream.commit);
+    offered = { ...upstream, ahead: distance?.ahead ?? null, behind: distance?.behind ?? null };
+    steps.push(`${passRef(upstream.name)}, which holds a map; this checkout is ${behindWords(offered)}`);
+    break;
+  }
+  const bounded = existsSync(join(root, 'atlas', 'boundaries.yaml'));
+  if (refresh && bounded) steps.push('call atlas_refresh, which maps this checkout into a cache outside it and writes nothing here');
+  steps.push(bounded ? 'run atlas map and commit atlas/' : 'run atlas init, then atlas map, and commit atlas/');
+  return { steps, offered };
+}
+
+// How far this checkout is behind a ref: "3 commits behind it".
+function behindWords({ ahead, behind }) {
+  if (ahead == null || behind == null) return 'at a distance from it git could not count';
+  if (ahead === 0 && behind === 0) return 'at its commit';
+  if (behind === 0) return `${commits(ahead)} behind it`;
+  if (ahead === 0) return `${commits(behind)} ahead of it`;
+  return `${commits(ahead)} behind it and ${behind} ahead`;
 }
 
 /** The map committed in the checkout, atlas/ in the working tree. */

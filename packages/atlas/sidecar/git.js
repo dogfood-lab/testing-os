@@ -108,14 +108,20 @@ export function distanceFromHead(root, commit) {
  * @returns {{ name: string, commit: string } | null}
  */
 export function upstreamOf(root) {
+  return upstreamsOf(root)[0] ?? null;
+}
+
+/** Each fetched upstream in that order, @{u} then origin/HEAD, the same ref once. */
+export function upstreamsOf(root) {
+  const out = [];
   for (const spec of ['@{u}', 'origin/HEAD']) {
     const named = git(root, ['rev-parse', '--abbrev-ref', '--symbolic-full-name', spec]);
     const name = named.ok ? String(named.stdout).trim() : '';
-    if (!name || !isRefShaped(name)) continue;
+    if (!name || !isRefShaped(name) || out.some((entry) => entry.name === name)) continue;
     const commit = commitOf(root, name);
-    if (commit) return { name, commit };
+    if (commit) out.push({ name, commit });
   }
-  return null;
+  return out;
 }
 
 /** The id git keeps a file under at a commit or ref, or null when it holds none there. */
