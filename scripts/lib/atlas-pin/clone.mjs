@@ -31,8 +31,11 @@ export function cloneState(root, env) {
   const current = git(['symbolic-ref', '--quiet', '--short', 'HEAD']);
   const remote = git(['symbolic-ref', '--quiet', '--short', 'refs/remotes/origin/HEAD']);
   const status = git(['status', '--porcelain']);
+  const shallow = git(['rev-parse', '--is-shallow-repository']).stdout.trim() === 'true';
   return {
     isClone: true,
+    shallow,
+    commits: shallow ? Number(git(['rev-list', '--count', 'HEAD']).stdout.trim()) : null,
     branch: current.status === 0 ? current.stdout.trim() : null,
     defaultBranch: remote.status === 0 ? remote.stdout.trim().replace(/^origin\//, '') : null,
     dirty: status.status !== 0 || status.stdout.trim() !== '',

@@ -41,6 +41,12 @@ export function checkClone(root, { target, env }) {
     return { repository: root, verdict: 'person', problems: [problem('PIN_BUMP_NOT_A_CLONE', `${root} has no commit checked out`, 'pass a clone of a repository with history')] };
   }
   const problems = [];
+  // The map's statistics (commits per file, co-change, the floor) are read
+  // from history, so a map made from a shallow clone would replace the
+  // committed ones with what a handful of commits say.
+  if (state.shallow) {
+    problems.push(problem('PIN_BUMP_SHALLOW_CLONE', `the clone is shallow, so a map made from it would read ${state.commits} commit${state.commits === 1 ? '' : 's'} of history`, `git -C ${root} fetch --unshallow, then run the tool again`));
+  }
   if (state.dirty) problems.push(problem('PIN_BUMP_DIRTY_TREE', 'git status lists changes or untracked files', 'commit, stash or remove them, then run the tool again'));
   if (state.defaultBranch == null) {
     problems.push(problem('PIN_BUMP_NO_DEFAULT_BRANCH', 'refs/remotes/origin/HEAD is not set', 'run git remote set-head origin --auto, or clone the repository again'));

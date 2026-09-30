@@ -2,7 +2,7 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import assert from 'node:assert/strict';
 import { after, describe, it } from 'node:test';
 import { makeRepo } from '../packages/atlas/core/fixture-repo.js';
@@ -157,6 +157,16 @@ describe('atlas-pin-bump check', () => {
       assert.match(out, /\n {5}hint: \S/);
     });
   }
+
+  it('leaves a shallow clone to a person, since the map reads the history', async () => {
+    const remote = fleetRemote();
+    const root = join(temporary('atlas-pin-bump-shallow-'), 'fleet');
+    execFileSync('git', ['clone', '-q', '--depth', '1', pathToFileURL(remote).href, root]);
+    assert.equal(gitAt(root)('rev-parse', '--is-shallow-repository'), 'true');
+    const { code, out } = await run(['check', root]);
+    assert.equal(code, 1);
+    assert.match(out, /! PIN_BUMP_SHALLOW_CLONE {2}the clone is shallow, so a map made from it would read 1 commit of history\n {5}hint: git -C \S+ fetch --unshallow, then run the tool again\n/);
+  });
 
   it('leaves a directory that is not a clone to a person', async () => {
     const plain = temporary('atlas-pin-bump-plain-');

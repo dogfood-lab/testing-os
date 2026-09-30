@@ -8,6 +8,7 @@ export const CODES = {
   PIN_BUMP_USAGE: 'The command line is not one the tool takes.',
   PIN_BUMP_FAILED: 'The tool failed on this clone.',
   PIN_BUMP_NOT_A_CLONE: 'The path is not the top of a git checkout.',
+  PIN_BUMP_SHALLOW_CLONE: 'The clone does not hold the history the map reads.',
   PIN_BUMP_DIRTY_TREE: 'The working tree has uncommitted changes.',
   PIN_BUMP_NO_DEFAULT_BRANCH: 'The clone does not record which branch is the default.',
   PIN_BUMP_NOT_DEFAULT_BRANCH: 'The clone is not on its default branch.',
