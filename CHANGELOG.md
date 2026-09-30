@@ -2,6 +2,11 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **`scripts/atlas-pin-bump.mjs`: one Atlas version across the fleet** (`docs/atlas-pin-bump.md`). From a local clone of a fleet repository, it moves the Atlas pin in CI and makes the map again with that engine, in one commit on `atlas/pin-<version>`, as the org rule asks. `check` gives each clone a verdict, `plan` shows the change as a diff with a summary of the map's change and the notices the new engine prints, and `apply` commits it and proves `atlas check` on a clean clone of the branch. It never pushes. It refuses a map made by any version but the target, and leaves to a person a shallow clone (whose map would lose its history), a dirty tree, a pin it cannot read and a repository it would move back.
+
 ## [1.24.0] — 2026-09-30
 
 Atlas answers from where it is asked, and says what will break a workflow before it runs. It answers from a fetched ref, from a tree exported without its history, and about a workflow file as the door it is (`docs/atlas-production.spec.md`, Part 1). It records each job's runtime and checks two things on it, shown as notices: a Node pin that the tool a step runs does not accept, and a lockfile that holds no native binding for the platform a job installs it on (Parts 2 to 5). Both checks were run over the 79 fleet repositories before they shipped (`docs/atlas-door-checks.fleet-check.md`).
