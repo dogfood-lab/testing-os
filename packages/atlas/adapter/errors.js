@@ -16,6 +16,7 @@ export const ERRORS = {
   ATLAS_GAPS_UNKNOWN_PATH: 'The path is not in the committed map.',
   ATLAS_DIFF_NO_BASE: 'The base ref carries no map.',
   ATLAS_NOT_A_REPOSITORY: 'The directory is not in a git repository.',
+  ATLAS_NO_COMMIT: 'The repository has no commit yet.',
   ATLAS_REF_UNKNOWN: 'The ref names no commit in this clone.',
   ATLAS_REF_MAP_FOREIGN: "The map at the ref names a commit that is not in the ref's history.",
   ATLAS_SIDECAR_NOT_A_REPOSITORY: 'The directory the sidecar answers for is not in a git repository.',

@@ -68,6 +68,7 @@ function initAt(cwd, argv) {
 // holds, and says so.
 function explainAt(cwd, argv) {
   const repo = repoRoot(cwd);
+  if (repo && !argv.includes('--ref') && unborn(repo)) return noCommit('explain');
   if (repo) return explainCommand(repo, showPrefix(cwd), argv);
   const exported = exportedRoot(cwd);
   if (!exported) return notARepository(cwd, 'explain');
@@ -78,6 +79,7 @@ function explainAt(cwd, argv) {
 // name decides which house rules a suggestion cites.
 function gapsAt(cwd, argv) {
   const repo = repoRoot(cwd);
+  if (repo && !argv.includes('--ref') && unborn(repo)) return noCommit('gaps');
   if (repo) return gapsCommand(repo, showPrefix(cwd), argv, { repository: repositoryName(repo) });
   const exported = exportedRoot(cwd);
   if (!exported) return notARepository(cwd, 'gaps');
@@ -97,6 +99,7 @@ export function mapCommand(cwd, argv = []) {
   if (flags.error) return usage(flags.error);
   const repo = repoRoot(cwd);
   if (!repo) return notARepository(cwd, 'map');
+  if (unborn(repo)) return noCommit('map');
   const origin = flags.name ?? repositoryName(repo);
   if (flags.divergence && !origin) return usage('atlas: --divergence needs an origin URL that names org/repo, or --name');
   let baseline = null;
@@ -209,6 +212,7 @@ export function checkCommand(cwd, argv = []) {
   const strict = argv.includes('--strict');
   const repo = repoRoot(cwd);
   if (!repo) return notARepository(cwd, 'check');
+  if (unborn(repo)) return noCommit('check');
   if (!existsSync(join(repo, 'atlas'))) {
     process.stdout.write('atlas: no atlas/ directory; nothing to check\n');
     return 0;
@@ -305,6 +309,7 @@ export function diffCommand(cwd, argv = []) {
   if (flags.error) return usage(flags.error);
   const repo = repoRoot(cwd);
   if (!repo) return notARepository(cwd, 'diff');
+  if (unborn(repo)) return noCommit('diff');
   const boundary = readBoundaryFile(repo);
   if (!boundary.ok) return failBoundary(boundary);
   // stdout is the markdown or JSON a caller posts or parses as is, so the
@@ -347,6 +352,26 @@ function notARepository(cwd, command) {
   process.stdout.write(formatFailure('ATLAS_NOT_A_REPOSITORY', [`${cwd} is in no git repository`], {
     exitCode: 2,
     whatToDo: `run atlas ${command} inside a git repository${where}`,
+  }));
+  return 2;
+}
+
+/**
+ * Whether the repository has no commit yet: HEAD names a branch that does
+ * not exist. A map is stamped with HEAD and read at HEAD, so there is none to
+ * make or read. init is the one command that runs before a first commit.
+ */
+function unborn(repo) {
+  if (spawnSync('git', ['rev-parse', '--verify', '--quiet', 'HEAD^{commit}'], { cwd: repo, encoding: 'utf8' }).status === 0) return false;
+  return spawnSync('git', ['symbolic-ref', '--quiet', 'HEAD'], { cwd: repo, encoding: 'utf8' }).status === 0;
+}
+
+// explain and gaps given --ref read that ref's map, which a clone that has
+// fetched but never committed can hold, so they are not refused here.
+function noCommit(command) {
+  process.stdout.write(formatFailure('ATLAS_NO_COMMIT', ['HEAD names no commit'], {
+    exitCode: 2,
+    whatToDo: `commit once first (git add -A, then git commit), then run atlas ${command}`,
   }));
   return 2;
 }
