@@ -1,10 +1,11 @@
 import { readFileSync } from 'node:fs';
 import { join, posix } from 'node:path';
 import picomatch from 'picomatch';
-import { parse } from 'yaml';
+import { parse, parseDocument } from 'yaml';
 import { better, cleanDir, commandLines, readCommands, readContainer, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
 import { godotProjects } from './godot.js';
 import { isTestFile } from './landings.js';
+import { jobRuntime } from './runtime.js';
 import { runsAProgram } from './step-programs.js';
 import { storedText } from './text.js';
 
@@ -325,10 +326,10 @@ function readDoor(repoPath, file, repo, asWorkflow = null) {
   }
   if (!isMapping(doc)) return { file, name: fallback, parseError: true };
   if (asWorkflow) return { ...readWorkflow(repoPath, file, repo, asWorkflow(doc, file), fallback, text), kind: 'action' };
-  return readWorkflow(repoPath, file, repo, doc, fallback, text);
+  return readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime: true });
 }
 
-function readWorkflow(repoPath, file, repo, doc, fallback, text) {
+function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = false } = {}) {
   const permissions = new Set(permissionList(doc.permissions));
   const commands = [];
   const uses = new Set();
@@ -365,6 +366,10 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
     if (!gates.has(key)) gates.set(key, { when, jobs: [], sends: emptySends(), issues: [], texts: [], stages: new Set(), pushes: false, sidePushes: [] });
     return gates.get(key);
   };
+  // The runtime each job declares (core/runtime.js), for a workflow's own
+  // jobs; an action runs in the job of whoever uses it.
+  const runtimes = [];
+  const written = runtime ? writtenScalars(text, doc) : null;
   const workflowDir = workingDirectory(doc.defaults);
   const workflowEnv = envOf(doc.env);
   const workflowSet = setEnvOf(doc.env);
@@ -413,7 +418,8 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
     // The run texts of the job's steps so far, where a later step's run-time
     // directory is assigned.
     const jobTexts = [];
-    const shipped = { job, body, platforms, gate, builds: new Set(), targets: new Set(), artifacts: [], downloads: false, uploads: [], packs: false };
+    if (runtime) runtimes.push(jobRuntime({ name: job, body, steps, repo, selfPath, source: (step, path) => (jobThrough.length > 0 ? null : written(job, body, step, path)) }));
+    const shipped ={ job, body, platforms, gate, builds: new Set(), targets: new Set(), artifacts: [], downloads: false, uploads: [], packs: false };
     shipping.push(shipped);
     steps.forEach((step, index) => {
       if (!isMapping(step)) return;
@@ -574,6 +580,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text) {
     secrets: [...new Set([...text.matchAll(/\bsecrets\.([A-Za-z_][A-Za-z0-9_]*)/g)].map((match) => match[1]))].sort(),
     usesWorkflowToken: /\bgithub\.token\b|\bsecrets\.GITHUB_TOKEN\b/.test(text),
     commands,
+    ...(runtime ? { jobs: runtimes } : {}),
     runs: recorded.kept,
     runsCount: recorded.count,
     checksCount: recorded.checks,
@@ -1889,6 +1896,27 @@ function otherCheckout(action, input) {
   if (typeof input.path !== 'string' || input.path.trim() === '') return null;
   const dir = cleanDir(input.path);
   return dir ? { dir, repository: repositoryName(input.repository) } : null;
+}
+
+/**
+ * The text a scalar of a workflow's own step was written as, which parsing
+ * loses for a number (node-version: 22.10 parses as 22.1): given the job, its
+ * body, a step of it and the path under the step, the scalar's source, or
+ * null for a step that is not the workflow's own (one inlined from a
+ * composite action) or a value that is not a scalar. The document is parsed
+ * again with its positions only when a value is asked for. With no step, the
+ * path is under the job itself (strategy.matrix.node.1).
+ */
+function writtenScalars(text, doc) {
+  let document = null;
+  return (job, body, step, path) => {
+    if (!isMapping(doc.jobs) || doc.jobs[job] !== body) return null;
+    const index = step == null ? null : Array.isArray(body.steps) ? body.steps.indexOf(step) : -1;
+    if (index === -1) return null;
+    document ??= parseDocument(text);
+    const node = document.getIn(['jobs', job, ...(index == null ? [] : ['steps', index]), ...path], true);
+    return node != null && typeof node.source === 'string' ? node.source : null;
+  };
 }
 
 function rawWorkingDirectory(defaults) {

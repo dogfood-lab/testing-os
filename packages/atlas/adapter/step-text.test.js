@@ -33,10 +33,10 @@ describe('a workflow step in the map', () => {
     assert.ok(!written.includes('Scanning for hardcoded secrets'), written);
   });
 
-  it('keeps each step by job and name, with the programs it runs', () => {
+  it('keeps each step by job and name, with the programs it runs and the directory it starts in', () => {
     assert.deepEqual(door.commands, [
-      { job: 'lint-and-test', programs: ['cat', 'echo', 'git', 'read', 'xargs'], step: 'Secret scan' },
-      { job: 'lint-and-test', programs: ['npm'], step: 'Test' },
+      { dir: '', job: 'lint-and-test', programs: ['cat', 'echo', 'git', 'read', 'xargs'], step: 'Secret scan' },
+      { dir: '', job: 'lint-and-test', programs: ['npm'], step: 'Test' },
     ]);
   });
 

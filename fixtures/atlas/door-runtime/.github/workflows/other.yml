@@ -1,0 +1,37 @@
+name: Other
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        type: string
+      target:
+        type: string
+jobs:
+  chosen:
+    runs-on: ${{ inputs.runner }}
+    environment: ${{ inputs.target }}
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - run: node tools/check.js
+  boxed:
+    runs-on: ubuntu-latest
+    container: node:22-alpine
+    environment: staging
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+      - run: node tools/check.js
+  own:
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: pyproject.toml
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/iron
+          node-version-file: .nvmrc
+      - run: node tools/check.js

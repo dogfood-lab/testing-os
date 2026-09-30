@@ -561,12 +561,14 @@ function carryDoor(door) {
     ...(door.app ? { app: door.app } : {}),
     ...(door.example ? { example: true } : {}),
     ...(door.bundledInto?.length > 0 ? { bundledInto: [...door.bundledInto] } : {}),
-    commands: door.commands.map((command) => ({ job: command.job, programs: stepPrograms(command.text), step: command.step })),
+    // The directory a step starts in, where it is one of this repository's.
+    commands: door.commands.map((command) => ({ ...(command.dir != null ? { dir: command.dir } : {}), job: command.job, programs: stepPrograms(command.text), step: command.step })),
     ...(door.conditional?.length > 0 ? { conditional: [...door.conditional] } : {}),
     elsewhere: (door.elsewhere ?? []).map((entry) => ({ clone: entry.clone, dir: entry.dir, pushes: entry.pushes, stages: [...entry.stages] })),
     ...(door.entry ? { entry: door.entry } : {}),
     ...(door.extension ? { extension: true } : {}),
     file: door.file,
+    ...(door.jobs ? { jobs: door.jobs.map(carryJob) } : {}),
     ...(door.gated?.length > 0
       ? { gated: door.gated.map((entry) => ({ jobs: [...entry.jobs], pushes: entry.pushes, ...(entry.pushesForReview ? { pushesForReview: true } : {}), ...(entry.pushesTo ? { pushesTo: [...entry.pushesTo] } : {}), sends: [...entry.sends], stages: [...entry.stages], when: { ...entry.when } })) }
       : {}),
@@ -614,6 +616,31 @@ function carryDoor(door) {
     ...(door.privatePackage ? { privatePackage: true } : {}),
     uses: [...door.uses],
     usesWorkflowToken: door.usesWorkflowToken,
+  };
+}
+
+// The runtime a job declares (core/runtime.js), in the workflow's order: its
+// runner legs with the platform each means, its environment and its setup
+// pins. Only labels, names, versions and ranges are kept.
+function carryJob(job) {
+  return {
+    basis: job.basis,
+    ...(job.environment ? { environment: { ...job.environment } } : {}),
+    name: job.name,
+    runsOn: job.runsOn.map((leg) => ({ labels: [...leg.labels], ...(leg.platform ? { platform: { ...leg.platform } } : {}), ...(leg.unresolved ? { unresolved: leg.unresolved } : {}) })),
+    ...(job.setup?.length > 0
+      ? {
+          setup: job.setup.map((entry) => ({
+            ...(entry.fileSays != null ? { fileSays: entry.fileSays } : {}),
+            ...(entry.ranges ? { ranges: entry.ranges.map((range) => ({ from: range.from, range: range.range })) } : {}),
+            step: entry.step,
+            ...(entry.unresolved ? { unresolved: entry.unresolved } : {}),
+            uses: entry.uses,
+            ...(entry.version != null ? { version: entry.version } : {}),
+            ...(entry.versionFile != null ? { versionFile: entry.versionFile } : {}),
+          })),
+        }
+      : {}),
   };
 }
 
