@@ -42,6 +42,9 @@ export function planClone(root, { facts, target, engine, env }) {
       return person(problem('PIN_BUMP_ENGINE_FAILED', `atlas map (${engine.label}) exited ${mapped.status}:\n${tail(mapped)}`, 'map the repository by hand with the target engine, and read what it says'));
     }
     const made = engineOf(readFileSync(join(temp.dir, STRUCTURE), 'utf8'));
+    if (made !== target) {
+      return person(problem('PIN_BUMP_ENGINE_MISMATCH', `the new map records ${made == null ? 'no engine' : `Atlas ${made}`}, and the target is ${target} (the engine run was ${engine.label})`, `run with an engine that is ${target}: drop --engine to take it from npm, or build ${target} and pass its cli.js`));
+    }
     const staged = git(['add', '-A', '--', 'atlas', ...workflows]);
     if (staged.status !== 0) return person(problem('PIN_BUMP_FAILED', `git add failed in the temporary clone: ${staged.stderr.trim()}`, 'run the tool again; if it repeats, map the repository by hand'));
     const checked = engine.run('check', temp.dir);

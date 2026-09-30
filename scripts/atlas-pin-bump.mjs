@@ -11,8 +11,8 @@
  *   plan    the change as a diff, made in a temporary clone; writes nothing
  *   apply   the change, committed on branch atlas/pin-<version>; never pushes
  */
-import { readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { applyClone, titleFor } from './lib/atlas-pin/apply.mjs';
@@ -36,6 +36,8 @@ A clone is a path to a local clone, on its default branch.
 
 options:
   --version <x.y.z>       the target engine (default ${WORKSPACE_VERSION}, this workspace's version)
+  --engine <cli.js>       run a local build of Atlas instead of npx --yes @dogfood-lab/atlas@<version>;
+                          a map it makes is still refused unless it records the target version
   --trailer "Key: value"  a trailer for apply's commit message; repeatable
   --json                  print JSON (check, plan)
 `;
@@ -55,7 +57,7 @@ export async function main(argv, io = {}) {
     write(`atlas-pin-bump: ${args.error}\n${USAGE}`);
     return 2;
   }
-  const engine = engineRunner({ version: args.version, exec: io.exec ?? commandRunner(env) });
+  const engine = engineRunner({ version: args.version, engine: args.engine, exec: io.exec ?? commandRunner(env) });
   const context = { write, env, engine };
   if (args.command === 'check') return check(args, context);
   if (args.command === 'plan') return plan(args, context);
@@ -66,15 +68,20 @@ function parseArgs(argv) {
   const [command, ...rest] = argv;
   if (command == null) return { error: 'name a command' };
   if (!COMMANDS.has(command)) return { error: `unknown command ${command}` };
-  const args = { command, json: false, version: WORKSPACE_VERSION, trailers: [], targets: [] };
+  const args = { command, json: false, version: WORKSPACE_VERSION, engine: null, trailers: [], targets: [] };
   for (let i = 0; i < rest.length; i += 1) {
     const word = rest[i];
     if (word === '--json') args.json = true;
-    else if (word === '--version' || word === '--trailer') {
+    else if (word === '--version' || word === '--trailer' || word === '--engine') {
       const value = rest[i + 1];
       if (value == null || value.startsWith('--')) return { error: `${word} needs a value` };
       if (word === '--trailer') args.trailers.push(value);
-      else if (!EXACT_VERSION.test(value)) return { error: `--version ${value} is not an exact version such as 1.24.0` };
+      else if (word === '--engine') {
+        // The engine runs in each temporary clone, so a relative path is
+        // resolved here, against the directory the tool was started in.
+        args.engine = resolve(value);
+        if (!existsSync(args.engine) || !statSync(args.engine).isFile()) return { error: `--engine ${value} names no file; pass the path to a build's packages/atlas/cli.js` };
+      } else if (!EXACT_VERSION.test(value)) return { error: `--version ${value} is not an exact version such as 1.24.0` };
       else args.version = value;
       i += 1;
     } else if (word.startsWith('--')) return { error: `unknown option ${word}` };

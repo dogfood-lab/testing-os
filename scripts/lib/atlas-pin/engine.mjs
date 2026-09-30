@@ -1,13 +1,18 @@
 import { spawnSync } from 'node:child_process';
 
 /**
- * The Atlas engine the tool runs: the target version from npm, run with
- * `npx --yes` in the directory it maps, as a fleet workflow runs it.
+ * The Atlas engine the tool runs: by default the target version from npm,
+ * run with `npx --yes` in the directory it maps, as a fleet workflow runs it;
+ * with `engine`, a local build's cli.js run by this Node, for a version not
+ * yet on npm. Either way the map it makes is refused unless it records the
+ * target version (plan.mjs), so a local build cannot stand in for another
+ * version.
  *
- * @param {{ version: string, exec: (command: string, args: string[], cwd: string) => { status: number, stdout: string, stderr: string } }} options
+ * @param {{ version: string, engine?: string | null, exec: (command: string, args: string[], cwd: string) => { status: number, stdout: string, stderr: string } }} options
  * @returns {{ label: string, run: (verb: string, cwd: string) => { status: number, stdout: string, stderr: string } }}
  */
-export function engineRunner({ version, exec }) {
+export function engineRunner({ version, engine = null, exec }) {
+  if (engine) return { label: engine, run: (verb, cwd) => exec(process.execPath, [engine, verb], cwd) };
   const spec = `@dogfood-lab/atlas@${version}`;
   return { label: spec, run: (verb, cwd) => exec('npx', ['--yes', spec, verb], cwd) };
 }

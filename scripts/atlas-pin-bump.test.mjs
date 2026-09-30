@@ -404,3 +404,60 @@ describe('atlas-pin-bump apply', () => {
     }
   });
 });
+
+// Any engine's call answered by this workspace's build, whatever version the
+// call names, as a wrong or older engine would answer it. `after` edits the
+// map it makes, to stand in for an engine that writes something else.
+function anyEngine(calls, after = () => {}) {
+  return (command, args, cwd) => {
+    calls.push([command, ...args]);
+    const result = spawnSync(process.execPath, [CLI, args.at(-1)], { cwd, encoding: 'utf8' });
+    if (args.at(-1) === 'map') after(cwd);
+    return { status: result.status ?? 1, stdout: result.stdout ?? '', stderr: result.stderr ?? '' };
+  };
+}
+
+describe('atlas-pin-bump engine', () => {
+  it('runs a local build with --engine, and apply commits the map it makes', async () => {
+    const { root, git } = fleetClone();
+    const { code, out } = await run(['apply', '--engine', CLI, root]);
+    assert.equal(code, 0, out);
+    assert.match(out, new RegExp(`\\n {3}proof {2}atlas check \\(${escaped(CLI)}\\) on a clean clone of ${escaped(BRANCH)} exited 0\\n`));
+    assert.equal(JSON.parse(git('show', `${BRANCH}:atlas/structure.json`)).engine, TARGET);
+  });
+
+  it('refuses a map made by another engine than the target, before anything is committed', async () => {
+    const { root, git } = fleetClone();
+    const before = snapshot(git);
+    const calls = [];
+    const { code, out } = await run(['apply', '--version', '1.99.0', root], { exec: anyEngine(calls) });
+    assert.equal(code, 1);
+    assert.match(out, new RegExp(`! PIN_BUMP_ENGINE_MISMATCH {2}the new map records Atlas ${escaped(TARGET)}, and the target is 1\\.99\\.0 \\(the engine run was @dogfood-lab/atlas@1\\.99\\.0\\)\\n`));
+    assert.deepEqual(calls, [['npx', '--yes', '@dogfood-lab/atlas@1.99.0', 'map']], 'the target runs from npm by default, and nothing runs after the refusal');
+    assert.deepEqual(snapshot(git), before);
+    const local = await run(['plan', '--engine', CLI, '--version', '1.99.0', root]);
+    assert.equal(local.code, 1);
+    assert.match(local.out, new RegExp(`! PIN_BUMP_ENGINE_MISMATCH {2}the new map records Atlas ${escaped(TARGET)}, and the target is 1\\.99\\.0 \\(the engine run was ${escaped(CLI)}\\)\\n`));
+  });
+
+  it('refuses a map with no engine stamp, as every engine before 1.23.0 makes', async () => {
+    const { root, git } = fleetClone();
+    const before = snapshot(git);
+    const unstamped = (cwd) => {
+      const path = join(cwd, 'atlas', 'structure.json');
+      const structure = JSON.parse(readFileSync(path, 'utf8'));
+      delete structure.engine;
+      writeFileSync(path, `${JSON.stringify(structure, null, 2)}\n`);
+    };
+    const { code, out } = await run(['apply', root], { exec: anyEngine([], unstamped) });
+    assert.equal(code, 1);
+    assert.match(out, new RegExp(`! PIN_BUMP_ENGINE_MISMATCH {2}the new map records no engine, and the target is ${escaped(TARGET)} `));
+    assert.deepEqual(snapshot(git), before);
+  });
+
+  it('takes --engine only as a file that exists', async () => {
+    const { code, out } = await run(['plan', '--engine', join(temporary('atlas-pin-bump-engine-'), 'cli.js'), '.']);
+    assert.equal(code, 2);
+    assert.match(out, /--engine \S+ names no file; pass the path to a build's packages\/atlas\/cli\.js/);
+  });
+});
