@@ -95,7 +95,7 @@
           "path": "packages/atlas/LICENSE"
         },
         {
-          "hash": "d134391b07e2b34c787931b28ed54373cac2a6e522789ea21626d406398e3775",
+          "hash": "4723b9bf6de22793a4fd68ea39e4ead64cc8bed5d1356ed85857b5d6e89eb366",
           "path": "packages/atlas/README.md"
         },
         {
@@ -105,7 +105,7 @@
             "stepPrograms",
             "unresolvedEntry"
           ],
-          "hash": "87905074835bc53ef7ad7076f2035881f5fe163c8c5c91d89eb20df8870e4ec0",
+          "hash": "170bdd9ccedfe61a07dbbe29206c38bf5d3b2caa01d6aa0a77e9c01bec7d58b6",
           "importOrder": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/languages.js",
@@ -213,35 +213,35 @@
             {
               "in": "mapCommand",
               "kind": "catch",
-              "line": 108
+              "line": 111
             },
             {
               "in": "checkCommand",
               "kind": "catch",
-              "line": 227
+              "line": 233
             },
             {
               "in": "readBaseline",
               "kind": "catch",
-              "line": 351
+              "line": 392
             },
             {
               "in": "readBaseline",
               "kind": "catch",
-              "line": 358
+              "line": 399
             },
             {
               "in": "manifestName",
               "kind": "catch",
-              "line": 412
+              "line": 453
             },
             {
               "in": "committedJson",
               "kind": "catch",
-              "line": 455
+              "line": 496
             }
           ],
-          "hash": "a96459244fc3d9b50778b2fbfde6b15f1e9520a875875ee7d6c6a670315e3f24",
+          "hash": "78fd7e9b539f9dc3605e8e7e77ba3b0d1d0b16765b4ff9fced4a6b01bcbb100e",
           "importOrder": [
             "packages/atlas/core/index.js",
             "packages/atlas/adapter/artifact.js",
@@ -249,6 +249,8 @@
             "packages/atlas/adapter/changes.js",
             "packages/atlas/adapter/check.js",
             "packages/atlas/adapter/diff.js",
+            "packages/atlas/core/door-checks.js",
+            "packages/atlas/adapter/engine.js",
             "packages/atlas/adapter/errors.js",
             "packages/atlas/adapter/explain.js",
             "packages/atlas/adapter/gaps.js",
@@ -267,6 +269,7 @@
             "packages/atlas/adapter/check.js",
             "packages/atlas/adapter/diff.js",
             "packages/atlas/adapter/divergence.js",
+            "packages/atlas/adapter/engine.js",
             "packages/atlas/adapter/errors.js",
             "packages/atlas/adapter/explain.js",
             "packages/atlas/adapter/gaps.js",
@@ -274,6 +277,7 @@
             "packages/atlas/adapter/page.js",
             "packages/atlas/adapter/statistics.js",
             "packages/atlas/adapter/write.js",
+            "packages/atlas/core/door-checks.js",
             "packages/atlas/core/index.js",
             "packages/atlas/sidecar/map.js",
             "packages/atlas/sidecar/server.js"
@@ -345,6 +349,28 @@
           "path": "packages/atlas/adapter/divergence.js"
         },
         {
+          "hash": "a697093267095ff4e2bfe163c81d738a4717e15ba6c9baf08969a4328886c0fb",
+          "path": "packages/atlas/adapter/door-findings-map.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "8246c0c347591e6bfc07b7e5dd98c8bdd3813ca1719e259fabb332e822734ad0",
+          "importsFiles": [
+            "packages/atlas/adapter/engine.js",
+            "packages/atlas/sidecar/test-client.js",
+            "packages/atlas/sidecar/test-oracle.js",
+            "packages/atlas/sidecar/tools.js"
+          ],
+          "path": "packages/atlas/adapter/door-notices.test.js",
+          "spawns": [
+            "packages/atlas/cli.js"
+          ],
+          "testFramework": "node --test"
+        },
+        {
           "hash": "afe9dd851884afad4560ac9fd61d3a4437da4ed36b14ba63b768746f631ce3be",
           "path": "packages/atlas/adapter/engine-stamp.test.js",
           "spawns": [
@@ -358,9 +384,10 @@
         },
         {
           "exports": [
-            "formatFailure"
+            "formatFailure",
+            "formatNotice"
           ],
-          "hash": "ec7af8516252664e228cff94444903f26d488ec41f153d7ad4b9237bcb7ab49e",
+          "hash": "0d6d4009a10a9f2878b921581e2621b79d5b0b6a287876f534db74e6c1293e5f",
           "path": "packages/atlas/adapter/errors.js"
         },
         {
@@ -388,7 +415,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "8ec8be5248fca9f5ade8dcf4974ce8924b6383c44c15bf44b36c803d93ac49b8",
+          "hash": "fce4d9441f64d7972547d274112c77cedb7b46a414b93469106bc279521b29b2",
           "importsFiles": [
             "packages/atlas/sidecar/test-client.js",
             "packages/atlas/sidecar/test-oracle.js",
@@ -2640,6 +2667,7 @@
             "exampleCommand",
             "externalsLine",
             "facts",
+            "findingLines",
             "gatePhrase",
             "guardClause",
             "inputWords",
@@ -2655,6 +2683,7 @@
             "readersClause",
             "registryList",
             "runsShown",
+            "runtimePhrase",
             "sendPhrases",
             "siteCount",
             "sourcesClause",
@@ -2669,8 +2698,9 @@
             "worded",
             "words"
           ],
-          "hash": "86d771e4ca50851c4bb9be898eeae89aa87252feddd595f9fe843a1f43cd9b68",
+          "hash": "0b4df3ffafa6d7b25fd7010277a863949f69f5a44e0d0f130d155654780fac08",
           "importOrder": [
+            "packages/atlas/core/door-checks.js",
             "packages/atlas/core/history.js",
             "packages/atlas/core/landings.js",
             "packages/atlas/core/languages.js",
@@ -2680,6 +2710,7 @@
           "importsFiles": [
             "packages/atlas/adapter/artifact.js",
             "packages/atlas/adapter/templates.js",
+            "packages/atlas/core/door-checks.js",
             "packages/atlas/core/history.js",
             "packages/atlas/core/landings.js",
             "packages/atlas/core/languages.js"
@@ -2802,7 +2833,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "8ef11a27c895a53e08be09170b1d14b8bf8f97859fce1dd0e2b240975333027c",
+          "hash": "dad84e3ef8536bdfbe5dd59d11c580f36107bb88e2b2544661092542addc9a2a",
           "importOrder": [
             "packages/atlas/core/index.js",
             "packages/atlas/core/fixture-repo.js",
@@ -3327,25 +3358,25 @@
             {
               "in": "tauriApp",
               "kind": "catch",
-              "line": 1994
+              "line": 2018
             },
             {
               "in": "instructionWords",
               "kind": "catch",
-              "line": 2044
+              "line": 2068
             },
             {
               "in": "patternOf",
               "kind": "catch",
-              "line": 2206
+              "line": 2230
             },
             {
               "in": "pnpmWorkspaceGlobs",
               "kind": "catch",
-              "line": 2636
+              "line": 2660
             }
           ],
-          "hash": "eec734145cfeb0ba91545a7c5b186478aabc2546859ba11b6cffd9b333e2cb6f",
+          "hash": "f4bb52ca2dfa1135865614a9991f6b2adc28e7cd0b899f04d952c516cbae2dad",
           "importOrder": [
             "packages/atlas/core/cargo.js",
             "packages/atlas/core/godot.js",
@@ -3419,6 +3450,51 @@
           "testFramework": "node --test"
         },
         {
+          "exports": [
+            "checkDoor",
+            "findingRemedy",
+            "findingSentence",
+            "workingDirs"
+          ],
+          "hash": "078699687f3b32c35b10d6c0717ad2ccb5124afcd466ac78f59f5ae8f205c92f",
+          "importsFiles": [
+            "packages/atlas/core/lockfile.js",
+            "packages/atlas/core/runtime.js"
+          ],
+          "path": "packages/atlas/core/door-checks.js"
+        },
+        {
+          "hash": "4661e833c1bc988016d0a84a3b7fa36e9300e8f6c9c38a45b61e380eb75f631c",
+          "importsFiles": [
+            "packages/atlas/core/door-checks.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/core/door-lockfile.test.js",
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "2a628637a2606deb52457125861d69e497f3597f5172149ab29e7e07a58498a4",
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js",
+            "packages/atlas/core/runtime.js"
+          ],
+          "path": "packages/atlas/core/door-runtime.test.js",
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "a61325826c054a0ed328d70d608ff9824443a666e46c2816169717064df4f9a9",
+          "importsFiles": [
+            "packages/atlas/core/door-checks.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "path": "packages/atlas/core/door-toolchain.test.js",
+          "testFramework": "node --test"
+        },
+        {
           "hash": "fc9ff61001e70ff8a35a69e314ba58b8fa5145acf8c91816589cc25baa777a4e",
           "importOrder": [
             "packages/atlas/core/index.js",
@@ -3433,6 +3509,7 @@
         },
         {
           "exports": [
+            "doorChecksNow",
             "isWorkflow",
             "mapCommandDoors",
             "mapDoors",
@@ -3443,24 +3520,35 @@
             {
               "in": "mapDoors",
               "kind": "catch",
-              "line": 65
+              "line": 67
             },
             {
               "in": "localYaml",
               "kind": "catch",
-              "line": 243
+              "line": 259
             },
             {
               "in": "readDoor",
               "kind": "catch",
-              "line": 323
+              "line": 339
             }
           ],
-          "hash": "d23da0a9155c5a76686ea4665ad40a6a6db815a564e25446758853ed02cfb726",
-          "importsFiles": [
+          "hash": "7cbb8648b768d84df525606612931b542e68411d7bc3d2f54eeac28040d68336",
+          "importOrder": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/godot.js",
             "packages/atlas/core/landings.js",
+            "packages/atlas/core/door-checks.js",
+            "packages/atlas/core/runtime.js",
+            "packages/atlas/core/step-programs.js",
+            "packages/atlas/core/text.js"
+          ],
+          "importsFiles": [
+            "packages/atlas/core/commands.js",
+            "packages/atlas/core/door-checks.js",
+            "packages/atlas/core/godot.js",
+            "packages/atlas/core/landings.js",
+            "packages/atlas/core/runtime.js",
             "packages/atlas/core/step-programs.js",
             "packages/atlas/core/text.js"
           ],
@@ -4077,6 +4165,36 @@
           "testFramework": "node --test"
         },
         {
+          "exports": [
+            "lockFor",
+            "lockPackages",
+            "optionalBindings",
+            "packageByBin",
+            "packageByName",
+            "readLock"
+          ],
+          "failurePaths": [
+            {
+              "in": "readLock",
+              "kind": "catch",
+              "line": 31
+            }
+          ],
+          "hash": "38118eefd472ca5a346de72a703e572c01f3b120cae49fae1e5d544b3dd0a06f",
+          "path": "packages/atlas/core/lockfile.js"
+        },
+        {
+          "hash": "feaddf036615482fb7fa499c1c101f95cf31c22757323b2706db458d1af32f69",
+          "importsFiles": [
+            "packages/atlas/core/commands.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/lockfile.js",
+            "packages/atlas/core/text.js"
+          ],
+          "path": "packages/atlas/core/lockfile.test.js",
+          "testFramework": "node --test"
+        },
+        {
           "hash": "702c449cd58803c24fd5195f1fca102bf6eb26d9b54206f6f033eef708ec31f0",
           "importOrder": [
             "packages/atlas/core/index.js",
@@ -4241,6 +4359,19 @@
             "packages/atlas/core/index.js"
           ],
           "path": "packages/atlas/core/page-scripts.test.js",
+          "testFramework": "node --test"
+        },
+        {
+          "hash": "c5c6f87dd6b00c683f6a7d8a7f388241ee692fd381f9d3178ecef3922db6f8a6",
+          "importsFiles": [
+            "packages/atlas/adapter/artifact.js",
+            "packages/atlas/core/fixture-repo.js",
+            "packages/atlas/core/index.js"
+          ],
+          "names": [
+            "site/astro.config.mjs"
+          ],
+          "path": "packages/atlas/core/pages-doors.test.js",
           "testFramework": "node --test"
         },
         {
@@ -4510,6 +4641,24 @@
           ],
           "path": "packages/atlas/core/runtime-roots.test.js",
           "testFramework": "node --test"
+        },
+        {
+          "exports": [
+            "jobRuntime",
+            "nodeRange",
+            "pep440Range",
+            "platformOf",
+            "pythonRange"
+          ],
+          "failurePaths": [
+            {
+              "in": "nodeFileSays",
+              "kind": "catch",
+              "line": 307
+            }
+          ],
+          "hash": "7998b854f60aaab6af096154eab904683ccb50d845bbf2c7faec74272cb26d72",
+          "path": "packages/atlas/core/runtime.js"
         },
         {
           "hash": "2d9d4932665913187b680cdfb7254b2d69ece5823ae5641f536e34539b1f357b",
@@ -5049,7 +5198,7 @@
           "reexportsOnly": true
         },
         {
-          "hash": "94eab764a615b4b94473bfa46cc9d9b1c50747188cd9552c31516f5c27b26ecf",
+          "hash": "e351c9563e9d872be636502eb91572c1ce85c5777f0a5fa37e6c9b6989859abe",
           "path": "packages/atlas/package.json"
         },
         {
@@ -5072,7 +5221,7 @@
               "line": 43
             }
           ],
-          "hash": "aa0e633517c78443517c56e9511bf3b126e6e77660ac95dd26a10d6267a70b74",
+          "hash": "f265884d05cbed6fa2a25298f60b41f65df84f0557d00a7247203b155e245ebd",
           "importsFiles": [
             "packages/atlas/adapter/engine.js",
             "packages/atlas/adapter/errors.js",
@@ -5108,25 +5257,31 @@
             "checkChangeAnswer",
             "reshapes"
           ],
-          "hash": "8657ff9d5221ab08012da2a8b65b54a772b7104cb98353c17c04ecfc5c237d71",
+          "hash": "11442894cf28944cc7e730a745cc59e92252619f374d5ba1de3cd26a4cd06c09",
           "importOrder": [
+            "packages/atlas/core/door-checks.js",
+            "packages/atlas/core/doors.js",
             "packages/atlas/core/languages.js",
             "packages/atlas/core/landings.js",
             "packages/atlas/adapter/test-reach.js",
             "packages/atlas/core/text.js",
             "packages/atlas/sidecar/answer.js",
             "packages/atlas/sidecar/freshness.js",
+            "packages/atlas/sidecar/limits.js",
             "packages/atlas/sidecar/git.js",
             "packages/atlas/sidecar/reread.js"
           ],
           "importsFiles": [
             "packages/atlas/adapter/test-reach.js",
+            "packages/atlas/core/door-checks.js",
+            "packages/atlas/core/doors.js",
             "packages/atlas/core/landings.js",
             "packages/atlas/core/languages.js",
             "packages/atlas/core/text.js",
             "packages/atlas/sidecar/answer.js",
             "packages/atlas/sidecar/freshness.js",
             "packages/atlas/sidecar/git.js",
+            "packages/atlas/sidecar/limits.js",
             "packages/atlas/sidecar/reread.js"
           ],
           "path": "packages/atlas/sidecar/check-change-tool.js"
@@ -5185,7 +5340,7 @@
           "exports": [
             "explainAnswer"
           ],
-          "hash": "810fa17a840bfe5b93e9de09db6fdbe2e7cbec0267ecdc53c764b81297639144",
+          "hash": "3e598fee4c86ac6b4cc6aaffe6179e4a62fc2769ed28cd2e9baa46c065b76f71",
           "importOrder": [
             "packages/atlas/core/landings.js",
             "packages/atlas/adapter/explain.js",
@@ -5288,9 +5443,10 @@
           "exports": [
             "cannotSeeFor",
             "cannotSeeSentence",
+            "doorChecksUnjudged",
             "walkStopsAt"
           ],
-          "hash": "f1e555c636e28c17efbc87f32d414fc45e502d91f04044b80ab308856c7f238d",
+          "hash": "98d7e1f9839cc39f284882ab9f919c3f5d535dd3465ba265a2f90948e200e06b",
           "path": "packages/atlas/sidecar/limits.js"
         },
         {
@@ -5338,8 +5494,9 @@
           "exports": [
             "overviewAnswer"
           ],
-          "hash": "eb48025bb58f9f9fbbffda5735752521d28f5c7b6d262f8c873bb529681a171d",
+          "hash": "6d88156328e47e5bbb2aa093107da80ba030d1a90cc9f0f5d5ed87cfb7b84480",
           "importsFiles": [
+            "packages/atlas/core/door-checks.js",
             "packages/atlas/sidecar/answer.js",
             "packages/atlas/sidecar/data.js",
             "packages/atlas/sidecar/limits.js"
@@ -5592,7 +5749,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "e0479934f28dc07c507bd7d4ca3d2c158a898e2b0d0cbaeb819a2525f3dd2b79",
+          "hash": "f6a3389658b23d3ab69ae3a7473e14cabb57e606156fd7925411349624261ca0",
           "importsFiles": [
             "packages/atlas/sidecar/git.js"
           ],
@@ -5602,8 +5759,11 @@
             "packages/atlas/adapter/test-kinds.js",
             "packages/atlas/adapter/test-reach.js",
             "packages/atlas/adapter/test-sources.js",
+            "packages/atlas/core/door-checks.js",
             "packages/atlas/core/failure-paths.js",
+            "packages/atlas/core/lockfile.js",
             "packages/atlas/core/mentions.js",
+            "packages/atlas/core/runtime.js",
             "packages/atlas/sidecar/refresh-worker.js",
             "packages/atlas/sidecar/refresh.js",
             "packages/atlas/sidecar/server.js",
@@ -5682,7 +5842,7 @@
               "line": 44
             }
           ],
-          "hash": "5bac9c655e068be0e94e47c39bc946c78f5337f8f50bfcb3a8fd94709a4c165f",
+          "hash": "a3667e0b06a46149ee003aa8a8932d9ab38aae3535a937788490913351d4faf1",
           "importsFiles": [
             "packages/atlas/adapter/changes.js"
           ],
@@ -5777,7 +5937,7 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 275,
+          "reads": 283,
           "where": [
             "caller"
           ],
@@ -5841,7 +6001,14 @@
           "writes": 0
         },
         {
-          "reads": 12,
+          "reads": 2,
+          "where": [
+            "cwd:package-lock.json"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 13,
           "where": [
             "cwd:package.json"
           ],
@@ -5862,13 +6029,13 @@
           "writes": 5
         }
       ],
-      "outsideReads": 319,
+      "outsideReads": 330,
       "outsideWrites": 11,
       "role": "code",
       "testRunners": [
         "node --test"
       ],
-      "testedBy": 273,
+      "testedBy": 280,
       "unresolvedNamed": [
         {
           "path": "packages/atlas/adapter/divergence-envelope.test.js",
@@ -5940,11 +6107,15 @@
           "path": "docs/atlas-design.dispatch.md"
         },
         {
+          "hash": "56313fd7e0d89f8f40cf0d8bc7de4cc83ff55ada2aa591177fd2cf7e22ae43e1",
+          "path": "docs/atlas-door-checks.fleet-check.md"
+        },
+        {
           "hash": "7f37d14e179df456f3128672e11274fc0de63246a99dc4ff0220f2147ad1bcf1",
           "path": "docs/atlas-page.spec.md"
         },
         {
-          "hash": "814217c265831f0dbd6ba67eff32f24330d21be86e4b53207c3163af36444956",
+          "hash": "67d9a0330d4432c04f835ff0eed4ebc61f57d4d3d68b4481a3deb20308d069d4",
           "path": "docs/atlas-production.spec.md"
         },
         {
@@ -5952,7 +6123,7 @@
           "path": "docs/atlas-sidecar.dispatch.md"
         },
         {
-          "hash": "e0073008329b5d63617cf1fe4a4b50233055cb4456f9e905e7a3fdf6a75ab1f6",
+          "hash": "ca8c9892292ef7b56fb969f75f92c223147e0d1f05fcc2ac7bb02a7cfa176d45",
           "path": "docs/atlas-sidecar.spec.md"
         },
         {
@@ -24099,6 +24270,204 @@
           "path": "fixtures/atlas/docs-gate/src/index.js"
         },
         {
+          "hash": "eca7f8b80a1c6f01c4effd7c469a831885cfd16838dbc45ea0c946471c9b9b39",
+          "path": "fixtures/atlas/door-lockfile/.github/workflows/complete.yml"
+        },
+        {
+          "hash": "d3f67f5688b664fab2a8451b944abd759297e230cd33b2027701f0c80bb283d1",
+          "path": "fixtures/atlas/door-lockfile/.github/workflows/install.yml"
+        },
+        {
+          "hash": "8ec5a59b8474840b60f84447ab942784b40ada4f64f05d3f8f948c285a21f1d7",
+          "path": "fixtures/atlas/door-lockfile/.github/workflows/matrix.yml"
+        },
+        {
+          "hash": "d0745ce3f5cf313690b21176b4a08eb1c8ccc72f9561dd0ef482b95260b43df8",
+          "path": "fixtures/atlas/door-lockfile/.github/workflows/own.yml"
+        },
+        {
+          "hash": "0237000382202e2ebfc2e15c17289eada9144e13bab4022da38756b32324bfc9",
+          "path": "fixtures/atlas/door-lockfile/.github/workflows/pages.yml"
+        },
+        {
+          "hash": "3b95bf9a3be1f83cad12e95e01f497b8e1b06e930b2e0ea9ed501dfc9a169aab",
+          "path": "fixtures/atlas/door-lockfile/.github/workflows/watcher.yml"
+        },
+        {
+          "hash": "9f97ff9fa9ed19f14408fe30a809a132873777ecedd743d9f4129f20bf569959",
+          "path": "fixtures/atlas/door-lockfile/.github/workflows/windows.yml"
+        },
+        {
+          "hash": "2d360f4926236305de464d022fd334e7ffb9e578a9f9cbc63225e35f597537f2",
+          "path": "fixtures/atlas/door-lockfile/README.md"
+        },
+        {
+          "hash": "c9a822255003adf0974f5092c53ff77d0c77c37d53404322500310d1043848b9",
+          "path": "fixtures/atlas/door-lockfile/atlas/boundaries.yaml"
+        },
+        {
+          "hash": "25060bf3b38ad445f64fe3a8b6a14d8138933baa9f222c71e57840643b2880ea",
+          "path": "fixtures/atlas/door-lockfile/complete/package-lock.json"
+        },
+        {
+          "hash": "11b086e56130a3df6bfa01afda9e504a3bf5c1834c4c80abe1c394d7d0b7ced5",
+          "path": "fixtures/atlas/door-lockfile/complete/package.json"
+        },
+        {
+          "hash": "4ff2e23c74472247647afa2331414bc9ad4ef1ad770ed49ad9df64fdd06c7f98",
+          "path": "fixtures/atlas/door-lockfile/site/package-lock.json"
+        },
+        {
+          "hash": "8d7b1398fb25df1d301ffae7f302de4b7cd93ad76fff0d4e0e67f037b52b3746",
+          "path": "fixtures/atlas/door-lockfile/site/package.json"
+        },
+        {
+          "hash": "9d51b8e28742884e752385a99a38eb1429aae840678fbaac49c6aacd61000573",
+          "path": "fixtures/atlas/door-lockfile/watcher/package-lock.json"
+        },
+        {
+          "hash": "dcea528ff4fe1441c18e86a2f7f74713c130c01f2d1b4ed02d4d48597ea8622c",
+          "path": "fixtures/atlas/door-lockfile/watcher/package.json"
+        },
+        {
+          "hash": "b3357120b8e44fe2bd2e6432a5a51c485836e45d45dc32738ddd1dc728a5def3",
+          "path": "fixtures/atlas/door-runtime/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "5060a02901584d6f5bfc1260f01a253aa8c261cf30d90fc6546a7093c7c7bc94",
+          "path": "fixtures/atlas/door-runtime/.github/workflows/other.yml"
+        },
+        {
+          "hash": "1c21501f44997a7d1c28d864425367b7e7a7bcb39d7a66c1916c0bf6f315b965",
+          "path": "fixtures/atlas/door-runtime/.github/workflows/pages.yml"
+        },
+        {
+          "hash": "812e48a851ac18e56d55eefade6ca056a06b96106954c1d8322979e1bf2c8ff6",
+          "path": "fixtures/atlas/door-runtime/.nvmrc"
+        },
+        {
+          "hash": "7f4a1c208222760cda7675c5724a3be64d3b7e759766ed1362c7d06d78b9fae5",
+          "path": "fixtures/atlas/door-runtime/README.md"
+        },
+        {
+          "hash": "b4558fa11e5bc0e1453cad19e45d477003af0eab4d63eef0970b56b7d9f819ea",
+          "path": "fixtures/atlas/door-runtime/atlas/boundaries.yaml"
+        },
+        {
+          "hash": "d133cfd9f97a70574869ce8739b1d545a6e55944927329b8688c5fb45b15306c",
+          "path": "fixtures/atlas/door-runtime/package.json"
+        },
+        {
+          "hash": "e23eb22fe6f1b1cebbcd30af9406853b9e239e762e53aba936f7b2511d86fc85",
+          "path": "fixtures/atlas/door-runtime/pyproject.toml"
+        },
+        {
+          "hash": "8d7b1398fb25df1d301ffae7f302de4b7cd93ad76fff0d4e0e67f037b52b3746",
+          "path": "fixtures/atlas/door-runtime/site/package.json"
+        },
+        {
+          "exports": [
+            "check"
+          ],
+          "hash": "0da760f3e138dd5222fd3a071fc054c63891992890130f2ef1c9dcce4de20809",
+          "path": "fixtures/atlas/door-runtime/tools/check.js"
+        },
+        {
+          "hash": "7a8567a46d061a42bfb4afa314c8859c972d7f3d1faea45d1e0a3e4645bf23cd",
+          "path": "fixtures/atlas/door-toolchain/.github/workflows/bare.yml"
+        },
+        {
+          "hash": "869fc5df90722e965c3f26c5c778c910765b80d1b74199bb4872a35bfe5a52f9",
+          "path": "fixtures/atlas/door-toolchain/.github/workflows/chosen.yml"
+        },
+        {
+          "hash": "c129c2bf097d01472afe8cba9fb22d9f97674da4e803532978c441aaf12bcfe7",
+          "path": "fixtures/atlas/door-toolchain/.github/workflows/from-file.yml"
+        },
+        {
+          "hash": "895d7d8dda9ed14c4a323743ff9383df4712eb3b3931a9ca14bec9c3aa89a660",
+          "path": "fixtures/atlas/door-toolchain/.github/workflows/lint.yml"
+        },
+        {
+          "hash": "15ee52c592ee40f712c188fe27f4d567ccb912b406285d85e1e060376af97fb1",
+          "path": "fixtures/atlas/door-toolchain/.github/workflows/lts.yml"
+        },
+        {
+          "hash": "6f9217820d36e22cba1df7ad54fc745b12530c4a8f56f8205bfb5f22fef83ae9",
+          "path": "fixtures/atlas/door-toolchain/.github/workflows/matrix.yml"
+        },
+        {
+          "hash": "4d7ffa9cf9c548f34a871e90b8b586c6f580be91fec7d777f21847d7bbaddefa",
+          "path": "fixtures/atlas/door-toolchain/.github/workflows/pages-22.yml"
+        },
+        {
+          "hash": "df6d983052fa6030d329ce7f70fae338bf8714d35fdd927f6c3cfc22460d6e39",
+          "path": "fixtures/atlas/door-toolchain/.github/workflows/pages.yml"
+        },
+        {
+          "hash": "35e4da034b001c0c5199936d253ededc2d02d044aba6addf6829f250e5a1b5f8",
+          "path": "fixtures/atlas/door-toolchain/.github/workflows/preview.yml"
+        },
+        {
+          "hash": "d70e699685de416d177edef4e980ac78855aaf2725466cf91b32977b43a91479",
+          "path": "fixtures/atlas/door-toolchain/.github/workflows/python-ok.yml"
+        },
+        {
+          "hash": "e0502f416d1447de36234985aa670c853e04c35af4613ae0267edf0edb1775f2",
+          "path": "fixtures/atlas/door-toolchain/.github/workflows/python.yml"
+        },
+        {
+          "hash": "ce2c7c5e874600b6d3ad0c05f849e4aad9ce578b8df3b968adc89863889a5a6f",
+          "path": "fixtures/atlas/door-toolchain/.github/workflows/strict.yml"
+        },
+        {
+          "hash": "221681ac0518a6c448401c44cd931e9c769f1a67661c807ac8bb594ff8771fc6",
+          "path": "fixtures/atlas/door-toolchain/README.md"
+        },
+        {
+          "hash": "25495fd9d40275945a0c5bcb28debcd5905c2c11c374a0f9a25e9328e70dd6a0",
+          "path": "fixtures/atlas/door-toolchain/atlas/boundaries.yaml"
+        },
+        {
+          "hash": "f8a934c18068a833cfae5e58e9678613fc1b0fe82377941f488199e7d3864ec3",
+          "path": "fixtures/atlas/door-toolchain/pylib/pyproject.toml"
+        },
+        {
+          "exports": [
+            "answer"
+          ],
+          "hash": "aecc013c518523ca22b7e3780f87002f5cae13fabc369f2f59a1faf7058f8c76",
+          "path": "fixtures/atlas/door-toolchain/pylib/src/pylib/__init__.py"
+        },
+        {
+          "hash": "5378796307535df3ec8d8b15a2e2dc5641419c3d3060cfe32238c0fa973f7aa3",
+          "path": "fixtures/atlas/door-toolchain/site/.nvmrc"
+        },
+        {
+          "hash": "8d817e3f21a2afc5a13bf3025ab5d13c8a7141251fbebb96081028a616396eef",
+          "path": "fixtures/atlas/door-toolchain/site/package-lock.json"
+        },
+        {
+          "hash": "1769920d96b883c4d268f2a5a843b427301a2c877a805e6928686e5110d504d8",
+          "path": "fixtures/atlas/door-toolchain/site/package.json"
+        },
+        {
+          "hash": "7d48eefbcff2495cc4b0cd99ea783bbc46184d78af064c56e1a7dc7ae9dba3aa",
+          "path": "fixtures/atlas/door-toolchain/site/src/index.md"
+        },
+        {
+          "hash": "7151cf397def0c2cb0ab65643701d27d335a72c90f775675b5f826bc7005818a",
+          "path": "fixtures/atlas/door-toolchain/strict/.npmrc"
+        },
+        {
+          "hash": "e0dd2939f0e250e85d54a03e9b5876442d45998548ed60d9b99f6517fba91fa3",
+          "path": "fixtures/atlas/door-toolchain/strict/package-lock.json"
+        },
+        {
+          "hash": "11b086e56130a3df6bfa01afda9e504a3bf5c1834c4c80abe1c394d7d0b7ced5",
+          "path": "fixtures/atlas/door-toolchain/strict/package.json"
+        },
+        {
           "hash": "9207a587684e5016353f1b60aaaa93fc95ea9864eb4b4fcc158f79a5b70d2a64",
           "path": "fixtures/atlas/doors-py/.github/workflows/baseline.yml"
         },
@@ -27515,6 +27884,38 @@
           "path": "fixtures/atlas/local-workflows/src/run.js"
         },
         {
+          "hash": "79f14c882f8d3501867b264cc39964cfa5d70faef4c307bc4e816e3875115639",
+          "path": "fixtures/atlas/lockfile-reader/README.md"
+        },
+        {
+          "hash": "d4b8f56100e164d1a3bd57332916ca7f0188604534b8472608405e46b2a0bdd8",
+          "path": "fixtures/atlas/lockfile-reader/broken/package-lock.json"
+        },
+        {
+          "hash": "6404bb3e4f5d36977c207c7deebc33559d8964136c772b70c95adf84f015bbc0",
+          "path": "fixtures/atlas/lockfile-reader/legacy/package-lock.json"
+        },
+        {
+          "hash": "82016bf2f0a07e36e999c32fc6764531eecb3bb2bdf11ef5f6669da867375c17",
+          "path": "fixtures/atlas/lockfile-reader/legacy/package.json"
+        },
+        {
+          "hash": "c7fbc783787f6f266308219ad0857919e219655b5d6dbe0d65e7711ef26a172a",
+          "path": "fixtures/atlas/lockfile-reader/old/package-lock.json"
+        },
+        {
+          "hash": "1867c3c5077796521835091fd2853d6178cacdd6d114b38f054ec8f336b9d9ad",
+          "path": "fixtures/atlas/lockfile-reader/package-lock.json"
+        },
+        {
+          "hash": "8a4b183632ed8df03e386b3900264d43a7e3bf9628edf240b9adcc6f9a9a3781",
+          "path": "fixtures/atlas/lockfile-reader/package.json"
+        },
+        {
+          "hash": "8d7b1398fb25df1d301ffae7f302de4b7cd93ad76fff0d4e0e67f037b52b3746",
+          "path": "fixtures/atlas/lockfile-reader/site/package.json"
+        },
+        {
           "hash": "d8da1c99e59fa66cf6f05ec40a3c339a373f989cb757b18f80d840d30e56ae07",
           "path": "fixtures/atlas/main-guards/.github/workflows/ci.yml"
         },
@@ -28361,6 +28762,60 @@
         {
           "hash": "d331036c6c4a60749fbb843463f56e64a0ddd1650092551e2d86ccec5dc241e4",
           "path": "fixtures/atlas/page-scripts/scripts/bundle.mjs"
+        },
+        {
+          "hash": "062421f8a903a71bafaa069721daf51a457831c00fd85ba4576db169ce37242c",
+          "path": "fixtures/atlas/pages-doors/.github/workflows/cd.yml"
+        },
+        {
+          "hash": "10085da1bf7bec16cfb56109574d2fa6fee7ab106e90b585fc829a89c4ba924f",
+          "path": "fixtures/atlas/pages-doors/.github/workflows/job-defaults.yml"
+        },
+        {
+          "hash": "027ef9155ea9624bfe69e7fe1a422da4b8e00a2f0ada12e1bf69bef923e033c2",
+          "path": "fixtures/atlas/pages-doors/.github/workflows/one-line.yml"
+        },
+        {
+          "hash": "261a65f7082bd3261965d9eef82a8753c56a702b013ec514960b1a56507b6342",
+          "path": "fixtures/atlas/pages-doors/.github/workflows/prefix.yml"
+        },
+        {
+          "hash": "7b9d42b399de75e72fa169ebc456a7bf56ffd0405e52e726a08397cfa237e7a3",
+          "path": "fixtures/atlas/pages-doors/.github/workflows/workflow-defaults.yml"
+        },
+        {
+          "hash": "bc4f86f613e2bc22cda7b881e15a036a4c81ac50fcb0079f37a581c177683e12",
+          "path": "fixtures/atlas/pages-doors/.github/workflows/working-directory.yml"
+        },
+        {
+          "hash": "4b619164397375622055554a1f4828262ccfb77ace232664c11ea66b4a17de96",
+          "path": "fixtures/atlas/pages-doors/README.md"
+        },
+        {
+          "hash": "b6c58d1097be36ce576c3057cf40a916eb9280c6ceb98d6383db10fc4a75d0db",
+          "path": "fixtures/atlas/pages-doors/atlas/boundaries.yaml"
+        },
+        {
+          "hash": "277a2d85582b130dbd7c2ed1cbb0d40f4b3bee2a5a01f4f24e8103ec18141db3",
+          "path": "fixtures/atlas/pages-doors/site/astro.config.mjs"
+        },
+        {
+          "hash": "f5e91ea7d0fe531d4d975ced7a5cb7078a7363b0b2737324c28ed920facdb12e",
+          "path": "fixtures/atlas/pages-doors/site/package.json"
+        },
+        {
+          "exports": [
+            "title"
+          ],
+          "hash": "b413f516e3583b21bd22102e8af44a1a9452f0e462be570fe143f91b83ad9d40",
+          "path": "fixtures/atlas/pages-doors/site/src/lib/format.ts"
+        },
+        {
+          "hash": "779a4419e85fe43816bfb0e1a2306440a12efc53d0094bad98fa72b214ce23c1",
+          "importsFiles": [
+            "fixtures/atlas/pages-doors/site/src/lib/format.ts"
+          ],
+          "path": "fixtures/atlas/pages-doors/site/src/pages/index.astro"
         },
         {
           "hash": "790e3169bc19b046fe55ba1da6d13b976c28363c8c00462a2195fe5faf260910",
@@ -38705,7 +39160,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "9ef167188af1875e6c3b7b32b6c2311e7567618a53c01b70169257e87d19e285",
+          "hash": "eed9e7d1f6c6ea1838f6a905d237f9117132940e34a1fd301369c07bced63f53",
           "path": "CHANGELOG.md"
         },
         {
@@ -38773,7 +39228,7 @@
           "path": "codecov.yml"
         },
         {
-          "hash": "cc7a2e1dcf4e72c7de04f250eb0bbf0789f730e0e1d1adb8c4d90bf4493bb08c",
+          "hash": "020a203d7498605f519fcb93dc461e5abd1ef5f6bfd1b8fcbf058fd921dce792",
           "path": "package-lock.json"
         },
         {
@@ -41190,7 +41645,7 @@
           "path": "site/src/content/docs/handbook/architecture.md"
         },
         {
-          "hash": "01c7bd745a3b8b1fdd810b00577a246035121a77b8da631c8c0beb74c67a0b3e",
+          "hash": "0eb0de0f2a3972136ecc244dc1d4e06fb97bfdb4426e9315ac98b89ff6f02268",
           "path": "site/src/content/docs/handbook/atlas.md"
         },
         {
@@ -41198,7 +41653,7 @@
           "path": "site/src/content/docs/handbook/beginners.md"
         },
         {
-          "hash": "d404b4acd1ba2fca2b22773ae5d100f60819a360f63bdb3bb7ff3e5ef5cfea44",
+          "hash": "98af077b06a1b708caf8246421a0b30502fa5563b365154f674ceaec062d4843",
           "path": "site/src/content/docs/handbook/cli-reference.md"
         },
         {
@@ -41206,7 +41661,7 @@
           "path": "site/src/content/docs/handbook/contracts.md"
         },
         {
-          "hash": "ea82fe5a65ef43b183ad0a47811704ce5b0d1d57814600469a74b0cd0839b250",
+          "hash": "f558b953b1262f5db5b9b1ce81d5481210976c7f8d8925100b6e99130a445df9",
           "path": "site/src/content/docs/handbook/error-codes.md"
         },
         {
@@ -42699,6 +43154,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "",
           "job": "render",
           "programs": [
             "npm"
@@ -42706,6 +43162,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "render",
           "programs": [
             "node"
@@ -42715,6 +43172,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/atlas-render.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "render",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Atlas render",
@@ -42779,6 +43267,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -42786,6 +43275,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -42793,6 +43283,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "1",
@@ -42804,6 +43295,7 @@
           "step": "Lockfile-drift gate — install (Node 22, non-Dependabot only; D4B-002 + FT-a)"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "echo",
@@ -42812,6 +43304,7 @@
           "step": "Lockfile-drift gate — diff (Node 22, non-Dependabot only; D4B-002 + FT-a)"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -42819,6 +43312,7 @@
           "step": "6"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -42826,6 +43320,7 @@
           "step": "7"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -42833,6 +43328,7 @@
           "step": "8"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "node"
@@ -42840,6 +43336,7 @@
           "step": "9"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "cat",
@@ -42852,6 +43349,7 @@
           "step": "Atlas diff on this pull request"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -42859,6 +43357,7 @@
           "step": "11"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npm"
@@ -42866,6 +43365,7 @@
           "step": "12"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npx"
@@ -42873,6 +43373,7 @@
           "step": "Schemas coverage and test results under Vitest"
         },
         {
+          "dir": "",
           "job": "build-and-test",
           "programs": [
             "npx"
@@ -42880,6 +43381,7 @@
           "step": "Coverage report"
         },
         {
+          "dir": "",
           "job": "windows-step-fixtures-proof-of-life",
           "programs": [
             "npm"
@@ -42887,6 +43389,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "windows-step-fixtures-proof-of-life",
           "programs": [
             "node"
@@ -42896,6 +43399,85 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build-and-test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                },
+                {
+                  "from": "24",
+                  "range": ">=24.0.0 <25.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node-version }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "codecov",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "windows-step-fixtures-proof-of-life",
+          "runsOn": [
+            {
+              "labels": [
+                "windows-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "os": "win32"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [
         "README.md",
         "docker/Dockerfile",
@@ -42934,7 +43516,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 117
+          "files": 120
         },
         {
           "boundary": "dogfood",
@@ -43066,6 +43648,13 @@
         },
         {
           "by": "packages/atlas/core/godot-project.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "README.md"
+        },
+        {
+          "by": "packages/atlas/core/lockfile.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true,
@@ -43485,6 +44074,19 @@
           "target": "indexes/integrity/chain.jsonl"
         },
         {
+          "by": "packages/atlas/core/lockfile.js",
+          "call": "get",
+          "confidence": "weak",
+          "target": "package-lock.json"
+        },
+        {
+          "by": "packages/atlas/core/lockfile.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "package-lock.json"
+        },
+        {
           "by": "packages/dogfood-swarm/lib/f-2710aadf-coordinator-ownership-class.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -43875,6 +44477,18 @@
         {
           "job": "build-and-test",
           "matched": true,
+          "path": "packages/atlas/adapter/door-findings-map.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/atlas/adapter/door-notices.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
           "path": "packages/atlas/adapter/engine-stamp.test.js",
           "runKind": "executes"
         },
@@ -43912,18 +44526,6 @@
           "job": "build-and-test",
           "matched": true,
           "path": "packages/atlas/adapter/fleet-index.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/adapter/fleet.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/adapter/gaps.test.js",
           "runKind": "executes"
         },
         {
@@ -45156,7 +45758,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 747,
+      "runsCount": 754,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -45184,7 +45786,7 @@
         {
           "coverage": true,
           "dir": "packages/atlas",
-          "files": 255,
+          "files": 262,
           "job": "build-and-test",
           "junit": true,
           "runner": "node --test",
@@ -45377,6 +45979,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "ingest",
           "programs": [
             "npm"
@@ -45384,6 +45987,7 @@
           "step": "2"
         },
         {
+          "dir": "",
           "job": "ingest",
           "programs": [
             "npm"
@@ -45391,6 +45995,7 @@
           "step": "3"
         },
         {
+          "dir": "",
           "job": "ingest",
           "programs": [
             "2",
@@ -45402,6 +46007,7 @@
           "step": "Run ingestion (repository_dispatch)"
         },
         {
+          "dir": "",
           "job": "ingest",
           "programs": [
             "2",
@@ -45413,6 +46019,7 @@
           "step": "Run ingestion (workflow_dispatch)"
         },
         {
+          "dir": "",
           "job": "ingest",
           "programs": [
             "1",
@@ -45424,6 +46031,7 @@
           "step": "Read result"
         },
         {
+          "dir": "",
           "job": "ingest",
           "programs": [
             "echo",
@@ -45432,6 +46040,7 @@
           "step": "Regenerate served badges + trends"
         },
         {
+          "dir": "",
           "job": "ingest",
           "programs": [
             "echo",
@@ -45441,6 +46050,7 @@
           "step": "Commit records and indexes"
         },
         {
+          "dir": "",
           "job": "ingest",
           "programs": [
             "echo"
@@ -45448,6 +46058,7 @@
           "step": "Fail run on deferred pipeline fault"
         },
         {
+          "dir": "",
           "job": "ingest",
           "programs": [
             "echo"
@@ -45455,6 +46066,7 @@
           "step": "Fail run on deferred result-parse error"
         },
         {
+          "dir": "",
           "job": "ingest",
           "programs": [
             "echo",
@@ -45463,6 +46075,7 @@
           "step": "Warn on stale indexes (degraded run)"
         },
         {
+          "dir": "",
           "job": "ingest",
           "programs": [
             "cat",
@@ -45473,6 +46086,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ingest.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "ingest",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [
         "README.md",
         "docker/Dockerfile",
@@ -45626,6 +46270,13 @@
         },
         {
           "by": "packages/atlas/core/godot-project.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "README.md"
+        },
+        {
+          "by": "packages/atlas/core/lockfile.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true,
@@ -46004,6 +46655,19 @@
           "confidence": "ast",
           "fromTests": true,
           "target": "indexes/trends.json"
+        },
+        {
+          "by": "packages/atlas/core/lockfile.js",
+          "call": "get",
+          "confidence": "weak",
+          "target": "package-lock.json"
+        },
+        {
+          "by": "packages/atlas/core/lockfile.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "package-lock.json"
         },
         {
           "by": "packages/dogfood-swarm/lib/f-2710aadf-coordinator-ownership-class.test.js",
@@ -46451,6 +47115,7 @@
       "checksCount": 0,
       "commands": [
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -46458,6 +47123,7 @@
           "step": "Install site dependencies"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "node"
@@ -46465,6 +47131,7 @@
           "step": "Accent reconciliation gate (D-DOCS-003 / F-e4a24655)"
         },
         {
+          "dir": "site",
           "job": "build",
           "programs": [
             "npm"
@@ -46472,6 +47139,7 @@
           "step": "Build site"
         },
         {
+          "dir": "",
           "job": "build",
           "programs": [
             "node"
@@ -46479,6 +47147,7 @@
           "step": "Atlas front door in the build"
         },
         {
+          "dir": "",
           "job": "deploy",
           "programs": [
             "awk",
@@ -46489,6 +47158,7 @@
           "step": "Verify deployed site returns 200"
         },
         {
+          "dir": "",
           "job": "a11y",
           "programs": [
             "cat",
@@ -46501,6 +47171,85 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "a11y",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "0",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [],
       "mentions": [],
       "name": "Deploy site to GitHub Pages",
@@ -46604,6 +47353,7 @@
       "checksCount": 4,
       "commands": [
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -46612,6 +47362,7 @@
           "step": "Check out the release tag"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -46624,6 +47375,7 @@
           "step": "Install npm >=11.5 in sandbox for OIDC trusted publishing"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "echo",
@@ -46632,6 +47384,7 @@
           "step": "Verify tag matches root package.json version"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "node"
@@ -46639,6 +47392,7 @@
           "step": "Verify every publishable package version matches the tag (lockstep)"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -46646,6 +47400,7 @@
           "step": "6"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "npm"
@@ -46653,6 +47408,7 @@
           "step": "Verify (full pre-publish gate)"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "awk",
@@ -46662,6 +47418,7 @@
           "step": "Extract release notes from CHANGELOG"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "1",
@@ -46674,6 +47431,7 @@
           "step": "Publish public packages to npm (idempotent + resilient)"
         },
         {
+          "dir": "",
           "job": "publish",
           "programs": [
             "1",
@@ -46683,6 +47441,7 @@
           "step": "Create GitHub Release"
         },
         {
+          "dir": "",
           "job": "container",
           "programs": [
             "echo",
@@ -46695,6 +47454,53 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "container",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
       "landings": [
         "README.md",
         "docker/Dockerfile",
@@ -46734,7 +47540,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 116
+          "files": 119
         },
         {
           "boundary": "docker",
@@ -46871,6 +47677,13 @@
         },
         {
           "by": "packages/atlas/core/godot-project.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "README.md"
+        },
+        {
+          "by": "packages/atlas/core/lockfile.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true,
@@ -47290,6 +48103,19 @@
           "target": "indexes/integrity/chain.jsonl"
         },
         {
+          "by": "packages/atlas/core/lockfile.js",
+          "call": "get",
+          "confidence": "weak",
+          "target": "package-lock.json"
+        },
+        {
+          "by": "packages/atlas/core/lockfile.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "package-lock.json"
+        },
+        {
           "by": "packages/dogfood-swarm/lib/f-2710aadf-coordinator-ownership-class.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -47686,6 +48512,18 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "packages/atlas/adapter/door-findings-map.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "packages/atlas/adapter/door-notices.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "packages/atlas/adapter/engine-stamp.test.js",
           "runKind": "executes"
         },
@@ -47717,18 +48555,6 @@
           "job": "publish",
           "matched": true,
           "path": "packages/atlas/adapter/explain.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/adapter/fleet-index.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/adapter/fleet.test.js",
           "runKind": "executes"
         },
         {
@@ -48955,7 +49781,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 751,
+      "runsCount": 758,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -48992,7 +49818,7 @@
         },
         {
           "dir": "packages/atlas",
-          "files": 255,
+          "files": 262,
           "job": "publish",
           "runner": "node --test",
           "step": "Verify (full pre-publish gate)",
@@ -49114,6 +49940,7 @@
       "checksCount": 1,
       "commands": [
         {
+          "dir": "",
           "job": "self-dogfood",
           "programs": [
             "npm"
@@ -49121,6 +49948,7 @@
           "step": "Install and build"
         },
         {
+          "dir": "",
           "job": "self-dogfood",
           "programs": [
             "echo",
@@ -49129,6 +49957,7 @@
           "step": "Build scenario results from CI conclusion"
         },
         {
+          "dir": "",
           "job": "self-dogfood",
           "programs": [
             "node"
@@ -49136,6 +49965,7 @@
           "step": "Build submission"
         },
         {
+          "dir": "",
           "job": "self-dogfood",
           "programs": [
             "echo",
@@ -49145,6 +49975,7 @@
           "step": "Dispatch to testing-os (self)"
         },
         {
+          "dir": "",
           "job": "self-dogfood",
           "programs": [
             "node"
@@ -49154,6 +49985,37 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/self-dogfood.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "self-dogfood",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
       "landings": [
         "README.md",
         "docker/Dockerfile",
@@ -49261,6 +50123,13 @@
         },
         {
           "by": "packages/atlas/core/godot-project.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "README.md"
+        },
+        {
+          "by": "packages/atlas/core/lockfile.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true,
@@ -49401,6 +50270,19 @@
           "target": "docker/Dockerfile"
         },
         {
+          "by": "packages/atlas/core/lockfile.js",
+          "call": "get",
+          "confidence": "weak",
+          "target": "package-lock.json"
+        },
+        {
+          "by": "packages/atlas/core/lockfile.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "package-lock.json"
+        },
+        {
           "by": "packages/dogfood-swarm/lib/f-2710aadf-coordinator-ownership-class.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -49512,7 +50394,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 72
+          "files": 75
         }
       ],
       "readers": [],
@@ -50805,8 +51687,8 @@
   ],
   "engine": "1.23.5",
   "generatedFrom": {
-    "commit": "e84ad73bf4e8e60cf884536c618ef5362a338df4",
-    "tracked": 3930
+    "commit": "b46a5cf3e107f2421f081902ec5cee6aab36e807",
+    "tracked": 4009
   },
   "landings": [
     {
@@ -51356,6 +52238,18 @@
     {
       "readers": [
         {
+          "by": "packages/atlas/adapter/door-findings-map.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/adapter/door-notices.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/atlas/adapter/page-hand-deploys.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -51363,6 +52257,18 @@
         },
         {
           "by": "packages/atlas/adapter/page-start-dead-ends.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/core/door-lockfile.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/core/door-toolchain.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -51752,6 +52658,12 @@
         },
         {
           "by": "packages/atlas/core/godot-project.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/core/lockfile.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -52510,6 +53422,18 @@
     {
       "readers": [
         {
+          "by": "packages/atlas/adapter/door-findings-map.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/adapter/door-notices.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/atlas/adapter/fleet.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -53243,6 +54167,42 @@
         }
       ],
       "target": "fixtures/atlas/docs-gate",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/core/door-lockfile.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/door-lockfile",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/core/door-runtime.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/door-runtime",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/core/door-toolchain.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/door-toolchain",
       "writers": []
     },
     {
@@ -54144,6 +55104,18 @@
     {
       "readers": [
         {
+          "by": "packages/atlas/core/lockfile.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/lockfile-reader",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/atlas/adapter/page-main-guards.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -54435,6 +55407,18 @@
         }
       ],
       "target": "fixtures/atlas/page-scripts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/core/pages-doors.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/pages-doors",
       "writers": []
     },
     {
@@ -57420,6 +58404,17 @@
     {
       "readers": [
         {
+          "by": "packages/atlas/core/lockfile.js",
+          "call": "get",
+          "confidence": "weak"
+        },
+        {
+          "by": "packages/atlas/core/lockfile.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/dogfood-swarm/lib/f-2710aadf-coordinator-ownership-class.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -57531,6 +58526,12 @@
           "fromTests": true
         },
         {
+          "by": "packages/atlas/core/door-runtime.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/atlas/core/doors.js",
           "call": "literal",
           "confidence": "weak"
@@ -57559,6 +58560,12 @@
         },
         {
           "by": "packages/atlas/core/landings.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/core/lockfile.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -62802,6 +63809,60 @@
     {
       "readers": [
         {
+          "by": "packages/atlas/core/pages-doors.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "site/astro.config.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/adapter/door-findings-map.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/adapter/door-notices.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/core/door-lockfile.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/core/door-toolchain.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "site/package-lock.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/core/lockfile.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "site/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/atlas/adapter/fleet.test.js",
           "call": "readFileSync",
           "confidence": "ast",
@@ -62911,6 +63972,18 @@
         }
       ],
       "target": "site/public/screenshots/verify-output.svg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/core/pages-doors.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "site/src",
       "writers": []
     },
     {
@@ -63580,7 +64653,7 @@
       "target": "README.md"
     }
   ],
-  "testFiles": 969,
+  "testFiles": 976,
   "unassigned": [
     {
       "hash": "ae8cd9e48976f29e3293dbbe6a4b41aff3f2b9b968fcfb551ce183a0b08ed8cc",
