@@ -79,7 +79,14 @@ describe('docker/Dockerfile', () => {
     assert.deepEqual(ofKind('CMD'), ['CMD ["atlas-fleet"]']);
     const entry = read('docker/entrypoint.sh');
     assert.match(entry, /^#!\/bin\/sh\n/);
-    assert.match(entry, /init\|map\|check\|explain\|diff\) exec atlas "\$@" ;;/);
+    // The verbs are read from the CLI's own dispatch, so a new one cannot be
+    // left off the entrypoint again, as gaps was from 1.23.4 until 1.24.0.
+    // mcp is not routed yet, a corner written down at 1.23.0.
+    const verbs = [...read('packages/atlas/adapter/commands.js').matchAll(/if \(argv\[0\] === '([a-z]+)'\)/g)].map((match) => match[1]);
+    assert.ok(verbs.includes('gaps') && verbs.includes('mcp'), `the CLI's verbs, as read: ${verbs.join(', ')}`);
+    const routed = /^\s*([a-z|]+)\) exec atlas "\$@" ;;$/m.exec(entry);
+    assert.ok(routed, 'a case that runs the CLI');
+    assert.deepEqual(routed[1].split('|'), verbs.filter((verb) => verb !== 'mcp'));
     assert.match(entry, /atlas-fleet\) [^\n]*exec atlas-fleet "\$@" ;;/);
     assert.match(entry, /\*\) exec "\$@" ;;/);
     const pkg = JSON.parse(read('packages/atlas/package.json'));
@@ -107,6 +114,7 @@ describe('docker/Dockerfile', () => {
     const mapped = runEntry('map', '--divergence', 'd.json');
     assert.equal(mapped.stdout, 'atlas map --divergence d.json\n');
     assert.equal(mapped.status, 3, 'the CLI exit code passes through');
+    assert.equal(runEntry('gaps', 'src').stdout, 'atlas gaps src\n');
     assert.equal(runEntry().stdout, 'fleet \n', 'no command is the service');
     assert.equal(runEntry('atlas-fleet').stdout, 'fleet \n');
     assert.equal(runEntry('echo', 'hi').stdout, 'hi\n');
