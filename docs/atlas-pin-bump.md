@@ -57,7 +57,7 @@ Exit codes: 0 when every clone is `done`, `ready`, or applied and proven; 1 when
 ## What a clone must be
 
 - **A full clone.** A map reads history (commits per file, what changes together, the floor). Made from a shallow clone it would replace those figures with what one commit says: on one fleet repository a file's commit count fell from 9 to 1. A shallow clone is a `person` (`PIN_BUMP_SHALLOW_CLONE`, with `git fetch --unshallow` as the hint).
-- **Clean, including no untracked files.** `atlas map` reads only what git tracks, so an untracked file would silently be left out.
+- **Clean, including no untracked files.** `atlas map` reads only what git tracks, so an untracked file would be left out of the map (from 1.25.0 `map` names such files, but the tool refuses the clone before that).
 - **On the default branch** its `origin/HEAD` names.
 - **Already mapped, with an `atlas check` step.** The tool moves a map; it makes no first map and adds no step. The org rule counts both, and they are done by hand.
 

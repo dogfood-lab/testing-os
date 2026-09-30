@@ -677,11 +677,13 @@ Every failure names what changed and what to do; the second line is never option
 | `ATLAS_EXPLAIN_UNKNOWN_PATH` | 2 | LOW | `adapter/explain.js` |
 | `ATLAS_DIFF_NO_BASE` | 2 | LOW | `adapter/diff.js` |
 | `ATLAS_NOT_A_REPOSITORY` | 2 | LOW | `adapter/commands.js` |
+| `ATLAS_NO_COMMIT` | 2 | LOW | `adapter/commands.js` |
 | `ATLAS_REF_UNKNOWN` | 2 | LOW | `sidecar/map.js` |
 | `ATLAS_REF_MAP_FOREIGN` | 2 | LOW | `sidecar/map.js` |
 | `ATLAS_DOOR_TOOLCHAIN` | 0 (1 with `--strict`) | LOW | `adapter/commands.js` |
 | `ATLAS_DOOR_LOCKFILE_PLATFORM` | 0 (1 with `--strict`) | LOW | `adapter/commands.js` |
 | `ATLAS_MAP_ENGINE_OLDER` | 0 (1 with `--strict`) | LOW | `adapter/commands.js` |
+| `ATLAS_MAP_UNTRACKED` | 0 | LOW | `adapter/commands.js` |
 | `ATLAS_SIDECAR_NOT_A_REPOSITORY` | none | LOW | `sidecar/tools.js` |
 | `ATLAS_SIDECAR_NO_MAP` | none | LOW | `sidecar/map.js` |
 | `ATLAS_SIDECAR_MAP_UNREADABLE` | none | LOW | `sidecar/map.js` |
@@ -822,6 +824,15 @@ The directory is not in a git repository, and the command needs one.
 - **Trigger:** `atlas init`, `map`, `check` or `diff` outside a git repository; `explain` or `gaps` in a directory that is neither a git repository nor holds `atlas/structure.json`; `--ref` in a tree exported without its history. From the sidecar, `atlas_changes`, `atlas_check_change` and `atlas_refresh` in an exported tree return it as a tool error.
 - **Operator action:** run the command inside a clone. A directory that holds `atlas/` but no git history still answers `explain`, `gaps` and the tools that only read the map.
 
+### `ATLAS_NO_COMMIT`
+
+:::tip[Severity: LOW]
+The repository has no commit yet, so there is no HEAD to map or to read a map at.
+:::
+
+- **Trigger:** `atlas map`, `check`, `explain`, `gaps` or `diff` in a repository just made with `git init`. `init` runs there, since it comes before the first commit; `explain` and `gaps` with `--ref` answer from a fetched ref.
+- **Operator action:** commit once (`git add -A`, then `git commit`), then run the command again.
+
 ### `ATLAS_REF_UNKNOWN`
 
 :::tip[Severity: LOW]
@@ -866,6 +877,15 @@ A notice: the committed map was made by an older Atlas than the one running, or 
 
 - **Trigger:** the pin in CI was bumped without regenerating the map, or the map predates 1.23.0, when the engine stamp was added. The check still passes or fails on the tree as before.
 - **Operator action:** run `atlas map` with the running version and commit `atlas/`.
+
+### `ATLAS_MAP_UNTRACKED`
+
+:::tip[Severity: LOW]
+A warning from `atlas map`: the working tree holds files git does not track and no ignore rule covers, and the map, which is of the tracked tree, leaves them out.
+:::
+
+- **Trigger:** files written and not yet staged when `atlas map` runs. It names the first five and a count, on stderr, and exits 0. `atlas/` itself is not counted.
+- **Operator action:** `git add` the files the map should hold and run `atlas map` again, or add them to `.gitignore`.
 
 ### The sidecar's codes
 
