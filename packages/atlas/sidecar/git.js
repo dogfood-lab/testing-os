@@ -12,7 +12,19 @@ import { spawnSync } from 'node:child_process';
  * defect, not an option.
  */
 
-const READ_COMMANDS = new Set(['cat-file', 'diff', 'ls-files', 'merge-base', 'rev-parse', 'show', 'status']);
+const READ_COMMANDS = new Set(['cat-file', 'diff', 'ls-files', 'ls-tree', 'merge-base', 'rev-list', 'rev-parse', 'show', 'status']);
+
+/**
+ * A ref git reads: a commit, a branch, a tag, HEAD~3, origin/main; never an
+ * option. Every ref an asker passes is held to it before git sees it.
+ */
+export const REF_PATTERN = '^[A-Za-z0-9._/~^@{}][A-Za-z0-9._/~^@{}-]*$';
+const REF = new RegExp(REF_PATTERN);
+
+/** Whether text has the shape of a ref git may be given. */
+export function isRefShaped(text) {
+  return typeof text === 'string' && text.length > 0 && text.length <= 200 && REF.test(text);
+}
 
 // A map is a few megabytes on a large repository, and git show returns it whole.
 const MAX_BUFFER = 64 * 1024 * 1024;
@@ -57,11 +69,60 @@ export function head(root) {
   return result.ok ? String(result.stdout).trim() : null;
 }
 
-/** Whether commit is HEAD or an ancestor of it in this checkout's history. */
-export function inHistory(root, commit) {
+/**
+ * Whether commit is tip or an ancestor of it: by default HEAD, this
+ * checkout's history; or the commit a ref names.
+ */
+export function inHistory(root, commit, tip = 'HEAD') {
   if (!/^[0-9a-f]{40}$/.test(String(commit))) return false;
   if (!git(root, ['cat-file', '-e', `${commit}^{commit}`]).ok) return false;
-  return git(root, ['merge-base', '--is-ancestor', commit, 'HEAD']).ok;
+  return git(root, ['merge-base', '--is-ancestor', commit, tip]).ok;
+}
+
+/** The commit a ref names in this clone, or null when it names none. */
+export function commitOf(root, ref) {
+  if (!isRefShaped(ref)) return null;
+  const result = git(root, ['rev-parse', '--verify', '--quiet', '--end-of-options', `${ref}^{commit}`]);
+  return result.ok ? String(result.stdout).trim() : null;
+}
+
+/**
+ * How far a commit is from this checkout's HEAD: the commits it holds that
+ * the checkout does not (ahead) and those the checkout holds that it does
+ * not (behind). Null when either side cannot be counted.
+ *
+ * @returns {{ ahead: number, behind: number } | null}
+ */
+export function distanceFromHead(root, commit) {
+  const result = git(root, ['rev-list', '--left-right', '--count', `HEAD...${commit}`]);
+  if (!result.ok) return null;
+  const [behind, ahead] = String(result.stdout).trim().split(/\s+/).map(Number);
+  return Number.isInteger(ahead) && Number.isInteger(behind) ? { ahead, behind } : null;
+}
+
+/** The id git keeps a file under at a commit or ref, or null when it holds none there. */
+export function blobAt(root, rev, path) {
+  const result = git(root, ['rev-parse', '--verify', '--quiet', '--end-of-options', `${rev}:${path}`]);
+  return result.ok ? String(result.stdout).trim() : null;
+}
+
+/**
+ * The regular files a commit holds, as `git ls-files` lists a checkout's:
+ * symlinks and submodules left out.
+ *
+ * @returns {string[] | null} null when git cannot list the commit
+ */
+export function trackedAt(root, commit) {
+  const result = git(root, ['ls-tree', '-r', '-z', '--full-tree', commit]);
+  if (!result.ok) return null;
+  const out = [];
+  for (const entry of String(result.stdout).split('\0')) {
+    const tab = entry.indexOf('\t');
+    if (tab === -1) continue;
+    const [mode, type] = entry.slice(0, tab).split(' ');
+    if (type === 'blob' && mode !== '120000') out.push(entry.slice(tab + 1));
+  }
+  return out;
 }
 
 /**

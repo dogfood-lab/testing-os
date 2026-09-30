@@ -48,6 +48,24 @@ export function checkoutState(root, commit) {
   return { head: at, committed, uncommitted };
 }
 
+/**
+ * The same, for a map read at a ref: what changed after the map is judged
+ * between the map's commit and the commit the ref names, and the working tree
+ * is not compared, so nothing is uncommitted. Files are read at that commit.
+ *
+ * @param {string} root
+ * @param {string} commit the commit the map was made from
+ * @param {string} at the commit the ref names
+ */
+export function stateAt(root, commit, at) {
+  const committed = new Set();
+  if (at !== commit) {
+    const diff = git(root, ['diff', '--name-only', '-z', '--no-renames', commit, at, '--']);
+    if (diff.ok) for (const path of String(diff.stdout).split('\0')) if (path && !inAtlas(path)) committed.add(path);
+  }
+  return { head: head(root), committed, uncommitted: new Map(), at };
+}
+
 /** Every tracked file of a map with the hash it recorded. */
 export function mapHashes(structure) {
   const out = new Map();
@@ -61,10 +79,10 @@ export function mapHashes(structure) {
  * from the working tree, or from HEAD when the working tree holds an edit on
  * top of it; null when there is no such file.
  */
-function hashAt(root, path, attributes, fromHead) {
+function hashAt(root, path, attributes, rev) {
   let bytes = null;
-  if (fromHead) {
-    const shown = git(root, ['show', `HEAD:${path}`], { encoding: 'buffer' });
+  if (rev) {
+    const shown = git(root, ['show', `${rev}:${path}`], { encoding: 'buffer' });
     if (shown.ok) bytes = shown.stdout;
   } else if (existsSync(join(root, path))) {
     try {
@@ -98,8 +116,10 @@ export function changedFiles(root, snapshot, state, paths) {
   // the edit it was made with, and that edit is no change after it.
   const held = new Map();
   const heldAt = (path, fromHead) => {
-    const key = `${fromHead ? 'head' : 'tree'}\0${path}`;
-    if (!held.has(key)) held.set(key, hashes.has(path) && hashAt(root, path, attributes(), fromHead) === hashes.get(path));
+    // A map read at a ref is compared with the files at that ref alone.
+    const rev = state.at ?? (fromHead ? 'HEAD' : null);
+    const key = `${rev ?? 'tree'}\0${path}`;
+    if (!held.has(key)) held.set(key, hashes.has(path) && hashAt(root, path, attributes(), rev) === hashes.get(path));
     return held.get(key);
   };
   // A directory changed when a file under it did.

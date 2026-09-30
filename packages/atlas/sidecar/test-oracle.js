@@ -25,9 +25,22 @@ function strip(place) {
 
 /** The committed map of a checkout, read as the sidecar reads it. */
 export function committedMap(root) {
+  return mapFrom(root, (file) => readFileSync(join(root, 'atlas', file), 'utf8'));
+}
+
+/** The map a ref holds, read with git show, in the shape committedMap gives. */
+export function mapAt(root, ref) {
+  return mapFrom(root, (file) => {
+    const shown = spawnSync('git', ['show', `${ref}:atlas/${file}`], { cwd: root, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+    if (shown.status !== 0) throw new Error(`${ref} holds no atlas/${file}`);
+    return shown.stdout;
+  });
+}
+
+function mapFrom(root, text) {
   const read = (file) => {
     try {
-      return JSON.parse(readFileSync(join(root, 'atlas', file), 'utf8'));
+      return JSON.parse(text(file));
     } catch {
       return null;
     }
@@ -45,9 +58,9 @@ export function committedMap(root) {
   return { root, structure, statistics: read('statistics.json') ?? {}, page: read('page.json'), fileOf, boundaryOf };
 }
 
-/** `atlas explain <target> --json` in the checkout. */
-export function explainJson(root, target) {
-  const result = spawnSync(process.execPath, [CLI, 'explain', target, '--json'], { cwd: root, encoding: 'utf8' });
+/** `atlas explain <target> --json` in the checkout, with any more arguments given. */
+export function explainJson(root, target, more = []) {
+  const result = spawnSync(process.execPath, [CLI, 'explain', target, '--json', ...more], { cwd: root, encoding: 'utf8' });
   assert.equal(result.status, 0, result.stdout);
   return JSON.parse(result.stdout);
 }

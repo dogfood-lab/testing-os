@@ -1,6 +1,7 @@
 import { ENGINE } from '../adapter/engine.js';
 import { ERRORS } from '../adapter/errors.js';
 import { asLine, asText, capStrings } from './data.js';
+import { distanceWords } from './map.js';
 
 /**
  * What every answer carries (docs/atlas-sidecar.spec.md, "Every answer
@@ -96,14 +97,22 @@ export function freshnessSentences(snapshot, changed) {
   if (age === 'unknown') out.push(`Atlas: the map does not name the engine that made it, so it was made before maps recorded one; atlas_refresh re-maps the checkout with this engine (${ENGINE}).`);
   else if (age === 'older') out.push(`Atlas: the map was made by Atlas ${snapshot.engine}, an older engine than this one (${ENGINE}); atlas_refresh re-maps the checkout with this engine.`);
   else if (age === 'newer') out.push(`Atlas: the map was made by Atlas ${snapshot.engine}, newer than this engine (${ENGINE}); it may state facts this engine does not read.`);
+  const ref = snapshot.ref;
+  if (ref && !ref.treeCompared) {
+    out.push(`Atlas: this answer is from the map at ${ref.name} (${short(ref.commit)}); files are read at ${ref.name}, and this checkout's working tree was not compared.`);
+  }
   if (changed.length > 0) {
     const files = changed.length === 1 ? '1 file' : `${changed.length} files`;
-    out.push(`Atlas: ${files} in this answer changed after the map, so what the map says of ${changed.length === 1 ? 'it' : 'them'} is from before the change; atlas_refresh re-maps the checkout.`);
+    const them = changed.length === 1 ? 'it' : 'them';
+    out.push(ref && !ref.treeCompared
+      ? `Atlas: ${files} in this answer changed between the map's commit and ${ref.name}, so what the map says of ${them} is from before the change.`
+      : `Atlas: ${files} in this answer changed after the map, so what the map says of ${them} is from before the change; atlas_refresh re-maps the checkout.`);
   }
   return out;
 }
 
-function changeWords(entry) {
+function changeWords(entry, ref) {
+  if (ref) return `committed before ${ref.name}`;
   if (entry.committed && entry.uncommitted) return 'committed, and changed again uncommitted';
   return entry.committed ? 'committed' : 'uncommitted';
 }
@@ -121,17 +130,24 @@ const CHANGED_NAMED = 3;
 export function provenance({ repo = null, snapshot = null, head = null, changed = [] } = {}) {
   const atlas = { engine: ENGINE };
   const parts = [`Atlas ${ENGINE}`];
+  const ref = snapshot?.ref ?? null;
   if (snapshot) {
     atlas.map = { snapshot: snapshot.id, commit: snapshot.commit, date: snapshot.date, engine: snapshot.engine, engineAge: engineAge(snapshot.engine) };
     const by = snapshot.engine ? `made by Atlas ${snapshot.engine}` : 'made by an Atlas that did not record its version';
-    const name = snapshot.id === 'committed' ? 'map' : 'refresh';
-    parts.push(`${name} ${short(snapshot.commit)}, ${snapshot.date || 'undated'}, ${by}`);
+    const name = snapshot.id === 'committed' || ref ? 'map' : 'refresh';
+    // "map 3fa91c2 from origin/main, 4 commits ahead of this checkout"
+    const from = ref ? ` from ${ref.name}, ${distanceWords(ref)}` : '';
+    parts.push(`${name} ${short(snapshot.commit)}${from}, ${snapshot.date || 'undated'}, ${by}`);
+  }
+  if (ref) {
+    atlas.ref = { name: ref.name, commit: ref.commit, ahead: ref.ahead, behind: ref.behind, workingTreeCompared: ref.treeCompared === true };
   }
   if (repo) {
     atlas.checkout = { root: repo.root, rootFrom: repo.from, head, changed, changedTotal: changed.length };
     if (head) parts.push(`HEAD ${short(head)}`);
     if (changed.length > 0) {
-      const named = changed.slice(0, CHANGED_NAMED).map((entry) => `${entry.path} changed after the map (${changeWords(entry)})`);
+      const between = ref && !ref.treeCompared ? ref : null;
+      const named = changed.slice(0, CHANGED_NAMED).map((entry) => `${entry.path} changed after the map (${changeWords(entry, between)})`);
       const more = changed.length > CHANGED_NAMED ? ` and ${changed.length - CHANGED_NAMED} more files changed after the map` : '';
       parts.push(`${named.join('; ')}${more}`);
     }
@@ -205,6 +221,19 @@ export const PROVENANCE_SCHEMA = {
         engineAge: { type: 'string', enum: ['same', 'older', 'newer', 'unknown'] },
       },
       required: ['snapshot', 'commit', 'date', 'engine', 'engineAge'],
+    },
+    // The ref an answer was read at, when one was given: its commit, how
+    // far it is from the checkout, and whether the working tree was compared.
+    ref: {
+      type: 'object',
+      properties: {
+        name: { type: 'string' },
+        commit: { type: 'string' },
+        ahead: { type: ['integer', 'null'], minimum: 0 },
+        behind: { type: ['integer', 'null'], minimum: 0 },
+        workingTreeCompared: { type: 'boolean' },
+      },
+      required: ['name', 'commit', 'ahead', 'behind', 'workingTreeCompared'],
     },
     checkout: {
       type: 'object',

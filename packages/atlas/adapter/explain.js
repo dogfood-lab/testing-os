@@ -1,6 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { isAbsolute, join, posix, relative } from 'node:path';
 import { isOwnTest, isTestFile } from '../core/landings.js';
+import { isRefShaped } from '../sidecar/git.js';
+import { distanceWords, readSnapshotAt } from '../sidecar/map.js';
 import { formatFailure } from './errors.js';
 import { boundaryRoot, capitalize, collapse, count, cover, entryOrder, externalsLine, installed, list, pageFacts, readerFiles, readerItem, testsClause, under, worded } from './page.js';
 
@@ -50,14 +52,20 @@ function readJson(path) {
 function parseArgs(argv) {
   let json = false;
   let target = null;
-  for (const arg of argv) {
+  let ref = null;
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
     if (arg === '--json') json = true;
-    else if (arg.startsWith('--')) return { error: `atlas: unknown argument ${arg}` };
+    else if (arg === '--ref') {
+      ref = argv[i + 1];
+      if (!isRefShaped(ref)) return { error: 'atlas: --ref needs a ref, such as --ref origin/main' };
+      i += 1;
+    } else if (arg.startsWith('--')) return { error: `atlas: unknown argument ${arg}` };
     else if (target != null) return { error: `atlas: explain takes one path, got ${arg} as well` };
     else target = arg;
   }
   if (target == null) return { error: 'atlas: explain needs a path' };
-  return { json, target };
+  return { json, target, ref };
 }
 
 // A path is tried as the caller wrote it from where they stand, then as a
@@ -440,11 +448,19 @@ function labelsFor(ctx, facts) {
   return Object.fromEntries([...new Set(ids)].sort(cmp).map((part) => [part, ctx.shown(part)]));
 }
 
-function mapLine(map) {
+/**
+ * Where the answer came from, last: the map's commit and date, and, for a
+ * map read at a ref, that ref and how far it is from this checkout.
+ *
+ * @param {{ commit: string, generatedAt: string, source?: { ref?: { name: string, ahead: number|null, behind: number|null } } | null }} map
+ */
+export function mapLine(map) {
+  const source = map.source ?? null;
   const commit = map.commit.slice(0, 7);
   const date = map.generatedAt.slice(0, 10);
-  if (!commit) return date ? `Map from ${date}.` : 'The map does not say which commit it is from.';
-  return date ? `Map from commit ${commit}, ${date}.` : `Map from commit ${commit}.`;
+  const at = source?.ref ? `, read at ${source.ref.name}, ${distanceWords(source.ref)}` : '';
+  if (!commit) return date ? `Map from ${date}${at}.` : `The map does not say which commit it is from${at}.`;
+  return date ? `Map from commit ${commit}, ${date}${at}.` : `Map from commit ${commit}${at}.`;
 }
 
 // What a part imports and what imports it, at part grain, and what it could
@@ -670,7 +686,7 @@ function explainPart(ctx, found, map) {
  * @returns {{ ok: true, found: object, facts: object, lines: string[], ctx: object }
  *   | { ok: false, code: string, details: string[], whatToDo: string }}
  */
-export function explainTarget({ structure, statistics = {}, page = null }, { repo, prefix = '', target }) {
+export function explainTarget({ structure, statistics = {}, page = null }, { repo, prefix = '', target, source = null }) {
   const ctx = pageFacts({ structure, statistics: statistics ?? {} });
   const tried = candidates(repo, prefix, target);
   const found = locate(ctx, tried, target);
@@ -682,8 +698,44 @@ export function explainTarget({ structure, statistics = {}, page = null }, { rep
       whatToDo: 'check the path or the part name, or run atlas map if the file is new',
     };
   }
-  const { facts, lines } = explainFound(ctx, found, mapCommit(page, statistics, structure));
+  const { facts, lines } = explainFound(ctx, found, { ...mapCommit(page, statistics, structure), source });
+  if (source?.ref) facts.ref = { ahead: source.ref.ahead, behind: source.ref.behind, commit: source.ref.commit, name: source.ref.name };
   return { ok: true, ctx, found, facts: sortKeys(facts), lines };
+}
+
+/**
+ * The map explain and gaps answer from: atlas/ in the checkout, or, given a
+ * ref, the map that ref holds, read with git (sidecar/map.js). A failure is
+ * in the error shape, under the command's own no-map code where the map is
+ * missing or unreadable.
+ *
+ * @param {string} repo
+ * @param {string|null} ref
+ * @param {string} noMap the command's code for a missing map
+ * @returns {{ ok: true, structure: object, statistics: object|null, page: object|null, source: object|null }
+ *   | { ok: false, code: string, details: string[], whatToDo: string }}
+ */
+export function readAnswerMap(repo, ref, noMap) {
+  if (ref == null) {
+    const structure = readJson(join(repo, 'atlas', 'structure.json'));
+    if (!structure.value) {
+      return { ok: false, code: noMap, details: [structure.absent ? 'atlas/structure.json is absent' : 'atlas/structure.json is not valid JSON'], whatToDo: 'run atlas map and commit atlas/' };
+    }
+    return {
+      ok: true,
+      structure: structure.value,
+      statistics: readJson(join(repo, 'atlas', 'statistics.json')).value ?? null,
+      page: readJson(join(repo, 'atlas', 'page.json')).value ?? null,
+      source: null,
+    };
+  }
+  const read = readSnapshotAt(repo, ref);
+  if (!read.ok) {
+    const { code, details, whatToDo } = read.error;
+    return { ok: false, code: code.startsWith('ATLAS_SIDECAR_') ? noMap : code, details, whatToDo };
+  }
+  const { structure, statistics, page, ref: at } = read.snapshot;
+  return { ok: true, structure, statistics, page, source: { ref: at } };
 }
 
 /**
@@ -698,16 +750,13 @@ export function explainCommand(repo, prefix, argv) {
     process.stdout.write(`${args.error}\nexit 2\n`);
     return 2;
   }
-  const structure = readJson(join(repo, 'atlas', 'structure.json'));
-  if (!structure.value) {
-    process.stdout.write(formatFailure('ATLAS_EXPLAIN_NO_MAP', [
-      structure.absent ? 'atlas/structure.json is absent' : 'atlas/structure.json is not valid JSON',
-    ], { exitCode: 2, whatToDo: 'run atlas map and commit atlas/' }));
+  const map = readAnswerMap(repo, args.ref, 'ATLAS_EXPLAIN_NO_MAP');
+  if (!map.ok) {
+    process.stdout.write(formatFailure(map.code, map.details, { exitCode: 2, whatToDo: map.whatToDo }));
     return 2;
   }
-  const statistics = readJson(join(repo, 'atlas', 'statistics.json')).value ?? {};
-  const page = readJson(join(repo, 'atlas', 'page.json')).value ?? null;
-  const answer = explainTarget({ structure: structure.value, statistics, page }, { repo, prefix, target: args.target });
+  const { structure, page, source } = map;
+  const answer = explainTarget({ structure, statistics: map.statistics ?? {}, page }, { repo, prefix, target: args.target, source });
   if (!answer.ok) {
     process.stdout.write(formatFailure(answer.code, answer.details, { exitCode: 2, whatToDo: answer.whatToDo }));
     return 2;

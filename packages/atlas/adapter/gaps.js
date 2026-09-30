@@ -1,6 +1,7 @@
-import { existsSync, readFileSync } from 'node:fs';
-import { isAbsolute, join, posix, relative } from 'node:path';
+import { isAbsolute, posix, relative } from 'node:path';
+import { isRefShaped } from '../sidecar/git.js';
 import { formatFailure } from './errors.js';
+import { mapLine, readAnswerMap } from './explain.js';
 import { count, list } from './page.js';
 import { SHOWN, testGaps } from './test-gaps.js';
 import { testReachOf } from './test-reach.js';
@@ -12,28 +13,26 @@ import { testReachOf } from './test-reach.js';
  * Facts come first, then suggestions, each naming its rule, the facts that
  * triggered it and the source of what it suggests. Code gaps are ranked and
  * five are shown, with a count of the rest; hygiene items stand apart. It
- * never maps, writes nothing, and makes no network call.
+ * never maps, writes nothing, and makes no network call; given --ref, it
+ * answers from the map that ref holds, read with git.
  */
-
-function readJson(path) {
-  if (!existsSync(path)) return { absent: true };
-  try {
-    return { value: JSON.parse(readFileSync(path, 'utf8')) };
-  } catch {
-    return { invalid: true };
-  }
-}
 
 function parseArgs(argv) {
   let json = false;
   let target = null;
-  for (const arg of argv) {
+  let ref = null;
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
     if (arg === '--json') json = true;
-    else if (arg.startsWith('--')) return { error: `atlas: unknown argument ${arg}` };
+    else if (arg === '--ref') {
+      ref = argv[i + 1];
+      if (!isRefShaped(ref)) return { error: 'atlas: --ref needs a ref, such as --ref origin/main' };
+      i += 1;
+    } else if (arg.startsWith('--')) return { error: `atlas: unknown argument ${arg}` };
     else if (target != null) return { error: `atlas: gaps takes at most one path, got ${arg} as well` };
     else target = arg;
   }
-  return { json, target };
+  return { json, target, ref };
 }
 
 function clean(path) {
@@ -249,11 +248,12 @@ export function gapsLines(answer, { mapLine }) {
   return lines;
 }
 
-function mapLineOf(statistics, structure) {
-  const commit = String(statistics?.generatedFrom?.commit ?? structure.generatedFrom?.commit ?? '').slice(0, 7);
-  const date = String(statistics?.generatedAt ?? '').slice(0, 10);
-  if (!commit) return date ? `Map from ${date}.` : 'The map does not say which commit it is from.';
-  return date ? `Map from commit ${commit}, ${date}.` : `Map from commit ${commit}.`;
+function mapLineOf(statistics, structure, source) {
+  return mapLine({
+    commit: String(statistics?.generatedFrom?.commit ?? structure.generatedFrom?.commit ?? ''),
+    generatedAt: String(statistics?.generatedAt ?? ''),
+    source,
+  });
 }
 
 /**
@@ -268,14 +268,13 @@ export function gapsCommand(repo, prefix, argv, { repository = null } = {}) {
     process.stdout.write(`${args.error}\nexit 2\n`);
     return 2;
   }
-  const structure = readJson(join(repo, 'atlas', 'structure.json'));
-  if (!structure.value) {
-    process.stdout.write(formatFailure('ATLAS_GAPS_NO_MAP', [
-      structure.absent ? 'atlas/structure.json is absent' : 'atlas/structure.json is not valid JSON',
-    ], { exitCode: 2, whatToDo: 'run atlas map and commit atlas/' }));
+  const map = readAnswerMap(repo, args.ref, 'ATLAS_GAPS_NO_MAP');
+  if (!map.ok) {
+    process.stdout.write(formatFailure(map.code, map.details, { exitCode: 2, whatToDo: map.whatToDo }));
     return 2;
   }
-  const statistics = readJson(join(repo, 'atlas', 'statistics.json')).value ?? null;
+  const structure = { value: map.structure };
+  const { statistics, source } = map;
   let target = null;
   if (args.target != null) {
     target = locate(structure.value, candidates(repo, prefix, args.target));
@@ -285,6 +284,7 @@ export function gapsCommand(repo, prefix, argv, { repository = null } = {}) {
     }
   }
   const answer = gapsAnswer(structure.value, { statistics, repository, target });
-  process.stdout.write(args.json ? `${JSON.stringify(answer, null, 2)}\n` : `${gapsLines(answer, { mapLine: mapLineOf(statistics, structure.value) }).join('\n')}\n`);
+  const shown = source?.ref ? { ...answer, ref: { name: source.ref.name, commit: source.ref.commit, ahead: source.ref.ahead, behind: source.ref.behind } } : answer;
+  process.stdout.write(args.json ? `${JSON.stringify(shown, null, 2)}\n` : `${gapsLines(answer, { mapLine: mapLineOf(statistics, structure.value, source) }).join('\n')}\n`);
   return 0;
 }

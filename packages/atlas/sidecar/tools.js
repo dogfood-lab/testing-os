@@ -5,9 +5,9 @@ import { changesAnswer } from './changes-tool.js';
 import { checkChangeAnswer } from './check-change-tool.js';
 import { explainAnswer } from './explain-tool.js';
 import { unplainNames } from './data.js';
-import { changedFiles, checkoutState, mapHashes } from './freshness.js';
-import { head, topLevel } from './git.js';
-import { readCommittedMap } from './map.js';
+import { changedFiles, checkoutState, mapHashes, stateAt } from './freshness.js';
+import { blobAt, head, inHistory, REF_PATTERN, topLevel } from './git.js';
+import { readCommittedMap, readSnapshotAt } from './map.js';
 import { overviewAnswer } from './overview-tool.js';
 import { reachAnswer } from './reach-tool.js';
 import { createRefresher } from './refresh.js';
@@ -106,8 +106,24 @@ const GAPS_ANSWER = answerSchema({
   },
 });
 
-// A ref git reads: a commit, a branch, a tag, HEAD~3; never an option.
-const REF = '^[A-Za-z0-9._/~^@{}][A-Za-z0-9._/~^@{}-]*$';
+// Every tool that answers from a map may be asked to answer from the map a
+// ref holds, read with git, never checked out and never fetched.
+const REF_ARGUMENT = {
+  type: 'string',
+  minLength: 1,
+  maxLength: 200,
+  pattern: REF_PATTERN,
+  description: 'A ref this clone holds, such as origin/main, a tag or a commit: the answer comes from the Atlas map at that ref, '
+    + 'and the files it names are read at that ref. Nothing is fetched. Left out, the map in the checkout answers.',
+};
+
+// atlas_check_change compares the working tree with the map, so the map a ref
+// holds must be made from a commit this checkout holds.
+const CHECK_REF_ARGUMENT = {
+  ...REF_ARGUMENT,
+  description: 'A ref this clone holds whose Atlas map was made from a commit in the history of this checkout, such as the '
+    + 'default branch a feature branch started from: the working tree is compared with that map. Nothing is fetched.',
+};
 
 const DEFINED = [
   {
@@ -219,7 +235,7 @@ const DEFINED = [
           type: 'string',
           minLength: 1,
           maxLength: 200,
-          pattern: REF,
+          pattern: REF_PATTERN,
           description: 'A commit or ref whose tree holds an Atlas map, such as the base of a pull request.',
         },
       },
@@ -294,6 +310,8 @@ const DEFINED = [
     // It reads the changed files again itself, as they are and as the map
     // read them; the generic re-read beside the map's view would repeat it.
     rereadsItself: true,
+    // It compares the working tree with the map, whatever map answers.
+    readsTree: true,
     answer: (snapshot, repo, args) => checkChangeAnswer(snapshot, repo, args),
   },
   {
@@ -311,10 +329,11 @@ const DEFINED = [
 
 // Every tool that answers from a map takes the size arguments (full, part,
 // kind, cursor) and says in its description how its answers are cut.
+// Every tool but the refresh also takes a ref to answer from.
 const TOOLS = DEFINED.map((tool) => (tool.refresh ? tool : {
   ...tool,
   description: `${tool.description}${SIZE_NOTE}`,
-  inputSchema: { ...tool.inputSchema, properties: { ...tool.inputSchema.properties, ...SIZE_PROPERTIES } },
+  inputSchema: { ...tool.inputSchema, properties: { ...tool.inputSchema.properties, ref: tool.readsTree ? CHECK_REF_ARGUMENT : REF_ARGUMENT, ...SIZE_PROPERTIES } },
 }));
 
 // The order the specification lists the questions in, by how often the
@@ -366,11 +385,25 @@ export function createTools({ refresher = createRefresher() } = {}) {
     }
     const repo = repositoryFor(context);
     if (repo.error) return failed(provenance(), repo.error);
-    const read = snapshotFor(repo);
+    const ref = tool.refresh ? null : args.ref ?? null;
+    const read = ref ? readSnapshotAt(repo.root, ref) : snapshotFor(repo);
     if (tool.refresh) return refreshAnswer(refresher, repo, read.ok ? read.snapshot : null);
     if (!read.ok) return failed(provenance({ repo, head: head(repo.root) }), read.error);
     const { snapshot } = read;
-    const state = checkoutState(repo.root, snapshot.commit);
+    if (ref && tool.readsTree) {
+      // The working tree is compared with the map at the ref only when the
+      // checkout holds the commit that map was made from; otherwise what
+      // differs would mix this change with the commits the checkout lacks.
+      if (!inHistory(repo.root, snapshot.commit)) {
+        return failed(provenance({ repo, snapshot, head: head(repo.root) }), {
+          code: 'ATLAS_SIDECAR_MAP_FOREIGN',
+          details: [`${snapshot.label} was made from ${snapshot.commit.slice(0, 7)}, which is not in this checkout's history, and ${name} compares this checkout's working tree with the map`],
+          whatToDo: `ask ${name} without ref after atlas_refresh, or with a ref whose map was made from a commit this checkout holds; the other tools answer from ${ref} as it is`,
+        });
+      }
+      snapshot.ref.treeCompared = true;
+    }
+    const state = ref && !tool.readsTree ? stateAt(repo.root, snapshot.commit, snapshot.ref.commit) : checkoutState(repo.root, snapshot.commit);
     const result = tool.answer(snapshot, repo, args);
     if (!result.ok) return failed(provenance({ repo, snapshot, head: state.head }), result.error, unplainNames(snapshot));
     const known = mapHashes(snapshot.structure);
@@ -380,9 +413,11 @@ export function createTools({ refresher = createRefresher() } = {}) {
     // A file asked about that changed after the map is read again, and what
     // it does now is set beside what the map says it did.
     const asked = new Set(tool.rereadsItself ? [] : result.files);
-    const rereadable = changed.map((entry) => entry.path).filter((path) => asked.has(path) && existsSync(join(repo.root, path))).slice(0, REREAD_CAP);
+    // At a ref, a file is read as the ref holds it.
+    const present = (path) => (state.at ? blobAt(repo.root, state.at, path) != null : existsSync(join(repo.root, path)));
+    const rereadable = changed.map((entry) => entry.path).filter((path) => asked.has(path) && present(path)).slice(0, REREAD_CAP);
     if (rereadable.length > 0) {
-      for (const reading of reread(snapshot, repo, rereadable)) {
+      for (const reading of reread(snapshot, repo, rereadable, { at: state.at ?? null })) {
         const view = rereadFacts(snapshot, reading);
         result.answer.facts.push(...view.facts);
         result.answer.cannotSee.push(...view.cannotSee);
