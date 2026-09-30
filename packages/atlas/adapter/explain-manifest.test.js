@@ -47,6 +47,11 @@ describe('what explain says a file imports and reads', () => {
   it('names no importer of the manifest', () => {
     const result = spawnSync(process.execPath, [CLI, 'explain', 'package.json'], { cwd: root, encoding: 'utf8' });
     assert.equal(result.status, 0, result.stdout + result.stderr);
-    assert.ok(result.stdout.split('\n').includes('No file imports it.'), result.stdout);
+    const lines = result.stdout.split('\n');
+    assert.ok(!lines.some((line) => line.startsWith('Imported by')), result.stdout);
+    // JSON is not parsed for imports, so Atlas makes no claim either way
+    // about what imports it or what it imports (docs/atlas-production.spec.md,
+    // Part 1 item 5).
+    assert.ok(!lines.includes('No file imports it.'), result.stdout);
   });
 });

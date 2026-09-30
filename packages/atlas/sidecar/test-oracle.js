@@ -116,6 +116,17 @@ function checkExplain(map, answer, explained) {
         case 'door':
           assert.equal(explained.doors.isDoor, item, where);
           break;
+        case 'doorDetail': {
+          assert.deepEqual(item, explained.door, where);
+          // And explain --json states the map's own fields for the door.
+          const source = map.structure.doors.find((entry) => entry.file === item.file && entry.name === item.name);
+          assert.ok(source, where);
+          assert.deepEqual(item.triggers, source.triggers ?? [], where);
+          assert.deepEqual(item.permissions, source.permissions ?? [], where);
+          assert.deepEqual(item.sends, source.sends ?? {}, where);
+          assert.deepEqual(item.reach, source.reach ?? [], where);
+          break;
+        }
         case 'runBy':
         case 'builtBy':
         case 'checkedBy':

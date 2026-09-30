@@ -1159,6 +1159,88 @@ function doorSteps(ctx, door) {
   return steps;
 }
 
+/**
+ * The jobs of a workflow door as the map records them, in the order the
+ * workflow gives them: each step that runs a command, with the programs it
+ * runs and the tests it runs under which runner, and the files the job runs.
+ * A job whose steps only use actions runs no command the map records, so it
+ * is not among them. A job's runtime (its runner, environment and pinned
+ * versions) is a field a later engine adds beside these.
+ *
+ * @returns {Array<{ name: string, steps: object[], runs: object[] }>}
+ */
+function jobsOf(door) {
+  const jobs = new Map();
+  const job = (name) => {
+    if (!jobs.has(name)) jobs.set(name, { name, steps: [], runs: [] });
+    return jobs.get(name);
+  };
+  for (const command of door.commands ?? []) job(command.job).steps.push({ step: command.step, programs: [...(command.programs ?? [])] });
+  for (const test of door.tests ?? []) {
+    const step = job(test.job).steps.find((entry) => entry.step === test.step);
+    const entry = { runner: test.runner ?? null, files: test.files ?? null, ...(test.through ? { through: [...test.through] } : {}) };
+    if (step) step.tests = [...(step.tests ?? []), entry];
+  }
+  for (const run of door.runs ?? []) job(run.job).runs.push({ path: run.path, runKind: run.runKind ?? 'executes', ...(run.built ? { built: true } : {}) });
+  return [...jobs.values()];
+}
+
+// A step by the name the workflow gives it, or by its place in the job when
+// it has none: the map records an unnamed step by its index from 0.
+function stepName(step) {
+  return /^\d+$/.test(step) ? `the unnamed step ${Number(step) + 1}` : `"${step}"`;
+}
+
+function jobLine(job) {
+  const clauses = job.steps.map((step) => {
+    const runs = step.programs.length > 0 ? `runs ${list(step.programs)}` : 'runs no program the map can name';
+    const runners = [...new Set((step.tests ?? []).map((entry) => entry.runner).filter(Boolean))];
+    return `${stepName(step.step)} ${runs}${runners.length > 0 ? `, its tests under ${list(runners)}` : ''}`;
+  });
+  const files = (kind) => job.runs.filter((run) => run.runKind === kind && !run.built).map((run) => run.path);
+  const built = job.runs.filter((run) => run.built).map((run) => run.path);
+  const ran = [['runs', files('executes')], ['builds', built], ['checks', files('checks')], ['packs', files('packs')]]
+    .filter(([, paths]) => paths.length > 0)
+    .map(([verb, paths]) => `${verb} ${runsShown(paths)}`);
+  if (ran.length > 0) clauses.push(`the job ${list(ran)}`);
+  return `Job \`${job.name}\`: ${clauses.length > 0 ? clauses.join('; ') : 'no step runs a command the map records'}.`;
+}
+
+/**
+ * One workflow door, as atlas explain states it for its file: when it
+ * starts, what it runs, reaches, writes and sends (the sentences the page
+ * gives the door it follows), each job with the commands its steps run, and
+ * the permissions it asks for by name. The facts are the map's own fields.
+ *
+ * @param {object} ctx the page's reading of the map
+ * @param {object} door a workflow door of the map
+ * @returns {{ facts: object, lines: string[] }}
+ */
+export function doorDetail(ctx, door) {
+  if (door.parseError) return { facts: { file: door.file, name: door.name, parseError: true }, lines: [] };
+  const jobs = jobsOf(door);
+  const permissions = [...(door.permissions ?? [])];
+  const when = triggerPhrases(door);
+  const lines = [
+    when.length > 0 ? `${capitalize(when.join('; '))}.` : 'Nothing this map can read starts it.',
+    ...doorSteps(ctx, door),
+    ...jobs.map(jobLine),
+    permissions.length > 0 ? `It asks for the permissions ${list(permissions.map((permission) => `\`${permission}\``))}.` : 'It asks for no permission by name.',
+  ];
+  return {
+    facts: {
+      file: door.file,
+      jobs,
+      name: door.name,
+      permissions,
+      reach: (door.reach ?? []).map((entry) => ({ ...entry })),
+      sends: structuredClone(door.sends ?? {}),
+      triggers: structuredClone(door.triggers ?? []),
+    },
+    lines,
+  };
+}
+
 // An identifier read as words: loadGlobalPolicy is "load global policy".
 export function words(identifier) {
   // An identifier is written as the code spells it, in code style: a reader

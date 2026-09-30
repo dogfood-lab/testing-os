@@ -1,10 +1,11 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { isAbsolute, join, posix, relative } from 'node:path';
+import { isCodePath } from '../core/languages.js';
 import { isOwnTest, isTestFile } from '../core/landings.js';
 import { isRefShaped } from '../sidecar/git.js';
 import { distanceWords, EXPORTED, newerUpstream, noMapAdvice, readSnapshotAt, upstreamMap } from '../sidecar/map.js';
 import { formatFailure } from './errors.js';
-import { boundaryRoot, capitalize, collapse, count, cover, entryOrder, externalsLine, installed, list, pageFacts, readerFiles, readerItem, testsClause, under, worded } from './page.js';
+import { boundaryRoot, capitalize, collapse, count, cover, doorDetail, entryOrder, externalsLine, installed, list, pageFacts, readerFiles, readerItem, testsClause, under, worded } from './page.js';
 
 /**
  * atlas explain: what one file, one directory or one part is in the system,
@@ -150,16 +151,20 @@ function targetText(ctx, target) {
   return target.startsWith('@') ? `a built chunk of ${ctx.shown(target.slice(1))}` : target;
 }
 
-function fileImportLines(ctx, own) {
+// A file in a language Atlas does not parse for imports (a workflow, a
+// configuration file, prose) is never said to import nothing or to be
+// imported by nothing: Atlas did not read it for that.
+function fileImportLines(ctx, own, parsed) {
   const lines = [];
   const shown = (targets) => shownList(targets.map((target) => targetText(ctx, target)));
   if (own.parseError) lines.push('It could not be parsed, so what it imports is not known.');
   else if (own.importsFiles.length > 0) lines.push(`Imports ${count(own.importsFiles.length, 'file')}: ${shown(own.importsFiles)}.`);
   if (own.reexportsAll.length > 0) lines.push(`Re-exports everything from ${shown(own.reexportsAll)}.`);
-  if (!own.parseError && own.importsFiles.length + own.reexportsAll.length === 0) lines.push('Imports no file in this repository.');
+  if (parsed && !own.parseError && own.importsFiles.length + own.reexportsAll.length === 0) lines.push('Imports no file in this repository.');
   const importers = own.importedByFiles.length;
-  if (importers === 0) lines.push('No file imports it.');
-  else {
+  if (importers === 0) {
+    if (parsed) lines.push('No file imports it.');
+  } else {
     const tests = own.importedByTestFiles;
     const which = tests === 0 ? '' : tests === importers ? `, ${importers === 1 ? 'a test' : 'all of them tests'}` : `, ${tests} of them ${tests === 1 ? 'a test' : 'tests'}`;
     lines.push(`Imported by ${count(importers, 'file')}${which}: ${shownList(own.importedByFiles)}.`);
@@ -587,6 +592,13 @@ function explainFound(ctx, found, map) {
   const doors = doorFacts(ctx, found, part?.part ?? null);
   facts.doors = { builtBy: doors.builtBy, checkedBy: doors.checkedBy, isDoor: doors.self?.name ?? null, onPath: doors.onPath, runBy: doors.runBy };
   lines.push(doorLine(doors, part?.partLabel ?? null, found.kind));
+  // A workflow file is its door: what starts it, what it runs, reaches and
+  // sends, its jobs and the permissions it asks for, as the page states them.
+  if (doors.self) {
+    const detail = doorDetail(ctx, doors.self);
+    facts.door = detail.facts;
+    lines.push(...detail.lines);
+  }
 
   const place = placeFacts(ctx, found);
   Object.assign(facts, place);
@@ -595,7 +607,7 @@ function explainFound(ctx, found, map) {
   if (found.kind === 'file') {
     const own = fileImports(ctx, found.path);
     Object.assign(facts, own);
-    lines.push(...fileImportLines(ctx, own));
+    lines.push(...fileImportLines(ctx, own, isCodePath(found.path)));
   }
 
   if (part) {
