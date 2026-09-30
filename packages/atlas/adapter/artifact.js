@@ -647,9 +647,40 @@ const LOOP_HEADS = new Set(['for', 'select', 'case', 'function']);
 // Builtins that steer the shell and run nothing.
 const STEERING = new Set(['break', 'continue', 'return', 'exit', 'set', 'shift', 'export', 'unset', 'local', 'readonly', 'declare', 'true', 'false', ':']);
 
+// Shell arithmetic runs nothing, and a name inside it is a variable: `$(( ))`
+// becomes a literal and a `(( ))` command becomes the no-op, before the text
+// is split into commands. It is arithmetic only when it closes with `))`;
+// `$((cd site && make) | tee log)` is a subshell in a command substitution
+// and is left to be read.
+function withoutArithmetic(text) {
+  let out = '';
+  let i = 0;
+  while (i < text.length) {
+    const expansion = text.startsWith('$((', i);
+    const command = !expansion && text.startsWith('((', i) && /(^|[\n;&|]|\b(if|while|until|elif|then|do|else|!))\s*$/.test(out);
+    if (expansion || command) {
+      const open = expansion ? i + 1 : i;
+      let depth = 0;
+      let close = open;
+      for (; close < text.length; close += 1) {
+        if (text[close] === '(') depth += 1;
+        else if (text[close] === ')' && (depth -= 1) === 0) break;
+      }
+      if (close < text.length && text[close - 1] === ')') {
+        out += expansion ? '0' : ':';
+        i = close + 1;
+        continue;
+      }
+    }
+    out += text[i];
+    i += 1;
+  }
+  return out;
+}
+
 export function stepPrograms(text) {
   const programs = new Set();
-  for (const words of commandLines(text ?? '')) {
+  for (const words of commandLines(withoutArithmetic(text ?? ''))) {
     let i = 0;
     while (i < words.length && (SHELL_WORDS.has(words[i]) || /^[A-Za-z_][A-Za-z0-9_]*\+?=/.test(words[i]))) i += 1;
     const first = words[i];

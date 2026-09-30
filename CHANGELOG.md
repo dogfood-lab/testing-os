@@ -17,6 +17,9 @@ Atlas answers from where it is asked: from a fetched ref, from a tree exported w
 - **"not a git repository" is `ATLAS_NOT_A_REPOSITORY`.** `init`, `map`, `check`, `explain`, `gaps` and `diff` printed a bare usage line; they now print the one error shape, exit 2 as before.
 - **`explain` no longer says "Imports no file in this repository." or "No file imports it." of a file Atlas does not parse for imports,** such as a workflow or a manifest.
 
+### Fixed
+- **Shell arithmetic names no program.** A step's script is kept in the map as the programs it runs. A variable inside `$(( ))` or a `(( ))` command was read as one, so a retry loop's `sleep $((attempt * 5))` recorded a program called `attempt`, and the new workflow explain would have printed "runs attempt". Arithmetic is now set aside before the script is split into commands; a subshell inside a command substitution, which also opens with two parentheses, is still read. Maps change only where a step used arithmetic.
+
 ## [1.23.5] — 2026-09-29
 
 A stub ingest can no longer write into this repository's evidence store, and the Codecov rollout tool carries what moving 56 fleet repositories to recipe v2 taught it.
