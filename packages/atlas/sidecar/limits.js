@@ -158,6 +158,20 @@ function doorSends(doors) {
   return out;
 }
 
+// The door checks a door's map records it could not judge: a runtime only a
+// run can know (no setup step, lts/*, an expression, a self-hosted runner)
+// or a lock it cannot read.
+export function doorChecksUnjudged(doors) {
+  const named = [];
+  for (const door of doors) {
+    for (const entry of door.unresolvedChecks ?? []) {
+      named.push({ door: door.name, rule: entry.rule, job: entry.job, step: entry.step, ...(entry.tool ? { tool: entry.tool } : {}), ...(entry.lock ? { lock: entry.lock } : {}), why: entry.why });
+    }
+  }
+  if (named.length === 0) return [];
+  return [{ basis: 'unresolved', what: 'check', grain: 'door', count: named.length, named, reason: 'a runtime only a run can know, or a lock Atlas cannot read' }];
+}
+
 function boundariesNamed(structure, parts) {
   const wanted = new Set(parts);
   return (structure.boundaries ?? []).filter((boundary) => wanted.has(boundary.name)).sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
@@ -190,7 +204,7 @@ export function cannotSeeFor(snapshot, { files = [], parts = [], doors = [] }) {
       ...userData(boundary, 'read'),
     );
   }
-  out.push(...untrackedWrites(structure, files), ...rawUrlReads(snapshot, files), ...httpCalls(structure, parts), ...doorSends(doors));
+  out.push(...untrackedWrites(structure, files), ...rawUrlReads(snapshot, files), ...httpCalls(structure, parts), ...doorSends(doors), ...doorChecksUnjudged(doors));
   return out;
 }
 
@@ -253,6 +267,7 @@ export function cannotSeeSentence(entry, shown = (name) => name) {
     if (entry.what === 'file') return `Atlas cannot see what ${count(entry.count, 'file')} import${entry.count === 1 ? 's' : ''}: the parser cannot read ${entry.count === 1 ? 'it' : 'them'}${why}.`;
     if (entry.what === 'import') return `Atlas cannot see where ${count(entry.count, 'import')}${within} ${entry.count === 1 ? 'leads' : 'lead'}: ${entry.count === 1 ? 'it does' : 'they do'} not resolve${why}.`;
     if (entry.what === 'command') return `Atlas cannot see ${count(entry.count, 'command')}${within} built at run time${why}.`;
+    if (entry.what === 'check') return `Atlas cannot judge ${count(entry.count, 'door check')}: ${entry.count === 1 ? 'it needs' : 'they need'} a runtime only a run can know, or a lock Atlas cannot read.`;
     return `Atlas cannot see the ${count(entry.count, 'path')}${within} built at run time to ${entry.what}.`;
   }
   const places = entry.places?.length > 0

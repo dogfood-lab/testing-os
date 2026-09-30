@@ -340,6 +340,23 @@ function installsHere(run) {
   return words.length === 1;
 }
 
+/**
+ * The directories the programs of a door's steps run in, an npm command's
+ * --prefix followed: where a changed lock or manifest touches the door.
+ */
+export function workingDirs(steps) {
+  const dirs = new Set();
+  for (const list of steps.values()) {
+    for (const step of list) {
+      for (const run of step.invocations) {
+        const dir = run.program === 'npm' ? installDir(run) : run.dir;
+        if (dir != null) dirs.add(dir);
+      }
+    }
+  }
+  return [...dirs].sort();
+}
+
 // The directory an npm command runs in, after --prefix.
 function installDir(run) {
   let dir = run.dir;

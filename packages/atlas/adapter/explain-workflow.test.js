@@ -14,8 +14,8 @@ import { createTools } from '../sidecar/tools.js';
  * what it runs, reaches and sends, each job with the commands its steps run,
  * the permissions it asks for by name), and never says of a file Atlas does
  * not parse for imports that it imports nothing or that nothing imports it.
- * The runtime of a door (its runner, environment and pinned versions) is a
- * later slice's, and nothing is said of it.
+ * Each job line says the runtime the job declares (Part 2): its runner and
+ * the platform it means.
  */
 
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
@@ -41,7 +41,7 @@ function explain(...args) {
 }
 
 describe('atlas explain on a workflow file', () => {
-  it('prints its door: triggers, what it runs and sends, each job, and permissions by name', () => {
+  it('prints its door: triggers, what it runs and sends, each job with its runtime, and permissions by name', () => {
     const lines = explain(WORKFLOW);
     assert.equal(lines[0], '.github/workflows/release.yml is in workflows (config).');
     assert.equal(lines[1], 'It is the door Release.');
@@ -49,13 +49,12 @@ describe('atlas explain on a workflow file', () => {
       'When a tag matching `v*` is pushed; or by hand.',
       'The workflow runs lib/core.test.js and lib/report.js in lib.',
       'It publishes to npm.',
-      'Job `test`: the unnamed step 2 runs node, its tests under node --test; the job runs lib/core.test.js.',
-      'Job `publish`: "Build the report" runs node; "Publish to npm" runs npm; the job runs lib/report.js.',
+      'Job `test` runs on ubuntu-latest (linux-x64, glibc): the unnamed step 2 runs node, its tests under node --test; the job runs lib/core.test.js.',
+      'Job `publish` runs on ubuntu-latest (linux-x64, glibc): "Build the report" runs node; "Publish to npm" runs npm; the job runs lib/report.js.',
       'It asks for the permissions `contents:write` and `id-token:write`.',
     ]) assert.ok(lines.includes(line), `${line}\n--- in ---\n${lines.join('\n')}`);
     assert.ok(!lines.includes('Imports no file in this repository.'));
     assert.ok(!lines.includes('No file imports it.'));
-    assert.ok(!lines.some((line) => /ubuntu|runs-on|runner/i.test(line)), 'nothing is said of the runtime yet');
   });
 
   it('states in --json only what the map records of the door', () => {
@@ -68,6 +67,9 @@ describe('atlas explain on a workflow file', () => {
     assert.deepEqual(door.reach, source.reach);
     assert.deepEqual(door.jobs.map((job) => job.name), ['test', 'publish']);
     for (const job of door.jobs) {
+      const { name, ...runtime } = source.jobs.find((entry) => entry.name === job.name);
+      assert.equal(name, job.name);
+      assert.deepEqual(job.runtime, runtime);
       for (const step of job.steps) {
         assert.ok(source.commands.some((command) => command.job === job.name && command.step === step.step && JSON.stringify(command.programs) === JSON.stringify(step.programs)), JSON.stringify(step));
         for (const test of step.tests ?? []) assert.ok(source.tests.some((entry) => entry.job === job.name && entry.step === step.step && entry.runner === test.runner), JSON.stringify(test));
@@ -86,14 +88,15 @@ describe('atlas explain on a workflow file', () => {
 
   it('reads the programs from the step text a map made before 1.22.0 kept', () => {
     // Such a map kept each step's script where a map made now keeps the
-    // programs it runs (adapter/artifact.js stepPrograms).
+    // programs it runs (adapter/artifact.js stepPrograms), and no runtime.
     const older = mappedRepository(FIXTURE, { prefix: 'atlas-explain-workflow-older-' });
     try {
       const path = join(older, 'atlas', 'structure.json');
       const structure = JSON.parse(readFileSync(path, 'utf8'));
       const door = structure.doors.find((entry) => entry.file === WORKFLOW);
       const texts = { 1: 'node --test lib/core.test.js', 'Build the report': 'node lib/report.js', 'Publish to npm': 'npm publish --provenance' };
-      door.commands = door.commands.map(({ programs, ...command }) => ({ ...command, text: texts[command.step] }));
+      door.commands = door.commands.map(({ programs, dir, ...command }) => ({ ...command, text: texts[command.step] }));
+      delete door.jobs;
       writeFileSync(path, `${JSON.stringify(structure, null, 2)}\n`);
       const result = spawnSync(process.execPath, [CLI, 'explain', WORKFLOW], { cwd: older, encoding: 'utf8' });
       const lines = result.stdout.trimEnd().split('\n');
@@ -111,7 +114,7 @@ describe('atlas explain on a workflow file', () => {
     const [detail] = answer.facts.filter((entry) => entry.fact === 'doorDetail');
     assert.equal(detail.basis, 'declared');
     assertInventsNothing('atlas_explain', answer, committedMap(repo), { explained: explainJson(repo, WORKFLOW) });
-    assert.match(result.content[0].text, /Job `publish`: "Build the report" runs node; "Publish to npm" runs npm; the job runs lib\/report\.js\./);
+    assert.match(result.content[0].text, /Job `publish` runs on ubuntu-latest \(linux-x64, glibc\): "Build the report" runs node; "Publish to npm" runs npm; the job runs lib\/report\.js\./);
     assert.doesNotMatch(result.content[0].text, /Imports no file in this repository|No file imports it/);
   });
 });

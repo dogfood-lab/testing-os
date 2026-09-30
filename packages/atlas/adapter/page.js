@@ -1,4 +1,5 @@
 import { posix } from 'node:path';
+import { findingRemedy, findingSentence } from '../core/door-checks.js';
 import { isSourcePath } from '../core/history.js';
 import { isTestFile, isTestMaterial, ownTestPair } from '../core/landings.js';
 import { isCodePath, languageOf } from '../core/languages.js';
@@ -1164,11 +1165,11 @@ function doorSteps(ctx, door) {
  * The jobs of a workflow door as the map records them, in the order the
  * workflow gives them: each step that runs a command, with the programs it
  * runs and the tests it runs under which runner, and the files the job runs.
- * A job whose steps only use actions runs no command the map records, so it
- * is not among them. A job's runtime (its runner, environment and pinned
- * versions) is a field a later engine adds beside these.
+ * Each job carries the runtime it declares (its runner legs, environment and
+ * setup pins), where the map records one; a map made before 1.24.0 records
+ * none, and a job whose steps only use actions is then not among them.
  *
- * @returns {Array<{ name: string, steps: object[], runs: object[] }>}
+ * @returns {Array<{ name: string, steps: object[], runs: object[], runtime?: object }>}
  */
 function jobsOf(door) {
   const jobs = new Map();
@@ -1176,6 +1177,7 @@ function jobsOf(door) {
     if (!jobs.has(name)) jobs.set(name, { name, steps: [], runs: [] });
     return jobs.get(name);
   };
+  for (const { name, ...runtime } of door.jobs ?? []) job(name).runtime = structuredClone(runtime);
   // A map made before 1.22.0 kept a step's script, not its programs; they
   // are read from it as a map made now records them.
   for (const command of door.commands ?? []) job(command.job).steps.push({ step: command.step, programs: command.programs ? [...command.programs] : stepPrograms(command.text) });
@@ -1206,7 +1208,61 @@ function jobLine(job) {
     .filter(([, paths]) => paths.length > 0)
     .map(([verb, paths]) => `${verb} ${runsShown(paths)}`);
   if (ran.length > 0) clauses.push(`the job ${list(ran)}`);
-  return `Job \`${job.name}\`: ${clauses.length > 0 ? clauses.join('; ') : 'no step runs a command the map records'}.`;
+  const runtime = job.runtime ? ` ${runtimePhrase(job.runtime)}` : '';
+  return `Job \`${job.name}\`${runtime}: ${clauses.length > 0 ? clauses.join('; ') : 'no step runs a command the map records'}.`;
+}
+
+const SETUP_TOOLS = { 'actions/setup-node': 'Node', 'actions/setup-python': 'Python' };
+
+/**
+ * What a job's runtime declares, as words: the runners it runs on and the
+ * platform each means, the versions its setup steps pin, and its
+ * environment; a value only a run can know is said to be not resolved, with
+ * why.
+ */
+export function runtimePhrase(runtime) {
+  const legs = runtime.runsOn.map((leg) => {
+    const labels = leg.labels.length > 0 ? leg.labels.join(' ') : 'no runner it names';
+    if (!leg.platform) return `${labels} (${leg.unresolved}, not resolved)`;
+    return `${labels} (${leg.platform.os}-${leg.platform.cpu}${leg.platform.libc ? `, ${leg.platform.libc}` : ''})`;
+  });
+  const parts = [`runs on ${legs.join(' or ')}`];
+  for (const entry of runtime.setup ?? []) {
+    const tool = SETUP_TOOLS[entry.uses] ?? entry.uses;
+    const from = entry.version == null && entry.versionFile != null ? ` from ${entry.versionFile}` : '';
+    if (entry.ranges) parts.push(`pins ${tool} ${list(entry.ranges.map((range) => range.from))}${from}`);
+    else {
+      const pinned = entry.version ?? entry.fileSays ?? entry.versionFile ?? 'by no version';
+      const why = entry.unresolved === pinned ? 'not resolved offline' : `${entry.unresolved}, not resolved`;
+      parts.push(`pins ${tool} ${pinned}${entry.fileSays != null ? from : ''} (${why})`);
+    }
+  }
+  if (runtime.environment?.name) parts.push(`deploys to the environment ${runtime.environment.name}`);
+  else if (runtime.environment) parts.push(`names an environment (${runtime.environment.unresolved}, not resolved)`);
+  return list(parts);
+}
+
+// A step by its name, or by its place in the job when it has none.
+function checkedStep(entry) {
+  return `job \`${entry.job}\`, ${stepName(entry.step)}`;
+}
+
+/**
+ * The findings a door's checks recorded, and what they could not judge, as
+ * lines: each finding in its sentence, the lines it was read from and what to
+ * do; each check not judged with why.
+ */
+export function findingLines(door) {
+  const lines = [];
+  for (const finding of door.findings ?? []) {
+    const read = (finding.lines ?? []).map((entry) => (entry.line != null ? `${entry.file}:${entry.line}` : entry.file));
+    lines.push(`Finding ${finding.rule}, a notice: ${findingSentence(door, finding)}${read.length > 0 ? ` Read from ${list(read)}.` : ''} To do: ${findingRemedy(finding)}.`);
+  }
+  for (const entry of door.unresolvedChecks ?? []) {
+    const what = entry.tool ?? entry.lock ?? entry.manifest ?? 'the step';
+    lines.push(`Not judged by ${entry.rule}: ${what} in ${checkedStep(entry)}, since ${entry.why}.`);
+  }
+  return lines;
 }
 
 /**
@@ -1229,16 +1285,19 @@ export function doorDetail(ctx, door) {
     ...doorSteps(ctx, door),
     ...jobs.map(jobLine),
     permissions.length > 0 ? `It asks for the permissions ${list(permissions.map((permission) => `\`${permission}\``))}.` : 'It asks for no permission by name.',
+    ...findingLines(door),
   ];
   return {
     facts: {
       file: door.file,
+      ...(door.findings?.length > 0 ? { findings: door.findings.map((finding) => ({ ...structuredClone(finding), sentence: findingSentence(door, finding), remedy: findingRemedy(finding) })) } : {}),
       jobs,
       name: door.name,
       permissions,
       reach: (door.reach ?? []).map((entry) => ({ ...entry })),
       sends: structuredClone(door.sends ?? {}),
       triggers: structuredClone(door.triggers ?? []),
+      ...(door.unresolvedChecks?.length > 0 ? { unresolvedChecks: structuredClone(door.unresolvedChecks) } : {}),
     },
     lines,
   };

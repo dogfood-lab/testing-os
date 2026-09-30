@@ -7,7 +7,10 @@ import { ignoredNotice, readBoundaryFile } from './boundary-file.js';
 import { changesSince } from './changes.js';
 import { compareArtifacts } from './check.js';
 import { diffAgainstBase, diffJson, diffMarkdown, readBaseMap } from './diff.js';
-import { formatFailure } from './errors.js';
+import semver from 'semver';
+import { FINDING_CODES, findingRemedy, findingSentence } from '../core/door-checks.js';
+import { ENGINE } from './engine.js';
+import { formatFailure, formatNotice } from './errors.js';
 import { explainCommand } from './explain.js';
 import { gapsCommand } from './gaps.js';
 import { initCommand } from './init.js';
@@ -24,7 +27,7 @@ import { exportedRoot } from '../sidecar/map.js';
 export function main(argv, cwd) {
   if (argv[0] === 'init') return initAt(cwd, argv.slice(1));
   if (argv[0] === 'map') return mapCommand(cwd, argv.slice(1));
-  if (argv[0] === 'check') return checkCommand(cwd);
+  if (argv[0] === 'check') return checkCommand(cwd, argv.slice(1));
   if (argv[0] === 'explain') return explainAt(cwd, argv.slice(1));
   if (argv[0] === 'gaps') return gapsAt(cwd, argv.slice(1));
   if (argv[0] === 'diff') return diffCommand(cwd, argv.slice(1));
@@ -195,7 +198,10 @@ export function writeMap(dir, { artifact, statistics, page }) {
   writeArtifactSync(join(dir, 'page.json'), page.json);
 }
 
-export function checkCommand(cwd) {
+export function checkCommand(cwd, argv = []) {
+  const unknown = argv.find((arg) => arg !== '--strict');
+  if (unknown !== undefined) return usage(`atlas: unknown argument ${unknown}; check takes --strict`);
+  const strict = argv.includes('--strict');
   const repo = repoRoot(cwd);
   if (!repo) return notARepository(cwd, 'check');
   if (!existsSync(join(repo, 'atlas'))) {
@@ -230,10 +236,13 @@ export function checkCommand(cwd) {
   }
   const mapped = mapRepository({ repoPath: repo, boundaries: forCore(boundary.boundaries) });
   const current = buildArtifact(mapped, head(repo) ?? '');
+  // What the check says beside its verdict: the door checks' findings,
+  // computed from the tree as it is now, and a map an older engine made.
+  const notices = checkNotices(committed, current);
   const failure = compareArtifacts(committed, current, repo);
   if (failure) {
     process.stdout.write(formatFailure(failure.code, failure.details));
-    return 1;
+    return withNotices(notices, 1, strict);
   }
   const statisticsPath = join(repo, 'atlas', 'statistics.json');
   if (existsSync(statisticsPath)) {
@@ -242,11 +251,43 @@ export function checkCommand(cwd) {
       process.stdout.write(formatFailure('ATLAS_STATISTICS_UNDATED', [problem], {
         whatToDo: 'run atlas map and commit atlas/',
       }));
-      return 1;
+      return withNotices(notices, 1, strict);
     }
   }
   process.stdout.write('atlas check\n  boundaries match the committed map\n');
-  return 0;
+  return withNotices(notices, 0, strict);
+}
+
+/**
+ * The notices of a check (docs/atlas-production.spec.md, Part 4): each
+ * finding of a door check on the tree now, and the engine notice when the
+ * committed map was made by an older Atlas or carries no stamp. Each is in
+ * the error shape, without an exit line.
+ */
+function checkNotices(committed, current) {
+  const out = [];
+  const made = typeof committed.engine === 'string' ? committed.engine : null;
+  if (made == null || (semver.valid(made) && semver.valid(ENGINE) && semver.lt(made, ENGINE))) {
+    const said = made == null ? `the map carries no engine stamp; this is Atlas ${ENGINE}` : `the map was made by Atlas ${made}; this is ${ENGINE}`;
+    out.push(formatNotice('ATLAS_MAP_ENGINE_OLDER', [said], 'run atlas map and commit atlas/'));
+  }
+  for (const door of current.doors ?? []) {
+    for (const finding of door.findings ?? []) {
+      const read = (finding.lines ?? []).map((entry) => (entry.line != null ? `${entry.file}:${entry.line}` : entry.file));
+      out.push(formatNotice(FINDING_CODES[finding.rule], [findingSentence(door, finding), ...(read.length > 0 ? [`read from ${read.join(', ')}`] : [])], findingRemedy(finding)));
+    }
+  }
+  return out;
+}
+
+// Prints the notices after the verdict. They leave the exit code as it is,
+// unless --strict makes any notice fail the check.
+function withNotices(notices, code, strict) {
+  if (notices.length === 0) return code;
+  process.stdout.write(`\nNotices\n${notices.join('')}`);
+  if (!strict || code !== 0) return code;
+  process.stdout.write(`--strict: ${notices.length === 1 ? 'a notice fails' : `${notices.length} notices fail`} the check\nexit 1\n`);
+  return 1;
 }
 
 /**

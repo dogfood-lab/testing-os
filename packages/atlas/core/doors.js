@@ -5,7 +5,7 @@ import { parse, parseDocument } from 'yaml';
 import { better, cleanDir, commandLines, readCommands, readContainer, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
 import { godotProjects } from './godot.js';
 import { isTestFile } from './landings.js';
-import { checkDoor } from './door-checks.js';
+import { checkDoor, workingDirs } from './door-checks.js';
 import { jobRuntime } from './runtime.js';
 import { runsAProgram } from './step-programs.js';
 import { storedText } from './text.js';
@@ -74,6 +74,20 @@ export function mapDoors({ repoPath, tracked, spawned, commands = [], builtFrom,
     .sort();
   for (const file of actions) doors.push(readDoor(repoPath, file, repo, actionAsWorkflow));
   return doors;
+}
+
+/**
+ * The workflow doors of a working tree with their runtime and what the door
+ * checks find on them (core/door-checks.js), read from the files as they are
+ * now and nothing else: no import is parsed and no reach is walked, so it
+ * answers in the time the workflows take to read. What a step runs is read
+ * as a map reads it, through npm run scripts, --prefix and cd.
+ *
+ * @param {{ repoPath: string, tracked: Set<string> }} input
+ * @returns {object[]} the workflow doors, each as mapDoors reads it
+ */
+export function doorChecksNow({ repoPath, tracked }) {
+  return mapDoors({ repoPath, tracked }).filter((door) => !door.kind && !door.parseError);
 }
 
 /**
@@ -605,6 +619,9 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
     ...(runtime ? { jobs: runtimes } : {}),
     ...(checked?.findings.length > 0 ? { findings: checked.findings } : {}),
     ...(checked?.unresolved.length > 0 ? { unresolvedChecks: checked.unresolved } : {}),
+    // Read by sidecar/check-change-tool.js, which a changed lock or manifest
+    // in one of them touches; adapter/artifact.js does not carry it.
+    ...(runtime ? { workingDirs: workingDirs(stepsByJob) } : {}),
     runs: recorded.kept,
     runsCount: recorded.count,
     checksCount: recorded.checks,

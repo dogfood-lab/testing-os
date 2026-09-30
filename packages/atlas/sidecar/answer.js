@@ -315,7 +315,7 @@ export const CANNOT_SEE_SCHEMA = {
   type: 'object',
   properties: {
     basis: { type: 'string', enum: ['unresolved', 'outside'] },
-    what: { type: 'string', enum: ['import', 'read', 'write', 'command', 'file', 'call', 'dispatch'] },
+    what: { type: 'string', enum: ['import', 'read', 'write', 'command', 'file', 'call', 'dispatch', 'check'] },
     grain: { type: 'string', enum: ['file', 'part', 'door'] },
     count: { type: 'integer', minimum: 0 },
     where: { type: 'string', enum: [...WHERES] },

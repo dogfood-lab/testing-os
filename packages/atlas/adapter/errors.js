@@ -28,7 +28,22 @@ export const ERRORS = {
   ATLAS_SIDECAR_REFRESH_FAILED: 'The refresh could not map the checkout.',
   ATLAS_SIDECAR_CURSOR_STALE: 'The cursor was given for another map than the one answering now.',
   ATLAS_SIDECAR_TOO_LARGE: 'The answer does not fit its size even with every list cut.',
+  ATLAS_DOOR_TOOLCHAIN: 'A door pins a runtime version the tool it runs does not accept.',
+  ATLAS_DOOR_LOCKFILE_PLATFORM: "A lockfile a door installs from holds no native binding for the job's platform.",
+  ATLAS_MAP_ENGINE_OLDER: 'The map was made by an older Atlas than the one running.',
 };
+
+/**
+ * A notice: the error shape without an exit line, since a notice does not
+ * change the exit code (atlas check --strict makes any notice fail).
+ */
+export function formatNotice(code, details, whatToDo) {
+  const lines = [`${code}  ${ERRORS[code]}`];
+  lines.push(`  what changed:   ${details[0] ?? '(none listed)'}`);
+  for (const extra of details.slice(1)) lines.push(`                  ${extra}`);
+  lines.push(`  what to do:     ${whatToDo}`);
+  return `${lines.join('\n')}\n`;
+}
 
 export function formatFailure(code, details, { exitCode = 1, whatToDo } = {}) {
   const sentence = ERRORS[code];
