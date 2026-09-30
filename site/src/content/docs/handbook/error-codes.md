@@ -676,6 +676,9 @@ Every failure names what changed and what to do; the second line is never option
 | `ATLAS_EXPLAIN_NO_MAP` | 2 | LOW | `adapter/explain.js` |
 | `ATLAS_EXPLAIN_UNKNOWN_PATH` | 2 | LOW | `adapter/explain.js` |
 | `ATLAS_DIFF_NO_BASE` | 2 | LOW | `adapter/diff.js` |
+| `ATLAS_NOT_A_REPOSITORY` | 2 | LOW | `adapter/commands.js` |
+| `ATLAS_REF_UNKNOWN` | 2 | LOW | `sidecar/map.js` |
+| `ATLAS_REF_MAP_FOREIGN` | 2 | LOW | `sidecar/map.js` |
 | `ATLAS_SIDECAR_NOT_A_REPOSITORY` | none | LOW | `sidecar/tools.js` |
 | `ATLAS_SIDECAR_NO_MAP` | none | LOW | `sidecar/map.js` |
 | `ATLAS_SIDECAR_MAP_UNREADABLE` | none | LOW | `sidecar/map.js` |
@@ -787,7 +790,7 @@ A file that the committed roster placed in one boundary is now in another.
 :::
 
 - **Trigger:** `atlas explain <path>` before `atlas map` has been run and committed, or with a hand-edited artifact.
-- **Operator action:** run `atlas map` and commit `atlas/`; `explain` reads the committed map and never maps on its own, so it answers at once and names the commit it describes.
+- **Operator action:** the message lists what to do in order. When the checkout's fetched upstream holds a map, run the command again with `--ref` and that ref, which reads and writes nothing. Otherwise run `atlas map` and commit `atlas/` (after `atlas init` when there is no boundary file); `explain` reads the committed map and never maps on its own, so it answers at once and names the commit it describes.
 
 ### `ATLAS_EXPLAIN_UNKNOWN_PATH`
 
@@ -807,6 +810,33 @@ The path given to `atlas explain` is not a file in the committed map, nor a dire
 - **Trigger:** a base ref that was not fetched (a shallow clone), a branch that predates Atlas, or a hand-edited artifact at the base. The CI step fetches the pull request's base branch before it diffs; the comment step never fails the build on this code, it prints the diff to the log instead.
 - **Operator action:** fetch the base ref, or run `atlas map` on it and commit `atlas/`. The flag has no default: `--base` names the ref explicitly.
 
+### `ATLAS_NOT_A_REPOSITORY`
+
+:::tip[Severity: LOW]
+The directory is not in a git repository, and the command needs one.
+:::
+
+- **Trigger:** `atlas init`, `map`, `check` or `diff` outside a git repository; `explain` or `gaps` in a directory that is neither a git repository nor holds `atlas/structure.json`; `--ref` in a tree exported without its history. From the sidecar, `atlas_changes`, `atlas_check_change` and `atlas_refresh` in an exported tree return it as a tool error.
+- **Operator action:** run the command inside a clone. A directory that holds `atlas/` but no git history still answers `explain`, `gaps` and the tools that only read the map.
+
+### `ATLAS_REF_UNKNOWN`
+
+:::tip[Severity: LOW]
+The ref given with `--ref`, or as a tool's `ref`, names no commit in this clone.
+:::
+
+- **Trigger:** a branch that was never fetched, a typo, or text that is not a ref. Atlas never fetches, so a ref is only what the clone already holds.
+- **Operator action:** name a branch, tag or commit the clone holds, such as `origin/main`, or fetch it first.
+
+### `ATLAS_REF_MAP_FOREIGN`
+
+:::tip[Severity: LOW]
+The map at the ref was made from a commit that is not in that ref's history.
+:::
+
+- **Trigger:** a map copied from another branch or repository, or a shallow clone that does not hold the commit the map names.
+- **Operator action:** name a ref whose map was made from its own history, or ask without a ref.
+
 ### The sidecar's codes
 
 `atlas mcp` neither prints nor exits on a failure. It returns the same fields as a tool error (`isError: true`), after the answer's provenance line, and keeps serving: `Atlas cannot answer: <sentence> (<code>)`, then what changed and what to do. The Exit column above reads "none" for these codes.
@@ -817,7 +847,7 @@ The path given to `atlas explain` is not a file in the committed map, nor a dire
 The directory the sidecar answers for is not in a git repository.
 :::
 
-- **Trigger:** no root the client offers is inside a git repository, and neither is the directory `atlas mcp` was started in.
+- **Trigger:** no root the client offers is inside a git repository, and neither is the directory `atlas mcp` was started in, and none of them holds `atlas/structure.json` (a directory that does is answered as an exported tree).
 - **Operator action:** start `atlas mcp` in the repository it should answer for, or have the client offer that repository as a root.
 
 ### `ATLAS_SIDECAR_NO_MAP`
@@ -827,7 +857,7 @@ The repository has no map: `atlas/structure.json` is absent.
 :::
 
 - **Trigger:** a repository that has not adopted Atlas, or one whose map was never committed.
-- **Operator action:** run `atlas init`, then `atlas map`, and commit `atlas/`. Until then `atlas_refresh` can map the checkout into the cache.
+- **Operator action:** the message lists what to do in order. When the checkout's fetched upstream holds a map, ask again with `ref` set to that ref; the message names it and how far behind the checkout is. Next, when a boundary file exists, `atlas_refresh` maps the checkout into the cache and writes nothing in the repository. Last, run `atlas map` and commit `atlas/` (after `atlas init` when there is no boundary file).
 
 ### `ATLAS_SIDECAR_MAP_UNREADABLE`
 
