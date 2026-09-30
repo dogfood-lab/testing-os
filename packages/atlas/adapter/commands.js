@@ -54,7 +54,7 @@ function forCore(boundaries) {
 
 function initAt(cwd, argv) {
   const repo = repoRoot(cwd);
-  if (!repo) return usage('atlas: not a git repository');
+  if (!repo) return notARepository(cwd, 'init');
   return initCommand(repo, argv);
 }
 
@@ -62,7 +62,7 @@ function initAt(cwd, argv) {
 // them and the caller's place inside the tree to read a path the way they wrote it.
 function explainAt(cwd, argv) {
   const repo = repoRoot(cwd);
-  if (!repo) return usage('atlas: not a git repository');
+  if (!repo) return notARepository(cwd, 'explain');
   return explainCommand(repo, showPrefix(cwd), argv);
 }
 
@@ -70,7 +70,7 @@ function explainAt(cwd, argv) {
 // name decides which house rules a suggestion cites.
 function gapsAt(cwd, argv) {
   const repo = repoRoot(cwd);
-  if (!repo) return usage('atlas: not a git repository');
+  if (!repo) return notARepository(cwd, 'gaps');
   return gapsCommand(repo, showPrefix(cwd), argv, { repository: repositoryName(repo) });
 }
 
@@ -79,7 +79,7 @@ export function mapCommand(cwd, argv = []) {
   const flags = parseMapArgs(argv);
   if (flags.error) return usage(flags.error);
   const repo = repoRoot(cwd);
-  if (!repo) return usage('atlas: not a git repository');
+  if (!repo) return notARepository(cwd, 'map');
   const origin = flags.name ?? repositoryName(repo);
   if (flags.divergence && !origin) return usage('atlas: --divergence needs an origin URL that names org/repo, or --name');
   let baseline = null;
@@ -183,7 +183,7 @@ export function writeMap(dir, { artifact, statistics, page }) {
 
 export function checkCommand(cwd) {
   const repo = repoRoot(cwd);
-  if (!repo) return usage('atlas: not a git repository');
+  if (!repo) return notARepository(cwd, 'check');
   if (!existsSync(join(repo, 'atlas'))) {
     process.stdout.write('atlas: no atlas/ directory; nothing to check\n');
     return 0;
@@ -244,7 +244,7 @@ export function diffCommand(cwd, argv = []) {
   const flags = parseDiffArgs(argv);
   if (flags.error) return usage(flags.error);
   const repo = repoRoot(cwd);
-  if (!repo) return usage('atlas: not a git repository');
+  if (!repo) return notARepository(cwd, 'diff');
   const boundary = readBoundaryFile(repo);
   if (!boundary.ok) return failBoundary(boundary);
   // stdout is the markdown or JSON a caller posts or parses as is, so the
@@ -273,6 +273,16 @@ function failBoundary(boundary) {
 
 function usage(line) {
   process.stdout.write(`${line}\nexit 2\n`);
+  return 2;
+}
+
+// Every command but mcp needs the repository it is run in; outside one it
+// fails in the error shape, so the failure has a code a reader can look up.
+function notARepository(cwd, command) {
+  process.stdout.write(formatFailure('ATLAS_NOT_A_REPOSITORY', [`${cwd} is in no git repository`], {
+    exitCode: 2,
+    whatToDo: `run atlas ${command} inside a git repository`,
+  }));
   return 2;
 }
 
