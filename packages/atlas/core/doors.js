@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join, posix } from 'node:path';
 import picomatch from 'picomatch';
 import { parse, parseDocument } from 'yaml';
+import { actionCommand } from './action-commands.js';
 import { better, cleanDir, commandLines, readCommands, readContainer, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
 import { godotProjects } from './godot.js';
 import { isTestFile } from './landings.js';
@@ -368,6 +369,9 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
   // The test runs the steps make, in the workflow's order, with each test
   // step whose runner Atlas cannot name.
   const tests = [];
+  // The command-shaped inputs of uses: steps that are not read as a command
+  // (core/action-commands.js), each with why.
+  const unresolvedCommands = [];
   const elsewhere = new Map();
   const sends = emptySends();
   const issues = [];
@@ -456,6 +460,15 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
       const when = joinGates(gate, jobGate(step.if, triggers));
       const scope = scopeFor(when);
       const held = when ? { when } : {};
+      const name = typeof step.name === 'string' && step.name.trim() !== '' ? step.name : String(index);
+      // A command the step hands a wrapper action (nick-fields/retry) is run
+      // as a run step's script is, from the workspace: a job's defaults.run
+      // applies to run steps alone. Any other command-shaped input is listed
+      // unresolved, never guessed as a run.
+      const wrapped = typeof step.uses === 'string' && typeof step.run !== 'string' && !step.uses.startsWith('./') ? actionCommand(step) : null;
+      for (const entry of wrapped?.unresolved ?? []) unresolvedCommands.push({ job, step: name, action: wrapped.action, ...entry });
+      const stepRun = typeof step.run === 'string' ? step.run : wrapped?.run ?? null;
+      const stepWorkDir = typeof step.run === 'string' || wrapped?.run == null ? step['working-directory'] : wrapped.dir;
       if (typeof step.uses === 'string') {
         const action = step.uses.replace(/@.*$/, '');
         uses.add(action);
@@ -483,9 +496,8 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
           }
         }
       }
-      if (typeof step.run !== 'string') return;
-      const name = typeof step.name === 'string' && step.name.trim() !== '' ? step.name : String(index);
-      scope.texts.push(step.run);
+      if (stepRun == null) return;
+      scope.texts.push(stepRun);
       const stepEnv = envOf(step.env);
       const lookup = (variable) => [stepEnv, jobEnv, workflowEnv].find((env) => env.has(variable))?.get(variable) ?? null;
       // What a variable is set to as written, an expression included: a test
@@ -496,16 +508,16 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
       // (src/${{ matrix.project }}, examples/${{ inputs.tool }}) is each
       // directory it can be: the matrix's values, the input's options, or
       // every tracked directory its glob matches.
-      const stepDirs = expandedDirs(step['working-directory'], body, doc.on, repo);
-      const jobDirs = step['working-directory'] === undefined ? expandedDirs(rawJobDir === '' ? undefined : rawJobDir, body, doc.on, repo) : null;
+      const stepDirs = expandedDirs(stepWorkDir, body, doc.on, repo);
+      const jobDirs = stepWorkDir === undefined ? expandedDirs(rawJobDir === '' ? undefined : rawJobDir, body, doc.on, repo) : null;
       const expanded = stepDirs ?? jobDirs;
-      const rawDirs = expanded ?? [step['working-directory'] ?? rawJobDir];
+      const rawDirs = expanded ?? [stepWorkDir ?? rawJobDir];
       // The directory the step's shell starts in, when it is this repository's
       // and one, for the files its own redirects write (landings.js
       // attachLandings).
       const firstDir = own(rawDirs[0]);
       const firstStart = firstDir == null ? { here: false } : placeOf({ here: true, dir: '' }, firstDir, clones, repo, lookup);
-      commands.push({ job, step: name, text: step.run, ...(firstStart.here && rawDirs.length === 1 ? { dir: firstStart.dir } : {}), ...held });
+      commands.push({ job, step: name, text: stepRun, ...(firstStart.here && rawDirs.length === 1 ? { dir: firstStart.dir } : {}), ...held });
       const stepTests = [];
       const stepRan = new Set();
       const stepEnds = [];
@@ -513,7 +525,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
       for (const rawDir of rawDirs) {
         const ownDir = own(rawDir);
         const start = ownDir == null ? { here: false, dir: String(rawDir ?? ''), clone: null } : placeOf({ here: true, dir: '' }, ownDir, clones, repo, lookup);
-        const work = gitWork(step.run, lookup, start, clones, repo, branch);
+        const work = gitWork(stepRun, lookup, start, clones, repo, branch);
         for (const staged of work.stages) scope.stages.add(staged);
         if (work.pushes) scope.pushes = true;
         scope.sidePushes.push(...work.sidePushes);
@@ -525,22 +537,22 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
           if (entry.pushes) found.pushes = true;
         }
         const place = { raw: ownDir ?? rawDir, jobTexts, repo, tagged: triggers.some((trigger) => (trigger.tags?.length ?? 0) > 0) };
-        commandSends(expandEnv(step.run, lookup), scope.sends, place);
+        commandSends(expandEnv(stepRun, lookup), scope.sends, place);
         // A step outside this repository's checkout names this repository by
         // a path through that checkout: stage/.github/pins.env from the
         // workspace, ../stage/fixtures from a sibling checkout.
         if (selfPath != null && ownDir == null) {
-          const through = throughCheckout(expandEnv(step.run, lookup), String(rawDir ?? ''), selfPath, repo);
+          const through = throughCheckout(expandEnv(stepRun, lookup), String(rawDir ?? ''), selfPath, repo);
           for (const path of through.named) mentions.set(`${path}\0${job}`, { path, job });
           for (const path of through.written) handed.add(path);
         }
         // A step whose working directory cannot be read as a repository path
         // names nothing Atlas can place, so its tokens are left unresolved.
-        const dir = selfPath != null ? ownDir : expanded ? cleanDir(rawDir) : step['working-directory'] === undefined ? jobDir : cleanDir(step['working-directory']);
+        const dir = selfPath != null ? ownDir : expanded ? cleanDir(rawDir) : stepWorkDir === undefined ? jobDir : cleanDir(stepWorkDir);
         if (dir == null) continue;
         if (dir !== '' && repo.tracked.has(`${dir}/package.json`)) workedIn.add(dir);
         // Actions spells ${{ env.X }} out before the shell sees the step.
-        const named = readCommands(expandEnv(step.run, lookup), dir, repo, platforms, { through: [...jobThrough, ...(step[REACHED_THROUGH] ?? [])], env: written });
+        const named = readCommands(expandEnv(stepRun, lookup), dir, repo, platforms, { through: [...jobThrough, ...(step[REACHED_THROUGH] ?? [])], env: written });
         stepTests.push(...named.tests);
         stepEnds.push(...named.ends);
         stepInvocations.push(...named.invocations);
@@ -574,14 +586,14 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
         const ran = [...stepRan].sort().slice(0, STEP_RAN_KEPT);
         // One that runs only the shell's own tools, an audit, a linter or a
         // type-check runs no tests, whatever its name (core/step-programs.js).
-        if (ran.length > 0 || end || runsAProgram(step.run)) tests.push({ job, step: name, runner: null, ...(end ? { through: [...end.through] } : {}), ...(ran.length > 0 ? { ran } : {}) });
+        if (ran.length > 0 || end || runsAProgram(stepRun)) tests.push({ job, step: name, runner: null, ...(end ? { through: [...end.through] } : {}), ...(ran.length > 0 ? { ran } : {}) });
       }
-      jobTexts.push(step.run);
-      const released = releaseUploads(expandEnv(step.run, lookup));
+      jobTexts.push(stepRun);
+      const released = releaseUploads(expandEnv(stepRun, lookup));
       if (released) shipped.uploads.push({ when, files: released, creates: false });
-      if (/\bmakeappx(?:\.exe)?["']?\s+pack\b/i.test(step.run)) shipped.packs = true;
-      for (const target of buildTargets(expandEnv(step.run, lookup), body)) shipped.targets.add(target);
-      if (/\bgh\s+issue\s+create\b/.test(step.run)) scope.issues.push(onlyOnFailure(step.if) || onlyOnFailure(body.if));
+      if (/\bmakeappx(?:\.exe)?["']?\s+pack\b/i.test(stepRun)) shipped.packs = true;
+      for (const target of buildTargets(expandEnv(stepRun, lookup), body)) shipped.targets.add(target);
+      if (/\bgh\s+issue\s+create\b/.test(stepRun)) scope.issues.push(onlyOnFailure(step.if) || onlyOnFailure(body.if));
     });
     if (!gate && jobScope.pushes) pushes = true;
     if (!gate) sidePushes.push(...jobScope.sidePushes);
@@ -622,6 +634,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
     ...(runtime ? { jobs: runtimes } : {}),
     ...(checked?.findings.length > 0 ? { findings: checked.findings } : {}),
     ...(checked?.unresolved.length > 0 ? { unresolvedChecks: checked.unresolved } : {}),
+    ...(unresolvedCommands.length > 0 ? { unresolvedCommands } : {}),
     // Read by sidecar/check-change-tool.js, which a changed lock or manifest
     // in one of them touches; adapter/artifact.js does not carry it.
     ...(runtime ? { workingDirs: workingDirs(stepsByJob) } : {}),

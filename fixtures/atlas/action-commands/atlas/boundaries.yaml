@@ -1,0 +1,15 @@
+summary: a workflow whose steps run commands through wrapper actions' inputs
+boundaries:
+  - name: scripts
+    globs:
+      - scripts/**
+    role: code
+  - name: lib
+    globs:
+      - lib/**
+    role: code
+  - name: root
+    globs:
+      - "*"
+      - .github/**
+    role: config
