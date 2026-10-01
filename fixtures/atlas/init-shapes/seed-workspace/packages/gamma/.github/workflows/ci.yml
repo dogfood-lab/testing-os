@@ -1,0 +1,11 @@
+name: CI
+on:
+  push:
+    paths:
+      - "gamma/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m gamma.cli
