@@ -54,9 +54,15 @@ const parser = new Parser();
  * Overlaps are reported and left out of every boundary's file list.
  * Ambiguous ownership is a fact for the human; this function does not pick a winner.
  *
- * @param {{ repoPath: string, boundaries: Array<{ name: string, globs?: string[], status?: string, role?: string }> }} input
+ * @param {{ repoPath: string, boundaries: Array<{ name: string, globs?: string[], status?: string, role?: string }>, structureOnly?: boolean }} input
+ *   structureOnly reads each file for the structure atlas check compares and
+ *   for the door checks alone (STRUCTURE_SKIPS): the parts, their files and
+ *   hashes, the edges, entries and unresolved sites, and the workflows' door
+ *   checks are a whole map's; the writes, reads, order of work, exports and
+ *   failure paths are left out, and so is what a door takes from them (a
+ *   private member's command a published package bundles is not kept)
  */
-export function mapRepository({ repoPath, boundaries } = {}) {
+export function mapRepository({ repoPath, boundaries, structureOnly = false } = {}) {
   if (typeof repoPath !== 'string' || repoPath.length === 0) {
     throw new Error('repoPath is required');
   }
@@ -109,7 +115,7 @@ export function mapRepository({ repoPath, boundaries } = {}) {
   const spawned = new Map();
   const builds = new Map();
   for (const path of tracked.regular) {
-    const file = describeFile(repoPath, path, places, facts, spawned, attributes.get(path), builds);
+    const file = describeFile(repoPath, path, places, facts, spawned, attributes.get(path), builds, null, { structure: structureOnly });
     const hits = [];
     for (const matcher of matchers) {
       if (matcher.isMatch(path)) hits.push(matcher.name);
@@ -644,6 +650,22 @@ function repositoryManifests(repoPath, tracked) {
  * spawnsInstalled, known through the manifest that installs them.
  */
 function attachTestSpawns(files, spawned, repo, withCommands) {
+  // A reading depends only on the command, the directory it runs from and the
+  // view, and a monorepo's files spawn the same few commands (npm run build
+  // from the root) again and again. Each such reading follows the build into
+  // every member, so reading it once per file made this grow with the files
+  // times the members; a directory a run stands for is likewise listed once.
+  const readings = new Map();
+  const reading = (command, dir, view) => {
+    const key = `${view === repo ? 'repo' : 'commands'}\0${dir}\0${command}`;
+    if (!readings.has(key)) readings.set(key, [...readCommands(command, dir, view).runs.values()]);
+    return readings.get(key);
+  };
+  const codeUnder = new Map();
+  const codeFilesUnder = (dir) => {
+    if (!codeUnder.has(dir)) codeUnder.set(dir, [...files].filter(([other, entry]) => entry.language != null && other.startsWith(dir)).map(([other]) => other));
+    return codeUnder.get(dir);
+  };
   for (const [path, commands] of spawned) {
     const file = files.get(path);
     if (!file) continue;
@@ -660,12 +682,12 @@ function attachTestSpawns(files, spawned, repo, withCommands) {
         const program = command.trim().split(/\s+/)[0] ?? '';
         const entry = test && !view.tracked.has(program) ? view.installed.get(program) : null;
         if (entry != null) installed.add(entry);
-        for (const run of readCommands(command, dir, view).runs.values()) {
+        for (const run of reading(command, dir, view)) {
           // Production code that type-checks or lints another part runs none
           // of it; a test's checks are how it reaches what it checks.
           if (!isTestFile(path) && run.runKind === 'checks') continue;
           if (run.path.endsWith('/')) {
-            for (const [other, entry] of files) if (entry.language != null && other.startsWith(run.path)) runs.add(other);
+            for (const other of codeFilesUnder(run.path)) runs.add(other);
           } else if (run.path !== path) runs.add(run.path);
         }
       }
@@ -801,8 +823,9 @@ function symlinkTarget(repoPath, oid) {
 // the same on a checkout with either line ending. raw is the file's content
 // from somewhere other than the working tree, a committed version of it.
 // reread is a reading for rereadFiles, which returns imports, landings,
-// spawns and failure paths alone (parseFile).
-function describeFile(repoPath, path, places, facts, spawned, attributes, builds, raw = null, { reread = false } = {}) {
+// spawns and failure paths alone (parseFile); structure is a reading for the
+// structure atlas check compares (STRUCTURE_SKIPS).
+function describeFile(repoPath, path, places, facts, spawned, attributes, builds, raw = null, { reread = false, structure = false } = {}) {
   const bytes = storedBytes(raw ?? readFileSync(join(repoPath, path)), attributes);
   const hash = createHash('sha256').update(bytes).digest('hex');
   // An Astro file's frontmatter (the --- fenced script at its top) is
@@ -817,7 +840,7 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
   // text (core/mentions.js).
   const shellNames = language == null && namesFiles(path) && isShellScript(path) ? shellWords(bytes.toString('utf8')) : [];
   if (language == null) return { path, hash, language: null, imports: 'unavailable', ...textLandings(path, bytes, places), ...(shellNames.length > 0 ? { mentions: shellNames } : {}) };
-  const extracted = parseFile(language, path, front ?? bytes.toString('utf8'), places, { reread });
+  const extracted = parseFile(language, path, front ?? bytes.toString('utf8'), places, { reread, structure });
   if (extracted.parseError) {
     const syntax = extracted.unreadSyntax ? { unreadSyntax: extracted.unreadSyntax } : {};
     return { path, hash, language, parseError: true, ...syntax, imports: [], ...noLandings() };
@@ -864,9 +887,25 @@ const REREAD_SKIPS = {
   mentions: [],
 };
 
+// The structure atlas check compares (the parts and their files, the edges,
+// the entries, the unresolved sites) and the door checks it reports are read
+// from a file's imports, the commands it hands a child process, its HTTP
+// routes and its bundler calls. Its writes and reads, the order of its calls,
+// its failure paths and the rest are the page's, and are more than half the
+// time a file takes, so a reading for the structure alone skips them.
+const STRUCTURE_SKIPS = {
+  sequence: { functions: [], topLevel: [], reexports: [] },
+  githubChanges: 0,
+  noStatements: false,
+  startsOnLoad: false,
+  holds: null,
+  failurePaths: [],
+  mentions: [],
+};
+
 export const PARSE_COUNTS = { files: 0, sequences: 0 };
 
-function parseFile(language, path, original, places, { reread = false } = {}) {
+function parseFile(language, path, original, places, { reread = false, structure = false } = {}) {
   PARSE_COUNTS.files += 1;
   let tree;
   let typeSites = [];
@@ -899,6 +938,17 @@ function parseFile(language, path, original, places, { reread = false } = {}) {
         landings: astLandings(language, tree.rootNode, path, places),
         spawned: language === 'python' ? pythonSpawns(tree.rootNode) : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
         failurePaths: failurePaths(language, tree.rootNode),
+      };
+    }
+    if (structure) {
+      return {
+        ...STRUCTURE_SKIPS,
+        imports,
+        // Fresh, since the settling that follows adds to a file's own lists.
+        landings: noLandings(),
+        spawned: language === 'python' ? pythonSpawns(tree.rootNode) : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
+        http: language === 'python' ? null : httpFacts(tree.rootNode),
+        builds: language === 'python' || isTestFile(path) ? [] : buildCalls(tree.rootNode, (node) => pathShape(node, path)),
       };
     }
     PARSE_COUNTS.sequences += 1;

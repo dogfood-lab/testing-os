@@ -635,6 +635,17 @@ function bundlesOf(repoPath, tracked) {
   return index;
 }
 
+const FOLDED = new WeakMap();
+
+// The tracked paths by their lower-case spelling, folded once per tracked set:
+// a map asks for the source of a built path once for every command that names
+// one, and folding the whole tree on each ask made the asks grow with the
+// tree's size times their own number.
+function foldedTracked(tracked) {
+  if (!FOLDED.has(tracked)) FOLDED.set(tracked, new Map([...tracked].map((path) => [path.toLowerCase(), path])));
+  return FOLDED.get(tracked);
+}
+
 /**
  * A declared entry that is not itself tracked. A source map naming one
  * tracked file wins; then a bundler's entry for the output (core/bundles.js);
@@ -646,7 +657,7 @@ export function resolveDeclaredPath(repoPath, rel, tracked) {
   const ctx = {
     repo: repoPath,
     tracked,
-    trackedLower: new Map([...tracked].map((path) => [path.toLowerCase(), path])),
+    trackedLower: foldedTracked(tracked),
     outputs: () => buildOutputs(repoPath, tracked),
   };
   const abs = join(repoPath, rel);

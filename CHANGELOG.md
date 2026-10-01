@@ -4,6 +4,13 @@ All notable changes to `testing-os` are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Changed
+- **`atlas check` and `atlas init` take seconds where they took minutes on a large repository.** On the fleet's largest repository (12,875 tracked files, a turbo monorepo of about 100 members), `check` took 491 s and 19 minutes in CI, so its adoption was held. It now takes 45 s; `init` went from 490 s to 44 s and `map` from 510 s to 108 s (median of three, a fresh process each). The time went into steps that grew faster than the repository did:
+  - every file that spawned the root build re-read that build through every member;
+  - each member's build scanned the whole tree;
+  - each built-path lookup rebuilt an index of the tree.
+  Each is now done once. `check` and `init` also read only what they compare or propose from, not what only the page uses. Every map is byte-identical before and after, on this repository's fixtures and on four fleet clones. A test fails if the build reading grows faster than the number of members again. Repositories of a few hundred files check in a second or two.
+
 ### Fixed
 - **A place read through a pattern is no longer "read by nothing".** A glob or a directory loop (`glob`, `iglob`, `Path.glob` and `rglob`, a loop over `os.listdir` or `iterdir`, through `sorted()`, `list()` and helper parameters) now reads every written place its pattern matches. A pattern under a directory chosen at run time qualifies the claim instead: "read by nothing else this map can name: report.py reads `*.log` under a directory chosen at run time, which may include it". On the fleet, a knowledge repository's databases, which its verify script opens through `*.db`, were said to be read by nothing. A pattern that names no file type is never matched against a place.
 - **"Where to start" no longer contradicts itself.** A file the map records imports from, such as a Godot scene or an Astro page, is now a step of the path, so a game whose scenes attach its scripts gets a path through them. Where a path ends at files the map records no order among, the page names them and says why it stops there. A door that reaches code but leads on into none says what it reaches, where it said "runs no code".

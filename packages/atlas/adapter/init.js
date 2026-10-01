@@ -145,7 +145,9 @@ export function initCommand(repo, argv) {
   }
   const { source, proposals } = proposalSet(repo, paths);
   const seeded = proposals.map((proposal) => ({ name: proposal.name, globs: [...proposal.globs], role: 'code' }));
-  const mapped = mapRepository({ repoPath: repo, boundaries: seeded });
+  // A proposal needs each part's files, entries and manifest, which the
+  // structure alone gives, as atlas check reads it.
+  const mapped = mapRepository({ repoPath: repo, boundaries: seeded, structureOnly: true });
   const byName = new Map(mapped.boundaries.map((boundary) => [boundary.name, boundary]));
   const boundaries = proposals.map((proposal) => {
     const live = byName.get(proposal.name);
