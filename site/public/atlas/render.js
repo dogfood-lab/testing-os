@@ -922,7 +922,27 @@ function startSection(ctx) {
     `<p class="chain">${chain.join(' <span aria-hidden="true">→</span><span class="sr">, then</span> ')}</p>`,
     p(`Read those in order to follow one ${esc(triggerNoun(ctx.start))} end to end.${ctx.page.startReason ? ` ${esc(str(ctx.page.startReason))}` : ''}`),
   ];
+  const beside = besideLines(ctx);
+  if (beside.length > 0) body.push(p(beside.join(' ')));
   return section('Where to start', body.join('\n'));
+}
+
+// A file named beside the path lists this many of the other files it calls,
+// the rest counted, as page.js besideLines does.
+const BESIDE_SHOWN = 4;
+
+// The files a step calls that the path does not go through, under the
+// chain: "Beside the path, src/cli.js also calls src/run.js and
+// src/report.js." Each is a sibling of the file the path goes on to, not a
+// step after it.
+function besideLines(ctx) {
+  return arr(ctx.page.startBeside).filter((entry) => entry && typeof entry === 'object' && arr(entry.files).length > 0).map((entry) => {
+    const files = arr(entry.files).map((path) => pathHtml(ctx, path));
+    const shown = files.length > BESIDE_SHOWN
+      ? `${files.slice(0, BESIDE_SHOWN).join(', ')} and ${count(files.length - BESIDE_SHOWN, 'more file')}`
+      : list(files);
+    return `Beside the path, ${pathHtml(ctx, entry.from)} also calls ${shown}.`;
+  });
 }
 
 function limitsSection(ctx) {

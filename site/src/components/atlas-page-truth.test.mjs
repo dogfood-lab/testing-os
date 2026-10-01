@@ -1,8 +1,9 @@
 /**
  * The site says what the markdown twin says for the sentences slice AJ-3
  * corrected: a directory its writers only put files into "holds files
- * written by" them, and a place named by its shape is shown as the
- * markdown shows it. Each fixture is mapped by the atlas CLI, so
+ * written by" them, a place named by its shape is shown as the markdown
+ * shows it, and the files a step calls that the path does not go through
+ * are listed beside the path. Each fixture is mapped by the atlas CLI, so
  * the site renders the page.json `atlas map` writes, and each section is
  * compared line for line with the README.md written beside it.
  */
@@ -81,3 +82,21 @@ test('a directory its writers only put files into holds files written by them, o
   assert.ok(generated.includes('tuning/matrix-*.json is written by scripts/tune.mjs when run from the repository root, and committed.'), generated.join('\n'));
 });
 
+test('the files a step calls that the path does not go through are listed beside the path, on the site as in the markdown', () => {
+  for (const name of ['start-steps/siblings', 'start-steps/lazy']) {
+    const { page, markdown } = mapped(name);
+    assert.ok((page.startBeside ?? []).length > 0, `${name} lists files beside its path`);
+    const html = render.renderPage(page, { repo: `acme/${name.replace('/', '-')}` });
+    assert.deepEqual(siteLines(html, 'Where to start'), markdownLines(markdown, 'Where to start'), name);
+  }
+});
+
+test('the files listed beside a path are counted past four, as the markdown counts them', () => {
+  const { page } = mapped('start-steps/siblings');
+  const many = { ...page, startBeside: [{ files: ['a.js', 'b.js', 'c.js', 'd.js', 'e.js', 'f.js'], from: 'src/cli.js' }] };
+  const lines = siteLines(render.renderPage(many, { repo: 'acme/siblings' }), 'Where to start');
+  assert.ok(lines.includes('Beside the path, src/cli.js also calls a.js, b.js, c.js, d.js and 2 more files.'), lines.join('\n'));
+  // A file name is data: it is escaped, never markup.
+  const hostile = { ...page, startBeside: [{ files: ['<img src=x>.js'], from: 'src/cli.js' }] };
+  assert.equal(render.renderPage(hostile, { repo: 'acme/siblings' }).includes('<img src=x>'), false);
+});
