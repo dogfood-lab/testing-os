@@ -1,18 +1,18 @@
 # sprite-foundry: how it works
 
-Mapped at 2026-10-01 from commit 571f7a0 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 77db0a0 by Atlas 1.26.0.
 
 ## What this is
 
 10 parts, mostly Python (65 files), GDScript (4), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 3 doors; the busiest is CI, which reaches 4 parts. It deploys a site to GitHub Pages. People run the Godot project.
 
-## What changed since 2026-09-30 (45a5555)
+## What changed since 2026-10-01 (571f7a0)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 11 paths; on a push touching 11 paths; or by hand. Runs 3d-prerender/test_texture_patch_region.py, foundry/__init__.py, foundry/cli.py and 2 more; checks CHANGELOG.md, LICENSE, README.md and 1 more.
+1. **CI.** On a pull request; on a push touching 11 paths; or by hand. Runs 3d-prerender/test_texture_patch_region.py, foundry/__init__.py, foundry/cli.py and 2 more; checks CHANGELOG.md, LICENSE, README.md and 1 more.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **the Godot project** (what Godot runs). Starts game/godot/render-lab/scenes/render_lab.tscn.
 

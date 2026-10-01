@@ -1,18 +1,18 @@
 # brand: how it works
 
-Mapped at 2026-10-01 from commit b78bfed by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit a6498e9 by Atlas 1.26.0.
 
 ## What this is
 
 11 parts, mostly images (256 files) and Markdown (60); code in TypeScript (40), JavaScript (8), Astro (2), CSS (2) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run brand.
 
-## What changed since 2026-09-30 (f3d1a79)
+## What changed since 2026-10-01 (722dc27)
 
-Nothing structural changed since 2026-09-30; 2 files changed content.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 17 paths; on a push touching 17 paths; or by hand. Runs scripts/check-audit-allowlist.mjs, src/cli.ts, tests/add-gallery.test.ts and 18 more; builds src/.
+1. **CI.** On a pull request; on a push touching 17 paths; or by hand. Runs scripts/check-audit-allowlist.mjs, src/cli.ts, tests/add-gallery.test.ts and 18 more; builds src/.
 2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/add-gallery.test.ts, tests/add-model.test.ts, tests/audit.test.ts and 16 more; builds src/.
 3. **Deploy site to GitHub Pages.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs site/astro.config.mjs and site/src/; builds src/.
 4. **Sync org logos.** On a schedule (`0 6 * * *`); or by hand. Runs scripts/sync-org-logos.sh and src/cli.ts; builds src/.

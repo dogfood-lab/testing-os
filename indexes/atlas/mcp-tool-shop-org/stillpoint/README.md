@@ -1,18 +1,18 @@
 # stillpoint: how it works
 
-Mapped at 2026-10-01 from commit df37a1a by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit bac3c38 by Atlas 1.26.0.
 
 ## What this is
 
 7 parts, mostly TypeScript (26 files), CSS (3), JavaScript (3), Rust (2), Astro (1), HTML (1) and PowerShell (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. stillpoint is a desktop app built from apps/desktop/src-tauri (nothing ships it).
 
-## What changed since 2026-09-30 (6054b1b)
+## What changed since 2026-10-01 (95417cd)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 8 paths; on a push to main touching 8 paths; or by hand. Runs packages/server/src/routes/api.test.ts, packages/server/src/routes/events.test.ts, packages/ui/src/ and 1 more.
+1. **CI.** On a pull request; on a push to main touching 8 paths; or by hand. Runs packages/server/src/routes/api.test.ts, packages/server/src/routes/events.test.ts, packages/ui/src/ and 1 more.
 2. **Deploy site to GitHub Pages.** On a pull request touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **stillpoint** (a desktop app built from apps/desktop/src-tauri, which nothing ships). Runs apps/desktop/src-tauri/src/main.rs.
 
@@ -50,7 +50,6 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 
 ## Written but never read
 
-- **apps/desktop/msix/layout/** is written by apps/desktop/msix/build-msix.ps1 and read by nothing else in this repository.
 - **apps/desktop/src-tauri/gen/schemas/** is written by apps/desktop/src-tauri/build.rs (a build script) and read by nothing else in this repository.
 
 ## Helpers that look duplicated
@@ -60,7 +59,6 @@ No two parts export a helper that looks alike.
 ## Generated, never hand-edited
 
 - **apps/desktop/msix/Assets/** is written by apps/desktop/msix/gen-assets.mjs.
-- **apps/desktop/msix/layout/** is written by apps/desktop/msix/build-msix.ps1.
 - **apps/desktop/src-tauri/gen/schemas/** is written by apps/desktop/src-tauri/build.rs (a build script).
 - **apps/desktop/src-tauri/icons/** is written by apps/desktop/src-tauri/gen-icons.mjs.
 

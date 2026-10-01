@@ -1,18 +1,18 @@
 # codecomfy-vscode: how it works
 
-Mapped at 2026-10-01 from commit cf6d5a3 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 4b01841 by Atlas 1.26.0.
 
 ## What this is
 
 9 parts, mostly TypeScript (50 files), JavaScript (5), CSS (2) and Astro (1). Work enters through 4 doors; CI and Build and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. It deploys a site to GitHub Pages. People install the codecomfy-vscode extension.
 
-## What changed since 2026-09-30 (93df7e1)
+## What changed since 2026-10-01 (cf6d5a3)
 
-Nothing structural changed since 2026-09-30; 1 file changed content.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 11 paths; on a push to main touching 11 paths; or by hand. Runs test/register-vscode-stub.js and test/unit/; builds src/ and test/; checks eslint.config.mjs, scripts/ and site/.
+1. **CI.** On a pull request to main; on a push to main touching 11 paths; or by hand. Runs test/register-vscode-stub.js and test/unit/; builds src/ and test/; checks eslint.config.mjs, scripts/ and site/.
 2. **Build and Release.** When a tag matching `v*` is pushed; or by hand. Runs test/register-vscode-stub.js and test/unit/; builds src/ and test/; checks eslint.config.mjs, scripts/ and site/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **codecomfy-vscode** (the extension people install from the VS Code Marketplace). Loads src/extension.ts.

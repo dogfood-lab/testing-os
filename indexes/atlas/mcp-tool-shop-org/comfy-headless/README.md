@@ -1,6 +1,6 @@
 # comfy-headless: how it works
 
-Mapped at 2026-10-01 from commit 8e77c6e by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 8e77c6e by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,6 +8,8 @@ Mapped at 2026-10-01 from commit 8e77c6e by Atlas 1.25.0.
 
 ## What changed since 2026-09-30 (a804d34)
 
+- kb/**/*.md is now read by scripts/gen_kb.py.
+- kb/workflows/*.json is now read by tests/test_kb.py.
 - kb was generated and is now mixed.
 - No file changed.
 
@@ -78,7 +80,7 @@ Beside the path, comfy_headless/__main__.py also calls comfy_headless/feature_fl
 ## What this map cannot see
 
 - 1 import could not be resolved: `tests/run_fuzz.py` imports `comfy_headless.tests.test_fuzz`, which is no module on its import path and no declared dependency.
-- 2 writes and 2 reads use paths built at run time and are not named here.
+- 2 writes and 1 read use paths built at run time and are not named here.
 - 38 reads go to a path their caller passes, not to this repository.
 - 3 reads go to a temporary directory, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.

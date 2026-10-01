@@ -1,0 +1,3203 @@
+{
+  "boundaries": [
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "215153b9aeb16e634188ec06ccba3b1aa3ed47000d9f6c5211add84a1de6b191",
+          "path": ".github/workflows/ci.yml"
+        },
+        {
+          "hash": "d2da174b21c12598abdf977eb7b69d91d4d0aa32d08a27656b3bbbe15bb609d0",
+          "path": ".github/workflows/docker-publish.yml"
+        },
+        {
+          "hash": "70c3cc3b8bf4d77647d89b18d4d77753822d1f8784bf30576d3d1876aeaf6c45",
+          "path": ".github/workflows/docker.yml"
+        },
+        {
+          "hash": "93dc62c74dfddae3a1dc3291b236a3e266cc0f9963100f2967357b3f3833b310",
+          "path": ".github/workflows/pages.yml"
+        },
+        {
+          "hash": "2459518b643e7cd081ecf2906a76cbb3185694cb931b0df8f88e8aae393d1b09",
+          "path": ".github/workflows/release.yml"
+        }
+      ],
+      "globs": [
+        ".github/**"
+      ],
+      "importConfidence": "full",
+      "name": ".github",
+      "origin": "authored",
+      "role": "config",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "packages/agent-identity/src/index.ts"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "b64501247e6243037afafa8a002a7169519d856398408b52200aa6d9c58f99e9",
+          "path": "packages/agent-identity/package.json"
+        },
+        {
+          "exports": [
+            "approveGrant",
+            "createRegistry",
+            "getActiveCapabilities",
+            "getAgent",
+            "getGrantsForAgent",
+            "hasCapability",
+            "isCapabilityActive",
+            "registerAgent",
+            "rejectGrant",
+            "requestGrant",
+            "revokeCapability"
+          ],
+          "hash": "f1988277689ee1739b8dd55f9cec27c5f79979b25687c77f3f9c631376c0d4d1",
+          "importOrder": [
+            "packages/types/src/index.ts",
+            "packages/agent-identity/src/types.ts"
+          ],
+          "importsFiles": [
+            "packages/agent-identity/src/types.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/agent-identity/src/identity.ts"
+        },
+        {
+          "hash": "c33ba922857d5fdc726005867476dcfd7a0cfa103048ca515bc7721f20950e20",
+          "importOrder": [
+            "packages/agent-identity/src/types.ts",
+            "packages/agent-identity/src/vc-types.ts",
+            "packages/agent-identity/src/identity.ts",
+            "packages/agent-identity/src/vc-export.ts"
+          ],
+          "importsFiles": [
+            "packages/agent-identity/src/identity.ts",
+            "packages/agent-identity/src/types.ts",
+            "packages/agent-identity/src/vc-export.ts",
+            "packages/agent-identity/src/vc-types.ts"
+          ],
+          "path": "packages/agent-identity/src/index.ts",
+          "reexportsOnly": true
+        },
+        {
+          "hash": "d54240fde8b3005763c9a0c1f510854b7f12f4fce429bca2a65ba7d59a3c9bf3",
+          "importsFiles": [
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/agent-identity/src/types.ts"
+        },
+        {
+          "exports": [
+            "attachProof",
+            "canonicalizeCredential",
+            "exportGrantAsVC",
+            "hashCanonical",
+            "verifyProofStructure"
+          ],
+          "hash": "743f586c435b8232f0261d284499deaee73e5484cbdf41d17a2c0e8dc947f47b",
+          "importOrder": [
+            "packages/agent-identity/src/types.ts",
+            "packages/types/src/index.ts",
+            "packages/agent-identity/src/vc-types.ts"
+          ],
+          "importsFiles": [
+            "packages/agent-identity/src/types.ts",
+            "packages/agent-identity/src/vc-types.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/agent-identity/src/vc-export.ts"
+        },
+        {
+          "hash": "90a46eff74c4bc9c066d6cf56622a219f37b757955b47bdad194c63f1e1df6cb",
+          "path": "packages/agent-identity/src/vc-types.ts"
+        },
+        {
+          "hash": "40354a1d835d24a6f763e9e9af8f0ece4f29e3d012a46f444228a2e8fa84d6b5",
+          "importsFiles": [
+            "packages/agent-identity/src/identity.ts"
+          ],
+          "path": "packages/agent-identity/tests/identity.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "ef8251a07cccc2857db8b0b228fbade6fec49d599882180e746b788725301e12",
+          "importsFiles": [
+            "packages/agent-identity/src/identity.ts",
+            "packages/agent-identity/src/vc-export.ts"
+          ],
+          "path": "packages/agent-identity/tests/vc-export.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "69482d7a725ef98761717809bdfe84a160ac7817888c5e34a6af524f3f91faad",
+          "path": "packages/agent-identity/tsconfig.json"
+        },
+        {
+          "hash": "316a7807e4cf85ddb1af7c951b9fbd4c42c900386402069711d4da9f547c5285",
+          "path": "packages/agent-identity/vitest.config.ts"
+        }
+      ],
+      "globs": [
+        "packages/agent-identity/**"
+      ],
+      "importConfidence": "full",
+      "name": "agent-identity",
+      "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 6,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
+      "outsideReads": 6,
+      "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
+      "testedBy": 5,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "9d97b069c3e551eda871bca3c247bd54c87f7fb12e5a29219bfbf33e9a1dc1f6",
+          "path": "packages/cognate/LICENSE"
+        },
+        {
+          "hash": "a0e4ba25ce17b1e6ffcd4b1fb8015f7cec3ea408a3c371e3e6c0304cb7d5aff4",
+          "path": "packages/cognate/README.es.md"
+        },
+        {
+          "hash": "b60945de4b3a79c304732f49827ff2b653d3fa4e9611bb312972f9c2726896eb",
+          "path": "packages/cognate/README.fr.md"
+        },
+        {
+          "hash": "03f98d2a05c7dc393b725c6c8c51a40365d15b0dbd07958a93a54a3ad86d7b08",
+          "path": "packages/cognate/README.hi.md"
+        },
+        {
+          "hash": "c53894fea8fe4ad29f90b863499ef516a3c7e3f19e8d72c4a2dcddb4a58c9154",
+          "path": "packages/cognate/README.it.md"
+        },
+        {
+          "hash": "73b5ac9734515de01e4e2d7ae3a938575eb39a9eaa32d5924fb4a590e4289a3f",
+          "path": "packages/cognate/README.ja.md"
+        },
+        {
+          "hash": "75b72955eb33f277445314d0f88e7937979937b82ea77ff535746b4f9c50bdc3",
+          "path": "packages/cognate/README.md"
+        },
+        {
+          "hash": "6344605aa292b77835073fdb0af6d74426d22a674d29db663e9a48c23c247f02",
+          "path": "packages/cognate/README.pt-BR.md"
+        },
+        {
+          "hash": "b4710b73929e3b5d8e798bd0c93960e086026cb11b28551bbeb57de21dff3cc8",
+          "path": "packages/cognate/README.zh.md"
+        },
+        {
+          "hash": "ba74b1ba53b9d1b75074df00305d183890f01ed51b20f3ed2261a0d8867dcb37",
+          "path": "packages/cognate/package.json"
+        },
+        {
+          "hash": "4b78eb53aeccbbd04005bfbebbc12840a2215e60c10d88d2f0d25f94f531ed94",
+          "importsFiles": [
+            "packages/agent-identity/src/index.ts"
+          ],
+          "path": "packages/cognate/src/agent-identity.ts",
+          "reexportsAll": [
+            "packages/agent-identity/src/index.ts"
+          ],
+          "reexportsOnly": true
+        },
+        {
+          "hash": "9c0e3bb0c5274005a2915325317ec89649e3c721f0c94d991632c2e7546ea518",
+          "importOrder": [
+            "packages/types/src/index.ts",
+            "packages/policy/src/index.ts",
+            "packages/model-registry/src/index.ts",
+            "packages/agent-identity/src/index.ts",
+            "packages/prompt-store/src/index.ts",
+            "packages/repomesh-bridge/src/index.ts"
+          ],
+          "importsFiles": [
+            "packages/agent-identity/src/index.ts",
+            "packages/model-registry/src/index.ts",
+            "packages/policy/src/index.ts",
+            "packages/prompt-store/src/index.ts",
+            "packages/repomesh-bridge/src/index.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/cognate/src/index.ts",
+          "reexportsOnly": true
+        },
+        {
+          "hash": "8c9429cfb6cf2525bfe26da724ea36999174413211539a96fb0f30a53ee5d355",
+          "importsFiles": [
+            "packages/model-registry/src/index.ts"
+          ],
+          "path": "packages/cognate/src/model-registry.ts",
+          "reexportsAll": [
+            "packages/model-registry/src/index.ts"
+          ],
+          "reexportsOnly": true
+        },
+        {
+          "hash": "d8d8aeea2986f32d817f399fc160d6a953d34bf3f80f1468ee63194136e4fc2e",
+          "importsFiles": [
+            "packages/policy/src/index.ts"
+          ],
+          "path": "packages/cognate/src/policy.ts",
+          "reexportsAll": [
+            "packages/policy/src/index.ts"
+          ],
+          "reexportsOnly": true
+        },
+        {
+          "hash": "5dab373ea017dd96cb0574b0da4365f2174ae34e34d027940e683016182d7423",
+          "importsFiles": [
+            "packages/prompt-store/src/index.ts"
+          ],
+          "path": "packages/cognate/src/prompt-store.ts",
+          "reexportsAll": [
+            "packages/prompt-store/src/index.ts"
+          ],
+          "reexportsOnly": true
+        },
+        {
+          "hash": "0432b127bf485b95f58b404fa78675c8f8e67fdfdc8e6bee002035ffb098437f",
+          "importsFiles": [
+            "packages/repomesh-bridge/src/index.ts"
+          ],
+          "path": "packages/cognate/src/repomesh-bridge.ts",
+          "reexportsAll": [
+            "packages/repomesh-bridge/src/index.ts"
+          ],
+          "reexportsOnly": true
+        },
+        {
+          "hash": "acb2a0cfcaf2e6009fe4350c1194d330e83fcc1eed1bb0142c106c47b5470330",
+          "importsFiles": [
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/cognate/src/types.ts",
+          "reexportsAll": [
+            "packages/types/src/index.ts"
+          ],
+          "reexportsOnly": true
+        },
+        {
+          "hash": "c6c21dd5d494a2ea3abdf2d9dd653a228734e98435e719a0882e742ce09ee647",
+          "importOrder": [
+            "packages/cognate/src/index.ts",
+            "packages/cognate/src/policy.ts",
+            "packages/cognate/src/model-registry.ts",
+            "packages/cognate/src/agent-identity.ts",
+            "packages/cognate/src/prompt-store.ts"
+          ],
+          "importsFiles": [
+            "packages/cognate/src/agent-identity.ts",
+            "packages/cognate/src/index.ts",
+            "packages/cognate/src/model-registry.ts",
+            "packages/cognate/src/policy.ts",
+            "packages/cognate/src/prompt-store.ts"
+          ],
+          "path": "packages/cognate/tests/smoke.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "3ba2d32e7790d60851618e53800555454d0c2220800b637ab90059725c1faefd",
+          "path": "packages/cognate/tsconfig.json"
+        },
+        {
+          "hash": "025bf1d305df2a8569bfa886c8ac0cc501cca9909219a539f217f1bb794fc896",
+          "path": "packages/cognate/tsup.config.ts"
+        },
+        {
+          "hash": "316a7807e4cf85ddb1af7c951b9fbd4c42c900386402069711d4da9f547c5285",
+          "path": "packages/cognate/vitest.config.ts"
+        }
+      ],
+      "globs": [
+        "packages/cognate/**"
+      ],
+      "importConfidence": "full",
+      "name": "cognate",
+      "origin": "authored",
+      "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
+      "testedBy": 1,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "15966909fd99371a4c9b0901a75228d70182db31ece3977a593fdbfa52ff0da8",
+          "path": "docs/WEB3_GROUNDEDNESS_REPORT.json"
+        },
+        {
+          "hash": "7f363f2d3542c15adaad3e3d3e58c445d589e3b8ceb4f2cecbb0f57a2a6f18a2",
+          "path": "docs/WEB3_GROUNDEDNESS_REPORT.md"
+        },
+        {
+          "hash": "7aca03799c3f889010efbcc0148169acc79a30ad9d0dab1c5c90da5dd5e65dcc",
+          "path": "docs/WEB3_RESEARCH.md"
+        }
+      ],
+      "globs": [
+        "docs/**"
+      ],
+      "importConfidence": "full",
+      "name": "docs",
+      "origin": "authored",
+      "role": "docs",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "packages/model-registry/src/index.ts"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "905063945d00a99018c8b5f724227b3c5c35312ac780fb54ac79242bffe6cb39",
+          "path": "packages/model-registry/package.json"
+        },
+        {
+          "exports": [
+            "attestTransitionVersion",
+            "buildTransitionProof"
+          ],
+          "failurePaths": [
+            {
+              "in": "attestTransitionVersion",
+              "kind": "catch",
+              "line": 76
+            },
+            {
+              "in": "attestTransitionVersion",
+              "kind": "throw",
+              "line": 77
+            }
+          ],
+          "hash": "4e0e4d39bd49c030671f6b346ed3335b49a0c4949f8a93a4766249788dbf1927",
+          "importOrder": [
+            "packages/types/src/index.ts",
+            "packages/model-registry/src/types.ts",
+            "packages/model-registry/src/registry.ts"
+          ],
+          "importsFiles": [
+            "packages/model-registry/src/registry.ts",
+            "packages/model-registry/src/types.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/model-registry/src/attestation.ts"
+        },
+        {
+          "hash": "1d7554b860f5d698ee41f15c959c85d0fd9e4ffb31b423f31bffaf44c5aaa88a",
+          "importOrder": [
+            "packages/model-registry/src/registry.ts",
+            "packages/model-registry/src/types.ts",
+            "packages/model-registry/src/attestation.ts"
+          ],
+          "importsFiles": [
+            "packages/model-registry/src/attestation.ts",
+            "packages/model-registry/src/registry.ts",
+            "packages/model-registry/src/types.ts"
+          ],
+          "path": "packages/model-registry/src/index.ts",
+          "reexportsOnly": true
+        },
+        {
+          "exports": [
+            "createRegistry",
+            "getCurrentDeployedVersion",
+            "getVersionHistory",
+            "registerModel",
+            "registerVersion",
+            "transitionVersion"
+          ],
+          "failurePaths": [
+            {
+              "in": "registerModel",
+              "kind": "throw",
+              "line": 45
+            },
+            {
+              "in": "registerVersion",
+              "kind": "throw",
+              "line": 70
+            },
+            {
+              "in": "registerVersion",
+              "kind": "throw",
+              "line": 77
+            },
+            {
+              "in": "transitionVersion",
+              "kind": "throw",
+              "line": 111
+            },
+            {
+              "in": "transitionVersion",
+              "kind": "throw",
+              "line": 119
+            },
+            {
+              "in": "transitionVersion",
+              "kind": "throw",
+              "line": 128
+            }
+          ],
+          "hash": "4133b018bc2c53b1c8f9e76dc59e22c819f0460f335d2dc5b858babb4619fc93",
+          "importOrder": [
+            "packages/types/src/index.ts",
+            "packages/model-registry/src/types.ts"
+          ],
+          "importsFiles": [
+            "packages/model-registry/src/types.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/model-registry/src/registry.ts"
+        },
+        {
+          "hash": "305815119e15e75a23cd97e6a4eb3b53295f4eecd4f658fc558e454ba70486f9",
+          "importsFiles": [
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/model-registry/src/types.ts"
+        },
+        {
+          "hash": "fd07fe69a2daedd197dae0f78ea3140f3a19316e8f16c4e485199d4de1ff2166",
+          "importOrder": [
+            "packages/model-registry/src/registry.ts",
+            "packages/model-registry/src/attestation.ts",
+            "packages/model-registry/src/types.ts",
+            "packages/types/src/index.ts"
+          ],
+          "importsFiles": [
+            "packages/model-registry/src/attestation.ts",
+            "packages/model-registry/src/registry.ts",
+            "packages/model-registry/src/types.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/model-registry/tests/attestation.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "6be648e570c600966b4ff04c7cb1467648363bb02ab147eadfca8e3ef9bbae98",
+          "importsFiles": [
+            "packages/model-registry/src/registry.ts",
+            "packages/model-registry/src/types.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/model-registry/tests/registry.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "acd5603719960fea0049a7b4fb2dda51dcff07540af8fe0126956c05eefa2a38",
+          "path": "packages/model-registry/tsconfig.json"
+        },
+        {
+          "hash": "316a7807e4cf85ddb1af7c951b9fbd4c42c900386402069711d4da9f547c5285",
+          "path": "packages/model-registry/vitest.config.ts"
+        }
+      ],
+      "globs": [
+        "packages/model-registry/**"
+      ],
+      "importConfidence": "full",
+      "name": "model-registry",
+      "origin": "authored",
+      "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
+      "testedBy": 5,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "packages/node/src/index.ts"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "720fe3f44698ac74f1e72703f3fce826bedb7a574b4ff1fed314ed9a70c9670f",
+          "path": "packages/node/package.json"
+        },
+        {
+          "hash": "08949c3aa886605454eebea565c945a05f9f0aae8637a7b2ef936a61c8b7fb59",
+          "importOrder": [
+            "packages/model-registry/src/index.ts",
+            "packages/agent-identity/src/index.ts",
+            "packages/prompt-store/src/index.ts",
+            "packages/node/src/server.ts"
+          ],
+          "importsFiles": [
+            "packages/agent-identity/src/index.ts",
+            "packages/model-registry/src/index.ts",
+            "packages/node/src/server.ts",
+            "packages/prompt-store/src/index.ts"
+          ],
+          "path": "packages/node/src/index.ts"
+        },
+        {
+          "exports": [
+            "authenticate",
+            "extractCredentials"
+          ],
+          "hash": "f6629278df8ef1c99132f01546b8523b1c636ab1f04610122f90592a39761e66",
+          "importOrder": [
+            "packages/types/src/index.ts",
+            "packages/agent-identity/src/index.ts"
+          ],
+          "importsFiles": [
+            "packages/agent-identity/src/index.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/node/src/middleware/auth.ts"
+        },
+        {
+          "exports": [
+            "checkRateLimit",
+            "createRateLimitState"
+          ],
+          "hash": "78b437ba8d02e04e1db11292ca384921dedb8cbdb6f399d3578628108ceeb5de",
+          "path": "packages/node/src/middleware/rate-limit.ts"
+        },
+        {
+          "exports": [
+            "handleHealth"
+          ],
+          "hash": "398c23cd80fb538c708386253bbf4318f0aa001fe0bb722bf22dac2f5d103f71",
+          "path": "packages/node/src/routes/health.ts"
+        },
+        {
+          "exports": [
+            "handleIdentity"
+          ],
+          "hash": "893f348de391cd635ecf12826ee266f9cc255367a4e044c562a6d8aee6b886dd",
+          "importOrder": [
+            "packages/agent-identity/src/index.ts",
+            "packages/types/src/index.ts",
+            "packages/node/src/server.ts"
+          ],
+          "importsFiles": [
+            "packages/agent-identity/src/index.ts",
+            "packages/node/src/server.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/node/src/routes/identity.ts"
+        },
+        {
+          "exports": [
+            "handlePolicy"
+          ],
+          "hash": "18e56c0eb4ae79a42b10b7f5c8c9691eb2bb40b7a59cf315832827b37f6465f1",
+          "importsFiles": [
+            "packages/policy/src/index.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/node/src/routes/policy.ts"
+        },
+        {
+          "exports": [
+            "handlePrompts"
+          ],
+          "hash": "9a80ca098b07abe487bee8ac2b2d75366c8bd1497dedb4fa8af0061e500a857a",
+          "importOrder": [
+            "packages/prompt-store/src/index.ts",
+            "packages/types/src/index.ts",
+            "packages/node/src/server.ts"
+          ],
+          "importsFiles": [
+            "packages/node/src/server.ts",
+            "packages/prompt-store/src/index.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/node/src/routes/prompts.ts"
+        },
+        {
+          "exports": [
+            "handleRegistry"
+          ],
+          "failurePaths": [
+            {
+              "in": "handleRegistry",
+              "kind": "catch",
+              "line": 32
+            },
+            {
+              "in": "handleRegistry",
+              "kind": "catch",
+              "line": 53
+            },
+            {
+              "in": "handleRegistry",
+              "kind": "catch",
+              "line": 70
+            }
+          ],
+          "hash": "96229a8a14aed41812a4efb1e4a8f8a8d64b950f50c8d01ff6bb6fe63ae58e70",
+          "importOrder": [
+            "packages/model-registry/src/index.ts",
+            "packages/types/src/index.ts",
+            "packages/node/src/server.ts"
+          ],
+          "importsFiles": [
+            "packages/model-registry/src/index.ts",
+            "packages/node/src/server.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/node/src/routes/registry.ts"
+        },
+        {
+          "exports": [
+            "createCognateServer"
+          ],
+          "failurePaths": [
+            {
+              "in": "parseBody",
+              "kind": "catch",
+              "line": 73
+            },
+            {
+              "in": "createCognateServer",
+              "kind": "catch",
+              "line": 171
+            }
+          ],
+          "hash": "585e8b21637f649942b6a0c9bac3858cf1fbd027e3643438cdd8482674fd4009",
+          "importOrder": [
+            "packages/model-registry/src/index.ts",
+            "packages/agent-identity/src/index.ts",
+            "packages/prompt-store/src/index.ts",
+            "packages/node/src/routes/health.ts",
+            "packages/node/src/routes/policy.ts",
+            "packages/node/src/routes/registry.ts",
+            "packages/node/src/routes/identity.ts",
+            "packages/node/src/routes/prompts.ts",
+            "packages/node/src/middleware/auth.ts",
+            "packages/node/src/middleware/rate-limit.ts"
+          ],
+          "importsFiles": [
+            "packages/agent-identity/src/index.ts",
+            "packages/model-registry/src/index.ts",
+            "packages/node/src/middleware/auth.ts",
+            "packages/node/src/middleware/rate-limit.ts",
+            "packages/node/src/routes/health.ts",
+            "packages/node/src/routes/identity.ts",
+            "packages/node/src/routes/policy.ts",
+            "packages/node/src/routes/prompts.ts",
+            "packages/node/src/routes/registry.ts",
+            "packages/prompt-store/src/index.ts"
+          ],
+          "path": "packages/node/src/server.ts"
+        },
+        {
+          "hash": "a26f4e4fa4850a15dbfcab749962627ec83df3b3b854ba18e5a187953d2b904d",
+          "importOrder": [
+            "packages/node/src/middleware/auth.ts",
+            "packages/node/src/middleware/rate-limit.ts",
+            "packages/agent-identity/src/index.ts"
+          ],
+          "importsFiles": [
+            "packages/agent-identity/src/index.ts",
+            "packages/node/src/middleware/auth.ts",
+            "packages/node/src/middleware/rate-limit.ts"
+          ],
+          "path": "packages/node/tests/middleware.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "95a07be5f74b9484240e327b2f30a3bcc8ef1ae59f875d0dab213e5791e9ea62",
+          "importOrder": [
+            "packages/node/src/server.ts",
+            "packages/node/src/routes/registry.ts",
+            "packages/node/src/routes/prompts.ts",
+            "packages/model-registry/src/index.ts",
+            "packages/agent-identity/src/index.ts",
+            "packages/prompt-store/src/index.ts"
+          ],
+          "importsFiles": [
+            "packages/agent-identity/src/index.ts",
+            "packages/model-registry/src/index.ts",
+            "packages/node/src/routes/prompts.ts",
+            "packages/node/src/routes/registry.ts",
+            "packages/node/src/server.ts",
+            "packages/prompt-store/src/index.ts"
+          ],
+          "path": "packages/node/tests/server.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "6e2369cbc791956c36103dd8081ebc2f9ed2fc174a4186a72f86f0f094e98fcb",
+          "path": "packages/node/tsconfig.json"
+        },
+        {
+          "hash": "316a7807e4cf85ddb1af7c951b9fbd4c42c900386402069711d4da9f547c5285",
+          "path": "packages/node/vitest.config.ts"
+        }
+      ],
+      "globs": [
+        "packages/node/**"
+      ],
+      "importConfidence": "full",
+      "name": "node",
+      "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
+      "outsideReads": 1,
+      "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
+      "testedBy": 4,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "packages/policy/src/index.ts"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "61f900f4508554a10619834246bf436f6d3ebded613d52d045000288f1659ad7",
+          "path": "packages/policy/package.json"
+        },
+        {
+          "exports": [
+            "evaluatePolicy",
+            "hasCapability",
+            "isCapabilityActive"
+          ],
+          "failurePaths": [
+            {
+              "in": "evaluateRegex",
+              "kind": "catch",
+              "line": 134
+            }
+          ],
+          "hash": "15f967f004fb27ecd7d8395990c3e9108f95d00d270e5ece52a223d11f35965b",
+          "importOrder": [
+            "packages/types/src/index.ts",
+            "packages/policy/src/types.ts"
+          ],
+          "importsFiles": [
+            "packages/policy/src/types.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/policy/src/evaluator.ts"
+        },
+        {
+          "hash": "8098020bd8c9c58f47959d202fd2e2bebf87dfe02bda1ed302b88f3d9cc29f0d",
+          "importsFiles": [
+            "packages/policy/src/evaluator.ts",
+            "packages/policy/src/types.ts"
+          ],
+          "path": "packages/policy/src/index.ts",
+          "reexportsOnly": true
+        },
+        {
+          "hash": "2cdd656b2f7bf264249910e6eccd12aa48a95da278ca5084fbf6440a7e0b8617",
+          "importsFiles": [
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/policy/src/types.ts"
+        },
+        {
+          "hash": "9c8c794ae3bb510ef35668d38b9f331c68e07c24cb8b43b80105684d7dd3a18c",
+          "importsFiles": [
+            "packages/policy/src/evaluator.ts",
+            "packages/policy/src/index.ts"
+          ],
+          "path": "packages/policy/tests/evaluator.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "69482d7a725ef98761717809bdfe84a160ac7817888c5e34a6af524f3f91faad",
+          "path": "packages/policy/tsconfig.json"
+        },
+        {
+          "hash": "316a7807e4cf85ddb1af7c951b9fbd4c42c900386402069711d4da9f547c5285",
+          "path": "packages/policy/vitest.config.ts"
+        }
+      ],
+      "globs": [
+        "packages/policy/**"
+      ],
+      "importConfidence": "full",
+      "name": "policy",
+      "origin": "authored",
+      "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
+      "testedBy": 2,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "packages/prompt-store/src/index.ts"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "ccb3f059a9d702f5e44332583bef5e477b324d388a36994f8a5a126948987136",
+          "path": "packages/prompt-store/package.json"
+        },
+        {
+          "exports": [
+            "attestLogOutput",
+            "attestLogPrompt"
+          ],
+          "failurePaths": [
+            {
+              "in": "attestLogPrompt",
+              "kind": "catch",
+              "line": 63
+            },
+            {
+              "in": "attestLogOutput",
+              "kind": "catch",
+              "line": 105
+            }
+          ],
+          "hash": "f8901a86d6b2787d415b72c47946898e07b5e9dae16ae014ce7068e4a57cb37f",
+          "importOrder": [
+            "packages/types/src/index.ts",
+            "packages/prompt-store/src/store.ts"
+          ],
+          "importsFiles": [
+            "packages/prompt-store/src/store.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/prompt-store/src/attestation.ts"
+        },
+        {
+          "exports": [
+            "decrypt",
+            "deserializePayload",
+            "encrypt",
+            "hashPlaintext",
+            "serializePayload"
+          ],
+          "hash": "1e3b78e5601d68e1e074fe81e471f6a5c8e967d2f7006ed1cc17694f684a3555",
+          "path": "packages/prompt-store/src/crypto.ts"
+        },
+        {
+          "hash": "92aed6c92177bee1496d5dc2051b14928535f748f1dfbb72e33ee7ea7d6b5357",
+          "importOrder": [
+            "packages/prompt-store/src/store.ts",
+            "packages/prompt-store/src/crypto.ts",
+            "packages/prompt-store/src/attestation.ts"
+          ],
+          "importsFiles": [
+            "packages/prompt-store/src/attestation.ts",
+            "packages/prompt-store/src/crypto.ts",
+            "packages/prompt-store/src/store.ts"
+          ],
+          "path": "packages/prompt-store/src/index.ts",
+          "reexportsOnly": true
+        },
+        {
+          "exports": [
+            "createStore",
+            "getModelVersionPrompts",
+            "getOutput",
+            "getOutputsForPrompt",
+            "getPrompt",
+            "getPromptsByAgent",
+            "getPromptsInRange",
+            "getSessionPrompts",
+            "logOutput",
+            "logPrompt"
+          ],
+          "hash": "907a1791e9e64460c1d3fa7cc4cd88d087bf88dc32ca15d22ae55ad0cd40fda6",
+          "importsFiles": [
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/prompt-store/src/store.ts"
+        },
+        {
+          "hash": "38b30be77587430b21c0e8f3208a711b8542ba4d33ce7a006ce8da7103ea41e3",
+          "importOrder": [
+            "packages/prompt-store/src/store.ts",
+            "packages/prompt-store/src/attestation.ts",
+            "packages/types/src/index.ts"
+          ],
+          "importsFiles": [
+            "packages/prompt-store/src/attestation.ts",
+            "packages/prompt-store/src/store.ts",
+            "packages/types/src/index.ts"
+          ],
+          "path": "packages/prompt-store/tests/attestation.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "e4e11f5f2f48720756b645b300b4a57cd22d9ad3ef278e5c2a8776a963071454",
+          "importsFiles": [
+            "packages/prompt-store/src/crypto.ts"
+          ],
+          "path": "packages/prompt-store/tests/crypto.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "7f73cebe0813c88842ff73ed115558ebaf415e406b596d40148967f0f7b1f6a3",
+          "importsFiles": [
+            "packages/prompt-store/src/store.ts"
+          ],
+          "path": "packages/prompt-store/tests/store.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "69482d7a725ef98761717809bdfe84a160ac7817888c5e34a6af524f3f91faad",
+          "path": "packages/prompt-store/tsconfig.json"
+        },
+        {
+          "hash": "316a7807e4cf85ddb1af7c951b9fbd4c42c900386402069711d4da9f547c5285",
+          "path": "packages/prompt-store/vitest.config.ts"
+        }
+      ],
+      "globs": [
+        "packages/prompt-store/**"
+      ],
+      "importConfidence": "full",
+      "name": "prompt-store",
+      "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 8,
+          "where": [
+            "caller"
+          ],
+          "writes": 0
+        }
+      ],
+      "outsideReads": 8,
+      "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
+      "testedBy": 6,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "packages/repomesh-bridge/src/index.ts"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "62e1542da673fa06c636bc8cae918fea43b2623342c5c0a0ce85037e8f9f1dee",
+          "path": "packages/repomesh-bridge/package.json"
+        },
+        {
+          "hash": "48871d6e7900580202e4f0386f1c45a9c3fc57d85c2e91f42fdbaa3ae02986cd",
+          "importsFiles": [
+            "packages/repomesh-bridge/src/types.ts",
+            "packages/repomesh-bridge/src/verify.ts"
+          ],
+          "path": "packages/repomesh-bridge/src/index.ts",
+          "reexportsOnly": true
+        },
+        {
+          "hash": "c99be3d60ab1dafa7082992909371b5fc5bcac714696147397aec92bd68b957c",
+          "path": "packages/repomesh-bridge/src/repomesh.d.ts"
+        },
+        {
+          "hash": "877e325d7a64db206f78602ce35774efcebc79e3669da9e3f2727fa349c9abc4",
+          "path": "packages/repomesh-bridge/src/types.ts"
+        },
+        {
+          "exports": [
+            "anchorPartition",
+            "checkTrust",
+            "verifyAll",
+            "verifyRelease"
+          ],
+          "hash": "4889396e814a34835c16495cfdadf913f1389f76db0cb4bdd299725ff0502e7a",
+          "importsFiles": [
+            "packages/repomesh-bridge/src/types.ts"
+          ],
+          "path": "packages/repomesh-bridge/src/verify.ts"
+        },
+        {
+          "hash": "fec05fcd41ecbe56bd4e61b96a5e7def779c067ce804d7be23941cc16e026810",
+          "importsFiles": [
+            "packages/repomesh-bridge/src/verify.ts"
+          ],
+          "path": "packages/repomesh-bridge/tests/verify.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "69482d7a725ef98761717809bdfe84a160ac7817888c5e34a6af524f3f91faad",
+          "path": "packages/repomesh-bridge/tsconfig.json"
+        },
+        {
+          "hash": "0619647d853125286b5a534d70895ceba502245748a3d4c20c21b83bce8b3ef6",
+          "path": "packages/repomesh-bridge/vitest.config.ts"
+        }
+      ],
+      "globs": [
+        "packages/repomesh-bridge/**"
+      ],
+      "importConfidence": "full",
+      "name": "repomesh-bridge",
+      "origin": "authored",
+      "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
+      "testedBy": 2,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "59146a5137cfdbe4f61069f254deb5ec6ae980d93827d6d4eda73ad8dcfa2916",
+          "path": ".dockerignore"
+        },
+        {
+          "hash": "ad0c9578b8e02b2ebd3575158c6a9504e23016719ec98e2ba898b79973f3158e",
+          "path": ".gitignore"
+        },
+        {
+          "hash": "786591367f8ef14896e3d5919e73572d0078292fcf99b279665973c6f8e03801",
+          "path": "CHANGELOG.md"
+        },
+        {
+          "hash": "9e5c0d8f1152719164c2be4418765573cf33d0381047ca7efc605dab9e750035",
+          "path": "Caddyfile"
+        },
+        {
+          "hash": "8cb6382ab5c42160eb1252339657b9712fdf6b5b6902b9a938088102e975bf85",
+          "path": "Dockerfile"
+        },
+        {
+          "hash": "c22b643e04b01e4bfda6d428cea1b50387da9976a2eb82dfccda9b04d6fb2092",
+          "path": "HANDBOOK.md"
+        },
+        {
+          "hash": "9d97b069c3e551eda871bca3c247bd54c87f7fb12e5a29219bfbf33e9a1dc1f6",
+          "path": "LICENSE"
+        },
+        {
+          "hash": "a1fe1920c6166fc7ec8f0dafca013e4adda6e7c42e5c364766d5be5c0d2e49de",
+          "path": "README.es.md"
+        },
+        {
+          "hash": "ef237c7684d52bddae8877f138bbdafaebd2cfec220570e7dc7a741191a580f7",
+          "path": "README.fr.md"
+        },
+        {
+          "hash": "510956a3620d08a4abfbe4bc3aeefdf97214b4b7ab79e09906937588e4962cf7",
+          "path": "README.hi.md"
+        },
+        {
+          "hash": "405c9c8d441352c7e8ea35749fbddcbb74793334df3fab5ff109cb73ea52ef17",
+          "path": "README.it.md"
+        },
+        {
+          "hash": "2f2b32fb61ee970f48d32f728bf41fc80de45b062af9142454b428ccc8c81f69",
+          "path": "README.ja.md"
+        },
+        {
+          "hash": "52337e21e06c3761975ba2ac445bd4b45aaf77cc85e04b496eaf78acabfc6d6b",
+          "path": "README.md"
+        },
+        {
+          "hash": "dc3a7d0159e2431ccbb1f82dd5b745bc9f2de8211e3de181f78c42e258ea56f1",
+          "path": "README.pt-BR.md"
+        },
+        {
+          "hash": "4b8a8fdce2cfde678e427d8392fdcd45c6a2ca69e62d77dc1583f2e1191b2ccb",
+          "path": "README.zh.md"
+        },
+        {
+          "hash": "d28b77a9445952809c18fc46bc08e1a90358768fd1ab3c0d8045cfa25c61f62d",
+          "path": "SCORECARD.md"
+        },
+        {
+          "hash": "be5799921672f6c9265f915d4eff93238c94dd270c2c9cf9c1b3f2741a954d2a",
+          "path": "SECURITY.md"
+        },
+        {
+          "hash": "1d6996c5bfe3d4a4d6e310b171fb36483c7f642bb439591f73f40e024625ffbb",
+          "path": "SHIP_GATE.md"
+        },
+        {
+          "hash": "b6509d00db036e4b52930273db6b10ec675d920ac196c2ebed554f39e2616de7",
+          "path": "docker-compose.prod.yml"
+        },
+        {
+          "hash": "6096c1c68a8cd7e51668a782421dee44e90d226de2a17257eb5567f181ae833a",
+          "path": "docker-compose.yml"
+        },
+        {
+          "hash": "ac7fd37374e75f0f79e3e014dae232d9d23f1d948c3cff6f7fb8242bc736f08d",
+          "path": "node.json"
+        },
+        {
+          "hash": "f5e1c79c8374a8b9d19708cd04bcef3daa6c102db269971a6abfc582e4245326",
+          "path": "package.json"
+        },
+        {
+          "hash": "43257a95da65397dfd377a17f22df417f6a4f098a931b0e8e28ce99b343deeaf",
+          "path": "pnpm-lock.yaml"
+        },
+        {
+          "hash": "18abfc850a1129c9254d47f994dd5d72525ba56054bc23375cb012ee2d3995ca",
+          "path": "pnpm-workspace.yaml"
+        },
+        {
+          "hash": "5c28e21d983f2332567e2056372bac6fd318d1bd25e80de1d63a6f572a0691ae",
+          "path": "tsconfig.json"
+        }
+      ],
+      "globs": [
+        "*"
+      ],
+      "importConfidence": "full",
+      "name": "root",
+      "origin": "authored",
+      "role": "config",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "270c1277ae1cc75b8b042ac74c650e9e47f346c9545a1cc5592e20b5c9edc98f",
+          "path": "scripts/health-server.mjs"
+        }
+      ],
+      "globs": [
+        "scripts/**"
+      ],
+      "importConfidence": "full",
+      "name": "scripts",
+      "origin": "authored",
+      "role": "code",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "575dab9521cadb0df71c652f64e117c22aaa04a5b6ac02a19c0453f00e944080",
+          "path": "site/astro.config.mjs"
+        },
+        {
+          "hash": "f28e1741415380da01a48577f390b8aa5aa9deda3d3ea3e330b3b8049c5ccc5d",
+          "path": "site/package-lock.json"
+        },
+        {
+          "hash": "9c39e620ebae2c5718ecd8c6188bd3451409a614ec8f5308dc15d5fd886e5b91",
+          "path": "site/package.json"
+        },
+        {
+          "hash": "db3c76ae1d22efa9f6c9a1cf3d8b1f45a5e94210d34e4b518006018e7d3d097d",
+          "path": "site/public/favicon.svg"
+        },
+        {
+          "hash": "dd7af14f57841c1dbd21700ddee8f7dbe8f712bc65bd344810d85c7e6e09e302",
+          "path": "site/src/assets/logo.png"
+        },
+        {
+          "constantOnly": true,
+          "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
+          "path": "site/src/content.config.ts"
+        },
+        {
+          "hash": "2846e366c36d2f1b10096309ed966285919e1a0d425290a250907632f4e23aad",
+          "path": "site/src/content/docs/handbook/architecture.md"
+        },
+        {
+          "hash": "f5fea732109f410dc2019c35ff14ba84b5d992de39ba18162ada290687df65cc",
+          "path": "site/src/content/docs/handbook/getting-started.md"
+        },
+        {
+          "hash": "74b00a8d2d75afce0e4f17d392fe2f9f18b0a0b4bd006ead3ad838aefad24eba",
+          "path": "site/src/content/docs/handbook/index.md"
+        },
+        {
+          "hash": "17f3075a5bc31ca8faa85878dfee3e7276959d51b9ed94e8a2ea19ffa0623601",
+          "path": "site/src/content/docs/handbook/reference.md"
+        },
+        {
+          "hash": "e8abe869768c297dceccd323b591a1395b7ef37d98c082b466e99e2f543fbb7a",
+          "path": "site/src/content/docs/handbook/security.md"
+        },
+        {
+          "hash": "85089413d3df87466b802ad8806efc3332365b3bbf3761c10dad3ce3014e9cba",
+          "path": "site/src/content/docs/handbook/usage.md"
+        },
+        {
+          "hash": "4fb84a646c4d833c33f4058e1ed1775849e855c65e5adb7e45d2a633674bd603",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
+          "path": "site/src/pages/index.astro"
+        },
+        {
+          "constantOnly": true,
+          "hash": "5bce89ed804f5d0719cc0044482b4f1ac50ce02ba6492c9244e24eacf5acad34",
+          "path": "site/src/site-config.ts"
+        },
+        {
+          "hash": "29ee8df91833e694bdba973126b34a6177de4cf01dab6d9ef7d3126e8e2b67fb",
+          "path": "site/src/styles/global.css"
+        },
+        {
+          "hash": "caf3bea3424477e9528b80490e442ff4fad4ccc7562df9457497382c5bd62339",
+          "path": "site/src/styles/starlight-custom.css"
+        },
+        {
+          "hash": "b5b0a5b04a14cddd7713c5e1c82e86c79c17c2f86b170e26e9b170b3d5e01cd9",
+          "path": "site/tsconfig.json"
+        }
+      ],
+      "globs": [
+        "site/**"
+      ],
+      "importConfidence": "full",
+      "name": "site",
+      "origin": "authored",
+      "role": "site",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "303b74e9a5debfec90a5287252222cc234d3fba332bce7543b75e5354fe79a48",
+          "path": "specs/RFC-010-AI-GOVERNANCE-EXTENSION.md"
+        }
+      ],
+      "globs": [
+        "specs/**"
+      ],
+      "importConfidence": "full",
+      "name": "specs",
+      "origin": "authored",
+      "role": "docs",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "packages/types/src/index.ts"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "119f80d2b02b1916d2e7fdf0354182793414835c0e90fa6275dcc46377cae2d1",
+          "path": "packages/types/package.json"
+        },
+        {
+          "hash": "b43d0b85683defa50ae49a83184e4aa8ad6ba7a84ce16b6c98883565a7a68f8e",
+          "path": "packages/types/src/index.ts"
+        },
+        {
+          "hash": "69482d7a725ef98761717809bdfe84a160ac7817888c5e34a6af524f3f91faad",
+          "path": "packages/types/tsconfig.json"
+        }
+      ],
+      "globs": [
+        "packages/types/**"
+      ],
+      "importConfidence": "full",
+      "name": "types",
+      "origin": "authored",
+      "role": "code",
+      "testRunners": [
+        "vitest"
+      ],
+      "testedBy": 10,
+      "unresolvedSites": 0
+    }
+  ],
+  "doors": [
+    {
+      "checksCount": 0,
+      "commands": [
+        {
+          "dir": "",
+          "job": "build-and-test",
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
+        },
+        {
+          "dir": "",
+          "job": "build-and-test",
+          "programs": [
+            "pnpm"
+          ],
+          "step": "4"
+        },
+        {
+          "dir": "",
+          "job": "build-and-test",
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Build"
+        },
+        {
+          "dir": "",
+          "job": "build-and-test",
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Typecheck"
+        },
+        {
+          "dir": "",
+          "job": "build-and-test",
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Test with coverage"
+        },
+        {
+          "dir": "",
+          "job": "build-and-test",
+          "programs": [
+            "1",
+            "echo",
+            "grep",
+            "pnpm"
+          ],
+          "step": "Dependency vulnerability scan"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build-and-test",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "2",
+              "uses": "actions/setup-node",
+              "version": "${{ matrix.node-version }}"
+            }
+          ]
+        }
+      ],
+      "landings": [],
+      "mentions": [],
+      "name": "CI",
+      "permissions": [
+        "contents:read"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "agent-identity",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "cognate",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "model-registry",
+          "depth": 0,
+          "files": 6
+        },
+        {
+          "boundary": "node",
+          "depth": 0,
+          "files": 11
+        },
+        {
+          "boundary": "policy",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "prompt-store",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "repomesh-bridge",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "types",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/agent-identity/src/",
+          "runKind": "executes",
+          "via": "tsc packages/agent-identity/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/agent-identity/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/agent-identity/vitest.config.ts"
+        },
+        {
+          "built": true,
+          "job": "build-and-test",
+          "path": "packages/cognate/src/agent-identity.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "build-and-test",
+          "path": "packages/cognate/src/index.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "build-and-test",
+          "path": "packages/cognate/src/model-registry.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "build-and-test",
+          "path": "packages/cognate/src/policy.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "build-and-test",
+          "path": "packages/cognate/src/prompt-store.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "build-and-test",
+          "path": "packages/cognate/src/repomesh-bridge.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "build-and-test",
+          "path": "packages/cognate/src/types.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/model-registry/src/",
+          "runKind": "executes",
+          "via": "tsc packages/model-registry/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/model-registry/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/model-registry/vitest.config.ts"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/node/src/",
+          "runKind": "executes",
+          "via": "tsc packages/node/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/node/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/policy/src/",
+          "runKind": "executes",
+          "via": "tsc packages/policy/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/policy/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/policy/vitest.config.ts"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/prompt-store/src/",
+          "runKind": "executes",
+          "via": "tsc packages/prompt-store/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/prompt-store/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/prompt-store/vitest.config.ts"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/repomesh-bridge/src/",
+          "runKind": "executes",
+          "via": "tsc packages/repomesh-bridge/tsconfig.json"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/types/src/",
+          "runKind": "executes",
+          "via": "tsc packages/types/tsconfig.json"
+        }
+      ],
+      "runsCount": 19,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "tests": [
+        {
+          "config": "packages/agent-identity/vitest.config.ts",
+          "coverage": true,
+          "dir": "packages/agent-identity",
+          "files": 2,
+          "job": "build-and-test",
+          "runner": "vitest",
+          "step": "Test with coverage",
+          "through": [
+            "pnpm run test:coverage",
+            "pnpm run test:coverage (packages/agent-identity)"
+          ]
+        },
+        {
+          "config": "packages/model-registry/vitest.config.ts",
+          "coverage": true,
+          "dir": "packages/model-registry",
+          "files": 2,
+          "job": "build-and-test",
+          "runner": "vitest",
+          "step": "Test with coverage",
+          "through": [
+            "pnpm run test:coverage",
+            "pnpm run test:coverage (packages/model-registry)"
+          ]
+        },
+        {
+          "config": "packages/node/vitest.config.ts",
+          "coverage": true,
+          "dir": "packages/node",
+          "files": 2,
+          "job": "build-and-test",
+          "runner": "vitest",
+          "step": "Test with coverage",
+          "through": [
+            "pnpm run test:coverage",
+            "pnpm run test:coverage (packages/node)"
+          ]
+        },
+        {
+          "config": "packages/policy/vitest.config.ts",
+          "coverage": true,
+          "dir": "packages/policy",
+          "files": 1,
+          "job": "build-and-test",
+          "runner": "vitest",
+          "step": "Test with coverage",
+          "through": [
+            "pnpm run test:coverage",
+            "pnpm run test:coverage (packages/policy)"
+          ]
+        },
+        {
+          "config": "packages/prompt-store/vitest.config.ts",
+          "coverage": true,
+          "dir": "packages/prompt-store",
+          "files": 3,
+          "job": "build-and-test",
+          "runner": "vitest",
+          "step": "Test with coverage",
+          "through": [
+            "pnpm run test:coverage",
+            "pnpm run test:coverage (packages/prompt-store)"
+          ]
+        },
+        {
+          "coverage": true,
+          "dir": "packages/types",
+          "files": 0,
+          "job": "build-and-test",
+          "runner": "vitest",
+          "step": "Test with coverage",
+          "through": [
+            "pnpm run test:coverage",
+            "pnpm run test:coverage (packages/types)"
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "pull_request",
+          "paths": [
+            "**/*.ts",
+            ".github/workflows/**",
+            "atlas/**",
+            "package.json",
+            "pnpm-lock.yaml",
+            "tsconfig*.json"
+          ]
+        },
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "push",
+          "paths": [
+            "**/*.ts",
+            ".github/workflows/**",
+            "atlas/**",
+            "package.json",
+            "pnpm-lock.yaml",
+            "tsconfig*.json"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "actions/setup-node",
+        "pnpm/action-setup"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 12,
+      "commands": [],
+      "elsewhere": [],
+      "file": ".github/workflows/docker-publish.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build-and-push",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
+      "landings": [],
+      "mentions": [],
+      "name": "Docker Publish",
+      "permissions": [
+        "contents:read",
+        "packages:write"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "agent-identity",
+          "depth": 0,
+          "files": 6
+        },
+        {
+          "boundary": "cognate",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "model-registry",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "node",
+          "depth": 0,
+          "files": 10
+        },
+        {
+          "boundary": "policy",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "prompt-store",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "repomesh-bridge",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "types",
+          "depth": 0,
+          "files": 2
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/agent-identity/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/agent-identity/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/agent-identity/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/cognate/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/model-registry/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/model-registry/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/model-registry/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/node/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/node/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/node/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "path": "packages/node/src/index.ts",
+          "runKind": "executes",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/policy/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/policy/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/policy/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/prompt-store/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/prompt-store/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/prompt-store/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/repomesh-bridge/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/repomesh-bridge/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/repomesh-bridge/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/types/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/types/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/types/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "pnpm-lock.yaml",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "pnpm-workspace.yaml",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "tsconfig.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        }
+      ],
+      "runsCount": 20,
+      "secrets": [
+        "GITHUB_TOKEN"
+      ],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": true,
+        "publishesTo": [
+          "container image"
+        ],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [
+        {
+          "event": "push",
+          "tags": [
+            "v*"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "docker/build-push-action",
+        "docker/login-action",
+        "docker/metadata-action",
+        "docker/setup-buildx-action"
+      ],
+      "usesWorkflowToken": true
+    },
+    {
+      "checksCount": 12,
+      "commands": [],
+      "elsewhere": [],
+      "file": ".github/workflows/docker.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build-and-push",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
+      "landings": [],
+      "mentions": [],
+      "name": "Publish to GHCR",
+      "permissions": [
+        "contents:read",
+        "packages:write"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "agent-identity",
+          "depth": 0,
+          "files": 6
+        },
+        {
+          "boundary": "cognate",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "model-registry",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "node",
+          "depth": 0,
+          "files": 10
+        },
+        {
+          "boundary": "policy",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "prompt-store",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "repomesh-bridge",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "types",
+          "depth": 0,
+          "files": 2
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/agent-identity/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/agent-identity/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/agent-identity/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/cognate/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/model-registry/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/model-registry/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/model-registry/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/node/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/node/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/node/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "path": "packages/node/src/index.ts",
+          "runKind": "executes",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/policy/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/policy/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/policy/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/prompt-store/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/prompt-store/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/prompt-store/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/repomesh-bridge/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/repomesh-bridge/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/repomesh-bridge/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/types/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/types/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/types/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "pnpm-lock.yaml",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "pnpm-workspace.yaml",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "tsconfig.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        }
+      ],
+      "runsCount": 20,
+      "secrets": [
+        "GITHUB_TOKEN"
+      ],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": true,
+        "publishesTo": [
+          "container image"
+        ],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [
+        {
+          "event": "release",
+          "types": [
+            "published"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "docker/build-push-action",
+        "docker/login-action",
+        "docker/metadata-action"
+      ],
+      "usesWorkflowToken": true
+    },
+    {
+      "checksCount": 0,
+      "commands": [
+        {
+          "dir": "site",
+          "job": "build",
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
+        },
+        {
+          "dir": "site",
+          "job": "build",
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
+      "landings": [],
+      "mentions": [],
+      "name": "Deploy site to GitHub Pages",
+      "permissions": [
+        "contents:read",
+        "id-token:write",
+        "pages:write"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "job": "build",
+          "matched": true,
+          "path": "site/astro.config.mjs",
+          "runKind": "executes",
+          "via": "astro build"
+        },
+        {
+          "directory": true,
+          "job": "build",
+          "matched": true,
+          "path": "site/src/",
+          "runKind": "executes",
+          "via": "astro build"
+        }
+      ],
+      "runsCount": 2,
+      "secrets": [],
+      "sends": {
+        "deploysPages": true,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "push",
+          "paths": [
+            ".github/workflows/pages.yml",
+            "site/**"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "actions/deploy-pages",
+        "actions/setup-node",
+        "actions/upload-pages-artifact"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [
+        {
+          "dir": "",
+          "job": "release",
+          "programs": [
+            "npm"
+          ],
+          "step": "Install pnpm"
+        },
+        {
+          "dir": "",
+          "job": "release",
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in sandbox for OIDC trusted-publishing auth"
+        },
+        {
+          "dir": "",
+          "job": "release",
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify tag matches packages/cognate/package.json version"
+        },
+        {
+          "dir": "",
+          "job": "release",
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Install dependencies"
+        },
+        {
+          "dir": "",
+          "job": "release",
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Build all packages (incl. the bundle)"
+        },
+        {
+          "dir": "",
+          "job": "release",
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Run tests"
+        },
+        {
+          "dir": "packages/cognate",
+          "job": "release",
+          "programs": [
+            "echo",
+            "node",
+            "npm"
+          ],
+          "step": "Strip workspace-only devDependencies from the published manifest"
+        },
+        {
+          "dir": "packages/cognate",
+          "job": "release",
+          "programs": [
+            "npm"
+          ],
+          "step": "npm pack dry-run (verify tarball shape)"
+        },
+        {
+          "dir": "packages/cognate",
+          "job": "release",
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher)"
+        },
+        {
+          "dir": "",
+          "job": "release",
+          "programs": [
+            "gh"
+          ],
+          "step": "Create GitHub Release"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "release",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Setup Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
+      "landings": [],
+      "mentions": [
+        {
+          "job": "release",
+          "path": "package.json"
+        },
+        {
+          "job": "release",
+          "path": "packages/cognate/package.json"
+        }
+      ],
+      "name": "Release",
+      "permissions": [
+        "contents:write",
+        "id-token:write"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "agent-identity",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "cognate",
+          "depth": 0,
+          "files": 8
+        },
+        {
+          "boundary": "model-registry",
+          "depth": 0,
+          "files": 6
+        },
+        {
+          "boundary": "node",
+          "depth": 0,
+          "files": 11
+        },
+        {
+          "boundary": "policy",
+          "depth": 0,
+          "files": 4
+        },
+        {
+          "boundary": "prompt-store",
+          "depth": 0,
+          "files": 7
+        },
+        {
+          "boundary": "repomesh-bridge",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "types",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "built": true,
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/agent-identity/src/",
+          "runKind": "executes",
+          "via": "tsc packages/agent-identity/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/agent-identity/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/agent-identity/vitest.config.ts"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "packages/cognate/src/agent-identity.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "packages/cognate/src/index.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "packages/cognate/src/model-registry.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "packages/cognate/src/policy.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "packages/cognate/src/prompt-store.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "packages/cognate/src/repomesh-bridge.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "packages/cognate/src/types.ts",
+          "runKind": "executes"
+        },
+        {
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/cognate/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/cognate/vitest.config.ts"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/model-registry/src/",
+          "runKind": "executes",
+          "via": "tsc packages/model-registry/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/model-registry/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/model-registry/vitest.config.ts"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/node/src/",
+          "runKind": "executes",
+          "via": "tsc packages/node/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/node/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/policy/src/",
+          "runKind": "executes",
+          "via": "tsc packages/policy/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/policy/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/policy/vitest.config.ts"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/prompt-store/src/",
+          "runKind": "executes",
+          "via": "tsc packages/prompt-store/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/prompt-store/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/prompt-store/vitest.config.ts"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/repomesh-bridge/src/",
+          "runKind": "executes",
+          "via": "tsc packages/repomesh-bridge/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/repomesh-bridge/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/repomesh-bridge/vitest.config.ts"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/types/src/",
+          "runKind": "executes",
+          "via": "tsc packages/types/tsconfig.json"
+        }
+      ],
+      "runsCount": 21,
+      "secrets": [
+        "GITHUB_TOKEN"
+      ],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "packages": [
+          {
+            "dir": "packages/cognate",
+            "name": "@mcptoolshop/cognate",
+            "registry": "npm"
+          }
+        ],
+        "publishes": true,
+        "publishesTo": [
+          "npm"
+        ],
+        "releases": true
+      },
+      "stages": [],
+      "tests": [
+        {
+          "config": "packages/agent-identity/vitest.config.ts",
+          "dir": "packages/agent-identity",
+          "files": 2,
+          "job": "release",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "pnpm test",
+            "pnpm test (packages/agent-identity)"
+          ]
+        },
+        {
+          "config": "packages/cognate/vitest.config.ts",
+          "dir": "packages/cognate",
+          "files": 1,
+          "job": "release",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "pnpm test",
+            "pnpm test (packages/cognate)"
+          ]
+        },
+        {
+          "config": "packages/model-registry/vitest.config.ts",
+          "dir": "packages/model-registry",
+          "files": 2,
+          "job": "release",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "pnpm test",
+            "pnpm test (packages/model-registry)"
+          ]
+        },
+        {
+          "config": "packages/node/vitest.config.ts",
+          "dir": "packages/node",
+          "files": 2,
+          "job": "release",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "pnpm test",
+            "pnpm test (packages/node)"
+          ]
+        },
+        {
+          "config": "packages/policy/vitest.config.ts",
+          "dir": "packages/policy",
+          "files": 1,
+          "job": "release",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "pnpm test",
+            "pnpm test (packages/policy)"
+          ]
+        },
+        {
+          "config": "packages/prompt-store/vitest.config.ts",
+          "dir": "packages/prompt-store",
+          "files": 3,
+          "job": "release",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "pnpm test",
+            "pnpm test (packages/prompt-store)"
+          ]
+        },
+        {
+          "config": "packages/repomesh-bridge/vitest.config.ts",
+          "dir": "packages/repomesh-bridge",
+          "files": 1,
+          "job": "release",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "pnpm test",
+            "pnpm test (packages/repomesh-bridge)"
+          ]
+        },
+        {
+          "dir": "packages/types",
+          "files": 0,
+          "job": "release",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "pnpm test",
+            "pnpm test (packages/types)"
+          ]
+        }
+      ],
+      "triggers": [
+        {
+          "event": "push",
+          "tags": [
+            "v*"
+          ]
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "actions/setup-node"
+      ],
+      "usesWorkflowToken": true
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "packages/cognate/package.json",
+      "kind": "package",
+      "landings": [],
+      "mentions": [],
+      "name": "@mcptoolshop/cognate",
+      "permissions": [],
+      "pushes": false,
+      "reach": [],
+      "readers": [],
+      "runs": [],
+      "runsCount": 0,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "unplaced": "packages/cognate/dist/index.d.ts",
+      "uses": [],
+      "usesWorkflowToken": false
+    }
+  ],
+  "edges": [
+    {
+      "from": "agent-identity",
+      "kind": "file",
+      "to": "types"
+    },
+    {
+      "from": "cognate",
+      "kind": "file",
+      "to": "agent-identity"
+    },
+    {
+      "from": "cognate",
+      "kind": "file",
+      "to": "model-registry"
+    },
+    {
+      "from": "cognate",
+      "kind": "file",
+      "to": "policy"
+    },
+    {
+      "from": "cognate",
+      "kind": "file",
+      "to": "prompt-store"
+    },
+    {
+      "from": "cognate",
+      "kind": "file",
+      "to": "repomesh-bridge"
+    },
+    {
+      "from": "cognate",
+      "kind": "file",
+      "to": "types"
+    },
+    {
+      "from": "model-registry",
+      "kind": "file",
+      "to": "types"
+    },
+    {
+      "from": "node",
+      "kind": "file",
+      "to": "agent-identity"
+    },
+    {
+      "from": "node",
+      "kind": "file",
+      "to": "model-registry"
+    },
+    {
+      "from": "node",
+      "kind": "file",
+      "to": "policy"
+    },
+    {
+      "from": "node",
+      "kind": "file",
+      "to": "prompt-store"
+    },
+    {
+      "from": "node",
+      "kind": "file",
+      "to": "types"
+    },
+    {
+      "from": "policy",
+      "kind": "file",
+      "to": "types"
+    },
+    {
+      "from": "prompt-store",
+      "kind": "file",
+      "to": "types"
+    }
+  ],
+  "engine": "1.26.0",
+  "generatedFrom": {
+    "commit": "00cd16316c7ffc7563e7717239aa3a3e721c37f7",
+    "tracked": 134
+  },
+  "landings": [
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
+        }
+      ],
+      "target": "package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
+        }
+      ],
+      "target": "packages/cognate/package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "node.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "packages/node/src/server.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "pnpm-workspace.yaml",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "packages/repomesh-bridge",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs/handbook",
+      "writers": []
+    }
+  ],
+  "overlaps": [],
+  "submodules": [],
+  "symlinks": [],
+  "testFiles": 12,
+  "unassigned": [],
+  "unseen": [
+    {
+      "files": [
+        "docker-compose.yml"
+      ],
+      "kind": "deploy"
+    }
+  ],
+  "workspaces": [
+    "packages/agent-identity",
+    "packages/cognate",
+    "packages/model-registry",
+    "packages/node",
+    "packages/policy",
+    "packages/prompt-store",
+    "packages/repomesh-bridge",
+    "packages/types"
+  ]
+}

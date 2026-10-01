@@ -6,6 +6,13 @@
   ],
   "authoredWritten": [
     {
+      "place": "experiments/acoustic-sft/runs/",
+      "untrackedInputs": true,
+      "writers": [
+        "experiments/acoustic-sft/runpod.mjs"
+      ]
+    },
+    {
       "place": "spaces/jam-actions-live/demo_data.json",
       "untrackedInputs": true,
       "writers": [
@@ -103,9 +110,9 @@
   "changes": {
     "fileCounts": {
       "added": 0,
-      "changed": 2,
+      "changed": 0,
       "moved": 0,
-      "parts": 1,
+      "parts": 0,
       "removed": 0
     },
     "items": [
@@ -126,14 +133,22 @@
         ]
       },
       {
+        "kind": "landing",
+        "sentence": "datasets/jam-actions-v0/records/* is now read by experiments/jam-actions-v0-lora/generate_train_jsonl.py.",
+        "subjects": [
+          "datasets/jam-actions-v0/records/*",
+          "experiments/jam-actions-v0-lora/generate_train_jsonl.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "2 files changed content, across 1 part.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "6e898149dd1e701d620e3db143abf37856e20a4a",
-      "generatedAt": "2026-09-30T20:07:02.042Z"
+      "commit": "254e22e84d5a226ef6417da4825af9f3f6e79175",
+      "generatedAt": "2026-10-01T02:13:24.770Z"
     },
     "unchanged": false
   },
@@ -143,7 +158,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 7 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "254e22e84d5a226ef6417da4825af9f3f6e79175",
+  "commit": "a93b36d938c4e2570a07cba7976de7cd57118cf8",
   "defaultBranch": "main",
   "derived": "14 parts, mostly JSON data (1520 files) and Markdown (348); code in TypeScript (563), Python (48), JavaScript (32), shell (28), PowerShell (3), CSS (2), Astro (1) and HTML (1). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
@@ -396,7 +411,7 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 21 paths",
+        "on a pull request",
         "on a push to main touching 21 paths",
         "or by hand"
       ]
@@ -999,7 +1014,7 @@
       "to": "scripts"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generated": [
     {
       "into": true,
@@ -1254,12 +1269,6 @@
       "place": "experiments/acoustic-sft/data/sft-train.jsonl",
       "writers": [
         "experiments/acoustic-sft/format-sft.ts"
-      ]
-    },
-    {
-      "place": "experiments/acoustic-sft/runs/",
-      "writers": [
-        "experiments/acoustic-sft/runpod.mjs"
       ]
     },
     {
@@ -1663,14 +1672,14 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-01T01:42:32.583Z",
+  "generatedAt": "2026-10-01T08:34:51.337Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.",
     "48 writes and 112 reads use paths built at run time and are not named here.",
     "26 writes go to places this repository does not track, so they are not listed as generated.",
-    "100 writes and 376 reads go to a path their caller passes, not to this repository.",
-    "1 write and 18 reads go to the directory the command is run in, not to this repository.",
+    "100 writes and 377 reads go to a path their caller passes, not to this repository.",
+    "1 write and 19 reads go to the directory the command is run in, not to this repository.",
     "3 writes and 11 reads go to the home directory (.ssh/), not to this repository.",
     "8 writes and 4 reads go to a temporary directory, not to this repository.",
     "1 write and 1 read go to the home directory (.ai-jam-sessions/) or a path their caller passes, not to this repository.",
@@ -1795,6 +1804,7 @@
     "spaces": 0,
     "src": 171
   },
+  "testedCodeParts": 5,
   "unnamedWrites": 48,
   "unread": [
     {

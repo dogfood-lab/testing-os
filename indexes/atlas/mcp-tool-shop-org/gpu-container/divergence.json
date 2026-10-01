@@ -1,0 +1,73 @@
+{
+  "repo": "mcp-tool-shop-org/gpu-container",
+  "generated_from": {
+    "commit_sha": "801f8f9fa36da3cea551414f52f9f4a18eb7d414"
+  },
+  "generated_at": "2026-10-01T08:39:05.047Z",
+  "shared_commit_floor": 3,
+  "confidence": "low",
+  "rows": [
+    {
+      "id": "mcp-tool-shop-org/gpu-container|file-moved|gpu_container|gpu_container/__init__.py",
+      "rule": "file-moved",
+      "value": 0.666667,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-01T08:39:05.047Z",
+      "last_seen": "2026-10-01T08:39:05.047Z",
+      "boundary": "gpu_container",
+      "file": "gpu_container/__init__.py",
+      "partner_boundary": "npm"
+    },
+    {
+      "id": "mcp-tool-shop-org/gpu-container|file-moved|npm|npm/bin/gpu-container.js",
+      "rule": "file-moved",
+      "value": 0.666667,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-01T08:39:05.047Z",
+      "last_seen": "2026-10-01T08:39:05.047Z",
+      "boundary": "npm",
+      "file": "npm/bin/gpu-container.js",
+      "partner_boundary": "gpu_container"
+    },
+    {
+      "id": "mcp-tool-shop-org/gpu-container|leaks|gpu_container",
+      "rule": "leaks",
+      "value": 0.666667,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-01T08:39:05.047Z",
+      "last_seen": "2026-10-01T08:39:05.047Z",
+      "boundary": "gpu_container"
+    },
+    {
+      "id": "mcp-tool-shop-org/gpu-container|leaks|npm",
+      "rule": "leaks",
+      "value": 0.666667,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-01T08:39:05.047Z",
+      "last_seen": "2026-10-01T08:39:05.047Z",
+      "boundary": "npm"
+    },
+    {
+      "id": "mcp-tool-shop-org/gpu-container|two-may-be-one|gpu_container|npm",
+      "rule": "two-may-be-one",
+      "value": 0.666667,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-01T08:39:05.047Z",
+      "last_seen": "2026-10-01T08:39:05.047Z",
+      "boundaries": [
+        "gpu_container",
+        "npm"
+      ]
+    }
+  ]
+}

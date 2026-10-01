@@ -39,13 +39,13 @@
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "Nothing structural changed since 2026-10-01; no file changed.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "6054b1b1dfdb91de994b7f227c3baff47388ae48",
-      "generatedAt": "2026-09-30T20:13:35.348Z"
+      "commit": "95417cd40addae05d873e0efbc7feeb074304231",
+      "generatedAt": "2026-10-01T02:13:56.529Z"
     },
     "unchanged": true
   },
@@ -54,7 +54,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "df37a1acb48be03abac4f4906349d91cc1755873",
+  "commit": "bac3c380c635c48b45ddeade5e7ba65bf5ec6a62",
   "defaultBranch": "main",
   "derived": "7 parts, mostly TypeScript (26 files), CSS (3), JavaScript (3), Rust (2), Astro (1), HTML (1) and PowerShell (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. stillpoint is a desktop app built from apps/desktop/src-tauri (nothing ships it).",
   "doors": [
@@ -92,7 +92,7 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 8 paths",
+        "on a pull request",
         "on a push to main touching 8 paths",
         "or by hand"
       ]
@@ -163,18 +163,12 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generated": [
     {
       "place": "apps/desktop/msix/Assets/",
       "writers": [
         "apps/desktop/msix/gen-assets.mjs"
-      ]
-    },
-    {
-      "place": "apps/desktop/msix/layout/",
-      "writers": [
-        "apps/desktop/msix/build-msix.ps1"
       ]
     },
     {
@@ -190,7 +184,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-01T01:53:27.009Z",
+  "generatedAt": "2026-10-01T08:44:23.654Z",
   "limits": [
     "2 writes and 12 reads go to a path their caller passes, not to this repository.",
     "4 test files under `packages/server/src/` are not run by CI on Linux, where the shell expands `**` as one directory level.",
@@ -234,14 +228,9 @@
     "server": 5,
     "ui": 0
   },
+  "testedCodeParts": 2,
   "unnamedWrites": 0,
   "unread": [
-    {
-      "place": "apps/desktop/msix/layout/",
-      "writers": [
-        "apps/desktop/msix/build-msix.ps1"
-      ]
-    },
     {
       "place": "apps/desktop/src-tauri/gen/schemas/",
       "writers": [
@@ -261,5 +250,5 @@
   "untestedNote": [
     "4 test files run in no workflow: packages/server/src/engine-manager.test.ts, packages/server/src/presets.test.ts, packages/server/src/state.test.ts and 1 more."
   ],
-  "written": 4
+  "written": 3
 }

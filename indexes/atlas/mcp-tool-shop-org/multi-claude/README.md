@@ -1,18 +1,18 @@
 # multi-claude: how it works
 
-Mapped at 2026-10-01 from commit 5f00fa1 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 1b2883b by Atlas 1.26.0.
 
 ## What this is
 
 11 parts, mostly TypeScript (328 files), CSS (3), JavaScript (3), Astro (1) and HTML (1). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. It deploys a site to GitHub Pages. People run multi-claude.
 
-## What changed since 2026-09-30 (bed1180)
+## What changed since 2026-10-01 (5f00fa1)
 
-Nothing structural changed since 2026-09-30; 1 file changed content.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 13 paths; on a push touching 13 paths; or by hand. Runs test/claim.test.ts, test/commands/, test/console/ and 53 more; builds bin/ and src/.
+1. **CI.** On a pull request; on a push touching 13 paths; or by hand. Runs test/claim.test.ts, test/commands/, test/console/ and 53 more; builds bin/ and src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **multi-claude** (a command people run). Runs bin/multi-claude.ts.
 

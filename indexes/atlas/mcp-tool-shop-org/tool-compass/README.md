@@ -1,18 +1,18 @@
 # tool-compass: how it works
 
-Mapped at 2026-10-01 from commit 98f8498 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 580f124 by Atlas 1.26.0.
 
 ## What this is
 
 8 parts, mostly Python (46 files), JavaScript (4), shell (4), CSS (2), TypeScript (2) and Astro (1). Work enters through 7 doors; the busiest is CI, which reaches 5 parts. It publishes to PyPI, @mcptoolshop/tool-compass to npm, and a container image. It deploys a site to GitHub Pages. People run tool-compass and tool-compass-ui.
 
-## What changed since 2026-09-30 (9bf87fd)
+## What changed since 2026-10-01 (e6e5806)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 16 paths; on a push to main touching 16 paths; on a schedule (`0 9 * * 1,3,5`); or by hand. Runs docker-entrypoint.sh, gateway.py, scripts/check-org-urls.sh and 35 more; checks requirements.txt; packs LICENSE, README.md, _version.py and 15 more into an image. On a push to main, it also runs site/astro.config.mjs and site/src/.
+1. **CI.** On a pull request to main; on a push to main touching 16 paths; on a schedule (`0 9 * * 1,3,5`); or by hand. Runs docker-entrypoint.sh, gateway.py, scripts/check-org-urls.sh and 35 more; checks requirements.txt; packs LICENSE, README.md, _version.py and 15 more into an image. Except on a schedule or when run by hand, it also runs site/astro.config.mjs and site/src/.
 2. **Publish.** When a release is published; when the workflow Release completes; or by hand. Runs cli.py, docker-entrypoint.sh and gateway.py; packs LICENSE, README.md, _version.py and 15 more into an image.
 3. **Release.** When a tag matching `v*` is pushed; or by hand. Runs ui.py.
 4. **Release Binaries.** When a release is published; on a `workflow_call` event; or by hand. Runs ui.py; builds cli.py.
@@ -28,7 +28,7 @@ Nothing structural changed since 2026-09-30; no file changed.
    3. Or, when `_is_ollama_embedding_provider(cfg)`, `main` does `redact_url_credentials` instead.
    4. Or, when `not tools`, `main` does `disconnect_all` (SimpleBackendManager) instead.
    5. `main` returns early 1 more way.
-2. On a push to main, it also runs site/astro.config.mjs and site/src/.
+2. Except on a schedule or when run by hand, it also runs site/astro.config.mjs and site/src/.
 3. It uploads coverage to Codecov.
 4. It runs the pre-commit hooks.
 5. It deploys the site on a push to main.
@@ -98,7 +98,7 @@ Beside the path, gateway.py also calls backend_client_simple.py, embedder.py and
 
 - 11 writes and 4 reads use paths built at run time and are not named here.
 - 5 writes and 35 reads go to a path their caller passes, not to this repository.
-- There is a docker-compose.yml and a fly.toml that no workflow runs; what deploys from them does so from outside this repository, and is not on this page.
+- There are a docker-compose.yml and a fly.toml that no workflow runs; what deploys from them does so from outside this repository, and is not on this page.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

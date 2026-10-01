@@ -9,7 +9,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "222d5808d67dba5d77bae8544def4084ce033e236f9d63dd84a48d46a5fca17b",
+          "hash": "77c92f1d81da4a1e9018855da24e11ec2578c6b98b55e665f68e18a97c31bb64",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -11201,18 +11201,7 @@
       ],
       "triggers": [
         {
-          "event": "pull_request",
-          "paths": [
-            ".github/workflows/**",
-            "atlas/**",
-            "codecov.yml",
-            "pyproject.toml",
-            "site/astro.config.mjs",
-            "site/package-lock.json",
-            "site/package.json",
-            "src/**",
-            "tests/**"
-          ]
+          "event": "pull_request"
         },
         {
           "event": "push",
@@ -11727,9 +11716,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "3c9ba45bf39683f3676dfb6a34267026ede22773",
+    "commit": "7ee4eb591b5c33b12fee878e11afff22a67ccefb",
     "tracked": 322
   },
   "landings": [
@@ -11779,6 +11768,17 @@
         }
       ],
       "target": "dogfood/scenarios",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/portlight/engine/dogfood_runner.py",
+          "call": "open",
+          "confidence": "ast"
+        }
+      ],
+      "target": "dogfood/scenarios/*.json",
       "writers": []
     },
     {

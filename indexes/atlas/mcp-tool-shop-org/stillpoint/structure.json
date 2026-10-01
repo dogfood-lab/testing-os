@@ -36,7 +36,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "367cd3eb054e380c05ac8390475e86b745bbd90d4484600547dba9f8466d5182",
+          "hash": "dad58cebdfa40aa55e4ee991663d58a22a228dfffd9d87c4ead8afe36aa91451",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -141,64 +141,12 @@
           "path": "apps/desktop/msix/Assets/Wide310x150Logo.png"
         },
         {
-          "hash": "94288f2e950f1d3653070ce27bbe69ddee67080459683489604d19aba20b7855",
-          "path": "apps/desktop/msix/Stillpoint.msix"
-        },
-        {
-          "hash": "075d17d9083befb8aa5b823c7c3666a488e90b047f011cd238f6b6312c354423",
+          "hash": "2ca395216b5defd65c97e56619f6b868b9b24850e9b0ccbbd672881ee7603994",
           "path": "apps/desktop/msix/build-msix.ps1"
         },
         {
           "hash": "ebbd9d672118ffa73a6b5516116b322dc5f6de4ca911832c5cbe8a15b716cb1d",
           "path": "apps/desktop/msix/gen-assets.mjs"
-        },
-        {
-          "hash": "f04260d4f5fd4870f5f1aa5d632767884034e3ff2662050d2c3e538852f3a038",
-          "path": "apps/desktop/msix/layout/AppxManifest.xml"
-        },
-        {
-          "hash": "e327885d0eee1fc70150162ac9dbf23f5dc7bf0547cc83241e33f6ac51c29507",
-          "path": "apps/desktop/msix/layout/Assets/Square150x150Logo.png"
-        },
-        {
-          "hash": "92d5e0318ad973d7d2762d96b92e2a0d3564394a515749d2b08e150878d71762",
-          "path": "apps/desktop/msix/layout/Assets/Square310x310Logo.png"
-        },
-        {
-          "hash": "97226e8e751d72cc5d146699d6799ad095597c0b261b9dbd85cea5f35281116c",
-          "path": "apps/desktop/msix/layout/Assets/Square44x44Logo.png"
-        },
-        {
-          "hash": "95db17227676ed997cc35c1278fcf75669d72b8626e762524e91983e01c938c6",
-          "path": "apps/desktop/msix/layout/Assets/Square44x44Logo.targetsize-24_altform-unplated.png"
-        },
-        {
-          "hash": "d032c65c63c7cd4fd07209caf1e4d55d090556844bb41550f2820105e6d1f12d",
-          "path": "apps/desktop/msix/layout/Assets/Square44x44Logo.targetsize-256_altform-unplated.png"
-        },
-        {
-          "hash": "d6db2fa297d0839bf92ac5fb8d5b9272a6169b92ed96256c370e5bf3465a2281",
-          "path": "apps/desktop/msix/layout/Assets/Square44x44Logo.targetsize-32_altform-unplated.png"
-        },
-        {
-          "hash": "c95bd70eba4d28cd0285e7af7dfd68ab41c528665a42b5e50be3235e99dd0114",
-          "path": "apps/desktop/msix/layout/Assets/Square44x44Logo.targetsize-48_altform-unplated.png"
-        },
-        {
-          "hash": "ec21f82b046d9c569eed6c815defd7482a7c14167d5cb75db502e179eeb57c1f",
-          "path": "apps/desktop/msix/layout/Assets/Square71x71Logo.png"
-        },
-        {
-          "hash": "d8d002a406838318e2d4c52a277313fbcf045ec5e105a7abb45822156b321425",
-          "path": "apps/desktop/msix/layout/Assets/StoreLogo.png"
-        },
-        {
-          "hash": "733d1e2c0f2abf482e6e6926fa404cef64e4da10502299fe53f762f7ca4bde33",
-          "path": "apps/desktop/msix/layout/Assets/Wide310x150Logo.png"
-        },
-        {
-          "hash": "37e622b7fe874c424099bf70658583b595c5197b42158a0e6f5ea8cb5782fcc3",
-          "path": "apps/desktop/msix/layout/Stillpoint.exe"
         },
         {
           "hash": "13a8ff2005099147db5859e9ef1c61f7a8c61f30b1d04684f06f651005b02c5d",
@@ -295,7 +243,7 @@
           "path": ".env.example"
         },
         {
-          "hash": "6919a292af78fe69b2d27df7b02bdbeede764130e01672296b36b3c393836dc2",
+          "hash": "edf18ea97b39e7390ae5dcbae4fd7921c2598b4cb1f3cdd9509cfe8659017b68",
           "path": ".gitignore"
         },
         {
@@ -1366,17 +1314,7 @@
       ],
       "triggers": [
         {
-          "event": "pull_request",
-          "paths": [
-            ".github/workflows/ci.yml",
-            "apps/**",
-            "atlas/**",
-            "codecov.yml",
-            "package-lock.json",
-            "package.json",
-            "packages/**",
-            "site/**"
-          ]
+          "event": "pull_request"
         },
         {
           "branches": [
@@ -1632,10 +1570,10 @@
       "to": "server"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "df37a1acb48be03abac4f4906349d91cc1755873",
-    "tracked": 137
+    "commit": "bac3c380c635c48b45ddeade5e7ba65bf5ec6a62",
+    "tracked": 124
   },
   "landings": [
     {
@@ -1752,103 +1690,6 @@
         }
       ],
       "target": "apps/desktop/msix/Assets/Wide310x150Logo.png",
-      "writers": []
-    },
-    {
-      "readers": [],
-      "target": "apps/desktop/msix/layout",
-      "writers": [
-        {
-          "by": "apps/desktop/msix/build-msix.ps1",
-          "confidence": "text"
-        }
-      ]
-    },
-    {
-      "readers": [],
-      "target": "apps/desktop/msix/layout/Assets",
-      "writers": [
-        {
-          "by": "apps/desktop/msix/build-msix.ps1",
-          "confidence": "text"
-        }
-      ]
-    },
-    {
-      "readers": [
-        {
-          "by": "apps/desktop/msix/layout/AppxManifest.xml",
-          "call": "configuration",
-          "confidence": "config"
-        }
-      ],
-      "target": "apps/desktop/msix/layout/Assets/Square150x150Logo.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "apps/desktop/msix/layout/AppxManifest.xml",
-          "call": "configuration",
-          "confidence": "config"
-        }
-      ],
-      "target": "apps/desktop/msix/layout/Assets/Square310x310Logo.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "apps/desktop/msix/layout/AppxManifest.xml",
-          "call": "configuration",
-          "confidence": "config"
-        }
-      ],
-      "target": "apps/desktop/msix/layout/Assets/Square44x44Logo.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "apps/desktop/msix/layout/AppxManifest.xml",
-          "call": "configuration",
-          "confidence": "config"
-        }
-      ],
-      "target": "apps/desktop/msix/layout/Assets/Square71x71Logo.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "apps/desktop/msix/layout/AppxManifest.xml",
-          "call": "configuration",
-          "confidence": "config"
-        }
-      ],
-      "target": "apps/desktop/msix/layout/Assets/StoreLogo.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "apps/desktop/msix/layout/AppxManifest.xml",
-          "call": "configuration",
-          "confidence": "config"
-        }
-      ],
-      "target": "apps/desktop/msix/layout/Assets/Wide310x150Logo.png",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "apps/desktop/msix/layout/AppxManifest.xml",
-          "call": "configuration",
-          "confidence": "config"
-        }
-      ],
-      "target": "apps/desktop/msix/layout/Stillpoint.exe",
       "writers": []
     },
     {

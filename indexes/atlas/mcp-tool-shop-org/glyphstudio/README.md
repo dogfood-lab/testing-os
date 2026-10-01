@@ -1,12 +1,12 @@
 # glyphstudio: how it works
 
-Mapped at 2026-10-01 from commit 5a1cc32 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit bd75874 by Atlas 1.26.0.
 
 ## What this is
 
 15 parts, mostly TypeScript (424 files), Rust (46), JavaScript (20), CSS (4), Astro (1) and HTML (1). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It deploys a site to GitHub Pages. glyphstudio is a desktop app built from apps/desktop/src-tauri (nothing ships it).
 
-## What changed since 2026-09-30 (fdf655b)
+## What changed since 2026-10-01 (5a1cc32)
 
 - docs/showcase/stage47a-test/monk-47a---*x*.png is now written by scripts/test-47a-prompt.mjs.
 - docs/showcase/stage47b-critique/monk-r0---*x*.png is now written by scripts/test-47b-critique-loop.mjs.
@@ -16,7 +16,7 @@ Mapped at 2026-10-01 from commit 5a1cc32 by Atlas 1.25.0.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 9 paths; on a push to main touching 9 paths; or by hand. Runs packages/domain/src/ciGates.test.ts, packages/domain/src/shortcutManifest.test.ts, packages/domain/src/sizeProfile.test.ts and 118 more; checks packages/domain/src/, packages/mcp-sprite-server/src/ and packages/state/src/.
+1. **CI.** On a pull request to main; on a push to main touching 9 paths; or by hand. Runs packages/domain/src/ciGates.test.ts, packages/domain/src/shortcutManifest.test.ts, packages/domain/src/sizeProfile.test.ts and 118 more; checks packages/domain/src/, packages/mcp-sprite-server/src/ and packages/state/src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Dogfood.** By hand. Runs no file this map can see.
 4. **glyphstudio** (a desktop app built from apps/desktop/src-tauri, which nothing ships). Runs apps/desktop/src-tauri/src/main.rs.

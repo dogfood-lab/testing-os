@@ -1,18 +1,18 @@
 # runforge-vscode: how it works
 
-Mapped at 2026-10-01 from commit 533e239 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 94f117b by Atlas 1.26.0.
 
 ## What this is
 
 10 parts, mostly TypeScript (71 files), Python (45), JavaScript (3), CSS (2) and Astro (1). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. It deploys a site to GitHub Pages. People install the runforge extension.
 
-## What changed since 2026-09-30 (6c5ebe8)
+## What changed since 2026-10-01 (533e239)
 
-Nothing structural changed since 2026-09-30; 1 file changed content.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 13 paths; on a push to main touching 13 paths; or by hand. Runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more; builds test/extension-host/; checks src/extension.ts.
+1. **CI.** On a pull request to main; on a push to main touching 13 paths; or by hand. Runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more; builds test/extension-host/; checks src/extension.ts.
 2. **Build and Release.** When a tag matching `v*` is pushed; or by hand. Runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more; checks src/extension.ts.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **runforge** (the extension people install from the VS Code Marketplace). Loads src/extension.ts.

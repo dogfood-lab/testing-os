@@ -323,7 +323,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 2,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 2,
@@ -2590,14 +2590,14 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 6,
+          "reads": 7,
           "where": [
             "caller"
           ],
           "writes": 5
         }
       ],
-      "outsideReads": 6,
+      "outsideReads": 7,
       "outsideWrites": 5,
       "role": "code",
       "testRunners": [
@@ -3864,7 +3864,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generatedFrom": {
     "commit": "cecd36ccdc4473babb0e7a18538b4a3ec959e7f1",
     "tracked": 104
@@ -3964,6 +3964,17 @@
         }
       ],
       "target": "src/mcp_arcade",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/mcp_arcade/docker.py",
+          "call": "open",
+          "confidence": "ast"
+        }
+      ],
+      "target": "src/mcp_arcade/**/*",
       "writers": []
     },
     {

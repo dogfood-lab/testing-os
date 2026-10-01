@@ -1,18 +1,18 @@
 # ollama-intern-mcp: how it works
 
-Mapped at 2026-10-01 from commit 9555331 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 0666dc3 by Atlas 1.26.0.
 
 ## What this is
 
 11 parts, mostly TypeScript (196 files), JavaScript (10), CSS (2), Python (2) and Astro (1). Work enters through 8 doors; CI and Doc Drift each reach 4 parts, and CI is followed because it comes first by name. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run ollama-intern-mcp. People import ollama-intern-mcp.
 
-## What changed since 2026-09-30 (9606f58)
+## What changed since 2026-10-01 (c9172ce)
 
-Nothing structural changed since 2026-09-30; 1 file changed content.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 19 paths; on a push to main touching 19 paths; or by hand. Runs scripts/gen-tool-docs.mjs, scripts/sync-doc-versions.mjs, src/index.ts and 98 more; builds src/; packs hermes.config.example.yaml, package-lock.json, package.json and 1 more into an image. When run by hand with run_generate true, it also runs scripts/cloud-smoke-generate.mjs.
+1. **CI.** On a pull request; on a push to main touching 19 paths; or by hand. Runs scripts/gen-tool-docs.mjs, scripts/sync-doc-versions.mjs, src/index.ts and 98 more; builds src/; packs hermes.config.example.yaml, package-lock.json, package.json and 1 more into an image. When run by hand with run_generate true, it also runs scripts/cloud-smoke-generate.mjs.
 2. **Doc Drift.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs scripts/sync-doc-versions.mjs, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more; checks HANDOFF.md, README.md and SHIP_GATE.md.
 3. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs src/index.ts, tests/cli.test.ts, tests/cloudCheck.test.ts and 96 more; builds src/; packs hermes.config.example.yaml, package-lock.json, package.json and 1 more into an image.
 4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.

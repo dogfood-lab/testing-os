@@ -1,6 +1,6 @@
 # audiobooker: how it works
 
-Mapped at 2026-10-01 from commit c6ef1df by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit c6ef1df by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,8 @@ Mapped at 2026-10-01 from commit c6ef1df by Atlas 1.25.0.
 
 ## What changed since 2026-09-30 (6fcd238)
 
-Nothing structural changed since 2026-09-30; no file changed.
+- .github/workflows/*.yml is now read by tools/check_ci_policy.py.
+- No file changed.
 
 ## What comes in
 
@@ -109,12 +110,12 @@ Beside the path, audiobooker/renderer/engine.py also calls audiobooker/renderer/
 
 - 14 import sites name a declared dependency that shares its name with a local module (docx); they are read as the dependency, which is not in this repository.
 - 7 imports could not be resolved: `audiobooker/cli.py` imports a path built at run time, twice; `audiobooker/language/profile.py` imports a path built at run time; `tests/test_feat_f5_cli.py` imports a path built at run time; and 3 more.
-- 5 writes and 8 reads use paths built at run time and are not named here.
+- 5 writes and 6 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
 - 27 writes and 39 reads go to a path their caller passes, not to this repository.
 - 3 writes and 5 reads go to the home directory (.local/, AppData/ and audiobooker/) or a path their caller passes, not to this repository.
-- 1 write and 2 reads go to the home directory (.config/, AppData/ and audiobooker/), not to this repository.
-- 2 reads go to the directory the command is run in (audiobooker and pyproject.toml), not to this repository.
+- 1 write and 3 reads go to the home directory (.config/, AppData/ and audiobooker/), not to this repository.
+- 3 reads go to the directory the command is run in, not to this repository.
 - 1 read goes to the directory the command is run in (.audiobookerrc) or the home directory (.audiobookerrc), not to this repository.
 - 4 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.

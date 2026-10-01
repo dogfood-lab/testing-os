@@ -1,6 +1,6 @@
 # ai-rpg-stage: how it works
 
-Mapped at 2026-10-01 from commit 0c744e3 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 0c744e3 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,11 @@ Mapped at 2026-10-01 from commit 0c744e3 by Atlas 1.25.0.
 
 ## What changed since 2026-09-30 (5e9e75f)
 
-Nothing structural changed since 2026-09-30; no file changed.
+- assets/dimetric/_rejected/sidecar.json is now written by assets/dimetric/andon/build_manifest.py.
+- assets/dimetric/ground/sidecar.json is now written by assets/dimetric/andon/build_manifest.py.
+- assets/dimetric/props/*/sidecar.json is now written by assets/dimetric/andon/build_manifest.py.
+- And 1 more new writer or reader of a place.
+- No file changed.
 
 ## What comes in
 
@@ -85,6 +89,7 @@ Read those in order to follow one push, or pull request from a fork, end to end.
 ## What this map cannot see
 
 - 12 reads use paths built at run time and are not named here.
+- 4 writes go to places this repository does not track, so they are not listed as generated.
 - 5 writes and 3 reads go to a path their caller passes, not to this repository.
 - 2 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.

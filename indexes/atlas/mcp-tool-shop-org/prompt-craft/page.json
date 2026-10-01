@@ -71,8 +71,16 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "src/**/__pycache__ is now read by scripts/mutate_predicates.py.",
+        "subjects": [
+          "src/**/__pycache__",
+          "scripts/mutate_predicates.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -80,7 +88,7 @@
       "commit": "43f3cfe48aabc2c12a31954563cfc823abd21295",
       "generatedAt": "2026-09-30T20:11:43.899Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -402,7 +410,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generated": [
     {
       "place": "src/pcraft/domains/image/subdomains/sprite/poses/turnaround/",
@@ -417,11 +425,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-01T01:50:24.722Z",
+  "generatedAt": "2026-10-01T08:40:57.228Z",
   "limits": [
     "8 imports could not be resolved: `src/pcraft/domains/image/scaffold.py` imports a path built at run time; `src/pcraft/domains/image/subdomains/sprite/calibrate.py` imports a path built at run time; `tests/test_amend_cli.py` imports a path built at run time; and 5 more.",
     "5 writes and 4 reads use paths built at run time and are not named here.",
-    "9 writes and 22 reads go to a path their caller passes, not to this repository.",
+    "9 writes and 21 reads go to a path their caller passes, not to this repository.",
     "1 read goes to a temporary directory, not to this repository.",
     "2 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
@@ -458,6 +466,7 @@
   "testedByScript": [
     "npm"
   ],
+  "testedCodeParts": 3,
   "unnamedWrites": 5,
   "unread": [
     {

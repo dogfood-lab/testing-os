@@ -1,19 +1,19 @@
 # role-os: how it works
 
-Mapped at 2026-10-01 from commit 91e12b7 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 1cd64d0 by Atlas 1.26.0.
 
 ## What this is
 
 15 parts, mostly JavaScript (162 files), Python (30), Astro (2), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run roleos.
 
-## What changed since 2026-10-01 (07450c9)
+## What changed since 2026-10-01 (91e12b7)
 
 - test/live-tool-contracts.test.mjs is now read by tools/conformance-dataset/live-tools/RECEIPT.md.
-- 1 file changed content, across 1 part.
+- No file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 14 paths; on a push touching 14 paths; or by hand. Runs bin/roleos.mjs, tools/token-budget-dataset/test_harvester.py and test/.
+1. **CI.** On a pull request; on a push touching 14 paths; or by hand. Runs bin/roleos.mjs, tools/token-budget-dataset/test_harvester.py and test/.
 2. **Release.** When a release is published; or by hand. Runs test/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **roleos** (a command people run). Runs bin/roleos.mjs.
@@ -97,10 +97,10 @@ Beside the path, src/swarm-cmd.mjs also calls src/swarm/domain-detect.mjs, src/a
 ## What this map cannot see
 
 - 3 imports could not be resolved: `test/knowledge-integration.test.mjs` imports a path built at run time, 3 times.
-- 16 writes and 14 reads use paths built at run time and are not named here.
+- 16 writes and 17 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
 - 28 writes and 88 reads go to the directory the command is run in, not to this repository.
-- 43 writes and 40 reads go to a path their caller passes, not to this repository.
+- 43 writes and 42 reads go to a path their caller passes, not to this repository.
 - 23 writes and 23 reads go to the directory the command is run in or a path their caller passes, not to this repository.
 - 8 writes and 1 read go to a temporary directory, not to this repository.
 - 8 commands are built at run time and not followed, 2 of them in tests.

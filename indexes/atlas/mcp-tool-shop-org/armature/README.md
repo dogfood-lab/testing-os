@@ -1,6 +1,6 @@
 # armature: how it works
 
-Mapped at 2026-10-01 from commit 944340b by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 944340b by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,10 @@ Mapped at 2026-10-01 from commit 944340b by Atlas 1.25.0.
 
 ## What changed since 2026-09-30 (7a70d6f)
 
-Nothing structural changed since 2026-09-30; no file changed.
+- specs/* is now read by tests/test_amend_w14_core_gates.py and tests/test_paid_argv_smoke.py.
+- tests/* is now read by tests/test_packaging.py.
+- tools/* is now read by tests/blender_stub.py, tests/test_amend_w16_builders.py, tests/test_build_payload.py, tests/test_instruments_amend_w22.py, tests/test_packaging.py and tests/test_sheet_pairing.py.
+- No file changed.
 
 ## What comes in
 
@@ -94,7 +97,7 @@ Beside the path, tools/armature_core/cli.py also calls tools/armature_core/parts
 ## What this map cannot see
 
 - 43 imports could not be resolved: `tests/blender/test_check_pack.py` imports `conftest`, which is no module on its import path and no declared dependency; `tests/blender_stub.py` imports a path built at run time; `tests/conftest.py` imports a path built at run time; and 40 more.
-- 116 writes and 73 reads use paths built at run time and are not named here.
+- 116 writes and 75 reads use paths built at run time and are not named here.
 - 80 writes and 156 reads go to a path their caller passes, not to this repository.
 - 3 writes go to the directory the command is run in, not to this repository.
 - 3 commands are built at run time and not followed.

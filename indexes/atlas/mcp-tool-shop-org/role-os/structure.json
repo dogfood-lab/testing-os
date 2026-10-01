@@ -341,7 +341,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "ef68bcdf91536fc974fcab56e445096de1adceda1e7e0f1e1f4345a7557e735c",
+          "hash": "b57fad4ecf82bc3fa3a25fa3fc59ac0914dabe1f17b92f7665a6fb9660dc42e6",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -6495,7 +6495,7 @@
       "unresolvedSites": 3
     },
     {
-      "dynamicReads": 4,
+      "dynamicReads": 7,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 3,
@@ -7636,7 +7636,7 @@
       "origin": "mixed",
       "outsidePlaces": [
         {
-          "reads": 9,
+          "reads": 11,
           "where": [
             "caller"
           ],
@@ -7650,7 +7650,7 @@
           "writes": 2
         }
       ],
-      "outsideReads": 9,
+      "outsideReads": 11,
       "outsideWrites": 10,
       "role": "code",
       "testRunners": [
@@ -7875,23 +7875,7 @@
       ],
       "triggers": [
         {
-          "event": "pull_request",
-          "paths": [
-            ".claude/role-os/**",
-            ".github/workflows/**",
-            "atlas/**",
-            "bin/**",
-            "codecov.yml",
-            "package-lock.json",
-            "package.json",
-            "site/astro.config.mjs",
-            "site/package-lock.json",
-            "site/package.json",
-            "src/**",
-            "starter-pack/**",
-            "test/**",
-            "tools/**"
-          ]
+          "event": "pull_request"
         },
         {
           "event": "push",
@@ -8330,9 +8314,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "91e12b75f3c679b6be952ae0ffeb65dabe54a25e",
+    "commit": "1cd64d0e759896b6e3fae6a5233cf3e34f3cfd19",
     "tracked": 626
   },
   "landings": [
@@ -9767,6 +9751,12 @@
       "writers": []
     },
     {
+      "mayReaders": [
+        {
+          "by": "tools/token-budget-dataset/harvester/locate.py",
+          "pattern": "*/*.jsonl"
+        }
+      ],
       "readers": [
         {
           "by": "tools/conformance-dataset/build_conformance_dataset.py",

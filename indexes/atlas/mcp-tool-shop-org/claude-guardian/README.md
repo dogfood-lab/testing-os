@@ -1,18 +1,18 @@
 # claude-guardian: how it works
 
-Mapped at 2026-10-01 from commit d6d8c52 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 08313ce by Atlas 1.26.0.
 
 ## What this is
 
 7 parts, mostly Markdown (75 files); code in TypeScript (38), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run claude-guardian.
 
-## What changed since 2026-09-30 (b484cb2)
+## What changed since 2026-10-01 (d6d8c52)
 
-Nothing structural changed since 2026-09-30; 1 file changed content.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 11 paths; on a push to main touching 11 paths; or by hand. Runs tests/; builds src/.
+1. **CI.** On a pull request; on a push to main touching 11 paths; or by hand. Runs tests/; builds src/.
 2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Dogfood.** On a push to main touching 3 paths; or by hand. On main, it runs src/cli.ts; builds src/.

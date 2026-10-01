@@ -1,6 +1,6 @@
 # prompt-craft: how it works
 
-Mapped at 2026-10-01 from commit 984cf5d by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 984cf5d by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,8 @@ Mapped at 2026-10-01 from commit 984cf5d by Atlas 1.25.0.
 
 ## What changed since 2026-09-30 (43f3cfe)
 
-Nothing structural changed since 2026-09-30; no file changed.
+- src/**/__pycache__ is now read by scripts/mutate_predicates.py.
+- No file changed.
 
 ## What comes in
 
@@ -95,7 +96,7 @@ Read those in order to follow one run of pcraft end to end. This path follows pc
 
 - 8 imports could not be resolved: `src/pcraft/domains/image/scaffold.py` imports a path built at run time; `src/pcraft/domains/image/subdomains/sprite/calibrate.py` imports a path built at run time; `tests/test_amend_cli.py` imports a path built at run time; and 5 more.
 - 5 writes and 4 reads use paths built at run time and are not named here.
-- 9 writes and 22 reads go to a path their caller passes, not to this repository.
+- 9 writes and 21 reads go to a path their caller passes, not to this repository.
 - 1 read goes to a temporary directory, not to this repository.
 - 2 commands are built at run time and not followed.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.

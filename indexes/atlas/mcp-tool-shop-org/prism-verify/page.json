@@ -126,13 +126,13 @@
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "Nothing structural changed since 2026-10-01; no file changed.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "94925c605d4d481d581e0a4d2001a2a252ec60aa",
-      "generatedAt": "2026-09-30T20:11:38.986Z"
+      "commit": "2d547750ddafb82cefe885624753f14af8da08f6",
+      "generatedAt": "2026-10-01T02:13:46.190Z"
     },
     "unchanged": true
   },
@@ -219,7 +219,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 7 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 1,
-  "commit": "2d547750ddafb82cefe885624753f14af8da08f6",
+  "commit": "2fc64fcca6398a60de21fa7ee0af7bf7054eaf2c",
   "defaultBranch": "main",
   "derived": "18 parts, mostly Python (200 files), JavaScript (6), CSS (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 9 parts, and CI is followed because a pull request goes through it. It publishes to PyPI and @mcptoolshop/prism-verify to npm. It deploys a site to GitHub Pages. People run prism.",
   "doors": [
@@ -291,7 +291,7 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 9 paths",
+        "on a pull request",
         "on a push touching 9 paths",
         "or by hand"
       ],
@@ -591,7 +591,7 @@
       "to": "receipts"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generated": [
     {
       "into": true,
@@ -675,7 +675,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-01T01:50:17.546Z",
+  "generatedAt": "2026-10-01T08:40:51.269Z",
   "limits": [
     "2 import sites name a path outside this repository, so what they load is not followed.",
     "3 writes and 5 reads use paths built at run time and are not named here.",
@@ -715,6 +715,13 @@
     "src/prism/cli/main.py"
   ],
   "startReason": "This path follows prism (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.",
+  "startStop": {
+    "files": [
+      "src/prism/core/engine.py",
+      "src/prism/core/setup.py"
+    ],
+    "from": "src/prism/cli/main.py"
+  },
   "summary": null,
   "summaryFrom": null,
   "testFiles": 63,
@@ -732,6 +739,7 @@
     "servers": 10,
     "specialist": 1
   },
+  "testedCodeParts": 12,
   "unnamedWrites": 3,
   "unread": [
     {

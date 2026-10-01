@@ -1,6 +1,6 @@
 # mcp-stress-test: how it works
 
-Mapped at 2026-10-01 from commit b33a7ff by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit b33a7ff by Atlas 1.26.0.
 
 ## What this is
 
@@ -77,8 +77,8 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 2 imports could not be resolved: `tests/test_operator_contract.py` imports a path built at run time, twice.
-- 3 writes and 8 reads use paths built at run time and are not named here.
-- 12 writes and 21 reads go to a path their caller passes, not to this repository.
+- 3 writes and 7 reads use paths built at run time and are not named here.
+- 12 writes and 22 reads go to a path their caller passes, not to this repository.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

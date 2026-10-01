@@ -1,6 +1,6 @@
 # loadout-os: how it works
 
-Mapped at 2026-10-01 from commit a6da6ca by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit a6da6ca by Atlas 1.26.0.
 
 ## What this is
 

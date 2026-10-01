@@ -1,18 +1,18 @@
 # registry-sync: how it works
 
-Mapped at 2026-10-01 from commit fae9a7c by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 51abbf2 by Atlas 1.26.0.
 
 ## What this is
 
 7 parts, mostly TypeScript (40 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run registry-sync. People import @mcptoolshop/registry-sync.
 
-## What changed since 2026-09-30 (779aa9a)
+## What changed since 2026-10-01 (fae9a7c)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 8 paths; on a push to main touching 8 paths; or by hand. Runs src/cli.ts and test/; builds src/index.ts.
+1. **CI.** On a pull request to main; on a push to main touching 8 paths; or by hand. Runs src/cli.ts and test/; builds src/index.ts.
 2. **Publish.** When a release is published; or by hand. Runs test/; builds src/index.ts.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/registry-sync** (the package people import). Loads src/index.ts.

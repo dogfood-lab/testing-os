@@ -1,18 +1,18 @@
 # accessibility-suite: how it works
 
-Mapped at 2026-10-01 from commit 3b49cbb by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 3b8d237 by Atlas 1.26.0.
 
 ## What this is
 
 15 parts, mostly Python (74 files), JavaScript (32), HTML (7), CSS (2), TypeScript (2), shell (2), Astro (1) and PowerShell (1). Work enters through 10 doors; the busiest is CI, which reaches 6 parts. It deploys a site to GitHub Pages. People run a11y, a11y-assist, a11y-ci, a11y-engine, a11y-lint, a11y-mcp and assist-run.
 
-## What changed since 2026-09-30 (f18e246)
+## What changed since 2026-10-01 (3b49cbb)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 13 paths; on a push to main touching 13 paths; or by hand. Runs scripts/verify_handbooks.py, src/a11y-ci/a11y_ci/cli.py, src/a11y-lint/a11y_lint/cli.py and 39 more.
+1. **CI.** On a pull request to main; on a push to main touching 13 paths; or by hand. Runs scripts/verify_handbooks.py, src/a11y-ci/a11y_ci/cli.py, src/a11y-lint/a11y_lint/cli.py and 39 more.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Publish to npm.** By hand. Runs scripts/verify.sh and scripts/verify_handbooks.py.
 4. **a11y** (a command people run). Runs src/a11y-mcp-tools/bin/cli.js.
@@ -104,9 +104,9 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 5 reads use paths built at run time and are not named here.
+- 4 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
-- 19 writes and 27 reads go to a path their caller passes, not to this repository.
+- 19 writes and 28 reads go to a path their caller passes, not to this repository.
 - 1 write and 1 read go to the home directory (.a11y-assist/), not to this repository.
 - 1 read goes to the directory the command is run in (spec/) or a path its caller passes, not to this repository.
 - 1 read goes to the directory the command is run in (spec/), not to this repository.

@@ -1,18 +1,18 @@
 # repo-knowledge: how it works
 
-Mapped at 2026-10-01 from commit 1222602 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 68a4dd1 by Atlas 1.26.0.
 
 ## What this is
 
 11 parts, mostly Markdown (646 files); code in TypeScript (84), JavaScript (10), CSS (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run rk. People import @mcptoolshop/repo-knowledge.
 
-## What changed since 2026-09-30 (f0654a0)
+## What changed since 2026-10-01 (1222602)
 
-Nothing structural changed since 2026-09-30; 1 file changed content.
+Nothing structural changed since 2026-10-01; 4 files changed content.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 15 paths; on a push to main touching 15 paths; or by hand. Runs scripts/postbuild.js and test/; builds src/cli.ts, src/index.ts and src/mcp/server.ts; checks src/.
+1. **CI.** On a pull request; on a push to main touching 15 paths; or by hand. Runs scripts/postbuild.js and test/; builds src/cli.ts, src/index.ts and src/mcp/server.ts; checks src/.
 2. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs scripts/gen-audit-report.mjs, scripts/gen-worklist.mjs, scripts/postbuild.js and 48 more; builds src/cli.ts, src/index.ts and src/mcp/server.ts; checks src/.
 3. **Deploy site to GitHub Pages.** On a pull request to main touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/repo-knowledge** (the package people import). Loads src/index.ts and src/mcp/server.ts.

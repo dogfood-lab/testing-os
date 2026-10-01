@@ -1,19 +1,19 @@
 # sensor-humor: how it works
 
-Mapped at 2026-10-01 from commit c62986b by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 68aa0d1 by Atlas 1.26.0.
 
 ## What this is
 
 8 parts, mostly TypeScript (86 files), JavaScript (3), CSS (2), Astro (1), Python (1) and shell (1). Work enters through 5 doors; the busiest is Release, which reaches 4 parts. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run sensor-humor.
 
-## What changed since 2026-09-30 (a2c1927)
+## What changed since 2026-10-01 (c62986b)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
 1. **Release.** When a tag matching `v*` is pushed. Runs scripts/check-pack.mjs, src/index.ts, tests/capture.test.ts and 25 more; builds src/; packs package-lock.json, package.json, tsconfig.build.json and 1 more into an image.
-2. **CI.** On a pull request touching 13 paths; on a push touching 13 paths; or by hand. Runs scripts/check-pack.mjs, tests/capture.test.ts, tests/character-voice-schema.test.ts and 24 more; builds src/.
+2. **CI.** On a pull request; on a push touching 13 paths; or by hand. Runs scripts/check-pack.mjs, tests/capture.test.ts, tests/character-voice-schema.test.ts and 24 more; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/sensor-humor** (the package's entry, which runs the command sensor-humor; it is not a library). Loads src/index.ts.
 5. **sensor-humor** (a command people run). Runs src/index.ts.

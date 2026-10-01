@@ -1,18 +1,18 @@
 # bytefit: how it works
 
-Mapped at 2026-10-01 from commit 13fd265 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 542e9a2 by Atlas 1.26.0.
 
 ## What this is
 
 6 parts, mostly TypeScript (49 files), CSS (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 5 doors; ci, Deploy site to GitHub Pages, Release, @mcptoolshop/bytefit and bytefit each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run bytefit. People import @mcptoolshop/bytefit.
 
-## What changed since 2026-09-30 (41121c5)
+## What changed since 2026-10-01 (13fd265)
 
-Nothing structural changed since 2026-09-30; 1 file changed content.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **ci.** On a pull request touching 10 paths; on a push touching 10 paths; or by hand. Runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more; builds src/.
+1. **ci.** On a pull request; on a push touching 10 paths; or by hand. Runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Release.** When a tag matching `v*` is pushed. Runs src/tests/catalog.test.ts, src/tests/cli.test.ts, src/tests/docs-drift.test.ts and 13 more; builds src/.
 4. **@mcptoolshop/bytefit** (the package people import). Loads src/index.ts.

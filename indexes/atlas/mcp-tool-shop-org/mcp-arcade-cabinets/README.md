@@ -1,6 +1,6 @@
 # mcp-arcade-cabinets: how it works
 
-Mapped at 2026-10-01 from commit 8da3a5e by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 8da3a5e by Atlas 1.26.0.
 
 ## What this is
 
@@ -121,6 +121,6 @@ Read those in order to follow one pull request end to end.
 - 2 writes and 5 reads go to the directory the command is run in (film/, fixtures/, ghost and 1 more place) or a path their caller passes, not to this repository.
 - 4 writes go to a temporary directory, not to this repository.
 - 41 commands are built at run time and not followed, 38 of them in tests.
-- There is a Dockerfile that a workflow builds and none pushes and Docker MCP Catalog entries at catalog/server.vibe.yaml and catalog/server.yaml; what ships from them goes from outside this repository, and is not on this page.
+- There are a Dockerfile that a workflow builds and none pushes and Docker MCP Catalog entries at catalog/server.vibe.yaml and catalog/server.yaml; what ships from them goes from outside this repository, and is not on this page.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

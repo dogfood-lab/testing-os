@@ -35,8 +35,16 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "src/mcp_arcade/**/* is now read by src/mcp_arcade/docker.py.",
+        "subjects": [
+          "src/mcp_arcade/**/*",
+          "src/mcp_arcade/docker.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -44,7 +52,7 @@
       "commit": "7c8960e5ca2bcb39a96a1c211e13b19052d4ce51",
       "generatedAt": "2026-09-30T20:10:02.490Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -218,12 +226,12 @@
       "to": "src"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-10-01T01:48:47.082Z",
+  "generatedAt": "2026-10-01T08:39:16.361Z",
   "limits": [
-    "2 writes and 2 reads use paths built at run time and are not named here.",
-    "5 writes and 6 reads go to a path their caller passes, not to this repository.",
+    "2 writes use paths built at run time and are not named here.",
+    "5 writes and 7 reads go to a path their caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -254,6 +262,7 @@
   "testedBy": {
     "src": 14
   },
+  "testedCodeParts": 1,
   "unnamedWrites": 2,
   "unread": [],
   "unreadFiles": 0,

@@ -1,18 +1,18 @@
 # saints-mile: how it works
 
-Mapped at 2026-10-01 from commit f161838 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 63663ad by Atlas 1.26.0.
 
 ## What this is
 
 6 parts, mostly Rust (109 files), JavaScript (3), CSS (2), TypeScript (2), Astro (1), PowerShell (1) and shell (1). Work enters through 4 doors; CI and Release Binaries each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to crates.io. It deploys a site to GitHub Pages. People run saints-mile.
 
-## What changed since 2026-09-30 (18fa475)
+## What changed since 2026-10-01 (f161838)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 8 paths; on a push to main touching 8 paths; or by hand. Runs src/combat/convoy.rs, src/combat/crowd.rs, src/combat/engine.rs and 43 more; checks src/lib.rs and src/main.rs.
+1. **CI.** On a pull request to main; on a push to main touching 8 paths; or by hand. Runs src/combat/convoy.rs, src/combat/crowd.rs, src/combat/engine.rs and 43 more; checks src/lib.rs and src/main.rs.
 2. **Release Binaries.** When a release is published; or by hand. Runs msix/gen-assets.mjs; builds src/main.rs; checks src/lib.rs.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **saints-mile** (a command people run). Runs src/main.rs.

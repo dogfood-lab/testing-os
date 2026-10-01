@@ -1,18 +1,18 @@
 # knowledge-core: how it works
 
-Mapped at 2026-10-01 from commit ba4ad42 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit d1f7b6e by Atlas 1.26.0.
 
 ## What this is
 
 6 parts, mostly TypeScript (17 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages.
 
-## What changed since 2026-09-30 (a03320f)
+## What changed since 2026-10-01 (ba4ad42)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 10 paths; on a push touching 10 paths; or by hand. Runs test/; checks src/.
+1. **CI.** On a pull request; on a push touching 10 paths; or by hand. Runs test/; checks src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **@roleos/knowledge-core** (the package's entry, not published from here). Loads src/index.ts.
 

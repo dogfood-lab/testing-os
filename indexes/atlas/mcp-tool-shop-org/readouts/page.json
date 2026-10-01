@@ -1,0 +1,984 @@
+{
+  "authored": [
+    ".github/",
+    "docs/",
+    "site/"
+  ],
+  "authoredWritten": [
+    {
+      "place": "docker-knowledge/waves/wave-02-measurement/research-raw.json",
+      "untrackedInputs": true,
+      "writers": [
+        "docker-knowledge/waves/wave-02-measurement/_build_raw.py"
+      ]
+    },
+    {
+      "into": true,
+      "place": "rust-knowledge/waves/wave-04-si-jam-sessions/",
+      "untrackedInputs": true,
+      "writers": [
+        "rust-knowledge/scripts/openrouter_lane.py"
+      ]
+    }
+  ],
+  "breaks": [
+    {
+      "doors": 1,
+      "importedBy": [
+        "blender-knowledge",
+        "godot-knowledge",
+        "root",
+        "rust-knowledge",
+        "sprite-motion-knowledge",
+        "sprites-knowledge"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "shared",
+      "partLabel": "shared"
+    },
+    {
+      "doors": 2,
+      "importedBy": [
+        "site"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "root",
+      "partLabel": "the repository root"
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "model-knowledge",
+        "tensor-engine-knowledge",
+        "training-knowledge",
+        "xrpl-knowledge"
+      ],
+      "target": "index.html",
+      "writers": [
+        "shared"
+      ]
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "blender-knowledge",
+        "godot-knowledge",
+        "model-knowledge",
+        "root",
+        "rust-knowledge",
+        "shared",
+        "sprite-motion-knowledge",
+        "sprites-knowledge",
+        "tensor-engine-knowledge",
+        "training-knowledge",
+        "xrpl-knowledge"
+      ],
+      "target": ".claude/loadout/index.json",
+      "writers": [
+        "shared"
+      ]
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 0,
+      "moved": 0,
+      "parts": 0,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "landing",
+        "sentence": "rust-knowledge/catalog/engine-*.md is now written by rust-knowledge/scripts/gen_catalog.py.",
+        "subjects": [
+          "rust-knowledge/catalog/engine-*.md",
+          "rust-knowledge/scripts/gen_catalog.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "tensor-engine-knowledge/verifier/results-real-*.json is now written by tensor-engine-knowledge/verifier/citation_panel_eval.py and tensor-engine-knowledge/verifier/citation_panel_eval_3family.py.",
+        "subjects": [
+          "tensor-engine-knowledge/verifier/results-real-*.json",
+          "tensor-engine-knowledge/verifier/citation_panel_eval.py",
+          "tensor-engine-knowledge/verifier/citation_panel_eval_3family.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "xrpl-knowledge/catalog/track-*.md is now written by xrpl-knowledge/scripts/gen_catalog.py.",
+        "subjects": [
+          "xrpl-knowledge/catalog/track-*.md",
+          "xrpl-knowledge/scripts/gen_catalog.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 83 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
+        "kind": "counts",
+        "sentence": "No file changed.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "85e545281a0e9a14d8f44d3d5184d8871a30b336",
+      "generatedAt": "2026-10-01T03:03:20.690Z"
+    },
+    "unchanged": false
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "7bb43b0ac7adb0dd4fb6e70413292e197ae79372",
+  "defaultBranch": "main",
+  "derived": "20 parts, mostly Python (161 files), HTML (57), Rust (6), JavaScript (3), CSS (2), TypeScript (2) and Astro (1). Work enters through 2 doors; verify and Deploy site to GitHub Pages each reach 2 parts, and verify is followed because a pull request goes through it. It deploys a site to GitHub Pages.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/verify.yml",
+      "id": ".github/workflows/verify.yml",
+      "landings": [],
+      "name": "verify",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "shared",
+          "depth": 1,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "verify.py"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 6 paths",
+        "on a push to main touching 6 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "root",
+          "depth": 1,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 3 paths",
+        "or by hand"
+      ]
+    }
+  ],
+  "duplicates": [
+    {
+      "files": [
+        "sprite-motion-knowledge/scripts/verify_cloud.py",
+        "xrpl-knowledge/scripts/verify_cloud.py"
+      ],
+      "name": "already_done",
+      "partLabels": [
+        "sprite-motion-knowledge",
+        "xrpl-knowledge"
+      ],
+      "parts": [
+        "sprite-motion-knowledge",
+        "xrpl-knowledge"
+      ]
+    },
+    {
+      "contract": true,
+      "files": [
+        "blender-knowledge/scripts/load_db.py",
+        "godot-knowledge/scripts/load_db.py",
+        "sprite-motion-knowledge/scripts/load_db.py",
+        "sprites-knowledge/scripts/load_db.py",
+        "training-knowledge/scripts/load_db.py"
+      ],
+      "name": "b",
+      "partLabels": [
+        "blender-knowledge",
+        "godot-knowledge",
+        "sprite-motion-knowledge",
+        "sprites-knowledge",
+        "training-knowledge"
+      ],
+      "parts": [
+        "blender-knowledge",
+        "godot-knowledge",
+        "sprite-motion-knowledge",
+        "sprites-knowledge",
+        "training-knowledge"
+      ]
+    },
+    {
+      "contract": true,
+      "files": [
+        "blender-knowledge/scripts/verify_cloud.py",
+        "sprite-motion-knowledge/scripts/verify_cloud.py",
+        "xrpl-knowledge/scripts/verify_cloud.py"
+      ],
+      "name": "call_model",
+      "partLabels": [
+        "blender-knowledge",
+        "sprite-motion-knowledge",
+        "xrpl-knowledge"
+      ],
+      "parts": [
+        "blender-knowledge",
+        "sprite-motion-knowledge",
+        "xrpl-knowledge"
+      ]
+    },
+    {
+      "contract": true,
+      "files": [
+        "blender-knowledge/scripts/gen_catalog.py",
+        "docker-knowledge/scripts/gen_catalog.py",
+        "godot-knowledge/scripts/gen_catalog.py",
+        "model-knowledge/scripts/gen_catalog.py",
+        "rust-knowledge/scripts/gen_catalog.py",
+        "sprite-motion-knowledge/scripts/gen_catalog.py",
+        "sprites-knowledge/scripts/gen_catalog.py",
+        "tensor-engine-knowledge/scripts/gen_catalog.py",
+        "training-knowledge/scripts/gen_catalog.py",
+        "vocology-knowledge/scripts/gen_catalog.py",
+        "xrpl-knowledge/scripts/gen_catalog.py"
+      ],
+      "name": "cell",
+      "partLabels": [
+        "blender-knowledge",
+        "docker-knowledge",
+        "godot-knowledge",
+        "model-knowledge",
+        "rust-knowledge",
+        "sprite-motion-knowledge",
+        "sprites-knowledge",
+        "tensor-engine-knowledge",
+        "training-knowledge",
+        "vocology-knowledge",
+        "xrpl-knowledge"
+      ],
+      "parts": [
+        "blender-knowledge",
+        "docker-knowledge",
+        "godot-knowledge",
+        "model-knowledge",
+        "rust-knowledge",
+        "sprite-motion-knowledge",
+        "sprites-knowledge",
+        "tensor-engine-knowledge",
+        "training-knowledge",
+        "vocology-knowledge",
+        "xrpl-knowledge"
+      ]
+    },
+    {
+      "contract": true,
+      "files": [
+        "blender-knowledge/scripts/gen_loadout.py",
+        "docker-knowledge/scripts/gen_loadout.py",
+        "godot-knowledge/scripts/gen_loadout.py",
+        "model-knowledge/scripts/gen_loadout.py",
+        "rust-knowledge/scripts/gen_loadout.py",
+        "sprite-motion-knowledge/scripts/gen_loadout.py",
+        "sprites-knowledge/scripts/gen_loadout.py",
+        "tensor-engine-knowledge/scripts/gen_loadout.py",
+        "training-knowledge/scripts/gen_loadout.py",
+        "vocology-knowledge/scripts/gen_loadout.py",
+        "xrpl-knowledge/scripts/gen_loadout.py"
+      ],
+      "name": "est",
+      "partLabels": [
+        "blender-knowledge",
+        "docker-knowledge",
+        "godot-knowledge",
+        "model-knowledge",
+        "rust-knowledge",
+        "sprite-motion-knowledge",
+        "sprites-knowledge",
+        "tensor-engine-knowledge",
+        "training-knowledge",
+        "vocology-knowledge",
+        "xrpl-knowledge"
+      ],
+      "parts": [
+        "blender-knowledge",
+        "docker-knowledge",
+        "godot-knowledge",
+        "model-knowledge",
+        "rust-knowledge",
+        "sprite-motion-knowledge",
+        "sprites-knowledge",
+        "tensor-engine-knowledge",
+        "training-knowledge",
+        "vocology-knowledge",
+        "xrpl-knowledge"
+      ]
+    }
+  ],
+  "duplicatesLead": "These are candidates from names and call order, not a judgement.",
+  "duplicatesNote": [
+    "And 15 more candidates."
+  ],
+  "edges": [
+    {
+      "from": "root",
+      "fromTests": false,
+      "to": "shared"
+    }
+  ],
+  "engine": "1.26.0",
+  "generated": [
+    {
+      "place": ".claude/",
+      "writers": [
+        "shared/gen_root_loadout.py"
+      ]
+    },
+    {
+      "block": true,
+      "place": "README.md",
+      "writers": [
+        "shared/sync_readme_table.py"
+      ]
+    },
+    {
+      "place": "blender-knowledge/.claude/loadout/index.json",
+      "writers": [
+        "blender-knowledge/scripts/gen_loadout.py"
+      ]
+    },
+    {
+      "place": "blender-knowledge/blender.db",
+      "writers": [
+        "blender-knowledge (4 files)"
+      ]
+    },
+    {
+      "place": "blender-knowledge/catalog/",
+      "writers": [
+        "blender-knowledge/scripts/gen_catalog.py"
+      ]
+    },
+    {
+      "block": true,
+      "place": "blender-knowledge/waves/wave-01-pipeline-core/research-raw.json",
+      "writers": [
+        "blender-knowledge/scripts/verify_cloud.py"
+      ]
+    },
+    {
+      "place": "docker-knowledge/.claude/loadout/index.json",
+      "writers": [
+        "docker-knowledge/scripts/gen_loadout.py"
+      ]
+    },
+    {
+      "place": "docker-knowledge/catalog/",
+      "writers": [
+        "docker-knowledge/scripts/gen_catalog.py"
+      ]
+    },
+    {
+      "place": "docker-knowledge/findings.db",
+      "writers": [
+        "docker-knowledge (4 files)"
+      ]
+    },
+    {
+      "place": "docker-knowledge/waves/wave-03-pinned-memory/family-verdicts.json",
+      "writers": [
+        "docker-knowledge/waves/wave-03-pinned-memory/_family_verify.py"
+      ]
+    },
+    {
+      "place": "docker-knowledge/waves/wave-03-pinned-memory/research-raw.json",
+      "writers": [
+        "docker-knowledge/waves/wave-03-pinned-memory/_build_raw.py"
+      ]
+    },
+    {
+      "place": "godot-knowledge/.claude/loadout/index.json",
+      "writers": [
+        "godot-knowledge/scripts/gen_loadout.py"
+      ]
+    },
+    {
+      "place": "godot-knowledge/catalog/",
+      "writers": [
+        "godot-knowledge/scripts/gen_catalog.py"
+      ]
+    },
+    {
+      "place": "godot-knowledge/godot.db",
+      "writers": [
+        "godot-knowledge (4 files)"
+      ]
+    },
+    {
+      "place": "index.html",
+      "writers": [
+        "shared/gen_root_index.py"
+      ]
+    },
+    {
+      "place": "index.json",
+      "writers": [
+        "shared/gen_root_index.py"
+      ]
+    },
+    {
+      "place": "index.md",
+      "writers": [
+        "shared/gen_root_index.py"
+      ]
+    },
+    {
+      "place": "model-knowledge/.claude/loadout/index.json",
+      "writers": [
+        "model-knowledge/scripts/gen_loadout.py"
+      ]
+    },
+    {
+      "place": "model-knowledge/catalog/",
+      "writers": [
+        "model-knowledge/scripts/gen_catalog.py"
+      ]
+    },
+    {
+      "place": "model-knowledge/models.db",
+      "writers": [
+        "model-knowledge (5 files)"
+      ]
+    },
+    {
+      "into": true,
+      "place": "model-knowledge/workflows/",
+      "writers": [
+        "model-knowledge/scripts/fetch_workflows.py"
+      ]
+    },
+    {
+      "place": "rust-knowledge/.claude/loadout/index.json",
+      "writers": [
+        "rust-knowledge/scripts/gen_loadout.py"
+      ]
+    },
+    {
+      "place": "rust-knowledge/catalog/",
+      "writers": [
+        "rust-knowledge/scripts/gen_catalog.py"
+      ]
+    },
+    {
+      "place": "rust-knowledge/rust.db",
+      "writers": [
+        "rust-knowledge (5 files)"
+      ]
+    },
+    {
+      "into": true,
+      "place": "rust-knowledge/verification/",
+      "writers": [
+        "rust-knowledge/scripts/assemble_lanes.py"
+      ]
+    },
+    {
+      "block": true,
+      "place": "rust-knowledge/verification/verdicts.json",
+      "writers": [
+        "rust-knowledge/scripts/build_ledger.py"
+      ]
+    },
+    {
+      "into": true,
+      "place": "rust-knowledge/waves/",
+      "writers": [
+        "rust-knowledge/scripts/assemble_lanes.py"
+      ]
+    },
+    {
+      "place": "sprite-motion-knowledge/.claude/loadout/index.json",
+      "writers": [
+        "sprite-motion-knowledge/scripts/gen_loadout.py"
+      ]
+    },
+    {
+      "place": "sprite-motion-knowledge/catalog/",
+      "writers": [
+        "sprite-motion-knowledge/scripts/gen_catalog.py"
+      ]
+    },
+    {
+      "place": "sprite-motion-knowledge/recipes.db",
+      "writers": [
+        "sprite-motion-knowledge (4 files)"
+      ]
+    },
+    {
+      "block": true,
+      "place": "sprite-motion-knowledge/waves/wave-01-foundation/research-raw.json",
+      "writers": [
+        "sprite-motion-knowledge/scripts/verify_cloud.py"
+      ]
+    },
+    {
+      "place": "sprites-knowledge/.claude/loadout/index.json",
+      "writers": [
+        "sprites-knowledge/scripts/gen_loadout.py"
+      ]
+    },
+    {
+      "place": "sprites-knowledge/catalog/",
+      "writers": [
+        "sprites-knowledge/scripts/gen_catalog.py"
+      ]
+    },
+    {
+      "place": "sprites-knowledge/recipes.db",
+      "writers": [
+        "sprites-knowledge (4 files)"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/.claude/loadout/index.json",
+      "writers": [
+        "tensor-engine-knowledge/scripts/gen_loadout.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/chroma-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_chroma_bench.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/diff-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_diff_bench.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/qwenimg-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_qwenimg_bench.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/qwenimg-sa-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_qwenimg_sa.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/sage-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_sage_bench.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/sage2-res-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_sage2_res.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/sage2-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_sage2_bench.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/sage2-zimage-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_sage2_zimage.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/catalog/",
+      "writers": [
+        "tensor-engine-knowledge/scripts/gen_catalog.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/engines.db",
+      "writers": [
+        "tensor-engine-knowledge (16 files)"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/recipes/MISSING-ENGINE-RECIPES.md",
+      "writers": [
+        "tensor-engine-knowledge/recipes/_gen_backlog.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/abstracts-cache-multidomain.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/_wave13_fetch.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/abstracts-cache.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/fetch_abstracts.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/budget-results.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/budget_bench.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/citation-panel-3family-receipt.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/citation_panel_eval_3family.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/citation-panel-hard-receipt.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/citation_panel_eval_hard.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/citation-panel-multidomain-receipt.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/citation_panel_eval_multidomain.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/citation-panel-nli-receipt.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/citation_panel_eval_nli.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/citation-panel-numeric-receipt.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/citation_panel_eval_numeric.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/citation-panel-prompt-v2-receipt.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/citation_panel_eval_prompt_v2.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/citation-panel-receipt.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/citation_panel_eval.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/e2e-full-abstract-receipt.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/e2e_full_abstract.mjs"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/prompt-hardening-receipt.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/prompt_hardening_probe.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/results-qwen3-30b-a3b.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/verify_local.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/results-real-*.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/citation_panel_eval.py",
+        "tensor-engine-knowledge/verifier/citation_panel_eval_3family.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/variant-results.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/prompt_variant_bench.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/wave9-abstracts-cache.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/wave9_dogfood.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/verifier/wave9-dogfood-receipt.json",
+      "writers": [
+        "tensor-engine-knowledge/verifier/wave9_dogfood.py"
+      ]
+    },
+    {
+      "place": "training-knowledge/.claude/loadout/index.json",
+      "writers": [
+        "training-knowledge/scripts/gen_loadout.py"
+      ]
+    },
+    {
+      "place": "training-knowledge/catalog/",
+      "writers": [
+        "training-knowledge/scripts/gen_catalog.py"
+      ]
+    },
+    {
+      "place": "training-knowledge/curriculum.json",
+      "writers": [
+        "training-knowledge/scripts/gen_curriculum.py"
+      ]
+    },
+    {
+      "place": "training-knowledge/training.db",
+      "writers": [
+        "training-knowledge (7 files)"
+      ]
+    },
+    {
+      "place": "vocology-knowledge/.claude/loadout/index.json",
+      "writers": [
+        "vocology-knowledge/scripts/gen_loadout.py"
+      ]
+    },
+    {
+      "place": "vocology-knowledge/catalog/",
+      "writers": [
+        "vocology-knowledge/scripts/gen_catalog.py"
+      ]
+    },
+    {
+      "place": "vocology-knowledge/findings.db",
+      "writers": [
+        "vocology-knowledge (4 files)"
+      ]
+    },
+    {
+      "place": "xrpl-knowledge/.claude/loadout/index.json",
+      "writers": [
+        "xrpl-knowledge/scripts/gen_loadout.py"
+      ]
+    },
+    {
+      "place": "xrpl-knowledge/catalog/",
+      "writers": [
+        "xrpl-knowledge/scripts/gen_catalog.py"
+      ]
+    },
+    {
+      "place": "xrpl-knowledge/module-drafts/",
+      "writers": [
+        "xrpl-knowledge/scripts/gen_module_drafts.py"
+      ]
+    },
+    {
+      "place": "xrpl-knowledge/module-drafts/COVERAGE-GAP.md",
+      "writers": [
+        "xrpl-knowledge/scripts/gen_coverage_gap.py"
+      ]
+    },
+    {
+      "place": "xrpl-knowledge/waves/wave-01-foundation/research-raw.json",
+      "writers": [
+        "xrpl-knowledge/scripts/assemble_lanes.py",
+        "xrpl-knowledge/scripts/verify_cloud.py"
+      ]
+    },
+    {
+      "place": "xrpl-knowledge/xrpl.db",
+      "writers": [
+        "xrpl-knowledge (7 files)"
+      ]
+    }
+  ],
+  "generatedAt": "2026-10-01T08:41:48.581Z",
+  "limits": [
+    "16 imports could not be resolved: `rust-knowledge/waves/wave-03-si-rpg-engine/probes/globals_probe.rs` imports `wasmparser::ExternalKind`; `rust-knowledge/waves/wave-03-si-rpg-engine/probes/globals_probe.rs` imports `wasmparser::Operator`; `rust-knowledge/waves/wave-03-si-rpg-engine/probes/globals_probe.rs` imports `wasmparser::Parser`; and 13 more.",
+    "1 import site names a path outside this repository, so what it loads is not followed.",
+    "31 writes and 22 reads use paths built at run time and are not named here.",
+    "10 writes go to places this repository does not track, so they are not listed as generated.",
+    "23 writes and 60 reads go to a path their caller passes, not to this repository.",
+    "6 writes and 2 reads go to a temporary directory, not to this repository.",
+    "5 reads go to the home directory (.cargo/), not to this repository.",
+    "3 reads go to the directory the command is run in, not to this repository.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/verify.yml",
+  "partLabels": {
+    ".claude": ".claude",
+    ".github": ".github",
+    "blender-knowledge": "blender-knowledge",
+    "docker-knowledge": "docker-knowledge",
+    "docs": "docs",
+    "godot-knowledge": "godot-knowledge",
+    "model-knowledge": "model-knowledge",
+    "oracle": "oracle",
+    "oracle-jam": "oracle-jam",
+    "oracle-jam-strict": "oracle-jam-strict",
+    "root": "the repository root",
+    "rust-knowledge": "rust-knowledge",
+    "shared": "shared",
+    "site": "the site",
+    "sprite-motion-knowledge": "sprite-motion-knowledge",
+    "sprites-knowledge": "sprites-knowledge",
+    "tensor-engine-knowledge": "tensor-engine-knowledge",
+    "training-knowledge": "training-knowledge",
+    "vocology-knowledge": "vocology-knowledge",
+    "xrpl-knowledge": "xrpl-knowledge"
+  },
+  "parts": 20,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/readouts",
+  "sequences": [],
+  "startDoor": ".github/workflows/verify.yml",
+  "startHere": [
+    ".github/workflows/verify.yml",
+    "verify.py",
+    "shared/verdicts.py"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 1,
+  "testedBy": {
+    "oracle": 0,
+    "oracle-jam": 0,
+    "oracle-jam-strict": 0,
+    "shared": 0,
+    "tensor-engine-knowledge": 0
+  },
+  "testedCodeParts": 5,
+  "unnamedWrites": 31,
+  "unread": [
+    {
+      "into": true,
+      "place": "model-knowledge/workflows/",
+      "writers": [
+        "model-knowledge/scripts/fetch_workflows.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/chroma-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_chroma_bench.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/qwenimg-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_qwenimg_bench.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/qwenimg-sa-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_qwenimg_sa.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/sage-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_sage_bench.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/sage2-res-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_sage2_res.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/sage2-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_sage2_bench.py"
+      ]
+    },
+    {
+      "place": "tensor-engine-knowledge/baselines/sage2-zimage-results.json",
+      "writers": [
+        "tensor-engine-knowledge/baselines/_sage2_zimage.py"
+      ]
+    }
+  ],
+  "unreadFiles": 0,
+  "unreadNote": [
+    "And 14 more places."
+  ],
+  "untested": [
+    {
+      "part": "oracle",
+      "partLabel": "oracle",
+      "testedBy": 0
+    },
+    {
+      "part": "oracle-jam",
+      "partLabel": "oracle-jam",
+      "testedBy": 0
+    },
+    {
+      "part": "oracle-jam-strict",
+      "partLabel": "oracle-jam-strict",
+      "testedBy": 0
+    },
+    {
+      "part": "shared",
+      "partLabel": "shared",
+      "testedBy": 0
+    },
+    {
+      "part": "tensor-engine-knowledge",
+      "partLabel": "tensor-engine-knowledge",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [
+    "tensor-engine-knowledge/baselines/_triton_test.py runs in no workflow."
+  ],
+  "written": 78
+}

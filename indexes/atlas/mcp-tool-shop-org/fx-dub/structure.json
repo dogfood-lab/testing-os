@@ -2183,7 +2183,7 @@
       "to": "tools"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generatedFrom": {
     "commit": "fe9233028c3d71a1e9f006593ba50176a142ac1a",
     "tracked": 178
@@ -2277,6 +2277,12 @@
           "call": "glob.glob",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tests/test_docs.py",
+          "call": "open",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "docs/briefs/*-reply.md",
@@ -2287,6 +2293,12 @@
         {
           "by": "tests/test_docs.py",
           "call": "glob.glob",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_docs.py",
+          "call": "open",
           "confidence": "ast",
           "fromTests": true
         }

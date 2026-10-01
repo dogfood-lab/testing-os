@@ -1,20 +1,21 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-10-01 from commit 254e22e by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit a93b36d by Atlas 1.26.0.
 
 ## What this is
 
 14 parts, mostly JSON data (1520 files) and Markdown (348); code in TypeScript (563), Python (48), JavaScript (32), shell (28), PowerShell (3), CSS (2), Astro (1) and HTML (1). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
-## What changed since 2026-09-30 (6e89814)
+## What changed since 2026-10-01 (254e22e)
 
 - experiments/rollout-arc/p4/runs/summary-*.json is now written by experiments/rollout-arc/p4/scripts/score-curriculum.mts.
 - site/public/america-the-beautiful-m*-*.svg is now written by scripts/render-landing-pianoroll.ts.
-- 2 files changed content, across 1 part.
+- datasets/jam-actions-v0/records/* is now read by experiments/jam-actions-v0-lora/generate_train_jsonl.py.
+- No file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 21 paths; on a push to main touching 21 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/ and 294 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 92 more; checks scripts/analysis-chords.ts, scripts/analysis-patterns.ts, scripts/analysis-sections.ts and 57 more; packs LICENSE, README.md, logo.png and 377 more into an image.
+1. **CI.** On a pull request; on a push to main touching 21 paths; or by hand. Runs src/mcp-server.ts, src/smoke.ts, apps/cockpit/src/ and 294 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 92 more; checks scripts/analysis-chords.ts, scripts/analysis-patterns.ts, scripts/analysis-sections.ts and 57 more; packs LICENSE, README.md, logo.png and 377 more into an image.
 2. **Release.** When a release is published; or by hand. Runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 301 more; builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 93 more; packs LICENSE, README.md, logo.png and 377 more into an image.
 3. **Deploy site to GitHub Pages.** On a push to main touching 3 paths; or by hand. Runs apps/cockpit/src/, apps/cockpit/vite.config.ts, site/astro.config.mjs and 2 more.
 4. **Publish jam-actions-v0.** By hand. Runs scripts/check-release-gate.ts, scripts/verify-public-package-checksums.ts and src/dataset/published-evidence.test.ts.
@@ -147,7 +148,6 @@ And 2 more pairs.
 - **docs/jam-actions-v0-slice7-e3-eval.md** is written by scripts/eval-jam-actions-annotation-grounding.ts.
 - **experiments/acoustic-sft/data/sft-test.jsonl** is written by experiments/acoustic-sft/format-sft.ts.
 - **experiments/acoustic-sft/data/sft-train.jsonl** is written by experiments/acoustic-sft/format-sft.ts.
-- **experiments/acoustic-sft/runs/** is written by experiments/acoustic-sft/runpod.mjs.
 - **experiments/analysis-arc/validation-results.json** is written by scripts/analysis-validate.ts.
 - **experiments/coverage-v1-sft/data/gold-test.jsonl** is written by experiments/coverage-v1-sft/format-sft.ts.
 - **experiments/coverage-v1-sft/data/sft-test.jsonl** is written by experiments/coverage-v1-sft/format-sft.ts.
@@ -219,6 +219,7 @@ And 2 more pairs.
 
 People write .github/, plugin/ and the repository root; 48 writes with paths built at run time may land here.
 
+- **experiments/acoustic-sft/runs/** is written by experiments/acoustic-sft/runpod.mjs from inputs this repository does not keep, and by people.
 - **spaces/jam-actions-live/demo_data.json** is written by spaces/jam-actions-live/extract-demo-data.mjs from inputs this repository does not keep, and by people.
 
 ## Where to start
@@ -235,8 +236,8 @@ Beside the path, src/mcp-server.ts also calls src/stdio-supervisor.ts and src/st
 - 2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.
 - 48 writes and 112 reads use paths built at run time and are not named here.
 - 26 writes go to places this repository does not track, so they are not listed as generated.
-- 100 writes and 376 reads go to a path their caller passes, not to this repository.
-- 1 write and 18 reads go to the directory the command is run in, not to this repository.
+- 100 writes and 377 reads go to a path their caller passes, not to this repository.
+- 1 write and 19 reads go to the directory the command is run in, not to this repository.
 - 3 writes and 11 reads go to the home directory (.ssh/), not to this repository.
 - 8 writes and 4 reads go to a temporary directory, not to this repository.
 - 1 write and 1 read go to the home directory (.ai-jam-sessions/) or a path their caller passes, not to this repository.

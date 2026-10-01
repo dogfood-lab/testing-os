@@ -76,9 +76,9 @@
   "changes": {
     "fileCounts": {
       "added": 0,
-      "changed": 1,
+      "changed": 0,
       "moved": 0,
-      "parts": 1,
+      "parts": 0,
       "removed": 0
     },
     "items": [
@@ -108,13 +108,13 @@
       },
       {
         "kind": "counts",
-        "sentence": "1 file changed content, across 1 part.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "f7b4973768c843655383d17005a6353a4ef2de74",
-      "generatedAt": "2026-09-30T20:14:07.142Z"
+      "commit": "dfeac64ea1a2585b65d88e6ee8a64fd02a185090",
+      "generatedAt": "2026-10-01T02:14:18.418Z"
     },
     "unchanged": false
   },
@@ -123,7 +123,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 1 source file reaches 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "dfeac64ea1a2585b65d88e6ee8a64fd02a185090",
+  "commit": "39edcba5f6d631a77c5dd7bdd18fdc73ab774aa4",
   "defaultBranch": "main",
   "derived": "13 parts, mostly JSON data (2616 files); code in JavaScript (233), Python (30), Astro (3), PowerShell (3), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; CI and Publish each reach 4 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run sdlab.",
   "doors": [
@@ -198,7 +198,7 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 14 paths",
+        "on a pull request",
         "on a push touching 14 paths",
         "or by hand"
       ]
@@ -376,7 +376,7 @@
       "to": "scripts"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generated": [
     {
       "place": "projects/ai-eye-test/outputs/synthetic/phase1/",
@@ -459,7 +459,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-01T01:53:55.407Z",
+  "generatedAt": "2026-10-01T08:45:01.247Z",
   "limits": [
     "4 imports could not be resolved: `bin/sdlab.js` imports a path built at run time; `lib/training-adapters.js` imports a path built at run time; `projects/salt-road/inputs/prompts/wave-runner.py` imports a path built at run time; and 1 more.",
     "38 writes and 72 reads use paths built at run time and are not named here.",
@@ -751,6 +751,7 @@
     "lib": 93,
     "scripts": 19
   },
+  "testedCodeParts": 3,
   "unnamedWrites": 38,
   "unread": [
     {
@@ -796,6 +797,14 @@
       ]
     },
     {
+      "mayRead": {
+        "by": [
+          "projects/ai-eye-test/compositor/phase2.py"
+        ],
+        "patterns": [
+          "*.png"
+        ]
+      },
       "place": "projects/salt-road/inputs/control-guides/",
       "writers": [
         "projects/salt-road/inputs/control-guides/blockouts.py"

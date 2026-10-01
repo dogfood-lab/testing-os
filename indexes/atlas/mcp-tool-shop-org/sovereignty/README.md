@@ -1,6 +1,6 @@
 # sovereignty: how it works
 
-Mapped at 2026-10-01 from commit a1733f7 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit a1733f7 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,10 @@ Mapped at 2026-10-01 from commit a1733f7 by Atlas 1.25.0.
 
 ## What changed since 2026-09-30 (83f9b40)
 
-Nothing structural changed since 2026-09-30; no file changed.
+- app/src-tauri/gen/schemas is now read by tests/test_tauri_updater_secrets.py.
+- assets/print/source/print-bundle.js is now also read by tests/test_tauri_updater_secrets.py.
+- sov_daemon/**/*.py is now read by tests/test_daemon_amend_wave9.py.
+- No file changed.
 
 ## What comes in
 
@@ -58,7 +61,7 @@ CI writes only to app/src-tauri/gen/schemas, which is not tracked.
 - **app** is imported by no other part and sits on the path of 3 doors.
 - **.github** is imported by no other part and sits on the path of 2 doors.
 - **docker** is imported by no other part and sits on the path of 2 doors.
-- **assets/print/source/print-bundle.js** is written by assets and read by assets; a hand edit reaches every reader.
+- **assets/print/source/print-bundle.js** is written by assets and read by assets, and by 1 test; a hand edit reaches every reader.
 
 scripts holds only shell files, which this map does not read, so what uses it cannot be seen.
 
@@ -111,7 +114,7 @@ Beside the path, sov_engine/io_utils.py also calls sov_engine/schemas.py.
 - 1 write and 32 reads use paths built at run time and are not named here.
 - 1 write goes to places this repository does not track, so it is not listed as generated.
 - 3 writes and 42 reads go to a path their caller passes, not to this repository.
-- 1 write and 2 reads go to the directory the command is run in (.sov/, README.md and docs/), not to this repository.
+- 1 write and 4 reads go to the directory the command is run in (.sov/, README.md and docs/), not to this repository.
 - 1 command is built at run time and not followed.
 - There is a compose.yaml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.

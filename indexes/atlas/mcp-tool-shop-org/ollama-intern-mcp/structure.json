@@ -29,7 +29,7 @@
           "path": ".github/pull_request_template.md"
         },
         {
-          "hash": "c38a58d12e3741a8c08cb954548a79308442e4489bfa46e792cef8d2f7b3e212",
+          "hash": "b610da13ba74af82b12e9ebef3887f7dcb0b9cc136863974836fcca79c40b061",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -7676,10 +7676,7 @@
           "matched": true,
           "path": "src/",
           "runKind": "executes",
-          "via": "tsc tsconfig.json",
-          "when": {
-            "event": "workflow_dispatch"
-          }
+          "via": "tsc tsconfig.json"
         },
         {
           "built": true,
@@ -8066,28 +8063,7 @@
       ],
       "triggers": [
         {
-          "event": "pull_request",
-          "paths": [
-            ".dockerignore",
-            ".github/workflows/**",
-            ".npmignore",
-            "Dockerfile",
-            "atlas/**",
-            "codecov.yml",
-            "hermes.config.example.yaml",
-            "package-lock.json",
-            "package.json",
-            "scripts/gen-tool-docs.mjs",
-            "scripts/sync-doc-versions.mjs",
-            "site/package-lock.json",
-            "site/package.json",
-            "site/src/content/docs/handbook/tools.md",
-            "site/src/content/docs/handbook/tools/**",
-            "src/**",
-            "tests/**",
-            "tsconfig.json",
-            "vitest.config.ts"
-          ]
+          "event": "pull_request"
         },
         {
           "branches": [
@@ -9628,9 +9604,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "9555331eec5ad1f5aab691e9eb4b1f66bdfeb135",
+    "commit": "0666dc31fc29269f18d4bb72b0e509c36c7ce95e",
     "tracked": 352
   },
   "landings": [

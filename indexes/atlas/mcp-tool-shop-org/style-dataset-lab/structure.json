@@ -25,7 +25,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "bd4e1ad0937def7881c40c4b8934ae2c79aa17b0b4cc25c665208b8a1500ecd9",
+          "hash": "d7404db0fa4a252237e72499c4169e0275ed60395fbbb42907daf200037ddfbf",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -19711,23 +19711,7 @@
       ],
       "triggers": [
         {
-          "event": "pull_request",
-          "paths": [
-            ".github/workflows/ci.yml",
-            "atlas/**",
-            "bin/**",
-            "codecov.yml",
-            "lib/**",
-            "package-lock.json",
-            "package.json",
-            "runtime/**",
-            "schemas/**",
-            "scripts/**",
-            "site/astro.config.mjs",
-            "site/package-lock.json",
-            "site/package.json",
-            "tests/**"
-          ]
+          "event": "pull_request"
         },
         {
           "event": "push",
@@ -20372,9 +20356,9 @@
       "to": "scripts"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "dfeac64ea1a2585b65d88e6ee8a64fd02a185090",
+    "commit": "39edcba5f6d631a77c5dd7bdd18fdc73ab774aa4",
     "tracked": 3231
   },
   "landings": [
@@ -20604,6 +20588,12 @@
       "writers": []
     },
     {
+      "mayReaders": [
+        {
+          "by": "projects/ai-eye-test/compositor/phase2.py",
+          "pattern": "*.png"
+        }
+      ],
       "readers": [
         {
           "by": "projects/ai-eye-test/compositor/phase1_smoke.py",
@@ -22671,6 +22661,12 @@
       ]
     },
     {
+      "mayReaders": [
+        {
+          "by": "projects/ai-eye-test/compositor/phase2.py",
+          "pattern": "*.png"
+        }
+      ],
       "readers": [],
       "target": "projects/salt-road/inputs/control-guides",
       "writers": [

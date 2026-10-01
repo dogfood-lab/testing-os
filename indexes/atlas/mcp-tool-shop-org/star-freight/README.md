@@ -1,18 +1,19 @@
 # star-freight: how it works
 
-Mapped at 2026-10-01 from commit 3c9ba45 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 7ee4eb5 by Atlas 1.26.0.
 
 ## What this is
 
 8 parts, mostly Python (207 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 5 doors; the busiest is CI, which reaches 2 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run starfreight.
 
-## What changed since 2026-09-30 (ae33f19)
+## What changed since 2026-10-01 (3c9ba45)
 
-Nothing structural changed since 2026-09-30; no file changed.
+- dogfood/scenarios/*.json is now read by src/portlight/engine/dogfood_runner.py.
+- No file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 9 paths; on a push touching 9 paths; or by hand. Runs tests/.
+1. **CI.** On a pull request; on a push touching 9 paths; or by hand. Runs tests/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Release Binaries.** When a release is published; or by hand. Builds src/portlight/__main__.py.
 4. **Publish to PyPI.** When a release is published; or by hand. Checks src/portlight/.

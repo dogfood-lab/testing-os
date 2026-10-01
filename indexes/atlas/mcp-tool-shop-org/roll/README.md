@@ -1,18 +1,18 @@
 # roll: how it works
 
-Mapped at 2026-10-01 from commit b65c777 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 2cde1e3 by Atlas 1.26.0.
 
 ## What this is
 
 5 parts, mostly TypeScript (58 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 7 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run roll, roll-bridge and roll-mcp. People import @mcptoolshop/roll.
 
-## What changed since 2026-09-30 (ad9faaa)
+## What changed since 2026-10-01 (b65c777)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 11 paths; on a push touching 11 paths; or by hand. Runs src/bin.ts and tests/; builds src/.
+1. **CI.** On a pull request; on a push touching 11 paths; or by hand. Runs src/bin.ts and tests/; builds src/.
 2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@mcptoolshop/roll** (the package people import). Loads src/index.ts, src/bridge/handler.ts and src/tables/engine.ts.

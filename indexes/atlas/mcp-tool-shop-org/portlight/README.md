@@ -1,18 +1,18 @@
 # portlight: how it works
 
-Mapped at 2026-10-01 from commit 4c668d5 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 24d0e14 by Atlas 1.26.0.
 
 ## What this is
 
 12 parts, mostly Python (183 files), JavaScript (3), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 6 doors; CI, Release and Release Binaries each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run portlight.
 
-## What changed since 2026-10-01 (73f9a29)
+## What changed since 2026-10-01 (4c668d5)
 
 Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 9 paths; on a push to main touching 9 paths; or by hand. Runs tests/; checks src/.
+1. **CI.** On a pull request to main; on a push to main touching 9 paths; or by hand. Runs tests/; checks src/.
 2. **Release.** When a release is published; or by hand. Runs src/portlight/app/cli.py, src/portlight/balance/runner.py, src/portlight/stress/invariants.py and 77 more; checks src/.
 3. **Release Binaries.** When a release is published; or by hand. Runs src/portlight/app/cli.py, src/portlight/balance/runner.py, src/portlight/stress/invariants.py and 77 more; builds src/portlight/__main__.py; checks src/.
 4. **Deploy Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
@@ -96,8 +96,7 @@ Beside the path, src/portlight/app/cli.py also calls src/portlight/engine/ship_s
 ## What this map cannot see
 
 - 2 imports could not be resolved: `src/portlight/app/tui/screens/encounter.py` imports `portlight.content.weapons`, which is no module on its import path and no declared dependency, twice.
-- 1 read uses a path built at run time and is not named here.
-- 2 writes and 129 reads go to a path their caller passes, not to this repository.
+- 2 writes and 130 reads go to a path their caller passes, not to this repository.
 - 4 writes go to the directory the command is run in (artifacts/) or a path their caller passes, not to this repository.
 - 2 reads go to the directory the command is run in, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.

@@ -1,6 +1,6 @@
 # ai-eyes-mcp: how it works
 
-Mapped at 2026-10-01 from commit f9e49a1 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit f9e49a1 by Atlas 1.26.0.
 
 ## What this is
 

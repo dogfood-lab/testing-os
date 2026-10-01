@@ -40,6 +40,22 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "kb/**/*.md is now read by scripts/gen_kb.py.",
+        "subjects": [
+          "kb/**/*.md",
+          "scripts/gen_kb.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "kb/workflows/*.json is now read by tests/test_kb.py.",
+        "subjects": [
+          "kb/workflows/*.json",
+          "tests/test_kb.py"
+        ]
+      },
+      {
         "kind": "origin",
         "sentence": "kb was generated and is now mixed.",
         "subjects": [
@@ -234,7 +250,7 @@
       "to": "comfy_headless"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generated": [
     {
       "into": true,
@@ -244,10 +260,10 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-01T01:46:30.324Z",
+  "generatedAt": "2026-10-01T08:37:38.236Z",
   "limits": [
     "1 import could not be resolved: `tests/run_fuzz.py` imports `comfy_headless.tests.test_fuzz`, which is no module on its import path and no declared dependency.",
-    "2 writes and 2 reads use paths built at run time and are not named here.",
+    "2 writes and 1 read use paths built at run time and are not named here.",
     "38 reads go to a path their caller passes, not to this repository.",
     "3 reads go to a temporary directory, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
@@ -290,6 +306,7 @@
     "comfy_headless": 49,
     "scripts": 1
   },
+  "testedCodeParts": 2,
   "unnamedWrites": 2,
   "unread": [],
   "unreadFiles": 0,

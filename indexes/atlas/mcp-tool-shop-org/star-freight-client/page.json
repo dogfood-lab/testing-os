@@ -1,0 +1,183 @@
+{
+  "authored": [
+    ".github/",
+    "assets/",
+    "root",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 1,
+      "importedBy": [
+        "scenes"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "scripts",
+      "partLabel": "scripts"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 0,
+      "moved": 0,
+      "parts": 0,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-10-01; no file changed.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "659f5b35e720f3270e6a772fe7c70f6a7e6a0221",
+      "generatedAt": "2026-10-01T03:00:25.881Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "e0bd9ea35f82b21a3338c4cd94f372170734a633",
+  "defaultBranch": "main",
+  "derived": "6 parts, mostly images (74 files) and Markdown (18); code in GDScript (4), CSS (2), TypeScript (2), Astro (1), JavaScript (1), Python (1) and shell (1). Work enters through 3 doors; the busiest is the game, which reaches 2 parts. It deploys a site to GitHub Pages. People run the game.",
+  "doors": [
+    {
+      "app": "game",
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "project.godot",
+      "id": "project.godot#the game",
+      "kind": "command",
+      "landings": [],
+      "name": "the game",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scenes",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "scripts",
+          "depth": 2,
+          "files": 4
+        }
+      ],
+      "runs": [
+        "scenes/main.tscn"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request",
+        "on a push touching 8 paths",
+        "or by hand"
+      ]
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "engine": "1.26.0",
+  "generated": [],
+  "generatedAt": "2026-10-01T08:44:21.008Z",
+  "limits": [
+    "5 reads use paths built at run time and are not named here.",
+    "2 reads go to a path their caller passes, not to this repository.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": "project.godot#the game",
+  "partLabels": {
+    ".github": ".github",
+    "assets": "assets",
+    "root": "the repository root",
+    "scenes": "scenes",
+    "scripts": "scripts",
+    "site": "the site"
+  },
+  "parts": 6,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/star-freight-client",
+  "sequences": [],
+  "startDoor": "project.godot#the game",
+  "startHere": [
+    "scenes/main.tscn",
+    "scenes/roster.tscn",
+    "scripts/roster_scene.gd",
+    "scripts/character_node.gd",
+    "scripts/pack_loader.gd"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 0,
+  "testedBy": {
+    "scripts": 0
+  },
+  "unnamedWrites": 0,
+  "unread": [],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [
+    "No test files were found by name."
+  ],
+  "written": 0
+}

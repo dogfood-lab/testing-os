@@ -9592,14 +9592,14 @@
           "writes": 0
         },
         {
-          "reads": 1,
+          "reads": 2,
           "where": [
             "cwd:docs/"
           ],
           "writes": 0
         }
       ],
-      "outsideReads": 9,
+      "outsideReads": 10,
       "role": "code",
       "testRunners": [
         "pytest"
@@ -9615,7 +9615,7 @@
       "unresolvedSites": 1
     },
     {
-      "dynamicReads": 13,
+      "dynamicReads": 14,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -10441,7 +10441,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 2,
+      "dynamicReads": 1,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 1,
@@ -12972,14 +12972,14 @@
           "writes": 1
         },
         {
-          "reads": 0,
+          "reads": 1,
           "where": [
             "cwd:.sov/"
           ],
           "writes": 1
         }
       ],
-      "outsideReads": 19,
+      "outsideReads": 20,
       "outsideWrites": 2,
       "role": "code",
       "testRunners": [
@@ -18148,7 +18148,7 @@
       "to": "sov_transport"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generatedFrom": {
     "commit": "a1733f72051279819821d8d7cda2f21da9d3737e",
     "tracked": 426
@@ -18423,7 +18423,22 @@
       "writers": []
     },
     {
-      "readers": [],
+      "readers": [
+        {
+          "by": "tests/test_tauri_updater_secrets.py",
+          "call": "read_bytes",
+          "confidence": "ast",
+          "fromTests": true,
+          "pattern": "**/*"
+        },
+        {
+          "by": "tests/test_tauri_updater_secrets.py",
+          "call": "rglob",
+          "confidence": "ast",
+          "fromTests": true,
+          "pattern": "**/*"
+        }
+      ],
       "target": "app/src-tauri/gen/schemas",
       "tracked": false,
       "writers": [
@@ -18801,6 +18816,20 @@
           "by": "assets/print/source/compile-jsx.mjs",
           "call": "statSync",
           "confidence": "ast"
+        },
+        {
+          "by": "tests/test_tauri_updater_secrets.py",
+          "call": "read_bytes",
+          "confidence": "ast",
+          "fromTests": true,
+          "pattern": "**/*"
+        },
+        {
+          "by": "tests/test_tauri_updater_secrets.py",
+          "call": "rglob",
+          "confidence": "ast",
+          "fromTests": true,
+          "pattern": "**/*"
         }
       ],
       "target": "assets/print/source/print-bundle.js",
@@ -19189,6 +19218,18 @@
         }
       ],
       "target": "sov_daemon",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_daemon_amend_wave9.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "sov_daemon/**/*.py",
       "writers": []
     },
     {

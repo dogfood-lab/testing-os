@@ -2373,7 +2373,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 1,
+      "dynamicReads": 0,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -4144,7 +4144,7 @@
       "to": "scripts"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generatedFrom": {
     "commit": "8e77c6e929405717e74b07c18de5e41f1dcc1b97",
     "tracked": 180
@@ -4219,10 +4219,36 @@
           "confidence": "ast"
         },
         {
+          "by": "scripts/gen_kb.py",
+          "call": "rglob",
+          "confidence": "ast",
+          "pattern": "kb/**/*.json"
+        },
+        {
+          "by": "scripts/gen_kb.py",
+          "call": "rglob",
+          "confidence": "ast",
+          "pattern": "kb/**/*.md"
+        },
+        {
+          "by": "tests/test_kb.py",
+          "call": "glob",
+          "confidence": "ast",
+          "fromTests": true,
+          "pattern": "kb/workflows/*.json"
+        },
+        {
           "by": "tests/test_kb.py",
           "call": "rglob",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tests/test_kb.py",
+          "call": "rglob",
+          "confidence": "ast",
+          "fromTests": true,
+          "pattern": "kb/**/*.json"
         }
       ],
       "target": "kb",
@@ -4236,6 +4262,17 @@
         }
       ],
       "writesInto": true
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/gen_kb.py",
+          "call": "read_text",
+          "confidence": "ast"
+        }
+      ],
+      "target": "kb/**/*.md",
+      "writers": []
     },
     {
       "readers": [
@@ -4276,6 +4313,18 @@
         }
       ],
       "target": "kb/workflows",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_kb.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "kb/workflows/*.json",
       "writers": []
     },
     {

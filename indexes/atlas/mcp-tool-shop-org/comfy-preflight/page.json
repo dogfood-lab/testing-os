@@ -59,8 +59,24 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "src/comfy_preflight/**/*.py is now read by tests/test_no_assert_in_library.py.",
+        "subjects": [
+          "src/comfy_preflight/**/*.py",
+          "tests/test_no_assert_in_library.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "tests/**/*.py is now read by tests/test_fixtures_are_self_contained.py.",
+        "subjects": [
+          "tests/**/*.py",
+          "tests/test_fixtures_are_self_contained.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -68,7 +84,7 @@
       "commit": "d8e49117af15c22fdf29f39cb5ee2989fe0e8c3e",
       "generatedAt": "2026-09-30T20:09:16.187Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -265,7 +281,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generated": [
     {
       "place": "tests/fixtures/MANIFEST.json",
@@ -280,7 +296,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-01T01:46:33.168Z",
+  "generatedAt": "2026-10-01T08:37:41.075Z",
   "limits": [
     "2 imports could not be resolved: `tests/test_packaging.py` imports a path built at run time, twice.",
     "1 write and 3 reads use paths built at run time and are not named here.",
@@ -328,6 +344,7 @@
     "src": 12,
     "tools": 0
   },
+  "testedCodeParts": 3,
   "unnamedWrites": 1,
   "unread": [],
   "unreadFiles": 0,

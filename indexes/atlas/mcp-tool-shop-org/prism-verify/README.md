@@ -1,18 +1,18 @@
 # prism-verify: how it works
 
-Mapped at 2026-10-01 from commit 2d54775 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 2fc64fc by Atlas 1.26.0.
 
 ## What this is
 
 18 parts, mostly Python (200 files), JavaScript (6), CSS (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 9 parts, and CI is followed because a pull request goes through it. It publishes to PyPI and @mcptoolshop/prism-verify to npm. It deploys a site to GitHub Pages. People run prism.
 
-## What changed since 2026-09-30 (94925c6)
+## What changed since 2026-10-01 (2d54775)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 9 paths; on a push touching 9 paths; or by hand. Runs tests/; checks src/.
+1. **CI.** On a pull request; on a push touching 9 paths; or by hand. Runs tests/; checks src/.
 2. **Release.** When a release is published; or by hand. Builds src/prism/__main__.py; checks npm/bin/prism.js and src/prism/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **prism** (a command people run, from pyproject.toml). Runs src/prism/cli/main.py.
@@ -108,7 +108,7 @@ People write .github/, assets/, design/, the repository root and site/; 3 writes
 
 ## Where to start
 
-Start at src/prism/cli/main.py to follow one run of prism end to end. This path follows prism (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.
+Start at src/prism/cli/main.py, which leads on to src/prism/core/engine.py and src/prism/core/setup.py; this map records no order among them, so the path ends there. This path follows prism (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.
 
 ## What this map cannot see
 

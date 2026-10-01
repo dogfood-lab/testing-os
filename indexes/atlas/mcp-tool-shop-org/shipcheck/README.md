@@ -1,18 +1,18 @@
 # shipcheck: how it works
 
-Mapped at 2026-10-01 from commit 8561c6d by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit c2b98d2 by Atlas 1.26.0.
 
 ## What this is
 
 10 parts, mostly Markdown (79 files); code in JavaScript (5), CSS (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run shipcheck.
 
-## What changed since 2026-09-30 (9604005)
+## What changed since 2026-10-01 (8561c6d)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 13 paths; on a push to main touching 13 paths; or by hand. Runs bin/shipcheck.mjs and test/.
+1. **CI.** On a pull request; on a push to main touching 13 paths; or by hand. Runs bin/shipcheck.mjs and test/.
 2. **Release.** When a release is published; or by hand. Runs bin/shipcheck.mjs and test/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **repomesh-broadcast.** When a release is published. Checks package.json.

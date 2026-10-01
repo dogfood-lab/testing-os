@@ -54,8 +54,38 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "specs/* is now read by tests/test_amend_w14_core_gates.py and tests/test_paid_argv_smoke.py.",
+        "subjects": [
+          "specs/*",
+          "tests/test_amend_w14_core_gates.py",
+          "tests/test_paid_argv_smoke.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "tests/* is now read by tests/test_packaging.py.",
+        "subjects": [
+          "tests/*",
+          "tests/test_packaging.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "tools/* is now read by tests/blender_stub.py, tests/test_amend_w16_builders.py, tests/test_build_payload.py, tests/test_instruments_amend_w22.py, tests/test_packaging.py and tests/test_sheet_pairing.py.",
+        "subjects": [
+          "tools/*",
+          "tests/blender_stub.py",
+          "tests/test_amend_w16_builders.py",
+          "tests/test_build_payload.py",
+          "tests/test_instruments_amend_w22.py",
+          "tests/test_packaging.py",
+          "tests/test_sheet_pairing.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -63,7 +93,7 @@
       "commit": "7a70d6fb97ef1cf5b33f8f03d18860611954e386",
       "generatedAt": "2026-09-30T20:07:32.567Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -332,12 +362,12 @@
       "to": "tools"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-10-01T01:44:32.556Z",
+  "generatedAt": "2026-10-01T08:36:05.206Z",
   "limits": [
     "43 imports could not be resolved: `tests/blender/test_check_pack.py` imports `conftest`, which is no module on its import path and no declared dependency; `tests/blender_stub.py` imports a path built at run time; `tests/conftest.py` imports a path built at run time; and 40 more.",
-    "116 writes and 73 reads use paths built at run time and are not named here.",
+    "116 writes and 75 reads use paths built at run time and are not named here.",
     "80 writes and 156 reads go to a path their caller passes, not to this repository.",
     "3 writes go to the directory the command is run in, not to this repository.",
     "3 commands are built at run time and not followed."
@@ -601,6 +631,7 @@
   "testedByScript": [
     "npm"
   ],
+  "testedCodeParts": 2,
   "unnamedWrites": 116,
   "unread": [],
   "unreadFiles": 0,

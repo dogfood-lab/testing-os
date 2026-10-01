@@ -1,19 +1,18 @@
 # polyglot-mcp: how it works
 
-Mapped at 2026-10-01 from commit e0fd93e by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit acfbfd4 by Atlas 1.26.0.
 
 ## What this is
 
 7 parts, mostly Markdown (71 files); code in TypeScript (39), JavaScript (4), CSS (2) and Astro (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because it comes first by name. It publishes to npm. It deploys a site to GitHub Pages. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.
 
-## What changed since 2026-09-30 (c3305f2)
+## What changed since 2026-10-01 (e0fd93e)
 
-- Deploy site to GitHub Pages now also starts on a pull request to main touching 2 paths.
-- 2 files changed content, across 2 parts.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 10 paths; on a push to main touching 10 paths; or by hand. Runs src/cache.concurrency.test.ts, src/cache.test.ts, src/codeSpans.test.ts and 18 more; builds src/.
+1. **CI.** On a pull request to main; on a push to main touching 10 paths; or by hand. Runs src/cache.concurrency.test.ts, src/cache.test.ts, src/codeSpans.test.ts and 18 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a pull request to main touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Publish to npm.** When a release is published; or by hand. Runs src/cache.concurrency.test.ts, src/cache.test.ts, src/codeSpans.test.ts and 18 more; builds src/.
 4. **@mcptoolshop/polyglot-mcp** (the package people import). Loads src/index.ts, src/cache.ts, src/codeSpans.ts and 9 more.

@@ -13,7 +13,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "79d5bd238db63f02633eed152e9348fe40a319141dfb7490834d40e33266cbf9",
+          "hash": "391e4730c7c98eb059537e81d7737220f881727f30c1d772e43df5e83bc2c09a",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -12005,7 +12005,7 @@
       "origin": "mixed",
       "outsidePlaces": [
         {
-          "reads": 182,
+          "reads": 183,
           "where": [
             "caller"
           ],
@@ -12033,7 +12033,7 @@
           "writes": 0
         }
       ],
-      "outsideReads": 198,
+      "outsideReads": 199,
       "outsideWrites": 47,
       "role": "code",
       "testRunners": [
@@ -26888,6 +26888,13 @@
           "writes": 1
         },
         {
+          "reads": 1,
+          "where": [
+            "cwd"
+          ],
+          "writes": 0
+        },
+        {
           "reads": 5,
           "where": [
             "cwd:node_modules/"
@@ -26939,7 +26946,7 @@
           "writes": 8
         }
       ],
-      "outsideReads": 142,
+      "outsideReads": 143,
       "outsideWrites": 36,
       "role": "code",
       "testRunners": [
@@ -31394,30 +31401,7 @@
       ],
       "triggers": [
         {
-          "event": "pull_request",
-          "paths": [
-            ".dockerignore",
-            ".github/workflows/**",
-            "Dockerfile",
-            "apps/**",
-            "atlas/**",
-            "codecov.yml",
-            "datasets/**",
-            "docker-compose.yml",
-            "package.json",
-            "plugin/**",
-            "pnpm-lock.yaml",
-            "pnpm-workspace.yaml",
-            "samples/**",
-            "scripts/**",
-            "site/astro.config.mjs",
-            "site/package-lock.json",
-            "site/package.json",
-            "songs/**",
-            "src/**",
-            "tsconfig.json",
-            "vitest.config.ts"
-          ]
+          "event": "pull_request"
         },
         {
           "branches": [
@@ -35420,9 +35404,9 @@
       "to": "scripts"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "254e22e84d5a226ef6417da4825af9f3f6e79175",
+    "commit": "a93b36d938c4e2570a07cba7976de7cd57118cf8",
     "tracked": 2950
   },
   "landings": [
@@ -37609,11 +37593,6 @@
         },
         {
           "by": "experiments/jam-actions-v0-lora/generate_train_jsonl.py",
-          "call": "open",
-          "confidence": "ast"
-        },
-        {
-          "by": "experiments/jam-actions-v0-lora/generate_train_jsonl.py",
           "call": "os.listdir",
           "confidence": "ast"
         },
@@ -37816,6 +37795,17 @@
           "confidence": "ast"
         }
       ]
+    },
+    {
+      "readers": [
+        {
+          "by": "experiments/jam-actions-v0-lora/generate_train_jsonl.py",
+          "call": "open",
+          "confidence": "ast"
+        }
+      ],
+      "target": "datasets/jam-actions-v0/records/*",
+      "writers": []
     },
     {
       "readers": [],
@@ -39339,7 +39329,8 @@
           "confidence": "ast",
           "unless": [
             "main"
-          ]
+          ],
+          "untrackedInputs": true
         }
       ]
     },

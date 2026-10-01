@@ -42,8 +42,16 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": ".github/workflows/*.yml is now read by tools/check_ci_policy.py.",
+        "subjects": [
+          ".github/workflows/*.yml",
+          "tools/check_ci_policy.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -51,7 +59,7 @@
       "commit": "6fcd238d2aafd234b4c5de59d4f88c3b2c46e8b9",
       "generatedAt": "2026-09-30T20:08:00.132Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -422,7 +430,7 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generated": [
     {
       "block": true,
@@ -432,16 +440,16 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-01T01:45:06.881Z",
+  "generatedAt": "2026-10-01T08:36:30.177Z",
   "limits": [
     "14 import sites name a declared dependency that shares its name with a local module (docx); they are read as the dependency, which is not in this repository.",
     "7 imports could not be resolved: `audiobooker/cli.py` imports a path built at run time, twice; `audiobooker/language/profile.py` imports a path built at run time; `tests/test_feat_f5_cli.py` imports a path built at run time; and 3 more.",
-    "5 writes and 8 reads use paths built at run time and are not named here.",
+    "5 writes and 6 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
     "27 writes and 39 reads go to a path their caller passes, not to this repository.",
     "3 writes and 5 reads go to the home directory (.local/, AppData/ and audiobooker/) or a path their caller passes, not to this repository.",
-    "1 write and 2 reads go to the home directory (.config/, AppData/ and audiobooker/), not to this repository.",
-    "2 reads go to the directory the command is run in (audiobooker and pyproject.toml), not to this repository.",
+    "1 write and 3 reads go to the home directory (.config/, AppData/ and audiobooker/), not to this repository.",
+    "3 reads go to the directory the command is run in, not to this repository.",
     "1 read goes to the directory the command is run in (.audiobookerrc) or the home directory (.audiobookerrc), not to this repository.",
     "4 commands are built at run time and not followed.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
@@ -640,6 +648,7 @@
     "examples": 0,
     "tools": 0
   },
+  "testedCodeParts": 3,
   "unnamedWrites": 5,
   "unread": [],
   "unreadFiles": 0,

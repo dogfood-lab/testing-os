@@ -67,7 +67,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 6,
+      "dynamicReads": 5,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 5,
@@ -10051,6 +10051,13 @@
         {
           "reads": 1,
           "where": [
+            "cwd"
+          ],
+          "writes": 0
+        },
+        {
+          "reads": 1,
+          "where": [
             "cwd:.audiobookerrc",
             "home:.audiobookerrc"
           ],
@@ -10071,7 +10078,7 @@
           "writes": 0
         },
         {
-          "reads": 2,
+          "reads": 3,
           "where": [
             "home:.config/",
             "home:AppData/",
@@ -10080,7 +10087,7 @@
           "writes": 1
         }
       ],
-      "outsideReads": 42,
+      "outsideReads": 44,
       "outsideWrites": 28,
       "role": "code",
       "testRunners": [
@@ -11951,7 +11958,7 @@
       "unresolvedSites": 3
     },
     {
-      "dynamicReads": 2,
+      "dynamicReads": 1,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -13373,7 +13380,7 @@
       "to": "audiobooker"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generatedFrom": {
     "commit": "c6ef1df5ec1ed842015f3dfc517cc955022f68cd",
     "tracked": 192
@@ -13388,6 +13395,17 @@
         }
       ],
       "target": ".github/workflows",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/check_ci_policy.py",
+          "call": "read_text",
+          "confidence": "ast"
+        }
+      ],
+      "target": ".github/workflows/*.yml",
       "writers": []
     },
     {

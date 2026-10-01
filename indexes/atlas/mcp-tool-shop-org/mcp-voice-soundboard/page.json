@@ -1,0 +1,477 @@
+{
+  "authored": [
+    ".claude-plugin/",
+    ".github/",
+    "assets/",
+    "docs/",
+    "root",
+    "scripts/",
+    "site/",
+    "skills/"
+  ],
+  "breaks": [
+    {
+      "doors": 5,
+      "importedBy": [
+        "mcp-server"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "core",
+      "partLabel": "core"
+    },
+    {
+      "doors": 3,
+      "importedBy": [
+        "backend-python"
+      ],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "voice_soundboard",
+      "partLabel": "voice_soundboard"
+    },
+    {
+      "doors": 4,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "mcp-server",
+      "partLabel": "mcp-server"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "changed": 0,
+      "moved": 0,
+      "parts": 0,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-10-01; no file changed.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "6cba5e40d5e358edb300ad9ab62a023768d7c5f7",
+      "generatedAt": "2026-10-01T03:00:16.101Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "3ed1183ec72c0c27f88443daa033df321eec4f3d",
+  "defaultBranch": "main",
+  "derived": "14 parts, mostly Python (209 files), TypeScript (89), CSS (2), Astro (1) and JavaScript (1). Work enters through 9 doors; CI, Publish to GHCR, Publish to npm, @mcptoolshop/voice-soundboard-mcp and voice-soundboard-mcp each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to PyPI, @mcptoolshop/voice-soundboard-core (packages/core) and @mcptoolshop/voice-soundboard-mcp (packages/mcp-server) to npm, and a container image. It deploys a site to GitHub Pages. People run voice-soundboard and voice-soundboard-mcp. People import @mcptoolshop/voice-soundboard-core and @mcptoolshop/voice-soundboard-mcp.",
+  "doors": [
+    {
+      "builds": [
+        "packages/core/src/",
+        "packages/mcp-server/src/"
+      ],
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "core",
+          "depth": 0,
+          "files": 57
+        },
+        {
+          "boundary": "mcp-server",
+          "depth": 0,
+          "files": 28
+        }
+      ],
+      "runs": [
+        "packages/core/tests/",
+        "packages/mcp-server/tests/abuse.test.ts",
+        "packages/mcp-server/tests/backend-http.test.ts",
+        "packages/mcp-server/tests/dialogue-e2e.test.ts",
+        "packages/mcp-server/tests/e2e.test.ts",
+        "packages/mcp-server/tests/golden-contract.test.ts",
+        "packages/mcp-server/tests/guardrails.test.ts",
+        "packages/mcp-server/tests/redact.test.ts",
+        "packages/mcp-server/tests/retention.test.ts",
+        "packages/mcp-server/tests/validation.test.ts"
+      ],
+      "runsCount": 10,
+      "runsMore": 7,
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a pull request to main",
+        "on a push to main touching 7 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/docker.yml",
+      "id": ".github/workflows/docker.yml",
+      "landings": [],
+      "name": "Publish to GHCR",
+      "packs": [
+        "LICENSE",
+        "README.md",
+        "pyproject.toml",
+        "voice_soundboard/"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "voice_soundboard",
+          "depth": 0,
+          "files": 151
+        }
+      ],
+      "runs": [
+        "voice_soundboard/adapters/cli.py"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [
+        "publishes a container image"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published",
+        "or by hand"
+      ]
+    },
+    {
+      "builds": [
+        "packages/core/src/",
+        "packages/mcp-server/src/"
+      ],
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/npm.yml",
+      "id": ".github/workflows/npm.yml",
+      "landings": [],
+      "name": "Publish to npm",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "core",
+          "depth": 0,
+          "files": 40
+        },
+        {
+          "boundary": "mcp-server",
+          "depth": 0,
+          "files": 17
+        }
+      ],
+      "runs": [],
+      "runsCount": 0,
+      "runsMore": 0,
+      "sends": [
+        "publishes @mcptoolshop/voice-soundboard-core (packages/core) and @mcptoolshop/voice-soundboard-mcp (packages/mcp-server) to npm"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "voice_soundboard/"
+      ],
+      "checksCount": 1,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release to PyPI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "voice_soundboard",
+          "depth": 0,
+          "files": 151
+        }
+      ],
+      "runs": [],
+      "runsCount": 0,
+      "runsMore": 0,
+      "sends": [
+        "publishes to PyPI"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "packages/mcp-server/package.json",
+      "id": "packages/mcp-server/package.json#@mcptoolshop/voice-soundboard-mcp",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/voice-soundboard-mcp",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "mcp-server",
+          "depth": 0,
+          "files": 16
+        },
+        {
+          "boundary": "core",
+          "depth": 2,
+          "files": 40
+        }
+      ],
+      "runs": [
+        "packages/mcp-server/src/index.ts"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "packages/mcp-server/package.json",
+      "id": "packages/mcp-server/package.json#voice-soundboard-mcp",
+      "kind": "command",
+      "landings": [],
+      "name": "voice-soundboard-mcp",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "mcp-server",
+          "depth": 0,
+          "files": 16
+        },
+        {
+          "boundary": "core",
+          "depth": 1,
+          "files": 40
+        }
+      ],
+      "runs": [
+        "packages/mcp-server/src/cli.ts"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "packages/core/package.json",
+      "id": "packages/core/package.json#@mcptoolshop/voice-soundboard-core",
+      "kind": "package",
+      "landings": [],
+      "name": "@mcptoolshop/voice-soundboard-core",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "core",
+          "depth": 0,
+          "files": 40
+        }
+      ],
+      "runs": [
+        "packages/core/src/index.ts"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "pyproject.toml",
+      "id": "pyproject.toml#voice-soundboard",
+      "kind": "command",
+      "landings": [],
+      "name": "voice-soundboard",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "voice_soundboard",
+          "depth": 0,
+          "files": 25
+        }
+      ],
+      "runs": [
+        "voice_soundboard/adapters/cli.py"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [
+    {
+      "files": [
+        "packages/backend-python/soundboard_bridge/__main__.py",
+        "packages/mcp-server/backend-python/soundboard_bridge/__main__.py"
+      ],
+      "name": "main",
+      "partLabels": [
+        "backend-python",
+        "mcp-server"
+      ],
+      "parts": [
+        "backend-python",
+        "mcp-server"
+      ]
+    }
+  ],
+  "duplicatesLead": "These are candidates from names and call order, not a judgement.",
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "mcp-server",
+      "fromTests": false,
+      "to": "core"
+    }
+  ],
+  "engine": "1.26.0",
+  "generated": [],
+  "generatedAt": "2026-10-01T08:40:09.931Z",
+  "limits": [
+    "5 import sites name declared dependencies that share their names with local modules (elevenlabs and openai); they are read as the dependencies, which are not in this repository.",
+    "16 imports could not be resolved: `voice_soundboard/accessibility/screen_readers/detection.py` imports a path built at run time; `voice_soundboard/engine/backends/azure.py` imports `azure.cognitiveservices.speech`, which is no module on its import path and no declared dependency, twice; and 13 more.",
+    "6 writes and 6 reads use paths built at run time and are not named here.",
+    "9 writes and 84 reads go to a path their caller passes, not to this repository.",
+    "3 writes go to a temporary directory, not to this repository.",
+    "1 write goes to the home directory (.cache/), not to this repository.",
+    "1 command is built at run time and not followed.",
+    "There is a fly.toml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".claude-plugin": ".claude-plugin",
+    ".github": ".github",
+    "assets": "assets",
+    "backend-python": "backend-python",
+    "core": "core",
+    "docs": "docs",
+    "mcp-server": "mcp-server",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "site": "the site",
+    "skills": "skills",
+    "tests": "tests",
+    "tools": "tools",
+    "voice_soundboard": "voice_soundboard"
+  },
+  "parts": 14,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/mcp-voice-soundboard",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "packages/core/src/index.ts",
+    "packages/core/src/errors.ts",
+    "packages/core/src/schemas.ts",
+    "packages/core/src/voices.ts"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 81,
+  "testedBy": {
+    "backend-python": 0,
+    "core": 23,
+    "mcp-server": 6,
+    "tools": 0,
+    "voice_soundboard": 47
+  },
+  "testedCodeParts": 5,
+  "unnamedWrites": 6,
+  "unread": [],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [
+    {
+      "part": "backend-python",
+      "partLabel": "backend-python",
+      "testedBy": 0
+    },
+    {
+      "part": "tools",
+      "partLabel": "tools",
+      "testedBy": 0
+    }
+  ],
+  "untestedNote": [
+    "45 test files run in no workflow: tests/registrum/test_accessibility.py, tests/registrum/test_attestation.py, tests/registrum/test_latency.py and 42 more."
+  ],
+  "written": 0
+}

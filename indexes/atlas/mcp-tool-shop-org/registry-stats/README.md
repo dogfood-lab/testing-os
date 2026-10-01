@@ -1,20 +1,20 @@
 # registry-stats: how it works
 
-Mapped at 2026-10-01 from commit 7bd013b by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 04ecf31 by Atlas 1.26.0.
 
 ## What this is
 
 8 parts, mostly TypeScript (35 files), C# (8), Astro (6), HTML (4), CSS (3) and JavaScript (2). Work enters through 7 doors; Daily Refresh and Desktop CI (MSIX) each reach 3 parts, and Daily Refresh is followed because it commits into the repository. It publishes to npm. It deploys a site to GitHub Pages. People run registry-stats. People import @mcptoolshop/registry-stats.
 
-## What changed since 2026-09-30 (ccdcd13)
+## What changed since 2026-10-01 (7bd013b)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
 1. **Desktop CI (MSIX).** On a pull request to main touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/scripts/fetch-stats.mjs, desktop/RegistryPulse.Tests/RegistryPulse.Tests.csproj, site/astro.config.mjs and 2 more; builds desktop/RegistryPulse.Desktop/RegistryPulse.Desktop.csproj.
 2. **Daily Refresh.** On a schedule (`0 6 * * *`); or by hand. Runs site/scripts/fetch-stats.mjs, src/cache.test.ts, src/calc.test.ts and 16 more; builds src/index.ts.
-3. **CI.** On a pull request touching 7 paths; on a push to main touching 7 paths; or by hand. Runs src/cache.test.ts, src/calc.test.ts, src/cli.test.ts and 15 more; builds src/index.ts.
+3. **CI.** On a pull request; on a push to main touching 7 paths; or by hand. Runs src/cache.test.ts, src/calc.test.ts, src/cli.test.ts and 15 more; builds src/index.ts.
 4. **Deploy site to GitHub Pages.** On a pull request touching 3 paths; on a push to main touching 3 paths; on a schedule (`0 7 * * 1`), Monday at 07:00 UTC; or by hand. Runs site/astro.config.mjs and site/src/; builds src/index.ts. Except on a pull request, it also runs site/scripts/fetch-stats.mjs.
 5. **Release.** When a release is published; or by hand. Runs src/cache.test.ts, src/calc.test.ts, src/cli.test.ts and 15 more; builds src/index.ts.
 6. **@mcptoolshop/registry-stats** (the package people import). Loads src/index.ts.

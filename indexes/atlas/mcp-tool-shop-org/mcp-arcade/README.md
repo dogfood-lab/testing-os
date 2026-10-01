@@ -1,6 +1,6 @@
 # mcp-arcade: how it works
 
-Mapped at 2026-10-01 from commit cecd36c by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit cecd36c by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,8 @@ Mapped at 2026-10-01 from commit cecd36c by Atlas 1.25.0.
 
 ## What changed since 2026-09-30 (7c8960e)
 
-Nothing structural changed since 2026-09-30; no file changed.
+- src/mcp_arcade/**/* is now read by src/mcp_arcade/docker.py.
+- No file changed.
 
 ## What comes in
 
@@ -77,8 +78,8 @@ Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 2 writes and 2 reads use paths built at run time and are not named here.
-- 5 writes and 6 reads go to a path their caller passes, not to this repository.
+- 2 writes use paths built at run time and are not named here.
+- 5 writes and 7 reads go to a path their caller passes, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

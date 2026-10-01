@@ -1,24 +1,23 @@
 # site-theme: how it works
 
-Mapped at 2026-10-01 from commit 700f363 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 973ea83 by Atlas 1.26.0.
 
 ## What this is
 
-14 parts, in JavaScript (51 files), Astro (45 files), TypeScript (20 files), CSS (4 files) and HTML (2 files). Work enters through 7 doors; the busiest is @mcptoolshop/site-theme, which reaches 5 parts. It publishes to npm. It deploys a site to GitHub Pages. People run site-theme. People import @mcptoolshop/site-theme.
+14 parts, in JavaScript (51 files), Astro (45 files), TypeScript (20 files), CSS (4 files) and HTML (2 files). Work enters through 6 doors; the busiest is @mcptoolshop/site-theme, which reaches 5 parts. It publishes to npm. It deploys a site to GitHub Pages. People run site-theme. People import @mcptoolshop/site-theme.
 
-## What changed since 2026-09-30 (0e0eb2e)
+## What changed since 2026-10-01 (9300fba)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
 1. **@mcptoolshop/site-theme** (the package people import). Loads types/config.ts, cli/front-door/index.mjs, cli/front-door/mcp.mjs and 21 more.
-2. **CI.** On a pull request to main touching 12 paths; on a push to main touching 12 paths; or by hand. Runs cli/init.mjs and tests/; checks types/.
+2. **CI.** On a pull request to main; on a push to main touching 12 paths; or by hand. Runs cli/init.mjs and tests/; checks types/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Release.** When a release is published; or by hand. Runs tests/; checks types/.
 5. **Dogfood.** On a push to main touching 4 paths; or by hand. On main, it runs cli/init.mjs.
-6. **CI (docs gate).** On a pull request to main except when only the 10 paths it ignores change; or by hand. Runs only echo.
-7. **site-theme** (a command people run). Runs cli/init.mjs.
+6. **site-theme** (a command people run). Runs cli/init.mjs.
 
 ## What happens through @mcptoolshop/site-theme
 
@@ -49,8 +48,6 @@ Nothing structural changed since 2026-09-30; no file changed.
 **Release** runs tests/, checks types/, reaches cli and lib, and publishes to npm.
 
 **Dogfood** runs cli/init.mjs on main, runs git, and sends a dispatch to dogfood-lab/testing-os on main.
-
-**CI (docs gate)** runs only echo.
 
 **site-theme** (a command people run) runs cli/init.mjs and runs git.
 

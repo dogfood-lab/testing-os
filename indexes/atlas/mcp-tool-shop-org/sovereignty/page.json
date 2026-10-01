@@ -90,6 +90,7 @@
         "assets"
       ],
       "target": "assets/print/source/print-bundle.js",
+      "tests": 1,
       "writers": [
         "assets"
       ]
@@ -105,8 +106,32 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "app/src-tauri/gen/schemas is now read by tests/test_tauri_updater_secrets.py.",
+        "subjects": [
+          "app/src-tauri/gen/schemas",
+          "tests/test_tauri_updater_secrets.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "assets/print/source/print-bundle.js is now also read by tests/test_tauri_updater_secrets.py.",
+        "subjects": [
+          "assets/print/source/print-bundle.js",
+          "tests/test_tauri_updater_secrets.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "sov_daemon/**/*.py is now read by tests/test_daemon_amend_wave9.py.",
+        "subjects": [
+          "sov_daemon/**/*.py",
+          "tests/test_daemon_amend_wave9.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -114,7 +139,7 @@
       "commit": "83f9b40eba1ef98f18c978316208899b5e450860",
       "generatedAt": "2026-09-30T20:13:11.703Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -639,7 +664,7 @@
       "to": "sov_transport"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generated": [
     {
       "place": "assets/print/source/print-bundle.js",
@@ -648,14 +673,14 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-01T01:52:23.370Z",
+  "generatedAt": "2026-10-01T08:43:20.522Z",
   "limits": [
     "35 import sites name a declared dependency that shares its name with a local module (xrpl); they are read as the dependency, which is not in this repository.",
     "3 imports could not be resolved: `assets/print/source/render.mjs` imports `puppeteer-core`, which is not declared; `assets/print/source/vendor/react-dom.production.min.js` imports `react`, which is not declared; `sov_cli/main.py` imports a path built at run time.",
     "1 write and 32 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
     "3 writes and 42 reads go to a path their caller passes, not to this repository.",
-    "1 write and 2 reads go to the directory the command is run in (.sov/, README.md and docs/), not to this repository.",
+    "1 write and 4 reads go to the directory the command is run in (.sov/, README.md and docs/), not to this repository.",
     "1 command is built at run time and not followed.",
     "There is a compose.yaml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
@@ -712,6 +737,7 @@
   "testedByScript": [
     "npm"
   ],
+  "testedCodeParts": 7,
   "unnamedWrites": 1,
   "unread": [],
   "unreadCode": [

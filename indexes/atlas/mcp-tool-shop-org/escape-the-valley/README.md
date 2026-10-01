@@ -1,18 +1,18 @@
 # escape-the-valley: how it works
 
-Mapped at 2026-10-01 from commit 6e49565 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 01ee88a by Atlas 1.26.0.
 
 ## What this is
 
 10 parts, mostly Python (61 files), CSS (2), JavaScript (2), TypeScript (2), HTML (1) and shell (1). Work enters through 8 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run escape-the-valley and trail.
 
-## What changed since 2026-09-30 (ab1e227)
+## What changed since 2026-10-01 (6e49565)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 9 paths; on a push touching 9 paths; on a `workflow_call` event; or by hand. Runs tests/; checks src/.
+1. **CI.** On a pull request; on a push touching 9 paths; on a `workflow_call` event; or by hand. Runs tests/; checks src/.
 2. **Release.** When a tag matching `v*` is pushed; or by hand. Runs tests/; checks src/.
 3. **Release Binaries.** When a release is published; when the workflow Release completes; or by hand. Runs scripts/smoke_test_binary.py; builds src/escape_the_valley/__main__.py.
 4. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.

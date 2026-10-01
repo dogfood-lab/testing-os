@@ -1,18 +1,18 @@
 # motif: how it works
 
-Mapped at 2026-10-01 from commit 4cd27f9 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 3bc4bf3 by Atlas 1.26.0.
 
 ## What this is
 
 23 parts, mostly TypeScript (277 files), CSS (3), JavaScript (3) and Astro (1). Work enters through 19 doors; CI and Release each reach 17 parts, and CI is followed because a pull request goes through it. It publishes @motif-studio/asset-index (packages/asset-index), @motif-studio/audio-engine (packages/audio-engine), @motif-studio/automation (packages/automation), @motif-studio/clip-engine (packages/clip-engine), @motif-studio/instrument-rack (packages/instrument-rack), @motif-studio/library (packages/library), @motif-studio/music-theory (packages/music-theory), @motif-studio/playback-engine (packages/playback-engine), @motif-studio/review (packages/review), @motif-studio/runtime-pack (packages/runtime-pack), @motif-studio/sample-lab (packages/sample-lab), @motif-studio/scene-mapper (packages/scene-mapper), @motif-studio/schema (packages/schema), @motif-studio/score-map (packages/score-map), @motif-studio/test-kit (packages/test-kit) and @motif-studio/ui (packages/ui) to npm. It deploys a site to GitHub Pages. People import @motif-studio/asset-index, @motif-studio/audio-engine, @motif-studio/automation, @motif-studio/clip-engine, @motif-studio/instrument-rack, @motif-studio/library, @motif-studio/music-theory, @motif-studio/playback-engine, @motif-studio/review, @motif-studio/runtime-pack and 6 more.
 
-## What changed since 2026-09-30 (2b08099)
+## What changed since 2026-10-01 (9bd1e9a)
 
-Nothing structural changed since 2026-09-30; 2 files changed content.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 10 paths; on a push to main touching 10 paths; or by hand. Runs apps/studio/next.config.js, apps/studio/src/app/, apps/studio/test/asset-files.test.ts and 73 more; builds packages/asset-index/src/, packages/audio-engine/src/, packages/automation/src/ and 121 more; checks apps/studio/next-env.d.ts and apps/studio/src/.
+1. **CI.** On a pull request; on a push to main touching 10 paths; or by hand. Runs apps/studio/next.config.js, apps/studio/src/app/, apps/studio/test/asset-files.test.ts and 73 more; builds packages/asset-index/src/, packages/audio-engine/src/, packages/automation/src/ and 121 more; checks apps/studio/next-env.d.ts and apps/studio/src/.
 2. **Release.** When a release is published. Runs apps/studio/next.config.js, apps/studio/src/app/, apps/studio/test/asset-files.test.ts and 73 more; builds packages/asset-index/src/, packages/audio-engine/src/, packages/automation/src/ and 121 more; checks apps/studio/next-env.d.ts.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **@motif-studio/playback-engine** (the package people import). Loads packages/playback-engine/src/index.ts.

@@ -36,7 +36,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "bcade4cb11a9b618bb3b901ae54701770bbbdfa84eb99b22409a7de72fe6eed6",
+          "hash": "2524e6d550f701695be58b32bf1e20a36011d1927497f70eda16ad6f49684ec7",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -6716,6 +6716,14 @@
           "programs": [
             "pnpm"
           ],
+          "step": "Audit production dependencies"
+        },
+        {
+          "dir": "",
+          "job": "security-audit",
+          "programs": [
+            "pnpm"
+          ],
           "step": "Audit all dependencies"
         },
         {
@@ -7351,19 +7359,7 @@
       ],
       "triggers": [
         {
-          "event": "pull_request",
-          "paths": [
-            ".github/workflows/**",
-            "apps/**",
-            "atlas/**",
-            "codecov.yml",
-            "package.json",
-            "packages/**",
-            "pnpm-lock.yaml",
-            "pnpm-workspace.yaml",
-            "tsconfig.base.json",
-            "turbo.json"
-          ]
+          "event": "pull_request"
         },
         {
           "branches": [
@@ -9427,9 +9423,9 @@
       "to": "test-kit"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "4cd27f9fda303a8b2e34769e165a12237233bfce",
+    "commit": "3bc4bf366c052fffb6d0f543dc816668762cfc9d",
     "tracked": 594
   },
   "landings": [

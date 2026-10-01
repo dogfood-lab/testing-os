@@ -1,18 +1,18 @@
 # forkctl: how it works
 
-Mapped at 2026-10-01 from commit e8a273f by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 1cecb5f by Atlas 1.26.0.
 
 ## What this is
 
 7 parts, mostly TypeScript (128 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI, forkctl and forkctl-mcp each reach 2 parts, and CI is followed because a pull request goes through it. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp.
 
-## What changed since 2026-09-30 (4e066e1)
+## What changed since 2026-10-01 (e8a273f)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 12 paths; on a push to main touching 12 paths; or by hand. Runs tests/assess.test.ts, tests/audit.test.ts, tests/backend-hardening.test.ts and 47 more; builds src/.
+1. **CI.** On a pull request; on a push to main touching 12 paths; or by hand. Runs tests/assess.test.ts, tests/audit.test.ts, tests/backend-hardening.test.ts and 47 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **forkctl** (a command people run). Runs src/cli.ts.
 4. **forkctl-mcp** (a command people run). Runs src/server.ts.

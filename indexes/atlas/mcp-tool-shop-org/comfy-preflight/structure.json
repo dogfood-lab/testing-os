@@ -2942,7 +2942,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generatedFrom": {
     "commit": "ddf5a1102245711f2ddbd70645f04b0e14026fbc",
     "tracked": 153
@@ -3118,6 +3118,18 @@
     {
       "readers": [
         {
+          "by": "tests/test_no_assert_in_library.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "src/comfy_preflight/**/*.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "tests/test_packaging.py",
           "call": "read_text",
           "confidence": "ast",
@@ -3166,6 +3178,24 @@
           "fromTests": true
         }
       ],
+      "target": "tests/**/*.py",
+      "writers": []
+    },
+    {
+      "mayReaders": [
+        {
+          "by": "tools/import_fixtures.py",
+          "pattern": "**/*.json"
+        }
+      ],
+      "readers": [
+        {
+          "by": "tests/test_fixtures_are_self_contained.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
       "target": "tests/fixtures/MANIFEST.json",
       "writers": [
         {
@@ -3175,12 +3205,25 @@
       ]
     },
     {
+      "mayReaders": [
+        {
+          "by": "tools/import_fixtures.py",
+          "pattern": "**/*.json"
+        }
+      ],
       "readers": [
         {
           "by": "tests/conftest.py",
           "call": "glob",
           "confidence": "ast",
           "fromTests": true
+        },
+        {
+          "by": "tests/conftest.py",
+          "call": "glob",
+          "confidence": "ast",
+          "fromTests": true,
+          "pattern": "tests/fixtures/graphs/*.json"
         },
         {
           "by": "tools/import_fixtures.py",

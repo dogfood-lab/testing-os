@@ -252,11 +252,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "a8c44cafc121b0b6986a01d0d4a3afaba4764dd7a3dd27310727d43e4d4d200f",
-          "path": ".github/workflows/ci-docs.yml"
-        },
-        {
-          "hash": "9578a46ff1df9c8c36d6ddbc6c7928822b198388f0346bbc5209bce64b29e705",
+          "hash": "5cdb0f30fe4114aad61eee0ea6ae16a6caf77f977581e4a8bd105272ba4bfd0c",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -2749,109 +2745,6 @@
   ],
   "doors": [
     {
-      "checksCount": 0,
-      "commands": [
-        {
-          "dir": "",
-          "job": "lint-and-test",
-          "programs": [
-            "echo"
-          ],
-          "step": "0"
-        },
-        {
-          "dir": "",
-          "job": "validate-templates",
-          "programs": [
-            "echo"
-          ],
-          "step": "0"
-        }
-      ],
-      "elsewhere": [],
-      "file": ".github/workflows/ci-docs.yml",
-      "jobs": [
-        {
-          "basis": "declared",
-          "name": "lint-and-test",
-          "runsOn": [
-            {
-              "labels": [
-                "ubuntu-latest"
-              ],
-              "platform": {
-                "cpu": "x64",
-                "libc": "glibc",
-                "os": "linux"
-              }
-            }
-          ]
-        },
-        {
-          "basis": "declared",
-          "name": "validate-templates",
-          "runsOn": [
-            {
-              "labels": [
-                "ubuntu-latest"
-              ],
-              "platform": {
-                "cpu": "x64",
-                "libc": "glibc",
-                "os": "linux"
-              }
-            }
-          ]
-        }
-      ],
-      "landings": [],
-      "mentions": [],
-      "name": "CI (docs gate)",
-      "permissions": [],
-      "pushes": false,
-      "reach": [],
-      "readers": [],
-      "runs": [],
-      "runsCount": 0,
-      "secrets": [],
-      "sends": {
-        "deploysPages": false,
-        "dispatchesTo": [],
-        "opensIssues": false,
-        "opensIssuesOnFailure": false,
-        "opensPullRequests": false,
-        "publishes": false,
-        "publishesTo": [],
-        "releases": false
-      },
-      "stages": [],
-      "triggers": [
-        {
-          "branches": [
-            "main"
-          ],
-          "event": "pull_request",
-          "paths-ignore": [
-            ".github/workflows/**",
-            "cli/**",
-            "components/**",
-            "package-lock.json",
-            "package.json",
-            "styles/**",
-            "templates/**",
-            "tests/**",
-            "tsconfig.json",
-            "types/**"
-          ]
-        },
-        {
-          "event": "workflow_dispatch"
-        }
-      ],
-      "uses": [],
-      "usesWorkflowToken": false
-    },
-    {
       "checksCount": 1,
       "commands": [
         {
@@ -3125,21 +3018,7 @@
           "branches": [
             "main"
           ],
-          "event": "pull_request",
-          "paths": [
-            ".github/workflows/**",
-            "atlas/**",
-            "cli/**",
-            "codecov.yml",
-            "components/**",
-            "package-lock.json",
-            "package.json",
-            "styles/**",
-            "templates/**",
-            "tests/**",
-            "tsconfig.json",
-            "types/**"
-          ]
+          "event": "pull_request"
         },
         {
           "branches": [
@@ -3982,10 +3861,10 @@
       "to": "lib"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "700f363248fa98202a8955f7fda32a0008ba9e62",
-    "tracked": 270
+    "commit": "973ea83c030523cc37f619c04d805e51c47ce59b",
+    "tracked": 269
   },
   "landings": [
     {

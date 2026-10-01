@@ -50,23 +50,31 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "modules/*.md is now read by tests/test_token_escrow.py.",
+        "subjects": [
+          "modules/*.md",
+          "tests/test_token_escrow.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "15a48f1f10d1938ae1a5ec5b45e4bfabdf365182",
-      "generatedAt": "2026-09-30T20:14:49.769Z"
+      "commit": "eef6677a1e815f1e8210fce1875ead214a9034e9",
+      "generatedAt": "2026-10-01T02:14:54.618Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
     "Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "eef6677a1e815f1e8210fce1875ead214a9034e9",
+  "commit": "132cb83b4c14ee341581c88667742d813b5a9756",
   "defaultBranch": "main",
   "derived": "11 parts, mostly Python (173 files), Astro (13), TypeScript (8), CSS (4), JavaScript (2), HTML (1) and shell (1). Work enters through 8 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run xrpl-lab.",
   "doors": [
@@ -115,7 +123,7 @@
       ],
       "stages": [],
       "triggers": [
-        "on a pull request touching 11 paths",
+        "on a pull request",
         "on a push touching 11 paths",
         "or by hand"
       ]
@@ -328,15 +336,15 @@
       "to": "xrpl_lab"
     }
   ],
-  "engine": "1.25.0",
+  "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-10-01T01:54:57.740Z",
+  "generatedAt": "2026-10-01T08:45:52.724Z",
   "limits": [
     "1 import could not be resolved: `tests/test_product_smoke.py` imports a path built at run time.",
     "3 writes and 7 reads use paths built at run time and are not named here.",
     "6 writes and 51 reads go to a path their caller passes, not to this repository.",
     "1 write and 6 reads go to the home directory (.xrpl-lab/) or a path their caller passes, not to this repository.",
-    "4 reads go to the directory the command is run in, not to this repository.",
+    "6 reads go to the directory the command is run in, not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -372,6 +380,7 @@
     "scripts": 1,
     "xrpl_lab": 115
   },
+  "testedCodeParts": 3,
   "unnamedWrites": 3,
   "unread": [],
   "unreadFiles": 0,

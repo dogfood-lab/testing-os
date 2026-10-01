@@ -1,18 +1,18 @@
 # taste-engine: how it works
 
-Mapped at 2026-10-01 from commit 51efe46 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 515e9a2 by Atlas 1.26.0.
 
 ## What this is
 
 11 parts, mostly TypeScript (142 files), shell (7), JavaScript (3), CSS (2), Astro (1) and HTML (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. People run taste.
 
-## What changed since 2026-09-30 (00527bb)
+## What changed since 2026-10-01 (51efe46)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 12 paths; on a push to main touching 12 paths; or by hand. Runs test/; builds src/.
+1. **CI.** On a pull request to main; on a push to main touching 12 paths; or by hand. Runs test/; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **taste** (a command people run). Runs src/cli/index.ts.
 

@@ -1,21 +1,21 @@
 # style-dataset-lab: how it works
 
-Mapped at 2026-10-01 from commit dfeac64 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 39edcba by Atlas 1.26.0.
 
 ## What this is
 
 13 parts, mostly JSON data (2616 files); code in JavaScript (233), Python (30), Astro (3), PowerShell (3), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; CI and Publish each reach 4 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run sdlab.
 
-## What changed since 2026-09-30 (f7b4973)
+## What changed since 2026-10-01 (dfeac64)
 
 - projects/ai-eye-test/outputs/synthetic/phase2/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2_build.py.
 - projects/ai-eye-test/outputs/synthetic/phase2_noshadow/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2_noshadow_build.py.
 - projects/ai-eye-test/outputs/synthetic/phase2b/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2b_build.py.
-- 1 file changed content, across 1 part.
+- No file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 14 paths; on a push touching 14 paths; or by hand. Runs bin/sdlab.js, tests/canon-star-freight/, tests/cli-scripts/ and 70 more.
+1. **CI.** On a pull request; on a push touching 14 paths; or by hand. Runs bin/sdlab.js, tests/canon-star-freight/, tests/cli-scripts/ and 70 more.
 2. **Publish.** When a release is published; or by hand. Runs bin/sdlab.js, tests/canon-star-freight/, tests/cli-scripts/ and 70 more.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **sdlab** (a command people run). Runs bin/sdlab.js.
@@ -86,7 +86,7 @@ bin is touched by tests only through a spawn: a test runs its files as a child p
 - **projects/ai-eye-test/outputs/synthetic/phase2b/apple_n*_s*.json** is written by projects/ai-eye-test/compositor/phase2b_build.py and read by nothing else in this repository.
 - **projects/ai-eye-test/outputs/synthetic/phase2b/manifest.json** is written by projects/ai-eye-test/compositor/phase2b_build.py and read by nothing else in this repository.
 - **projects/salt-road/inbox/generated/set-v2-2026-07-30/receipts.jsonl** is written by projects/salt-road/inputs/prompts/wave-runner.py and read by nothing else in this repository.
-- **projects/salt-road/inputs/control-guides/** is written by projects/salt-road/inputs/control-guides/blockouts.py and read by nothing else in this repository.
+- **projects/salt-road/inputs/control-guides/** is written by projects/salt-road/inputs/control-guides/blockouts.py and read by nothing else this map can name: projects/ai-eye-test/compositor/phase2.py reads `*.png` under a directory chosen at run time, which may include it.
 
 And 2 more places.
 
