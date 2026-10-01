@@ -388,7 +388,10 @@ function landingItems(previous, current) {
     const shown = place(landing.target);
     if (newWriters.length > 0) {
       const also = oldWriters.size > 0 ? 'now also' : 'now';
-      writers.push({ kind: 'landing', sentence: `${shown} is ${also} written by ${list(newWriters)}.`, subjects: [shown, ...newWriters] });
+      // A directory its writers only put files into, beside others, holds
+      // their files; it is not written.
+      const written = landing.writesInto ? `${also} holds files written by` : `is ${also} written by`;
+      writers.push({ kind: 'landing', sentence: `${shown} ${written} ${list(newWriters)}.`, subjects: [shown, ...newWriters] });
     }
     if (newReaders.length > 0) {
       const also = oldReaders.size > 0 ? 'now also' : 'now';

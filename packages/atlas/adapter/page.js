@@ -4,6 +4,7 @@ import { isSourcePath } from '../core/history.js';
 import { isTestFile, isTestMaterial, ownTestPair } from '../core/landings.js';
 import { isCodePath, languageOf } from '../core/languages.js';
 import { stepPrograms } from './artifact.js';
+import { runnerMayRun } from './test-gaps.js';
 import { isImagePath } from './templates.js';
 
 /**
@@ -177,6 +178,7 @@ function facts({ structure, statistics }) {
       target: landing.target,
       writers: (landing.writers ?? []).filter(strong),
       readers: (landing.readers ?? []).filter(strong),
+      ...(landing.writesInto ? { writesInto: true } : {}),
     })),
     untrackedWrites: (structure.landings ?? []).filter((landing) => landing.tracked === false)
       .reduce((sum, landing) => sum + (landing.writers ?? []).filter(strong).length, 0),
@@ -1265,7 +1267,24 @@ export function findingLines(door) {
   for (const entry of door.unresolvedCommands ?? []) {
     lines.push(`Not read as a command: in ${checkedStep(entry)}, the input \`${entry.input}\` of ${entry.action} starts ${entry.program}, since ${entry.why}.`);
   }
+  for (const entry of door.unresolvedExpressions ?? []) lines.push(expressionLine(entry));
   return lines;
+}
+
+/**
+ * What explain says of an expression standing in a step's command, which
+ * Actions spells out before the shell runs: one that adds only flags is read
+ * as absent; one that may add words leaves the files of the run it is in
+ * unlisted.
+ *
+ * @param {{ job: string, step: string, adds: 'flags'|'words' }} entry
+ * @returns {string}
+ */
+export function expressionLine(entry) {
+  const what = entry.adds === 'flags'
+    ? 'it adds only flags, so the command is read without it'
+    : 'it may add words this map cannot read, so the files a runner it is handed to runs are not listed';
+  return `Not read as part of a command: in ${checkedStep(entry)}, an expression Actions spells out before the shell runs; ${what}.`;
 }
 
 /**
@@ -1302,6 +1321,7 @@ export function doorDetail(ctx, door) {
       triggers: structuredClone(door.triggers ?? []),
       ...(door.unresolvedChecks?.length > 0 ? { unresolvedChecks: structuredClone(door.unresolvedChecks) } : {}),
       ...(door.unresolvedCommands?.length > 0 ? { unresolvedCommands: structuredClone(door.unresolvedCommands) } : {}),
+      ...(door.unresolvedExpressions?.length > 0 ? { unresolvedExpressions: structuredClone(door.unresolvedExpressions) } : {}),
     },
     lines,
   };
@@ -1860,8 +1880,28 @@ function writtenPlaces(ctx) {
       .filter((landing) => landing.target !== target && ctx.fileOf.has(landing.target) && landing.writers.length === 0
         && writers.length === 1 && landing.readers.some((entry) => entry.by === writers[0] && !quotedOnly(entry)))
       .map((landing) => landing.target).sort(cmp);
-    return { target, writers, readers, guards: guardsOf(inside), once, fromRoot, ...(stamped ? { stamped: true } : {}), ...(mixed ? { mixed: true } : {}), ...(sources.length > 0 ? { sources } : {}) };
+    // A directory its writers only write files into, beside tracked files
+    // they do not make (core/landings.js writtenInto), holds their files; it
+    // is not written.
+    const into = inside.some((landing) => landing.target === target && landing.writesInto);
+    return { target, writers, readers, guards: guardsOf(inside), once, fromRoot, ...(stamped ? { stamped: true } : {}), ...(mixed ? { mixed: true } : {}), ...(sources.length > 0 ? { sources } : {}), ...(into ? { into: true } : {}) };
   });
+}
+
+/**
+ * How the page says a place is written: "**kb/** is written by", or, for a
+ * directory its writers only write files into beside others, "**kb/** holds
+ * files written by", which says what they write and not that they write the
+ * directory.
+ *
+ * @param {string} place the place as the page shows it
+ * @param {boolean} [into]
+ * @param {string} [how] a word between "written" and "by", as "once"
+ * @returns {string}
+ */
+export function writtenBy(place, into = false, how = '') {
+  const written = how ? `written ${how}` : 'written';
+  return into ? `**${place}** holds files ${written} by` : `**${place}** is ${written} by`;
 }
 
 // The guards that kept a door from each writer's write, by writer: a writer
@@ -1933,6 +1973,7 @@ function breaks(ctx) {
       readers: partsOf(ctx, place.readers.map((reader) => reader.path)),
       // The tests that read it are readers a hand edit reaches too.
       ...(place.tests > 0 ? { tests: place.tests } : {}),
+      ...(place.into ? { into: true } : {}),
     }));
   const parts = ctx.boundaries
     .map((boundary) => ({
@@ -1979,7 +2020,7 @@ function breakLine(ctx, entry) {
     const comma = entry.writers.length > 1 ? ',' : '';
     const writers = list(entry.writers.map(ctx.shown));
     const tests = entry.tests > 0 ? `, and by ${count(entry.tests, 'test')}` : '';
-    return `- **${entry.target}** is written by ${writers}${comma} and read by ${list(entry.readers.map(ctx.shown))}${tests}; a hand edit reaches every reader.`;
+    return `- ${writtenBy(entry.target, entry.into)} ${writers}${comma} and read by ${list(entry.readers.map(ctx.shown))}${tests}; a hand edit reaches every reader.`;
   }
   const fromTests = entry.importedByTests ?? [];
   const path = entry.doors === 0 ? 'no door' : count(entry.doors, 'door');
@@ -2211,7 +2252,12 @@ function unrunTests(ctx) {
   const named = (path) => /(\.(test|spec)\.[cm]?[jt]sx?|(^|\/)test_[^/]*\.py|_test\.py)$/.test(path);
   // A script a conftest.py keeps out of collection is no test.
   const ignored = new Set(ctx.structure.collectIgnored ?? []);
-  const left = [...ctx.fileOf.keys()].filter((path) => named(path) && !ignored.has(path) && !/(^|\/)(fixtures|__fixtures__|testdata)\//.test(path) && !ran(path)).sort(cmp);
+  // A runner named from its command alone lists none of the files it runs
+  // (playwright test over the directory its configuration names): a test
+  // file it may run is not one no workflow runs, as testsNotRun has it.
+  const unlisted = [...new Set(workflows.flatMap((door) => (door.tests ?? []).filter((run) => run.runner != null && run.files == null).map((run) => run.runner)))];
+  const mayRun = (path) => unlisted.some((runner) => runnerMayRun(runner, path, ctx.fileOf.get(path)?.testFramework ?? null));
+  const left = [...ctx.fileOf.keys()].filter((path) => named(path) && !ignored.has(path) && !/(^|\/)(fixtures|__fixtures__|testdata)\//.test(path) && !ran(path) && !mayRun(path)).sort(cmp);
   // A gate script at the root (verify.sh) that no workflow runs is a check
   // only a person runs, which a reader of CI would assume it covers.
   const gates = [...ctx.fileOf.keys()].filter((path) => /^(?:verify|check|gate)(?:[-_.][^/]*)?\.(?:sh|bash|ps1|py|mjs|js)$/.test(path) && !ran(path)
@@ -2244,6 +2290,7 @@ function unread(ctx) {
   const all = written
     .filter((place) => !place.stamped && place.readers.every((reader) => place.writers.includes(reader.path) && !place.once.includes(reader.path)))
     .map((place) => ({
+      ...(place.into ? { into: true } : {}),
       place: ctx.place(place.target),
       writers: writerItems(ctx, place.writers, place.guards),
     }));
@@ -2256,7 +2303,7 @@ function unreadSection(ctx, found) {
   const body = found.items.length > 0
     ? found.items.map((item) => {
       const comma = item.writers.length > 1 ? ',' : '';
-      return `- **${item.place}** is written by ${list(worded(item.writers, ctx.shown))}${comma} and read by nothing else in this repository.`;
+      return `- ${writtenBy(item.place, item.into)} ${list(worded(item.writers, ctx.shown))}${comma} and read by nothing else in this repository.`;
     }).join('\n')
     : (found.written === 0 ? absence('unread', unreadCount(ctx)) : 'Every written place has a reader.');
   return ['## Written but never read', body, ...found.note].join('\n\n');
@@ -2377,7 +2424,7 @@ function generated(ctx) {
     const target = ctx.place(place.target);
     const once = place.writers.length > 0 && place.writers.every((by) => (place.guards.get(by) ?? []).includes('exists'));
     const fromRoot = place.writers.length > 0 && place.writers.every((by) => place.fromRoot.includes(by));
-    items.push({ place: target, shown: target, writers: place.writers, guards: place.guards, ...(place.stamped ? { block: true } : {}), ...(once ? { once: true } : {}), ...(fromRoot ? { fromRoot: true } : {}), ...(place.sources ? { sources: place.sources } : {}) });
+    items.push({ place: target, shown: target, writers: place.writers, guards: place.guards, ...(place.stamped ? { block: true } : {}), ...(once ? { once: true } : {}), ...(fromRoot ? { fromRoot: true } : {}), ...(place.sources ? { sources: place.sources } : {}), ...(place.into ? { into: true } : {}) });
   }
   for (const boundary of ctx.boundaries.filter((item) => item.origin !== 'generated')) {
     const bot = botAdded(ctx, boundary.name);
@@ -2404,11 +2451,12 @@ function generatedSection(ctx, items, shared = []) {
       if (item.addedBy) return `- **${item.shown}** is written by ${item.addedBy}, which added every file in it.`;
       if (item.writers.length === 0) return `- **${item.shown}** is written by code this map cannot name.`;
       const by = list(worded(item.writers, ctx.shown));
-      if (item.once) return `- **${item.shown}** is written once by ${by}.`;
+      const into = item.into === true;
+      if (item.once) return `- ${writtenBy(item.shown, into, 'once')} ${by}.`;
       // Output of a run from the root that the repository checks in.
-      if (item.fromRoot) return `- **${item.shown}** is written by ${by} when run from the repository root, and committed.`;
+      if (item.fromRoot) return `- ${writtenBy(item.shown, into)} ${by} when run from the repository root, and committed.`;
       if (item.block) return `- **${item.shown}** has a block written by ${by}.`;
-      return `- **${item.shown}** is written by ${by}${sourcesClause(item.sources)}.`;
+      return `- ${writtenBy(item.shown, into)} ${by}${sourcesClause(item.sources)}.`;
     }).join('\n')
     : shared.length > 0 ? ALL_SHARED : absence('generated', unreadCount(ctx));
   return ['## Generated, never hand-edited', body].join('\n\n');
@@ -2431,10 +2479,11 @@ function writtenByPeople(ctx) {
       ? {
         byPeople: people.byPeople,
         commits: people.commits,
+        ...(place.into ? { into: true } : {}),
         place: ctx.place(place.target),
         writers: writerItems(ctx, place.writers, place.guards),
       }
-      : { place: ctx.place(place.target), untrackedInputs: true, writers: writerItems(ctx, place.writers, place.guards) }));
+      : { ...(place.into ? { into: true } : {}), place: ctx.place(place.target), untrackedInputs: true, writers: writerItems(ctx, place.writers, place.guards) }));
 }
 
 // Nothing the map names writes to these parts, but a write whose path is
@@ -2452,8 +2501,8 @@ function authoredSection(ctx, boundaries, shared) {
     : absence('authored', unreadCount(ctx), people);
   const body = boundaries.length > 0 ? caveat : 'No configuration or documentation part is left to people alone.';
   const lines = shared.map((item) => (item.untrackedInputs
-    ? `- **${item.place}** is written by ${list(worded(item.writers, ctx.shown))} from inputs this repository does not keep, and by people.`
-    : `- **${item.place}** is written by ${list(worded(item.writers, ctx.shown))}, and by people: ${item.byPeople} of its ${count(item.commits, 'commit')} in the window ${item.byPeople === 1 ? 'is' : 'are'} theirs.`));
+    ? `- ${writtenBy(item.place, item.into)} ${list(worded(item.writers, ctx.shown))} from inputs this repository does not keep, and by people.`
+    : `- ${writtenBy(item.place, item.into)} ${list(worded(item.writers, ctx.shown))}, and by people: ${item.byPeople} of its ${count(item.commits, 'commit')} in the window ${item.byPeople === 1 ? 'is' : 'are'} theirs.`));
   return ['## Hand-authored', body, ...(lines.length > 0 ? [lines.join('\n')] : [])].join('\n\n');
 }
 
@@ -2469,13 +2518,63 @@ function isIndex(path) {
 }
 
 // The file a file's entry first calls into inside a part, when the map
-// recorded its order of work.
-function firstCallInto(ctx, path, part) {
+// recorded its order of work. Through an index, only a call the index hands
+// on counts: a file the entry imports itself is reached without it.
+function firstCallInto(ctx, path, part, index = null) {
   const file = ctx.fileOf.get(path);
   const root = (file?.sequences ?? []).find((sequence) => sequence.name === file.entry);
-  const call = (root?.calls ?? []).find((item) => !item.passed && item.target?.file && ctx.boundaryOf.get(item.target.file) === part);
+  const direct = new Set(index == null ? [] : (file?.importsFiles ?? []).filter((target) => target !== index));
+  const call = (root?.calls ?? []).find((item) => !item.passed && item.target?.file && ctx.boundaryOf.get(item.target.file) === part && !direct.has(item.target.file));
   return call?.target.file ?? null;
 }
+
+/**
+ * The files the functions a file calls in another file call in turn: the
+ * work `from` asks of `path`, a lazy import inside the called function among
+ * it (launch() in a package's __init__.py importing .ui when it runs). Each
+ * is a call `path` makes, so each is an arrow from it.
+ */
+function askedOf(ctx, from, path) {
+  const file = from == null ? null : ctx.fileOf.get(from);
+  if (!file) return [];
+  const root = (file.sequences ?? []).find((sequence) => sequence.name === file.entry);
+  const calls = root ? root.calls ?? [] : (file.sequences ?? []).flatMap((sequence) => sequence.calls ?? []);
+  const found = [];
+  for (const call of calls) {
+    if (call.passed || call.target?.file !== path) continue;
+    for (const inner of call.inner ?? []) if (!inner.passed && inner.target?.file && !found.includes(inner.target.file)) found.push(inner.target.file);
+  }
+  return found;
+}
+
+/**
+ * The files from `root` to `target` by the imports the map recorded inside
+ * one part, the nearest way, `target` last and `root` left out; none when no
+ * way is found within a few hops, so no arrow is drawn the map did not record.
+ */
+function importPath(ctx, root, target, part) {
+  const cameFrom = new Map([[root, null]]);
+  let level = [root];
+  for (let hop = 0; hop < IMPORT_HOPS && level.length > 0 && !cameFrom.has(target); hop += 1) {
+    const nextLevel = [];
+    for (const path of level) {
+      for (const other of [...(ctx.fileOf.get(path)?.importsFiles ?? [])].sort(cmp)) {
+        if (cameFrom.has(other) || (ctx.boundaryOf.get(other) ?? null) !== part) continue;
+        cameFrom.set(other, path);
+        nextLevel.push(other);
+      }
+    }
+    level = nextLevel;
+  }
+  if (!cameFrom.has(target)) return [];
+  const out = [];
+  for (let at = target; at != null && at !== root; at = cameFrom.get(at)) out.unshift(at);
+  return out;
+}
+
+// How far importPath looks for the modules between a library's root and a
+// module of it.
+const IMPORT_HOPS = 4;
 
 /**
  * The files a file's entry calls, in the order it calls them: the calls it
@@ -2711,7 +2810,7 @@ function startHere(ctx, main, first = null) {
       break;
     }
   }
-  if (current == null) return { chain: [], words: [] };
+  if (current == null) return { chain: [], words: [], beside: [] };
   add(current);
   const reached = new Set((main.reach ?? []).map((entry) => entry.boundary));
   const breadth = new Map((main.reach ?? []).map((entry) => [entry.boundary, entry.files]));
@@ -2732,6 +2831,13 @@ function startHere(ctx, main, first = null) {
     }
     return null;
   };
+  // The files a step calls that the path does not go through, by the file
+  // that calls them.
+  const beside = [];
+  // A file goes on when it has a step of its own to take: a place it writes
+  // that ends the path, or a file it imports that is not on the path yet.
+  const goesOn = (file) => ending(file) != null || (ctx.fileOf.get(file)?.importsFiles ?? [])
+    .some((other) => other !== file && !chain.includes(other) && ctx.fileOf.has(other) && readable(other) && !isTestFile(other));
   const next = (path) => {
     const part = ctx.boundaryOf.get(path) ?? null;
     // A Rust binary that uses its own package's library goes into it at its
@@ -2764,30 +2870,40 @@ function startHere(ctx, main, first = null) {
       const reaching = tied.filter((target) => parts.get(target) === most);
       return reaching.length === 1 ? reaching[0] : null;
     }
-    // Inside its own part the path follows the order of work of the file it
-    // entered the part by, past a package index that only hands names on:
-    // the next file that file's entry calls, which is how a reader of the
-    // entry meets them.
-    const entered = chain.find((entry) => (ctx.boundaryOf.get(entry) ?? null) === part && ctx.fileOf.has(entry)
-      && !isIndex(entry) && !ctx.fileOf.get(entry)?.reexportsOnly) ?? path;
-    // An arrow is an import or a call of the file before it: the entry's
-    // calls are followed in order, but with no calls recorded its import list
-    // is no order of work, so only what the current file imports goes next
-    // (slice AC's fallback listed cli.py's imports as if each led on).
-    const byCalls = calledFiles(ctx, entered, { imports: false }).length > 0;
-    const owner = byCalls ? entered : path;
-    const found = [];
-    for (const target of calledFiles(ctx, owner)) {
-      if ((ctx.boundaryOf.get(target) ?? null) !== part || !ctx.fileOf.has(target) || isTestFile(target) || !readable(target)) continue;
-      const file = working(ctx, target, owner);
-      if (file != null && !chain.includes(file) && !found.includes(file)) found.push(file);
+    // Inside its own part every arrow is an import or a call of the file
+    // before it (1.22.0 followed the entry's calls in order, so a helper the
+    // entry called first read as leading to the next file it called). The
+    // work the file before asks of this one comes first: the calls made
+    // inside the functions it calls here, a lazy import among them. Then
+    // this file's own order of work. Of the files either names, the path
+    // goes through the first that goes on, and the others are listed beside
+    // the file that calls them, not chained.
+    const inPart = (paths) => {
+      const found = [];
+      for (const target of paths) {
+        if ((ctx.boundaryOf.get(target) ?? null) !== part || !ctx.fileOf.has(target) || isTestFile(target) || !readable(target)) continue;
+        const file = working(ctx, target, path);
+        if (file != null && file !== path && !chain.includes(file) && !found.includes(file)) found.push(file);
+      }
+      return found;
+    };
+    const before = chain[chain.indexOf(path) - 1] ?? null;
+    const byCalls = inPart([...askedOf(ctx, before, path), ...calledFiles(ctx, path, { imports: false })]);
+    if (byCalls.length > 0) {
+      const chosen = byCalls.find(goesOn) ?? byCalls[0];
+      const others = byCalls.filter((file) => file !== chosen);
+      if (others.length > 0) beside.push({ from: path, files: others });
+      return chosen;
     }
-    if (byCalls) return found[0] ?? null;
-    // By imports alone, a file that goes on inside the part comes first, in
-    // the order imported; a package's __init__.py that goes nowhere is no
-    // step, since it holds what the package exports, not the work.
-    const goesOn = (file) => (ctx.fileOf.get(file)?.importsFiles ?? []).some((other) => other !== file && !chain.includes(other) && (ctx.boundaryOf.get(other) ?? null) === part && !isTestFile(other));
-    return found.find(goesOn) ?? found.find((file) => !/(^|\/)__init__\.py$/.test(file)) ?? null;
+    // With no calls recorded, an import list is no order of work, so only
+    // what the current file imports goes next (slice AC's fallback listed
+    // cli.py's imports as if each led on): a file that goes on inside the
+    // part first, in the order imported; a package's __init__.py that goes
+    // nowhere is no step, since it holds what the package exports, not the
+    // work.
+    const found = inPart(calledFiles(ctx, path));
+    const inside = (file) => (ctx.fileOf.get(file)?.importsFiles ?? []).some((other) => other !== file && !chain.includes(other) && (ctx.boundaryOf.get(other) ?? null) === part && !isTestFile(other));
+    return found.find(inside) ?? found.find((file) => !/(^|\/)__init__\.py$/.test(file)) ?? null;
   };
   // Of the files a binary uses through its library, and the files those use
   // in the same part, the first that imports another part, the one the door
@@ -2803,9 +2919,9 @@ function startHere(ctx, main, first = null) {
     const second = inPart([...new Set(first.flatMap((target) => ctx.fileOf.get(target)?.importsFiles ?? []))]);
     for (const level of [first, second]) {
       const found = level.filter((target) => reach(target) > 0).sort((a, b) => reach(b) - reach(a) || cmp(a, b))[0];
-      if (found) return found;
+      if (found) return importPath(ctx, root, found, part).filter((file) => !chain.includes(file));
     }
-    return null;
+    return [];
   };
   for (let step = 0; step < START_STEPS; step += 1) {
     const end = ending(current);
@@ -2834,15 +2950,17 @@ function startHere(ctx, main, first = null) {
     if (following === ctx.fileOf.get(current)?.library) {
       // The library's root declares its modules; the path goes through it
       // to the module the binary uses that goes on into another part.
+      // The root reaches that module through the modules that declare it
+      // (lib.rs, then commands/mod.rs, then commands/planner.rs), each an
+      // arrow the map recorded.
       const through = intoLibrary(current, following);
-      if (through != null) {
-        add(through);
-        following = through;
-      }
+      for (const file of through) add(file);
+      if (through.length > 0) following = through.at(-1);
     } else if (isIndex(following)) {
       // A package index that only hands a name on is followed to the file the
-      // entry's call reaches through it, since that is where the work is.
-      const through = firstCallInto(ctx, current, ctx.boundaryOf.get(following));
+      // entry's call reaches through it, since that is where the work is. A
+      // file the entry imports itself is not reached through the index.
+      const through = firstCallInto(ctx, current, ctx.boundaryOf.get(following), following);
       if (through && (ctx.fileOf.get(following)?.importsFiles ?? []).includes(through) && readable(through) && !chain.includes(through)) {
         add(through);
         following = through;
@@ -2850,7 +2968,11 @@ function startHere(ctx, main, first = null) {
     }
     current = following;
   }
-  return { chain, words: [...chain] };
+  // A file listed beside the path is one it does not go through; one the
+  // path reached later by another arrow is on it.
+  const also = beside.map((entry) => ({ from: entry.from, files: entry.files.filter((file) => !chain.includes(file)) }))
+    .filter((entry) => entry.files.length > 0 && chain.includes(entry.from));
+  return { chain, words: [...chain], beside: also };
 }
 
 /**
@@ -2985,7 +3107,29 @@ function heldNoun(door) {
   return when.event === 'pull_request' || also.length === 0 ? from : `${also.join(', ')}, or ${from}`;
 }
 
-function startSection(words, main, readable, reason = null) {
+// A file named beside the path lists this many of the other files it calls,
+// the rest counted.
+const BESIDE_SHOWN = 4;
+
+/**
+ * What the page says of the files a step calls that the path does not go
+ * through: "Beside the path, src/cli.js also calls src/run.js and
+ * src/report.js." Each is a sibling of the file the path goes on to, not a
+ * step after it.
+ *
+ * @param {Array<{ from: string, files: string[] }>} beside
+ * @returns {string[]}
+ */
+export function besideLines(beside) {
+  return (beside ?? []).map((entry) => {
+    const shown = entry.files.length > BESIDE_SHOWN
+      ? `${entry.files.slice(0, BESIDE_SHOWN).join(', ')} and ${count(entry.files.length - BESIDE_SHOWN, 'more file')}`
+      : list(entry.files);
+    return `Beside the path, ${entry.from} also calls ${shown}.`;
+  });
+}
+
+function startSection(words, main, readable, reason = null, beside = []) {
   if (!main) {
     const why = readable ? 'No door runs a file this map can see' : 'No door was found';
     return ['## Where to start', `${why}, so there is no path through this repository to follow.`].join('\n\n');
@@ -2999,7 +3143,8 @@ function startSection(words, main, readable, reason = null) {
     return ['## Where to start', reason ? `${single} ${reason}` : single].join('\n\n');
   }
   const read = `Read those in order to follow one ${noun}${comma} end to end.`;
-  return ['## Where to start', words.join(' → '), reason ? `${read} ${reason}` : read].join('\n\n');
+  const also = besideLines(beside);
+  return ['## Where to start', words.join(' → '), reason ? `${read} ${reason}` : read, ...(also.length > 0 ? [also.join(' ')] : [])].join('\n\n');
 }
 
 /**
@@ -3682,7 +3827,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
   // A pull request's door that runs no code the map can follow leaves the
   // path to the busiest door, as before a pull request's door was preferred.
   let starting = startDoor(ctx, main);
-  let start = { chain: [], words: [] };
+  let start = { chain: [], words: [], beside: [] };
   let reason = null;
   // A pull request that runs only tests enters the code through what the
   // tests import, which is no way a person uses it; the path follows the
@@ -3760,7 +3905,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     duplicatesSection(duplicated),
     generatedSection(ctx, generatedItems, sharedPlaces),
     authoredSection(ctx, authoredBoundaries, sharedPlaces),
-    startSection(start.words, starting, ctx.doors.some((door) => !door.parseError), reason),
+    startSection(start.words, starting, ctx.doors.some((door) => !door.parseError), reason, start.beside),
     limitsSection(limitLines),
   );
   const markdown = `${sections.join('\n\n')}\n`;
@@ -3782,7 +3927,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     duplicatesNote: duplicated.note,
     edges: breakEdges(ctx, breakEntries),
     ...(engine ? { engine } : {}),
-    generated: generatedItems.map((item) => ({ ...(item.addedBy ? { addedBy: item.addedBy } : {}), ...(item.block ? { block: true } : {}), ...(item.fromRoot ? { fromRoot: true } : {}), ...(item.once ? { once: true } : {}), place: item.place, ...(item.sources ? { sources: item.sources } : {}), writers: worded(item.writers, id) })),
+    generated: generatedItems.map((item) => ({ ...(item.addedBy ? { addedBy: item.addedBy } : {}), ...(item.block ? { block: true } : {}), ...(item.fromRoot ? { fromRoot: true } : {}), ...(item.into ? { into: true } : {}), ...(item.once ? { once: true } : {}), place: item.place, ...(item.sources ? { sources: item.sources } : {}), writers: worded(item.writers, id) })),
     generatedAt,
     limits: limitLines,
     mainDoor: main ? doorKey(main) : null,
@@ -3792,6 +3937,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     repo: String(repoName ?? ''),
     sequences: found,
     startDoor: starting ? doorKey(starting) : null,
+    ...(start.beside?.length > 0 ? { startBeside: start.beside.map((entry) => ({ files: [...entry.files], from: entry.from })) } : {}),
     startHere: start.chain,
     ...(reason ? { startReason: reason } : {}),
     ...(starting && start.chain.length === 0 ? { startNote: noPath(starting) } : {}),
@@ -3804,7 +3950,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     testedBy: untestedParts.testedBy,
     testFiles: untestedParts.testFiles,
     unreadFiles: unreadCount(ctx),
-    unread: unreadPlaces.items.map((item) => ({ place: item.place, writers: worded(item.writers, id) })),
+    unread: unreadPlaces.items.map((item) => ({ ...(item.into ? { into: true } : {}), place: item.place, writers: worded(item.writers, id) })),
     unreadNote: unreadPlaces.note,
     written: unreadPlaces.written,
     untested: untestedParts.items,

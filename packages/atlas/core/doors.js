@@ -372,6 +372,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
   // The command-shaped inputs of uses: steps that are not read as a command
   // (core/action-commands.js), each with why.
   const unresolvedCommands = [];
+  const unresolvedExpressions = new Map();
   const elsewhere = new Map();
   const sends = emptySends();
   const issues = [];
@@ -551,8 +552,12 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
         const dir = selfPath != null ? ownDir : expanded ? cleanDir(rawDir) : stepWorkDir === undefined ? jobDir : cleanDir(stepWorkDir);
         if (dir == null) continue;
         if (dir !== '' && repo.tracked.has(`${dir}/package.json`)) workedIn.add(dir);
-        // Actions spells ${{ env.X }} out before the shell sees the step.
-        const named = readCommands(expandEnv(stepRun, lookup), dir, repo, platforms, { through: [...jobThrough, ...(step[REACHED_THROUGH] ?? [])], env: written });
+        // Actions spells ${{ env.X }} out before the shell sees the step. An
+        // expression standing as a word of a command is set aside before the
+        // command is read, and what it could add is noted, never guessed.
+        const aside = setAsideExpressions(expandEnv(stepRun, lookup));
+        for (const adds of aside.adds) unresolvedExpressions.set(`${job}\0${name}\0${adds}`, { job, step: name, adds });
+        const named = readCommands(aside.text, dir, repo, platforms, { through: [...jobThrough, ...(step[REACHED_THROUGH] ?? [])], env: written });
         stepTests.push(...named.tests);
         stepEnds.push(...named.ends);
         stepInvocations.push(...named.invocations);
@@ -635,6 +640,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
     ...(checked?.findings.length > 0 ? { findings: checked.findings } : {}),
     ...(checked?.unresolved.length > 0 ? { unresolvedChecks: checked.unresolved } : {}),
     ...(unresolvedCommands.length > 0 ? { unresolvedCommands } : {}),
+    ...(unresolvedExpressions.size > 0 ? { unresolvedExpressions: [...unresolvedExpressions.values()] } : {}),
     // Read by sidecar/check-change-tool.js, which a changed lock or manifest
     // in one of them touches; adapter/artifact.js does not carry it.
     ...(runtime ? { workingDirs: workingDirs(stepsByJob) } : {}),
@@ -1652,6 +1658,66 @@ function expandEnv(text, lookup) {
   return text
     .replace(/\$\{\{\s*env\.([A-Za-z_][A-Za-z0-9_]*)\s*\}\}/g, (whole, name) => lookup(name) ?? whole)
     .replace(/\$env:([A-Za-z_][A-Za-z0-9_]*)/g, (whole, name) => lookup(name) ?? whole);
+}
+
+/**
+ * A step's text with each expression that stands as a whole word of a
+ * command set aside, when every value it can take is spelled in it and is
+ * flags or nothing: the Codecov recipe's
+ * `${{ env.COVERAGE_LEG == 'true' && '--cov=pkg' || '' }}` among pytest's
+ * arguments, read as a path until 1.24, left pytest with no files. Such an
+ * expression is removed from the text read, and noted as adding flags; any
+ * other standing expression stays in the text, where a runner reads it as a
+ * word it cannot resolve, and is noted as adding words. Never guessed.
+ *
+ * @param {string} text
+ * @returns {{ text: string, adds: Array<'flags'|'words'> }}
+ */
+export function setAsideExpressions(text) {
+  const adds = new Set();
+  const out = String(text ?? '').replace(/\$\{\{([\s\S]*?)\}\}/g, (whole, inner, at, all) => {
+    const before = at === 0 ? '' : all[at - 1];
+    const after = all[at + whole.length] ?? '';
+    if ((before !== '' && !/\s/.test(before)) || (after !== '' && !/[\s;&|)]/.test(after))) return whole;
+    const values = expressionValues(inner);
+    if (values != null && values.every((value) => value.trim().split(/\s+/).every((word) => word === '' || word.startsWith('-')))) {
+      adds.add('flags');
+      return ' ';
+    }
+    adds.add('words');
+    return whole;
+  });
+  return { text: out, adds: [...adds].sort() };
+}
+
+// The values an expression can take when each is spelled in it: a string
+// literal, or `condition && 'literal'`, for each alternative of a top-level
+// ||. Null when any alternative is anything else.
+function expressionValues(inner) {
+  const alternatives = [];
+  let quote = false;
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < inner.length; i += 1) {
+    const ch = inner[i];
+    if (ch === "'") quote = !quote;
+    else if (quote) continue;
+    else if (ch === '(') depth += 1;
+    else if (ch === ')') depth -= 1;
+    else if (depth === 0 && ch === '|' && inner[i + 1] === '|') {
+      alternatives.push(inner.slice(start, i));
+      start = i + 2;
+      i += 1;
+    }
+  }
+  alternatives.push(inner.slice(start));
+  const values = [];
+  for (const alternative of alternatives) {
+    const found = /(?:^|&&)\s*'((?:[^']|'')*)'\s*$/.exec(alternative.trim());
+    if (!found || (!alternative.includes('&&') && !/^\s*'/.test(alternative))) return null;
+    values.push(found[1].replace(/''/g, "'"));
+  }
+  return values;
 }
 
 // The variables an env: block sets, each as written, an expression kept as

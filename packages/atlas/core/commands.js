@@ -861,7 +861,11 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
     }
     const next = CHECKERS.has(tool) ? { ...frame, runKind: 'checks' } : frame;
     const runner = runnerOf(tool, argv);
-    if (runner != null) invoke(runner, dir, next, () => handlers[tool](argv, dir, next));
+    // An expression Actions spells out before the shell runs that stands as
+    // an argument and may be a path (core/doors.js setAsideExpressions) could
+    // name the tests the runner runs: which it runs is not known here.
+    const unread = argv.slice(1).some((word) => /^\$\{\{[\s\S]*\}\}$/.test(word));
+    if (runner != null) invoke(runner, dir, next, () => handlers[tool](argv, dir, next), { known: !unread });
     else handlers[tool](argv, dir, next);
     return true;
   }

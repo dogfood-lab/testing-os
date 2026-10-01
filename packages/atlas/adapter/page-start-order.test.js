@@ -33,12 +33,14 @@ function section(markdown, heading) {
 }
 
 describe('where to start inside one part', () => {
-  it('reads the files the entry calls in its own part, in the order it calls them', () => {
+  it('goes to the first file the entry calls in its own part, and lists the others beside the path in the order it calls them', () => {
     const { markdown, data } = page('own-part', ['src', 'test']);
-    assert.deepEqual(data.startHere, ['src/cli.js', 'src/config.js', 'src/run.js', 'src/report.js']);
+    assert.deepEqual(data.startHere, ['src/cli.js', 'src/config.js']);
+    assert.deepEqual(data.startBeside, [{ files: ['src/run.js', 'src/report.js'], from: 'src/cli.js' }]);
     const start = section(markdown, 'Where to start');
-    assert.equal(start[2], 'src/cli.js → src/config.js → src/run.js → src/report.js');
+    assert.equal(start[2], 'src/cli.js → src/config.js');
     assert.equal(start[4], 'Read those in order to follow one run of tool end to end. This path follows tool (a command people run) from its entry, since CI runs only tests.');
+    assert.equal(start[6], 'Beside the path, src/cli.js also calls src/run.js and src/report.js.');
   });
 
   it('with no order of work, goes on only by what each file imports, never down the entry\'s import list', () => {
