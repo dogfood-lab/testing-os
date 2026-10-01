@@ -2,7 +2,9 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.26.0] — 2026-10-01
+
+Atlas checks a large repository in seconds and maps the last of the fleet. Adopting the 11 repositories that ran workflows with no map found two things: `atlas check` took 19 minutes in CI on the largest, and the page still said false things in four places. `check` and `init` on that repository went from about eight minutes to 45 seconds, with every answer byte-identical. The four false sentences are fixed at the class, `init` leaves no tracked file in no part, and the verb agrees with a counted subject. Two of the adopted repositories are in C# and PowerShell, which Atlas does not parse; their maps hold their workflows, as the org rule asks.
 
 ### Changed
 - **`atlas check` and `atlas init` take seconds where they took minutes on a large repository.** On the fleet's largest repository (12,875 tracked files, a turbo monorepo of about 100 members), `check` took 491 s and 19 minutes in CI, so its adoption was held. It now takes 45 s; `init` went from 490 s to 44 s and `map` from 510 s to 108 s (median of three, a fresh process each). The time went into steps that grew faster than the repository did:
