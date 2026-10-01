@@ -243,7 +243,9 @@ export function checkCommand(cwd, argv = []) {
     process.stdout.write(formatFailure('ATLAS_STRUCTURE_DRIFT', ['atlas/structure.json is not valid JSON']));
     return 1;
   }
-  const mapped = mapRepository({ repoPath: repo, boundaries: forCore(boundary.boundaries) });
+  // The check compares the structure and reports the door checks, so the
+  // tree is read for those alone; the page's readings are the map's to make.
+  const mapped = mapRepository({ repoPath: repo, boundaries: forCore(boundary.boundaries), structureOnly: true });
   const current = buildArtifact(mapped, head(repo) ?? '');
   // What the check says beside its verdict: the door checks' findings,
   // computed from the tree as it is now, and a map an older engine made.
