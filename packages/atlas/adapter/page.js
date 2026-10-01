@@ -179,6 +179,7 @@ function facts({ structure, statistics }) {
       writers: (landing.writers ?? []).filter(strong),
       readers: (landing.readers ?? []).filter(strong),
       ...(landing.writesInto ? { writesInto: true } : {}),
+      ...(landing.mayReaders ? { mayReaders: landing.mayReaders } : {}),
     })),
     untrackedWrites: (structure.landings ?? []).filter((landing) => landing.tracked === false)
       .reduce((sum, landing) => sum + (landing.writers ?? []).filter(strong).length, 0),
@@ -1884,7 +1885,10 @@ function writtenPlaces(ctx) {
     // they do not make (core/landings.js writtenInto), holds their files; it
     // is not written.
     const into = inside.some((landing) => landing.target === target && landing.writesInto);
-    return { target, writers, readers, guards: guardsOf(inside), once, fromRoot, ...(stamped ? { stamped: true } : {}), ...(mixed ? { mixed: true } : {}), ...(sources.length > 0 ? { sources } : {}), ...(into ? { into: true } : {}) };
+    // Files reading a pattern under a directory chosen at run time that
+    // could match the place (core/landings.js looseReaders).
+    const mayRead = inside.flatMap((landing) => landing.mayReaders ?? []).filter((entry) => !writers.includes(entry.by) && !under(entry.by, target));
+    return { target, writers, readers, guards: guardsOf(inside), once, fromRoot, ...(stamped ? { stamped: true } : {}), ...(mixed ? { mixed: true } : {}), ...(sources.length > 0 ? { sources } : {}), ...(into ? { into: true } : {}), ...(mayRead.length > 0 ? { mayRead } : {}) };
   });
 }
 
@@ -2291,11 +2295,33 @@ function unread(ctx) {
     .filter((place) => !place.stamped && place.readers.every((reader) => place.writers.includes(reader.path) && !place.once.includes(reader.path)))
     .map((place) => ({
       ...(place.into ? { into: true } : {}),
+      ...(place.mayRead ? { mayRead: { by: [...new Set(place.mayRead.map((entry) => entry.by))].sort(cmp), patterns: [...new Set(place.mayRead.map((entry) => entry.pattern))].sort(cmp) } } : {}),
       place: ctx.place(place.target),
       writers: writerItems(ctx, place.writers, place.guards),
     }));
   return { items: all.slice(0, UNREAD_SHOWN), note: more(all.length, UNREAD_SHOWN, 'place'), written: written.length };
 }
+
+/**
+ * How the page ends a place nothing reads by name: "read by nothing else in
+ * this repository", or, when a file reads a pattern under a directory chosen
+ * at run time that could match it, that no reader can be named and which
+ * may read it.
+ *
+ * @param {{ by: string[], patterns: string[] }} [mayRead]
+ * @param {(pattern: string) => string} [code] how a pattern is marked as code
+ * @returns {string}
+ */
+export function unreadEnd(mayRead, code = (pattern) => `\`${pattern}\``) {
+  if (!mayRead) return 'and read by nothing else in this repository.';
+  const verb = mayRead.by.length > 1 ? 'read' : 'reads';
+  const by = mayRead.by.length > MAY_READ_NAMED ? `${mayRead.by.slice(0, MAY_READ_NAMED).join(', ')} and ${count(mayRead.by.length - MAY_READ_NAMED, 'more file')}` : list(mayRead.by);
+  return `and read by nothing else this map can name: ${by} ${verb} ${list(mayRead.patterns.map(code))} under a directory chosen at run time, which may include it.`;
+}
+
+// A place a run-time pattern may read names this many of the files reading
+// it, the rest counted.
+const MAY_READ_NAMED = 3;
 
 // With nothing written, "every written place has a reader" would be true of
 // nothing; the page says there is nothing to read instead.
@@ -2303,7 +2329,7 @@ function unreadSection(ctx, found) {
   const body = found.items.length > 0
     ? found.items.map((item) => {
       const comma = item.writers.length > 1 ? ',' : '';
-      return `- ${writtenBy(item.place, item.into)} ${list(worded(item.writers, ctx.shown))}${comma} and read by nothing else in this repository.`;
+      return `- ${writtenBy(item.place, item.into)} ${list(worded(item.writers, ctx.shown))}${comma} ${unreadEnd(item.mayRead)}`;
     }).join('\n')
     : (found.written === 0 ? absence('unread', unreadCount(ctx)) : 'Every written place has a reader.');
   return ['## Written but never read', body, ...found.note].join('\n\n');
@@ -3950,7 +3976,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     testedBy: untestedParts.testedBy,
     testFiles: untestedParts.testFiles,
     unreadFiles: unreadCount(ctx),
-    unread: unreadPlaces.items.map((item) => ({ ...(item.into ? { into: true } : {}), place: item.place, writers: worded(item.writers, id) })),
+    unread: unreadPlaces.items.map((item) => ({ ...(item.into ? { into: true } : {}), ...(item.mayRead ? { mayRead: item.mayRead } : {}), place: item.place, writers: worded(item.writers, id) })),
     unreadNote: unreadPlaces.note,
     written: unreadPlaces.written,
     untested: untestedParts.items,

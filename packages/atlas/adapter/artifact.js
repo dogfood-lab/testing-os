@@ -499,6 +499,7 @@ function carryLandings(landings) {
   return landings
     .filter((landing) => !inAtlas(landing.target))
     .map((landing) => ({
+      ...((landing.mayReaders ?? []).some((entry) => !inAtlas(entry.by)) ? { mayReaders: landing.mayReaders.filter((entry) => !inAtlas(entry.by)).map((entry) => ({ by: entry.by, pattern: entry.pattern })) } : {}),
       readers: landing.readers.filter((entry) => !inAtlas(entry.by)).map(carryReader),
       ...(landing.spans ? { spans: landing.spans } : {}),
       target: landing.target,
@@ -521,7 +522,7 @@ function carryWriter(entry) {
 
 function carryReader(entry) {
   const out = { by: entry.by };
-  for (const field of ['call', 'confidence', 'ref', 'repo', 'target']) {
+  for (const field of ['call', 'confidence', 'pattern', 'ref', 'repo', 'target']) {
     if (entry[field] != null) out[field] = entry[field];
   }
   if (entry.fromTests) out.fromTests = true;

@@ -100,3 +100,13 @@ test('the files listed beside a path are counted past four, as the markdown coun
   const hostile = { ...page, startBeside: [{ files: ['<img src=x>.js'], from: 'src/cli.js' }] };
   assert.equal(render.renderPage(hostile, { repo: 'acme/siblings' }).includes('<img src=x>'), false);
 });
+
+test('a place a pattern under a directory chosen at run time could match is read by nothing the map can name, on the site as in the markdown', () => {
+  const { page, markdown } = mapped('glob-readers');
+  assert.ok(page.unread.some((item) => item.mayRead), 'the map has a place a run-time pattern may read');
+  const html = render.renderPage(page, { repo: 'acme/glob-readers' });
+  assert.deepEqual(siteLines(html, 'Written but never read'), markdownLines(markdown, 'Written but never read'));
+  // A pattern is data: it is escaped, never markup.
+  const hostile = { ...page, unread: [{ ...page.unread[0], mayRead: { by: ['report.py'], patterns: ['<img src=x>'] } }] };
+  assert.equal(render.renderPage(hostile, { repo: 'acme/glob-readers' }).includes('<img src=x>'), false);
+});

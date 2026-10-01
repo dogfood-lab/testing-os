@@ -57,6 +57,11 @@ const PY_OS_WRITES = new Map([
 const PY_SHUTIL_WRITES = new Set(['copy', 'copy2', 'copyfile', 'move']);
 const PY_RECEIVER_WRITES = new Set(['write_text', 'write_bytes']);
 const PY_RECEIVER_READS = new Set(['read_text', 'read_bytes', 'iterdir', 'glob', 'rglob']);
+// A glob call's result is the paths its pattern matches when it runs.
+const PY_GLOBS = new Set(['glob.glob', 'glob.iglob', 'glob', 'iglob']);
+const PY_GLOB_METHODS = new Set(['glob', 'rglob']);
+// What keeps a glob's paths a list of them: sorted(glob(...)).
+const PY_LISTS = new Set(['sorted', 'list', 'reversed', 'tuple', 'set']);
 const PY_JOIN = new Set(['os.path.join', 'path.join', 'posixpath.join', 'join']);
 const PY_PATH = new Set([
   'Path',
@@ -741,7 +746,7 @@ export function astLandings(language, root, path, places) {
     visiting: new Set(),
     assignments: new Map(),
   };
-  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0, outsideWhere: [], pendingWrites: [], pendingReads: [], pendingParams: [], untrackedReads: 0 };
+  const found = { writes: [], dynamicWrites: 0, outsideWrites: 0, reads: [], dynamicReads: 0, outsideReads: 0, outsideWhere: [], pendingWrites: [], pendingReads: [], pendingParams: [], untrackedReads: 0, loosePatterns: new Set() };
   // The build outputs the file names by a path this repository does not
   // track (packages/server/dist/server.js), for the commands a build bundles
   // (index.js bundledCommands).
@@ -752,7 +757,10 @@ export function astLandings(language, root, path, places) {
     if (!text.startsWith('../') && !places.files.has(text) && text.split('/').some((part) => BUILD_OUTPUTS.has(part))) builtNames.add(text);
   };
   const evaluate = ctx.python ? evalPy : evalJs;
-  const site = (kind, call, node, countDynamic = true) => {
+  // patternsOnly: the site is read for what a pattern it holds matches, and
+  // is otherwise counted by another site (a receiver glob, read as its
+  // directory there).
+  const site = (kind, call, node, countDynamic = true, { patternsOnly = false } = {}) => {
     if (!node) return;
     const all = (ctx.python ? evaluate(node, ctx, 0) : throughClosure(node, ctx)).filter((value) => !value.shape);
     for (const value of all) named(value);
@@ -761,7 +769,7 @@ export function astLandings(language, root, path, places) {
     // not the content a stamp keeps (stamps).
     const compared = kind === 'read' && !ctx.python && comparedOnly(node.parent?.parent) ? { compared: true } : {};
     if (all.length === 0) {
-      if (countDynamic) found[kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
+      if (countDynamic && !patternsOnly) found[kind === 'write' ? 'dynamicWrites' : 'dynamicReads'] += 1;
       return;
     }
     // A path rooted at a parameter of a module-level function is settled
@@ -774,8 +782,9 @@ export function astLandings(language, root, path, places) {
       found.pendingParams.push({
         kind,
         call,
-        countDynamic: countDynamic && rest.length === 0,
-        counted: rest.some(outside),
+        countDynamic: countDynamic && !patternsOnly && rest.length === 0,
+        counted: patternsOnly || rest.some(outside),
+        ...(patternsOnly ? { patternsOnly: true } : {}),
         values: bound.map((value) => ({ param: { ...value.param }, open: value.open, text: value.text, ...(value.open && value.tail != null ? { tail: value.tail } : {}) })),
         ...(unless.length > 0 ? { unless } : {}),
       });
@@ -799,19 +808,34 @@ export function astLandings(language, root, path, places) {
     const values = all.filter((value) => !boundParam(value) && !settled.has(value)).map((value) => (isHelper(value) ? asRoot(value) : value));
     if (values.length === 0) return;
     const theirs = values.some(outside);
-    if (theirs) {
+    if (theirs && !patternsOnly) {
       found[kind === 'write' ? 'outsideWrites' : 'outsideReads'] += 1;
       found.outsideWhere.push({ kind, where: whereSet(values.filter(outside), call) });
     }
+    // A file read under the home directory (a crate's source in ~/.cargo/,
+    // found by a glob there) is an input this repository does not keep, as
+    // one spelled whole and untracked is: what is written from it cannot be
+    // made again from here.
+    if (kind === 'read' && !patternsOnly && CONTENT_READS.has(call) && values.some((value) => value.anchor === 'home')) found.untrackedReads += 1;
     const before = list.length;
     let unplaced = false;
     for (const value of values) {
-      if (outside(value)) continue;
+      if (outside(value)) {
+        if (kind === 'read') addLoosePattern(found.loosePatterns, value);
+        continue;
+      }
       if (value.text.includes('://')) {
         if (kind !== 'read' || value.open) continue;
         for (const entry of rawUrls(value.text, places)) list.push({ ...entry, call, confidence: 'ast' });
         continue;
       }
+      // A read through a pattern reads what it matches, which attachLandings
+      // settles against the places written; the place it names as a path, if
+      // any, is read as before.
+      const pattern = kind === 'read' ? readPattern(value, call, places) : null;
+      if (pattern != null) list.push({ ...landingEntry(pattern, call, value, places), pattern: true, ...compared });
+      else if (kind === 'read' && value.rooted) addLoosePattern(found.loosePatterns, value);
+      if (patternsOnly) continue;
       // A path built at run time shaped like no tracked file makes files this
       // repository does not keep, under the place it is built in.
       // A literal a caller's place falls back to (homedir() || '.') is the
@@ -821,11 +845,14 @@ export function astLandings(language, root, path, places) {
       // a .gitkeep marks where a user's files go, not where this code writes.
       if (target != null && value.rooted && placeholder(target, places)) unplaced = true;
       else if (target != null) list.push({ ...landingEntry(target, call, value, places), ...(unless.length > 0 ? { unless } : {}), ...compared });
-      else if (value.open) unplaced = true;
+      // A path through a glob's result (file:${db}) that lands nowhere is as
+      // unnamed as one built at run time.
+      else if (value.open || value.text.includes('*')) unplaced = true;
       // A file read by a path spelled out in full that this repository does
       // not keep: an input its output cannot be made again from here.
       else if (kind === 'read' && CONTENT_READS.has(call) && untrackedInput(value.text)) found.untrackedReads += 1;
     }
+    if (patternsOnly) return;
     // A root another file's function returns is settled once that file is
     // known: the caller's place when every such function returns one, and
     // otherwise the unreadable root it was read as, landings and all. A path
@@ -907,6 +934,7 @@ export function astLandings(language, root, path, places) {
     ...(paramCalls.length > 0 ? { paramCalls } : {}),
     ...(defaultCalls.length > 0 ? { defaultCalls } : {}),
     ...(builtNames.size > 0 ? { builtNames: [...builtNames].sort() } : {}),
+    ...(found.loosePatterns.size > 0 ? { loosePatterns: [...found.loosePatterns].sort() } : {}),
   };
 }
 
@@ -1121,6 +1149,9 @@ export function settleParamPaths(files, places) {
         for (const key of found.where) where.add(key);
         const before = entries.length;
         const land = (value) => {
+          const pattern = pending.kind === 'read' ? readPattern(value, pending.call, places) : null;
+          if (pattern != null) entries.push({ ...landingEntry(pattern, pending.call, value, places, { settled: true }), pattern: true });
+          if (pending.patternsOnly) return;
           const target = shapedLikeNothing(value, pending.call, places) ? shapedTarget(value) : pending.kind === 'write' ? writtenPlace(value, places, pending.call, !found.outside && !pending.counted) : landingOf(value, places);
           if (target == null || (value.rooted && placeholder(target, places))) return;
           const unless = [...new Set([...(pending.unless ?? []), ...(value.main && pending.kind === 'write' ? ['main'] : [])])].sort();
@@ -1133,10 +1164,17 @@ export function settleParamPaths(files, places) {
         if (found.unread) {
           const kept = entries.length;
           land({ ...rest, rooted: true, ...(found.unreadFree ? {} : { main: true }) });
-          if (entries.length === kept && entries.length === before) {
+          if (entries.length === kept && entries.length === before && !pending.patternsOnly) {
             theirs = true;
             where.add('caller');
           }
+        }
+        // A pattern under a root no call here places is kept for the written
+        // places it could match, as astLandings keeps one.
+        if (pending.kind === 'read' && (found.unread || found.outside) && entries.length === before) {
+          const loose = new Set(file.loosePatterns ?? []);
+          addLoosePattern(loose, rest);
+          if (loose.size > 0) file.loosePatterns = [...loose].sort(compare);
         }
       }
       if (theirs && !pending.counted) {
@@ -1146,7 +1184,7 @@ export function settleParamPaths(files, places) {
       // A directory made where the file also writes inside it is only
       // evidence of that write, as astLandings has it.
       if (entries.length > 0) file[kind] = sortEntries(kind === 'writes' ? withoutRedundantDirectories([...(file[kind] ?? []), ...entries], places) : [...(file[kind] ?? []), ...entries]);
-      else if (!theirs && pending.countDynamic) file[dynamicCount] = (file[dynamicCount] ?? 0) + 1;
+      else if (!theirs && pending.countDynamic && !pending.patternsOnly) file[dynamicCount] = (file[dynamicCount] ?? 0) + 1;
     }
     delete file.pendingParams;
     delete file.paramCalls;
@@ -1659,7 +1697,8 @@ function pythonSite(node, site, pil = false) {
     if (fn.text === 'open') {
       const mode = openMode(keywordArgument(node, 'mode') ?? args[1], true);
       if (mode != null) site(mode, 'open', args[0]);
-    } else if (NETWORK.has(fn.text)) site('read', fn.text, args[0], false);
+    } else if (fn.text === 'glob' || fn.text === 'iglob') site('read', fn.text, args[0]);
+    else if (NETWORK.has(fn.text)) site('read', fn.text, args[0], false);
     return;
   }
   if (fn.type !== 'attribute') return;
@@ -1670,7 +1709,10 @@ function pythonSite(node, site, pil = false) {
   if (owner === 'os' && PY_OS_WRITES.has(attribute)) return site('write', call, args[PY_OS_WRITES.get(attribute)]);
   if (owner === 'os' && (attribute === 'listdir' || attribute === 'scandir')) return site('read', call, args[0]);
   if (owner === 'shutil' && PY_SHUTIL_WRITES.has(attribute)) return site('write', call, args[1]);
-  if (owner === 'glob' && attribute === 'glob') return site('read', call, args[0]);
+  if (owner === 'glob' && (attribute === 'glob' || attribute === 'iglob')) return site('read', call, args[0]);
+  // dir.glob('*.db') reads the directory, as a receiver read below, and the
+  // files its pattern matches there, read as the joined pattern (evalPy).
+  if (PY_GLOB_METHODS.has(attribute) && args[0]) site('read', attribute, node, false, { patternsOnly: true });
   // sqlite3.connect(path) opens the database file, making it when absent,
   // and whatever the connection commits is written there.
   if (owner === 'sqlite3' && attribute === 'connect' && args[0]?.text !== '":memory:"' && args[0]?.text !== "':memory:'") return site('write', call, args[0]);
@@ -2148,9 +2190,22 @@ function evalPy(node, ctx, depth) {
       }
       if (PY_DIRNAME.has(name)) return dirnameValues(evalPy(args[0], ctx, next));
       if (PY_IDENTITY.has(name)) return evalPy(args[0], ctx, next);
+      // The paths a glob matches are its pattern, marked so a loop over them
+      // binds each (bindingPy); a list made of them is still them.
+      if (PY_GLOBS.has(name)) return globbed(evalPy(args[0], ctx, next));
+      // os.listdir gives the names in a directory, each a path once joined
+      // onto it: join(ROOT, name) for name in listdir(ROOT) is ROOT/*.
+      if (name === 'os.listdir' || name === 'listdir') return globbed([closed('*')]);
+      if (PY_LISTS.has(name) && args.length === 1) return evalPy(args[0], ctx, next).filter((value) => value.glob);
       if (fn?.type === 'attribute') {
         const attribute = fn.childForFieldName('attribute')?.text;
         const object = fn.childForFieldName('object');
+        if (PY_GLOB_METHODS.has(attribute) && args.length > 0) {
+          // rglob(p) is glob('**/' + p): the pattern at any depth under dir.
+          const pattern = evalPy(args[0], ctx, next).map((value) => (attribute === 'rglob' && !value.open ? { ...value, text: `**/${value.text}` } : value));
+          return globbed(joinValues([evalPy(object, ctx, next), pattern], false));
+        }
+        if (attribute === 'iterdir' && args.length === 0) return globbed(joinValues([evalPy(object, ctx, next), [closed('*')]], false));
         if (attribute === 'resolve' || attribute === 'absolute') return fromCaller(evalPy(object, ctx, next));
         if (attribute === 'expanduser') return evalPy(object, ctx, next);
         if (attribute === 'joinpath') return joinValues([object, ...args].map((arg) => evalPy(arg, ctx, next)), false);
@@ -2520,6 +2575,9 @@ function bindingPy(name, from, ctx, depth) {
     if (scope.type !== 'function_definition' && scope.type !== 'module') continue;
     const body = scope.type === 'module' ? scope : scope.childForFieldName('body');
     const rights = [];
+    // The iterables a loop binds the name over; of what they read as, only a
+    // glob's paths are what the name takes, one at a time.
+    const loops = [];
     let bound = false;
     const stack = [...(body?.namedChildren ?? [])];
     while (stack.length > 0) {
@@ -2534,6 +2592,8 @@ function bindingPy(name, from, ctx, depth) {
         }
       } else if (node.type === 'for_statement' && node.childForFieldName('left')?.text === name) {
         bound = true;
+        const right = node.childForFieldName('right');
+        if (right) loops.push(right);
       } else if (node.type === 'for_statement' && pyUnpacks(node.childForFieldName('left'), name) !== -1) {
         // for prefix, path in files: the path of each tuple a literal list
         // holds, the list spelled there or bound to a name once.
@@ -2548,11 +2608,61 @@ function bindingPy(name, from, ctx, depth) {
     const id = `binding:${key(scope)}:${name}`;
     if (ctx.visiting.has(id)) return [];
     ctx.visiting.add(id);
-    const values = union(rights.map((right) => evalPy(right, ctx, depth)));
+    const values = union([
+      ...rights.map((right) => evalPy(right, ctx, depth)),
+      ...loops.map((right) => evalPy(right, ctx, depth).filter((value) => value.glob)),
+    ]);
     ctx.visiting.delete(id);
     return values;
   }
   return [];
+}
+
+function globbed(values) {
+  return values.map((value) => ({ ...value, glob: true }));
+}
+
+/**
+ * A pattern read under a root this map cannot place (a directory the caller
+ * passes, or one read at run time): os.path.join(sys.argv[1], '*.db'). It
+ * names no place, but a written place it could match is not one the map can
+ * say nothing reads (attachLandings, mayReaders). A pattern whose name is
+ * all wildcard (rglob('*') over a directory a person names) spells no kind
+ * of file: it could read any, as any path built at run time could, and is
+ * counted with those, never set against one place.
+ *
+ * @param {Set<string>} into
+ * @param {{ text: string, open?: boolean }} value the path under that root
+ */
+function addLoosePattern(into, value) {
+  if (value.open || !value.text.includes('*') || value.text.includes('://')) return;
+  let text = value.text.replaceAll('\\', '/');
+  while (text.startsWith('./') || text.startsWith('/')) text = text.slice(text.startsWith('/') ? 1 : 2);
+  if (text !== '' && !text.startsWith('../') && !FREE_NAME.test(text)) into.add(text);
+}
+
+/**
+ * The pattern a read names when its path holds a wildcard: the paths a glob
+ * matches, read through the glob call or a loop over its result. A star in a
+ * path is a glob's (no file of a repository is named with one); ? and [ are
+ * a glob's only at the glob call itself, since a page route may spell
+ * [slug]. A pattern under a root read at run time names the files it
+ * matches only when what it spells before its first wildcard is a tracked
+ * directory, as a path under such a root names a place (landingOf); any
+ * other could be under any directory, and names none. Null for any other read.
+ */
+function readPattern(value, call, places) {
+  if (value.open || value.text.includes('://')) return null;
+  const wild = value.text.includes('*') || ((PY_GLOBS.has(call) || PY_GLOB_METHODS.has(call)) && /[?[]/.test(value.text));
+  if (!wild) return null;
+  let text = value.text.replaceAll('\\', '/');
+  while (text.startsWith('./')) text = text.slice(2);
+  if (text === '' || text.startsWith('/') || text.startsWith('../')) return null;
+  if (value.rooted) {
+    const head = text.slice(0, Math.max(text.lastIndexOf('/', text.search(/[*?[]/)), 0));
+    if (head === '' || !places.dirs.has(head)) return null;
+  }
+  return text;
 }
 
 
@@ -3550,6 +3660,7 @@ export function attachLandings({ files, doors, boundaries, places }) {
   for (const file of testReads) {
     for (const read of file.reads) add(readers, read.target, { ...readerEntry(file.path, read), fromTests: true });
   }
+  settlePatternReads(readers, writers, places);
   // Code that imports a module something writes reads that module, and code
   // that loads a manifest reads the manifest.
   for (const file of own) {
@@ -3634,8 +3745,10 @@ export function attachLandings({ files, doors, boundaries, places }) {
 
   for (const boundary of boundaries) boundary.origin = originOf(boundary, strong, stamped, places, into);
 
+  const loose = looseReaders(own, writers, places);
   return [...new Set([...writers.keys(), ...readers.keys()])].sort(compare).map((target) => {
     const landing = { target, writers: sortedValues(writers.get(target)), readers: sortedValues(readers.get(target)) };
+    if (loose.has(target)) landing.mayReaders = sortedValues(loose.get(target));
     if (spans.has(target)) landing.spans = spans.get(target);
     if (untracked.has(target)) landing.tracked = false;
     // Its writers write files into it, beside tracked files they do not
@@ -3877,7 +3990,64 @@ function readerEntry(by, read) {
   const entry = { by, call: read.call, confidence: read.confidence };
   if (read.ref != null) entry.ref = read.ref;
   if (read.repo != null) entry.repo = read.repo;
+  if (read.pattern) entry.pattern = read.target;
   return entry;
+}
+
+/**
+ * A read through a pattern (*-knowledge/*.db) reads each written place the
+ * pattern matches: a file it matches, or a directory holding a tracked file
+ * it matches. The pattern is no place of its own, and what it matches that
+ * nothing writes stays unnamed, as before patterns were read.
+ * Matched as Python's glob does, a star never taking a leading dot.
+ *
+ * @param {Map<string, Map<string, object>>} readers
+ * @param {Map<string, Map<string, object>>} writers
+ * @param {{ files: Set<string>, dirs: Set<string> }} places
+ */
+function settlePatternReads(readers, writers, places) {
+  const patterns = [...readers].filter(([, entries]) => [...entries.values()].some((entry) => entry.pattern != null));
+  if (patterns.length === 0) return;
+  const written = [...writers.keys()].filter((target) => !target.includes('*'));
+  for (const [pattern, entries] of patterns) {
+    const reads = [...entries.values()].filter((entry) => entry.pattern != null);
+    for (const target of matchedPlaces(pattern, written, places)) {
+      if (!readers.has(target)) readers.set(target, new Map());
+      for (const entry of reads) readers.get(target).set(canonicalEntry(entry), entry);
+    }
+    for (const entry of reads) entries.delete(canonicalEntry(entry));
+    if (entries.size === 0) readers.delete(pattern);
+  }
+}
+
+// The places of a list a glob matches: each it matches, and each directory
+// holding a tracked file it matches.
+function matchedPlaces(pattern, targets, places) {
+  const isMatch = picomatch(pattern);
+  const files = [...places.files].filter((path) => isMatch(path));
+  return targets.filter((target) => isMatch(target) || (places.dirs.has(target) && files.some((path) => path.startsWith(`${target}/`))));
+}
+
+/**
+ * The files reading a pattern under a root this map cannot place
+ * (addLoosePattern), by each written place the pattern could match there,
+ * at any depth: kb/alpha.db for *.db read under a directory the caller
+ * passes. A test is left out, as what it reads is its own copy.
+ *
+ * @returns {Map<string, Map<string, { by: string, pattern: string }>>}
+ */
+function looseReaders(own, writers, places) {
+  const out = new Map();
+  const written = [...writers.keys()].filter((target) => !target.includes('*'));
+  for (const file of own) {
+    for (const pattern of file.loosePatterns ?? []) {
+      for (const target of matchedPlaces(`**/${pattern}`, written, places)) {
+        if (!out.has(target)) out.set(target, new Map());
+        out.get(target).set(`${file.path}\0${pattern}`, { by: file.path, pattern });
+      }
+    }
+  }
+  return out;
 }
 
 function canonicalEntry(entry) {

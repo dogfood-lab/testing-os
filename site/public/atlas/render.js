@@ -806,6 +806,18 @@ function untestedSection(ctx) {
   return section('What no test touches', [...body, ...note].join('\n'));
 }
 
+// A file reading a pattern under a directory chosen at run time that could
+// match the place leaves no reader the map can name, as the markdown says.
+function unreadEnd(ctx, mayRead) {
+  const by = arr(mayRead?.by).filter((path) => typeof path === 'string');
+  const patterns = arr(mayRead?.patterns).filter((pattern) => typeof pattern === 'string');
+  if (by.length === 0 || patterns.length === 0) return 'and read by nothing else in this repository.';
+  // Three are named and the rest counted, as page.js unreadEnd names them.
+  const named = by.slice(0, 3).map((path) => pathHtml(ctx, path));
+  const readers = by.length > 3 ? `${named.join(', ')} and ${count(by.length - 3, 'more file')}` : list(named);
+  return `and read by nothing else this map can name: ${readers} ${by.length > 1 ? 'read' : 'reads'} ${list(patterns.map((pattern) => `<code>${esc(pattern)}</code>`))} under a directory chosen at run time, which may include it.`;
+}
+
 function unreadSection(ctx) {
   if (!Array.isArray(ctx.page.unread)) return '';
   const items = ctx.page.unread.filter((item) => item && typeof item === 'object');
@@ -813,7 +825,7 @@ function unreadSection(ctx) {
     ? ul(items.map((item) => {
       const writers = arr(item.writers);
       const comma = writers.length > 1 ? ',' : '';
-      return `${writtenBy(`<strong>${pathHtml(ctx, item.place)}</strong>`, item.into)} ${list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))))}${comma} and read by nothing else in this repository.`;
+      return `${writtenBy(`<strong>${pathHtml(ctx, item.place)}</strong>`, item.into)} ${list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))))}${comma} ${unreadEnd(ctx, item.mayRead)}`;
     }))
     : p(ctx.page.written === 0 ? absence('unread', unreadFiles(ctx)) : 'Every written place has a reader.');
   const note = arr(ctx.page.unreadNote).map((line) => p(esc(line)));
