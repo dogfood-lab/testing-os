@@ -2,7 +2,9 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.25.0] — 2026-09-30
+
+The map holds its sentences and its harness holds its tests (`docs/atlas-production.spec.md`, Part 6). A count of the written-down corners over the 79 fleet maps found three kinds of false sentence on the page: directories called generated that people write in, start-chain arrows that were not a step, and tests CI runs said to run in no workflow. Each is fixed at the class, and the fleet site now says what the page says. Reach is walked from every run, `map` names untracked files, a repository with no commit gets a clear error, commands handed to retry actions are read, inner lists page, and a cold `atlas_check_change` takes half the time. The weekly render removes a repository that leaves the list but refuses a mass removal, the tests no longer race git's maintenance, and the release waits longer for npm. With it ships `scripts/atlas-pin-bump.mjs`, which moved 79 repositories to one Atlas version on 2026-09-30.
 
 ### Added
 - **A door's reach is walked from every run.** A door records at most 200 runs, and its reach, the files it writes from, its gate reach and its programs were walked from those alone. This repository's CI door has 760. They are now walked from all runs. The recorded list is still cut at 200, and a door past the cap says so (`runsCut`, beside `runsCount`), and its page line says it walks its reach from all of them.

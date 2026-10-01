@@ -97,6 +97,8 @@ Known before the run, and named in the slice brief: two doors where D1 should fi
 
 ## Part 6: hardening
 
+Every row was done in 1.25.0 (slice AJ, 2026-09-30); the changelog has the measurements. "Today" below is the state the slice started from.
+
 | Item | Today | Done when |
 |---|---|---|
 | Reach from every run | A door's reach is walked from its first 200 recorded runs; this repository's CI door has 740 | Reach is walked from all runs; the recorded list may still be cut, and says so |
@@ -131,8 +133,8 @@ Measured 2026-09-30: 79 repositories carry eight different pins; 11 are on 1.14.
 
 1. **Slice AH:** Part 1 items 1 to 5. Built 2026-09-30.
 2. **Slice AI:** Parts 2 to 5 and the Pages-door fixture. Built 2026-09-30; the fleet check was a script the coordinator ran, and the coordinator reviewed the firings. AH and AI ship together as release 1.24.0, since both were built before either was released and a release now carries a full treatment and a Docker proof; the later version numbers below move down by one.
-3. **The pin-bump wave** at 1.24.0: the tool by one Opus agent, the wave by Sonnet agents.
-4. **Slice AJ, release 1.26.0:** Part 6. The test and release items may run beside AI; the engine items follow it.
+3. **The pin-bump wave** at 1.24.0: the tool by one Opus agent, the wave by Sonnet agents. Done 2026-09-30: 78 public fleet repositories and one private one moved, all merged; the wave ran as the coordinator's scripts around the tool rather than as agents. Nine needed more than the tool (a re-run, two rebuilds after merge conflicts, six red dependency audits fixed first).
+4. **Slice AJ, release 1.25.0:** Part 6. Done 2026-09-30, as three builds (engine, harness, and the sentences the corner count found wrong) and one research lane that counted the corners.
 5. **Slice AK:** Part 1 item 6.
 6. **Coverage and the docs pass:** door-only maps for the unmapped repositories that run workflows, first proving that Atlas maps a repository whose language it cannot parse; the landing page's Atlas section; the exit test.
 
