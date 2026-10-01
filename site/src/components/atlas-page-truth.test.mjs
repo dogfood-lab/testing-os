@@ -110,3 +110,10 @@ test('a place a pattern under a directory chosen at run time could match is read
   const hostile = { ...page, unread: [{ ...page.unread[0], mayRead: { by: ['report.py'], patterns: ['<img src=x>'] } }] };
   assert.equal(render.renderPage(hostile, { repo: 'acme/glob-readers' }).includes('<img src=x>'), false);
 });
+
+test('a path that ends at a tie among the files it leads to names them, on the site as in the markdown', () => {
+  const { page, markdown } = mapped('start-scenes');
+  assert.ok(page.startStop, 'the map has a path that ends at a tie');
+  const html = render.renderPage(page, { repo: 'acme/start-scenes' });
+  assert.deepEqual(siteLines(html, 'Where to start'), markdownLines(markdown, 'Where to start'));
+});

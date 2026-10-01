@@ -928,7 +928,12 @@ function startSection(ctx) {
   const chain = arr(ctx.page.startHere).map((path) => pathHtml(ctx, path));
   if (chain.length === 0 && ctx.page.startNote) return section('Where to start', p(esc(ctx.page.startNote)));
   const reason = ctx.page.startReason ? ` ${esc(str(ctx.page.startReason))}` : '';
-  // One file is where to start, not a list to read in order.
+  // One file is where to start, not a list to read in order; where the path
+  // ends there at a tie, the files it leads to are named, as page.js startOne.
+  const stop = ctx.page.startStop && typeof ctx.page.startStop === 'object' ? arr(ctx.page.startStop.files).filter((path) => typeof path === 'string') : [];
+  if (chain.length === 1 && stop.length > 0 && ctx.page.startStop.from === arr(ctx.page.startHere)[0]) {
+    return section('Where to start', p(`Start at ${chain[0]}, which leads on to ${list(stop.map((path) => pathHtml(ctx, path)))}; this map records no order among them, so the path ends there.${reason}`));
+  }
   if (chain.length === 1) return section('Where to start', p(`Start at ${chain[0]} to follow one ${esc(triggerNoun(ctx.start))} end to end.${reason}`));
   const body = [
     `<p class="chain">${chain.join(' <span aria-hidden="true">→</span><span class="sr">, then</span> ')}</p>`,
