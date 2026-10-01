@@ -11,6 +11,7 @@ import { buildArtifact } from './artifact.js';
 import { readBoundaryFile } from './boundary-file.js';
 import { compareArtifacts } from './check.js';
 import { checkCommand } from './commands.js';
+import { initCommand } from './init.js';
 
 // atlas check compares the structure (the parts and their files, the edges,
 // the entries, the unresolved sites) and reports the workflows' door checks.
@@ -120,4 +121,24 @@ describe('the cost of atlas check', () => {
       assert.equal(compareArtifacts(whole, structure, root), null);
     });
   }
+});
+
+describe('the cost of atlas init', () => {
+  // A proposal is each part's files, entries and manifest, which is the
+  // structure the check reads; init read the tree for the page as well.
+  it('reads each file for the structure, never for the order of its calls', () => {
+    const root = mkdtempSync(join(tmpdir(), 'atlas-init-cost-'));
+    roots.push(root);
+    cpSync(join(FIXTURES, 'host'), root, { recursive: true });
+    rmSync(join(root, 'atlas'), { recursive: true, force: true });
+    git(root, ['init', '-q']);
+    git(root, ['add', '-A']);
+    git(root, ['-c', 'user.email=atlas@example.com', '-c', 'user.name=atlas', 'commit', '-q', '-m', 'host']);
+    const before = { ...PARSE_COUNTS };
+    const { code, out } = quietly(() => initCommand(root, []));
+    assert.equal(code, 0, out);
+    assert.match(out, /wrote atlas\/boundaries\.yaml/);
+    assert.ok(PARSE_COUNTS.files > before.files, 'init parsed the tree');
+    assert.equal(PARSE_COUNTS.sequences, before.sequences, 'and read no file for the order of its calls');
+  });
 });
