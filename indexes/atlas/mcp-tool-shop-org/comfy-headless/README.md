@@ -1,6 +1,6 @@
 # comfy-headless: how it works
 
-Mapped at 2026-09-30 from commit 8e77c6e by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 8e77c6e by Atlas 1.25.0.
 
 ## What this is
 
@@ -8,7 +8,8 @@ Mapped at 2026-09-30 from commit 8e77c6e by Atlas 1.24.0.
 
 ## What changed since 2026-09-30 (a804d34)
 
-Nothing structural changed since 2026-09-30; no file changed.
+- kb was generated and is now mixed.
+- No file changed.
 
 ## What comes in
 
@@ -60,7 +61,7 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-- **kb/** is written by scripts/gen_kb.py.
+- **kb/** holds files written by scripts/gen_kb.py.
 
 ## Hand-authored
 
@@ -68,9 +69,11 @@ People write .github/, assets/, docs/, the repository root and site/; 2 writes w
 
 ## Where to start
 
-comfy_headless/__main__.py → comfy_headless/feature_flags.py → comfy_headless/__init__.py
+comfy_headless/__main__.py → comfy_headless/__init__.py → comfy_headless/config.py
 
 Read those in order to follow one run of comfy-headless end to end. This path follows comfy-headless (a command people run) from its entry, since CI runs only tests and checks.
+
+Beside the path, comfy_headless/__main__.py also calls comfy_headless/feature_flags.py.
 
 ## What this map cannot see
 

@@ -248,7 +248,7 @@
           "path": ".github/workflows/ci.yml"
         },
         {
-          "hash": "3d5bb4e5e7614d7116c95bd59ed0a74c9876ad323efe43e0abd121ed535a4de0",
+          "hash": "8caf7234bc27751a1e7ef13c0520ecd94c741fb4287fc2c62622ad5d418cb0be",
           "path": ".github/workflows/pages.yml"
         },
         {
@@ -366,7 +366,7 @@
           "path": "logo.png"
         },
         {
-          "hash": "45c96592c316d2d37c08acc3acb0a14124f0f72859ae41f989d723f9c3c8216f",
+          "hash": "82a93ac7880103304f5e53367431d414fff069c71962663d15af3f6d4d9039ae",
           "path": "package-lock.json"
         },
         {
@@ -2251,6 +2251,26 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/pages.yml",
+      "gated": [
+        {
+          "jobs": [
+            "build",
+            "deploy"
+          ],
+          "pushes": false,
+          "sends": [
+            "deploysPages"
+          ],
+          "stages": [],
+          "when": {
+            "branches": [
+              "main"
+            ],
+            "byHand": true,
+            "event": "push"
+          }
+        }
+      ],
       "jobs": [
         {
           "basis": "declared",
@@ -2338,7 +2358,7 @@
       "runsCount": 2,
       "secrets": [],
       "sends": {
-        "deploysPages": true,
+        "deploysPages": false,
         "dispatchesTo": [],
         "opensIssues": false,
         "opensIssuesOnFailure": false,
@@ -2349,6 +2369,16 @@
       },
       "stages": [],
       "triggers": [
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "pull_request",
+          "paths": [
+            ".github/workflows/pages.yml",
+            "site/**"
+          ]
+        },
         {
           "branches": [
             "main"
@@ -2831,9 +2861,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
-    "commit": "a72ff296da57061c24f26e76f81cd90a0ea7f4e6",
+    "commit": "e0fd93e1984754317e96214bd4f4723c28406d4f",
     "tracked": 133
   },
   "landings": [

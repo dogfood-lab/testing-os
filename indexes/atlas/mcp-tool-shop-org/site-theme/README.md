@@ -1,6 +1,6 @@
 # site-theme: how it works
 
-Mapped at 2026-09-30 from commit 700f363 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 700f363 by Atlas 1.25.0.
 
 ## What this is
 
@@ -97,6 +97,8 @@ People write .claude/, .github/, assets/, docs/, receipts/, the repository root,
 .github/workflows/ci.yml → cli/init.mjs → cli/front-door/index.mjs → cli/front-door/verify.mjs → cli/front-door/references.mjs → cli/front-door/extract.mjs
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, cli/front-door/index.mjs also calls cli/front-door/report.mjs, cli/front-door/generate.mjs, cli/front-door/standard.mjs, cli/front-door/eval.mjs and 2 more files. Beside the path, cli/front-door/verify.mjs also calls cli/front-door/model.mjs, cli/front-door/minimality.mjs, cli/front-door/doctest.mjs, cli/front-door/attestation.mjs and 2 more files.
 
 ## What this map cannot see
 

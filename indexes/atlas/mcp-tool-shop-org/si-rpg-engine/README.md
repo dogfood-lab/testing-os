@@ -1,6 +1,6 @@
 # si-rpg-engine: how it works
 
-Mapped at 2026-09-30 from commit 06c9367 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 06c9367 by Atlas 1.25.0.
 
 ## What this is
 
@@ -171,9 +171,11 @@ People write .github/, docs/, predicates/beliefs/, predicates/hazards/, predicat
 
 ## Where to start
 
-.github/workflows/ci.yml → harness/bundle.mjs → packages/tick/bundle.js → packages/tick/runs.js → packages/tick/difference.js → packages/tick/trace-line.js → packages/frame/hash.js
+.github/workflows/ci.yml → harness/bundle.mjs → packages/tick/bundle.js → packages/tick/runs.js → packages/tick/memory.js → packages/tick/trust.js
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, packages/tick/bundle.js also calls packages/tick/difference.js and packages/tick/trace-line.js.
 
 ## What this map cannot see
 

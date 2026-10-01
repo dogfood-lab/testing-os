@@ -27,8 +27,16 @@
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI now also runs tests/.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "tests/"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -36,7 +44,7 @@
       "commit": "11998651e6550c721d152d4b6d4c4d84f598c25f",
       "generatedAt": "2026-09-30T20:06:30.460Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -45,7 +53,7 @@
   "changesTogetherWithTests": 0,
   "commit": "f9e49a191a2b248a88ac40b30a19de92cc52acc7",
   "defaultBranch": "main",
-  "derived": "6 parts, mostly Python (11 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 3 doors; CI, Deploy site to GitHub Pages and ai-eyes-mcp each reach 1 part, and CI is followed because a pull request goes through it. It deploys a site to GitHub Pages. People run ai-eyes-mcp.",
+  "derived": "6 parts, mostly Python (11 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. People run ai-eyes-mcp.",
   "doors": [
     {
       "checks": [],
@@ -61,15 +69,21 @@
           "boundary": "src",
           "depth": 0,
           "files": 3
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 7
         }
       ],
       "runs": [
         "src/ai_eyes_mcp/__init__.py",
         "src/ai_eyes_mcp/engine.py",
-        "src/ai_eyes_mcp/server.py"
+        "src/ai_eyes_mcp/server.py",
+        "tests/"
       ],
-      "runsCount": 3,
-      "runsMore": 0,
+      "runsCount": 4,
+      "runsMore": 7,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -142,9 +156,9 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [],
-  "generatedAt": "2026-09-30T21:45:42.975Z",
+  "generatedAt": "2026-10-01T01:41:56.938Z",
   "limits": [
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -179,7 +193,6 @@
   "unreadNote": [],
   "untested": [],
   "untestedNote": [
-    "6 test files run in no workflow: tests/test_ci_gates.py, tests/test_edge_cases.py, tests/test_engine_ci.py and 3 more.",
     "verify.sh runs in no workflow."
   ],
   "written": 0

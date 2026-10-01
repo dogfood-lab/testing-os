@@ -1,6 +1,6 @@
 # world-forge: how it works
 
-Mapped at 2026-09-30 from commit fa8ab80 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 5885654 by Atlas 1.25.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-09-30 from commit fa8ab80 by Atlas 1.24.0.
 
 ## What changed since 2026-09-30 (69358f1)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-09-30; 1 file added and 1 changed content.
 
 ## What comes in
 

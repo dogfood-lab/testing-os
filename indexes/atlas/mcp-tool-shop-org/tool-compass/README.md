@@ -1,6 +1,6 @@
 # tool-compass: how it works
 
-Mapped at 2026-09-30 from commit 98f8498 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 98f8498 by Atlas 1.25.0.
 
 ## What this is
 
@@ -88,9 +88,11 @@ People write .github/, assets/ and site/; 11 writes with paths built at run time
 
 ## Where to start
 
-.github/workflows/ci.yml → gateway.py → config.py → backend_client_simple.py → tool_manifest.py → embedder.py → indexer.py
+.github/workflows/ci.yml → gateway.py → config.py → tool_manifest.py
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, gateway.py also calls backend_client_simple.py, embedder.py and indexer.py.
 
 ## What this map cannot see
 

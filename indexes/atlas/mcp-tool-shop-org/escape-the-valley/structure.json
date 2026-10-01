@@ -68,6 +68,9 @@
       "name": "agents",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 1,
       "unresolvedSites": 0
     },
@@ -4773,6 +4776,9 @@
       "outsideReads": 12,
       "outsideWrites": 2,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 23,
       "unresolvedSites": 0
     },
@@ -5377,13 +5383,16 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
   ],
   "doors": [
     {
-      "checksCount": 2,
+      "checksCount": 1,
       "commands": [
         {
           "dir": "",
@@ -5536,7 +5545,7 @@
           "directory": true,
           "job": "test",
           "path": "tests/",
-          "runKind": "checks"
+          "runKind": "executes"
         }
       ],
       "runsCount": 2,
@@ -5555,7 +5564,7 @@
       "tests": [
         {
           "config": "pyproject.toml",
-          "files": 0,
+          "files": 26,
           "job": "test",
           "junit": true,
           "runner": "pytest",
@@ -5596,6 +5605,13 @@
         },
         {
           "event": "workflow_dispatch"
+        }
+      ],
+      "unresolvedExpressions": [
+        {
+          "adds": "flags",
+          "job": "test",
+          "step": "Test"
         }
       ],
       "uses": [
@@ -6076,7 +6092,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 2,
+      "checksCount": 1,
       "commands": [
         {
           "dir": "",
@@ -6349,7 +6365,7 @@
           "directory": true,
           "job": "gate/test",
           "path": "tests/",
-          "runKind": "checks"
+          "runKind": "executes"
         }
       ],
       "runsCount": 2,
@@ -6379,7 +6395,7 @@
       "tests": [
         {
           "config": "pyproject.toml",
-          "files": 0,
+          "files": 26,
           "job": "gate/test",
           "junit": true,
           "runner": "pytest",
@@ -6398,6 +6414,13 @@
         },
         {
           "event": "workflow_dispatch"
+        }
+      ],
+      "unresolvedExpressions": [
+        {
+          "adds": "flags",
+          "job": "gate/test",
+          "step": "Test"
         }
       ],
       "uses": [
@@ -6566,7 +6589,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
     "commit": "6e49565cdd05c895b860359023c8f8435497655e",
     "tracked": 155
@@ -6706,31 +6729,5 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 26,
-  "testsNotRun": [
-    "tests/test_adapter.py",
-    "tests/test_backpack.py",
-    "tests/test_backpack_ledger.py",
-    "tests/test_backpack_models.py",
-    "tests/test_backpack_save.py",
-    "tests/test_cli_stats.py",
-    "tests/test_death_causes.py",
-    "tests/test_event_loader.py",
-    "tests/test_events.py",
-    "tests/test_four_tier_live.py",
-    "tests/test_gm.py",
-    "tests/test_ledger.py",
-    "tests/test_ledger_proof.py",
-    "tests/test_memory.py",
-    "tests/test_memory_emitters.py",
-    "tests/test_models.py",
-    "tests/test_narration.py",
-    "tests/test_npx_launcher.py",
-    "tests/test_physics.py",
-    "tests/test_save.py",
-    "tests/test_step_engine.py",
-    "tests/test_tui_smoke.py",
-    "tests/test_voice.py",
-    "tests/test_worldgen.py"
-  ],
   "unassigned": []
 }

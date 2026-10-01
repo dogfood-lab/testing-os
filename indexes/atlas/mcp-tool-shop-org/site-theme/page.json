@@ -419,9 +419,9 @@
       "to": "lib"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [],
-  "generatedAt": "2026-09-30T21:53:03.566Z",
+  "generatedAt": "2026-10-01T01:52:01.848Z",
   "limits": [
     "5 writes and 2 reads use paths built at run time and are not named here.",
     "12 writes and 44 reads go to the directory the command is run in, not to this repository.",
@@ -595,6 +595,30 @@
           "phrase": "`startServer`"
         }
       ]
+    }
+  ],
+  "startBeside": [
+    {
+      "files": [
+        "cli/front-door/report.mjs",
+        "cli/front-door/generate.mjs",
+        "cli/front-door/standard.mjs",
+        "cli/front-door/eval.mjs",
+        "cli/front-door/ablation/index.mjs",
+        "cli/front-door/mcp.mjs"
+      ],
+      "from": "cli/front-door/index.mjs"
+    },
+    {
+      "files": [
+        "cli/front-door/model.mjs",
+        "cli/front-door/minimality.mjs",
+        "cli/front-door/doctest.mjs",
+        "cli/front-door/attestation.mjs",
+        "cli/front-door/gherkin.mjs",
+        "cli/front-door/scorecard.mjs"
+      ],
+      "from": "cli/front-door/verify.mjs"
     }
   ],
   "startDoor": ".github/workflows/ci.yml",

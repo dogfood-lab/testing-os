@@ -7763,7 +7763,7 @@
           "path": "package.json"
         },
         {
-          "hash": "72b174141d774f3386fe2ccfc6f40f681933ee958b35bd66eaff3f1d20a10c23",
+          "hash": "c2cc0e4954084d655b1cc10abb863c3856872c76ccf7524641ba3b3b3f6446ce",
           "path": "pnpm-lock.yaml"
         },
         {
@@ -11908,9 +11908,9 @@
       "to": "domain"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
-    "commit": "a5248e42735038afa90395835e6c2eceacbf6a4b",
+    "commit": "5a1cc3213f0da895e6d0a325272dee125e73825a",
     "tracked": 851
   },
   "landings": [
@@ -12094,7 +12094,8 @@
           "by": "packages/mcp-sprite-server/src/dogfood/materialize.test.ts",
           "confidence": "ast"
         }
-      ]
+      ],
+      "writesInto": true
     },
     {
       "readers": [],
@@ -12380,7 +12381,7 @@
     },
     {
       "readers": [],
-      "target": "docs/showcase/stage47a-test",
+      "target": "docs/showcase/stage47a-test/monk-47a---*x*.png",
       "writers": [
         {
           "by": "scripts/test-47a-prompt.mjs",
@@ -12401,6 +12402,36 @@
     {
       "readers": [],
       "target": "docs/showcase/stage47b-critique",
+      "writers": [
+        {
+          "by": "scripts/test-47b-critique-loop.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "docs/showcase/stage47b-critique/monk-r0---*x*.png",
+      "writers": [
+        {
+          "by": "scripts/test-47b-critique-loop.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "docs/showcase/stage47b-critique/monk-r1---*x*.png",
+      "writers": [
+        {
+          "by": "scripts/test-47b-critique-loop.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "docs/showcase/stage47b-critique/monk-r2---*x*.png",
       "writers": [
         {
           "by": "scripts/test-47b-critique-loop.mjs",
@@ -12490,7 +12521,8 @@
           "by": "packages/mcp-sprite-server/src/workflows/verify.ts",
           "confidence": "ast"
         }
-      ]
+      ],
+      "writesInto": true
     },
     {
       "readers": [
@@ -12605,17 +12637,8 @@
           "by": "showcase/generate.mjs",
           "confidence": "ast"
         }
-      ]
-    },
-    {
-      "readers": [],
-      "target": "showcase/previews",
-      "writers": [
-        {
-          "by": "showcase/render-previews.mjs",
-          "confidence": "ast"
-        }
-      ]
+      ],
+      "writesInto": true
     },
     {
       "readers": [],
@@ -12640,6 +12663,16 @@
     {
       "readers": [],
       "target": "showcase/previews/hero-variants.ppm",
+      "writers": [
+        {
+          "by": "showcase/render-previews.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "showcase/previews/part-*.ppm",
       "writers": [
         {
           "by": "showcase/render-previews.mjs",

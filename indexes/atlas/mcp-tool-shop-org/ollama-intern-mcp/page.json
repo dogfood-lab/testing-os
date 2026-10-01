@@ -588,7 +588,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [
     {
       "block": true,
@@ -598,7 +598,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-30T21:51:16.994Z",
+  "generatedAt": "2026-10-01T01:49:54.093Z",
   "limits": [
     "1 import could not be resolved: `scripts/gen-tool-docs.mjs` imports a path built at run time.",
     "3 writes and 9 reads use paths built at run time and are not named here.",
@@ -703,6 +703,16 @@
   ],
   "spawnTested": [
     "scripts"
+  ],
+  "startBeside": [
+    {
+      "files": [
+        "src/ollama.ts",
+        "src/observability.ts",
+        "src/prewarm.ts"
+      ],
+      "from": "src/index.ts"
+    }
   ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [

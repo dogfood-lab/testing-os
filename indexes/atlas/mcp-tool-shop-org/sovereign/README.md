@@ -1,12 +1,12 @@
 # sovereign: how it works
 
-Mapped at 2026-09-30 from commit d5f96a1 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 10f3ee8 by Atlas 1.25.0.
 
 ## What this is
 
 8 parts, mostly JavaScript (52 files), HTML (39), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to npm. It deploys a site to GitHub Pages. People run sovereign. People import @mcptoolshop/sovereign.
 
-## What changed since 2026-09-30 (107b2aa)
+## What changed since 2026-09-30 (d5f96a1)
 
 Nothing structural changed since 2026-09-30; no file changed.
 

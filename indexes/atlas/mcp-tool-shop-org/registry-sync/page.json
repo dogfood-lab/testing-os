@@ -237,9 +237,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [],
-  "generatedAt": "2026-09-30T21:52:04.163Z",
+  "generatedAt": "2026-10-01T01:50:46.204Z",
   "limits": [
     "4 writes and 4 reads go to a path their caller passes, not to this repository.",
     "2 reads go to the directory the command is run in (package.json and registry-sync.config.json), not to this repository.",
@@ -534,16 +534,27 @@
       ]
     }
   ],
+  "startBeside": [
+    {
+      "files": [
+        "src/audit.ts",
+        "src/format/json.ts",
+        "src/format/markdown.ts",
+        "src/format/table.ts",
+        "src/plan.ts",
+        "src/apply.ts",
+        "src/diff.ts",
+        "src/format/diff.ts"
+      ],
+      "from": "src/cli.ts"
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "src/cli.ts",
     "src/config.ts",
-    "src/audit.ts",
-    "src/format/json.ts",
-    "src/format/markdown.ts",
-    "src/format/table.ts",
-    "src/plan.ts"
+    "src/types.ts"
   ],
   "summary": null,
   "summaryFrom": null,

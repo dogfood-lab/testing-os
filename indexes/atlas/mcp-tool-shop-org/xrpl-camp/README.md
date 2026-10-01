@@ -1,14 +1,14 @@
 # xrpl-camp: how it works
 
-Mapped at 2026-09-30 from commit 8796d1c by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 1763b68 by Atlas 1.25.0.
 
 ## What this is
 
 7 parts, mostly Python (31 files), shell (5), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 7 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. It deploys a site to GitHub Pages. People run xrpl-camp.
 
-## What changed since 2026-09-30 (eaa4028)
+## What changed since 2026-10-01 (8796d1c)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; 2 files changed content.
 
 ## What comes in
 
@@ -37,7 +37,7 @@ CI writes nothing this map can see.
 
 **Release (npm)** runs scripts/check-versions.sh and publishes to npm.
 
-**Freshness Check** runs scripts/check-freshness.sh, writes to .github/freshness-report.md, commits .github/freshness-report.md and pushes to a branch for review, never to main, and opens a pull request.
+**Freshness Check** runs scripts/check-freshness.sh, writes to .github/freshness-report.md, commits .github/freshness-report.md and pushes to a branch for review, never to main, and opens an issue.
 
 **xrpl-camp** (a command people run, from package.json) runs bin/xrpl-camp.js.
 
@@ -80,7 +80,7 @@ People write the repository root, scripts/ and site/. Nothing in this repository
 
 ## Where to start
 
-xrpl_camp/cli.py → xrpl_camp/errors.py
+xrpl_camp/cli.py → xrpl_camp/errors.py → xrpl_camp/models.py
 
 Read those in order to follow one run of xrpl-camp end to end. This path follows xrpl-camp (a command people run, from pyproject.toml) from its entry, since CI only checks code.
 

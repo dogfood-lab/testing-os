@@ -40,13 +40,13 @@
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "Nothing structural changed since 2026-10-01; no file changed.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "26b6267d76105b20ab1b8c4ebe3c6602c1d63a01",
-      "generatedAt": "2026-09-30T20:11:33.462Z"
+      "commit": "73f9a294f974916571113578fb35d33d34965457",
+      "generatedAt": "2026-10-01T00:12:59.239Z"
     },
     "unchanged": true
   },
@@ -117,7 +117,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "73f9a294f974916571113578fb35d33d34965457",
+  "commit": "4c668d5a9841b6851d8179d83fa682c9d7a6ed3a",
   "defaultBranch": "main",
   "derived": "12 parts, mostly Python (183 files), JavaScript (3), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 6 doors; CI, Release and Release Binaries each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run portlight.",
   "doors": [
@@ -345,7 +345,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [
     {
       "fromRoot": true,
@@ -356,7 +356,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-30T21:51:28.560Z",
+  "generatedAt": "2026-10-01T01:50:08.748Z",
   "limits": [
     "2 imports could not be resolved: `src/portlight/app/tui/screens/encounter.py` imports `portlight.content.weapons`, which is no module on its import path and no declared dependency, twice.",
     "1 read uses a path built at run time and is not named here.",
@@ -391,14 +391,39 @@
   ],
   "repo": "mcp-tool-shop-org/portlight",
   "sequences": [],
+  "startBeside": [
+    {
+      "files": [
+        "src/portlight/engine/ship_stats.py",
+        "src/portlight/engine/naval.py"
+      ],
+      "from": "src/portlight/app/cli.py"
+    },
+    {
+      "files": [
+        "src/portlight/content/armor.py",
+        "src/portlight/content/melee_weapons.py",
+        "src/portlight/content/ranged_weapons.py",
+        "src/portlight/content/fighting_styles.py",
+        "src/portlight/content/injuries.py",
+        "src/portlight/content/upgrades.py"
+      ],
+      "from": "src/portlight/app/session.py"
+    },
+    {
+      "files": [
+        "src/portlight/engine/naval.py"
+      ],
+      "from": "src/portlight/engine/encounter.py"
+    }
+  ],
   "startDoor": "pyproject.toml#portlight",
   "startHere": [
     "src/portlight/app/cli.py",
     "src/portlight/app/session.py",
-    "src/portlight/engine/ship_stats.py",
     "src/portlight/engine/encounter.py",
-    "src/portlight/engine/models.py",
-    "src/portlight/engine/naval.py"
+    "src/portlight/content/factions.py",
+    "src/portlight/engine/models.py"
   ],
   "startReason": "This path follows portlight (a command people run, from pyproject.toml) from its entry, since CI runs only tests and checks.",
   "summary": null,

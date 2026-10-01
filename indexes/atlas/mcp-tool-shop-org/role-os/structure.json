@@ -341,7 +341,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "3b7e243890cab7b66d3502eb52fe6dc97a6266c06ec4a1930b0bf6068787d426",
+          "hash": "ef68bcdf91536fc974fcab56e445096de1adceda1e7e0f1e1f4345a7557e735c",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -7206,6 +7206,8 @@
           "path": "tools/token-budget-dataset/review-ui/index.html"
         },
         {
+          "entry": "main",
+          "entryRule": 1,
           "exports": [
             "check",
             "main",
@@ -7229,7 +7231,7 @@
             "test_scrub_redacts_real_secrets",
             "test_skipped_parse_counts"
           ],
-          "hash": "5d805aa05006964449d71e9cedf6bcc8bc0ad244f82c6bd1bc27da16dcc27639",
+          "hash": "0123e29ef64a77704c6e35c435ef01239b508d846d9136524fe6c169d719db7c",
           "importOrder": [
             "tools/token-budget-dataset/harvester/__init__.py",
             "tools/token-budget-dataset/harvester/scrub.py",
@@ -7260,7 +7262,370 @@
             "tools/token-budget-dataset/harvester/puzzles.py",
             "tools/token-budget-dataset/harvester/scrub.py"
           ],
-          "path": "tools/token-budget-dataset/test_harvester.py"
+          "path": "tools/token-budget-dataset/test_harvester.py",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 65,
+                  "name": "andon_rescan",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 67,
+                  "name": "scrub_text",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 70,
+                  "name": "andon_rescan",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_scrub_redacts_real_secrets"
+            },
+            {
+              "calls": [
+                {
+                  "line": 78,
+                  "name": "andon_rescan",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_andon_catches_unscrubbed_secret"
+            },
+            {
+              "calls": [
+                {
+                  "line": 92,
+                  "name": "contamination_check",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_contamination_check_raises"
+            },
+            {
+              "calls": [
+                {
+                  "line": 110,
+                  "name": "scrub_record",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_canon_truncation"
+            },
+            {
+              "calls": [
+                {
+                  "line": 141,
+                  "name": "andon_rescan",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 144,
+                  "name": "scrub_text",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 149,
+                  "name": "andon_rescan",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 154,
+                  "name": "scrub_text",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 160,
+                  "name": "andon_rescan",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 162,
+                  "name": "scrub_text",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 167,
+                  "name": "andon_rescan",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 169,
+                  "name": "scrub_text",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 174,
+                  "name": "scrub_record",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_path_email_redaction"
+            },
+            {
+              "calls": [
+                {
+                  "line": 181,
+                  "name": "baseline_spend",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_baseline"
+            },
+            {
+              "calls": [
+                {
+                  "line": 188,
+                  "name": "cost_weighted_spend",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_cost_weighting"
+            },
+            {
+              "calls": [
+                {
+                  "line": 242,
+                  "name": "build_swarm_index",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 246,
+                  "name": "join_dispatch",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_join_does_not_overclaim"
+            },
+            {
+              "calls": [
+                {
+                  "line": 277,
+                  "name": "freeze",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_freeze_folds_human_verdicts"
+            },
+            {
+              "calls": [
+                {
+                  "line": 302,
+                  "name": "level1_spot_driver",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 309,
+                  "name": "level2_which_costs_more",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 316,
+                  "name": "level3_fit_or_split",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_puzzles_self_check"
+            },
+            {
+              "calls": [
+                {
+                  "line": 325,
+                  "name": "scrub_record",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_scrub_record_drops_internal_fields"
+            },
+            {
+              "calls": [
+                {
+                  "line": 350,
+                  "name": "load_roleos_verdicts",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_roleos_receipt_outcomes"
+            },
+            {
+              "calls": [
+                {
+                  "line": 378,
+                  "name": "run",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_empty_harvest_refuses_overwrite"
+            },
+            {
+              "calls": [
+                {
+                  "line": 397,
+                  "name": "refuse_empty_write",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_refuse_empty_write_gates"
+            },
+            {
+              "calls": [
+                {
+                  "line": 450,
+                  "name": "parse_agent_transcript",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_skipped_parse_counts"
+            },
+            {
+              "calls": [
+                {
+                  "line": 475,
+                  "name": "freeze",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_freeze_empty_frozen_refuses_write"
+            },
+            {
+              "calls": [
+                {
+                  "line": 493,
+                  "name": "print_task_preview",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_inspect_sample_preview_scrubs_stdout"
+            },
+            {
+              "calls": [
+                {
+                  "line": 515,
+                  "name": "write_dataset",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "test_puzzles_empty_refuses_write"
+            }
+          ]
         }
       ],
       "globs": [
@@ -7288,6 +7653,9 @@
       "outsideReads": 9,
       "outsideWrites": 10,
       "role": "code",
+      "testRunners": [
+        "python"
+      ],
       "testedBy": 3,
       "unresolvedSites": 0
     }
@@ -7335,6 +7703,14 @@
             "npm"
           ],
           "step": "8"
+        },
+        {
+          "dir": "tools/token-budget-dataset",
+          "job": "test",
+          "programs": [
+            "python"
+          ],
+          "step": "Token-budget harvester tests"
         }
       ],
       "elsewhere": [],
@@ -7370,6 +7746,17 @@
               "step": "1",
               "uses": "actions/setup-node",
               "version": "${{ matrix.node-version }}"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python for the harvester tests",
+              "uses": "actions/setup-python",
+              "version": "3.12"
             }
           ]
         },
@@ -7410,6 +7797,11 @@
           "files": 72
         },
         {
+          "boundary": "tools",
+          "depth": 0,
+          "files": 16
+        },
+        {
           "boundary": "src",
           "depth": 1,
           "enters": {
@@ -7432,9 +7824,14 @@
           "matched": true,
           "path": "test/",
           "runKind": "executes"
+        },
+        {
+          "job": "test",
+          "path": "tools/token-budget-dataset/test_harvester.py",
+          "runKind": "executes"
         }
       ],
-      "runsCount": 2,
+      "runsCount": 3,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -7467,6 +7864,13 @@
           "through": [
             "npm run verify"
           ]
+        },
+        {
+          "dir": "tools/token-budget-dataset",
+          "files": 1,
+          "job": "test",
+          "runner": "python",
+          "step": "Token-budget harvester tests"
         }
       ],
       "triggers": [
@@ -7516,6 +7920,7 @@
         "actions/checkout",
         "actions/download-artifact",
         "actions/setup-node",
+        "actions/setup-python",
         "actions/upload-artifact",
         "codecov/codecov-action"
       ],
@@ -7925,9 +8330,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
-    "commit": "07450c9f33f21d86fad86d8415268ed3228a6a78",
+    "commit": "91e12b75f3c679b6be952ae0ffeb65dabe54a25e",
     "tracked": 626
   },
   "landings": [
@@ -9193,6 +9598,17 @@
     {
       "readers": [
         {
+          "by": "tools/conformance-dataset/live-tools/RECEIPT.md",
+          "call": "--test",
+          "confidence": "text"
+        }
+      ],
+      "target": "test/live-tool-contracts.test.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "audit-manifest.json",
           "call": "configuration",
           "confidence": "config"
@@ -9378,18 +9794,8 @@
           "by": "tools/conformance-dataset/build_tool_constraints.mjs",
           "confidence": "ast"
         }
-      ]
-    },
-    {
-      "readers": [
-        {
-          "by": "tools/conformance-dataset/build_conformance_dataset.py",
-          "call": "import",
-          "confidence": "ast"
-        }
       ],
-      "target": "tools/conformance-dataset/audit.py",
-      "writers": []
+      "writesInto": true
     },
     {
       "readers": [
@@ -9401,43 +9807,6 @@
         }
       ],
       "target": "tools/conformance-dataset/certify",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tools/conformance-dataset/build_conformance_dataset.py",
-          "call": "import",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/conformance-dataset/certify_conformance.py",
-          "call": "import",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/conformance-dataset/conformance_puzzles.py",
-          "call": "import",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/conformance-dataset/dogfood_conformance.py",
-          "call": "import",
-          "confidence": "ast"
-        }
-      ],
-      "target": "tools/conformance-dataset/config.py",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
-          "by": "tools/conformance-dataset/build_conformance_dataset.py",
-          "call": "import",
-          "confidence": "ast"
-        }
-      ],
-      "target": "tools/conformance-dataset/conformance_puzzles.py",
       "writers": []
     },
     {
@@ -9608,22 +9977,6 @@
     {
       "readers": [
         {
-          "by": "tools/conformance-dataset/ood_floor_eval.mjs",
-          "call": "import",
-          "confidence": "ast"
-        },
-        {
-          "by": "tools/conformance-dataset/test_ood_floor_gate.mjs",
-          "call": "import",
-          "confidence": "ast"
-        }
-      ],
-      "target": "tools/conformance-dataset/ood_floor_gate.mjs",
-      "writers": []
-    },
-    {
-      "readers": [
-        {
           "by": "test/tool-constraints.test.mjs",
           "call": "existsSync",
           "confidence": "ast",
@@ -9646,8 +9999,7 @@
   "testFiles": 75,
   "testsNotRun": [
     "tools/conformance-dataset/test_certify_ship_stamp.py",
-    "tools/conformance-dataset/test_empty_write_gate.py",
-    "tools/token-budget-dataset/test_harvester.py"
+    "tools/conformance-dataset/test_empty_write_gate.py"
   ],
   "unassigned": []
 }

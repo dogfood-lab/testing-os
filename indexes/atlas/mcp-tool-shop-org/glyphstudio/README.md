@@ -1,6 +1,6 @@
 # glyphstudio: how it works
 
-Mapped at 2026-09-30 from commit a5248e4 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 5a1cc32 by Atlas 1.25.0.
 
 ## What this is
 
@@ -8,7 +8,11 @@ Mapped at 2026-09-30 from commit a5248e4 by Atlas 1.24.0.
 
 ## What changed since 2026-09-30 (fdf655b)
 
-Nothing structural changed since 2026-09-30; no file changed.
+- docs/showcase/stage47a-test/monk-47a---*x*.png is now written by scripts/test-47a-prompt.mjs.
+- docs/showcase/stage47b-critique/monk-r0---*x*.png is now written by scripts/test-47b-critique-loop.mjs.
+- docs/showcase/stage47b-critique/monk-r1---*x*.png is now written by scripts/test-47b-critique-loop.mjs.
+- And 2 more new writers and readers of places.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 
@@ -43,7 +47,7 @@ Nothing structural changed since 2026-09-30; no file changed.
 - **domain** is imported by 4 parts (api-contract, desktop, mcp-sprite-server, state) and sits on the path of 1 door.
 - **api-contract** is imported by 2 parts (desktop, state) and sits on the path of 1 door.
 - **state** is imported by 2 parts (desktop, mcp-sprite-server) and sits on the path of 1 door.
-- **packages/mcp-sprite-server/fixtures/golden/** is written by mcp-sprite-server and read by mcp-sprite-server, and by 1 test; a hand edit reaches every reader.
+- **packages/mcp-sprite-server/fixtures/golden/** holds files written by mcp-sprite-server and read by mcp-sprite-server, and by 1 test; a hand edit reaches every reader.
 
 ## What tends to change together
 
@@ -61,7 +65,7 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 ## Written but never read
 
 - **apps/desktop/src-tauri/gen/schemas/** is written by apps/desktop/src-tauri/build.rs (a build script) and read by nothing else in this repository.
-- **docs/benchmark-assets/** is written by packages/mcp-sprite-server/src/dogfood/materialize.test.ts (a test) and read by nothing else in this repository.
+- **docs/benchmark-assets/** holds files written by packages/mcp-sprite-server/src/dogfood/materialize.test.ts (a test) and read by nothing else in this repository.
 - **docs/dogfood/character-sprite/** is written by scripts/translate-character.mjs and read by nothing else in this repository.
 - **docs/dogfood/prop-sprite/** is written by scripts/translate-prop.mjs and read by nothing else in this repository.
 - **docs/dogfood/stage43-creature/** is written by scripts/dogfood-43-creature.mjs and read by nothing else in this repository.
@@ -69,7 +73,7 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 - **docs/dogfood/stage43-prop/** is written by scripts/dogfood-43-prop.mjs and read by nothing else in this repository.
 - **docs/dogfood/stage44-curves/** is written by scripts/dogfood-44-curves.mjs and read by nothing else in this repository.
 
-And 17 more places.
+And 21 more places.
 
 ## Helpers that look duplicated
 
@@ -78,7 +82,7 @@ No two parts export a helper that looks alike.
 ## Generated, never hand-edited
 
 - **apps/desktop/src-tauri/gen/schemas/** is written by apps/desktop/src-tauri/build.rs (a build script).
-- **docs/benchmark-assets/** is written by packages/mcp-sprite-server/src/dogfood/materialize.test.ts (a test).
+- **docs/benchmark-assets/** holds files written by packages/mcp-sprite-server/src/dogfood/materialize.test.ts (a test).
 - **docs/dogfood/character-concept/** is written by scripts/dogfood-character.mjs.
 - **docs/dogfood/character-sprite/** is written by scripts/translate-character.mjs.
 - **docs/dogfood/prop-concept/** is written by scripts/dogfood-prop.mjs.
@@ -96,15 +100,19 @@ No two parts export a helper that looks alike.
 - **docs/showcase/stage46/showcase-log.md** is written by scripts/showcase-46.mjs.
 - **docs/showcase/stage47-ollama/*---*x*.png** is written by scripts/dogfood-47-ollama.mjs.
 - **docs/showcase/stage47-ollama/dogfood-log.md** is written by scripts/dogfood-47-ollama.mjs.
-- **docs/showcase/stage47a-test/** is written by scripts/test-47a-prompt.mjs.
+- **docs/showcase/stage47a-test/monk-47a---*x*.png** is written by scripts/test-47a-prompt.mjs.
+- **docs/showcase/stage47a-test/shapes.json** is written by scripts/test-47a-prompt.mjs.
 - **docs/showcase/stage47b-critique/** is written by scripts/test-47b-critique-loop.mjs.
 - **docs/visual-recovery/critiques/** is written by scripts/critique-sprite.mjs.
 - **docs/visual-recovery/hero-sprite/hero-500.png** is written by scripts/hero-sprite.mjs.
 - **docs/visual-recovery/hero-sprite/hero-silhouette-500.png** is written by scripts/hero-sprite.mjs.
 - **examples/benchmark-assets/** is written by packages/mcp-sprite-server/src/dogfood/materialize.test.ts (a test).
-- **packages/mcp-sprite-server/fixtures/golden/** is written by packages/mcp-sprite-server/src/workflows/verify.ts.
-- **showcase/** is written by showcase/generate.mjs.
-- **showcase/previews/** is written by showcase/render-previews.mjs.
+- **packages/mcp-sprite-server/fixtures/golden/** holds files written by packages/mcp-sprite-server/src/workflows/verify.ts.
+- **showcase/** holds files written by showcase/generate.mjs.
+- **showcase/previews/hero-animation.ppm** is written by showcase/render-previews.mjs.
+- **showcase/previews/hero-still.ppm** is written by showcase/render-previews.mjs.
+- **showcase/previews/hero-variants.ppm** is written by showcase/render-previews.mjs.
+- **showcase/previews/part-*.ppm** is written by showcase/render-previews.mjs.
 
 ## Hand-authored
 
@@ -112,9 +120,11 @@ People write .github/, assets/, audit/, dogfood/, the repository root and site/;
 
 ## Where to start
 
-apps/desktop/src-tauri/src/main.rs → apps/desktop/src-tauri/src/lib.rs
+apps/desktop/src-tauri/src/main.rs → apps/desktop/src-tauri/src/lib.rs → apps/desktop/src-tauri/src/engine/canvas_state.rs → apps/desktop/src-tauri/src/engine/pixel_buffer.rs
 
 Read those in order to follow one run of glyphstudio end to end. This path follows glyphstudio (a desktop app built from apps/desktop/src-tauri, which nothing ships) from its entry, since CI runs only tests and checks.
+
+Beside the path, apps/desktop/src-tauri/src/lib.rs also calls apps/desktop/src-tauri/src/engine/selection.rs, apps/desktop/src-tauri/src/engine/motion.rs, apps/desktop/src-tauri/src/engine/sandbox.rs and apps/desktop/src-tauri/src/engine/scene.rs.
 
 ## What this map cannot see
 

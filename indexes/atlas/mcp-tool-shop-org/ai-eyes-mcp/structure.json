@@ -753,6 +753,9 @@
       "name": "src",
       "origin": "authored",
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 7,
       "unresolvedSites": 0
     },
@@ -968,6 +971,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -1092,6 +1098,11 @@
           "boundary": "src",
           "depth": 0,
           "files": 3
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 7
         }
       ],
       "readers": [],
@@ -1110,9 +1121,17 @@
           "job": "test",
           "path": "src/ai_eyes_mcp/server.py",
           "runKind": "executes"
+        },
+        {
+          "directory": true,
+          "job": "test",
+          "matched": true,
+          "path": "tests/",
+          "runKind": "executes",
+          "via": "pytest pyproject.toml"
         }
       ],
-      "runsCount": 3,
+      "runsCount": 4,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -1128,7 +1147,7 @@
       "tests": [
         {
           "config": "pyproject.toml",
-          "files": 0,
+          "files": 7,
           "job": "test",
           "junit": true,
           "runner": "pytest",
@@ -1162,6 +1181,13 @@
         },
         {
           "event": "workflow_dispatch"
+        }
+      ],
+      "unresolvedExpressions": [
+        {
+          "adds": "flags",
+          "job": "test",
+          "step": "Run CI-safe tests"
         }
       ],
       "uses": [
@@ -1367,7 +1393,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
     "commit": "f9e49a191a2b248a88ac40b30a19de92cc52acc7",
     "tracked": 66
@@ -1550,13 +1576,5 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 18,
-  "testsNotRun": [
-    "tests/test_ci_gates.py",
-    "tests/test_edge_cases.py",
-    "tests/test_engine_ci.py",
-    "tests/test_engine_dogfood.py",
-    "tests/test_server_ci.py",
-    "tests/test_tools_dogfood.py"
-  ],
   "unassigned": []
 }

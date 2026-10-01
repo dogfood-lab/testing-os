@@ -1,6 +1,6 @@
 # claude-rpg: how it works
 
-Mapped at 2026-09-30 from commit 11e26e3 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit f762fbe by Atlas 1.25.0.
 
 ## What this is
 
@@ -8,7 +8,8 @@ Mapped at 2026-09-30 from commit 11e26e3 by Atlas 1.24.0.
 
 ## What changed since 2026-09-30 (475262f)
 
-Nothing structural changed since 2026-09-30; no file changed.
+- dogfood/tuning/matrix-*.json is now written by test/helpers/living-world-matrix.ts.
+- 6 files changed content, across 2 parts.
 
 ## What comes in
 
@@ -22,17 +23,17 @@ Nothing structural changed since 2026-09-30; no file changed.
 
 1. The workflow runs 86 files in src and 35 files in test; it checks src/ in src and test/ in test.
 2. On a pull request, it also runs scripts/check-critical-coverage.mjs.
-3. It writes to dogfood/tuning/.
+3. It writes to dogfood/tuning/matrix-*.json.
 4. It runs git.
 5. It uploads coverage to Codecov.
 
 ## Who reads the results
 
-- **dogfood/tuning/** has no reader in this repository.
+- **dogfood/tuning/matrix-*.json** has no reader in this repository.
 
 ## The other doors
 
-**Release** runs src/action-interpreter.test.ts, src/bin-defenses.test.ts, src/character/builder.test.ts and 118 more, builds src/, reaches scripts, writes to dogfood/tuning/, publishes to npm, and creates a GitHub release.
+**Release** runs src/action-interpreter.test.ts, src/bin-defenses.test.ts, src/character/builder.test.ts and 118 more, builds src/, reaches scripts, writes to dogfood/tuning/matrix-*.json, publishes to npm, and creates a GitHub release.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -52,7 +53,7 @@ No two source files, other than a file and its own test, changed together often 
 
 7 files changed together with their own tests, as expected.
 
-Window: 180 days; a pair counts from 10 shared commits, since 27 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do.
+Window: 180 days; a pair counts from 10 shared commits, since 28 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do.
 
 ## What no test touches
 
@@ -60,7 +61,7 @@ Every code part is imported by at least one test.
 
 ## Written but never read
 
-- **dogfood/tuning/** is written by test/helpers/living-world-matrix.ts (a test) and read by nothing else in this repository.
+- **dogfood/tuning/matrix-*.json** is written by test/helpers/living-world-matrix.ts (a test) and read by nothing else in this repository.
 
 ## Helpers that look duplicated
 
@@ -68,7 +69,7 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-- **dogfood/tuning/** is written by test/helpers/living-world-matrix.ts (a test) when run from the repository root, and committed.
+- **dogfood/tuning/matrix-*.json** is written by test/helpers/living-world-matrix.ts (a test) when run from the repository root, and committed.
 
 ## Hand-authored
 
@@ -76,9 +77,11 @@ People write .github/, docs/, the repository root and site/. Nothing in this rep
 
 ## Where to start
 
-src/bin.ts → src/cli/usage.ts → src/cli/error-presenter.ts → src/cli/world-flag.ts → src/character/builder.ts → src/cli/boot-zone-entry.ts → src/llm/claude-adapter.ts
+src/bin.ts → src/cli/usage.ts → src/display/play-renderer.ts → src/cli/colors.ts
 
 Read those in order to follow one run of claude-rpg end to end. This path follows claude-rpg (a command people run) from its entry, since CI runs only tests and checks.
+
+Beside the path, src/bin.ts also calls src/cli/error-presenter.ts, src/cli/world-flag.ts, src/character/builder.ts, src/cli/boot-zone-entry.ts and 9 more files. Beside the path, src/cli/usage.ts also calls src/display/help-system.ts and src/character/packs.ts.
 
 ## What this map cannot see
 

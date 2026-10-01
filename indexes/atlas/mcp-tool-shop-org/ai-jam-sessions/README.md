@@ -1,6 +1,6 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-09-30 from commit e5fcb31 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 254e22e by Atlas 1.25.0.
 
 ## What this is
 
@@ -8,7 +8,9 @@ Mapped at 2026-09-30 from commit e5fcb31 by Atlas 1.24.0.
 
 ## What changed since 2026-09-30 (6e89814)
 
-Nothing structural changed since 2026-09-30; no file changed.
+- experiments/rollout-arc/p4/runs/summary-*.json is now written by experiments/rollout-arc/p4/scripts/score-curriculum.mts.
+- site/public/america-the-beautiful-m*-*.svg is now written by scripts/render-landing-pianoroll.ts.
+- 2 files changed content, across 1 part.
 
 ## What comes in
 
@@ -28,15 +30,16 @@ Nothing structural changed since 2026-09-30; no file changed.
 1. The workflow runs apps/cockpit/src/ and apps/cockpit/vite.config.ts in cockpit, 9 files in experiments, 4 files in scripts, and 69 files in src; it builds 95 files in src; it checks 5 files in scripts; it packs 7 files in the repository root, src/ in src, samples/vocal/ in samples, and songs/library/ in songs into an image.
    1. Inside src/mcp-server.ts, `main` does, in order: `shouldSuperviseStdio`, `userSongsDir`, `initializeFromLibrary`, `serverStatePath` and `openRpcOutputStream`.
    2. Or, when `shouldSuperviseStdio()`, `main` does `runStdioSupervisor` instead.
-2. It uploads coverage to Codecov.
+2. It writes to datasets/jam-actions-v1/PROVENANCE-NOTE.md, datasets/jam-actions-v1/README.md, datasets/jam-actions-v1/checksums.sha256, datasets/jam-actions-v1/coverage.json, datasets/jam-actions-v1/manifest.json, datasets/jam-actions-v1/records/, datasets/jam-actions-v1/records.jsonl and datasets/jam-actions-v1/splits.json.
+3. It uploads coverage to Codecov.
 
 ## Who reads the results
 
-CI writes nothing this map can see.
+- **datasets/jam-actions-v1/** is read by experiments/coverage-v1-sft/format-sft.ts, src/dataset/acoustic-v1/generate-public.ts and src/dataset/acoustic-v1/toolless-baseline.mjs, and by 2 tests.
 
 ## The other doors
 
-**Release** runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 301 more, builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 93 more, packs LICENSE, README.md, logo.png and 377 more into an image, and publishes to npm and a container image.
+**Release** runs src/mcp-server.ts, apps/cockpit/src/capture.test.ts, apps/cockpit/src/clipboard.test.ts and 301 more, builds src/analysis/analyze.ts, src/analysis/baseline.ts, src/analysis/chord-id.ts and 93 more, packs LICENSE, README.md, logo.png and 377 more into an image, writes to datasets/jam-actions-v1/PROVENANCE-NOTE.md, datasets/jam-actions-v1/README.md, datasets/jam-actions-v1/checksums.sha256, datasets/jam-actions-v1/coverage.json, datasets/jam-actions-v1/manifest.json, datasets/jam-actions-v1/records/, datasets/jam-actions-v1/records.jsonl and datasets/jam-actions-v1/splits.json, and publishes to npm and a container image.
 
 **Deploy site to GitHub Pages** runs apps/cockpit/src/, apps/cockpit/vite.config.ts, site/astro.config.mjs and 2 more, reaches src, writes to site/dist, which is not tracked, and deploys the site.
 
@@ -61,8 +64,8 @@ CI writes nothing this map can see.
 - **cockpit** is imported only from tests, by 1 part (src), and sits on the path of 3 doors.
 - **experiments** is imported only from tests, by 1 part (src), and sits on the path of 2 doors.
 - **the repository root** is imported by no other part and sits on the path of 2 doors.
-- **experiments/rollout-arc/p4/runs/** is written by experiments and read by experiments, and by 2 tests; a hand edit reaches every reader.
 - **songs/library/** is written by scripts and read by experiments, scripts and src, and by 6 tests; a hand edit reaches every reader.
+- **datasets/jam-actions-v0/** holds files written by scripts and read by experiments, scripts and src, and by 5 tests; a hand edit reaches every reader.
 
 ## What tends to change together
 
@@ -87,7 +90,7 @@ Window: 180 days; a pair counts from 3 shared commits, since 7 source files reac
 - **datasets/jam-actions-v1-probe/PROVENANCE-NOTE.md** is written by src/dataset/acoustic-v1/generate-probe.ts and read by nothing else in this repository.
 - **datasets/jam-actions-v1-probe/README.md** is written by src/dataset/acoustic-v1/generate-probe.ts and read by nothing else in this repository.
 
-And 63 more places.
+And 65 more places.
 
 ## Helpers that look duplicated
 
@@ -103,9 +106,9 @@ And 2 more pairs.
 
 ## Generated, never hand-edited
 
-- **datasets/jam-actions-acoustic-v0/** is written by src/dataset/acoustic/generate-corpus.ts.
-- **datasets/jam-actions-v0-public/** is written by scripts/package-jam-actions-public.ts, scripts/regenerate-public-package-checksums.ts and scripts/run-jam-actions-corpus-eval.ts.
-- **datasets/jam-actions-v0/** is written by scripts (6 files).
+- **datasets/jam-actions-acoustic-v0/** holds files written by src/dataset/acoustic/generate-corpus.ts.
+- **datasets/jam-actions-v0-public/** holds files written by scripts/package-jam-actions-public.ts, scripts/regenerate-public-package-checksums.ts and scripts/run-jam-actions-corpus-eval.ts.
+- **datasets/jam-actions-v0/** holds files written by scripts (6 files).
 - **datasets/jam-actions-v0/evals/e1-tool-use-results.json** is written by scripts/eval-jam-actions-tool-use.ts.
 - **datasets/jam-actions-v0/evals/e2-notes-present-results.json** is written by scripts/run-e2-notes-present-eval.ts.
 - **datasets/jam-actions-v0/evals/e2-phrase-continuation-results.json** is written by scripts/eval-jam-actions-phrase-continuation.ts.
@@ -191,13 +194,14 @@ And 2 more pairs.
 - **experiments/rollout-arc/p3/runs/er-prompts.jsonl** is written by experiments/rollout-arc/p3/scripts/emit-er-prompts.mts.
 - **experiments/rollout-arc/p4/REVIEW-PACKET.md** is written by experiments/rollout-arc/p4/scripts/emit-review-packet.mts.
 - **experiments/rollout-arc/p4/fixtures/progressions-v1.json** is written by experiments/rollout-arc/p4/scripts/emit-progression-fixture.mts.
-- **experiments/rollout-arc/p4/runs/** is written by experiments/rollout-arc/p4/scripts/score-curriculum.mts.
+- **experiments/rollout-arc/p4/runs/curriculum-summary.json** is written by experiments/rollout-arc/p4/scripts/score-curriculum.mts.
 - **experiments/rollout-arc/p4/runs/fewshot-exemplar.txt** is written by experiments/rollout-arc/p4/scripts/make-fewshot.mts.
 - **experiments/rollout-arc/p4/runs/prompts-heldout-v1.jsonl** is written by experiments/rollout-arc/p4/scripts/emit-prompts-from-fixture.mts.
 - **experiments/rollout-arc/p4/runs/prompts-vs-heldout.jsonl** is written by experiments/rollout-arc/p4/scripts/emit-vs-prompts.mts.
 - **experiments/rollout-arc/p4/runs/spec-4bar-prefixed.jsonl** is written by experiments/rollout-arc/p4/scripts/emit-exploring-starts.mts.
 - **experiments/rollout-arc/p4/runs/spec-4bar-same-opening.jsonl** is written by experiments/rollout-arc/p4/scripts/emit-same-opening.mts.
 - **experiments/rollout-arc/p4/runs/spec-probe-summary.json** is written by experiments/rollout-arc/p4/scripts/score-spec-probe.mts.
+- **experiments/rollout-arc/p4/runs/summary-*.json** is written by experiments/rollout-arc/p4/scripts/score-curriculum.mts.
 - **experiments/rollout-arc/p4/runs/vl-probe-summary.json** is written by experiments/rollout-arc/p4/scripts/score-vl-probe.mts.
 - **experiments/rollout-arc/p4/runs/vl-prompts.jsonl** is written by experiments/rollout-arc/p4/scripts/emit-vl-prompts.mts.
 - **samples/vocal/** is written by scripts/bake-carriers.ts, scripts/generate-carriers.ts and scripts/synth-carriers.ts.
@@ -219,9 +223,11 @@ People write .github/, plugin/ and the repository root; 48 writes with paths bui
 
 ## Where to start
 
-.github/workflows/ci.yml → src/mcp-server.ts → src/stdio-supervisor.ts → src/state-home.ts → src/songs/config/loader.ts
+.github/workflows/ci.yml → src/mcp-server.ts → src/songs/config/loader.ts → src/songs/config/schema.ts → src/songs/types.ts
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, src/mcp-server.ts also calls src/stdio-supervisor.ts and src/state-home.ts.
 
 ## What this map cannot see
 
@@ -239,8 +245,8 @@ Read those in order to follow one pull request end to end.
 - 20 commands are built at run time and not followed, 2 of them in tests.
 - There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
 - There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.
-- CI runs or checks 468 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
-- Release runs or checks 406 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
+- CI runs or checks 468 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 468.
+- Release runs or checks 406 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 406.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

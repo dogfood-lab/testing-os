@@ -17,7 +17,7 @@
           "path": ".github/workflows/ci.yml"
         },
         {
-          "hash": "978aa8ba675c6adb289d07c204f6ddd3d34db205e0888cfcce24814eeb4d9513",
+          "hash": "5c7cdaad3bbdbd33812e98f7439091bf206a06c63051aa9b9fa476dc95e67dcc",
           "path": ".github/workflows/freshness-check.yml"
         },
         {
@@ -133,7 +133,7 @@
           "path": "README.zh.md"
         },
         {
-          "hash": "3529f9de1088fb50a890be4f7ac525e1dab206187f6792f4bc02b2f0ceb35894",
+          "hash": "0ad9edf39b4b1875c5486c913c2425664c31bf2b37aec062f89709f18f9356e7",
           "path": "SCORECARD.md"
         },
         {
@@ -141,7 +141,7 @@
           "path": "SECURITY.md"
         },
         {
-          "hash": "f5cc09bb88cddaea27ca1daf7c6049744fc87e4ed78a7a0937d4990c0e44fdc6",
+          "hash": "fd8ead84b27c177d625aa04729baccc4e30d3d7b7d826286bd89afe33a523d6d",
           "path": "SHIP_GATE.md"
         },
         {
@@ -8450,6 +8450,13 @@
           "why": "no setup-python step before it"
         }
       ],
+      "unresolvedExpressions": [
+        {
+          "adds": "words",
+          "job": "lint-and-test",
+          "step": "Set up Python ${{ matrix.python-version }}"
+        }
+      ],
       "uses": [
         "actions/checkout",
         "actions/download-artifact",
@@ -8475,12 +8482,14 @@
           "dir": "",
           "job": "check",
           "programs": [
+            "cat",
             "date",
             "echo",
             "gh",
-            "git"
+            "git",
+            "printf"
           ],
-          "step": "Open PR if the report changed"
+          "step": "Push the report branch and update the tracking issue"
         }
       ],
       "elsewhere": [],
@@ -8516,7 +8525,7 @@
       "permissions": [
         "contents:read",
         "contents:write",
-        "pull-requests:write"
+        "issues:write"
       ],
       "pushes": false,
       "pushesForReview": true,
@@ -8540,9 +8549,9 @@
       "sends": {
         "deploysPages": false,
         "dispatchesTo": [],
-        "opensIssues": false,
+        "opensIssues": true,
         "opensIssuesOnFailure": false,
-        "opensPullRequests": true,
+        "opensPullRequests": false,
         "publishes": false,
         "publishesTo": [],
         "releases": false
@@ -9102,6 +9111,13 @@
           "why": "no setup-python step before it"
         }
       ],
+      "unresolvedExpressions": [
+        {
+          "adds": "words",
+          "job": "release-outcome",
+          "step": "Check that GitHub Release and PyPI publish agree"
+        }
+      ],
       "uses": [
         "actions/checkout",
         "actions/download-artifact",
@@ -9380,9 +9396,9 @@
       "to": "xrpl_camp"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
-    "commit": "8796d1cc8fd67396b6e0a35726f619f03f805e54",
+    "commit": "1763b68e5bf565abc6bdce9e6858e7f91de6901e",
     "tracked": 86
   },
   "landings": [

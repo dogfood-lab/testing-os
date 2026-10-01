@@ -83,8 +83,32 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "projects/ai-eye-test/outputs/synthetic/phase2/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2_build.py.",
+        "subjects": [
+          "projects/ai-eye-test/outputs/synthetic/phase2/apple_n*_s*.json",
+          "projects/ai-eye-test/compositor/phase2_build.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "projects/ai-eye-test/outputs/synthetic/phase2_noshadow/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2_noshadow_build.py.",
+        "subjects": [
+          "projects/ai-eye-test/outputs/synthetic/phase2_noshadow/apple_n*_s*.json",
+          "projects/ai-eye-test/compositor/phase2_noshadow_build.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "projects/ai-eye-test/outputs/synthetic/phase2b/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2b_build.py.",
+        "subjects": [
+          "projects/ai-eye-test/outputs/synthetic/phase2b/apple_n*_s*.json",
+          "projects/ai-eye-test/compositor/phase2b_build.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; 1 file changed content.",
+        "sentence": "1 file changed content, across 1 part.",
         "subjects": []
       }
     ],
@@ -92,7 +116,7 @@
       "commit": "f7b4973768c843655383d17005a6353a4ef2de74",
       "generatedAt": "2026-09-30T20:14:07.142Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -352,7 +376,7 @@
       "to": "scripts"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [
     {
       "place": "projects/ai-eye-test/outputs/synthetic/phase1/",
@@ -361,19 +385,37 @@
       ]
     },
     {
-      "place": "projects/ai-eye-test/outputs/synthetic/phase2/",
+      "place": "projects/ai-eye-test/outputs/synthetic/phase2/apple_n*_s*.json",
       "writers": [
         "projects/ai-eye-test/compositor/phase2_build.py"
       ]
     },
     {
-      "place": "projects/ai-eye-test/outputs/synthetic/phase2_noshadow/",
+      "place": "projects/ai-eye-test/outputs/synthetic/phase2/manifest.json",
+      "writers": [
+        "projects/ai-eye-test/compositor/phase2_build.py"
+      ]
+    },
+    {
+      "place": "projects/ai-eye-test/outputs/synthetic/phase2_noshadow/apple_n*_s*.json",
       "writers": [
         "projects/ai-eye-test/compositor/phase2_noshadow_build.py"
       ]
     },
     {
-      "place": "projects/ai-eye-test/outputs/synthetic/phase2b/",
+      "place": "projects/ai-eye-test/outputs/synthetic/phase2_noshadow/manifest.json",
+      "writers": [
+        "projects/ai-eye-test/compositor/phase2_noshadow_build.py"
+      ]
+    },
+    {
+      "place": "projects/ai-eye-test/outputs/synthetic/phase2b/apple_n*_s*.json",
+      "writers": [
+        "projects/ai-eye-test/compositor/phase2b_build.py"
+      ]
+    },
+    {
+      "place": "projects/ai-eye-test/outputs/synthetic/phase2b/manifest.json",
       "writers": [
         "projects/ai-eye-test/compositor/phase2b_build.py"
       ]
@@ -417,7 +459,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-30T21:54:36.556Z",
+  "generatedAt": "2026-10-01T01:53:55.407Z",
   "limits": [
     "4 imports could not be resolved: `bin/sdlab.js` imports a path built at run time; `lib/training-adapters.js` imports a path built at run time; `projects/salt-road/inputs/prompts/wave-runner.py` imports a path built at run time; and 1 more.",
     "38 writes and 72 reads use paths built at run time and are not named here.",
@@ -712,19 +754,37 @@
   "unnamedWrites": 38,
   "unread": [
     {
-      "place": "projects/ai-eye-test/outputs/synthetic/phase2/",
+      "place": "projects/ai-eye-test/outputs/synthetic/phase2/apple_n*_s*.json",
       "writers": [
         "projects/ai-eye-test/compositor/phase2_build.py"
       ]
     },
     {
-      "place": "projects/ai-eye-test/outputs/synthetic/phase2_noshadow/",
+      "place": "projects/ai-eye-test/outputs/synthetic/phase2/manifest.json",
+      "writers": [
+        "projects/ai-eye-test/compositor/phase2_build.py"
+      ]
+    },
+    {
+      "place": "projects/ai-eye-test/outputs/synthetic/phase2_noshadow/apple_n*_s*.json",
       "writers": [
         "projects/ai-eye-test/compositor/phase2_noshadow_build.py"
       ]
     },
     {
-      "place": "projects/ai-eye-test/outputs/synthetic/phase2b/",
+      "place": "projects/ai-eye-test/outputs/synthetic/phase2_noshadow/manifest.json",
+      "writers": [
+        "projects/ai-eye-test/compositor/phase2_noshadow_build.py"
+      ]
+    },
+    {
+      "place": "projects/ai-eye-test/outputs/synthetic/phase2b/apple_n*_s*.json",
+      "writers": [
+        "projects/ai-eye-test/compositor/phase2b_build.py"
+      ]
+    },
+    {
+      "place": "projects/ai-eye-test/outputs/synthetic/phase2b/manifest.json",
       "writers": [
         "projects/ai-eye-test/compositor/phase2b_build.py"
       ]
@@ -740,26 +800,16 @@
       "writers": [
         "projects/salt-road/inputs/control-guides/blockouts.py"
       ]
-    },
-    {
-      "place": "projects/salt-road/inputs/prompts/curate-plan.json",
-      "writers": [
-        "projects/salt-road/inputs/prompts/ingest-styleset-records.mjs"
-      ]
-    },
-    {
-      "place": "projects/salt-road/outputs/style-set-v2-review.html",
-      "writers": [
-        "projects/salt-road/inputs/prompts/build-review-page.mjs"
-      ]
     }
   ],
   "unreadFiles": 0,
-  "unreadNote": [],
+  "unreadNote": [
+    "And 2 more places."
+  ],
   "untested": [],
   "untestedNote": [
     "bin is touched by tests only through a spawn: a test runs its files as a child process.",
     "2 test files run in no workflow: projects/ai-eye-test/compositor/test_compositor.py and projects/ai-eye-test/compositor/test_phase2.py."
   ],
-  "written": 10
+  "written": 13
 }

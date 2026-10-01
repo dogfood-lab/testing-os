@@ -1,6 +1,6 @@
 # saints-mile: how it works
 
-Mapped at 2026-09-30 from commit f161838 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit f161838 by Atlas 1.25.0.
 
 ## What this is
 
@@ -68,7 +68,7 @@ People write .github/, the repository root and site/. Nothing in this repository
 
 ## Where to start
 
-src/main.rs → src/lib.rs → src/ui/mod.rs → src/state/store.rs → src/ui/screens/title.rs → src/ui/screens/scene.rs → src/ui/screens/standoff.rs
+src/main.rs → src/lib.rs → src/scene/mod.rs → src/scene/types.rs → src/types.rs
 
 Read those in order to follow one run of saints-mile end to end. This path follows saints-mile (a command people run) from its entry, since CI runs only tests and checks.
 

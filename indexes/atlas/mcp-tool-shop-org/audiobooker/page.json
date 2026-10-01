@@ -422,7 +422,7 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [
     {
       "block": true,
@@ -432,7 +432,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-30T21:47:44.950Z",
+  "generatedAt": "2026-10-01T01:45:06.881Z",
   "limits": [
     "14 import sites name a declared dependency that shares its name with a local module (docx); they are read as the dependency, which is not in this repository.",
     "7 imports could not be resolved: `audiobooker/cli.py` imports a path built at run time, twice; `audiobooker/language/profile.py` imports a path built at run time; `tests/test_feat_f5_cli.py` imports a path built at run time; and 3 more.",
@@ -609,6 +609,18 @@
           "phrase": "`RealFFmpegRunner`"
         }
       ]
+    }
+  ],
+  "startBeside": [
+    {
+      "files": [
+        "audiobooker/renderer/output.py",
+        "audiobooker/renderer/cache_manifest.py",
+        "audiobooker/renderer/hash_utils.py",
+        "audiobooker/renderer/progress.py",
+        "audiobooker/renderer/failure_report.py"
+      ],
+      "from": "audiobooker/renderer/engine.py"
     }
   ],
   "startDoor": ".github/workflows/ci.yml",

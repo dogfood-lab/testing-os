@@ -1,6 +1,6 @@
 # ollama-intern-mcp: how it works
 
-Mapped at 2026-09-30 from commit 9555331 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 9555331 by Atlas 1.25.0.
 
 ## What this is
 
@@ -99,6 +99,8 @@ People write .github/, docs/, evals/ and the repository root; 3 writes with path
 .github/workflows/ci.yml → src/index.ts → src/profiles.ts → src/tiers.ts
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, src/index.ts also calls src/ollama.ts, src/observability.ts and src/prewarm.ts.
 
 ## What this map cannot see
 

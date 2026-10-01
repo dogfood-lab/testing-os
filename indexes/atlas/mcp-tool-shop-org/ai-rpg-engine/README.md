@@ -1,6 +1,6 @@
 # ai-rpg-engine: how it works
 
-Mapped at 2026-09-30 from commit 8dceef7 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 8dceef7 by Atlas 1.25.0.
 
 ## What this is
 
@@ -37,16 +37,16 @@ Nothing structural changed since 2026-09-30; 1 file changed content.
    3. Or, when `wantsHelp && !COMMANDS_WITH_OWN_HELP.has(command)`, `main` does `closeReadline` instead.
    4. Or, when `raw === undefined || raw === '' || raw.startsWith('-')`, `main` does `map` instead.
    5. `main` returns early 5 more ways.
-2. It writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json and docs/c0-alignment/version-skew.json.
+2. It writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json, docs/c0-alignment/version-skew.json and docs/contract-v1/rng-audit.json.
 3. It uploads coverage to Codecov.
 
 ## Who reads the results
 
-- **docs/c0-alignment/** has no reader in this repository.
+- **docs/** has no reader in this repository.
 
 ## The other doors
 
-**Release** runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more, builds docs/mixed-game-viability-proof.ts, checks templates/, docs/, eslint.config.js and 5 more, packs package-lock.json, package.json, packages/ and 1 more into an image, writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json and docs/c0-alignment/version-skew.json, and publishes workspace packages to npm and a container image (on a run by hand, only with dry_run false).
+**Release** runs packages/cli/src/bin.ts, scripts/check-packaging.mjs, scripts/verify-isolated-consumer.mjs and 389 more, builds docs/mixed-game-viability-proof.ts, checks templates/, docs/, eslint.config.js and 5 more, packs package-lock.json, package.json, packages/ and 1 more into an image, writes to docs/c0-alignment/intake-table.json, docs/c0-alignment/reverse-table.json, docs/c0-alignment/version-skew.json and docs/contract-v1/rng-audit.json, and publishes workspace packages to npm and a container image (on a run by hand, only with dry_run false).
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on main.
 
@@ -134,7 +134,7 @@ Read those in order to follow one pull request end to end.
 - 12 writes and 9 reads go to the directory the command is run in, not to this repository.
 - 6 writes and 3 reads go to a temporary directory, not to this repository.
 - 2 commands are built at run time and not followed, 1 of them in tests.
-- CI runs or checks 434 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
-- Release runs or checks 433 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.
+- CI runs or checks 434 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 434.
+- Release runs or checks 433 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 433.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

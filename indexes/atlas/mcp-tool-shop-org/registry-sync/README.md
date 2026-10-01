@@ -1,6 +1,6 @@
 # registry-sync: how it works
 
-Mapped at 2026-09-30 from commit fae9a7c by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit fae9a7c by Atlas 1.25.0.
 
 ## What this is
 
@@ -88,9 +88,11 @@ People write .claude/, .github/, the repository root, site/ and templates/. Noth
 
 ## Where to start
 
-.github/workflows/ci.yml → src/cli.ts → src/config.ts → src/audit.ts → src/format/json.ts → src/format/markdown.ts → src/format/table.ts → src/plan.ts
+.github/workflows/ci.yml → src/cli.ts → src/config.ts → src/types.ts
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, src/cli.ts also calls src/audit.ts, src/format/json.ts, src/format/markdown.ts, src/format/table.ts and 4 more files.
 
 ## What this map cannot see
 

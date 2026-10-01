@@ -1,12 +1,12 @@
 # rig-bridge: how it works
 
-Mapped at 2026-09-30 from commit dfb7dd0 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 48f4827 by Atlas 1.25.0.
 
 ## What this is
 
 6 parts, mostly TypeScript (48 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 4 doors; ci, Deploy site to GitHub Pages, Release and rig-bridge each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run rig-bridge.
 
-## What changed since 2026-09-30 (204828b)
+## What changed since 2026-09-30 (dfb7dd0)
 
 Nothing structural changed since 2026-09-30; no file changed.
 
@@ -109,9 +109,11 @@ People write .github/, docs/, the repository root, schemas/ and site/. Nothing i
 
 ## Where to start
 
-.github/workflows/ci.yml → src/cli.ts → src/commands/init.ts → src/commands/new.ts → src/commands/send.ts → src/commands/close.ts → src/commands/status.ts → src/commands/thread.ts
+.github/workflows/ci.yml → src/cli.ts → src/commands/init.ts → src/engine/config.ts → src/engine/rig-id.ts
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, src/cli.ts also calls src/commands/new.ts, src/commands/send.ts, src/commands/close.ts, src/commands/status.ts and 3 more files. Beside the path, src/commands/init.ts also calls src/engine/git.ts.
 
 ## What this map cannot see
 

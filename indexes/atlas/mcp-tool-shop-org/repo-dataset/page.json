@@ -228,9 +228,9 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [],
-  "generatedAt": "2026-09-30T21:52:06.663Z",
+  "generatedAt": "2026-10-01T01:50:49.400Z",
   "limits": [
     "8 reads use paths built at run time and are not named here.",
     "9 writes and 12 reads go to a path their caller passes, not to this repository.",
@@ -251,16 +251,26 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/repo-dataset",
   "sequences": [],
+  "startBeside": [
+    {
+      "files": [
+        "src/discovery/git.ts",
+        "src/extractors/registry.ts",
+        "src/formatters/registry.ts",
+        "src/pipeline/quality.ts",
+        "src/pipeline/dedup.ts",
+        "src/pipeline/balance.ts"
+      ],
+      "from": "src/pipeline/runner.ts"
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "src/index.ts",
     "src/pipeline/runner.ts",
     "src/discovery/scanner.ts",
-    "src/discovery/git.ts",
-    "src/extractors/registry.ts",
-    "src/formatters/registry.ts",
-    "src/pipeline/quality.ts"
+    "src/discovery/languages.ts"
   ],
   "summary": null,
   "summaryFrom": null,

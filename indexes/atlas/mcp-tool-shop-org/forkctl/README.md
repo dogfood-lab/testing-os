@@ -1,6 +1,6 @@
 # forkctl: how it works
 
-Mapped at 2026-09-30 from commit e8a273f by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit e8a273f by Atlas 1.25.0.
 
 ## What this is
 
@@ -73,6 +73,8 @@ People write .github/, assets/, design/, the repository root and site/; 8 writes
 .github/workflows/ci.yml → src/cli.ts → src/dispatch.ts → src/lib/result.ts → src/lib/errors.ts
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, src/dispatch.ts also calls src/lib/audit.ts.
 
 ## What this map cannot see
 

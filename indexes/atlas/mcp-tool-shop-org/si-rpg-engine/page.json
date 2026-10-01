@@ -974,7 +974,7 @@
       "to": "load"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [
     {
       "block": true,
@@ -1016,7 +1016,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-30T21:53:00.884Z",
+  "generatedAt": "2026-10-01T01:51:58.714Z",
   "limits": [
     "19 imports could not be resolved: `harness/bundle.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/caps.test.js` imports `../solver/dist/solver.mjs`, which a build generates; `harness/corpus.mjs` imports `../solver/dist/solver.mjs`, which a build generates; and 16 more.",
     "2 writes and 7 reads use paths built at run time and are not named here.",
@@ -1989,15 +1989,23 @@
       ]
     }
   ],
+  "startBeside": [
+    {
+      "files": [
+        "packages/tick/difference.js",
+        "packages/tick/trace-line.js"
+      ],
+      "from": "packages/tick/bundle.js"
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "harness/bundle.mjs",
     "packages/tick/bundle.js",
     "packages/tick/runs.js",
-    "packages/tick/difference.js",
-    "packages/tick/trace-line.js",
-    "packages/frame/hash.js"
+    "packages/tick/memory.js",
+    "packages/tick/trust.js"
   ],
   "summary": "Deterministic 3D RPG tick: the model proposes, a checker admits, and the host draws committed frames.",
   "summaryFrom": "person",

@@ -1,6 +1,6 @@
 # comfy-preflight: how it works
 
-Mapped at 2026-09-30 from commit ddf5a11 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit ddf5a11 by Atlas 1.25.0.
 
 ## What this is
 
@@ -74,9 +74,11 @@ People write .github/, docs/, the repository root and site/; 1 write with a path
 
 ## Where to start
 
-src/comfy_preflight/cli.py → src/comfy_preflight/graph.py → src/comfy_preflight/register.py → src/comfy_preflight/checks/c1_link_topology.py → src/comfy_preflight/aggregate.py → src/comfy_preflight/__init__.py
+src/comfy_preflight/cli.py → src/comfy_preflight/graph.py → src/comfy_preflight/errors.py
 
 Read those in order to follow one run of comfy-preflight end to end. This path follows comfy-preflight (a command people run, from pyproject.toml) from its entry, since CI runs only tests, scripts that import no code here and checks.
+
+Beside the path, src/comfy_preflight/cli.py also calls src/comfy_preflight/register.py, src/comfy_preflight/checks/c1_link_topology.py, src/comfy_preflight/aggregate.py and src/comfy_preflight/__init__.py.
 
 ## What this map cannot see
 

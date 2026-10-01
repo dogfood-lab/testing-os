@@ -1,6 +1,6 @@
 # style-dataset-lab: how it works
 
-Mapped at 2026-09-30 from commit dfeac64 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit dfeac64 by Atlas 1.25.0.
 
 ## What this is
 
@@ -8,7 +8,10 @@ Mapped at 2026-09-30 from commit dfeac64 by Atlas 1.24.0.
 
 ## What changed since 2026-09-30 (f7b4973)
 
-Nothing structural changed since 2026-09-30; 1 file changed content.
+- projects/ai-eye-test/outputs/synthetic/phase2/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2_build.py.
+- projects/ai-eye-test/outputs/synthetic/phase2_noshadow/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2_noshadow_build.py.
+- projects/ai-eye-test/outputs/synthetic/phase2b/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2b_build.py.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 
@@ -76,13 +79,16 @@ bin is touched by tests only through a spawn: a test runs its files as a child p
 
 ## Written but never read
 
-- **projects/ai-eye-test/outputs/synthetic/phase2/** is written by projects/ai-eye-test/compositor/phase2_build.py and read by nothing else in this repository.
-- **projects/ai-eye-test/outputs/synthetic/phase2_noshadow/** is written by projects/ai-eye-test/compositor/phase2_noshadow_build.py and read by nothing else in this repository.
-- **projects/ai-eye-test/outputs/synthetic/phase2b/** is written by projects/ai-eye-test/compositor/phase2b_build.py and read by nothing else in this repository.
+- **projects/ai-eye-test/outputs/synthetic/phase2/apple_n*_s*.json** is written by projects/ai-eye-test/compositor/phase2_build.py and read by nothing else in this repository.
+- **projects/ai-eye-test/outputs/synthetic/phase2/manifest.json** is written by projects/ai-eye-test/compositor/phase2_build.py and read by nothing else in this repository.
+- **projects/ai-eye-test/outputs/synthetic/phase2_noshadow/apple_n*_s*.json** is written by projects/ai-eye-test/compositor/phase2_noshadow_build.py and read by nothing else in this repository.
+- **projects/ai-eye-test/outputs/synthetic/phase2_noshadow/manifest.json** is written by projects/ai-eye-test/compositor/phase2_noshadow_build.py and read by nothing else in this repository.
+- **projects/ai-eye-test/outputs/synthetic/phase2b/apple_n*_s*.json** is written by projects/ai-eye-test/compositor/phase2b_build.py and read by nothing else in this repository.
+- **projects/ai-eye-test/outputs/synthetic/phase2b/manifest.json** is written by projects/ai-eye-test/compositor/phase2b_build.py and read by nothing else in this repository.
 - **projects/salt-road/inbox/generated/set-v2-2026-07-30/receipts.jsonl** is written by projects/salt-road/inputs/prompts/wave-runner.py and read by nothing else in this repository.
 - **projects/salt-road/inputs/control-guides/** is written by projects/salt-road/inputs/control-guides/blockouts.py and read by nothing else in this repository.
-- **projects/salt-road/inputs/prompts/curate-plan.json** is written by projects/salt-road/inputs/prompts/ingest-styleset-records.mjs and read by nothing else in this repository.
-- **projects/salt-road/outputs/style-set-v2-review.html** is written by projects/salt-road/inputs/prompts/build-review-page.mjs and read by nothing else in this repository.
+
+And 2 more places.
 
 ## Helpers that look duplicated
 
@@ -91,9 +97,12 @@ No two parts export a helper that looks alike.
 ## Generated, never hand-edited
 
 - **projects/ai-eye-test/outputs/synthetic/phase1/** is written by projects/ai-eye-test/compositor/compositor.py.
-- **projects/ai-eye-test/outputs/synthetic/phase2/** is written by projects/ai-eye-test/compositor/phase2_build.py.
-- **projects/ai-eye-test/outputs/synthetic/phase2_noshadow/** is written by projects/ai-eye-test/compositor/phase2_noshadow_build.py.
-- **projects/ai-eye-test/outputs/synthetic/phase2b/** is written by projects/ai-eye-test/compositor/phase2b_build.py.
+- **projects/ai-eye-test/outputs/synthetic/phase2/apple_n*_s*.json** is written by projects/ai-eye-test/compositor/phase2_build.py.
+- **projects/ai-eye-test/outputs/synthetic/phase2/manifest.json** is written by projects/ai-eye-test/compositor/phase2_build.py.
+- **projects/ai-eye-test/outputs/synthetic/phase2_noshadow/apple_n*_s*.json** is written by projects/ai-eye-test/compositor/phase2_noshadow_build.py.
+- **projects/ai-eye-test/outputs/synthetic/phase2_noshadow/manifest.json** is written by projects/ai-eye-test/compositor/phase2_noshadow_build.py.
+- **projects/ai-eye-test/outputs/synthetic/phase2b/apple_n*_s*.json** is written by projects/ai-eye-test/compositor/phase2b_build.py.
+- **projects/ai-eye-test/outputs/synthetic/phase2b/manifest.json** is written by projects/ai-eye-test/compositor/phase2b_build.py.
 - **projects/salt-road/inbox/generated/set-v2-2026-07-30/receipts.jsonl** is written by projects/salt-road/inputs/prompts/wave-runner.py.
 - **projects/salt-road/inputs/control-guides/** is written by projects/salt-road/inputs/control-guides/blockouts.py.
 - **projects/salt-road/inputs/prompts/curate-plan.json** is written by projects/salt-road/inputs/prompts/ingest-styleset-records.mjs.

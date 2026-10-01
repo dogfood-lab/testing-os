@@ -1,6 +1,6 @@
 # stillpoint: how it works
 
-Mapped at 2026-09-30 from commit df37a1a by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit df37a1a by Atlas 1.25.0.
 
 ## What this is
 
@@ -70,9 +70,11 @@ People write .claude/, .github/, the repository root and site/. Nothing in this 
 
 ## Where to start
 
-.github/workflows/ci.yml → packages/server/src/server.ts → packages/server/src/routes/api.ts → packages/server/src/routes/events.ts
+.github/workflows/ci.yml → packages/server/src/server.ts → packages/server/src/routes/api.ts → packages/server/src/preset-store.ts → packages/server/src/state.ts
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, packages/server/src/server.ts also calls packages/server/src/routes/events.ts.
 
 ## What this map cannot see
 

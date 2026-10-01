@@ -1,14 +1,14 @@
 # repomesh: how it works
 
-Mapped at 2026-09-30 from commit bcd11b2 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit dbdaa6d by Atlas 1.25.0.
 
 ## What this is
 
 18 parts, mostly JavaScript (175 files), CSS (3), TypeScript (2), Astro (1) and shell (1). Work enters through 11 doors; Release and anchor-xrpl each reach 8 parts, and Release is followed because it comes first by name. It publishes @mcptoolshop/repomesh to npm and a container image. It deploys a site to GitHub Pages. People run repomesh. People import @mcptoolshop/repomesh. Other repositories use the RepoMesh verify-release action.
 
-## What changed since 2026-09-30 (b6e00d6)
+## What changed since 2026-10-01 (bcd11b2)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
@@ -17,7 +17,7 @@ Nothing structural changed since 2026-09-30; no file changed.
 3. **pages-ci.** On a push to main touching 6 paths; or by hand. Runs pages/build-metrics.mjs, pages/build-pages.mjs, pages/build-stats.mjs and 7 more.
 4. **attestor-ci.** On a schedule (`0 */6 * * *`); or by hand. Runs attestor/scripts/attest-release.mjs, policy/scripts/check-policy.mjs, verifiers/license/scripts/verify-license.mjs and 2 more; checks LICENSE.
 5. **registry-ci.** On a push to main touching 5 paths; or by hand. Runs registry/scripts/build-anchors.mjs, registry/scripts/build-badges.mjs, registry/scripts/build-dependencies.mjs and 4 more.
-6. **ledger-ci.** On a pull request touching 9 paths; or by hand. Runs ledger/scripts/validate-ledger.mjs.
+6. **ledger-ci.** On a pull request touching 12 paths; or by hand. Runs ledger/scripts/validate-ledger.mjs.
 7. **xrpl-watch.** On a schedule (`0 12 * * 1`), Monday at 12:00 UTC; or by hand. Runs anchor/xrpl/scripts/watch.mjs.
 8. **repomesh-broadcast.** When a release is published; or by hand. Runs packages/repomesh-cli/scripts/build.mjs.
 9. **@mcptoolshop/repomesh** (the package people import). Loads packages/repomesh-cli/dist/index.mjs, built from a source this map cannot place.
@@ -104,10 +104,10 @@ And 9 more pairs.
 - **anchor/xrpl/manifests/** is written by anchor/xrpl/scripts/compute-root.mjs.
 - **assets/** is written by repomesh-bot, which added every file in it.
 - **ledger/events/events.jsonl** is written by .github/workflows/anchor-xrpl.yml, .github/workflows/attestor-ci.yml, attestor/scripts/emit-key-event.mjs and packages/repomesh-cli/src/key/rotate-revoke.mjs.
-- **ledger/nodes/** is written by attestor/scripts/emit-key-event.mjs, tools/join-node.mjs and tools/register-node.mjs.
+- **ledger/nodes/** holds files written by attestor/scripts/emit-key-event.mjs, tools/join-node.mjs and tools/register-node.mjs.
 - **profiles/** is written by repomesh-bot, which added every file in it.
 - **registry/anchors.json** is written by verifiers/lib/common.mjs.
-- **registry/badges/** is written by registry/scripts/build-badges.mjs.
+- **registry/badges/** holds files written by registry/scripts/build-badges.mjs.
 - **registry/capabilities.json** is written by registry/scripts/build-registry.mjs.
 - **registry/dependencies.json** is written by registry/scripts/build-dependencies.mjs.
 - **registry/nodes.json** is written by registry/scripts/build-registry.mjs.

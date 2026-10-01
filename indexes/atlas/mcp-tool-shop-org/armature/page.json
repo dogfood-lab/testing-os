@@ -332,9 +332,9 @@
       "to": "tools"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [],
-  "generatedAt": "2026-09-30T21:47:21.113Z",
+  "generatedAt": "2026-10-01T01:44:32.556Z",
   "limits": [
     "43 imports could not be resolved: `tests/blender/test_check_pack.py` imports `conftest`, which is no module on its import path and no declared dependency; `tests/blender_stub.py` imports a path built at run time; `tests/conftest.py` imports a path built at run time; and 40 more.",
     "116 writes and 73 reads use paths built at run time and are not named here.",
@@ -574,12 +574,22 @@
       ]
     }
   ],
+  "startBeside": [
+    {
+      "files": [
+        "tools/armature_core/parts.py"
+      ],
+      "from": "tools/armature_core/cli.py"
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "tools/armature_core/cli.py",
     "tools/armature_core/route_gates.py",
-    "tools/armature_core/parts.py"
+    "tools/armature_core/canon.py",
+    "tools/armature_core/canon_census.py",
+    "tools/armature_core/errors.py"
   ],
   "summary": null,
   "summaryFrom": null,

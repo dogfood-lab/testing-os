@@ -1,6 +1,6 @@
 # roll: how it works
 
-Mapped at 2026-09-30 from commit b65c777 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit b65c777 by Atlas 1.25.0.
 
 ## What this is
 
@@ -76,9 +76,11 @@ People write .github/, the repository root and site/. Nothing in this repository
 
 ## Where to start
 
-.github/workflows/ci.yml → src/bin.ts → src/display/color.ts → src/display/box.ts → src/loot/table.ts
+.github/workflows/ci.yml → src/bin.ts → src/display/box.ts → src/display/color.ts
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, src/bin.ts also calls src/loot/table.ts.
 
 ## What this map cannot see
 

@@ -21,7 +21,7 @@
           "path": ".github/workflows/release.yml"
         },
         {
-          "hash": "45c5c16ffb7903230f197d4efbb7d8deea342361fe96bbab5438e4030c705c8c",
+          "hash": "9b45f4acfd0c7c9da7623b07585691b65f0a9959e711a4de1e7bd21be9a6db8b",
           "path": ".github/workflows/sync.yml"
         },
         {
@@ -6269,7 +6269,7 @@
           "path": "package.json"
         },
         {
-          "hash": "1ae1d92dd631cd5afca99ea53eb35cc42d26abf03e52568dad1e2a44c0175d1c",
+          "hash": "93867ae17e30d124a66491d3c33f8a24bcccc04fb19b5f941ce0907e8d62aceb",
           "path": "pnpm-lock.yaml"
         },
         {
@@ -10252,7 +10252,42 @@
           "programs": [
             "pnpm"
           ],
+          "step": "Install dependencies"
+        },
+        {
+          "dir": "",
+          "job": "sync",
+          "programs": [
+            "pnpm"
+          ],
+          "step": "Install Playwright Chromium (windsurf source)"
+        },
+        {
+          "dir": "",
+          "job": "sync",
+          "programs": [
+            "curl",
+            "ollama",
+            "sh",
+            "sleep"
+          ],
+          "step": "Install Ollama (free LLM provider)"
+        },
+        {
+          "dir": "",
+          "job": "sync",
+          "programs": [
+            "pnpm"
+          ],
           "step": "Build CLI"
+        },
+        {
+          "dir": "",
+          "job": "sync",
+          "programs": [
+            "node"
+          ],
+          "step": "Sync (fetch + ingest + embed)"
         },
         {
           "dir": "",
@@ -10739,9 +10774,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
-    "commit": "a222e671c2f750517f49444564d3eb2c7144cd0c",
+    "commit": "fd309d28d29dce2355bc6efb6ad33ff3f665ed3b",
     "tracked": 1704
   },
   "landings": [

@@ -265,7 +265,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [
     {
       "place": "tests/fixtures/MANIFEST.json",
@@ -280,7 +280,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-30T21:48:45.659Z",
+  "generatedAt": "2026-10-01T01:46:33.168Z",
   "limits": [
     "2 imports could not be resolved: `tests/test_packaging.py` imports a path built at run time, twice.",
     "1 write and 3 reads use paths built at run time and are not named here.",
@@ -302,14 +302,22 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/comfy-preflight",
   "sequences": [],
+  "startBeside": [
+    {
+      "files": [
+        "src/comfy_preflight/register.py",
+        "src/comfy_preflight/checks/c1_link_topology.py",
+        "src/comfy_preflight/aggregate.py",
+        "src/comfy_preflight/__init__.py"
+      ],
+      "from": "src/comfy_preflight/cli.py"
+    }
+  ],
   "startDoor": "pyproject.toml#comfy-preflight",
   "startHere": [
     "src/comfy_preflight/cli.py",
     "src/comfy_preflight/graph.py",
-    "src/comfy_preflight/register.py",
-    "src/comfy_preflight/checks/c1_link_topology.py",
-    "src/comfy_preflight/aggregate.py",
-    "src/comfy_preflight/__init__.py"
+    "src/comfy_preflight/errors.py"
   ],
   "startReason": "This path follows comfy-preflight (a command people run, from pyproject.toml) from its entry, since CI runs only tests, scripts that import no code here and checks.",
   "summary": null,

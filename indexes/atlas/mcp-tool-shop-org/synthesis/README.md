@@ -1,6 +1,6 @@
 # synthesis: how it works
 
-Mapped at 2026-09-30 from commit bd5151e by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit bd5151e by Atlas 1.25.0.
 
 ## What this is
 
@@ -81,6 +81,8 @@ People write .claude/, .github/, assets/, data/, docs/, research/, the repositor
 .github/workflows/ci.yml → src/index.ts → src/load.ts → src/color.ts
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, src/index.ts also calls src/runner.ts, src/report.ts and src/planted.ts.
 
 ## What this map cannot see
 

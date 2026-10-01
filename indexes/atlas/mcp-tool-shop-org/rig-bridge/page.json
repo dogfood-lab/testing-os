@@ -32,8 +32,8 @@
       }
     ],
     "since": {
-      "commit": "204828b76b942cb4bc89f2baccfe96564090f241",
-      "generatedAt": "2026-09-30T20:12:20.596Z"
+      "commit": "dfb7dd05662767b92cf6b3d320dc0234430a18ed",
+      "generatedAt": "2026-09-30T22:06:55.364Z"
     },
     "unchanged": true
   },
@@ -42,7 +42,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "dfb7dd05662767b92cf6b3d320dc0234430a18ed",
+  "commit": "48f4827d3af0251bdc48cc9879788dbfcbd8fcf0",
   "defaultBranch": "main",
   "derived": "6 parts, mostly TypeScript (48 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 4 doors; ci, Deploy site to GitHub Pages, Release and rig-bridge each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run rig-bridge.",
   "doors": [
@@ -230,9 +230,9 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [],
-  "generatedAt": "2026-09-30T21:52:32.665Z",
+  "generatedAt": "2026-10-01T01:51:23.589Z",
   "limits": [
     "9 writes and 46 reads go to a path their caller passes, not to this repository.",
     "2 commands are built at run time and not followed.",
@@ -584,16 +584,33 @@
       ]
     }
   ],
+  "startBeside": [
+    {
+      "files": [
+        "src/commands/new.ts",
+        "src/commands/send.ts",
+        "src/commands/close.ts",
+        "src/commands/status.ts",
+        "src/commands/thread.ts",
+        "src/commands/sync.ts",
+        "src/commands/relay.ts"
+      ],
+      "from": "src/cli.ts"
+    },
+    {
+      "files": [
+        "src/engine/git.ts"
+      ],
+      "from": "src/commands/init.ts"
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "src/cli.ts",
     "src/commands/init.ts",
-    "src/commands/new.ts",
-    "src/commands/send.ts",
-    "src/commands/close.ts",
-    "src/commands/status.ts",
-    "src/commands/thread.ts"
+    "src/engine/config.ts",
+    "src/engine/rig-id.ts"
   ],
   "summary": null,
   "summaryFrom": null,

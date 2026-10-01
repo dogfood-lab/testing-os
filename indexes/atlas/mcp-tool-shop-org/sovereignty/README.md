@@ -1,6 +1,6 @@
 # sovereignty: how it works
 
-Mapped at 2026-09-30 from commit a1733f7 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit a1733f7 by Atlas 1.25.0.
 
 ## What this is
 
@@ -98,9 +98,11 @@ People write .github/, docker/, docs/, the repository root and site/; 1 write wi
 
 ## Where to start
 
-.github/workflows/ci.yml → sov_daemon/__init__.py → sov_daemon/lifecycle.py → sov_engine/io_utils.py → sov_engine/schemas.py → sov_engine/proof.py
+.github/workflows/ci.yml → sov_daemon/__init__.py → sov_daemon/lifecycle.py → sov_engine/io_utils.py → sov_engine/proof.py
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, sov_engine/io_utils.py also calls sov_engine/schemas.py.
 
 ## What this map cannot see
 

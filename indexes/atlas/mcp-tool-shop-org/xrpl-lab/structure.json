@@ -9937,6 +9937,13 @@
           "event": "workflow_dispatch"
         }
       ],
+      "unresolvedExpressions": [
+        {
+          "adds": "flags",
+          "job": "lint-and-test",
+          "step": "Run tests"
+        }
+      ],
       "uses": [
         "actions/checkout",
         "actions/download-artifact",
@@ -10813,7 +10820,7 @@
       "to": "xrpl_lab"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
     "commit": "eef6677a1e815f1e8210fce1875ead214a9034e9",
     "tracked": 285

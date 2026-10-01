@@ -1,18 +1,18 @@
 # vocal-synth-engine: how it works
 
-Mapped at 2026-09-30 from commit 907e159 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 9f610c6 by Atlas 1.25.0.
 
 ## What this is
 
 10 parts, mostly TypeScript (99 files), JavaScript (3), Astro (2), CSS (2), shell (2), HTML (1) and Python (1). Work enters through 15 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run vocal-synth-engine-mcp, vse-analyze, vse-build-preset, vse-compare, vse-gen-vowel-wav, vse-inspect, vse-phonemize, vse-play-score, vse-resynth and vse-score-from-midi. People import @mcptoolshop/vocal-synth-engine.
 
-## What changed since 2026-09-30 (231081d)
+## What changed since 2026-10-01 (907e159)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request to main touching 11 paths; on a push to main touching 11 paths; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. Runs scripts/bench-gate.mjs, tests/cross-domain-stage-c.test.ts, tests/curves.test.ts and 15 more; builds src/.
+1. **CI.** On a pull request to main touching 12 paths; on a push to main touching 12 paths; on a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. Runs scripts/bench-gate.mjs, tests/cross-domain-stage-c.test.ts, tests/curves.test.ts and 15 more; builds src/.
 2. **Release.** When a tag matching `v*` is pushed. Runs scripts/verify.sh, tests/cross-domain-stage-c.test.ts, tests/curves.test.ts and 15 more; builds src/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **Dogfood.** On a push to main touching 3 paths; or by hand. On main, it runs src/server/index.prod.ts; builds src/.
@@ -83,8 +83,6 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 
 - **cockpit** is imported by no test.
 - **scripts** is imported by no test.
-
-apps/cockpit/tests/smoke.spec.ts runs in no workflow.
 
 ## Written but never read
 

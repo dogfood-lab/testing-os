@@ -12226,11 +12226,11 @@
           "path": "package.json"
         },
         {
-          "hash": "8cd7df5abaf69f982e4e5d7df8b5ddf41d428915ec58739755186581664f5843",
+          "hash": "081cf6859d5b9b8d736531bbda8035fe243e8b1a84cc9de223f9487facdb41da",
           "path": "pnpm-lock.yaml"
         },
         {
-          "hash": "3535801e2faee1f88c018d252641c5eba733621af0a7fa0bd675a5dac54c63ad",
+          "hash": "a04f681e44162c1de91702039bb79c475de8cee778e34742b3cbe0caac160614",
           "path": "pnpm-workspace.yaml"
         },
         {
@@ -27288,7 +27288,16 @@
           ]
         }
       ],
-      "landings": [],
+      "landings": [
+        "datasets/jam-actions-v1/PROVENANCE-NOTE.md",
+        "datasets/jam-actions-v1/README.md",
+        "datasets/jam-actions-v1/checksums.sha256",
+        "datasets/jam-actions-v1/coverage.json",
+        "datasets/jam-actions-v1/manifest.json",
+        "datasets/jam-actions-v1/records",
+        "datasets/jam-actions-v1/records.jsonl",
+        "datasets/jam-actions-v1/splits.json"
+      ],
       "mentions": [
         {
           "job": "plugin-validate",
@@ -27336,7 +27345,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 12
+          "files": 69
         },
         {
           "boundary": "src",
@@ -27344,7 +27353,342 @@
           "files": 371
         }
       ],
-      "readers": [],
+      "readers": [
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/PROVENANCE-NOTE.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/PROVENANCE-NOTE.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/PROVENANCE-NOTE.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/PROVENANCE-NOTE.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/PROVENANCE-NOTE.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/PROVENANCE-NOTE.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/PROVENANCE-NOTE.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/README.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/README.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/README.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/README.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/README.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/README.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/README.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/checksums.sha256"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/checksums.sha256"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/checksums.sha256"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/checksums.sha256"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/checksums.sha256"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/checksums.sha256"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/checksums.sha256"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/manifest.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/manifest.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/manifest.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/manifest.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/manifest.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/manifest.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/manifest.json"
+        },
+        {
+          "by": "experiments/coverage-v1-sft/format-sft.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/probe.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/toolless-baseline.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/splits.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/splits.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/splits.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/splits.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/splits.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/splits.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/splits.json"
+        }
+      ],
       "runs": [
         {
           "job": "docker-image",
@@ -31002,6 +31346,7 @@
         }
       ],
       "runsCount": 468,
+      "runsCut": true,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -31651,6 +31996,13 @@
           "event": "workflow_dispatch"
         }
       ],
+      "unresolvedExpressions": [
+        {
+          "adds": "words",
+          "job": "publish",
+          "step": "Print final receipt"
+        }
+      ],
       "uses": [
         "actions/checkout",
         "actions/setup-node",
@@ -32053,7 +32405,16 @@
           ]
         }
       ],
-      "landings": [],
+      "landings": [
+        "datasets/jam-actions-v1/PROVENANCE-NOTE.md",
+        "datasets/jam-actions-v1/README.md",
+        "datasets/jam-actions-v1/checksums.sha256",
+        "datasets/jam-actions-v1/coverage.json",
+        "datasets/jam-actions-v1/manifest.json",
+        "datasets/jam-actions-v1/records",
+        "datasets/jam-actions-v1/records.jsonl",
+        "datasets/jam-actions-v1/splits.json"
+      ],
       "mentions": [
         {
           "job": "publish-npm",
@@ -32071,7 +32432,7 @@
         {
           "boundary": "cockpit",
           "depth": 0,
-          "files": 24
+          "files": 28
         },
         {
           "boundary": "experiments",
@@ -32094,7 +32455,342 @@
           "files": 371
         }
       ],
-      "readers": [],
+      "readers": [
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/PROVENANCE-NOTE.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/PROVENANCE-NOTE.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/PROVENANCE-NOTE.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/PROVENANCE-NOTE.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/PROVENANCE-NOTE.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/PROVENANCE-NOTE.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/PROVENANCE-NOTE.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/README.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/README.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/README.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/README.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/README.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/README.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/README.md"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/checksums.sha256"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/checksums.sha256"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/checksums.sha256"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/checksums.sha256"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/checksums.sha256"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/checksums.sha256"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/checksums.sha256"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/coverage.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/manifest.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/manifest.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/manifest.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/manifest.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/manifest.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/manifest.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/manifest.json"
+        },
+        {
+          "by": "experiments/coverage-v1-sft/format-sft.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/probe.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/toolless-baseline.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/records.jsonl"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/splits.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/splits.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/splits.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "readdirSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/splits.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-corpus.ts",
+          "call": "statSync",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/splits.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/generate-public.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "target": "datasets/jam-actions-v1/splits.json"
+        },
+        {
+          "by": "src/dataset/acoustic-v1/v1.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "datasets/jam-actions-v1/splits.json"
+        }
+      ],
       "runs": [
         {
           "job": "publish-docker",
@@ -34342,6 +35038,7 @@
         }
       ],
       "runsCount": 406,
+      "runsCut": true,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -34723,9 +35420,9 @@
       "to": "scripts"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
-    "commit": "e5fcb31ecfedd043c463f70d8e3cb4c1dd0834ea",
+    "commit": "254e22e84d5a226ef6417da4825af9f3f6e79175",
     "tracked": 2950
   },
   "landings": [
@@ -35886,7 +36583,8 @@
             "main"
           ]
         }
-      ]
+      ],
+      "writesInto": true
     },
     {
       "readers": [
@@ -35989,7 +36687,8 @@
           "by": "scripts/build-pilot-records.ts",
           "confidence": "ast"
         }
-      ]
+      ],
+      "writesInto": true
     },
     {
       "readers": [
@@ -36044,7 +36743,8 @@
           "by": "scripts/run-jam-actions-corpus-eval.ts",
           "confidence": "ast"
         }
-      ]
+      ],
+      "writesInto": true
     },
     {
       "readers": [
@@ -42497,12 +43197,7 @@
         }
       ],
       "target": "experiments/rollout-arc/p4/runs",
-      "writers": [
-        {
-          "by": "experiments/rollout-arc/p4/scripts/score-curriculum.mts",
-          "confidence": "ast"
-        }
-      ]
+      "writers": []
     },
     {
       "readers": [],
@@ -43194,6 +43889,16 @@
       "writers": [
         {
           "by": "experiments/rollout-arc/p4/scripts/emit-spec-prompts.mts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "experiments/rollout-arc/p4/runs/summary-*.json",
+      "writers": [
+        {
+          "by": "experiments/rollout-arc/p4/scripts/score-curriculum.mts",
           "confidence": "ast"
         }
       ]
@@ -44711,6 +45416,16 @@
       ]
     },
     {
+      "readers": [],
+      "target": "site/public/america-the-beautiful-m*-*.svg",
+      "writers": [
+        {
+          "by": "scripts/render-landing-pianoroll.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
       "readers": [
         {
           "by": "site/astro.config.mjs",
@@ -45068,7 +45783,10 @@
       "writers": [
         {
           "by": "scripts/npm-ship-list.ts",
-          "confidence": "ast"
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
         }
       ]
     },

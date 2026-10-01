@@ -10329,7 +10329,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
     "commit": "596a5e77d7178ae71bae66553a3d5b1efc227d47",
     "tracked": 450
@@ -10378,27 +10378,11 @@
           "confidence": "ast"
         },
         {
-          "by": "scripts/generate-batch-bad-fixtures.ts",
-          "confidence": "ast"
-        },
-        {
-          "by": "scripts/generate-external-bad-fixtures.ts",
-          "confidence": "ast"
-        },
-        {
           "by": "scripts/generate-momentum-bad-fixtures.ts",
           "confidence": "ast"
         },
         {
-          "by": "scripts/generate-multi-step-external-bad-fixtures.ts",
-          "confidence": "ast"
-        },
-        {
           "by": "scripts/generate-sgd-coupled-l2-fixtures.ts",
-          "confidence": "ast"
-        },
-        {
-          "by": "scripts/generate-softmax-ce-bad-fixtures.ts",
           "confidence": "ast"
         }
       ]
@@ -10419,6 +10403,26 @@
       "writers": [
         {
           "by": "scripts/build-pytorch-helper-fixtures.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "fixtures/bad/batch.bad-*.jsonl",
+      "writers": [
+        {
+          "by": "scripts/generate-batch-bad-fixtures.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "fixtures/bad/external.bad-*.jsonl",
+      "writers": [
+        {
+          "by": "scripts/generate-external-bad-fixtures.ts",
           "confidence": "ast"
         }
       ]
@@ -10589,6 +10593,16 @@
       "writers": []
     },
     {
+      "readers": [],
+      "target": "fixtures/bad/multi-step-external.bad-*.jsonl",
+      "writers": [
+        {
+          "by": "scripts/generate-multi-step-external-bad-fixtures.ts",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
       "readers": [
         {
           "by": "test/cli.multi-step-import-pipe.test.ts",
@@ -10725,6 +10739,16 @@
       ],
       "target": "fixtures/bad/multi-step.bad-trace-id.jsonl",
       "writers": []
+    },
+    {
+      "readers": [],
+      "target": "fixtures/bad/softmax-ce.bad-*.jsonl",
+      "writers": [
+        {
+          "by": "scripts/generate-softmax-ce-bad-fixtures.ts",
+          "confidence": "ast"
+        }
+      ]
     },
     {
       "readers": [

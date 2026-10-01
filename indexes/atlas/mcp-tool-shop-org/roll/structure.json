@@ -6165,6 +6165,13 @@
           "event": "workflow_dispatch"
         }
       ],
+      "unresolvedExpressions": [
+        {
+          "adds": "words",
+          "job": "release",
+          "step": "Verify tag matches package.json version"
+        }
+      ],
       "uses": [
         "actions/checkout",
         "actions/setup-node"
@@ -6357,7 +6364,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
     "commit": "b65c777bd9f43d214eb58d2feb27a36b3923b273",
     "tracked": 94

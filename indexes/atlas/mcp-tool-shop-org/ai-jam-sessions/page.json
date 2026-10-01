@@ -75,17 +75,6 @@
     {
       "kind": "place",
       "readers": [
-        "experiments"
-      ],
-      "target": "experiments/rollout-arc/p4/runs/",
-      "tests": 2,
-      "writers": [
-        "experiments"
-      ]
-    },
-    {
-      "kind": "place",
-      "readers": [
         "experiments",
         "scripts",
         "src"
@@ -95,20 +84,50 @@
       "writers": [
         "scripts"
       ]
+    },
+    {
+      "into": true,
+      "kind": "place",
+      "readers": [
+        "experiments",
+        "scripts",
+        "src"
+      ],
+      "target": "datasets/jam-actions-v0/",
+      "tests": 5,
+      "writers": [
+        "scripts"
+      ]
     }
   ],
   "changes": {
     "fileCounts": {
       "added": 0,
-      "changed": 0,
+      "changed": 2,
       "moved": 0,
-      "parts": 0,
+      "parts": 1,
       "removed": 0
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "experiments/rollout-arc/p4/runs/summary-*.json is now written by experiments/rollout-arc/p4/scripts/score-curriculum.mts.",
+        "subjects": [
+          "experiments/rollout-arc/p4/runs/summary-*.json",
+          "experiments/rollout-arc/p4/scripts/score-curriculum.mts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "site/public/america-the-beautiful-m*-*.svg is now written by scripts/render-landing-pianoroll.ts.",
+        "subjects": [
+          "site/public/america-the-beautiful-m*-*.svg",
+          "scripts/render-landing-pianoroll.ts"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "2 files changed content, across 1 part.",
         "subjects": []
       }
     ],
@@ -116,7 +135,7 @@
       "commit": "6e898149dd1e701d620e3db143abf37856e20a4a",
       "generatedAt": "2026-09-30T20:07:02.042Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -124,7 +143,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 7 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "e5fcb31ecfedd043c463f70d8e3cb4c1dd0834ea",
+  "commit": "254e22e84d5a226ef6417da4825af9f3f6e79175",
   "defaultBranch": "main",
   "derived": "14 parts, mostly JSON data (1520 files) and Markdown (348); code in TypeScript (563), Python (48), JavaScript (32), shell (28), PowerShell (3), CSS (2), Astro (1) and HTML (1). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.",
   "doors": [
@@ -233,7 +252,16 @@
       "checksMore": 57,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
-      "landings": [],
+      "landings": [
+        "datasets/jam-actions-v1/PROVENANCE-NOTE.md",
+        "datasets/jam-actions-v1/README.md",
+        "datasets/jam-actions-v1/checksums.sha256",
+        "datasets/jam-actions-v1/coverage.json",
+        "datasets/jam-actions-v1/manifest.json",
+        "datasets/jam-actions-v1/records/",
+        "datasets/jam-actions-v1/records.jsonl",
+        "datasets/jam-actions-v1/splits.json"
+      ],
       "name": "CI",
       "packs": [
         "LICENSE",
@@ -267,7 +295,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 12
+          "files": 69
         },
         {
           "boundary": "src",
@@ -473,7 +501,16 @@
       "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
-      "landings": [],
+      "landings": [
+        "datasets/jam-actions-v1/PROVENANCE-NOTE.md",
+        "datasets/jam-actions-v1/README.md",
+        "datasets/jam-actions-v1/checksums.sha256",
+        "datasets/jam-actions-v1/coverage.json",
+        "datasets/jam-actions-v1/manifest.json",
+        "datasets/jam-actions-v1/records/",
+        "datasets/jam-actions-v1/records.jsonl",
+        "datasets/jam-actions-v1/splits.json"
+      ],
       "name": "Release",
       "packs": [
         "LICENSE",
@@ -492,7 +529,7 @@
         {
           "boundary": "cockpit",
           "depth": 0,
-          "files": 24
+          "files": 28
         },
         {
           "boundary": "experiments",
@@ -962,15 +999,17 @@
       "to": "scripts"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [
     {
+      "into": true,
       "place": "datasets/jam-actions-acoustic-v0/",
       "writers": [
         "src/dataset/acoustic/generate-corpus.ts"
       ]
     },
     {
+      "into": true,
       "place": "datasets/jam-actions-v0-public/",
       "writers": [
         "scripts/package-jam-actions-public.ts",
@@ -979,6 +1018,7 @@
       ]
     },
     {
+      "into": true,
       "place": "datasets/jam-actions-v0/",
       "writers": [
         "scripts (6 files)"
@@ -1500,7 +1540,7 @@
       ]
     },
     {
-      "place": "experiments/rollout-arc/p4/runs/",
+      "place": "experiments/rollout-arc/p4/runs/curriculum-summary.json",
       "writers": [
         "experiments/rollout-arc/p4/scripts/score-curriculum.mts"
       ]
@@ -1539,6 +1579,12 @@
       "place": "experiments/rollout-arc/p4/runs/spec-probe-summary.json",
       "writers": [
         "experiments/rollout-arc/p4/scripts/score-spec-probe.mts"
+      ]
+    },
+    {
+      "place": "experiments/rollout-arc/p4/runs/summary-*.json",
+      "writers": [
+        "experiments/rollout-arc/p4/scripts/score-curriculum.mts"
       ]
     },
     {
@@ -1617,7 +1663,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-30T21:46:07.176Z",
+  "generatedAt": "2026-10-01T01:42:32.583Z",
   "limits": [
     "5 import sites name declared dependencies that share their names with local modules (datasets and spaces); they are read as the dependencies, which are not in this repository.",
     "2 imports could not be resolved: `scripts/cast-kokoro-lock.mjs` imports a path built at run time; `scripts/cast-kokoro-lock.mjs` probes `kokoro-js`, which is not declared.",
@@ -1633,8 +1679,8 @@
     "20 commands are built at run time and not followed, 2 of them in tests.",
     "There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
     "There is a Hugging Face Space under spaces/jam-actions-live/; what ships from it goes from outside this repository, and is not on this page.",
-    "CI runs or checks 468 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
-    "Release runs or checks 406 files and directories; the map records 200 of them, some from every directory, and walks its reach from those.",
+    "CI runs or checks 468 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 468.",
+    "Release runs or checks 406 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 406.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -1655,7 +1701,17 @@
     "src": "src"
   },
   "parts": 14,
-  "readers": [],
+  "readers": [
+    {
+      "readers": [
+        "experiments/coverage-v1-sft/format-sft.ts",
+        "src/dataset/acoustic-v1/generate-public.ts",
+        "src/dataset/acoustic-v1/toolless-baseline.mjs"
+      ],
+      "target": "datasets/jam-actions-v1/",
+      "tests": 2
+    }
+  ],
   "repo": "mcp-tool-shop-org/ai-jam-sessions",
   "sequences": [
     {
@@ -1712,13 +1768,22 @@
       ]
     }
   ],
+  "startBeside": [
+    {
+      "files": [
+        "src/stdio-supervisor.ts",
+        "src/state-home.ts"
+      ],
+      "from": "src/mcp-server.ts"
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "src/mcp-server.ts",
-    "src/stdio-supervisor.ts",
-    "src/state-home.ts",
-    "src/songs/config/loader.ts"
+    "src/songs/config/loader.ts",
+    "src/songs/config/schema.ts",
+    "src/songs/types.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -1783,7 +1848,7 @@
   ],
   "unreadFiles": 0,
   "unreadNote": [
-    "And 63 more places."
+    "And 65 more places."
   ],
   "untested": [
     {
@@ -1793,5 +1858,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 108
+  "written": 109
 }

@@ -1,6 +1,6 @@
 # codecomfy-vscode: how it works
 
-Mapped at 2026-09-30 from commit cf6d5a3 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit cf6d5a3 by Atlas 1.25.0.
 
 ## What this is
 
@@ -76,9 +76,11 @@ People write .github/, assets/, docs/, the repository root, schemas/ and site/; 
 
 ## Where to start
 
-.github/workflows/ci.yml → src/extension.ts → src/logging/logger.ts → src/presets/registry.ts
+.github/workflows/ci.yml → src/extension.ts → src/presets/registry.ts → src/types/index.ts
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, src/extension.ts also calls src/logging/logger.ts.
 
 ## What this map cannot see
 

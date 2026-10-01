@@ -1,6 +1,6 @@
 # audiobooker: how it works
 
-Mapped at 2026-09-30 from commit c6ef1df by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit c6ef1df by Atlas 1.25.0.
 
 ## What this is
 
@@ -102,6 +102,8 @@ People write .github/, assets/, docs/, npm/, the repository root and site/; 5 wr
 .github/workflows/ci.yml → audiobooker/cli.py → audiobooker/renderer/engine.py → audiobooker/__init__.py → audiobooker/models.py → audiobooker/formats.py
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, audiobooker/renderer/engine.py also calls audiobooker/renderer/output.py, audiobooker/renderer/cache_manifest.py, audiobooker/renderer/hash_utils.py, audiobooker/renderer/progress.py and 1 more file.
 
 ## What this map cannot see
 

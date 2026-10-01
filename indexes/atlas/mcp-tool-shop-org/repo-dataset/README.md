@@ -1,6 +1,6 @@
 # repo-dataset: how it works
 
-Mapped at 2026-09-30 from commit fdf8c06 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit fdf8c06 by Atlas 1.25.0.
 
 ## What this is
 
@@ -69,9 +69,11 @@ People write .github/, docs/, the repository root and site/. Nothing in this rep
 
 ## Where to start
 
-.github/workflows/ci.yml → src/index.ts → src/pipeline/runner.ts → src/discovery/scanner.ts → src/discovery/git.ts → src/extractors/registry.ts → src/formatters/registry.ts → src/pipeline/quality.ts
+.github/workflows/ci.yml → src/index.ts → src/pipeline/runner.ts → src/discovery/scanner.ts → src/discovery/languages.ts
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, src/pipeline/runner.ts also calls src/discovery/git.ts, src/extractors/registry.ts, src/formatters/registry.ts, src/pipeline/quality.ts and 2 more files.
 
 ## What this map cannot see
 

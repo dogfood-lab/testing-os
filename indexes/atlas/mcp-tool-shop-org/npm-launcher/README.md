@@ -1,6 +1,6 @@
 # npm-launcher: how it works
 
-Mapped at 2026-09-30 from commit ecc477e by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit ecc477e by Atlas 1.25.0.
 
 ## What this is
 
@@ -95,6 +95,8 @@ People write .github/, the repository root and site/. Nothing in this repository
 .github/workflows/ci.yml → bin/mcptoolshop-launch.js → src/index.js → src/log.js
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, src/index.js also calls src/platform.js, src/cache.js, src/lock.js, src/github.js and 2 more files.
 
 ## What this map cannot see
 

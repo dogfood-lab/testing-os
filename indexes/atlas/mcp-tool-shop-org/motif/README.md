@@ -1,6 +1,6 @@
 # motif: how it works
 
-Mapped at 2026-09-30 from commit 765b76c by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 4cd27f9 by Atlas 1.25.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-09-30 from commit 765b76c by Atlas 1.24.0.
 
 ## What changed since 2026-09-30 (2b08099)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-09-30; 2 files changed content.
 
 ## What comes in
 

@@ -1,6 +1,6 @@
 # .github: how it works
 
-Mapped at 2026-09-30 from commit 15e5178 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 173f84e by Atlas 1.25.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ This is the organization's profile page and the community-health files its repos
 
 ## What changed since 2026-09-30 (d05c730)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-09-30; 4 files changed content.
 
 ## What comes in
 
@@ -42,7 +42,7 @@ No part is imported by another part, and no part sits on the path of two doors.
 
 No two source files changed together often enough to name.
 
-Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
+Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -74,6 +74,6 @@ Read those in order to follow one pull request end to end. This path follows Doc
 
 - 12 writes go to places this repository does not track, so they are not listed as generated.
 - 1 write goes to a temporary directory, not to this repository.
-- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

@@ -639,7 +639,7 @@
       "to": "sov_transport"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [
     {
       "place": "assets/print/source/print-bundle.js",
@@ -648,7 +648,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-30T21:53:19.429Z",
+  "generatedAt": "2026-10-01T01:52:23.370Z",
   "limits": [
     "35 import sites name a declared dependency that shares its name with a local module (xrpl); they are read as the dependency, which is not in this repository.",
     "3 imports could not be resolved: `assets/print/source/render.mjs` imports `puppeteer-core`, which is not declared; `assets/print/source/vendor/react-dom.production.min.js` imports `react`, which is not declared; `sov_cli/main.py` imports a path built at run time.",
@@ -681,13 +681,20 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/sovereignty",
   "sequences": [],
+  "startBeside": [
+    {
+      "files": [
+        "sov_engine/schemas.py"
+      ],
+      "from": "sov_engine/io_utils.py"
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "sov_daemon/__init__.py",
     "sov_daemon/lifecycle.py",
     "sov_engine/io_utils.py",
-    "sov_engine/schemas.py",
     "sov_engine/proof.py"
   ],
   "summary": null,

@@ -9,7 +9,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "c19a303714ddf36773695d89ed467f8ad6c5b453bbb9cc848bed23a0e59a01e3",
+          "hash": "927c917c66088e0f6ee7656fb31349a2ca04bec22a4f0cbcef47e4063c2dc43b",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -13027,7 +13027,7 @@
           ],
           "event": "pull_request",
           "paths": [
-            ".github/workflows/ci.yml",
+            ".github/workflows/**",
             "atlas/**",
             "codecov.yml",
             "pyproject.toml",
@@ -13044,7 +13044,7 @@
           ],
           "event": "push",
           "paths": [
-            ".github/workflows/ci.yml",
+            ".github/workflows/**",
             "atlas/**",
             "codecov.yml",
             "pyproject.toml",
@@ -13057,6 +13057,13 @@
         },
         {
           "event": "workflow_dispatch"
+        }
+      ],
+      "unresolvedExpressions": [
+        {
+          "adds": "flags",
+          "job": "test",
+          "step": "Test"
         }
       ],
       "uses": [
@@ -13931,9 +13938,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
-    "commit": "73f9a294f974916571113578fb35d33d34965457",
+    "commit": "4c668d5a9841b6851d8179d83fa682c9d7a6ed3a",
     "tracked": 264
   },
   "landings": [

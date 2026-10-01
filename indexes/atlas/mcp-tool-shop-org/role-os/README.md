@@ -1,25 +1,26 @@
 # role-os: how it works
 
-Mapped at 2026-09-30 from commit 07450c9 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 91e12b7 by Atlas 1.25.0.
 
 ## What this is
 
-15 parts, mostly JavaScript (162 files), Python (30), Astro (2), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 3 parts. It publishes to npm. It deploys a site to GitHub Pages. People run roleos.
+15 parts, mostly JavaScript (162 files), Python (30), Astro (2), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run roleos.
 
-## What changed since 2026-09-30 (64fe05b)
+## What changed since 2026-10-01 (07450c9)
 
-Nothing structural changed since 2026-09-30; no file changed.
+- test/live-tool-contracts.test.mjs is now read by tools/conformance-dataset/live-tools/RECEIPT.md.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 
-1. **CI.** On a pull request touching 14 paths; on a push touching 14 paths; or by hand. Runs bin/roleos.mjs and test/.
+1. **CI.** On a pull request touching 14 paths; on a push touching 14 paths; or by hand. Runs bin/roleos.mjs, tools/token-budget-dataset/test_harvester.py and test/.
 2. **Release.** When a release is published; or by hand. Runs test/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **roleos** (a command people run). Runs bin/roleos.mjs.
 
 ## What happens through CI
 
-1. The workflow runs bin/roleos.mjs in bin and test/ in test.
+1. The workflow runs bin/roleos.mjs in bin, test/ in test and tools/token-budget-dataset/test_harvester.py in tools.
 2. That reaches src (70 files).
 3. It uploads coverage to Codecov.
 
@@ -58,7 +59,7 @@ Window: 180 days; a pair counts from 3 shared commits, since 1 source file reach
 
 bin is touched by tests only through a spawn: a test runs its files as a child process.
 
-3 test files run in no workflow: tools/conformance-dataset/test_certify_ship_stamp.py, tools/conformance-dataset/test_empty_write_gate.py and tools/token-budget-dataset/test_harvester.py.
+2 test files run in no workflow: tools/conformance-dataset/test_certify_ship_stamp.py and tools/conformance-dataset/test_empty_write_gate.py.
 
 ## Written but never read
 
@@ -75,7 +76,7 @@ No two parts export a helper that looks alike.
 - **dossier/data.js** is written by dossier/build-gallery.mjs.
 - **dossier/portraits/briefs/** is written by dossier/portraits/write-prompt.mjs.
 - **dossier/portraits/web/** is written by dossier/optimize-portraits.py.
-- **tools/conformance-dataset/** is written by tools/conformance-dataset/build_conformance_dataset.py and tools/conformance-dataset/build_tool_constraints.mjs.
+- **tools/conformance-dataset/** holds files written by tools/conformance-dataset/build_conformance_dataset.py and tools/conformance-dataset/build_tool_constraints.mjs.
 - **tools/conformance-dataset/corpus_l4.json** is written by tools/conformance-dataset/author_l4.py.
 - **tools/conformance-dataset/corpus_tools.json** has a block written by tools/conformance-dataset/merge_corpus.py.
 - **tools/conformance-dataset/live-tools/corpus.json** is written by tools/conformance-dataset/live-tools/prep_inputs.mjs.
@@ -87,9 +88,11 @@ People write .github/, .role-os/, assets/, design/, examples/, the repository ro
 
 ## Where to start
 
-.github/workflows/ci.yml → bin/roleos.mjs → src/swarm-cmd.mjs → src/swarm/domain-detect.mjs → src/run.mjs → src/artifacts.mjs → src/swarm/exit-condition.mjs → src/swarm/build-gate.mjs
+.github/workflows/ci.yml → bin/roleos.mjs → src/swarm-cmd.mjs → src/run.mjs → src/entry.mjs → src/mission.mjs → src/route.mjs → src/fs-utils.mjs
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, src/swarm-cmd.mjs also calls src/swarm/domain-detect.mjs, src/artifacts.mjs, src/swarm/exit-condition.mjs and src/swarm/build-gate.mjs.
 
 ## What this map cannot see
 

@@ -66,23 +66,31 @@
   "changes": {
     "fileCounts": {
       "added": 0,
-      "changed": 0,
+      "changed": 1,
       "moved": 0,
-      "parts": 0,
+      "parts": 1,
       "removed": 0
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "test/live-tool-contracts.test.mjs is now read by tools/conformance-dataset/live-tools/RECEIPT.md.",
+        "subjects": [
+          "test/live-tool-contracts.test.mjs",
+          "tools/conformance-dataset/live-tools/RECEIPT.md"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "1 file changed content, across 1 part.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "64fe05b375eedcfde4fbb7c344f837b5527f5fa8",
-      "generatedAt": "2026-09-30T20:12:33.667Z"
+      "commit": "07450c9f33f21d86fad86d8415268ed3228a6a78",
+      "generatedAt": "2026-10-01T00:15:28.908Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -121,9 +129,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 1 source file reaches 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "07450c9f33f21d86fad86d8415268ed3228a6a78",
+  "commit": "91e12b75f3c679b6be952ae0ffeb65dabe54a25e",
   "defaultBranch": "main",
-  "derived": "15 parts, mostly JavaScript (162 files), Python (30), Astro (2), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 3 parts. It publishes to npm. It deploys a site to GitHub Pages. People run roleos.",
+  "derived": "15 parts, mostly JavaScript (162 files), Python (30), Astro (2), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run roleos.",
   "doors": [
     {
       "checks": [],
@@ -146,6 +154,11 @@
           "files": 72
         },
         {
+          "boundary": "tools",
+          "depth": 0,
+          "files": 16
+        },
+        {
           "boundary": "src",
           "depth": 1,
           "files": 70
@@ -153,9 +166,10 @@
       ],
       "runs": [
         "bin/roleos.mjs",
+        "tools/token-budget-dataset/test_harvester.py",
         "test/"
       ],
-      "runsCount": 2,
+      "runsCount": 3,
       "runsMore": 0,
       "sends": [
         "uploads coverage to Codecov"
@@ -280,7 +294,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [
     {
       "place": ".claude/role-os/tool-contracts.json",
@@ -314,6 +328,7 @@
       ]
     },
     {
+      "into": true,
       "place": "tools/conformance-dataset/",
       "writers": [
         "tools/conformance-dataset/build_conformance_dataset.py",
@@ -346,7 +361,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-30T21:52:38.862Z",
+  "generatedAt": "2026-10-01T01:51:32.489Z",
   "limits": [
     "3 imports could not be resolved: `test/knowledge-integration.test.mjs` imports a path built at run time, 3 times.",
     "16 writes and 14 reads use paths built at run time and are not named here.",
@@ -383,16 +398,27 @@
   "spawnTested": [
     "bin"
   ],
+  "startBeside": [
+    {
+      "files": [
+        "src/swarm/domain-detect.mjs",
+        "src/artifacts.mjs",
+        "src/swarm/exit-condition.mjs",
+        "src/swarm/build-gate.mjs"
+      ],
+      "from": "src/swarm-cmd.mjs"
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "bin/roleos.mjs",
     "src/swarm-cmd.mjs",
-    "src/swarm/domain-detect.mjs",
     "src/run.mjs",
-    "src/artifacts.mjs",
-    "src/swarm/exit-condition.mjs",
-    "src/swarm/build-gate.mjs"
+    "src/entry.mjs",
+    "src/mission.mjs",
+    "src/route.mjs",
+    "src/fs-utils.mjs"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -416,7 +442,7 @@
   ],
   "untestedNote": [
     "bin is touched by tests only through a spawn: a test runs its files as a child process.",
-    "3 test files run in no workflow: tools/conformance-dataset/test_certify_ship_stamp.py, tools/conformance-dataset/test_empty_write_gate.py and tools/token-budget-dataset/test_harvester.py."
+    "2 test files run in no workflow: tools/conformance-dataset/test_certify_ship_stamp.py and tools/conformance-dataset/test_empty_write_gate.py."
   ],
   "written": 10
 }

@@ -315,9 +315,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [],
-  "generatedAt": "2026-09-30T21:52:45.115Z",
+  "generatedAt": "2026-10-01T01:51:40.757Z",
   "limits": [
     "1 write and 9 reads use paths built at run time and are not named here.",
     "21 writes and 31 reads go to a path their caller passes, not to this repository.",
@@ -341,10 +341,24 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/runforge-vscode",
   "sequences": [],
+  "startBeside": [
+    {
+      "files": [
+        "src/runner/gpu-probe.ts",
+        "src/presets/registry.ts",
+        "src/workspace/run-folder.ts",
+        "src/workspace/index-manager.ts",
+        "src/utils/format.ts"
+      ],
+      "from": "src/runner/run-manager.ts"
+    }
+  ],
   "startDoor": "package.json#runforge",
   "startHere": [
     "src/extension.ts",
-    "src/runner/run-manager.ts"
+    "src/runner/run-manager.ts",
+    "src/runner/python-runner.ts",
+    "src/types.ts"
   ],
   "startReason": "This path follows runforge (the extension people install from the VS Code Marketplace) from its entry, since CI runs only tests and checks, and builds test/extension-host/.",
   "summary": null,

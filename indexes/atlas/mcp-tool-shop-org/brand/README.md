@@ -1,14 +1,14 @@
 # brand: how it works
 
-Mapped at 2026-09-30 from commit f3d1a79 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit b78bfed by Atlas 1.25.0.
 
 ## What this is
 
 11 parts, mostly images (256 files) and Markdown (60); code in TypeScript (40), JavaScript (8), Astro (2), CSS (2) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run brand.
 
-## What changed since 2026-09-30 (b3a0324)
+## What changed since 2026-09-30 (f3d1a79)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-09-30; 2 files changed content.
 
 ## What comes in
 
@@ -75,7 +75,7 @@ Every tracked place code writes here is edited by people too; see Hand-authored.
 
 People write .claude/, .githooks/, .github/, assets/, docs/, logos/ and site/. Nothing in this repository writes to them.
 
-- **manifest.json** is written by .github/workflows/sync.yml, and by people: 46 of its 47 commits in the window are theirs.
+- **manifest.json** is written by .github/workflows/sync.yml, and by people: 47 of its 48 commits in the window are theirs.
 
 ## Where to start
 

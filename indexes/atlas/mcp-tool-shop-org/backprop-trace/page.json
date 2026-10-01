@@ -70,8 +70,37 @@
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "fixtures/bad/batch.bad-*.jsonl is now written by scripts/generate-batch-bad-fixtures.ts.",
+        "subjects": [
+          "fixtures/bad/batch.bad-*.jsonl",
+          "scripts/generate-batch-bad-fixtures.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "fixtures/bad/external.bad-*.jsonl is now written by scripts/generate-external-bad-fixtures.ts.",
+        "subjects": [
+          "fixtures/bad/external.bad-*.jsonl",
+          "scripts/generate-external-bad-fixtures.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "fixtures/bad/multi-step-external.bad-*.jsonl is now written by scripts/generate-multi-step-external-bad-fixtures.ts.",
+        "subjects": [
+          "fixtures/bad/multi-step-external.bad-*.jsonl",
+          "scripts/generate-multi-step-external-bad-fixtures.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 1 more new writer or reader of a place.",
+        "subjects": []
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -79,7 +108,7 @@
       "commit": "aa93d580e049ce1c883bc7646d0d47ab015daa29",
       "generatedAt": "2026-09-30T21:29:25.497Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -670,12 +699,14 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [
     {
       "place": "fixtures/bad/",
       "writers": [
-        "scripts (7 files)"
+        "scripts/generate-adam-bad-fixtures.ts",
+        "scripts/generate-momentum-bad-fixtures.ts",
+        "scripts/generate-sgd-coupled-l2-fixtures.ts"
       ]
     },
     {
@@ -691,9 +722,33 @@
       ]
     },
     {
+      "place": "fixtures/bad/batch.bad-*.jsonl",
+      "writers": [
+        "scripts/generate-batch-bad-fixtures.ts"
+      ]
+    },
+    {
+      "place": "fixtures/bad/external.bad-*.jsonl",
+      "writers": [
+        "scripts/generate-external-bad-fixtures.ts"
+      ]
+    },
+    {
       "place": "fixtures/bad/jax.bad-pytree-flatten-order.jsonl",
       "writers": [
         "scripts/generate-jax-bad-fixtures.ts"
+      ]
+    },
+    {
+      "place": "fixtures/bad/multi-step-external.bad-*.jsonl",
+      "writers": [
+        "scripts/generate-multi-step-external-bad-fixtures.ts"
+      ]
+    },
+    {
+      "place": "fixtures/bad/softmax-ce.bad-*.jsonl",
+      "writers": [
+        "scripts/generate-softmax-ce-bad-fixtures.ts"
       ]
     },
     {
@@ -943,7 +998,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-09-30T21:47:50.557Z",
+  "generatedAt": "2026-10-01T01:45:14.227Z",
   "limits": [
     "1 import site names a declared dependency that shares its name with a local module (jax); it is read as the dependency, which is not in this repository.",
     "15 writes and 11 reads use paths built at run time and are not named here.",
@@ -970,14 +1025,28 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/backprop-trace",
   "sequences": [],
+  "startBeside": [
+    {
+      "files": [
+        "src/emit.ts",
+        "src/hash.ts"
+      ],
+      "from": "src/reconcile.ts"
+    },
+    {
+      "files": [
+        "src/activations.ts"
+      ],
+      "from": "src/general-engine.ts"
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "src/index.ts",
     "src/reconcile.ts",
     "src/general-engine.ts",
-    "src/emit.ts",
-    "src/hash.ts"
+    "src/topology.ts"
   ],
   "summary": null,
   "summaryFrom": null,
@@ -1002,6 +1071,30 @@
       ]
     },
     {
+      "place": "fixtures/bad/batch.bad-*.jsonl",
+      "writers": [
+        "scripts/generate-batch-bad-fixtures.ts"
+      ]
+    },
+    {
+      "place": "fixtures/bad/external.bad-*.jsonl",
+      "writers": [
+        "scripts/generate-external-bad-fixtures.ts"
+      ]
+    },
+    {
+      "place": "fixtures/bad/multi-step-external.bad-*.jsonl",
+      "writers": [
+        "scripts/generate-multi-step-external-bad-fixtures.ts"
+      ]
+    },
+    {
+      "place": "fixtures/bad/softmax-ce.bad-*.jsonl",
+      "writers": [
+        "scripts/generate-softmax-ce-bad-fixtures.ts"
+      ]
+    },
+    {
       "place": "fixtures/external/adam.reddi-2018-pathology.note.json",
       "writers": [
         "scripts/generate-pytorch-adam-fixtures.ts"
@@ -1012,34 +1105,12 @@
       "writers": [
         "scripts/generate-pytorch-adam-fixtures.ts"
       ]
-    },
-    {
-      "place": "fixtures/external/pytorch.sgd-momentum.nesterov.multi-step.sidecar.jsonl",
-      "writers": [
-        "scripts/generate-pytorch-momentum-fixtures.ts"
-      ]
-    },
-    {
-      "place": "fixtures/external/pytorch.sgd-momentum.nesterov.sidecar.jsonl",
-      "writers": [
-        "scripts/generate-pytorch-momentum-fixtures.ts"
-      ]
-    },
-    {
-      "place": "fixtures/sgd-coupled-l2.golden.jsonl",
-      "writers": [
-        "scripts/generate-sgd-coupled-l2-fixtures.ts"
-      ]
-    },
-    {
-      "place": "fixtures/sgd-momentum-coupled-l2.multi-step.jsonl",
-      "writers": [
-        "scripts/generate-sgd-coupled-l2-fixtures.ts"
-      ]
     }
   ],
   "unreadFiles": 0,
-  "unreadNote": [],
+  "unreadNote": [
+    "And 4 more places."
+  ],
   "untested": [
     {
       "part": "examples",
@@ -1053,5 +1124,5 @@
     }
   ],
   "untestedNote": [],
-  "written": 45
+  "written": 49
 }

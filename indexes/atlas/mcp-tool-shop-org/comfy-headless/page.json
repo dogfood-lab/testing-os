@@ -40,8 +40,15 @@
     },
     "items": [
       {
+        "kind": "origin",
+        "sentence": "kb was generated and is now mixed.",
+        "subjects": [
+          "kb"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; no file changed.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
@@ -49,7 +56,7 @@
       "commit": "a804d340931e04aa742876692ed3ef9a25cd6830",
       "generatedAt": "2026-09-30T20:09:11.510Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
@@ -227,16 +234,17 @@
       "to": "comfy_headless"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [
     {
+      "into": true,
       "place": "kb/",
       "writers": [
         "scripts/gen_kb.py"
       ]
     }
   ],
-  "generatedAt": "2026-09-30T21:48:43.160Z",
+  "generatedAt": "2026-10-01T01:46:30.324Z",
   "limits": [
     "1 import could not be resolved: `tests/run_fuzz.py` imports `comfy_headless.tests.test_fuzz`, which is no module on its import path and no declared dependency.",
     "2 writes and 2 reads use paths built at run time and are not named here.",
@@ -260,11 +268,19 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/comfy-headless",
   "sequences": [],
+  "startBeside": [
+    {
+      "files": [
+        "comfy_headless/feature_flags.py"
+      ],
+      "from": "comfy_headless/__main__.py"
+    }
+  ],
   "startDoor": "pyproject.toml#comfy-headless",
   "startHere": [
     "comfy_headless/__main__.py",
-    "comfy_headless/feature_flags.py",
-    "comfy_headless/__init__.py"
+    "comfy_headless/__init__.py",
+    "comfy_headless/config.py"
   ],
   "startReason": "This path follows comfy-headless (a command people run) from its entry, since CI runs only tests and checks.",
   "summary": null,

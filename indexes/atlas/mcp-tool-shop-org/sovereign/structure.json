@@ -13,7 +13,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "c1c472d36e549b102044e1d2ce1e9e6c0f6f2ab55b6b92211bfd8641c27134b2",
+          "hash": "9f279ebcaffcc91997763a41f00311ad79e5a418d82f6202b9483ff3e079a024",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -1114,39 +1114,6 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
-      "findings": [
-        {
-          "job": "test",
-          "legs": 2,
-          "lines": [
-            {
-              "file": ".github/workflows/ci.yml",
-              "line": 65
-            },
-            {
-              "file": ".github/workflows/ci.yml",
-              "line": 87
-            },
-            {
-              "file": "package-lock.json",
-              "line": 358
-            }
-          ],
-          "package": "c8",
-          "pinnedBy": {
-            "step": "Setup Node",
-            "version": "${{ matrix.node }}"
-          },
-          "pins": [
-            "18"
-          ],
-          "requires": "^20.19.0 || ^22.12.0 || >=23",
-          "rule": "D1",
-          "step": "Coverage report for Codecov",
-          "tool": "c8 report",
-          "version": "12.0.0"
-        }
-      ],
       "jobs": [
         {
           "basis": "declared",
@@ -1178,12 +1145,12 @@
             {
               "ranges": [
                 {
-                  "from": "18",
-                  "range": ">=18.0.0 <19.0.0-0"
-                },
-                {
                   "from": "20",
                   "range": ">=20.0.0 <21.0.0-0"
+                },
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
                 }
               ],
               "step": "Setup Node",
@@ -1787,9 +1754,9 @@
       "to": "tools"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
-    "commit": "d5f96a1de906ab7c234ca25c06c2fc562a56cd16",
+    "commit": "10f3ee8f30af8264d1a096932fbc0c8960d4183c",
     "tracked": 160
   },
   "landings": [

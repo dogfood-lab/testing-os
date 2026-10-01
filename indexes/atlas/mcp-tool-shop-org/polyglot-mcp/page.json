@@ -20,15 +20,22 @@
   "changes": {
     "fileCounts": {
       "added": 0,
-      "changed": 1,
+      "changed": 2,
       "moved": 0,
-      "parts": 1,
+      "parts": 2,
       "removed": 0
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "Deploy site to GitHub Pages now also starts on a pull request to main touching 2 paths.",
+        "subjects": [
+          ".github/workflows/pages.yml"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; 1 file changed content.",
+        "sentence": "2 files changed content, across 2 parts.",
         "subjects": []
       }
     ],
@@ -36,16 +43,16 @@
       "commit": "c3305f2f8dbf38151adbf61c4437be0bf0ab5235",
       "generatedAt": "2026-09-30T20:11:27.616Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "a72ff296da57061c24f26e76f81cd90a0ea7f4e6",
+  "commit": "e0fd93e1984754317e96214bd4f4723c28406d4f",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly Markdown (71 files); code in TypeScript (39), JavaScript (4), CSS (2) and Astro (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.",
+  "derived": "7 parts, mostly Markdown (71 files); code in TypeScript (39), JavaScript (4), CSS (2) and Astro (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because it comes first by name. It publishes to npm. It deploys a site to GitHub Pages. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.",
   "doors": [
     {
       "builds": [
@@ -124,10 +131,11 @@
       "runsCount": 2,
       "runsMore": 0,
       "sends": [
-        "deploys the site"
+        "deploys the site on a push to main or by hand"
       ],
       "stages": [],
       "triggers": [
+        "on a pull request to main touching 2 paths",
         "on a push to main touching 2 paths",
         "or by hand"
       ]
@@ -253,9 +261,9 @@
   "duplicatesLead": null,
   "duplicatesNote": [],
   "edges": [],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generated": [],
-  "generatedAt": "2026-09-30T21:51:21.569Z",
+  "generatedAt": "2026-10-01T01:49:58.501Z",
   "limits": [
     "3 writes and 5 reads use paths built at run time and are not named here.",
     "5 writes and 6 reads go to a path their caller passes, not to this repository.",
@@ -276,16 +284,25 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/polyglot-mcp",
   "sequences": [],
+  "startBeside": [
+    {
+      "files": [
+        "src/languages.ts",
+        "src/glossary.ts",
+        "src/codeSpans.ts",
+        "src/polish.ts",
+        "src/validate.ts"
+      ],
+      "from": "src/translate.ts"
+    }
+  ],
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
     "src/index.ts",
     "src/translate.ts",
-    "src/languages.ts",
     "src/ollama.ts",
-    "src/glossary.ts",
-    "src/codeSpans.ts",
-    "src/polish.ts"
+    "src/errors.ts"
   ],
   "summary": null,
   "summaryFrom": null,

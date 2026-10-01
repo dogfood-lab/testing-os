@@ -1,6 +1,6 @@
 # star-freight: how it works
 
-Mapped at 2026-09-30 from commit 3c9ba45 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 3c9ba45 by Atlas 1.25.0.
 
 ## What this is
 
@@ -74,9 +74,11 @@ People write .github/, design/, the repository root, site/ and world/. Nothing i
 
 ## Where to start
 
-src/portlight/app/cli.py → src/portlight/app/session.py → src/portlight/engine/encounter.py → src/portlight/engine/captain_memory.py → src/portlight/engine/underworld.py → src/portlight/engine/weapon_provenance.py → src/portlight/engine/loot.py
+src/portlight/app/cli.py → src/portlight/app/session.py → src/portlight/content/contracts.py → src/portlight/engine/contracts.py → src/portlight/engine/reputation.py → src/portlight/engine/models.py
 
 Read those in order to follow one run of starfreight end to end. This path follows starfreight (a command people run) from its entry, since CI runs only tests.
+
+Beside the path, src/portlight/app/cli.py also calls src/portlight/engine/encounter.py, src/portlight/engine/captain_memory.py, src/portlight/engine/underworld.py, src/portlight/engine/weapon_provenance.py and 3 more files.
 
 ## What this map cannot see
 

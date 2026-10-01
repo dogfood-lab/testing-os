@@ -1,6 +1,6 @@
 # ai-playtest: how it works
 
-Mapped at 2026-09-30 from commit 35206f8 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 35206f8 by Atlas 1.25.0.
 
 ## What this is
 
@@ -63,9 +63,11 @@ People write .github/, docs/, the repository root and site/; 2 writes with paths
 
 ## Where to start
 
-.github/workflows/ci.yml → src/cli.ts → src/config.ts → src/openrouter.ts → src/stats.ts → src/run.ts → src/report.ts
+.github/workflows/ci.yml → src/cli.ts → src/config.ts → src/verifiers.ts → src/coverage.ts → src/player.ts → src/openrouter.ts
 
 Read those in order to follow one pull request end to end.
+
+Beside the path, src/cli.ts also calls src/stats.ts, src/run.ts and src/report.ts.
 
 ## What this map cannot see
 

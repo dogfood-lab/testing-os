@@ -87,7 +87,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "5441cdf3cac2be6f557b66762c90ac6ec9238a00ba4990f82e21b04ab50ab130",
+          "hash": "8593c3c37c2ebe64d8e60d17abbb80b48194f97e98624a972da59efef6263712",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -580,7 +580,7 @@
           "path": "logos/homebrew-mcp-tools/readme.png"
         },
         {
-          "hash": "37b14249a3acc5e23f86e219515399dccd1d3bc2d3415be1d783b4b3a38fb2f8",
+          "hash": "2406d8518295844e1ab36ff3a9a264aea60a6574b38e5a9c94a8e01d837ee8f7",
           "path": "logos/housekeeping/readme.png"
         },
         {
@@ -1267,7 +1267,7 @@
           "path": "codecov.yml"
         },
         {
-          "hash": "bdab4d87a545648e9ce61f2501688e431fd7d3ae9215734ff0bf4e4d4d0d642b",
+          "hash": "2f104bb35c3e2a9fa64b67cbea7bc499f362b48b485bc9ad0dab3269e46208a0",
           "path": "manifest.json"
         },
         {
@@ -2957,70 +2957,6 @@
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
-      "findings": [
-        {
-          "job": "lint-test-build",
-          "legs": 3,
-          "lines": [
-            {
-              "file": ".github/workflows/ci.yml",
-              "line": 87
-            },
-            {
-              "file": ".github/workflows/ci.yml",
-              "line": 150
-            },
-            {
-              "file": "package-lock.json",
-              "line": 1371
-            }
-          ],
-          "package": "vitest",
-          "pinnedBy": {
-            "step": "1",
-            "version": "${{ matrix.node-version }}"
-          },
-          "pins": [
-            "20"
-          ],
-          "requires": "^22.12.0 || ^24.0.0 || >=26.0.0",
-          "rule": "D1",
-          "step": "Test",
-          "tool": "vitest run",
-          "version": "5.0.0"
-        },
-        {
-          "job": "lint-test-build",
-          "legs": 3,
-          "lines": [
-            {
-              "file": ".github/workflows/ci.yml",
-              "line": 87
-            },
-            {
-              "file": ".github/workflows/ci.yml",
-              "line": 119
-            },
-            {
-              "file": "package-lock.json",
-              "line": 1371
-            }
-          ],
-          "package": "vitest",
-          "pinnedBy": {
-            "step": "1",
-            "version": "${{ matrix.node-version }}"
-          },
-          "pins": [
-            "20"
-          ],
-          "requires": "^22.12.0 || ^24.0.0 || >=26.0.0",
-          "rule": "D1",
-          "step": "Test (with coverage)",
-          "tool": "vitest run",
-          "version": "5.0.0"
-        }
-      ],
       "jobs": [
         {
           "basis": "declared",
@@ -3040,10 +2976,6 @@
           "setup": [
             {
               "ranges": [
-                {
-                  "from": "20",
-                  "range": ">=20.0.0 <21.0.0-0"
-                },
                 {
                   "from": "22",
                   "range": ">=22.0.0 <23.0.0-0"
@@ -3399,6 +3331,13 @@
         },
         {
           "event": "workflow_dispatch"
+        }
+      ],
+      "unresolvedExpressions": [
+        {
+          "adds": "words",
+          "job": "lint-test-build",
+          "step": "Write CI summary"
         }
       ],
       "uses": [
@@ -3982,6 +3921,13 @@
           "event": "workflow_dispatch"
         }
       ],
+      "unresolvedExpressions": [
+        {
+          "adds": "words",
+          "job": "release",
+          "step": "Verify tag matches package.json version"
+        }
+      ],
       "uses": [
         "actions/checkout",
         "actions/setup-node"
@@ -4313,9 +4259,9 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
-    "commit": "f3d1a792cd6dfcd12592c0b9d74e96a6b47d59e2",
+    "commit": "b78bfedbd159c9e1ade658012c666dc39d898591",
     "tracked": 391
   },
   "landings": [

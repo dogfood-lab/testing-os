@@ -1,6 +1,6 @@
 # commandui: how it works
 
-Mapped at 2026-09-30 from commit 9b77cf9 by Atlas 1.24.0.
+Mapped at 2026-10-01 from commit 9b77cf9 by Atlas 1.25.0.
 
 ## What this is
 
@@ -88,7 +88,7 @@ People write .claude/, .github/, docs/, the repository root, site/ and winget/. 
 
 ## Where to start
 
-apps/desktop/src-tauri/src/main.rs → apps/desktop/src-tauri/src/lib.rs → apps/desktop/src-tauri/src/commands/planner.rs → crates/runtime-planner/src/lib.rs → crates/runtime-planner/src/client.rs → crates/runtime-planner/src/prompt.rs → crates/runtime-planner/src/types.rs
+apps/desktop/src-tauri/src/main.rs → apps/desktop/src-tauri/src/lib.rs → apps/desktop/src-tauri/src/commands/mod.rs → apps/desktop/src-tauri/src/commands/planner.rs → crates/runtime-planner/src/lib.rs → crates/runtime-planner/src/client.rs → crates/runtime-planner/src/prompt.rs → crates/runtime-planner/src/types.rs
 
 Read those in order to follow one run of commandui-desktop end to end. This path follows commandui-desktop (the desktop app people install) from its entry, since CI runs only tests and checks.
 

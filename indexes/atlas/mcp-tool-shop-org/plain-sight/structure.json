@@ -1201,6 +1201,9 @@
       "outsideReads": 2,
       "outsideWrites": 2,
       "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 3,
       "unresolvedSites": 0
     },
@@ -1266,6 +1269,9 @@
       "name": "tests",
       "origin": "authored",
       "role": "test",
+      "testRunners": [
+        "pytest"
+      ],
       "testedBy": 0,
       "unresolvedSites": 0
     }
@@ -1389,7 +1395,12 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 4
+          "files": 5
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 3
         }
       ],
       "readers": [],
@@ -1403,9 +1414,17 @@
           "job": "test",
           "path": "src/plain_sight/server.py",
           "runKind": "executes"
+        },
+        {
+          "directory": true,
+          "job": "test",
+          "matched": true,
+          "path": "tests/",
+          "runKind": "executes",
+          "via": "pytest pyproject.toml"
         }
       ],
-      "runsCount": 2,
+      "runsCount": 3,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -1421,7 +1440,7 @@
       "tests": [
         {
           "config": "pyproject.toml",
-          "files": 0,
+          "files": 3,
           "job": "test",
           "junit": true,
           "runner": "pytest",
@@ -1459,6 +1478,13 @@
         },
         {
           "event": "workflow_dispatch"
+        }
+      ],
+      "unresolvedExpressions": [
+        {
+          "adds": "flags",
+          "job": "test",
+          "step": "Run edge-case tests"
         }
       ],
       "uses": [
@@ -1706,7 +1732,7 @@
       "to": "src"
     }
   ],
-  "engine": "1.24.0",
+  "engine": "1.25.0",
   "generatedFrom": {
     "commit": "00b5c82698c1f772ced65a6a988ca4bb1b707675",
     "tracked": 46
@@ -1842,9 +1868,5 @@
   "submodules": [],
   "symlinks": [],
   "testFiles": 3,
-  "testsNotRun": [
-    "tests/test_dogfood.py",
-    "tests/test_edge_cases.py"
-  ],
   "unassigned": []
 }
