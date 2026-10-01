@@ -169,6 +169,7 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
   const texts = new Map();
   const manifests = new Map();
   const under = new Map();
+  const codeUnder = new Map();
   let members = null;
   const view = {
     repoPath,
@@ -206,10 +207,18 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
       manifests.set(dir, pkg);
       return pkg;
     },
-    // Every tracked file under a directory, the root included.
+    // Every tracked file under a directory, the root included. The paths under
+    // one directory are a run of the sorted list, found by a binary search: a
+    // monorepo's build asks for one directory per member, and a scan of the
+    // whole tree for each made that grow with the members times the files.
     filesUnder(dir) {
-      if (!under.has(dir)) under.set(dir, dir === '' ? sorted : sorted.filter((path) => path.startsWith(`${dir}/`)));
+      if (!under.has(dir)) under.set(dir, dir === '' ? sorted : sortedRun(sorted, `${dir}/`));
       return under.get(dir);
+    },
+    // The code files under a directory, the root included.
+    codeFilesUnder(dir) {
+      if (!codeUnder.has(dir)) codeUnder.set(dir, view.filesUnder(dir).filter(isCodePath));
+      return codeUnder.get(dir);
     },
     workspaces() {
       if (!members) members = readWorkspaces(view);
@@ -239,7 +248,7 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
       const isMatch = picomatch(globs.map(stripDot), { dot: false });
       const ignored = ignore.length > 0 ? picomatch(ignore.flatMap((pattern) => [stripDot(pattern), `${stripDot(pattern).replace(/\/+$/, '')}/**`]), { dot: true }) : null;
       const out = [];
-      for (const path of view.filesUnder(base)) {
+      for (const path of globCandidates(view, base, globs.map(stripDot))) {
         const rel = base ? path.slice(base.length + 1) : path;
         if (rel.startsWith('node_modules/') || rel.includes('/node_modules/')) continue;
         if (isMatch(rel) && !(ignored && ignored(rel))) out.push(path);
@@ -283,7 +292,7 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
       const covered = new Map();
       const whole = (dir) => {
         if (!covered.has(dir)) {
-          const code = view.filesUnder(dir).filter(isCodePath);
+          const code = view.codeFilesUnder(dir);
           covered.set(dir, code.length > 0 && code.every((path) => set.has(path)));
         }
         return covered.get(dir);
@@ -312,6 +321,62 @@ export function repositoryView({ repoPath, tracked, spawned = new Map(), command
 
 function stripDot(pattern) {
   return pattern.replace(/^\.\//, '');
+}
+
+/**
+ * The paths of a sorted list that start with a prefix, which sit together in
+ * it: the first is found by binary search, in the order sort() put them.
+ *
+ * @param {string[]} sorted
+ * @param {string} prefix
+ * @returns {string[]}
+ */
+export function sortedRun(sorted, prefix) {
+  let low = 0;
+  let high = sorted.length;
+  while (low < high) {
+    const middle = (low + high) >>> 1;
+    if (sorted[middle] < prefix) low = middle + 1;
+    else high = middle;
+  }
+  let end = low;
+  while (end < sorted.length && sorted[end].startsWith(prefix)) end += 1;
+  return sorted.slice(low, end);
+}
+
+// A character that makes a glob segment match more than its own spelling.
+const GLOB_MAGIC = /[*?[\]{}()!+@\\]/;
+
+/**
+ * The directory a glob's every match lies under, relative to where it is
+ * matched: its leading segments up to the first that holds a glob character,
+ * never the last. Null when that is the root, or when a segment is one a
+ * matcher might read otherwise ('', '.', '..'), and the whole tree is read.
+ */
+function globDirectory(glob) {
+  const segments = glob.split('/');
+  const fixed = [];
+  for (const segment of segments.slice(0, -1)) {
+    if (GLOB_MAGIC.test(segment)) break;
+    if (segment === '' || segment === '.' || segment === '..') return null;
+    fixed.push(segment);
+  }
+  return fixed.length > 0 ? fixed.join('/') : null;
+}
+
+/**
+ * The tracked files under base that a set of globs can match, in sorted
+ * order: the files under the directory each glob is fixed to, or every file
+ * under base when one glob can match anywhere. A monorepo's compile names one
+ * member's sources from the root, and reading the whole tree for each member
+ * grew with the members times the files.
+ */
+function globCandidates(view, base, globs) {
+  const dirs = globs.map(globDirectory);
+  if (dirs.some((dir) => dir == null)) return view.filesUnder(base);
+  const at = (dir) => (base ? `${base}/${dir}` : dir);
+  const found = new Set(dirs.flatMap((dir) => view.filesUnder(at(dir))));
+  return [...found].sort();
 }
 
 // One segment of an sh glob as a test of one name: * and ** match any run of

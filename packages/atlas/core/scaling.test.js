@@ -3,6 +3,7 @@ import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
 import { after, describe, it } from 'node:test';
+import { repositoryView } from './commands.js';
 import { resolveDeclaredPath } from './resolve.js';
 
 // The cost of a map has to grow with the repository, not with its square: a
@@ -56,5 +57,31 @@ describe('the cost of a map', () => {
     const few = walksFor(10);
     const many = walksFor(160);
     assert.equal(many, few, `the tree was walked ${few} times for 10 asks and ${many} for 160`);
+  });
+
+  // A compile names one member's sources from the root (tsc -p
+  // packages/m3/tsconfig.json includes packages/m3/src/**/*), and turbo build
+  // compiles every member: matching each member's globs against the whole
+  // tree, and listing each directory by a scan of it, grew with the members
+  // times the files. Linear is about 4x at 4x the members; the old way was
+  // 16x. The bound is 8x, wide for a busy runner, and each time is the best
+  // of several so one slow pass does not decide it.
+  it('matches each member\'s globs in time that grows with the tree, not with members times files', () => {
+    const repo = scratch();
+    const compileEveryMember = (members) => {
+      const view = repositoryView({ repoPath: repo, tracked: trackedTree(members, 30) });
+      const started = process.hrtime.bigint();
+      for (let m = 0; m < members; m += 1) {
+        const files = view.filesMatching('', [`packages/m${m}/src/**/*.ts`, `packages/m${m}/src/**/*.tsx`]);
+        assert.equal(files.length, 30);
+        view.compact(files);
+      }
+      return Number(process.hrtime.bigint() - started);
+    };
+    const best = (members) => Math.min(...Array.from({ length: 5 }, () => compileEveryMember(members)));
+    best(40);
+    const small = best(150);
+    const large = best(600);
+    assert.ok(large < 8 * small, `4x the members took ${(large / small).toFixed(1)}x the time (${(small / 1e6).toFixed(1)} ms, then ${(large / 1e6).toFixed(1)} ms)`);
   });
 });
