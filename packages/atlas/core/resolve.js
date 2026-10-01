@@ -176,6 +176,10 @@ function submoduleSites(sites, tracked) {
 
 function resolveSite(ctx, fromAbs, language, site) {
   if (site.kind === 'manifest') return { outcome: 'manifest' };
+  // from .core import * loads the module it names as any from-import does
+  // (a package's __init__.py handing on its siblings); only which names it
+  // binds is left open, and those are no part of where it resolves.
+  if (site.kind === 'wildcard' && language === 'python') return resolvePython(ctx, fromAbs, site.specifier, site.roots ?? [], []);
   if (site.kind === 'dynamic' || site.kind === 'wildcard') {
     return { outcome: 'unresolved', reason: site.kind };
   }

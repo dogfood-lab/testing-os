@@ -179,6 +179,7 @@ function facts({ structure, statistics }) {
       writers: (landing.writers ?? []).filter(strong),
       readers: (landing.readers ?? []).filter(strong),
       ...(landing.writesInto ? { writesInto: true } : {}),
+      ...(landing.mayReaders ? { mayReaders: landing.mayReaders } : {}),
     })),
     untrackedWrites: (structure.landings ?? []).filter((landing) => landing.tracked === false)
       .reduce((sum, landing) => sum + (landing.writers ?? []).filter(strong).length, 0),
@@ -1884,7 +1885,10 @@ function writtenPlaces(ctx) {
     // they do not make (core/landings.js writtenInto), holds their files; it
     // is not written.
     const into = inside.some((landing) => landing.target === target && landing.writesInto);
-    return { target, writers, readers, guards: guardsOf(inside), once, fromRoot, ...(stamped ? { stamped: true } : {}), ...(mixed ? { mixed: true } : {}), ...(sources.length > 0 ? { sources } : {}), ...(into ? { into: true } : {}) };
+    // Files reading a pattern under a directory chosen at run time that
+    // could match the place (core/landings.js looseReaders).
+    const mayRead = inside.flatMap((landing) => landing.mayReaders ?? []).filter((entry) => !writers.includes(entry.by) && !under(entry.by, target));
+    return { target, writers, readers, guards: guardsOf(inside), once, fromRoot, ...(stamped ? { stamped: true } : {}), ...(mixed ? { mixed: true } : {}), ...(sources.length > 0 ? { sources } : {}), ...(into ? { into: true } : {}), ...(mayRead.length > 0 ? { mayRead } : {}) };
   });
 }
 
@@ -2216,7 +2220,7 @@ function untested(ctx) {
   const byScript = scripted.map((name) => `${ctx.shown(name)} is tested only by its package's own test script, which a workflow runs.`);
   const unread = unreadCodeParts(ctx);
   const unreadLine = unreadCodeLine(unread, 'tests');
-  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...within, ...byScript, ...(unreadLine ? [unreadLine] : []), ...unrunTests(ctx), ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned, inside, scripted, unread: unread.map((entry) => entry.part) };
+  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...within, ...byScript, ...(unreadLine ? [unreadLine] : []), ...unrunTests(ctx), ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned, inside, scripted, unread: unread.map((entry) => entry.part), codeParts: parts.length };
 }
 
 /**
@@ -2279,8 +2283,25 @@ function untestedSection(found) {
   const every = found.spawned.length > 0 || found.inside.length > 0 || (found.scripted ?? []).length > 0 ? `Every code part${read} is touched by at least one test.` : `Every code part${read} is imported by at least one test.`;
   const body = found.items.length > 0
     ? found.items.map((item) => `- **${item.partLabel}** is imported by no test.`).join('\n')
-    : (found.testFiles === 0 ? null : every);
+    : (found.testFiles === 0 ? null : untestedClaim(found.codeParts, every, (found.unread ?? []).length > 0));
   return ['## What no test touches', ...(body ? [body] : []), ...found.note].join('\n\n');
+}
+
+/**
+ * What the page claims of every code part when none is untested: the claim,
+ * made only when at least one code part outside the tests is read. With none
+ * read, a claim about every one would be true of nothing: the page says only
+ * what it cannot see (the line on parts it does not read), or, with no such
+ * part, that no part holds code it reads.
+ *
+ * @param {number|undefined} codeParts the code parts holding source the map reads
+ * @param {string} every the claim
+ * @param {boolean} unreadParts whether code parts the map does not read are named
+ * @returns {string|null}
+ */
+export function untestedClaim(codeParts, every, unreadParts) {
+  if (codeParts == null || codeParts > 0) return every;
+  return unreadParts ? null : 'No part outside the tests holds code this map reads.';
 }
 
 // A place is unread when nothing but its own writers reads it: a writer that
@@ -2291,11 +2312,33 @@ function unread(ctx) {
     .filter((place) => !place.stamped && place.readers.every((reader) => place.writers.includes(reader.path) && !place.once.includes(reader.path)))
     .map((place) => ({
       ...(place.into ? { into: true } : {}),
+      ...(place.mayRead ? { mayRead: { by: [...new Set(place.mayRead.map((entry) => entry.by))].sort(cmp), patterns: [...new Set(place.mayRead.map((entry) => entry.pattern))].sort(cmp) } } : {}),
       place: ctx.place(place.target),
       writers: writerItems(ctx, place.writers, place.guards),
     }));
   return { items: all.slice(0, UNREAD_SHOWN), note: more(all.length, UNREAD_SHOWN, 'place'), written: written.length };
 }
+
+/**
+ * How the page ends a place nothing reads by name: "read by nothing else in
+ * this repository", or, when a file reads a pattern under a directory chosen
+ * at run time that could match it, that no reader can be named and which
+ * may read it.
+ *
+ * @param {{ by: string[], patterns: string[] }} [mayRead]
+ * @param {(pattern: string) => string} [code] how a pattern is marked as code
+ * @returns {string}
+ */
+export function unreadEnd(mayRead, code = (pattern) => `\`${pattern}\``) {
+  if (!mayRead) return 'and read by nothing else in this repository.';
+  const verb = mayRead.by.length > 1 ? 'read' : 'reads';
+  const by = mayRead.by.length > MAY_READ_NAMED ? `${mayRead.by.slice(0, MAY_READ_NAMED).join(', ')} and ${count(mayRead.by.length - MAY_READ_NAMED, 'more file')}` : list(mayRead.by);
+  return `and read by nothing else this map can name: ${by} ${verb} ${list(mayRead.patterns.map(code))} under a directory chosen at run time, which may include it.`;
+}
+
+// A place a run-time pattern may read names this many of the files reading
+// it, the rest counted.
+const MAY_READ_NAMED = 3;
 
 // With nothing written, "every written place has a reader" would be true of
 // nothing; the page says there is nothing to read instead.
@@ -2303,7 +2346,7 @@ function unreadSection(ctx, found) {
   const body = found.items.length > 0
     ? found.items.map((item) => {
       const comma = item.writers.length > 1 ? ',' : '';
-      return `- ${writtenBy(item.place, item.into)} ${list(worded(item.writers, ctx.shown))}${comma} and read by nothing else in this repository.`;
+      return `- ${writtenBy(item.place, item.into)} ${list(worded(item.writers, ctx.shown))}${comma} ${unreadEnd(item.mayRead)}`;
     }).join('\n')
     : (found.written === 0 ? absence('unread', unreadCount(ctx)) : 'Every written place has a reader.');
   return ['## Written but never read', body, ...found.note].join('\n\n');
@@ -2612,6 +2655,13 @@ function runsAsCode(path) {
   return isCodePath(path) || /\.html?$/i.test(path);
 }
 
+// A file a path through a door may take a step on: code, or a file that is
+// not code but leads to code by an edge the map recorded (a Godot scene runs
+// the scripts its ext_resource lines attach, an Astro page its imports).
+function leadsOn(ctx, path) {
+  return runsAsCode(path) || (ctx.fileOf.get(path)?.importsFiles ?? []).length > 0;
+}
+
 function pullRequested(door) {
   return (door.triggers ?? []).some((trigger) => trigger.event === 'pull_request' || trigger.event === 'pull_request_target');
 }
@@ -2747,9 +2797,10 @@ function startHere(ctx, main, first = null) {
     && !ctx.landings.some((landing) => landing.writers.some((entry) => entry.by === path))
     && sourceOf(ctx, path, []) == null;
   const live = spelled.filter((path) => !deadEnd(path));
-  const paths = (live.length > 0 ? live : ran.filter((path) => !deadEnd(path))).filter((path) => path.endsWith('/') || runsAsCode(path));
+  const step = (path) => leadsOn(ctx, path);
+  const paths = (live.length > 0 ? live : ran.filter((path) => !deadEnd(path))).filter((path) => path.endsWith('/') || step(path));
   const filesIn = (path) => depthZero.find((entry) => entry.boundary === runPart(ctx, path))?.files ?? 0;
-  const readable = (path) => runsAsCode(path) && !ctx.fileOf.get(path)?.noStatements;
+  const readable = (path) => step(path) && !ctx.fileOf.get(path)?.noStatements;
   const entries = new Set(ctx.boundaries.flatMap((boundary) => boundary.entryPoints ?? []));
   const byWidth = (a, b) => Number(a !== main.entry) - Number(b !== main.entry) || filesIn(b) - filesIn(a) || cmp(a, b);
   // The path begins at the door's entry: a file it runs that is its part's
@@ -2834,6 +2885,9 @@ function startHere(ctx, main, first = null) {
   // The files a step calls that the path does not go through, by the file
   // that calls them.
   const beside = [];
+  // The files the path could go on to when it ends at a tie between them.
+  let tie = null;
+  let stop = null;
   // A file goes on when it has a step of its own to take: a place it writes
   // that ends the path, or a file it imports that is not on the path yet.
   const goesOn = (file) => ending(file) != null || (ctx.fileOf.get(file)?.importsFiles ?? [])
@@ -2868,7 +2922,9 @@ function startHere(ctx, main, first = null) {
       const parts = new Map(tied.map((target) => [target, partsReached(ctx, [target]).size]));
       const most = Math.max(...parts.values());
       const reaching = tied.filter((target) => parts.get(target) === most);
-      return reaching.length === 1 ? reaching[0] : null;
+      if (reaching.length === 1) return reaching[0];
+      tie = { from: path, files: [...reaching].sort(cmp) };
+      return null;
     }
     // Inside its own part every arrow is an import or a call of the file
     // before it (1.22.0 followed the entry's calls in order, so a helper the
@@ -2939,7 +2995,7 @@ function startHere(ctx, main, first = null) {
       if (source) {
         add(source.place);
         add(source.writer);
-      }
+      } else if (tie?.from === current) stop = tie;
       break;
     }
     if (ctx.fileOf.get(following)?.reexportsOnly) {
@@ -2972,7 +3028,7 @@ function startHere(ctx, main, first = null) {
   // path reached later by another arrow is on it.
   const also = beside.map((entry) => ({ from: entry.from, files: entry.files.filter((file) => !chain.includes(file)) }))
     .filter((entry) => entry.files.length > 0 && chain.includes(entry.from));
-  return { chain, words: [...chain], beside: also };
+  return { chain, words: [...chain], beside: also, ...(stop ? { stop } : {}) };
 }
 
 /**
@@ -3088,11 +3144,56 @@ function startReason(from, door, found) {
   return `This path follows ${door.name} (${installedAs(door)}) from its entry, since ${from.name} ${runs}.`;
 }
 
-// What "Where to start" says of a door that runs no code the map can follow.
-function noPath(door) {
-  const checks = shownRuns(door, 'checks').some((path) => path.endsWith('/') || isCodePath(path));
-  const why = checks ? `${door.name} runs no code this map can follow; it only checks code` : `${door.name} runs no code this map can follow`;
+// A list of reached parts names this many, the rest counted.
+const NO_PATH_PARTS = 4;
+
+function onlyChecks(door) {
+  return shownRuns(door, 'checks').some((path) => path.endsWith('/') || isCodePath(path));
+}
+
+// What a door that runs code reaches, the parts it runs files in first; none
+// for a door that only checks code or runs none.
+function codeReach(ctx, door) {
+  if (onlyChecks(door)) return [];
+  const executed = new Set(startRuns(door).filter((run) => run.runKind !== 'checks').map((run) => run.path));
+  const runsCode = filesOfRuns(ctx, startShown(door).filter((path) => executed.has(path))).some((path) => leadsOn(ctx, path));
+  const reach = [...(door.reach ?? [])].filter((entry) => entry.files > 0).sort((a, b) => a.depth - b.depth || cmp(a.boundary, b.boundary));
+  return runsCode || reach.some((entry) => entry.depth > 0) ? reach : [];
+}
+
+/**
+ * What "Where to start" says of a door it finds no path through. A door that
+ * runs code, or reaches parts past what it runs, is said with what it reaches,
+ * as "What happens" says it ("That reaches scripts (4 files)"), and why no
+ * path is drawn: no file it runs leads on into code this map can follow. One
+ * that runs no code, or only checks it, says so.
+ */
+export function noPath(ctx, door) {
+  const checks = onlyChecks(door);
+  const reach = codeReach(ctx, door);
+  if (reach.length > 0) {
+    const named = reach.slice(0, NO_PATH_PARTS).map((entry) => fileCount(ctx, entry));
+    const parts = reach.length > NO_PATH_PARTS ? `${named.join(', ')} and ${count(reach.length - NO_PATH_PARTS, 'more part')}` : list(named);
+    return `${leadName(door)} reaches ${parts}, but no file it runs leads on into code this map can follow, so there is no path of files to read in order.`;
+  }
+  const why = checks ? `${leadName(door)} runs no code this map can follow; it only checks code` : `${leadName(door)} runs no code this map can follow`;
   return `${why}, so there is no path of files to read in order.`;
+}
+
+/**
+ * "Where to start" when the path is one file: where to start, or, when the
+ * path ends there at a tie among the files it leads to (a scene attaching two
+ * scripts, neither calling the other), those files and that this map records
+ * no order among them.
+ *
+ * @param {string} first
+ * @param {string} noun what one pass through the door is ("pull request")
+ * @param {{ from: string, files: string[] }|null} stop
+ */
+export function startOne(first, noun, stop) {
+  const comma = noun.includes(',') ? ',' : '';
+  if (!stop || stop.from !== first) return `Start at ${first} to follow one ${noun}${comma} end to end.`;
+  return `Start at ${first}, which leads on to ${list(stop.files)}; this map records no order among them, so the path ends there.`;
 }
 
 // What one pass through a door is when its every run is held to where a
@@ -3129,17 +3230,17 @@ export function besideLines(beside) {
   });
 }
 
-function startSection(words, main, readable, reason = null, beside = []) {
+function startSection(ctx, words, main, readable, reason = null, beside = [], stop = null) {
   if (!main) {
     const why = readable ? 'No door runs a file this map can see' : 'No door was found';
     return ['## Where to start', `${why}, so there is no path through this repository to follow.`].join('\n\n');
   }
-  if (words.length === 0) return ['## Where to start', noPath(main)].join('\n\n');
+  if (words.length === 0) return ['## Where to start', noPath(ctx, main)].join('\n\n');
   const noun = heldNoun(main) ?? triggerNoun(main);
   const comma = noun.includes(',') ? ',' : '';
   // One file is where to start, not a list to read in order.
   if (words.length === 1) {
-    const single = `Start at ${words[0]} to follow one ${noun}${comma} end to end.`;
+    const single = startOne(words[0], noun, stop);
     return ['## Where to start', reason ? `${single} ${reason}` : single].join('\n\n');
   }
   const read = `Read those in order to follow one ${noun}${comma} end to end.`;
@@ -3456,7 +3557,7 @@ function unseenLines(ctx) {
         ...others.map((path) => `a ${path}`),
       ];
       const them = files.length === 1 ? 'it' : 'them';
-      lines.push(`There is ${list(named)} that no workflow runs; what deploys from ${them} does so from outside this repository, and is not on this page.`);
+      lines.push(`${thereBe(files.length)} ${list(named)} that no workflow runs; what deploys from ${them} does so from outside this repository, and is not on this page.`);
     } else if (entry.kind === 'shipped') {
       const items = entry.items ?? [];
       const images = items.filter((item) => item.kind === 'image');
@@ -3466,10 +3567,16 @@ function unseenLines(ctx) {
         ...shippedAt(items, 'catalog', 'a Docker MCP Catalog entry at', 'Docker MCP Catalog entries at', (path) => path),
       ];
       const them = items.length === 1 ? 'it' : 'them';
-      lines.push(`There is ${list(named)}; what ships from ${them} goes from outside this repository, and is not on this page.`);
+      lines.push(`${thereBe(items.length)} ${list(named)}; what ships from ${them} goes from outside this repository, and is not on this page.`);
     }
   }
   return lines;
+}
+
+// "There is" one thing; "There are" a count or a list of them, the verb
+// agreeing with all it introduces.
+function thereBe(things) {
+  return things === 1 ? 'There is' : 'There are';
 }
 
 // "a Docker MCP Catalog entry at catalog/server.yaml", or the entries
@@ -3870,8 +3977,8 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     for (const door of reaching(ctx.doors).filter((entry) => entry !== passed && !installed(entry) && pullRequested(entry))) {
       const found = startHere(ctx, door);
       if (found.chain.length === 0) continue;
-      const checks = shownRuns(passed, 'checks').some((path) => path.endsWith('/') || isCodePath(path));
-      reason = `This path follows ${door.name}, since ${passed.name} ${checks ? 'only checks code' : 'runs no code this map can follow'}.`;
+      const why = onlyChecks(passed) ? 'only checks code' : codeReach(ctx, passed).length > 0 ? 'runs no file that leads on into code this map can follow' : 'runs no code this map can follow';
+      reason = `This path follows ${door.name}, since ${passed.name} ${why}.`;
       starting = door;
       start = found;
       break;
@@ -3905,7 +4012,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     duplicatesSection(duplicated),
     generatedSection(ctx, generatedItems, sharedPlaces),
     authoredSection(ctx, authoredBoundaries, sharedPlaces),
-    startSection(start.words, starting, ctx.doors.some((door) => !door.parseError), reason, start.beside),
+    startSection(ctx, start.words, starting, ctx.doors.some((door) => !door.parseError), reason, start.beside, start.stop ?? null),
     limitsSection(limitLines),
   );
   const markdown = `${sections.join('\n\n')}\n`;
@@ -3940,17 +4047,19 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     ...(start.beside?.length > 0 ? { startBeside: start.beside.map((entry) => ({ files: [...entry.files], from: entry.from })) } : {}),
     startHere: start.chain,
     ...(reason ? { startReason: reason } : {}),
-    ...(starting && start.chain.length === 0 ? { startNote: noPath(starting) } : {}),
+    ...(starting && start.chain.length === 0 ? { startNote: noPath(ctx, starting) } : {}),
+    ...(start.stop && start.chain.length === 1 ? { startStop: { files: [...start.stop.files], from: start.stop.from } } : {}),
     summary,
     summaryFrom: summary ? 'person' : null,
     ...(untestedParts.spawned.length > 0 ? { spawnTested: untestedParts.spawned } : {}),
     ...(untestedParts.inside.length > 0 ? { testedInside: untestedParts.inside } : {}),
     ...((untestedParts.scripted ?? []).length > 0 ? { testedByScript: untestedParts.scripted } : {}),
     ...(unreadCodeParts(ctx).length > 0 ? { unreadCode: unreadCodeParts(ctx).map((entry) => entry.part), unreadCodeUses: unreadCodeLine(unreadCodeParts(ctx), 'uses') } : {}),
+    ...(untestedParts.codeParts != null ? { testedCodeParts: untestedParts.codeParts } : {}),
     testedBy: untestedParts.testedBy,
     testFiles: untestedParts.testFiles,
     unreadFiles: unreadCount(ctx),
-    unread: unreadPlaces.items.map((item) => ({ ...(item.into ? { into: true } : {}), place: item.place, writers: worded(item.writers, id) })),
+    unread: unreadPlaces.items.map((item) => ({ ...(item.into ? { into: true } : {}), ...(item.mayRead ? { mayRead: item.mayRead } : {}), place: item.place, writers: worded(item.writers, id) })),
     unreadNote: unreadPlaces.note,
     written: unreadPlaces.written,
     untested: untestedParts.items,

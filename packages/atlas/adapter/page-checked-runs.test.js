@@ -116,9 +116,10 @@ describe('a file a linter checks is not a file the door runs', () => {
     assert.ok(page.includes('1. The workflow runs scripts/gate.mjs in scripts, a/x.test.js and a/y.test.js in a, b/x.test.js and b/y.test.js in b, c/x.test.js and c/y.test.js in c, d/x.test.js and d/y.test.js in d, and 6 files in 3 more parts.'), page);
     // The script the workflow names imports nothing and writes nothing, and
     // the tests import nothing either: a path never ends on a gate script,
-    // so there is none to read.
+    // so there is none to read. What it runs is code all the same, so the
+    // page says what it reaches and why no path is drawn.
     assert.ok(!page.includes('→ scripts/gate.mjs'), page);
-    assert.ok(page.includes('CI runs no code this map can follow, so there is no path of files to read in order.'), page);
+    assert.ok(page.includes('CI reaches a (2 files), b (2 files), c (2 files), d (2 files) and 4 more parts, but no file it runs leads on into code this map can follow, so there is no path of files to read in order.'), page);
   });
 
   it('tells explain a file is checked, not run', () => {

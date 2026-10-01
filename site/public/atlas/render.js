@@ -800,10 +800,28 @@ function untestedSection(ctx) {
   if (!Array.isArray(ctx.page.untested)) return '';
   const items = ctx.page.untested.filter((item) => item && typeof item === 'object');
   const note = arr(ctx.page.untestedNote).map((line) => p(esc(line)));
+  const every = `Every code part${arr(ctx.page.unreadCode).length > 0 ? ' this map reads' : ''} is ${arr(ctx.page.spawnTested).length > 0 || arr(ctx.page.testedInside).length > 0 || arr(ctx.page.testedByScript).length > 0 ? 'touched by' : 'imported by'} at least one test.`;
+  // With no code part read outside the tests, a claim about every one would
+  // be true of nothing, as page.js untestedClaim has it. A page.json written
+  // before testedCodeParts was kept makes the claim, as its markdown did.
+  const none = ctx.page.testedCodeParts === 0;
+  const claim = !none ? every : arr(ctx.page.unreadCode).length > 0 ? null : 'No part outside the tests holds code this map reads.';
   const body = items.length > 0
     ? [ul(items.map((item) => `<strong>${esc(partName(ctx, item) ?? '')}</strong> is imported by no test.`))]
-    : (Number(ctx.page.testFiles) === 0 ? [] : [p(`Every code part${arr(ctx.page.unreadCode).length > 0 ? ' this map reads' : ''} is ${arr(ctx.page.spawnTested).length > 0 || arr(ctx.page.testedInside).length > 0 || arr(ctx.page.testedByScript).length > 0 ? 'touched by' : 'imported by'} at least one test.`)]);
+    : (Number(ctx.page.testFiles) === 0 || claim == null ? [] : [p(claim)]);
   return section('What no test touches', [...body, ...note].join('\n'));
+}
+
+// A file reading a pattern under a directory chosen at run time that could
+// match the place leaves no reader the map can name, as the markdown says.
+function unreadEnd(ctx, mayRead) {
+  const by = arr(mayRead?.by).filter((path) => typeof path === 'string');
+  const patterns = arr(mayRead?.patterns).filter((pattern) => typeof pattern === 'string');
+  if (by.length === 0 || patterns.length === 0) return 'and read by nothing else in this repository.';
+  // Three are named and the rest counted, as page.js unreadEnd names them.
+  const named = by.slice(0, 3).map((path) => pathHtml(ctx, path));
+  const readers = by.length > 3 ? `${named.join(', ')} and ${count(by.length - 3, 'more file')}` : list(named);
+  return `and read by nothing else this map can name: ${readers} ${by.length > 1 ? 'read' : 'reads'} ${list(patterns.map((pattern) => `<code>${esc(pattern)}</code>`))} under a directory chosen at run time, which may include it.`;
 }
 
 function unreadSection(ctx) {
@@ -813,7 +831,7 @@ function unreadSection(ctx) {
     ? ul(items.map((item) => {
       const writers = arr(item.writers);
       const comma = writers.length > 1 ? ',' : '';
-      return `${writtenBy(`<strong>${pathHtml(ctx, item.place)}</strong>`, item.into)} ${list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))))}${comma} and read by nothing else in this repository.`;
+      return `${writtenBy(`<strong>${pathHtml(ctx, item.place)}</strong>`, item.into)} ${list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))))}${comma} ${unreadEnd(ctx, item.mayRead)}`;
     }))
     : p(ctx.page.written === 0 ? absence('unread', unreadFiles(ctx)) : 'Every written place has a reader.');
   const note = arr(ctx.page.unreadNote).map((line) => p(esc(line)));
@@ -916,7 +934,12 @@ function startSection(ctx) {
   const chain = arr(ctx.page.startHere).map((path) => pathHtml(ctx, path));
   if (chain.length === 0 && ctx.page.startNote) return section('Where to start', p(esc(ctx.page.startNote)));
   const reason = ctx.page.startReason ? ` ${esc(str(ctx.page.startReason))}` : '';
-  // One file is where to start, not a list to read in order.
+  // One file is where to start, not a list to read in order; where the path
+  // ends there at a tie, the files it leads to are named, as page.js startOne.
+  const stop = ctx.page.startStop && typeof ctx.page.startStop === 'object' ? arr(ctx.page.startStop.files).filter((path) => typeof path === 'string') : [];
+  if (chain.length === 1 && stop.length > 0 && ctx.page.startStop.from === arr(ctx.page.startHere)[0]) {
+    return section('Where to start', p(`Start at ${chain[0]}, which leads on to ${list(stop.map((path) => pathHtml(ctx, path)))}; this map records no order among them, so the path ends there.${reason}`));
+  }
   if (chain.length === 1) return section('Where to start', p(`Start at ${chain[0]} to follow one ${esc(triggerNoun(ctx.start))} end to end.${reason}`));
   const body = [
     `<p class="chain">${chain.join(' <span aria-hidden="true">→</span><span class="sr">, then</span> ')}</p>`,
@@ -1141,7 +1164,7 @@ function flowSentence(page, columns) {
   const landings = arr(main.landings).map(str);
   if (landings.length > 0) clauses.push(`it writes to ${list(landings)}`);
   const readers = columns.find((column) => column.kind === 'readers');
-  if (readers) clauses.push(`${count(readers.total, 'reader')} read those places`);
+  if (readers) clauses.push(`${count(readers.total, 'reader')} ${Number(readers.total) === 1 ? 'reads' : 'read'} those places`);
   return `${str(main.name)} (${str(main.file)}) ${clauses.join('; ')}.`;
 }
 

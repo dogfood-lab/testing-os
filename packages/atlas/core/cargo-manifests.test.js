@@ -67,7 +67,7 @@ describe('a Cargo manifest is read as Cargo reads it', () => {
 
   it('proposes a part per crate, and keeps a Tauri app\'s Rust half in the web package it is built with', () => {
     const { proposals } = proposalSet(root, listTracked(root));
-    assert.deepEqual(proposals.map((proposal) => [proposal.name, proposal.glob]), [
+    assert.deepEqual(proposals.map((proposal) => [proposal.name, ...proposal.globs]), [
       ['cli', 'crates/cli/**'],
       ['desktop', 'apps/desktop/**'],
       ['engine', 'crates/engine/**'],

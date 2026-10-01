@@ -14,7 +14,10 @@ export function isTestPath(path) {
   return false;
 }
 
-const CODE_EXT = new Set(['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx', 'mts', 'cts', 'py', 'pyi', 'rs', 'gd']);
+// Source in a language Atlas does not parse is code all the same: a part of
+// C# or Go files is code, though the map reads none of them.
+const CODE_EXT = new Set(['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx', 'mts', 'cts', 'py', 'pyi', 'rs', 'gd',
+  'cs', 'fs', 'vb', 'go', 'java', 'kt', 'swift', 'c', 'h', 'cpp', 'hpp', 'cc', 'rb', 'php', 'lua']);
 // Shell scripts are code a part runs, though Atlas does not parse them.
 const SCRIPT_EXT = new Set(['sh', 'bash', 'zsh', 'ps1']);
 // What a part holds as data: records, schemas, tables and images a program
@@ -90,16 +93,23 @@ function commonDirectory(paths) {
  * code however many pages document it.
  */
 function roleByFiles(paths, kinds) {
-  if (paths.some((path) => SITE_CONFIG.test(path) || SITE_CONTENT.test(path))) return 'site';
-  // A package of its own (a manifest at the directory's top and code under
-  // it) that carries the workflows of the repository it came from
-  // (accessibility-suite's src/a11y-assist) is read by its files, as any
-  // other part is, never made config by those workflows.
-  const top = commonDirectory(paths);
-  const manifestAtTop = ['pyproject.toml', 'package.json', 'Cargo.toml', 'setup.py'].some((name) => paths.includes(`${top}${name}`));
-  const packageCode = paths.some((path, index) => kinds[index] === 'code' && !WORKFLOW.test(path) && !path.slice(top.length).startsWith('.github/'));
-  const ownPackage = manifestAtTop && packageCode;
-  if (!ownPackage && paths.some((path) => WORKFLOW.test(path))) return 'config';
+  // A project that carries a site of its own beside its source (a seed with
+  // site/ next to src/) is the project: the part is the site only when all
+  // its code is the site's.
+  const sites = [...new Set(paths.flatMap((path) => {
+    if (SITE_CONFIG.test(path)) return [path.slice(0, path.lastIndexOf('/') + 1)];
+    const at = path.search(SITE_CONTENT);
+    return at === -1 ? [] : [path.slice(0, at === 0 ? 0 : at + 1)];
+  }))];
+  const inSite = (path) => sites.some((dir) => path.startsWith(dir));
+  if (sites.length > 0 && !paths.some((path, index) => kinds[index] === 'code' && !inSite(path))) return 'site';
+  // A project of its own (code outside any .github/) that carries the
+  // workflows of the repository it came from (accessibility-suite's
+  // src/a11y-assist, a seed copied whole into a monorepo) is read by its
+  // files, as any other part is, never made config by those workflows,
+  // manifest at its top or not.
+  const packageCode = paths.some((path, index) => kinds[index] === 'code' && !/(^|\/)\.github\//.test(path));
+  if (!packageCode && paths.some((path) => WORKFLOW.test(path))) return 'config';
   // An npm package with a command of its own (a wrapper: package.json, bin/
   // and its READMEs) is code, however many READMEs it carries.
   const root = commonDirectory(paths);

@@ -1,0 +1,10 @@
+name: Report
+on:
+  push:
+    branches: [main]
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/report.mjs
