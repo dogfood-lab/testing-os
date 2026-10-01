@@ -644,6 +644,22 @@ function repositoryManifests(repoPath, tracked) {
  * spawnsInstalled, known through the manifest that installs them.
  */
 function attachTestSpawns(files, spawned, repo, withCommands) {
+  // A reading depends only on the command, the directory it runs from and the
+  // view, and a monorepo's files spawn the same few commands (npm run build
+  // from the root) again and again. Each such reading follows the build into
+  // every member, so reading it once per file made this grow with the files
+  // times the members; a directory a run stands for is likewise listed once.
+  const readings = new Map();
+  const reading = (command, dir, view) => {
+    const key = `${view === repo ? 'repo' : 'commands'}\0${dir}\0${command}`;
+    if (!readings.has(key)) readings.set(key, [...readCommands(command, dir, view).runs.values()]);
+    return readings.get(key);
+  };
+  const codeUnder = new Map();
+  const codeFilesUnder = (dir) => {
+    if (!codeUnder.has(dir)) codeUnder.set(dir, [...files].filter(([other, entry]) => entry.language != null && other.startsWith(dir)).map(([other]) => other));
+    return codeUnder.get(dir);
+  };
   for (const [path, commands] of spawned) {
     const file = files.get(path);
     if (!file) continue;
@@ -660,12 +676,12 @@ function attachTestSpawns(files, spawned, repo, withCommands) {
         const program = command.trim().split(/\s+/)[0] ?? '';
         const entry = test && !view.tracked.has(program) ? view.installed.get(program) : null;
         if (entry != null) installed.add(entry);
-        for (const run of readCommands(command, dir, view).runs.values()) {
+        for (const run of reading(command, dir, view)) {
           // Production code that type-checks or lints another part runs none
           // of it; a test's checks are how it reaches what it checks.
           if (!isTestFile(path) && run.runKind === 'checks') continue;
           if (run.path.endsWith('/')) {
-            for (const [other, entry] of files) if (entry.language != null && other.startsWith(run.path)) runs.add(other);
+            for (const other of codeFilesUnder(run.path)) runs.add(other);
           } else if (run.path !== path) runs.add(run.path);
         }
       }

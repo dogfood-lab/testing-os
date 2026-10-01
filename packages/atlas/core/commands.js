@@ -423,6 +423,13 @@ function packagingRoots(repo) {
 }
 
 /**
+ * How many pieces of command text the readers have read, nested scripts
+ * included: the work a map does on commands, which a test holds to growing
+ * with the repository (core/scaling.test.js).
+ */
+export const COMMAND_COUNTS = { texts: 0 };
+
+/**
  * Read one piece of level-0 command text run from `dir`.
  * Returns the runs keyed by path, the tracked files it mentions, the files a
  * shell's expansion of an unquoted glob leaves out that the tool would have
@@ -621,6 +628,7 @@ function makeReader(repo, runs, mentions, missed = new Map()) {
   }
 
   function read(text, dir, frame) {
+    COMMAND_COUNTS.texts += 1;
     if (frame.level === 0) {
       // What git add names is what a commit carries, not a file the step
       // reads (landings.js has staging as neither a write nor a read).

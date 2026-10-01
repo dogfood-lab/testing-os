@@ -1,9 +1,11 @@
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import assert from 'node:assert/strict';
 import { after, describe, it } from 'node:test';
-import { repositoryView } from './commands.js';
+import { COMMAND_COUNTS, repositoryView } from './commands.js';
+import { makeRepo } from './fixture-repo.js';
+import { mapRepository } from './index.js';
 import { resolveDeclaredPath } from './resolve.js';
 
 // The cost of a map has to grow with the repository, not with its square: a
@@ -32,6 +34,28 @@ class CountedSet extends Set {
     this.walks += 1;
     return super[Symbol.iterator]();
   }
+}
+
+function write(base, path, text) {
+  mkdirSync(dirname(join(base, path)), { recursive: true });
+  writeFileSync(join(base, path), text);
+}
+
+// A turbo monorepo whose every member has a test that builds the whole
+// repository from its root before it runs, as an end-to-end test does.
+function monorepo(members) {
+  const staging = scratch();
+  write(staging, 'package.json', `${JSON.stringify({ private: true, workspaces: ['packages/*'], scripts: { build: 'turbo build' } }, null, 2)}\n`);
+  for (let m = 0; m < members; m += 1) {
+    const dir = `packages/m${m}`;
+    write(staging, `${dir}/package.json`, `${JSON.stringify({ name: `m${m}`, scripts: { build: 'tsc -p tsconfig.json' } }, null, 2)}\n`);
+    write(staging, `${dir}/tsconfig.json`, `${JSON.stringify({ compilerOptions: { outDir: 'dist', rootDir: 'src' }, include: ['src/**/*'] }, null, 2)}\n`);
+    write(staging, `${dir}/src/index.ts`, `export const value${m} = ${m};\n`);
+    write(staging, `${dir}/test/build.test.js`, "import { execSync } from 'node:child_process';\nexecSync('npm run build');\n");
+  }
+  const root = makeRepo(staging);
+  roots.push(root);
+  return root;
 }
 
 function trackedTree(members, perMember) {
@@ -83,5 +107,27 @@ describe('the cost of a map', () => {
     const small = best(150);
     const large = best(600);
     assert.ok(large < 8 * small, `4x the members took ${(large / small).toFixed(1)}x the time (${(small / 1e6).toFixed(1)} ms, then ${(large / 1e6).toFixed(1)} ms)`);
+  });
+
+  // Every member's test spawns npm run build from the root, which turbo
+  // follows into every member: read once per test, the command text read
+  // grew with the tests times the members. It is counted, not timed, so the
+  // bound holds on any runner: linear is about 4x at 4x the members, the old
+  // way about 13x, and the bound is 6x.
+  it('reads the commands a monorepo\'s tests spawn in work that grows with the members, not their square', () => {
+    const textsFor = (members) => {
+      const root = monorepo(members);
+      const before = COMMAND_COUNTS.texts;
+      const mapped = mapRepository({ repoPath: root, boundaries: [{ name: 'packages', globs: ['packages/**'], role: 'code' }] });
+      const texts = COMMAND_COUNTS.texts - before;
+      const tests = mapped.boundaries[0].files.filter((file) => file.path.endsWith('/test/build.test.js'));
+      assert.equal(tests.length, members);
+      const sources = Array.from({ length: members }, (_, m) => `packages/m${m}/src/index.ts`).sort();
+      for (const test of tests) assert.deepEqual(test.spawns, sources, `${test.path} runs every member's build`);
+      return texts;
+    };
+    const small = textsFor(6);
+    const large = textsFor(24);
+    assert.ok(large <= 6 * small, `4x the members read ${(large / small).toFixed(1)}x the command text (${small}, then ${large})`);
   });
 });
