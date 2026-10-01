@@ -104,6 +104,14 @@ function pathHtml(ctx, text) {
   return href ? `<a href="${esc(href)}">${code}</a>` : esc(value);
 }
 
+// "<place> is written by", or for a directory its writers only put files
+// into beside others (page.json into), "<place> holds files written by",
+// as page.js writtenBy says it. how is a word after "written", as "once".
+function writtenBy(placeHtml, into, how = '') {
+  const written = how ? `written ${how}` : 'written';
+  return into === true ? `${placeHtml} holds files ${written} by` : `${placeHtml} is ${written} by`;
+}
+
 // A reader string is a path, a path marked found by text or from tests, or
 // a part with a file count; only the path part becomes a link.
 function readerHtml(ctx, text) {
@@ -707,7 +715,7 @@ function breakLine(ctx, entry) {
     const readers = arr(entry.readers).map((part) => esc(ctx.name(part)));
     const comma = writers.length > 1 ? ',' : '';
     const tests = Number(entry.tests) > 0 ? `, and by ${count(Number(entry.tests), 'test')}` : '';
-    return `<strong>${pathHtml(ctx, entry.target)}</strong> is written by ${list(writers)}${comma} and read by ${list(readers)}${tests}; a hand edit reaches every reader.`;
+    return `${writtenBy(`<strong>${pathHtml(ctx, entry.target)}</strong>`, entry.into)} ${list(writers)}${comma} and read by ${list(readers)}${tests}; a hand edit reaches every reader.`;
   }
   const importedBy = arr(entry?.importedBy).map((part) => ctx.name(part));
   const imported = importedBy.length === 0
@@ -805,7 +813,7 @@ function unreadSection(ctx) {
     ? ul(items.map((item) => {
       const writers = arr(item.writers);
       const comma = writers.length > 1 ? ',' : '';
-      return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))))}${comma} and read by nothing else in this repository.`;
+      return `${writtenBy(`<strong>${pathHtml(ctx, item.place)}</strong>`, item.into)} ${list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))))}${comma} and read by nothing else in this repository.`;
     }))
     : p(ctx.page.written === 0 ? absence('unread', unreadFiles(ctx)) : 'Every written place has a reader.');
   const note = arr(ctx.page.unreadNote).map((line) => p(esc(line)));
@@ -843,12 +851,12 @@ function generatedSection(ctx) {
       if (writers.length === 0) return `${place} is written by code this map cannot name.`;
       const by = list(writers.map((writer) => pathHtml(ctx, wordedName(ctx, writer))));
       // A stamped file is written by people, with one block a script keeps.
-      if (item.once) return `${place} is written once by ${by}.`;
-      if (item.fromRoot) return `${place} is written by ${by} when run from the repository root, and committed.`;
+      if (item.once) return `${writtenBy(place, item.into, 'once')} ${by}.`;
+      if (item.fromRoot) return `${writtenBy(place, item.into)} ${by} when run from the repository root, and committed.`;
       if (item.block) return `${place} has a block written by ${by}.`;
       // A source the writer reads and people write, as page.js says it.
       const sources = arr(item.sources).map(str);
-      return `${place} is written by ${by}${sources.length > 0 ? `, except ${list(sources.map((path) => pathHtml(ctx, path)))}, which it reads and people write` : ''}.`;
+      return `${writtenBy(place, item.into)} ${by}${sources.length > 0 ? `, except ${list(sources.map((path) => pathHtml(ctx, path)))}, which it reads and people write` : ''}.`;
     }))
     : arr(ctx.page.authoredWritten).length > 0
       ? p('Every tracked place code writes here is edited by people too; see Hand-authored.')
@@ -874,8 +882,9 @@ function authoredSection(ctx) {
     const writers = list(arr(item.writers).map((writer) => pathHtml(ctx, wordedName(ctx, writer))));
     const people = Number(item.byPeople) || 0;
     // A writer reading inputs the repository does not keep, as page.js says it.
-    if (item.untrackedInputs) return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${writers} from inputs this repository does not keep, and by people.`;
-    return `<strong>${pathHtml(ctx, item.place)}</strong> is written by ${writers}, and by people: ${people} of its ${count(Number(item.commits) || 0, 'commit')} in the window ${people === 1 ? 'is' : 'are'} theirs.`;
+    const place = writtenBy(`<strong>${pathHtml(ctx, item.place)}</strong>`, item.into);
+    if (item.untrackedInputs) return `${place} ${writers} from inputs this repository does not keep, and by people.`;
+    return `${place} ${writers}, and by people: ${people} of its ${count(Number(item.commits) || 0, 'commit')} in the window ${people === 1 ? 'is' : 'are'} theirs.`;
   });
   return section('Hand-authored', shared.length > 0 ? `${body}\n${ul(shared)}` : body);
 }
