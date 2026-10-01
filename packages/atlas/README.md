@@ -17,7 +17,7 @@ npx --yes @dogfood-lab/atlas gaps [path-or-part] [--ref <ref>]
 npx --yes @dogfood-lab/atlas mcp
 ```
 
-`init` proposes `atlas/boundaries.yaml`: the named parts of the repository and the globs that own them. Edit the names and globs if the proposal is wrong. The one line a person may add is `summary`. `init` also adds `atlas/**` to an existing `.vscodeignore`, `atlas/` to an existing `.npmignore` when the manifest has no `files` list, and `atlas/` to `.prettierignore` when prettier is used, and says what it added.
+`init` proposes `atlas/boundaries.yaml`: the named parts of the repository and the globs that own them. The proposal leaves no tracked file in no part: one part per project (a workspace member, or a directory with a manifest, `.csproj` and `go.mod` included) and a part for what each directory's projects leave. Edit the names and globs if the proposal is wrong. The one line a person may add is `summary`. `init` also adds `atlas/**` to an existing `.vscodeignore`, `atlas/` to an existing `.npmignore` when the manifest has no `files` list, and `atlas/` to `.prettierignore` when prettier is used, and says what it added.
 
 `check` fails when the committed map no longer matches the tree. When that happens after a change you meant to make, run `map` and commit the regenerated `atlas/` files with the change; never edit the page by hand, and never change the code to satisfy the map.
 
