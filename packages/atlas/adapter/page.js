@@ -2220,7 +2220,7 @@ function untested(ctx) {
   const byScript = scripted.map((name) => `${ctx.shown(name)} is tested only by its package's own test script, which a workflow runs.`);
   const unread = unreadCodeParts(ctx);
   const unreadLine = unreadCodeLine(unread, 'tests');
-  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...within, ...byScript, ...(unreadLine ? [unreadLine] : []), ...unrunTests(ctx), ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned, inside, scripted, unread: unread.map((entry) => entry.part) };
+  return { items: all.slice(0, UNTESTED_SHOWN), note: [...through, ...within, ...byScript, ...(unreadLine ? [unreadLine] : []), ...unrunTests(ctx), ...more(all.length, UNTESTED_SHOWN, 'part')], testedBy, testFiles, spawned, inside, scripted, unread: unread.map((entry) => entry.part), codeParts: parts.length };
 }
 
 /**
@@ -2283,8 +2283,25 @@ function untestedSection(found) {
   const every = found.spawned.length > 0 || found.inside.length > 0 || (found.scripted ?? []).length > 0 ? `Every code part${read} is touched by at least one test.` : `Every code part${read} is imported by at least one test.`;
   const body = found.items.length > 0
     ? found.items.map((item) => `- **${item.partLabel}** is imported by no test.`).join('\n')
-    : (found.testFiles === 0 ? null : every);
+    : (found.testFiles === 0 ? null : untestedClaim(found.codeParts, every, (found.unread ?? []).length > 0));
   return ['## What no test touches', ...(body ? [body] : []), ...found.note].join('\n\n');
+}
+
+/**
+ * What the page claims of every code part when none is untested: the claim,
+ * made only when at least one code part outside the tests is read. With none
+ * read, a claim about every one would be true of nothing: the page says only
+ * what it cannot see (the line on parts it does not read), or, with no such
+ * part, that no part holds code it reads.
+ *
+ * @param {number|undefined} codeParts the code parts holding source the map reads
+ * @param {string} every the claim
+ * @param {boolean} unreadParts whether code parts the map does not read are named
+ * @returns {string|null}
+ */
+export function untestedClaim(codeParts, every, unreadParts) {
+  if (codeParts == null || codeParts > 0) return every;
+  return unreadParts ? null : 'No part outside the tests holds code this map reads.';
 }
 
 // A place is unread when nothing but its own writers reads it: a writer that
@@ -4032,6 +4049,7 @@ export function buildPage({ structure, statistics, document, repoName, defaultBr
     ...(untestedParts.inside.length > 0 ? { testedInside: untestedParts.inside } : {}),
     ...((untestedParts.scripted ?? []).length > 0 ? { testedByScript: untestedParts.scripted } : {}),
     ...(unreadCodeParts(ctx).length > 0 ? { unreadCode: unreadCodeParts(ctx).map((entry) => entry.part), unreadCodeUses: unreadCodeLine(unreadCodeParts(ctx), 'uses') } : {}),
+    ...(untestedParts.codeParts != null ? { testedCodeParts: untestedParts.codeParts } : {}),
     testedBy: untestedParts.testedBy,
     testFiles: untestedParts.testFiles,
     unreadFiles: unreadCount(ctx),

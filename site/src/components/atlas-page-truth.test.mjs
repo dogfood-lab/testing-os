@@ -117,3 +117,11 @@ test('a path that ends at a tie among the files it leads to names them, on the s
   const html = render.renderPage(page, { repo: 'acme/start-scenes' });
   assert.deepEqual(siteLines(html, 'Where to start'), markdownLines(markdown, 'Where to start'));
 });
+
+test('no claim about every code part when none outside the tests is read, on the site as in the markdown', () => {
+  const { page, markdown } = mapped('door-only-tests');
+  assert.equal(page.testedCodeParts, 0);
+  const html = render.renderPage(page, { repo: 'acme/door-only-tests' });
+  assert.deepEqual(siteLines(html, 'What no test touches'), markdownLines(markdown, 'What no test touches'));
+  assert.ok(!siteLines(html, 'What no test touches').some((line) => line.startsWith('Every code part')));
+});

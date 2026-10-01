@@ -800,9 +800,15 @@ function untestedSection(ctx) {
   if (!Array.isArray(ctx.page.untested)) return '';
   const items = ctx.page.untested.filter((item) => item && typeof item === 'object');
   const note = arr(ctx.page.untestedNote).map((line) => p(esc(line)));
+  const every = `Every code part${arr(ctx.page.unreadCode).length > 0 ? ' this map reads' : ''} is ${arr(ctx.page.spawnTested).length > 0 || arr(ctx.page.testedInside).length > 0 || arr(ctx.page.testedByScript).length > 0 ? 'touched by' : 'imported by'} at least one test.`;
+  // With no code part read outside the tests, a claim about every one would
+  // be true of nothing, as page.js untestedClaim has it. A page.json written
+  // before testedCodeParts was kept makes the claim, as its markdown did.
+  const none = ctx.page.testedCodeParts === 0;
+  const claim = !none ? every : arr(ctx.page.unreadCode).length > 0 ? null : 'No part outside the tests holds code this map reads.';
   const body = items.length > 0
     ? [ul(items.map((item) => `<strong>${esc(partName(ctx, item) ?? '')}</strong> is imported by no test.`))]
-    : (Number(ctx.page.testFiles) === 0 ? [] : [p(`Every code part${arr(ctx.page.unreadCode).length > 0 ? ' this map reads' : ''} is ${arr(ctx.page.spawnTested).length > 0 || arr(ctx.page.testedInside).length > 0 || arr(ctx.page.testedByScript).length > 0 ? 'touched by' : 'imported by'} at least one test.`)]);
+    : (Number(ctx.page.testFiles) === 0 || claim == null ? [] : [p(claim)]);
   return section('What no test touches', [...body, ...note].join('\n'));
 }
 
