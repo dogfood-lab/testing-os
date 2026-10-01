@@ -14,7 +14,6 @@ const CODE = { name: 'code', globs: ['**'], role: 'code', status: 'accepted' };
 
 const external = { outcome: 'external' };
 const dynamic = { outcome: 'unresolved', reason: 'dynamic' };
-const wildcard = { outcome: 'unresolved', reason: 'wildcard' };
 const missing = { outcome: 'unresolved', reason: 'python-module-not-found' };
 const file = (path) => ({ outcome: 'file', path });
 
@@ -59,9 +58,11 @@ const EXPECTED = {
     { ...entry('.', 'static', 7, missing), names: ['local'] },
     { ...entry('..', 'static', 8, missing), names: ['up'] },
   ],
+  // A wildcard import resolves where the module it names does, as any
+  // from-import: x is a package not in the repository, .y a missing sibling.
   'py/wild.py': [
-    entry('x', 'wildcard', 1, wildcard),
-    entry('.y', 'wildcard', 2, wildcard),
+    entry('x', 'wildcard', 1, external),
+    entry('.y', 'wildcard', 2, missing),
     entry('name', 'dynamic', 3, dynamic),
     entry('a.b', 'dynamic-literal', 4, external),
     entry('z', 'dynamic-literal', 5, external),
@@ -87,7 +88,7 @@ const LANGUAGE = {
 };
 
 describe('import extraction', () => {
-  it('records specifiers, kinds and lines, and counts dynamic, wildcard and parse failures', () => {
+  it('records specifiers, kinds and lines, and counts dynamic imports and parse failures', () => {
     const root = makeRepo(LANGUAGES);
     roots.push(root);
     const result = mapRepository({ repoPath: root, boundaries: [CODE] });
@@ -120,7 +121,7 @@ describe('import extraction', () => {
     }
 
     assert.equal(boundary.parseErrors, 4);
-    assert.equal(boundary.unresolvedSites, 11);
+    assert.equal(boundary.unresolvedSites, 10);
     assert.equal(boundary.importConfidence, 'full');
     assert.equal(boundary.files.length, Object.keys(EXPECTED).length + 4 + 3);
   });
