@@ -1,20 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-10-01 from commit b927c46 by Atlas 1.25.0.
+Mapped at 2026-10-01 from commit 73ca700 by Atlas 1.26.0.
 
 ## What this is
 
 23 parts, mostly JavaScript (1603 files), Python (237), TypeScript (215), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
 
-## What changed since 2026-10-01 (a757587)
+## What changed since 2026-10-01 (b927c46)
 
-- CI runs 2 more files than before.
-- Release runs 2 more files than before.
-- fixtures/atlas/ is now also read by packages/atlas/adapter/check-cost.test.js.
-- fixtures/atlas/build-output/ is now also read by packages/atlas/adapter/check-cost.test.js.
-- fixtures/atlas/bundled-builds/ is now also read by packages/atlas/adapter/check-cost.test.js.
-- And 16 more new writers and readers of places.
-- 2 files added and 7 changed content, across 3 parts.
+Nothing structural changed since 2026-10-01; 1 file added and 22 changed content.
 
 ## What comes in
 
