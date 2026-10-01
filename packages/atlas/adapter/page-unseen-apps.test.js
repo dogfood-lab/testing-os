@@ -47,7 +47,7 @@ describe('what runs where no workflow reaches', () => {
 
   it('says the HTTP link and the deployments in the limits', () => {
     assert.ok(data.limits.includes('ui calls server over HTTP at 2 routes, a link no import shows: the map draws it, and no door\'s reach follows it.'), data.limits.join('\n'));
-    assert.ok(data.limits.includes('There is a Dockerfile, a fly.toml and a render.yaml that no workflow runs; what deploys from them does so from outside this repository, and is not on this page.'), data.limits.join('\n'));
+    assert.ok(data.limits.includes('There are a Dockerfile, a fly.toml and a render.yaml that no workflow runs; what deploys from them does so from outside this repository, and is not on this page.'), data.limits.join('\n'));
   });
 
   it('reads the Tauri app as a desktop app, so it is no longer unseen', () => {

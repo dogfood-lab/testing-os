@@ -3557,7 +3557,7 @@ function unseenLines(ctx) {
         ...others.map((path) => `a ${path}`),
       ];
       const them = files.length === 1 ? 'it' : 'them';
-      lines.push(`There is ${list(named)} that no workflow runs; what deploys from ${them} does so from outside this repository, and is not on this page.`);
+      lines.push(`${thereBe(files.length)} ${list(named)} that no workflow runs; what deploys from ${them} does so from outside this repository, and is not on this page.`);
     } else if (entry.kind === 'shipped') {
       const items = entry.items ?? [];
       const images = items.filter((item) => item.kind === 'image');
@@ -3567,10 +3567,16 @@ function unseenLines(ctx) {
         ...shippedAt(items, 'catalog', 'a Docker MCP Catalog entry at', 'Docker MCP Catalog entries at', (path) => path),
       ];
       const them = items.length === 1 ? 'it' : 'them';
-      lines.push(`There is ${list(named)}; what ships from ${them} goes from outside this repository, and is not on this page.`);
+      lines.push(`${thereBe(items.length)} ${list(named)}; what ships from ${them} goes from outside this repository, and is not on this page.`);
     }
   }
   return lines;
+}
+
+// "There is" one thing; "There are" a count or a list of them, the verb
+// agreeing with all it introduces.
+function thereBe(things) {
+  return things === 1 ? 'There is' : 'There are';
 }
 
 // "a Docker MCP Catalog entry at catalog/server.yaml", or the entries

@@ -125,3 +125,9 @@ test('no claim about every code part when none outside the tests is read, on the
   assert.deepEqual(siteLines(html, 'What no test touches'), markdownLines(markdown, 'What no test touches'));
   assert.ok(!siteLines(html, 'What no test touches').some((line) => line.startsWith('Every code part')));
 });
+
+test('the flow picture says one reader reads the places its door writes', () => {
+  const { page } = mapped('counted-deploys');
+  const desc = /<desc id="atlasFlowDesc">([^<]+)<\/desc>/.exec(render.renderFlow(page))?.[1] ?? '';
+  assert.ok(desc.endsWith('; 1 reader reads those places.'), desc);
+});

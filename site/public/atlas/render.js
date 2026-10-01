@@ -1164,7 +1164,7 @@ function flowSentence(page, columns) {
   const landings = arr(main.landings).map(str);
   if (landings.length > 0) clauses.push(`it writes to ${list(landings)}`);
   const readers = columns.find((column) => column.kind === 'readers');
-  if (readers) clauses.push(`${count(readers.total, 'reader')} read those places`);
+  if (readers) clauses.push(`${count(readers.total, 'reader')} ${Number(readers.total) === 1 ? 'reads' : 'read'} those places`);
   return `${str(main.name)} (${str(main.file)}) ${clauses.join('; ')}.`;
 }
 
