@@ -795,7 +795,7 @@ export function dispatch(opts) {
     const routedIds = new Set();
     for (const domain of domains) {
       if (!isAgentBearingDomain(domain)) continue;
-      for (const f of findingsForDomain(db, opts.runId, domain)) routedIds.add(f.finding_id);
+      for (const f of findingsForDomain(db, opts.runId, domain, domains)) routedIds.add(f.finding_id);
     }
     unroutedApprovedFindings = approved
       .filter(f => !routedIds.has(f.finding_id))
@@ -836,7 +836,7 @@ export function dispatch(opts) {
         worktreeBranch: null,
       };
       if (isAmend) {
-        agent.approvedFindingCount = findingsForDomain(db, opts.runId, domain).length;
+        agent.approvedFindingCount = findingsForDomain(db, opts.runId, domain, domains).length;
       }
       if (opts.isolate) {
         const wt = previewWorktree(run.local_path, waveNumber, domain.name, opts.runId);
@@ -1084,7 +1084,7 @@ export function dispatch(opts) {
       // the correct answer (this domain has no work in this wave) — do NOT fall
       // back to all-approved, which would feed every fix to every agent and
       // defeat exclusive file ownership (Law #1). See lib/findings-filter.js.
-      const findings = findingsForDomain(db, opts.runId, domain);
+      const findings = findingsForDomain(db, opts.runId, domain, domains);
       prompt = buildAmendPrompt({ ...promptOpts, findings });
       // Item 5: amend prompts are the verification-discipline carrier — audit
       // prompts don't run tests anyway. Append the parallel-wave directive

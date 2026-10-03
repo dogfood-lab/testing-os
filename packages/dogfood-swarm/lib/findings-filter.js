@@ -22,6 +22,7 @@
  */
 
 import { minimatch } from 'minimatch';
+import { resolveExclusiveOwner } from './domains.js';
 
 /**
  * Match `file_path` against any of `globs`.
@@ -81,9 +82,16 @@ export function matchesAnyGlob(filePath, globs) {
  *   diagnosed loudly (see below) rather than only disclosed in this
  *   docstring — a documented risk nobody reads is the same as an
  *   undocumented one.
+ * @param {Array<object>} [allDomains] — every domain row of the run. When
+ *   given, a finding with a file_path routes only to that file's exclusive
+ *   owner under resolveExclusiveOwner, the arbitration collect enforces.
+ *   Without it, overlapping globs (`packages/**` and `packages/**\/*.test.*`)
+ *   handed one finding to both domains (commandui run swarm-1791046650-fb76,
+ *   wave 6: eleven test-file findings briefed to backend or desktop as well as
+ *   tests). A path no exclusive domain owns keeps the membership answer.
  * @returns {object[]} findings rows
  */
-export function findingsForDomain(db, runId, domain) {
+export function findingsForDomain(db, runId, domain, allDomains = null) {
   const approved = db.prepare(
     "SELECT * FROM findings WHERE run_id = ? AND status = 'approved'"
   ).all(runId);
@@ -113,7 +121,12 @@ export function findingsForDomain(db, runId, domain) {
   }
 
   return approved.filter(f => {
-    if (f.file_path) return matchesAnyGlob(f.file_path, domain.globs);
+    if (f.file_path) {
+      if (!matchesAnyGlob(f.file_path, domain.globs)) return false;
+      if (!allDomains || !domain.name) return true;
+      const owner = resolveExclusiveOwner(allDomains, f.file_path);
+      return owner === null || owner === domain.name;
+    }
     return f.filed_by_domain != null && f.filed_by_domain === domain.name;
   });
 }
