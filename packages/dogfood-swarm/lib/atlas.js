@@ -25,7 +25,7 @@ import { spawnSync, execFileSync } from 'node:child_process';
 import { readBoundedJson } from './bounded-json-read.js';
 
 /** The published Atlas the swarm runs. Bump with the lockstep release. */
-export const ATLAS_VERSION = '1.15.0';
+export const ATLAS_VERSION = '1.24.0';
 export const ATLAS_PACKAGE = `@dogfood-lab/atlas@${ATLAS_VERSION}`;
 
 // A committed map is a few megabytes on a large repository; the swarm's other
