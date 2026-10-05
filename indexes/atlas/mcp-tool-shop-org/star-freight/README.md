@@ -1,6 +1,6 @@
 # star-freight: how it works
 
-Mapped at 2026-10-01 from commit 7ee4eb5 by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit 5e74339 by Atlas 1.26.0.
 
 ## What this is
 
@@ -9,7 +9,7 @@ Mapped at 2026-10-01 from commit 7ee4eb5 by Atlas 1.26.0.
 ## What changed since 2026-10-01 (3c9ba45)
 
 - dogfood/scenarios/*.json is now read by src/portlight/engine/dogfood_runner.py.
-- No file changed.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 

@@ -1,6 +1,6 @@
 # comfy-preflight: how it works
 
-Mapped at 2026-10-01 from commit ddf5a11 by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit 7184251 by Atlas 1.26.0.
 
 ## What this is
 
@@ -10,7 +10,7 @@ Mapped at 2026-10-01 from commit ddf5a11 by Atlas 1.26.0.
 
 - src/comfy_preflight/**/*.py is now read by tests/test_no_assert_in_library.py.
 - tests/**/*.py is now read by tests/test_fixtures_are_self_contained.py.
-- No file changed.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 

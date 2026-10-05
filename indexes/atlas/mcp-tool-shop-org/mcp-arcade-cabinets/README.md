@@ -1,6 +1,6 @@
 # mcp-arcade-cabinets: how it works
 
-Mapped at 2026-10-01 from commit 8da3a5e by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit 1d89b90 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-01 from commit 8da3a5e by Atlas 1.26.0.
 
 ## What changed since 2026-09-30 (c01c274)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-09-30; 1 file changed content.
 
 ## What comes in
 

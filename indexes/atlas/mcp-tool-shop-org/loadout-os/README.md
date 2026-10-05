@@ -1,6 +1,6 @@
 # loadout-os: how it works
 
-Mapped at 2026-10-01 from commit a6da6ca by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit 75d1109 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-01 from commit a6da6ca by Atlas 1.26.0.
 
 ## What changed since 2026-09-30 (532deee)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-09-30; 4 files changed content.
 
 ## What comes in
 

@@ -1,10 +1,49 @@
 {
   "repo": "mcp-tool-shop-org/commandui",
   "generated_from": {
-    "commit_sha": "e6067ba7eab7ed542ef56fce1cbfc1804ebffe60"
+    "commit_sha": "6ce3235aea74c44d58020c95b93c676c40c4db1d"
   },
-  "generated_at": "2026-10-01T08:37:43.396Z",
+  "generated_at": "2026-10-05T13:57:57.182Z",
   "shared_commit_floor": 3,
   "confidence": "low",
-  "rows": []
+  "rows": [
+    {
+      "id": "mcp-tool-shop-org/commandui|file-moved|runtime-planner|crates/runtime-planner/src/validate.rs",
+      "rule": "file-moved",
+      "value": 0.6,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-05T13:57:57.182Z",
+      "last_seen": "2026-10-05T13:57:57.182Z",
+      "boundary": "runtime-planner",
+      "file": "crates/runtime-planner/src/validate.rs",
+      "partner_boundary": "runtime-core"
+    },
+    {
+      "id": "mcp-tool-shop-org/commandui|leaks|runtime-planner",
+      "rule": "leaks",
+      "value": 1.155556,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-05T13:57:57.182Z",
+      "last_seen": "2026-10-05T13:57:57.182Z",
+      "boundary": "runtime-planner"
+    },
+    {
+      "id": "mcp-tool-shop-org/commandui|two-may-be-one|runtime-core|runtime-planner",
+      "rule": "two-may-be-one",
+      "value": 1.155556,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-05T13:57:57.182Z",
+      "last_seen": "2026-10-05T13:57:57.182Z",
+      "boundaries": [
+        "runtime-core",
+        "runtime-planner"
+      ]
+    }
+  ]
 }

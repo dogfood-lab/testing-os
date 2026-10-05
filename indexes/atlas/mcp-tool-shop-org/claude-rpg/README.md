@@ -1,6 +1,6 @@
 # claude-rpg: how it works
 
-Mapped at 2026-10-01 from commit 7a550cc by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit e39fc82 by Atlas 1.26.0.
 
 ## What this is
 
@@ -9,7 +9,7 @@ Mapped at 2026-10-01 from commit 7a550cc by Atlas 1.26.0.
 ## What changed since 2026-10-01 (f762fbe)
 
 - dogfood/tuning/matrix-*.json is now written by test/helpers/living-world-matrix.ts.
-- No file changed.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 

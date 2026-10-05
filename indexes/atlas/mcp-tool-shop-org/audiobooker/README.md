@@ -1,6 +1,6 @@
 # audiobooker: how it works
 
-Mapped at 2026-10-01 from commit c6ef1df by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit 033948f by Atlas 1.26.0.
 
 ## What this is
 
@@ -9,7 +9,7 @@ Mapped at 2026-10-01 from commit c6ef1df by Atlas 1.26.0.
 ## What changed since 2026-09-30 (6fcd238)
 
 - .github/workflows/*.yml is now read by tools/check_ci_policy.py.
-- No file changed.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 

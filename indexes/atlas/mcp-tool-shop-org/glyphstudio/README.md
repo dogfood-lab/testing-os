@@ -1,6 +1,6 @@
 # glyphstudio: how it works
 
-Mapped at 2026-10-01 from commit bd75874 by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit d2be33c by Atlas 1.26.0.
 
 ## What this is
 
@@ -12,7 +12,7 @@ Mapped at 2026-10-01 from commit bd75874 by Atlas 1.26.0.
 - docs/showcase/stage47b-critique/monk-r0---*x*.png is now written by scripts/test-47b-critique-loop.mjs.
 - docs/showcase/stage47b-critique/monk-r1---*x*.png is now written by scripts/test-47b-critique-loop.mjs.
 - And 2 more new writers and readers of places.
-- 1 file changed content, across 1 part.
+- 2 files changed content, across 2 parts.
 
 ## What comes in
 

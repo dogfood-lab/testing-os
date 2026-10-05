@@ -54,8 +54,8 @@
       }
     ],
     "since": {
-      "commit": "533e239e0a974e3fe258462bec7634b49a29a81e",
-      "generatedAt": "2026-10-01T02:12:56.558Z"
+      "commit": "b4242c55dacfdb41c35027356334f955983091c9",
+      "generatedAt": "2026-10-01T23:48:06.337Z"
     },
     "unchanged": true
   },
@@ -63,7 +63,7 @@
     {
       "a": "src/observability/export-markdown-command.ts",
       "b": "src/observability/interpretability-index-command.ts",
-      "either": 5,
+      "either": 6,
       "partLabels": [
         "src",
         "src"
@@ -81,9 +81,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "94f117b51ad2cc1eb7ecaccb137af4e0f9cb25dc",
+  "commit": "7bda38cbdeded3f577e98b7ce438ae6bc574524a",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly TypeScript (71 files), Python (45), JavaScript (3), CSS (2) and Astro (1). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. It deploys a site to GitHub Pages. People install the runforge extension.",
+  "derived": "10 parts, mostly TypeScript (90 files), Python (45), JavaScript (3), CSS (2) and Astro (1). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. It deploys a site to GitHub Pages. People install the runforge extension.",
   "doors": [
     {
       "builds": [
@@ -108,7 +108,7 @@
         {
           "boundary": "test",
           "depth": 0,
-          "files": 36
+          "files": 55
         },
         {
           "boundary": "python",
@@ -120,6 +120,25 @@
         "test/browse-runs.test.ts",
         "test/cancel-state-machine.test.ts",
         "test/cancelled-marker-reader.test.ts",
+        "test/coverage-extension-activate.test.ts",
+        "test/coverage-extension-commands.test.ts",
+        "test/coverage-extension-open-summary.test.ts",
+        "test/coverage-extension-registry.test.ts",
+        "test/coverage-extension-status-notify.test.ts",
+        "test/coverage-observability-artifact-views.test.ts",
+        "test/coverage-observability-browse-runs.test.ts",
+        "test/coverage-observability-contract-drift.test.ts",
+        "test/coverage-observability-event-stream.test.ts",
+        "test/coverage-observability-export-metadata.test.ts",
+        "test/coverage-observability-fs-safe.test.ts",
+        "test/coverage-observability-inspect-commands.test.ts",
+        "test/coverage-observability-markers-render.test.ts",
+        "test/coverage-observability-recover-index.test.ts",
+        "test/coverage-runner-gpu-probe.test.ts",
+        "test/coverage-runner-python-runner.test.ts",
+        "test/coverage-runner-run-folder.test.ts",
+        "test/coverage-runner-run-manager.test.ts",
+        "test/coverage-views-runs-picker.test.ts",
         "test/csv-edge-cases.test.ts",
         "test/dataset-path-setting.test.ts",
         "test/event-stream-consumer.test.ts",
@@ -152,8 +171,8 @@
         "test/version.test.ts",
         "test/workspace-trust-guard.test.ts"
       ],
-      "runsCount": 34,
-      "runsMore": 31,
+      "runsCount": 53,
+      "runsMore": 50,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -184,7 +203,7 @@
         {
           "boundary": "test",
           "depth": 0,
-          "files": 34
+          "files": 53
         },
         {
           "boundary": "python",
@@ -196,6 +215,25 @@
         "test/browse-runs.test.ts",
         "test/cancel-state-machine.test.ts",
         "test/cancelled-marker-reader.test.ts",
+        "test/coverage-extension-activate.test.ts",
+        "test/coverage-extension-commands.test.ts",
+        "test/coverage-extension-open-summary.test.ts",
+        "test/coverage-extension-registry.test.ts",
+        "test/coverage-extension-status-notify.test.ts",
+        "test/coverage-observability-artifact-views.test.ts",
+        "test/coverage-observability-browse-runs.test.ts",
+        "test/coverage-observability-contract-drift.test.ts",
+        "test/coverage-observability-event-stream.test.ts",
+        "test/coverage-observability-export-metadata.test.ts",
+        "test/coverage-observability-fs-safe.test.ts",
+        "test/coverage-observability-inspect-commands.test.ts",
+        "test/coverage-observability-markers-render.test.ts",
+        "test/coverage-observability-recover-index.test.ts",
+        "test/coverage-runner-gpu-probe.test.ts",
+        "test/coverage-runner-python-runner.test.ts",
+        "test/coverage-runner-run-folder.test.ts",
+        "test/coverage-runner-run-manager.test.ts",
+        "test/coverage-views-runs-picker.test.ts",
         "test/csv-edge-cases.test.ts",
         "test/dataset-path-setting.test.ts",
         "test/event-stream-consumer.test.ts",
@@ -228,8 +266,8 @@
         "test/version.test.ts",
         "test/workspace-trust-guard.test.ts"
       ],
-      "runsCount": 34,
-      "runsMore": 31,
+      "runsCount": 53,
+      "runsMore": 50,
       "sends": [
         "creates a GitHub release and uploads SHA256SUMS.txt and files named at run time to the release on a tag push",
         "publishes to the VS Code Marketplace when run by hand"
@@ -287,7 +325,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 31
+          "files": 32
         },
         {
           "boundary": "python",
@@ -317,7 +355,7 @@
   ],
   "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-10-01T08:42:42.720Z",
+  "generatedAt": "2026-10-05T14:03:02.503Z",
   "limits": [
     "1 write and 9 reads use paths built at run time and are not named here.",
     "21 writes and 31 reads go to a path their caller passes, not to this repository.",
@@ -363,11 +401,11 @@
   "startReason": "This path follows runforge (the extension people install from the VS Code Marketplace) from its entry, since CI runs only tests and checks, and builds test/extension-host/.",
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 64,
+  "testFiles": 83,
   "testedBy": {
     "eslint-rules": 0,
     "python": 14,
-    "src": 32
+    "src": 51
   },
   "testedCodeParts": 3,
   "unnamedWrites": 1,

@@ -1,6 +1,7 @@
 {
   "authored": [
-    ".github/"
+    ".github/",
+    "root"
   ],
   "breaks": [
     {
@@ -30,26 +31,37 @@
       "kind": "part",
       "name": "test",
       "partLabel": "test"
+    },
+    {
+      "kind": "place",
+      "readers": [
+        "site"
+      ],
+      "target": "site/src/data/stats.json",
+      "writers": [
+        ".github",
+        "site"
+      ]
     }
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 0,
+      "added": 1,
+      "changed": 7,
       "moved": 0,
-      "parts": 0,
+      "parts": 5,
       "removed": 0
     },
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-01; no file changed.",
+        "sentence": "Nothing structural changed since 2026-10-03; 1 file added and 7 changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "7bd013bf4d2a84f1c17307489c97afbc8667a7da",
-      "generatedAt": "2026-10-01T02:12:23.024Z"
+      "commit": "56428378e4a1f927b2b553a04c2084c158ea86da",
+      "generatedAt": "2026-10-03T20:31:49.036Z"
     },
     "unchanged": true
   },
@@ -58,12 +70,13 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "04ecf31c07504411253f497c0263036ca89a9e98",
+  "commit": "35043fe784ce5c5f1fc133e635fcaa3107ff9347",
   "defaultBranch": "main",
-  "derived": "8 parts, mostly TypeScript (35 files), C# (8), Astro (6), HTML (4), CSS (3) and JavaScript (2). Work enters through 7 doors; Daily Refresh and Desktop CI (MSIX) each reach 3 parts, and Daily Refresh is followed because it commits into the repository. It publishes to npm. It deploys a site to GitHub Pages. People run registry-stats. People import @mcptoolshop/registry-stats.",
+  "derived": "8 parts, mostly TypeScript (41 files), C# (9), Astro (6), HTML (4), CSS (3) and JavaScript (3). Work enters through 7 doors; Daily Refresh and Desktop CI (MSIX) each reach 3 parts, and Daily Refresh is followed because it commits into the repository. It publishes to npm. It deploys a site to GitHub Pages. People run registry-stats. People import @mcptoolshop/registry-stats.",
   "doors": [
     {
       "builds": [
+        "src/index.ts",
         "desktop/RegistryPulse.Desktop/RegistryPulse.Desktop.csproj"
       ],
       "checks": [],
@@ -93,7 +106,7 @@
         },
         {
           "boundary": "src",
-          "depth": 1,
+          "depth": 0,
           "files": 13
         }
       ],
@@ -140,27 +153,31 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 18
+          "files": 21
         },
         {
           "boundary": "test",
           "depth": 0,
-          "files": 13
+          "files": 16
         }
       ],
       "runs": [
         "site/scripts/fetch-stats.mjs",
         "src/cache.test.ts",
         "src/calc.test.ts",
+        "src/cli.cover.test.ts",
         "src/cli.test.ts",
         "src/contract.test.ts",
+        "src/fetch.cover.test.ts",
         "src/retry.test.ts",
         "test/"
       ],
-      "runsCount": 7,
-      "runsMore": 16,
+      "runsCount": 9,
+      "runsMore": 21,
       "sends": [],
       "stages": [
+        "site/public/data/packages.json",
+        "site/public/data/stats.json",
         "site/src/data/history.json",
         "site/src/data/snapshots.json",
         "site/src/data/stats.json"
@@ -186,29 +203,31 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 18
+          "files": 21
         },
         {
           "boundary": "test",
           "depth": 0,
-          "files": 13
+          "files": 16
         }
       ],
       "runs": [
         "src/cache.test.ts",
         "src/calc.test.ts",
+        "src/cli.cover.test.ts",
         "src/cli.test.ts",
         "src/contract.test.ts",
+        "src/fetch.cover.test.ts",
         "src/retry.test.ts",
         "test/"
       ],
-      "runsCount": 6,
-      "runsMore": 15,
+      "runsCount": 8,
+      "runsMore": 20,
       "sends": [],
       "stages": [],
       "triggers": [
         "on a pull request",
-        "on a push to main touching 7 paths",
+        "on a push to main touching 8 paths",
         "or by hand"
       ]
     },
@@ -253,7 +272,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 13
+          "files": 14
         },
         {
           "boundary": "src",
@@ -262,13 +281,14 @@
         }
       ],
       "runs": [
+        "site/scripts/audit.mjs",
         "site/astro.config.mjs",
         "site/src/"
       ],
-      "runsCount": 2,
+      "runsCount": 3,
       "runsMore": 0,
       "sends": [
-        "commits site/src/data/snapshots.json and site/src/data/stats.json, then pushes, and deploys the site, except on a pull request"
+        "commits site/public/data/packages.json, site/public/data/stats.json, site/src/data/history.json, site/src/data/snapshots.json and site/src/data/stats.json, then pushes, and deploys the site, except on a pull request"
       ],
       "stages": [],
       "triggers": [
@@ -294,24 +314,26 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 18
+          "files": 21
         },
         {
           "boundary": "test",
           "depth": 0,
-          "files": 13
+          "files": 16
         }
       ],
       "runs": [
         "src/cache.test.ts",
         "src/calc.test.ts",
+        "src/cli.cover.test.ts",
         "src/cli.test.ts",
         "src/contract.test.ts",
+        "src/fetch.cover.test.ts",
         "src/retry.test.ts",
         "test/"
       ],
-      "runsCount": 6,
-      "runsMore": 15,
+      "runsCount": 8,
+      "runsMore": 20,
       "sends": [
         "publishes to npm"
       ],
@@ -402,57 +424,49 @@
       "writers": []
     },
     {
-      "addedBy": "github-actions[bot]",
-      "place": "desktop/",
-      "writers": []
-    },
-    {
-      "addedBy": "github-actions[bot]",
-      "place": "root",
-      "writers": []
-    },
-    {
-      "addedBy": "github-actions[bot]",
-      "place": "site/",
-      "writers": []
-    },
-    {
       "place": "site/public/data/packages.json",
       "writers": [
+        ".github/workflows/daily-refresh.yml",
+        ".github/workflows/pages.yml",
         "site/scripts/fetch-stats.mjs"
       ]
     },
     {
       "place": "site/public/data/stats.json",
       "writers": [
+        ".github/workflows/daily-refresh.yml",
+        ".github/workflows/pages.yml",
         "site/scripts/fetch-stats.mjs"
       ]
     },
     {
-      "block": true,
       "place": "site/src/data/history.json",
       "writers": [
+        ".github/workflows/daily-refresh.yml",
+        ".github/workflows/pages.yml",
         "site/scripts/fetch-stats.mjs"
       ]
     },
     {
-      "block": true,
       "place": "site/src/data/snapshots.json",
       "writers": [
+        ".github/workflows/daily-refresh.yml",
+        ".github/workflows/pages.yml",
         "site/scripts/fetch-stats.mjs"
       ]
     },
     {
-      "block": true,
       "place": "site/src/data/stats.json",
       "writers": [
+        ".github/workflows/daily-refresh.yml",
+        ".github/workflows/pages.yml",
         "site/scripts/fetch-stats.mjs"
       ]
     }
   ],
-  "generatedAt": "2026-10-01T08:41:54.665Z",
+  "generatedAt": "2026-10-05T14:02:13.606Z",
   "limits": [
-    "8 reads go to a path their caller passes, not to this repository.",
+    "9 reads go to a path their caller passes, not to this repository.",
     "1 write and 3 reads go to the directory the command is run in (registry-stats.config.json), not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -492,17 +506,15 @@
   "startDoor": ".github/workflows/desktop-ci.yml",
   "startHere": [
     ".github/workflows/desktop-ci.yml",
-    "site/scripts/fetch-stats.mjs",
     "src/index.ts",
-    "src/providers/npm.ts",
     "src/fetch.ts",
     "src/types.ts"
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 18,
+  "testFiles": 23,
   "testedBy": {
-    "src": 17
+    "src": 22
   },
   "testedCodeParts": 1,
   "unnamedWrites": 0,
@@ -510,12 +522,32 @@
     {
       "place": "site/public/data/packages.json",
       "writers": [
+        ".github/workflows/daily-refresh.yml",
+        ".github/workflows/pages.yml",
         "site/scripts/fetch-stats.mjs"
       ]
     },
     {
       "place": "site/public/data/stats.json",
       "writers": [
+        ".github/workflows/daily-refresh.yml",
+        ".github/workflows/pages.yml",
+        "site/scripts/fetch-stats.mjs"
+      ]
+    },
+    {
+      "place": "site/src/data/history.json",
+      "writers": [
+        ".github/workflows/daily-refresh.yml",
+        ".github/workflows/pages.yml",
+        "site/scripts/fetch-stats.mjs"
+      ]
+    },
+    {
+      "place": "site/src/data/snapshots.json",
+      "writers": [
+        ".github/workflows/daily-refresh.yml",
+        ".github/workflows/pages.yml",
         "site/scripts/fetch-stats.mjs"
       ]
     }

@@ -1,6 +1,6 @@
 # role-os: how it works
 
-Mapped at 2026-10-01 from commit 1cd64d0 by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit 5738c96 by Atlas 1.26.0.
 
 ## What this is
 
@@ -9,7 +9,7 @@ Mapped at 2026-10-01 from commit 1cd64d0 by Atlas 1.26.0.
 ## What changed since 2026-10-01 (91e12b7)
 
 - test/live-tool-contracts.test.mjs is now read by tools/conformance-dataset/live-tools/RECEIPT.md.
-- No file changed.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 

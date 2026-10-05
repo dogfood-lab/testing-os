@@ -1,6 +1,6 @@
 # prompt-craft: how it works
 
-Mapped at 2026-10-01 from commit 984cf5d by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit f787191 by Atlas 1.26.0.
 
 ## What this is
 
@@ -9,7 +9,7 @@ Mapped at 2026-10-01 from commit 984cf5d by Atlas 1.26.0.
 ## What changed since 2026-09-30 (43f3cfe)
 
 - src/**/__pycache__ is now read by scripts/mutate_predicates.py.
-- No file changed.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 

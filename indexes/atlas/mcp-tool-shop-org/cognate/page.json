@@ -69,7 +69,8 @@
     {
       "doors": 4,
       "importedBy": [
-        "cognate"
+        "cognate",
+        "node"
       ],
       "importedByTests": [],
       "kind": "part",
@@ -96,32 +97,32 @@
   "changes": {
     "fileCounts": {
       "added": 0,
-      "changed": 0,
+      "changed": 7,
       "moved": 0,
-      "parts": 0,
+      "parts": 3,
       "removed": 0
     },
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-01; no file changed.",
+        "sentence": "Nothing structural changed since 2026-10-01; 7 files changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "5087fbc035436f852152ff4c022ac69ad8ba3962",
-      "generatedAt": "2026-10-01T02:55:34.136Z"
+      "commit": "a3cbcc0ac7ab1996ff00d57f5d703812cac8cb83",
+      "generatedAt": "2026-10-01T20:39:48.116Z"
     },
     "unchanged": true
   },
   "changesTogether": [],
   "changesTogetherNote": [
-    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+    "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "00cd16316c7ffc7563e7717239aa3a3e721c37f7",
+  "commit": "324888396a110aae607bb84e9996c320de45eed9",
   "defaultBranch": "main",
-  "derived": "14 parts, mostly TypeScript (59 files), CSS (2), JavaScript (2) and Astro (1). Work enters through 6 doors; Docker Publish and Publish to GHCR each reach 9 parts, and Docker Publish is followed because it comes first by name. It publishes @mcptoolshop/cognate to npm and a container image. It deploys a site to GitHub Pages. People import @mcptoolshop/cognate.",
+  "derived": "14 parts, mostly TypeScript (66 files), CSS (2), JavaScript (2) and Astro (1). Work enters through 6 doors; Docker Publish and Publish to GHCR each reach 9 parts, and Docker Publish is followed because it comes first by name. It publishes @mcptoolshop/cognate to npm and a container image. It deploys a site to GitHub Pages. People import @mcptoolshop/cognate.",
   "doors": [
     {
       "builds": [
@@ -142,6 +143,7 @@
       "name": "Docker Publish",
       "packs": [
         "package.json",
+        "packages/",
         "packages/agent-identity/package.json",
         "packages/cognate/package.json",
         "packages/model-registry/package.json",
@@ -159,37 +161,37 @@
         {
           "boundary": "agent-identity",
           "depth": 0,
-          "files": 6
+          "files": 9
         },
         {
           "boundary": "cognate",
           "depth": 0,
-          "files": 1
+          "files": 11
         },
         {
           "boundary": "model-registry",
           "depth": 0,
-          "files": 5
+          "files": 8
         },
         {
           "boundary": "node",
           "depth": 0,
-          "files": 10
+          "files": 20
         },
         {
           "boundary": "policy",
           "depth": 0,
-          "files": 4
+          "files": 6
         },
         {
           "boundary": "prompt-store",
           "depth": 0,
-          "files": 5
+          "files": 9
         },
         {
           "boundary": "repomesh-bridge",
           "depth": 0,
-          "files": 5
+          "files": 7
         },
         {
           "boundary": "root",
@@ -235,6 +237,7 @@
       "name": "Publish to GHCR",
       "packs": [
         "package.json",
+        "packages/",
         "packages/agent-identity/package.json",
         "packages/cognate/package.json",
         "packages/model-registry/package.json",
@@ -252,37 +255,37 @@
         {
           "boundary": "agent-identity",
           "depth": 0,
-          "files": 6
+          "files": 9
         },
         {
           "boundary": "cognate",
           "depth": 0,
-          "files": 1
+          "files": 11
         },
         {
           "boundary": "model-registry",
           "depth": 0,
-          "files": 5
+          "files": 8
         },
         {
           "boundary": "node",
           "depth": 0,
-          "files": 10
+          "files": 20
         },
         {
           "boundary": "policy",
           "depth": 0,
-          "files": 4
+          "files": 6
         },
         {
           "boundary": "prompt-store",
           "depth": 0,
-          "files": 5
+          "files": 9
         },
         {
           "boundary": "repomesh-bridge",
           "depth": 0,
-          "files": 5
+          "files": 7
         },
         {
           "boundary": "root",
@@ -353,7 +356,7 @@
         {
           "boundary": "node",
           "depth": 0,
-          "files": 11
+          "files": 18
         },
         {
           "boundary": "policy",
@@ -437,7 +440,7 @@
         {
           "boundary": "node",
           "depth": 0,
-          "files": 11
+          "files": 18
         },
         {
           "boundary": "policy",
@@ -470,7 +473,7 @@
         "packages/repomesh-bridge/tests/"
       ],
       "runsCount": 7,
-      "runsMore": 7,
+      "runsMore": 10,
       "sends": [
         "publishes @mcptoolshop/cognate to npm",
         "creates a GitHub release"
@@ -598,6 +601,11 @@
     {
       "from": "node",
       "fromTests": false,
+      "to": "repomesh-bridge"
+    },
+    {
+      "from": "node",
+      "fromTests": false,
       "to": "types"
     },
     {
@@ -613,11 +621,11 @@
   ],
   "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-10-01T08:37:33.506Z",
+  "generatedAt": "2026-10-05T13:57:45.858Z",
   "limits": [
-    "15 reads go to a path their caller passes, not to this repository.",
+    "3 writes and 15 reads go to a path their caller passes, not to this repository.",
     "There is a docker-compose.yml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
-    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/docker-publish.yml",
   "partLabels": {
@@ -649,17 +657,17 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 12,
+  "testFiles": 15,
   "testedBy": {
-    "agent-identity": 5,
+    "agent-identity": 8,
     "cognate": 1,
-    "model-registry": 5,
-    "node": 4,
+    "model-registry": 8,
+    "node": 7,
     "policy": 2,
-    "prompt-store": 6,
+    "prompt-store": 9,
     "repomesh-bridge": 2,
     "scripts": 0,
-    "types": 10
+    "types": 13
   },
   "testedCodeParts": 9,
   "unnamedWrites": 0,

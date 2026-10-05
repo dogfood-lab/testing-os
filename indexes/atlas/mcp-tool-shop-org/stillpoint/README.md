@@ -1,6 +1,6 @@
 # stillpoint: how it works
 
-Mapped at 2026-10-01 from commit bac3c38 by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit ddb08b8 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-01 from commit bac3c38 by Atlas 1.26.0.
 
 ## What changed since 2026-10-01 (95417cd)
 
-Nothing structural changed since 2026-10-01; no file changed.
+Nothing structural changed since 2026-10-01; 1 file changed content.
 
 ## What comes in
 

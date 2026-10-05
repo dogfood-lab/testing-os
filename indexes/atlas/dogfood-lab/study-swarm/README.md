@@ -1,6 +1,6 @@
 # study-swarm: how it works
 
-Mapped at 2026-10-01 from commit 634378f by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit f5a37fa by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-01 from commit 634378f by Atlas 1.26.0.
 
 ## What changed since 2026-09-30 (ab907f0)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-09-30; 1 file changed content.
 
 ## What comes in
 

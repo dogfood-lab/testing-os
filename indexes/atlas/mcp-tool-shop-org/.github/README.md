@@ -1,6 +1,6 @@
 # .github: how it works
 
-Mapped at 2026-10-01 from commit 9053d00 by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit 37aad02 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ This is the organization's profile page and the community-health files its repos
 
 ## What changed since 2026-10-01 (173f84e)
 
-Nothing structural changed since 2026-10-01; no file changed.
+Nothing structural changed since 2026-10-01; 5 files changed content.
 
 ## What comes in
 

@@ -1,25 +1,25 @@
 # runforge-vscode: how it works
 
-Mapped at 2026-10-01 from commit 94f117b by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit 7bda38c by Atlas 1.26.0.
 
 ## What this is
 
-10 parts, mostly TypeScript (71 files), Python (45), JavaScript (3), CSS (2) and Astro (1). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. It deploys a site to GitHub Pages. People install the runforge extension.
+10 parts, mostly TypeScript (90 files), Python (45), JavaScript (3), CSS (2) and Astro (1). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. It deploys a site to GitHub Pages. People install the runforge extension.
 
-## What changed since 2026-10-01 (533e239)
+## What changed since 2026-10-01 (b4242c5)
 
 Nothing structural changed since 2026-10-01; no file changed.
 
 ## What comes in
 
-1. **CI.** On a pull request to main; on a push to main touching 13 paths; or by hand. Runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more; builds test/extension-host/; checks src/extension.ts.
-2. **Build and Release.** When a tag matching `v*` is pushed; or by hand. Runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more; checks src/extension.ts.
+1. **CI.** On a pull request to main; on a push to main touching 13 paths; or by hand. Runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 50 more; builds test/extension-host/; checks src/extension.ts.
+2. **Build and Release.** When a tag matching `v*` is pushed; or by hand. Runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 50 more; checks src/extension.ts.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **runforge** (the extension people install from the VS Code Marketplace). Loads src/extension.ts.
 
 ## What happens through CI
 
-1. The workflow runs 34 files in test; it builds test/extension-host/ in test; it checks src/extension.ts in src.
+1. The workflow runs 53 files in test; it builds test/extension-host/ in test; it checks src/extension.ts in src.
 2. That reaches python (18 files).
 3. It uploads coverage to Codecov.
 
@@ -29,7 +29,7 @@ CI writes nothing this map can see.
 
 ## The other doors
 
-**Build and Release** runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 31 more, checks src/extension.ts, reaches python, creates a GitHub release and uploads SHA256SUMS.txt and files named at run time to the release on a tag push, and publishes to the VS Code Marketplace when run by hand.
+**Build and Release** runs test/browse-runs.test.ts, test/cancel-state-machine.test.ts, test/cancelled-marker-reader.test.ts and 50 more, checks src/extension.ts, reaches python, creates a GitHub release and uploads SHA256SUMS.txt and files named at run time to the release on a tag push, and publishes to the VS Code Marketplace when run by hand.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
@@ -43,7 +43,7 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-- **src/observability/export-markdown-command.ts** and **src/observability/interpretability-index-command.ts** changed together in 5 of 5 commits, inside the src part.
+- **src/observability/export-markdown-command.ts** and **src/observability/interpretability-index-command.ts** changed together in 5 of 6 commits, inside the src part.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

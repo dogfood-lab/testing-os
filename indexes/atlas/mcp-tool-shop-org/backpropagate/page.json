@@ -72,9 +72,9 @@
   "changes": {
     "fileCounts": {
       "added": 0,
-      "changed": 9,
+      "changed": 30,
       "moved": 0,
-      "parts": 3,
+      "parts": 5,
       "removed": 0
     },
     "items": [
@@ -96,25 +96,24 @@
       },
       {
         "kind": "counts",
-        "sentence": "9 files changed content, across 3 parts.",
+        "sentence": "30 files changed content, across 5 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "9d35807a7524916906dc57748edc3b698d324139",
-      "generatedAt": "2026-10-01T06:30:06.085Z"
+      "commit": "dd2ed9840442bf0248451ab959072de55830cfca",
+      "generatedAt": "2026-10-03T04:52:24.630Z"
     },
     "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
-    "2 files changed together with their own tests, as expected.",
-    "Window: 180 days; a pair counts from 10 shared commits, since 21 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
+    "Window: 180 days; a pair counts from 10 shared commits, since 35 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
-  "changesTogetherWithTests": 2,
-  "commit": "51c80ca6c7bd63eec5dbaa0771aeb8219ff3f67c",
+  "changesTogetherWithTests": 0,
+  "commit": "98f06985cf08b0f0a9d926d5d1d97e5f0d83e07e",
   "defaultBranch": "main",
-  "derived": "13 parts, mostly Python (214 files), shell (11), Astro (2), CSS (2), JavaScript (2) and TypeScript (2). Work enters through 13 doors; the busiest is CI, which reaches 6 parts. It publishes to npm and PyPI, and a container image. It deploys a site to GitHub Pages. People run backprop and backpropagate.",
+  "derived": "13 parts, mostly Python (272 files), shell (11), Astro (2), CSS (2), JavaScript (2) and TypeScript (2). Work enters through 13 doors; the busiest is CI, which reaches 6 parts. It publishes to npm and PyPI, and a container image. It deploys a site to GitHub Pages. People run backprop and backpropagate.",
   "doors": [
     {
       "checks": [
@@ -131,6 +130,7 @@
       "packs": [
         "LICENSE",
         "README.md",
+        "docker/fetch_bun.py",
         "pyproject.toml",
         "uv.lock"
       ],
@@ -139,7 +139,7 @@
         {
           "boundary": "backpropagate",
           "depth": 0,
-          "files": 53
+          "files": 68
         },
         {
           "boundary": "requirements",
@@ -154,12 +154,12 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 2
+          "files": 4
         },
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 146
+          "files": 186
         },
         {
           "boundary": "fuzz",
@@ -201,6 +201,7 @@
       "packs": [
         "LICENSE",
         "README.md",
+        "docker/fetch_bun.py",
         "pyproject.toml",
         "uv.lock"
       ],
@@ -209,7 +210,7 @@
         {
           "boundary": "backpropagate",
           "depth": 0,
-          "files": 53
+          "files": 68
         },
         {
           "boundary": "requirements",
@@ -295,7 +296,7 @@
         {
           "boundary": "backpropagate",
           "depth": 1,
-          "files": 20
+          "files": 21
         }
       ],
       "runs": [
@@ -350,7 +351,6 @@
       "landings": [],
       "name": "Mutation testing (mutmut)",
       "pushes": false,
-      "pushesForReview": true,
       "reach": [
         {
           "boundary": "scripts",
@@ -363,12 +363,8 @@
       ],
       "runsCount": 1,
       "runsMore": 0,
-      "sends": [
-        "opens a pull request"
-      ],
-      "stages": [
-        ".github/mutmut-baseline.txt"
-      ],
+      "sends": [],
+      "stages": [],
       "triggers": [
         "by hand"
       ]
@@ -386,7 +382,7 @@
         {
           "boundary": "site",
           "depth": 0,
-          "files": 6
+          "files": 7
         }
       ],
       "runs": [
@@ -417,7 +413,7 @@
         {
           "boundary": "backpropagate",
           "depth": 0,
-          "files": 22
+          "files": 28
         }
       ],
       "runs": [
@@ -491,7 +487,7 @@
         {
           "boundary": "backpropagate",
           "depth": 0,
-          "files": 22
+          "files": 28
         }
       ],
       "runs": [
@@ -543,7 +539,7 @@
         {
           "boundary": "backpropagate",
           "depth": 0,
-          "files": 22
+          "files": 28
         }
       ],
       "runs": [
@@ -580,17 +576,19 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-01T08:36:58.360Z",
+  "generatedAt": "2026-10-05T13:57:12.252Z",
   "limits": [
     "56 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
-    "14 imports could not be resolved: `backpropagate/trainer.py` imports a path built at run time; `tests/test_fp8_smoke.py` imports a path built at run time; `tests/test_full_ft_offload_smoke.py` imports a path built at run time; and 11 more.",
-    "8 writes and 10 reads use paths built at run time and are not named here.",
-    "31 writes and 63 reads go to a path their caller passes, not to this repository.",
-    "3 writes go to a temporary directory, not to this repository.",
+    "16 imports could not be resolved: `backpropagate/trainer.py` imports a path built at run time; `tests/test_fp8_smoke.py` imports a path built at run time; `tests/test_full_ft_offload_smoke.py` imports a path built at run time; and 13 more.",
+    "13 writes and 19 reads use paths built at run time and are not named here.",
+    "50 writes and 107 reads go to a path their caller passes, not to this repository.",
+    "5 writes and 4 reads go to the home directory (.backpropagate/, .cache/ and AppData/), not to this repository.",
+    "4 writes go to a temporary directory, not to this repository.",
+    "2 reads go to the directory the command is run in, not to this repository.",
     "1 write goes to the home directory (AppData/, Library/ and backpropagate/) or a path its caller passes, not to this repository.",
-    "1 read goes to the directory the command is run in, not to this repository.",
-    "1 read goes to the home directory (.cache/), not to this repository.",
-    "There is a compose.yaml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page."
+    "1 write goes to a temporary directory or a path its caller passes, not to this repository.",
+    "There is a compose.yaml that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.",
+    "1 file belongs to no part: docker/fetch_bun.py."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
@@ -638,14 +636,14 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 149,
+  "testFiles": 189,
   "testedBy": {
-    "backpropagate": 136,
+    "backpropagate": 176,
     "bin": 0,
-    "scripts": 2
+    "scripts": 3
   },
   "testedCodeParts": 3,
-  "unnamedWrites": 8,
+  "unnamedWrites": 13,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],

@@ -1,6 +1,6 @@
 # comfy-headless: how it works
 
-Mapped at 2026-10-01 from commit 8e77c6e by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit f66a4f9 by Atlas 1.26.0.
 
 ## What this is
 
@@ -11,7 +11,7 @@ Mapped at 2026-10-01 from commit 8e77c6e by Atlas 1.26.0.
 - kb/**/*.md is now read by scripts/gen_kb.py.
 - kb/workflows/*.json is now read by tests/test_kb.py.
 - kb was generated and is now mixed.
-- No file changed.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 

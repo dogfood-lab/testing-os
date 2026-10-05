@@ -1,6 +1,6 @@
 # claude-synergy: how it works
 
-Mapped at 2026-10-01 from commit fd309d2 by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit 2f08e9d by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-01 from commit fd309d2 by Atlas 1.26.0.
 
 ## What changed since 2026-10-01 (a222e67)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-10-01; 2 files changed content.
 
 ## What comes in
 

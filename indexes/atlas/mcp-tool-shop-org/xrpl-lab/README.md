@@ -1,6 +1,6 @@
 # xrpl-lab: how it works
 
-Mapped at 2026-10-01 from commit 132cb83 by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit 3d8a304 by Atlas 1.26.0.
 
 ## What this is
 
@@ -9,7 +9,7 @@ Mapped at 2026-10-01 from commit 132cb83 by Atlas 1.26.0.
 ## What changed since 2026-10-01 (eef6677)
 
 - modules/*.md is now read by tests/test_token_escrow.py.
-- No file changed.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 
@@ -56,9 +56,11 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-No two source files changed together often enough to name.
+No two source files, other than a file and its own test, changed together often enough to name.
 
-Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do.
+1 file changed together with its own test, as expected.
+
+Window: 180 days; a pair counts from 3 shared commits, since 5 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 

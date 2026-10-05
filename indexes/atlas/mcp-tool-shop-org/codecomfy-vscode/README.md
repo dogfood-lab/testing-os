@@ -1,6 +1,6 @@
 # codecomfy-vscode: how it works
 
-Mapped at 2026-10-01 from commit 4b01841 by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit 12c955f by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-01 from commit 4b01841 by Atlas 1.26.0.
 
 ## What changed since 2026-10-01 (cf6d5a3)
 
-Nothing structural changed since 2026-10-01; no file changed.
+Nothing structural changed since 2026-10-01; 1 file changed content.
 
 ## What comes in
 

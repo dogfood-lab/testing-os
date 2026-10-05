@@ -1,30 +1,28 @@
 # commandui: how it works
 
-Mapped at 2026-10-01 from commit e6067ba by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit 6ce3235 by Atlas 1.26.0.
 
 ## What this is
 
-15 parts, in TypeScript (59 files), Rust (53 files), CSS (3 files), Astro (2 files), HTML (1 file) and JavaScript (1 file). Work enters through 5 doors; the busiest is Release Desktop, which reaches 7 parts. It deploys a site to GitHub Pages. People install the commandui-desktop desktop app. commandui-console is a command built from apps/console (nothing ships it).
+16 parts, mostly TypeScript (141 files), Rust (58), CSS (3), Astro (2), JavaScript (2), PowerShell (2) and HTML (1). Work enters through 5 doors; the busiest is CI, which reaches 10 parts. It deploys a site to GitHub Pages. People install the commandui-desktop desktop app. commandui-console is a command built from apps/console (nothing ships it).
 
-## What changed since 2026-10-01 (9b77cf9)
+## What changed since 2026-10-05 (eb408fd)
 
-Nothing structural changed since 2026-10-01; no file changed.
+Nothing structural changed since 2026-10-05; 14 files changed content.
 
 ## What comes in
 
-1. **Release Desktop.** When a release is published; or by hand. Runs apps/desktop/src-tauri/build.rs, apps/desktop/src/ and apps/desktop/vite.config.ts; builds apps/desktop/src-tauri/src/main.rs; checks apps/desktop/src-tauri/src/lib.rs.
-2. **CI.** On a pull request; on a push touching 9 paths; or by hand. Runs crates/runtime-core/src/events.rs, crates/runtime-core/src/lib.rs, crates/runtime-core/src/parity.rs and 9 more; checks crates/runtime-persistence/src/lib.rs and crates/runtime-planner/src/lib.rs.
-3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
+1. **CI.** On a pull request; on a push to main touching 19 paths; or by hand. Runs packaging/check-release-version.mjs, apps/console/src/app.rs, apps/console/src/event_sink.rs and 149 more; checks packages/api-contract/src/, packages/domain/src/, packages/state/src/ and 1 more.
+2. **Release Desktop.** When a release is published; or by hand. Runs packaging/pack-msix.ps1, apps/desktop/src-tauri/build.rs, apps/desktop/src/ and 1 more; builds apps/desktop/src-tauri/src/main.rs; checks apps/desktop/src-tauri/src/lib.rs. On a release event, it also runs packaging/check-release-version.mjs.
+3. **Deploy site to GitHub Pages.** On a pull request touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **commandui-desktop** (the desktop app people install). Runs apps/desktop/src-tauri/src/main.rs.
 5. **commandui-console** (a command built from apps/console, which nothing ships). Runs apps/console/src/main.rs.
 
-## What happens through Release Desktop
+## What happens through CI
 
-1. The workflow runs apps/desktop/src-tauri/build.rs, apps/desktop/src/ and apps/desktop/vite.config.ts in desktop; it checks apps/desktop/src-tauri/src/lib.rs in desktop.
-2. That reaches api-contract (12 files), domain (8 files) and state (2 files).
-3. That reaches runtime-core (6 files), runtime-persistence (6 files) and runtime-planner (7 files).
-4. It writes to apps/desktop/src-tauri/gen/schemas/.
-5. It builds apps/desktop/src-tauri/src/main.rs into MSI and NSIS installers and uploads them to the release on a release event.
+1. The workflow runs packaging/check-release-version.mjs in packaging, packages/api-contract/src/contracts.test.ts in api-contract, 7 files in console, 117 files in desktop, packages/domain/src/memoryDetectors.test.ts and packages/domain/src/workflowPersist.test.ts in domain, and 24 files in 4 more parts; it checks packages/api-contract/src/ in api-contract, packages/domain/src/ in domain, packages/state/src/ in state and packages/ui/src/ in ui.
+2. It writes to apps/desktop/src-tauri/gen/schemas/.
+3. It uploads coverage to Codecov.
 
 ## Who reads the results
 
@@ -32,9 +30,9 @@ Nothing structural changed since 2026-10-01; no file changed.
 
 ## The other doors
 
-**CI** runs crates/runtime-core/src/events.rs, crates/runtime-core/src/lib.rs, crates/runtime-core/src/parity.rs and 9 more, and checks crates/runtime-persistence/src/lib.rs and crates/runtime-planner/src/lib.rs.
+**Release Desktop** runs packaging/pack-msix.ps1, apps/desktop/src-tauri/build.rs, apps/desktop/src/ and 1 more, checks apps/desktop/src-tauri/src/lib.rs, runs packaging/check-release-version.mjs on a release event, reaches api-contract, domain, runtime-core, runtime-persistence, runtime-planner and state, writes to apps/desktop/src-tauri/gen/schemas/, and builds apps/desktop/src-tauri/src/main.rs into MSI and NSIS installers and an MSIX package, and uploads them to the release, on a release event.
 
-**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
+**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on a push to main or by hand.
 
 **commandui-desktop** (the desktop app people install) runs apps/desktop/src-tauri/src/main.rs and reaches runtime-core, runtime-persistence and runtime-planner.
 
@@ -42,19 +40,26 @@ Nothing structural changed since 2026-10-01; no file changed.
 
 ## What breaks what
 
-- **domain** is imported by 3 parts (api-contract, desktop, state) and sits on the path of 1 door.
+- **domain** is imported by 3 parts (api-contract, desktop, state) and sits on the path of 2 doors.
 - **runtime-core** is imported by 2 parts (console, desktop) and sits on the path of 4 doors.
 - **runtime-planner** is imported by 2 parts (console, desktop) and sits on the path of 4 doors.
-- **api-contract** is imported by 2 parts (desktop, state) and sits on the path of 1 door.
+- **api-contract** is imported by 2 parts (desktop, state) and sits on the path of 2 doors.
 - **runtime-persistence** is imported by 1 part (desktop) and sits on the path of 3 doors.
-- **state** is imported by 1 part (desktop) and sits on the path of 1 door.
-- **desktop** is imported by no other part and sits on the path of 2 doors.
+- **state** is imported by 1 part (desktop) and sits on the path of 2 doors.
+- **desktop** is imported by no other part and sits on the path of 3 doors.
+- **console** is imported by no other part and sits on the path of 2 doors.
 
 ## What tends to change together
 
-No two source files changed together often enough to name.
+- **apps/console/src/app.rs** and **apps/console/src/model.rs** changed together in 9 of 10 commits, inside the console part.
+- **apps/console/src/model.rs** and **apps/console/src/ui.rs** changed together in 9 of 10 commits, inside the console part.
+- **apps/console/src/input.rs** and **apps/console/src/model.rs** changed together in 8 of 9 commits, inside the console part.
+- **apps/console/src/app.rs** and **apps/console/src/ui.rs** changed together in 9 of 11 commits, inside the console part.
+- **crates/runtime-core/src/pty.rs** and **crates/runtime-core/src/services/session_service.rs** changed together in 12 of 15 commits, inside the runtime-core part.
 
-Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
+Confidence is low: fewer than 25 source files reach 10 revisions in the window.
+
+Window: 180 days; a pair counts from 3 shared commits, since 6 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -62,13 +67,9 @@ Window: 180 days; a pair counts from 3 shared commits, since the window holds fe
 
 console is tested only by the unit tests in its own files.
 
-runtime-core is tested only by the unit tests in its own files.
-
 runtime-persistence is tested only by the unit tests in its own files.
 
 runtime-planner is tested only by the unit tests in its own files.
-
-3 test files run in no workflow: packages/api-contract/src/contracts.test.ts, packages/domain/src/memoryDetectors.test.ts and packages/state/src/index.test.ts.
 
 ## Written but never read
 
@@ -84,18 +85,20 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .claude/, .github/, docs/, the repository root, site/ and winget/. Nothing in this repository writes to them.
+People write .claude/, .github/, docs/, packaging/, the repository root, site/ and winget/; 2 writes with paths built at run time may land here.
 
 ## Where to start
 
-apps/desktop/src-tauri/src/main.rs → apps/desktop/src-tauri/src/lib.rs → apps/desktop/src-tauri/src/commands/mod.rs → apps/desktop/src-tauri/src/commands/planner.rs → crates/runtime-planner/src/lib.rs → crates/runtime-planner/src/client.rs → crates/runtime-planner/src/prompt.rs → crates/runtime-planner/src/types.rs
+.github/workflows/ci.yml → packages/api-contract/src/errors.ts
 
-Read those in order to follow one run of commandui-desktop end to end. This path follows commandui-desktop (the desktop app people install) from its entry, since CI runs only tests and checks.
+Read those in order to follow one pull request end to end.
 
 ## What this map cannot see
 
-- 1 read uses a path built at run time and is not named here.
-- 1 write goes to the home directory, not to this repository.
-- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+- 1 import could not be resolved: `apps/desktop/src/app/AppShell.honesty.test.tsx` imports `./AppShell.tsx?raw`, which is not in this repository.
+- 2 writes and 3 reads use paths built at run time and are not named here.
+- 2 writes and 1 read go to a path their caller passes, not to this repository.
+- 3 writes go to a temporary directory, not to this repository.
+- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

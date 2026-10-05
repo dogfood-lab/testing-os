@@ -1,6 +1,6 @@
 # tool-compass: how it works
 
-Mapped at 2026-10-01 from commit 580f124 by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit 91250a2 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-01 from commit 580f124 by Atlas 1.26.0.
 
 ## What changed since 2026-10-01 (e6e5806)
 
-Nothing structural changed since 2026-10-01; no file changed.
+Nothing structural changed since 2026-10-01; 1 file changed content.
 
 ## What comes in
 
@@ -78,13 +78,12 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-- **docs/** is written by dependabot[bot], which added every file in it.
 - **npm/bin/tool-compass.js** has a block written by scripts/sync-version.mjs.
 - **npm/package.json** has a block written by scripts/sync-version.mjs.
 
 ## Hand-authored
 
-People write .github/, assets/ and site/; 11 writes with paths built at run time may land here.
+People write .github/, assets/, docs/ and site/; 11 writes with paths built at run time may land here.
 
 ## Where to start
 

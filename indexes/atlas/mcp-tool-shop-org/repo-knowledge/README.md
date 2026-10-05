@@ -1,6 +1,6 @@
 # repo-knowledge: how it works
 
-Mapped at 2026-10-01 from commit 68a4dd1 by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit bb1c92a by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-01 from commit 68a4dd1 by Atlas 1.26.0.
 
 ## What changed since 2026-10-01 (1222602)
 
-Nothing structural changed since 2026-10-01; 4 files changed content.
+Nothing structural changed since 2026-10-01; 5 files changed content.
 
 ## What comes in
 

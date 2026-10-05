@@ -1,6 +1,6 @@
 # style-dataset-lab: how it works
 
-Mapped at 2026-10-01 from commit 39edcba by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit a881cb5 by Atlas 1.26.0.
 
 ## What this is
 
@@ -11,7 +11,7 @@ Mapped at 2026-10-01 from commit 39edcba by Atlas 1.26.0.
 - projects/ai-eye-test/outputs/synthetic/phase2/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2_build.py.
 - projects/ai-eye-test/outputs/synthetic/phase2_noshadow/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2_noshadow_build.py.
 - projects/ai-eye-test/outputs/synthetic/phase2b/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2b_build.py.
-- No file changed.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 

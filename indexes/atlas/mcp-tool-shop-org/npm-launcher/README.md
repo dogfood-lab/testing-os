@@ -1,6 +1,6 @@
 # npm-launcher: how it works
 
-Mapped at 2026-10-01 from commit ecc477e by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit f112329 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-01 from commit ecc477e by Atlas 1.26.0.
 
 ## What changed since 2026-09-30 (7269308)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-09-30; 1 file changed content.
 
 ## What comes in
 

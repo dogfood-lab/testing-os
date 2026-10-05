@@ -1,6 +1,6 @@
 # research-os: how it works
 
-Mapped at 2026-10-01 from commit 8be93a7 by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit 6342b1c by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-01 from commit 8be93a7 by Atlas 1.26.0.
 
 ## What changed since 2026-09-30 (d3cd0a8)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-09-30; 1 file changed content.
 
 ## What comes in
 

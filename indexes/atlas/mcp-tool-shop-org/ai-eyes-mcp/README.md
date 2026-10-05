@@ -1,6 +1,6 @@
 # ai-eyes-mcp: how it works
 
-Mapped at 2026-10-01 from commit f9e49a1 by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit a37e8cd by Atlas 1.26.0.
 
 ## What this is
 
@@ -9,7 +9,7 @@ Mapped at 2026-10-01 from commit f9e49a1 by Atlas 1.26.0.
 ## What changed since 2026-09-30 (1199865)
 
 - CI now also runs tests/.
-- No file changed.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 

@@ -1,6 +1,6 @@
 # mcp-arcade: how it works
 
-Mapped at 2026-10-01 from commit cecd36c by Atlas 1.26.0.
+Mapped at 2026-10-05 from commit b30f8bc by Atlas 1.26.0.
 
 ## What this is
 
@@ -9,7 +9,7 @@ Mapped at 2026-10-01 from commit cecd36c by Atlas 1.26.0.
 ## What changed since 2026-09-30 (7c8960e)
 
 - src/mcp_arcade/**/* is now read by src/mcp_arcade/docker.py.
-- No file changed.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 
