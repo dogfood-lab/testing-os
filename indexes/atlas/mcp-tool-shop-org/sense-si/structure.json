@@ -1,0 +1,3019 @@
+{
+  "boundaries": [
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "86e50ecd339bd31bb3596c8ccf11ce8175194996a713896b99df81aceb37bd5a",
+          "path": ".github/workflows/ci.yml"
+        }
+      ],
+      "globs": [
+        ".github/**"
+      ],
+      "importConfidence": "full",
+      "name": ".github",
+      "origin": "authored",
+      "role": "config",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "e6b29810ee8ea0d7544534da067646a3e1e873618a360cc07d51528988708f50",
+          "path": "packages/decisions/pyproject.toml"
+        },
+        {
+          "hash": "478f74701953eef3104530ec740bd45b7228f7cd132c3885c46c5b9e30dd319c",
+          "importsFiles": [
+            "packages/decisions/src/decisions/client.py",
+            "packages/decisions/src/decisions/kev.py"
+          ],
+          "path": "packages/decisions/src/decisions/__init__.py"
+        },
+        {
+          "exports": [
+            "create_decisions_client",
+            "require_pinned",
+            "validate_answer"
+          ],
+          "failurePaths": [
+            {
+              "in": "require_pinned",
+              "kind": "raise",
+              "line": 142
+            },
+            {
+              "in": "validate_answer",
+              "kind": "raise",
+              "line": 158
+            },
+            {
+              "in": "validate_answer",
+              "kind": "raise",
+              "line": 162
+            },
+            {
+              "in": "validate_answer",
+              "kind": "raise",
+              "line": 168
+            },
+            {
+              "in": "validate_answer",
+              "kind": "raise",
+              "line": 178
+            },
+            {
+              "in": "_default_fetch",
+              "kind": "except",
+              "line": 201
+            },
+            {
+              "in": "_default_fetch",
+              "kind": "except",
+              "line": 204
+            },
+            {
+              "in": "_default_fetch",
+              "kind": "raise",
+              "line": 205
+            },
+            {
+              "in": "create_decisions_client",
+              "kind": "raise",
+              "line": 220
+            },
+            {
+              "in": "client",
+              "kind": "raise",
+              "line": 231
+            },
+            {
+              "in": "client",
+              "kind": "raise",
+              "line": 236
+            },
+            {
+              "in": "client",
+              "kind": "raise",
+              "line": 285
+            },
+            {
+              "in": "client",
+              "kind": "except",
+              "line": 287
+            },
+            {
+              "in": "client",
+              "kind": "raise",
+              "line": 288
+            },
+            {
+              "in": "client",
+              "kind": "except",
+              "line": 289
+            },
+            {
+              "in": "client",
+              "kind": "except",
+              "line": 298
+            },
+            {
+              "in": "client",
+              "kind": "raise",
+              "line": 314
+            },
+            {
+              "in": "client",
+              "kind": "raise",
+              "line": 334
+            }
+          ],
+          "hash": "45fe6cf3cbd670d657599ee54c8f6c01e33487e4ae3536a1f1fca399b6bcb0c3",
+          "path": "packages/decisions/src/decisions/client.py"
+        },
+        {
+          "exports": [
+            "apply_memory_cap",
+            "create_kev_client",
+            "fit_lomo",
+            "resolve_memory_fraction",
+            "serve_capped"
+          ],
+          "failurePaths": [
+            {
+              "in": "resolve_memory_fraction",
+              "kind": "except",
+              "line": 55
+            },
+            {
+              "in": "resolve_memory_fraction",
+              "kind": "raise",
+              "line": 56
+            },
+            {
+              "in": "resolve_memory_fraction",
+              "kind": "raise",
+              "line": 63
+            },
+            {
+              "in": "resolve_memory_fraction",
+              "kind": "raise",
+              "line": 66
+            },
+            {
+              "in": "_default_cuda",
+              "kind": "except",
+              "line": 76
+            },
+            {
+              "in": "serve_capped",
+              "kind": "raise",
+              "line": 161
+            },
+            {
+              "in": "serve_capped",
+              "kind": "raise",
+              "line": 166
+            },
+            {
+              "in": "_wire_model",
+              "kind": "raise",
+              "line": 186
+            },
+            {
+              "in": "_default_fetch",
+              "kind": "except",
+              "line": 202
+            },
+            {
+              "in": "_default_fetch",
+              "kind": "except",
+              "line": 204
+            },
+            {
+              "in": "_default_fetch",
+              "kind": "raise",
+              "line": 205
+            },
+            {
+              "in": "client",
+              "kind": "raise",
+              "line": 224
+            },
+            {
+              "in": "client",
+              "kind": "raise",
+              "line": 244
+            },
+            {
+              "in": "client",
+              "kind": "except",
+              "line": 251
+            },
+            {
+              "in": "client",
+              "kind": "raise",
+              "line": 252
+            },
+            {
+              "in": "client",
+              "kind": "raise",
+              "line": 254
+            },
+            {
+              "in": "client",
+              "kind": "raise",
+              "line": 257
+            },
+            {
+              "in": "fit_lomo",
+              "kind": "raise",
+              "line": 314
+            },
+            {
+              "in": "fit_lomo",
+              "kind": "raise",
+              "line": 321
+            }
+          ],
+          "hash": "730adab9f3f3eca0430319a8d80d9f292bbd9618730cecab7d33c65eaa1129f3",
+          "importsFiles": [
+            "packages/decisions/src/decisions/client.py"
+          ],
+          "path": "packages/decisions/src/decisions/kev.py"
+        },
+        {
+          "exports": [
+            "test_a_dead_transport_or_a_bad_body_is_not_turned_into_an_answer",
+            "test_a_refused_date_never_calls",
+            "test_accepts_the_dated_snapshot_when_the_answer_echoes_it",
+            "test_answers_that_are_not_objects_or_not_probabilities_are_refused",
+            "test_choice_must_be_one_of_the_options",
+            "test_client_errors_are_not_retried",
+            "test_empty_key_builds_nothing",
+            "test_import_does_not_require_a_key",
+            "test_omitted_sleep_pauses_between_retries",
+            "test_posts_the_pin_and_stamps_the_date_on_the_answer",
+            "test_questions_wire_the_shape_the_api_expects",
+            "test_refuses_a_different_snapshot_on_the_answer",
+            "test_refuses_a_request_with_no_questions_before_calling",
+            "test_refuses_a_router_that_comes_back_on_the_answer",
+            "test_refuses_anything_but_the_pin_before_the_request",
+            "test_rejects_a_malformed_answer_instead_of_guessing",
+            "test_retries_429_and_5xx_but_not_other_4xx",
+            "test_retries_stop_when_the_budget_is_spent",
+            "test_score_must_be_numeric",
+            "test_the_default_transport_reads_a_response",
+            "test_the_default_transport_reports_an_http_error",
+            "test_the_default_transport_reports_an_unreachable_host",
+            "test_usage_that_is_not_a_number_is_left_blank"
+          ],
+          "hash": "e8d81a9bfe648c587d443021132e0dfb30576de441ed6f617e2274f0838b28aa",
+          "importsFiles": [
+            "packages/decisions/src/decisions/__init__.py",
+            "packages/decisions/src/decisions/client.py",
+            "packages/decisions/src/decisions/kev.py"
+          ],
+          "path": "packages/decisions/tests/test_client.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "test_a_partial_line_counts_as_uncovered"
+          ],
+          "hash": "ce51a0cdd226766d63d68a775999ed32ed20bb7dd0f86d5721de578a16661954",
+          "importsFiles": [
+            "tools/coverage_bar.py"
+          ],
+          "path": "packages/decisions/tests/test_coverage_bar.py"
+        },
+        {
+          "exports": [
+            "test_an_uncapped_call_uses_the_fake_torch_and_not_the_card",
+            "test_client_accepts_a_base_that_already_names_the_path",
+            "test_client_posts_systemone_and_stamps_the_revision",
+            "test_client_refuses_a_third_model_a_bad_echo_and_a_bad_body",
+            "test_client_uses_the_local_fetch_when_no_stub_is_passed",
+            "test_default_cuda_and_setter_do_not_need_a_gpu",
+            "test_default_fetch_reads_a_body_and_reports_a_down_server",
+            "test_live_checkpoint_answers_one_question",
+            "test_lomo_fits_a_temperature_per_mix_and_does_not_adopt",
+            "test_memory_fraction_defaults_and_refuses_a_bad_cap",
+            "test_one_class_training_does_not_invent_a_temperature",
+            "test_serve_refuses_an_unpinned_run_and_launches_the_pin",
+            "test_the_cap_is_applied_only_when_cuda_is_there",
+            "test_the_pin_is_a_revision_hash_and_not_jevs_band"
+          ],
+          "hash": "e1f4a0fff95f7172c837379c35cdc7944dc0be4280399e39dcf038bd3a63cdf8",
+          "importsFiles": [
+            "packages/decisions/src/decisions/__init__.py",
+            "packages/decisions/src/decisions/client.py",
+            "packages/decisions/src/decisions/kev.py"
+          ],
+          "path": "packages/decisions/tests/test_kev.py",
+          "testFramework": "pytest"
+        }
+      ],
+      "globs": [
+        "packages/decisions/**"
+      ],
+      "importConfidence": "full",
+      "name": "decisions",
+      "origin": "authored",
+      "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
+      "testedBy": 5,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "860b1e737de05912129ca0ade039ae766296253c00f72c845c3cf4c5ca50a496",
+          "path": "docs/adapter.md"
+        },
+        {
+          "hash": "42476fd4c8c7a13d2db2d263efa69ef17112a8eaccd18d4eba81b5de9b977f4e",
+          "path": "docs/calibration.md"
+        },
+        {
+          "hash": "0801d4a6137239e907642ba659b3215d5057df6d24577f8919b9e6198ad45580",
+          "path": "docs/calibration/corp.svg"
+        },
+        {
+          "hash": "7087baf51c3b6a37377370f78c17397bcb97feb848aef231e52bdff6db7d5523",
+          "path": "docs/calibration/phrases.json"
+        },
+        {
+          "hash": "678cc91308837fe8160b1070fd4b3538b3ab4df21476f1f7a6e812dd30862bb2",
+          "path": "docs/calibration/summary.json"
+        },
+        {
+          "hash": "ecd6645f419f28f28b0baa742905d6b983c6ca63793d1e70e756f92f6fa294ed",
+          "path": "docs/contract.md"
+        },
+        {
+          "hash": "52d4a9d30298efdee994f4803d2dff1781a397b83ef49a209b4c1ec430e2e28f",
+          "path": "docs/decision-learning.md"
+        },
+        {
+          "hash": "286d6a693a44c369cd1aa0334a68fe48de61ddfb97aaa219e9d726ee97d60595",
+          "path": "docs/decision-learning/phrases.json"
+        },
+        {
+          "hash": "45a04ee0598051cac4c83ff653283160376ad2d34356e9928f872efe5e4eea16",
+          "path": "docs/decision-learning/summary.json"
+        },
+        {
+          "hash": "74f67faaf7b16f0a85934b4ff132efbb009fb6b269515b0429a315e28a7d7083",
+          "path": "docs/join-evidence.md"
+        }
+      ],
+      "globs": [
+        "docs/**"
+      ],
+      "importConfidence": "full",
+      "name": "docs",
+      "origin": "mixed",
+      "role": "docs",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "712d339845216418f56cc15c7f4c5da352c89535f6b6fc8dcf17b2e4086b7e2b",
+          "path": "packages/ears/pyproject.toml"
+        },
+        {
+          "hash": "fda96708fe4400d5ca9fd0efb2dad0d0477227c4c46e21e92a3c4507f6ea079a",
+          "importsFiles": [
+            "packages/ears/src/ai_ears/questions.py",
+            "packages/ears/src/ai_ears/record.py"
+          ],
+          "path": "packages/ears/src/ai_ears/__init__.py"
+        },
+        {
+          "exports": [
+            "load_question_result",
+            "phrase_clean",
+            "which_take"
+          ],
+          "failurePaths": [
+            {
+              "in": "load_question_result",
+              "kind": "raise",
+              "line": 75
+            },
+            {
+              "in": "_check_instructions",
+              "kind": "raise",
+              "line": 96
+            },
+            {
+              "in": "_check_instructions",
+              "kind": "raise",
+              "line": 98
+            },
+            {
+              "in": "_check_pin",
+              "kind": "raise",
+              "line": 106
+            },
+            {
+              "in": "_answered_band",
+              "kind": "raise",
+              "line": 115
+            },
+            {
+              "in": "_probabilities",
+              "kind": "raise",
+              "line": 122
+            },
+            {
+              "in": "_probabilities",
+              "kind": "raise",
+              "line": 126
+            },
+            {
+              "in": "_probabilities",
+              "kind": "raise",
+              "line": 129
+            },
+            {
+              "in": "which_take",
+              "kind": "raise",
+              "line": 144
+            },
+            {
+              "in": "which_take",
+              "kind": "raise",
+              "line": 148
+            },
+            {
+              "in": "which_take",
+              "kind": "raise",
+              "line": 150
+            },
+            {
+              "in": "which_take",
+              "kind": "raise",
+              "line": 168
+            },
+            {
+              "in": "phrase_clean",
+              "kind": "raise",
+              "line": 196
+            },
+            {
+              "in": "phrase_clean",
+              "kind": "raise",
+              "line": 198
+            },
+            {
+              "in": "phrase_clean",
+              "kind": "raise",
+              "line": 210
+            }
+          ],
+          "hash": "08b1799bcaaec8cdf3d6aacef54879af00e1bc04a3cd70407d32c346fc91573d",
+          "importsFiles": [
+            "packages/decisions/src/decisions/__init__.py",
+            "packages/ears/src/ai_ears/record.py"
+          ],
+          "path": "packages/ears/src/ai_ears/questions.py"
+        },
+        {
+          "exports": [
+            "detector_revision",
+            "evidence_revision",
+            "from_jam_take",
+            "phrase_evidence",
+            "reject_gate_keys",
+            "review_marks",
+            "transcript_from_scores"
+          ],
+          "failurePaths": [
+            {
+              "in": "reject_gate_keys",
+              "kind": "raise",
+              "line": 27
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 116
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 291
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 293
+            },
+            {
+              "in": "_timing_rows",
+              "kind": "raise",
+              "line": 330
+            },
+            {
+              "in": "_timing_rows",
+              "kind": "raise",
+              "line": 339
+            },
+            {
+              "in": "_pitch_rows",
+              "kind": "raise",
+              "line": 389
+            },
+            {
+              "in": "_pitch_rows",
+              "kind": "raise",
+              "line": 395
+            },
+            {
+              "in": "_pitch_rows",
+              "kind": "raise",
+              "line": 415
+            },
+            {
+              "in": "transcript_from_scores",
+              "kind": "raise",
+              "line": 453
+            },
+            {
+              "in": "transcript_from_scores",
+              "kind": "except",
+              "line": 456
+            },
+            {
+              "in": "transcript_from_scores",
+              "kind": "raise",
+              "line": 457
+            },
+            {
+              "in": "review_marks",
+              "kind": "raise",
+              "line": 485
+            },
+            {
+              "in": "review_marks",
+              "kind": "raise",
+              "line": 497
+            },
+            {
+              "in": "review_marks",
+              "kind": "raise",
+              "line": 499
+            },
+            {
+              "in": "review_marks",
+              "kind": "raise",
+              "line": 503
+            },
+            {
+              "in": "from_jam_take",
+              "kind": "raise",
+              "line": 536
+            },
+            {
+              "in": "from_jam_take",
+              "kind": "raise",
+              "line": 542
+            },
+            {
+              "in": "_evidence_count",
+              "kind": "raise",
+              "line": 580
+            },
+            {
+              "in": "phrase_evidence",
+              "kind": "raise",
+              "line": 600
+            },
+            {
+              "in": "phrase_evidence",
+              "kind": "raise",
+              "line": 602
+            },
+            {
+              "in": "phrase_evidence",
+              "kind": "raise",
+              "line": 604
+            },
+            {
+              "in": "phrase_evidence",
+              "kind": "raise",
+              "line": 606
+            },
+            {
+              "in": "phrase_evidence",
+              "kind": "raise",
+              "line": 609
+            },
+            {
+              "in": "phrase_evidence",
+              "kind": "raise",
+              "line": 616
+            },
+            {
+              "in": "phrase_evidence",
+              "kind": "raise",
+              "line": 618
+            },
+            {
+              "in": "phrase_evidence",
+              "kind": "raise",
+              "line": 622
+            },
+            {
+              "in": "phrase_evidence",
+              "kind": "raise",
+              "line": 625
+            },
+            {
+              "in": "phrase_evidence",
+              "kind": "raise",
+              "line": 666
+            },
+            {
+              "in": "phrase_evidence",
+              "kind": "raise",
+              "line": 669
+            }
+          ],
+          "hash": "f5c8a65e582a764d979eb4ac06b9840ec3a644f40cecf7bf2cb57d847086d52e",
+          "path": "packages/ears/src/ai_ears/record.py"
+        },
+        {
+          "hash": "6cf6f276da906fa431b0c6403b9cf41b05a862ae90949e811e888567179a7691",
+          "path": "packages/ears/tests/fixtures/phrase-evidence.json"
+        },
+        {
+          "hash": "57b4f9278f0bef6db952532406ab0a7923268525a3c8f23a34e2e9054d67a2cf",
+          "path": "packages/ears/tests/fixtures/phrase-scores.json"
+        },
+        {
+          "hash": "f39c74c75190398e1cc0728a7083f0bdb2371682dae37ecef48e14358fb89691",
+          "path": "packages/ears/tests/fixtures/pitch.json"
+        },
+        {
+          "hash": "d9fde096c9354ad77f72d59225f224f026f297cd48b3a7964f5535ae1c56eb05",
+          "path": "packages/ears/tests/fixtures/receipt.json"
+        },
+        {
+          "hash": "345a3be48c8ad599121dc2399a3eeb42199216bad378ce68f96a2c2cc7339a6f",
+          "path": "packages/ears/tests/fixtures/undated-receipt.json"
+        },
+        {
+          "hash": "433f148e4614b35a4e6dcdda85aefab191f6c236e5421578a879192a23b99a75",
+          "path": "packages/ears/tests/fixtures/undated-verify-energy.json"
+        },
+        {
+          "hash": "d519e7eb491131126024b631919e43c5c2d59b5e533b45bd27742e724a3691b1",
+          "path": "packages/ears/tests/fixtures/verify-energy.json"
+        },
+        {
+          "exports": [
+            "test_a_built_phrase_carries_no_marks",
+            "test_clopper_matches_the_zero_error_form_and_a_two_trial_case",
+            "test_decide_adopts_only_when_every_gate_passes",
+            "test_errors_at_low_confidence_open_an_interior_band",
+            "test_full_coverage_is_not_an_interior_band_and_a_small_sample_certifies_nothing",
+            "test_mark_window_is_closed_at_both_ends",
+            "test_outer_split_is_stratified_and_leaves_the_inner_set",
+            "test_pav_pools_a_reversal_and_keeps_an_increase",
+            "test_question_text_has_no_gate_word",
+            "test_slice_keeps_a_boundary_row_and_an_overlapping_note",
+            "test_study_on_a_perfect_sample_does_not_invent_an_interior_band",
+            "test_temperature_sharpens_an_underconfident_probability_and_leaves_a_coin_flip",
+            "test_zero_errors_need_a_large_sample_at_the_locked_confidence"
+          ],
+          "hash": "e1259f4e1d7e6941dac1edda73425e2271638cb82cbc3c0baf8ea5769512ef80",
+          "importsFiles": [
+            "tools/phrase_calibration.py"
+          ],
+          "path": "packages/ears/tests/test_calibration_rule.py"
+        },
+        {
+          "exports": [
+            "test_base_rate_reads_the_extended_and_strict_fields",
+            "test_cap_counts_the_recorded_calibration_spend",
+            "test_evidence_features_flag_the_three_missing_readings",
+            "test_frozen_holdout_is_twenty_sorted_indices_and_leaves_the_rest",
+            "test_full_state_omits_evidence_and_pruned_keeps_the_receipt_features",
+            "test_leave_one_mix_out_holds_the_whole_mix_and_the_probe_bar_is_locked",
+            "test_pruned_and_row_states_carry_no_text_and_empty_marks",
+            "test_rules_are_the_nine_thresholds_and_a_missing_cent_does_not_fire",
+            "test_similarity_shots_skip_the_query_and_break_ties_by_index",
+            "test_strict_window_ignores_the_lag_and_tags_follow_the_locked_priority",
+            "test_student_t_and_nadeau_bengio_match_the_locked_small_case",
+            "test_warp_items_drop_only_the_cut_placement_mix",
+            "test_zero_spend_does_not_claim_a_call_and_an_edge_drop_can_be_unresolvable"
+          ],
+          "hash": "5c084ab1808c8fa9a3b9366d5bd506a2a2d0addeaef9c356fc1c62f5a44d5d1a",
+          "importOrder": [
+            "tools/decision_learning.py",
+            "packages/ears/src/ai_ears/record.py"
+          ],
+          "importsFiles": [
+            "packages/ears/src/ai_ears/record.py",
+            "tools/decision_learning.py"
+          ],
+          "path": "packages/ears/tests/test_decision_learning.py"
+        },
+        {
+          "exports": [
+            "test_a_gate_word_in_the_question_never_calls",
+            "test_a_result_without_a_cost_omits_it_and_a_loaded_confidence_is_kept",
+            "test_an_explicit_jev_band_still_marks_a_clear_probability",
+            "test_band_edges_are_uncertain",
+            "test_empty_instructions_never_call",
+            "test_kev_phrase_clean_stays_unanswered_and_refuses_a_passed_band",
+            "test_kev_which_take_stays_unanswered",
+            "test_load_rejects_pass_and_fail_and_a_winner",
+            "test_missing_confidence_is_too_close_to_call",
+            "test_phrase_clean_refuses_blank_criteria_and_a_choice_answer",
+            "test_phrase_clean_reports_p_yes_and_the_band",
+            "test_which_take_refuses_a_set_that_is_not_one_phrase",
+            "test_which_take_refuses_an_unpinned_or_shapeless_answer",
+            "test_which_take_returns_probabilities_and_no_winner",
+            "test_which_take_through_the_real_client_never_leaves_the_machine"
+          ],
+          "hash": "ea1f83d64926e36a56ab4852fbe9493b3489e38fe3d35205a168f20911a09ff4",
+          "importsFiles": [
+            "packages/decisions/src/decisions/__init__.py",
+            "packages/decisions/src/decisions/client.py",
+            "packages/ears/src/ai_ears/questions.py",
+            "packages/ears/src/ai_ears/record.py"
+          ],
+          "path": "packages/ears/tests/test_questions.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "test_a_null_median_without_a_pitch_state_is_refused",
+            "test_a_null_onset_is_undated_and_the_aligner_stays_on_the_receipt",
+            "test_a_record_needs_both_ids",
+            "test_an_empty_table_and_a_blank_hash_leave_no_provenance",
+            "test_an_unvoiced_row_with_no_median_stays_unvoiced",
+            "test_gate_keys_are_rejected_on_a_result_shaped_object",
+            "test_listener_transcript_must_stay_advisory",
+            "test_phrase_evidence_keeps_the_readings_and_drops_the_directory",
+            "test_phrase_evidence_refuses_marks_and_a_missing_phrase",
+            "test_phrase_scores_and_marks_that_are_the_wrong_shape_are_refused",
+            "test_phrase_scores_keep_a_string_note_and_skip_empty_values",
+            "test_pitch_states_and_a_different_vocal_hash_are_kept",
+            "test_placed_receipt_keeps_measurements_and_drops_the_gate",
+            "test_raw_take_has_no_aligner_reading",
+            "test_receipts_that_are_not_measurements_are_refused",
+            "test_review_mark_keeps_the_level",
+            "test_skipped_observations_and_a_non_rise_method_stay_measurements",
+            "test_swift_fields_are_not_a_cross_check",
+            "test_take_id_cannot_be_a_gate_word",
+            "test_tracker_name_is_read_from_the_receipt"
+          ],
+          "hash": "d13e955a23d2f55f7e3decc8f855043ea97225cfa565982fae04a3ff4b192e05",
+          "importsFiles": [
+            "packages/ears/src/ai_ears/record.py"
+          ],
+          "path": "packages/ears/tests/test_record.py",
+          "testFramework": "pytest"
+        }
+      ],
+      "globs": [
+        "packages/ears/**"
+      ],
+      "importConfidence": "full",
+      "name": "ears",
+      "origin": "authored",
+      "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
+      "testedBy": 4,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "packages/eyes/src/ai_eyes_mcp/server.py"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "f1e84bdf6125080becee13b5eac9a909d132d6e44c82e3777058885f942d398c",
+          "path": "packages/eyes/.github/workflows/ci.yml"
+        },
+        {
+          "hash": "fe1db5f18ca42c6e2363f0860db9c117b03a6bff39b375189f7c9d2f1882b4a1",
+          "path": "packages/eyes/.github/workflows/pages.yml"
+        },
+        {
+          "hash": "b7061c0287d56af8fb774e2d0f53d94ade971aa71b4a734d2cdd275abea7abae",
+          "path": "packages/eyes/.gitignore"
+        },
+        {
+          "hash": "5ec4e9e70e5bc59760cf01253b25d8e457d1aa9c21b7dfdb43fb8fc8e1951072",
+          "path": "packages/eyes/CHANGELOG.md"
+        },
+        {
+          "hash": "367e5141e4f5884e5791c4021f33a9faa958840a5decf44e1b273a87aad1c459",
+          "path": "packages/eyes/LICENSE"
+        },
+        {
+          "hash": "d0a434f9764454366c03e3e996ccad3e503d50b13e7097fc2e784470a36eecff",
+          "path": "packages/eyes/README.es.md"
+        },
+        {
+          "hash": "3e9489805ab060bc4c16bce7a10d9fd50e8214fde71508d2db5e70807842bfb3",
+          "path": "packages/eyes/README.fr.md"
+        },
+        {
+          "hash": "969087f5ae71283a255163a63772347186876371c7f8b7437712399f1099da1b",
+          "path": "packages/eyes/README.hi.md"
+        },
+        {
+          "hash": "b2093265cc46301eceaeb2c3b9237ff1d7c9eac1fc3106c6a9c9dffed106394a",
+          "path": "packages/eyes/README.it.md"
+        },
+        {
+          "hash": "ab4c9d0d1ca5c6c1d6ac45b4010d372836a10648dce9bd8c9ee613f34f860190",
+          "path": "packages/eyes/README.ja.md"
+        },
+        {
+          "hash": "4258835644ac74c68e8d85483a2a41404ed0a05e0c6e585e443ffeced9e0e145",
+          "path": "packages/eyes/README.md"
+        },
+        {
+          "hash": "49a221fd5727b0b5d54071eb87f855dce66b1cc1563e71d5ae87b81d663d636d",
+          "path": "packages/eyes/README.pt-BR.md"
+        },
+        {
+          "hash": "e47fe7f724e01a69fa50588e8dd05961604001d81fecaf6a1a6a25405e609633",
+          "path": "packages/eyes/README.zh.md"
+        },
+        {
+          "hash": "0f787586a791d51d643942b805a97b8e19f284de7879cf7b8ea4e2e481777ea9",
+          "path": "packages/eyes/SECURITY.md"
+        },
+        {
+          "hash": "7bab9f7f9e8ea99677f8f2b381259263dab30f74944ebd9b5c7bab6d013f6769",
+          "path": "packages/eyes/SHIP_GATE.md"
+        },
+        {
+          "hash": "80f9232b69ccfeb59f476e270d5a7fe7ab24602718639b871537db9e4dd3f310",
+          "path": "packages/eyes/atlas/README.md"
+        },
+        {
+          "hash": "9a45705790d0d22309c783e74b745d5ef45f11e468fda248eac9fb2ae0f4f002",
+          "path": "packages/eyes/atlas/boundaries.yaml"
+        },
+        {
+          "hash": "bfd2d7113d72ad28e7d0f97ac99cbdde2ca1b4f08e966db5427606c7280957fd",
+          "path": "packages/eyes/atlas/page.json"
+        },
+        {
+          "hash": "6d96375522e1c20ecab2b10a68a5b08e679fb0b7f28304d6431dcd5aa09c0fa2",
+          "path": "packages/eyes/atlas/statistics.json"
+        },
+        {
+          "hash": "c0ad786ddff1962b76a31790db72756a5be03afd9fd0a14c00d0f691c5202b8f",
+          "path": "packages/eyes/atlas/structure.json"
+        },
+        {
+          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "path": "packages/eyes/codecov.yml"
+        },
+        {
+          "hash": "b2176b02803744826defed1db3c5a80b191d3d250249caa8f59ff229f4e675af",
+          "path": "packages/eyes/docs/README.md"
+        },
+        {
+          "hash": "dfd8bb8b5f15332c813137be7aeecfc844c653a476819239074f68979c73d3b2",
+          "path": "packages/eyes/docs/architecture.md"
+        },
+        {
+          "hash": "29688b8cff2a20c62bada5294be2d00b01419732f7f4e63b230f5abd86ee6104",
+          "path": "packages/eyes/docs/architecture.svg"
+        },
+        {
+          "hash": "ccb2dd6b72f08e07f5feeab426f7b38dc418a20b156ab694e70251c20ec71f69",
+          "path": "packages/eyes/docs/honest-judgment.md"
+        },
+        {
+          "hash": "d064c99c625ed87f641e746bf8fb23a3cb2d7c788a0e3087ce6fb783aeccfb83",
+          "path": "packages/eyes/docs/install-and-validate.md"
+        },
+        {
+          "hash": "035bc8e76db5a0162240f752311e64b210f68d39db81d7663f2cf72571e136ee",
+          "path": "packages/eyes/docs/logo.png"
+        },
+        {
+          "hash": "48333c5983289b99fc9ef0f9c77ce3d68a49fde21c0c31996ca5814d169f3400",
+          "path": "packages/eyes/docs/tools.md"
+        },
+        {
+          "hash": "a361643eb32cd8f5c52cc05d2fe631ad3c0503bde810626eb972e319297490de",
+          "path": "packages/eyes/pyproject.toml"
+        },
+        {
+          "hash": "3a79af2f0dfcdb4e6da6bddab3ef3e0e1144d0a309bd8bda92e352f8ea2922f1",
+          "path": "packages/eyes/site/astro.config.mjs"
+        },
+        {
+          "hash": "0607a19c4f60b635244a906c7ad2424359b50e20c4a83bc140f202abce4a941e",
+          "path": "packages/eyes/site/package-lock.json"
+        },
+        {
+          "hash": "ede5fe47605b55555e8d3ed7b2eb904e0c9b03a975348882ae0a870ef5b98bb7",
+          "path": "packages/eyes/site/package.json"
+        },
+        {
+          "hash": "035bc8e76db5a0162240f752311e64b210f68d39db81d7663f2cf72571e136ee",
+          "path": "packages/eyes/site/src/assets/logo.png"
+        },
+        {
+          "constantOnly": true,
+          "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
+          "path": "packages/eyes/site/src/content.config.ts"
+        },
+        {
+          "hash": "5ac20016ecc9879c65933d97182c91f77f1e6c921292291226fa65db7a244c19",
+          "path": "packages/eyes/site/src/content/docs/handbook/getting-started.md"
+        },
+        {
+          "hash": "19cc47c78bede57b44649797b9004ce6674e6810ec7c748d7d347d37fa3d2b7d",
+          "path": "packages/eyes/site/src/content/docs/handbook/honest-measurement.md"
+        },
+        {
+          "hash": "fa4bfe3f2a97c19898085293f9b5df3f15c4a69ec156fbf1f50cdeeb27e1dfce",
+          "path": "packages/eyes/site/src/content/docs/handbook/index.md"
+        },
+        {
+          "hash": "0bfaeeb0e926c8b82031c0c9a183e5c5060bb81cf7536a297f649f95cabc2f93",
+          "path": "packages/eyes/site/src/content/docs/handbook/reproducibility.md"
+        },
+        {
+          "hash": "70011d71f1640c7d32ffad281044e908bed2f94fe715f13aac4f5d95ed7a5017",
+          "path": "packages/eyes/site/src/content/docs/handbook/tools.md"
+        },
+        {
+          "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "packages/eyes/site/src/styles/global.css",
+            "packages/eyes/site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "packages/eyes/site/src/site-config.ts",
+            "packages/eyes/site/src/styles/global.css"
+          ],
+          "path": "packages/eyes/site/src/pages/index.astro"
+        },
+        {
+          "constantOnly": true,
+          "hash": "08b63213b4cdbb95de68f44ed881f8db48004c5c072dc11dc87152c479f23c19",
+          "path": "packages/eyes/site/src/site-config.ts"
+        },
+        {
+          "hash": "29ee8df91833e694bdba973126b34a6177de4cf01dab6d9ef7d3126e8e2b67fb",
+          "path": "packages/eyes/site/src/styles/global.css"
+        },
+        {
+          "hash": "caf3bea3424477e9528b80490e442ff4fad4ccc7562df9457497382c5bd62339",
+          "path": "packages/eyes/site/src/styles/starlight-custom.css"
+        },
+        {
+          "hash": "b5b0a5b04a14cddd7713c5e1c82e86c79c17c2f86b170e26e9b170b3d5e01cd9",
+          "path": "packages/eyes/site/tsconfig.json"
+        },
+        {
+          "hash": "71c6c122dda19de73a2be46468f853e6cb2dde0aeaeae3fd59dfa2fd843fe53a",
+          "path": "packages/eyes/src/ai_eyes_mcp/__init__.py"
+        },
+        {
+          "hash": "492379e8600334c6b1e4dc9c6263d783effca16210735be9aebaa4e4d3c761a9",
+          "importsFiles": [
+            "packages/eyes/src/ai_eyes_mcp/server.py"
+          ],
+          "path": "packages/eyes/src/ai_eyes_mcp/__main__.py"
+        },
+        {
+          "hash": "070e679401206e4eb239cb63d9c49e10ad92cfcb8987c742f70d75f6253d5ae2",
+          "path": "packages/eyes/src/ai_eyes_mcp/assets/selftest/cheetah.jpg"
+        },
+        {
+          "hash": "385a033093b6176b10bebe27e87b9abe469e645c582f0d2c44df42a7e780e964",
+          "path": "packages/eyes/src/ai_eyes_mcp/assets/selftest/cook.png"
+        },
+        {
+          "hash": "64933dd3380fd2abc7df436876b7e414ddf642b27d402664581a56647d29dc54",
+          "path": "packages/eyes/src/ai_eyes_mcp/assets/selftest/knight.png"
+        },
+        {
+          "entry": "configure_logging",
+          "entryRule": 1,
+          "exports": [
+            "assert_cold_status",
+            "confidence_from_magnitude",
+            "configure_logging",
+            "display_round",
+            "round_margin",
+            "round_pair_preserving_order",
+            "round_preserving_gt",
+            "validate_model_revision"
+          ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 96
+            },
+            {
+              "kind": "except",
+              "line": 106
+            },
+            {
+              "in": "assert_cold_status",
+              "kind": "raise",
+              "line": 134
+            },
+            {
+              "in": "assert_cold_status",
+              "kind": "raise",
+              "line": 139
+            },
+            {
+              "in": "assert_cold_status",
+              "kind": "raise",
+              "line": 144
+            },
+            {
+              "in": "validate_model_revision",
+              "kind": "raise",
+              "line": 161
+            },
+            {
+              "in": "_ensure_loaded_locked",
+              "kind": "except",
+              "line": 336
+            },
+            {
+              "in": "_ensure_loaded_locked",
+              "kind": "raise",
+              "line": 351
+            },
+            {
+              "in": "_load_image",
+              "kind": "raise",
+              "line": 370
+            },
+            {
+              "in": "_load_image",
+              "kind": "raise",
+              "line": 372
+            },
+            {
+              "in": "_load_image",
+              "kind": "except",
+              "line": 375
+            },
+            {
+              "in": "_load_image",
+              "kind": "raise",
+              "line": 376
+            },
+            {
+              "in": "_load_image",
+              "kind": "except",
+              "line": 379
+            },
+            {
+              "in": "_load_image",
+              "kind": "raise",
+              "line": 380
+            },
+            {
+              "in": "_validate_query",
+              "kind": "raise",
+              "line": 388
+            },
+            {
+              "in": "_validate_query",
+              "kind": "raise",
+              "line": 390
+            },
+            {
+              "in": "_warn_if_truncated",
+              "kind": "except",
+              "line": 435
+            },
+            {
+              "in": "score_multi",
+              "kind": "raise",
+              "line": 475
+            },
+            {
+              "in": "score_batch",
+              "kind": "raise",
+              "line": 628
+            },
+            {
+              "in": "_embed_cache_key",
+              "kind": "except",
+              "line": 649
+            },
+            {
+              "in": "similarities_to_reference",
+              "kind": "raise",
+              "line": 710
+            },
+            {
+              "in": "verify",
+              "kind": "raise",
+              "line": 734
+            },
+            {
+              "in": "verify",
+              "kind": "raise",
+              "line": 745
+            }
+          ],
+          "hash": "b1e07759021e37bc553b829c3ad0102ff42683a8268ef4d6fbc193d7b20d6750",
+          "importsFiles": [
+            "packages/eyes/src/ai_eyes_mcp/__init__.py"
+          ],
+          "path": "packages/eyes/src/ai_eyes_mcp/engine.py",
+          "sequences": []
+        },
+        {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "path": "packages/eyes/src/ai_eyes_mcp/py.typed"
+        },
+        {
+          "entry": "main",
+          "entryRule": 0,
+          "exports": [
+            "eyes_selftest",
+            "eyes_status",
+            "image_classify",
+            "image_compare",
+            "image_contains",
+            "image_rank",
+            "image_score_batch",
+            "image_verify",
+            "main"
+          ],
+          "failurePaths": [
+            {
+              "in": "_construct_engine",
+              "kind": "except",
+              "line": 66
+            },
+            {
+              "in": "_construct_engine",
+              "kind": "raise",
+              "line": 73
+            },
+            {
+              "in": "_parse_baseline_pairs",
+              "kind": "raise",
+              "line": 96
+            },
+            {
+              "in": "_ensure_engine_ready",
+              "kind": "except",
+              "line": 160
+            },
+            {
+              "in": "_ensure_engine_ready",
+              "kind": "raise",
+              "line": 161
+            },
+            {
+              "in": "image_contains",
+              "kind": "raise",
+              "line": 191
+            },
+            {
+              "in": "image_contains",
+              "kind": "except",
+              "line": 197
+            },
+            {
+              "in": "image_contains",
+              "kind": "raise",
+              "line": 198
+            },
+            {
+              "in": "image_classify",
+              "kind": "raise",
+              "line": 231
+            },
+            {
+              "in": "image_classify",
+              "kind": "raise",
+              "line": 233
+            },
+            {
+              "in": "image_classify",
+              "kind": "except",
+              "line": 241
+            },
+            {
+              "in": "image_classify",
+              "kind": "raise",
+              "line": 242
+            },
+            {
+              "in": "image_compare",
+              "kind": "except",
+              "line": 302
+            },
+            {
+              "in": "image_compare",
+              "kind": "raise",
+              "line": 303
+            },
+            {
+              "in": "image_rank",
+              "kind": "raise",
+              "line": 350
+            },
+            {
+              "in": "image_rank",
+              "kind": "raise",
+              "line": 352
+            },
+            {
+              "in": "image_rank",
+              "kind": "raise",
+              "line": 354
+            },
+            {
+              "in": "image_rank",
+              "kind": "except",
+              "line": 365
+            },
+            {
+              "in": "image_rank",
+              "kind": "raise",
+              "line": 366
+            },
+            {
+              "in": "image_score_batch",
+              "kind": "raise",
+              "line": 420
+            },
+            {
+              "in": "image_score_batch",
+              "kind": "raise",
+              "line": 422
+            },
+            {
+              "in": "image_score_batch",
+              "kind": "raise",
+              "line": 424
+            },
+            {
+              "in": "image_score_batch",
+              "kind": "except",
+              "line": 436
+            },
+            {
+              "in": "image_score_batch",
+              "kind": "raise",
+              "line": 437
+            },
+            {
+              "in": "image_score_batch",
+              "kind": "except",
+              "line": 448
+            },
+            {
+              "in": "image_score_batch",
+              "kind": "except",
+              "line": 450
+            },
+            {
+              "in": "image_score_batch",
+              "kind": "except",
+              "line": 456
+            },
+            {
+              "in": "image_verify",
+              "kind": "except",
+              "line": 551
+            },
+            {
+              "in": "image_verify",
+              "kind": "raise",
+              "line": 552
+            },
+            {
+              "in": "eyes_selftest",
+              "kind": "except",
+              "line": 569
+            },
+            {
+              "in": "eyes_selftest",
+              "kind": "raise",
+              "line": 570
+            }
+          ],
+          "hash": "d0f865b5a5f67e4397fdba645e51ecb52b22f4be950399b0a7d4fc7d79d8195c",
+          "importsFiles": [
+            "packages/eyes/src/ai_eyes_mcp/engine.py"
+          ],
+          "path": "packages/eyes/src/ai_eyes_mcp/server.py",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 58,
+                  "name": "SigLIPEngine",
+                  "target": {
+                    "file": "packages/eyes/src/ai_eyes_mcp/engine.py"
+                  }
+                },
+                {
+                  "line": 62,
+                  "name": "DEFAULT_CACHE_DIR",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/eyes/src/ai_eyes_mcp/engine.py"
+                  }
+                },
+                {
+                  "line": 63,
+                  "name": "DEFAULT_DEVICE",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/eyes/src/ai_eyes_mcp/engine.py"
+                  }
+                },
+                {
+                  "line": 64,
+                  "name": "DEFAULT_DTYPE",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/eyes/src/ai_eyes_mcp/engine.py"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "_construct_engine"
+            },
+            {
+              "calls": [
+                {
+                  "line": 110,
+                  "name": "round_margin",
+                  "target": {
+                    "file": "packages/eyes/src/ai_eyes_mcp/engine.py"
+                  }
+                },
+                {
+                  "line": 112,
+                  "name": "confidence_from_magnitude",
+                  "target": {
+                    "file": "packages/eyes/src/ai_eyes_mcp/engine.py"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_separation"
+            },
+            {
+              "calls": [
+                {
+                  "line": 205,
+                  "name": "round_preserving_gt",
+                  "target": {
+                    "file": "packages/eyes/src/ai_eyes_mcp/engine.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "image_contains"
+            },
+            {
+              "calls": [
+                {
+                  "line": 250,
+                  "name": "display_round",
+                  "target": {
+                    "file": "packages/eyes/src/ai_eyes_mcp/engine.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "image_classify"
+            },
+            {
+              "calls": [
+                {
+                  "line": 110,
+                  "name": "round_margin",
+                  "target": {
+                    "file": "packages/eyes/src/ai_eyes_mcp/engine.py"
+                  },
+                  "via": "_separation"
+                },
+                {
+                  "line": 112,
+                  "name": "confidence_from_magnitude",
+                  "target": {
+                    "file": "packages/eyes/src/ai_eyes_mcp/engine.py"
+                  },
+                  "via": "_separation"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "image_compare"
+            },
+            {
+              "calls": [
+                {
+                  "line": 391,
+                  "name": "round_margin",
+                  "target": {
+                    "file": "packages/eyes/src/ai_eyes_mcp/engine.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "image_rank"
+            },
+            {
+              "calls": [
+                {
+                  "line": 445,
+                  "name": "round_preserving_gt",
+                  "target": {
+                    "file": "packages/eyes/src/ai_eyes_mcp/engine.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "image_score_batch"
+            }
+          ]
+        },
+        {
+          "hash": "396c7b535869e4418fd9d9657635e5134c6ba626819059f0b26e9b8fbc82a761",
+          "path": "packages/eyes/tests/assets/photos/bus.png"
+        },
+        {
+          "hash": "29b0090f5ec471dad0264abc20ecc3c80a0133a63a03d11df920e39a093fe6c8",
+          "path": "packages/eyes/tests/assets/photos/cheetah.jpg"
+        },
+        {
+          "hash": "4c45ece00075f152cb2e6cfd5f1dfd7dc8e83042264685b4f470026240eff3ef",
+          "path": "packages/eyes/tests/assets/photos/lion.jpg"
+        },
+        {
+          "hash": "f57f96f7a71f89739d27ae8ffc09f73cd2f17415d16c94d42dcb0d571f4eb0ee",
+          "path": "packages/eyes/tests/assets/photos/tower.jpg"
+        },
+        {
+          "hash": "5a24c69d021bd7a94ae19c8f4e73328d8886433c08f42d67478b320de9e2bfbc",
+          "path": "packages/eyes/tests/assets/sprites/avar_armed_front.png"
+        },
+        {
+          "hash": "efab16643db58d62c86e3e081dbd671ec762b87b8ec0756d230edd3f9b645c70",
+          "path": "packages/eyes/tests/assets/sprites/avar_desperate_front.png"
+        },
+        {
+          "hash": "af79969a00c661cdbca2302ec0bd8b74bf068b466e0b50707660f7cae891b3f5",
+          "path": "packages/eyes/tests/assets/sprites/goblin_cook_front.png"
+        },
+        {
+          "hash": "d5727121e831c36da8598897ac1919e993b15afc464391baf98e5d2d0ed728bc",
+          "path": "packages/eyes/tests/assets/sprites/hero_bard_front.png"
+        },
+        {
+          "hash": "c128666c2e7b06a3ad1d261478896115d24107769ed16cc1eacb03c40ca7ef55",
+          "path": "packages/eyes/tests/assets/sprites/knight_battleaxe_front.png"
+        },
+        {
+          "hash": "618aaf257f38023fd4d33201d45c6d8fb78140422411d6dea284ac3ce7f3f4c2",
+          "path": "packages/eyes/tests/assets/sprites/knight_sword_front.png"
+        },
+        {
+          "hash": "cf51df2e65d67322ce55ff31fa6f5b6a255361f1d20c32ad6b667e046e29ce63",
+          "path": "packages/eyes/tests/assets/sprites/knight_sword_left.png"
+        },
+        {
+          "exports": [
+            "assert_identical_scores",
+            "avar_armed_front",
+            "avar_desperate_front",
+            "engine",
+            "goblin_cook_front",
+            "hero_bard_front",
+            "is_missing_weights_error",
+            "knight_battleaxe_front",
+            "knight_sword_front",
+            "knight_sword_left",
+            "photo_bus",
+            "photo_cheetah",
+            "photo_lion",
+            "photo_tower",
+            "subprocess_env"
+          ],
+          "hash": "13b0782ae266da58df233fde63e6d4b487d7f5e0209d671771f97ef0b3fd5f7a",
+          "importsFiles": [
+            "packages/eyes/src/ai_eyes_mcp/engine.py"
+          ],
+          "path": "packages/eyes/tests/conftest.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "test_canonical_constant_matches_the_independent_anchor",
+            "test_ci_and_verify_select_not_dogfood",
+            "test_ci_yml_uses_canonical_tool_names",
+            "test_cold_status_gate_passes_fresh_engine",
+            "test_cold_status_gate_rejects_loaded_lie",
+            "test_cold_status_gate_rejects_wrong_revision",
+            "test_dev_extra_includes_hatchling",
+            "test_live_registration_matches_the_independent_anchor",
+            "test_shipped_tool_count_matches_the_shipped_set",
+            "test_verify_and_ci_use_cold_status_gate",
+            "test_verify_sh_asserts_the_shipped_tool_set",
+            "test_version_agrees_across_manifest_package_and_readme",
+            "test_version_is_a_release_number_not_a_placeholder"
+          ],
+          "hash": "fc1b421f502f48fd5867837a2d0cf8d0b466e3d5c3ee9841a367350676671e08",
+          "importOrder": [
+            "packages/eyes/src/ai_eyes_mcp/__init__.py",
+            "packages/eyes/src/ai_eyes_mcp/server.py",
+            "packages/eyes/src/ai_eyes_mcp/engine.py"
+          ],
+          "importsFiles": [
+            "packages/eyes/src/ai_eyes_mcp/__init__.py",
+            "packages/eyes/src/ai_eyes_mcp/engine.py",
+            "packages/eyes/src/ai_eyes_mcp/server.py"
+          ],
+          "path": "packages/eyes/tests/test_ci_gates.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "6e74d5d669952a21b863b937c5080f9971c80ebf042f7c8baa5c4fdcdc3a5f6d",
+          "importsFiles": [
+            "packages/eyes/src/ai_eyes_mcp/engine.py",
+            "packages/eyes/src/ai_eyes_mcp/server.py",
+            "packages/eyes/tests/conftest.py"
+          ],
+          "path": "packages/eyes/tests/test_edge_cases.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "test_baseline_embeddings_are_reused_across_calls",
+            "test_char_cap_does_not_bound_tokens",
+            "test_configure_logging_is_idempotent",
+            "test_default_revision_is_forty_char_hex",
+            "test_display_round_never_prints_zero_for_nonzero_sigmoid",
+            "test_embedding_cache_hands_back_a_private_copy",
+            "test_embedding_cache_invalidates_when_the_file_changes",
+            "test_embedding_cache_is_bounded",
+            "test_engine_score_returns_score_with_qualifiers",
+            "test_ensure_loaded_single_flight",
+            "test_env_main_raises_at_construction",
+            "test_from_pretrained_always_receives_revision",
+            "test_identical_scores_gate_fires_on_any_difference",
+            "test_load_lock_is_not_the_forward_lock",
+            "test_missing_weights_helper_does_not_treat_oom_as_absent",
+            "test_non_sha_revision_raises_actionable_error",
+            "test_out_of_range_threshold_falls_back_with_warning",
+            "test_query_truncated_false_when_under_limit",
+            "test_query_truncated_true_when_over_encoder_limit",
+            "test_score_object_behaves_as_float_and_carries_qualifiers",
+            "test_standalone_engine_honours_log_level",
+            "test_standalone_engine_honours_model_id_env",
+            "test_status_dtype_reads_parameter_dtype_not_constructor_string",
+            "test_status_includes_revision_when_unloaded",
+            "test_valid_sha_override_reaches_from_pretrained",
+            "test_verify_confidence_band_matches_displayed_margin",
+            "test_verify_tiny_margin_does_not_display_as_zero",
+            "test_vram_mb_is_load_delta_not_current_process_allocation"
+          ],
+          "hash": "12cfb1dc06b0808225118cd0bf5621b1d1eed3d8a783e72c64dc9b2640d61a29",
+          "importsFiles": [
+            "packages/eyes/src/ai_eyes_mcp/engine.py",
+            "packages/eyes/tests/conftest.py"
+          ],
+          "path": "packages/eyes/tests/test_engine_ci.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "118c908e4c85071468cc9eeb516fae8fd7f7d0ef05e8374283d0802b1e44a284",
+          "importsFiles": [
+            "packages/eyes/src/ai_eyes_mcp/engine.py",
+            "packages/eyes/tests/conftest.py"
+          ],
+          "path": "packages/eyes/tests/test_engine_dogfood.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "test_bad_env_defaults_fall_back_and_are_restored",
+            "test_classify_keeps_raw_scores_when_rounding_cannot_preserve_the_best",
+            "test_cold_status_rejects_the_wrong_model_and_revision_edges",
+            "test_compare_and_rank_use_caller_baselines",
+            "test_construct_engine_exits_on_a_bad_revision",
+            "test_eager_load_runs_at_construction",
+            "test_embed_accepts_a_pooled_output_object",
+            "test_embed_cache_can_be_turned_off",
+            "test_embed_cache_hit_is_a_private_copy_and_a_missing_file_is_uncached",
+            "test_load_applies_dtype_records_cache_dir_and_clears_a_failed_load",
+            "test_load_image_refuses_a_directory_a_missing_file_and_a_bad_file",
+            "test_module_entry_point_calls_server_main",
+            "test_rounding_falls_back_to_the_raw_value_when_every_digit_flips",
+            "test_score_batch_logs_progress_and_refuses_an_empty_list",
+            "test_score_batch_sorts_errors_and_names_a_best_path",
+            "test_score_multi_dedupes_and_refuses_an_empty_list",
+            "test_selftest_orders_the_bundled_pairs",
+            "test_server_main_starts_the_stdio_server",
+            "test_similarities_need_a_candidate_and_verify_needs_a_real_contrast",
+            "test_token_id_filter_drops_only_the_benign_config_warning",
+            "test_tools_refuse_bad_input_and_map_engine_errors",
+            "test_truncation_check_never_raises"
+          ],
+          "hash": "e7a9a305ef3bca251de010fa266574187ee8de280dcfca33843f195f9c865b02",
+          "importOrder": [
+            "packages/eyes/src/ai_eyes_mcp/engine.py",
+            "packages/eyes/src/ai_eyes_mcp/__init__.py",
+            "packages/eyes/src/ai_eyes_mcp/server.py"
+          ],
+          "importsFiles": [
+            "packages/eyes/src/ai_eyes_mcp/__init__.py",
+            "packages/eyes/src/ai_eyes_mcp/engine.py",
+            "packages/eyes/src/ai_eyes_mcp/server.py"
+          ],
+          "names": [
+            "packages/eyes/src/ai_eyes_mcp/__main__.py"
+          ],
+          "path": "packages/eyes/tests/test_forward_ci.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "test_baseline_floor_is_not_re_embedded_on_every_call",
+            "test_baseline_pair_accepts_lists_and_tuples_of_two_paths",
+            "test_baseline_pair_rejects_two_character_string",
+            "test_baseline_pair_rejects_wrong_shapes_with_actionable_error",
+            "test_batch_displayed_score_agrees_with_present",
+            "test_classify_best_uses_raw_scores_not_rounded",
+            "test_classify_docstring_does_not_equate_low_score_with_absence",
+            "test_classify_exposes_truncated_flag",
+            "test_compare_incomplete_without_baselines",
+            "test_compare_separated_uses_caller_baseline_not_a_fixed_band",
+            "test_contains_displayed_score_agrees_with_present",
+            "test_contains_exposes_truncated_flag",
+            "test_eager_server_import_does_not_leak_traceback",
+            "test_every_model_backed_payload_names_the_resolved_revision",
+            "test_eyes_status_includes_revision",
+            "test_image_rank_incomplete_without_baselines",
+            "test_image_rank_nothing_close_returns_empty_matches",
+            "test_load_failure_does_not_forward_raw_exception",
+            "test_verify_exposes_truncated_flag"
+          ],
+          "hash": "fcdba99b335508f5ccbe7099da7c78ce7f83ed8558d2b33a5d1ea27bd93082ae",
+          "importsFiles": [
+            "packages/eyes/src/ai_eyes_mcp/__init__.py",
+            "packages/eyes/src/ai_eyes_mcp/engine.py",
+            "packages/eyes/src/ai_eyes_mcp/server.py",
+            "packages/eyes/tests/conftest.py"
+          ],
+          "path": "packages/eyes/tests/test_server_ci.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "0d46afe5c7f23016e23ed29bd8d6ffef211e3d5cd39e19da2c84284f35dc3283",
+          "importsFiles": [
+            "packages/eyes/src/ai_eyes_mcp/__init__.py",
+            "packages/eyes/src/ai_eyes_mcp/server.py",
+            "packages/eyes/tests/test_ci_gates.py"
+          ],
+          "path": "packages/eyes/tests/test_tools_dogfood.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "4191e309d7b0a70551026570ed5ade8ae7b829cd88c02f38d7d1b9000af4ad39",
+          "path": "packages/eyes/verify.sh"
+        }
+      ],
+      "frameworks": [
+        "mcp"
+      ],
+      "globs": [
+        "packages/eyes/**"
+      ],
+      "importConfidence": "full",
+      "name": "eyes",
+      "origin": "authored",
+      "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
+      "testedBy": 8,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "242f2918e842458e993c07bf29254d878df874144223dd1101d94244c50baf08",
+          "path": ".gitignore"
+        },
+        {
+          "hash": "367e5141e4f5884e5791c4021f33a9faa958840a5decf44e1b273a87aad1c459",
+          "path": "LICENSE"
+        },
+        {
+          "hash": "f65a339bb97e72bbdc1da3a6b5ff6dd6faff3ca1d7b9150be94626bafbf21d77",
+          "path": "README.md"
+        },
+        {
+          "hash": "fbebd5f3d08e8028d7c1209480928ac2c5cb99cbdf034462f0c41c7105debbdd",
+          "path": "codecov.yml"
+        },
+        {
+          "hash": "87a0475d473f4de7040fd263bf84f99609af9265d33b18e57f86e38c35ca1d4f",
+          "path": "pyproject.toml"
+        }
+      ],
+      "globs": [
+        "*"
+      ],
+      "importConfidence": "full",
+      "name": "root",
+      "origin": "authored",
+      "role": "config",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 6,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "entry": "main",
+          "entryRule": 1,
+          "exports": [
+            "line_counts",
+            "main",
+            "percent"
+          ],
+          "hash": "82ddf51c6b859e079f22577c180800001bf501c3dad30be4fb6726d10f19e25f",
+          "path": "tools/coverage_bar.py",
+          "sequences": []
+        },
+        {
+          "exports": [
+            "bootstrap_delta",
+            "brier",
+            "call_cells",
+            "cell_name",
+            "compare_folds",
+            "compare_grouped",
+            "cosine_neighbors",
+            "edge_shift",
+            "evidence_feature_row",
+            "feature_row",
+            "fixed_fold_scores",
+            "fixed_grouped_scores",
+            "frozen_test_indices",
+            "grouped_predictions",
+            "leave_one_mix_out",
+            "log_loss",
+            "main",
+            "mix_identified",
+            "mix_name",
+            "mix_probe",
+            "nadeau_bengio",
+            "prepare",
+            "regularized_beta",
+            "render_result",
+            "repeated_predictions",
+            "room_for_cell",
+            "rule_row",
+            "run_models",
+            "serialisation_table",
+            "serialised_state",
+            "state_ok",
+            "strict_label",
+            "strict_overlaps",
+            "student_t_975",
+            "tag_phrase",
+            "warp_items",
+            "write_report"
+          ],
+          "failurePaths": [
+            {
+              "in": "frozen_test_indices",
+              "kind": "raise",
+              "line": 195
+            },
+            {
+              "in": "student_t_975",
+              "kind": "raise",
+              "line": 255
+            },
+            {
+              "in": "_fit_sklearn",
+              "kind": "raise",
+              "line": 487
+            },
+            {
+              "in": "mix_probe",
+              "kind": "except",
+              "line": 734
+            },
+            {
+              "in": "serialised_state",
+              "kind": "raise",
+              "line": 841
+            },
+            {
+              "in": "_model_missing",
+              "kind": "except",
+              "line": 986
+            },
+            {
+              "in": "_label_values",
+              "kind": "raise",
+              "line": 993
+            },
+            {
+              "in": "_fit_scope",
+              "kind": "raise",
+              "line": 1000
+            },
+            {
+              "in": "_fit_scope",
+              "kind": "except",
+              "line": 1009
+            },
+            {
+              "in": "_once",
+              "kind": "except",
+              "line": 1049
+            },
+            {
+              "in": "call_cells",
+              "kind": "except",
+              "line": 1345
+            },
+            {
+              "in": "_ask",
+              "kind": "raise",
+              "line": 1377
+            },
+            {
+              "in": "_forbid",
+              "kind": "raise",
+              "line": 1710
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 1807
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 1810
+            },
+            {
+              "kind": "raise",
+              "line": 1818
+            }
+          ],
+          "hash": "1100d2c858c3244f4cd48c6b561c897e537ae356079ab1669086469081c90106",
+          "importOrder": [
+            "tools/phrase_calibration.py",
+            "packages/decisions/src/decisions/__init__.py",
+            "packages/ears/src/ai_ears/record.py"
+          ],
+          "importsFiles": [
+            "packages/decisions/src/decisions/__init__.py",
+            "packages/ears/src/ai_ears/record.py",
+            "tools/phrase_calibration.py"
+          ],
+          "path": "tools/decision_learning.py"
+        },
+        {
+          "exports": [
+            "apply_temperature",
+            "assert_question",
+            "assign_folds",
+            "assign_outer",
+            "binom_cdf",
+            "bootstrap_edges",
+            "build_phrase",
+            "call_jev",
+            "clopper_accuracy_lower",
+            "clopper_upper",
+            "decide",
+            "fit_temperature",
+            "load_items",
+            "main",
+            "mark_overlaps",
+            "median",
+            "pav",
+            "percentile",
+            "phrase_label",
+            "run_study",
+            "selective_bound",
+            "slice_phrase",
+            "temperature_grid",
+            "write_report"
+          ],
+          "failurePaths": [
+            {
+              "in": "clopper_upper",
+              "kind": "raise",
+              "line": 165
+            },
+            {
+              "in": "clopper_upper",
+              "kind": "raise",
+              "line": 167
+            },
+            {
+              "in": "percentile",
+              "kind": "raise",
+              "line": 336
+            },
+            {
+              "in": "median",
+              "kind": "raise",
+              "line": 353
+            },
+            {
+              "in": "run_study",
+              "kind": "raise",
+              "line": 487
+            },
+            {
+              "in": "assert_question",
+              "kind": "raise",
+              "line": 619
+            },
+            {
+              "in": "build_phrase",
+              "kind": "raise",
+              "line": 625
+            },
+            {
+              "in": "build_phrase",
+              "kind": "raise",
+              "line": 628
+            },
+            {
+              "in": "build_phrase",
+              "kind": "raise",
+              "line": 642
+            },
+            {
+              "in": "build_phrase",
+              "kind": "raise",
+              "line": 656
+            },
+            {
+              "in": "build_phrase",
+              "kind": "raise",
+              "line": 658
+            },
+            {
+              "in": "_mark_times",
+              "kind": "raise",
+              "line": 675
+            },
+            {
+              "in": "_mark_times",
+              "kind": "raise",
+              "line": 685
+            },
+            {
+              "in": "_mark_times",
+              "kind": "raise",
+              "line": 687
+            },
+            {
+              "in": "_mark_times",
+              "kind": "raise",
+              "line": 696
+            },
+            {
+              "in": "load_items",
+              "kind": "raise",
+              "line": 730
+            },
+            {
+              "in": "load_items",
+              "kind": "raise",
+              "line": 733
+            },
+            {
+              "in": "load_items",
+              "kind": "raise",
+              "line": 736
+            },
+            {
+              "in": "load_items",
+              "kind": "raise",
+              "line": 738
+            },
+            {
+              "in": "_forbid",
+              "kind": "raise",
+              "line": 992
+            },
+            {
+              "in": "write_report",
+              "kind": "raise",
+              "line": 1000
+            },
+            {
+              "in": "write_report",
+              "kind": "raise",
+              "line": 1049
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 1078
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 1081
+            },
+            {
+              "kind": "raise",
+              "line": 1090
+            }
+          ],
+          "hash": "ce03405f01ee3930b6faea0425e0d895c09d3a81448c281723ee0a8a2a0766e4",
+          "importOrder": [
+            "packages/ears/src/ai_ears/questions.py",
+            "packages/ears/src/ai_ears/record.py",
+            "packages/decisions/src/decisions/__init__.py"
+          ],
+          "importsFiles": [
+            "packages/decisions/src/decisions/__init__.py",
+            "packages/ears/src/ai_ears/questions.py",
+            "packages/ears/src/ai_ears/record.py"
+          ],
+          "path": "tools/phrase_calibration.py"
+        }
+      ],
+      "globs": [
+        "tools/**"
+      ],
+      "importConfidence": "full",
+      "name": "tools",
+      "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 11,
+          "where": [
+            "caller"
+          ],
+          "writes": 3
+        }
+      ],
+      "outsideReads": 11,
+      "outsideWrites": 3,
+      "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
+      "testedBy": 3,
+      "unresolvedSites": 0
+    }
+  ],
+  "doors": [
+    {
+      "checksCount": 0,
+      "commands": [
+        {
+          "dir": "",
+          "job": "pytest",
+          "programs": [
+            "python"
+          ],
+          "step": "Install pytest"
+        },
+        {
+          "dir": "",
+          "job": "pytest",
+          "programs": [
+            "python"
+          ],
+          "step": "pytest"
+        },
+        {
+          "dir": "",
+          "job": "atlas",
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "pytest",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                },
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python ${{ matrix.python-version }}",
+              "uses": "actions/setup-python",
+              "version": "${{ matrix.python-version }}"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "atlas",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "Set up Node",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
+      "landings": [],
+      "mentions": [],
+      "name": "CI",
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "decisions",
+          "depth": 0,
+          "files": 6
+        },
+        {
+          "boundary": "ears",
+          "depth": 0,
+          "files": 6
+        },
+        {
+          "boundary": "eyes",
+          "depth": 0,
+          "files": 11
+        },
+        {
+          "boundary": "tools",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "directory": true,
+          "job": "pytest",
+          "matched": true,
+          "path": "packages/decisions/tests/",
+          "runKind": "executes",
+          "via": "pytest pyproject.toml"
+        },
+        {
+          "directory": true,
+          "job": "pytest",
+          "matched": true,
+          "path": "packages/ears/tests/",
+          "runKind": "executes",
+          "via": "pytest pyproject.toml"
+        },
+        {
+          "directory": true,
+          "job": "pytest",
+          "matched": true,
+          "path": "packages/eyes/tests/",
+          "runKind": "executes",
+          "via": "pytest pyproject.toml"
+        },
+        {
+          "job": "pytest",
+          "path": "tools/coverage_bar.py",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 4,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "tests": [
+        {
+          "config": "pyproject.toml",
+          "coverage": true,
+          "files": 15,
+          "job": "pytest",
+          "runner": "pytest",
+          "step": "pytest"
+        }
+      ],
+      "triggers": [
+        {
+          "event": "pull_request"
+        },
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "push",
+          "paths": [
+            ".github/workflows/**",
+            "codecov.yml",
+            "packages/**",
+            "pyproject.toml",
+            "tools/**"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "actions/setup-node",
+        "actions/setup-python",
+        "codecov/codecov-action"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "packages/eyes/pyproject.toml",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "ai-eyes",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "eyes",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "packages/eyes/src/ai_eyes_mcp/server.py",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    }
+  ],
+  "edges": [
+    {
+      "from": "decisions",
+      "fromTests": true,
+      "kind": "file",
+      "to": "tools"
+    },
+    {
+      "from": "ears",
+      "kind": "file",
+      "to": "decisions"
+    },
+    {
+      "from": "ears",
+      "fromTests": true,
+      "kind": "file",
+      "to": "tools"
+    },
+    {
+      "from": "tools",
+      "kind": "file",
+      "to": "decisions"
+    },
+    {
+      "from": "tools",
+      "kind": "file",
+      "to": "ears"
+    }
+  ],
+  "engine": "1.26.0",
+  "generatedFrom": {
+    "commit": "f16e8ea7f293a329a90779df860ceb9f3e770354",
+    "tracked": 113
+  },
+  "landings": [
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/atlas/page.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": ".github",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/atlas/page.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/eyes/atlas/statistics.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/eyes/atlas/structure.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": ".github/workflows/ci.yml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/atlas/statistics.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/eyes/atlas/structure.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": ".gitignore",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/atlas/statistics.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/eyes/atlas/structure.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "LICENSE",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/atlas/statistics.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/eyes/atlas/structure.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/.github/workflows/ci.yml",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/eyes/atlas/statistics.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/eyes/atlas/structure.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "codecov.yml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/atlas/page.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/phrase_calibration.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "docs/calibration",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/phrase_calibration.py",
+          "call": "read_text",
+          "confidence": "ast"
+        }
+      ],
+      "target": "docs/calibration.md",
+      "writers": [
+        {
+          "by": "tools/phrase_calibration.py",
+          "confidence": "ast",
+          "stamps": true,
+          "unless": [
+            "main"
+          ],
+          "untrackedInputs": true
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "docs/calibration/corp.svg",
+      "writers": [
+        {
+          "by": "tools/phrase_calibration.py",
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ],
+          "untrackedInputs": true
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "docs/calibration/phrases.json",
+      "writers": [
+        {
+          "by": "tools/phrase_calibration.py",
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ],
+          "untrackedInputs": true
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "docs/calibration/summary.json",
+      "writers": [
+        {
+          "by": "tools/phrase_calibration.py",
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ],
+          "untrackedInputs": true
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/decision_learning.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "docs/decision-learning",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/decision_learning.py",
+          "call": "read_text",
+          "confidence": "ast"
+        }
+      ],
+      "target": "docs/decision-learning.md",
+      "writers": [
+        {
+          "by": "tools/decision_learning.py",
+          "confidence": "ast",
+          "stamps": true,
+          "unless": [
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "docs/decision-learning/phrases.json",
+      "writers": [
+        {
+          "by": "tools/decision_learning.py",
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "docs/decision-learning/summary.json",
+      "writers": [
+        {
+          "by": "tools/decision_learning.py",
+          "confidence": "ast",
+          "unless": [
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/ears/pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "packages/decisions",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/decisions/pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
+          "by": "tools/phrase_calibration.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/decisions/src",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/decisions/tests/test_kev.py",
+          "call": "open",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/decisions/src/decisions/kev.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "packages/decisions/tests",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/ears/pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
+          "by": "tools/phrase_calibration.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/ears/src",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "packages/ears/tests",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "packages/eyes",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/tests/test_ci_gates.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/eyes/.github/workflows/ci.yml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
+          "by": "packages/eyes/tests/test_ci_gates.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/eyes/README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/tests/test_ci_gates.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/eyes/tests/test_edge_cases.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/eyes/pyproject.toml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/eyes/site/src/content/docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/eyes/site/src/content/docs/handbook",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "packages/eyes/src",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "packages/eyes/src/ai_eyes_mcp",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/src/ai_eyes_mcp/engine.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/eyes/src/ai_eyes_mcp/assets/selftest",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/src/ai_eyes_mcp/engine.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/eyes/src/ai_eyes_mcp/assets/selftest/cheetah.jpg",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/src/ai_eyes_mcp/engine.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/eyes/src/ai_eyes_mcp/assets/selftest/cook.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/src/ai_eyes_mcp/engine.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/eyes/src/ai_eyes_mcp/assets/selftest/knight.png",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "packages/eyes/tests",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/tests/conftest.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/eyes/tests/assets",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/tests/conftest.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/eyes/tests/assets/photos",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/tests/conftest.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/eyes/tests/assets/sprites",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/tests/test_ci_gates.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/eyes/verify.sh",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/eyes/.github/workflows/ci.yml",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/eyes/atlas/page.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/eyes/atlas/statistics.json",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "packages/eyes/atlas/structure.json",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "pyproject.toml",
+      "writers": []
+    }
+  ],
+  "overlaps": [],
+  "submodules": [],
+  "symlinks": [],
+  "testFiles": 33,
+  "unassigned": []
+}

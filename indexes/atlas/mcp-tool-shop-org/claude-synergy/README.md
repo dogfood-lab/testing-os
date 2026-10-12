@@ -1,14 +1,17 @@
 # claude-synergy: how it works
 
-Mapped at 2026-10-05 from commit 2f08e9d by Atlas 1.26.0.
+Mapped at 2026-10-12 from commit 26d9752 by Atlas 1.26.0.
 
 ## What this is
 
-10 parts, mostly Markdown (1273 files) and JSON data (317); code in TypeScript (83), JavaScript (9), CSS (2), Python (2), Astro (1) and shell (1). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. It deploys a site to GitHub Pages. People run claude-synergy-mcp and hk.
+10 parts, mostly Markdown (2457 files) and JSON data (317); code in TypeScript (83), JavaScript (9), CSS (2), Python (2), Astro (1) and shell (1). Work enters through 7 doors; Tests and Release each reach 2 parts, and Tests is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run claude-synergy-mcp and hk.
 
 ## What changed since 2026-10-01 (a222e67)
 
-Nothing structural changed since 2026-10-01; 2 files changed content.
+- LATEST.txt is now written by .github/workflows/sync.yml.
+- PRODUCTS.txt is now written by .github/workflows/sync.yml.
+- the repository root was authored and is now mixed.
+- 1186 files added and 5 changed content, across 4 parts.
 
 ## What comes in
 
@@ -20,23 +23,22 @@ Nothing structural changed since 2026-10-01; 2 files changed content.
 6. **claude-synergy-mcp** (a command people run). Runs src/mcp-server.ts.
 7. **hk** (a command people run). Runs src/cli.ts.
 
-## What happens through Daily sync
+## What happens through Tests
 
-1. The workflow runs src/cli.ts in src; it builds src/mcp-server.ts in src.
-2. It commits LATEST.txt, PRODUCTS.txt, SOURCES.md (written by people), URGENT_FINDINGS.md (written by people), data/ and products/ (written by people), then pushes.
-3. It runs gh.
+1. The workflow runs test/integration/, test/regression/ and test/unit/ in test; it checks src/ in src.
+2. It uploads coverage to Codecov.
 
 ## Who reads the results
 
-Daily sync writes nothing this map can see.
+Tests writes nothing this map can see.
 
 ## The other doors
-
-**Tests** runs test/integration/, test/regression/ and test/unit/, checks src/, and uploads coverage to Codecov.
 
 **Release** runs test/integration/, test/regression/ and test/unit/, builds src/cli.ts and src/mcp-server.ts, publishes to npm, and creates a GitHub release.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
+
+**Daily sync** runs src/cli.ts, builds src/mcp-server.ts, writes to LATEST.txt and PRODUCTS.txt, commits LATEST.txt, PRODUCTS.txt, SOURCES.md (written by people), URGENT_FINDINGS.md (written by people), data/ and products/ (written by people), then pushes to a branch for review, never to main, runs gh, and opens a pull request.
 
 **@mcptoolshop/claude-synergy** (the package's entry, which runs the command hk; it is not a library) loads src/cli.ts and src/mcp-server.ts.
 
@@ -72,6 +74,8 @@ verify.sh runs in no workflow.
 
 ## Written but never read
 
+- **LATEST.txt** is written by .github/workflows/sync.yml and read by nothing else in this repository.
+- **PRODUCTS.txt** is written by .github/workflows/sync.yml and read by nothing else in this repository.
 - **dataset/changelog-actions/v1/eval-report-run1.json** is written by scripts/eval-cs-actions.mjs and read by nothing else in this repository.
 - **dataset/changelog-actions/v1/eval-report.v1.json** is written by scripts/eval-cs-actions.mjs and read by nothing else in this repository.
 - **dataset/changelog-actions/v1/judge-report.json** is written by scripts/judge-dataset.mjs and read by nothing else in this repository.
@@ -83,6 +87,8 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
+- **LATEST.txt** is written by .github/workflows/sync.yml.
+- **PRODUCTS.txt** is written by .github/workflows/sync.yml.
 - **dataset/changelog-actions/v1/entries/** is written by scripts/apply-a3c-review.mjs.
 - **dataset/changelog-actions/v1/eval-report-run1.json** is written by scripts/eval-cs-actions.mjs.
 - **dataset/changelog-actions/v1/eval-report.v1.json** is written by scripts/eval-cs-actions.mjs.
@@ -93,7 +99,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, docs/, products/, the repository root, site/ and synergies/. Nothing in this repository writes to them.
+People write .github/, docs/, products/, site/ and synergies/. Nothing in this repository writes to them.
 
 ## Where to start
 

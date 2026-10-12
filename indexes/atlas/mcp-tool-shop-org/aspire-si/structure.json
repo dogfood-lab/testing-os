@@ -1,0 +1,5627 @@
+{
+  "boundaries": [
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "fdc8e37f981b927e440dfec51104ef6413cf88fd71ec9dacc054420e100c4ee2",
+          "path": ".github/SECURITY.md"
+        },
+        {
+          "hash": "e27d081cd8ecd175784a4b0a736d03682eb9070ef746c28c73893458bab8c8d6",
+          "path": ".github/dependabot.yml"
+        },
+        {
+          "hash": "a181274c0973002492f16d9b5a770ec00a7a494c6f7021031386f7eee3cd2619",
+          "path": ".github/workflows/ci.yml"
+        },
+        {
+          "hash": "cf1ad38464c54f14127d46750a5763f224b286cac09ac46aafc8ebbcd993f3ff",
+          "path": ".github/workflows/pages.yml"
+        },
+        {
+          "hash": "fa7a58d722b7033aeb43bca1da08aa401576830515e4669bb459b9de84b982ab",
+          "path": ".github/workflows/release.yml"
+        }
+      ],
+      "globs": [
+        ".github/**"
+      ],
+      "importConfidence": "full",
+      "name": ".github",
+      "origin": "authored",
+      "role": "config",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 6,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 2,
+      "entryPoints": [
+        "aspire/cli.py"
+      ],
+      "externalNames": [
+        "openai"
+      ],
+      "externals": 1,
+      "files": [
+        {
+          "hash": "e6c243ab90acb48bf44d80721e30e6bd9cb849072914c54b70ae8839a30710da",
+          "importsFiles": [
+            "aspire/config.py",
+            "aspire/trainer.py"
+          ],
+          "path": "aspire/__init__.py"
+        },
+        {
+          "entry": "run",
+          "entryRule": 0,
+          "exports": [
+            "diagnose",
+            "dialogue",
+            "doctor",
+            "evaluate",
+            "init",
+            "judge",
+            "main",
+            "report",
+            "run",
+            "set_level",
+            "teachers",
+            "tolerate_unencodable_output",
+            "train",
+            "verbose",
+            "version_callback"
+          ],
+          "failurePaths": [
+            {
+              "in": "set_level",
+              "kind": "raise",
+              "line": 40
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 89
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 92
+            },
+            {
+              "in": "run",
+              "kind": "raise",
+              "line": 94
+            },
+            {
+              "in": "_read_prompts",
+              "kind": "raise",
+              "line": 100
+            },
+            {
+              "in": "_read_prompts",
+              "kind": "except",
+              "line": 103
+            },
+            {
+              "in": "_read_prompts",
+              "kind": "raise",
+              "line": 104
+            },
+            {
+              "in": "_read_prompts",
+              "kind": "raise",
+              "line": 110
+            },
+            {
+              "in": "version_callback",
+              "kind": "raise",
+              "line": 121
+            },
+            {
+              "in": "train",
+              "kind": "raise",
+              "line": 176
+            },
+            {
+              "in": "evaluate",
+              "kind": "raise",
+              "line": 236
+            },
+            {
+              "in": "_read_pairs",
+              "kind": "raise",
+              "line": 272
+            },
+            {
+              "in": "_read_pairs",
+              "kind": "except",
+              "line": 275
+            },
+            {
+              "in": "_read_pairs",
+              "kind": "raise",
+              "line": 276
+            },
+            {
+              "in": "_read_pairs",
+              "kind": "raise",
+              "line": 288
+            },
+            {
+              "in": "judge",
+              "kind": "raise",
+              "line": 311
+            },
+            {
+              "in": "judge",
+              "kind": "raise",
+              "line": 316
+            },
+            {
+              "in": "doctor",
+              "kind": "except",
+              "line": 474
+            },
+            {
+              "in": "doctor",
+              "kind": "except",
+              "line": 483
+            },
+            {
+              "in": "doctor",
+              "kind": "except",
+              "line": 530
+            },
+            {
+              "in": "doctor",
+              "kind": "raise",
+              "line": 550
+            },
+            {
+              "in": "diagnose",
+              "kind": "except",
+              "line": 593
+            },
+            {
+              "in": "diagnose",
+              "kind": "except",
+              "line": 628
+            },
+            {
+              "in": "diagnose",
+              "kind": "raise",
+              "line": 663
+            }
+          ],
+          "hash": "e87ebf85cab9bea9f223daa50e4fb4380f44d285d2976ce9dc9889fda57540fa",
+          "importOrder": [
+            "aspire/__init__.py",
+            "aspire/errors.py",
+            "aspire/config.py",
+            "aspire/trainer.py",
+            "aspire/judge.py",
+            "aspire/dialogue/__init__.py",
+            "aspire/teachers/__init__.py",
+            "aspire/teachers/registry.py"
+          ],
+          "importsFiles": [
+            "aspire/__init__.py",
+            "aspire/config.py",
+            "aspire/dialogue/__init__.py",
+            "aspire/errors.py",
+            "aspire/judge.py",
+            "aspire/teachers/__init__.py",
+            "aspire/teachers/registry.py",
+            "aspire/trainer.py"
+          ],
+          "path": "aspire/cli.py",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 56,
+                  "name": "AspireError",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "report"
+            },
+            {
+              "calls": [
+                {
+                  "line": 56,
+                  "name": "AspireError",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/errors.py"
+                  },
+                  "via": "report"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "run"
+            },
+            {
+              "calls": [
+                {
+                  "line": 99,
+                  "name": "exists",
+                  "target": null
+                },
+                {
+                  "branch": "not path.exists()",
+                  "line": 100,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                },
+                {
+                  "line": 102,
+                  "name": "read_text",
+                  "target": null
+                },
+                {
+                  "line": 104,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                },
+                {
+                  "branch": "not isinstance(prompts, list) or not all(isinstance(prompt,…",
+                  "line": 110,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_read_prompts"
+            },
+            {
+              "calls": [
+                {
+                  "line": 175,
+                  "name": "exists",
+                  "target": null
+                },
+                {
+                  "branch": "not config.exists()",
+                  "line": 176,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                },
+                {
+                  "line": 179,
+                  "name": "from_yaml",
+                  "target": {
+                    "file": "aspire/config.py"
+                  }
+                },
+                {
+                  "line": 181,
+                  "name": "AspireConfig",
+                  "target": {
+                    "file": "aspire/config.py"
+                  }
+                },
+                {
+                  "line": 99,
+                  "name": "exists",
+                  "target": null,
+                  "via": "_read_prompts"
+                },
+                {
+                  "branch": "not path.exists()",
+                  "line": 100,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  },
+                  "via": "_read_prompts"
+                },
+                {
+                  "line": 102,
+                  "name": "read_text",
+                  "target": null,
+                  "via": "_read_prompts"
+                },
+                {
+                  "line": 104,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  },
+                  "via": "_read_prompts"
+                },
+                {
+                  "branch": "not isinstance(prompts, list) or not all(isinstance(prompt,…",
+                  "line": 110,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  },
+                  "via": "_read_prompts"
+                },
+                {
+                  "line": 212,
+                  "name": "AspireTrainer",
+                  "target": {
+                    "file": "aspire/trainer.py"
+                  }
+                },
+                {
+                  "line": 214,
+                  "name": "train",
+                  "receiver": "AspireTrainer",
+                  "target": {
+                    "file": "aspire/trainer.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "train"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "not config_path.exists()",
+                  "line": 236,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                },
+                {
+                  "line": 240,
+                  "name": "from_yaml",
+                  "target": {
+                    "file": "aspire/config.py"
+                  }
+                },
+                {
+                  "line": 99,
+                  "name": "exists",
+                  "target": null,
+                  "via": "_read_prompts"
+                },
+                {
+                  "branch": "not path.exists()",
+                  "line": 100,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  },
+                  "via": "_read_prompts"
+                },
+                {
+                  "line": 102,
+                  "name": "read_text",
+                  "target": null,
+                  "via": "_read_prompts"
+                },
+                {
+                  "line": 104,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  },
+                  "via": "_read_prompts"
+                },
+                {
+                  "branch": "not isinstance(prompts, list) or not all(isinstance(prompt,…",
+                  "line": 110,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  },
+                  "via": "_read_prompts"
+                },
+                {
+                  "line": 247,
+                  "name": "AspireTrainer",
+                  "target": {
+                    "file": "aspire/trainer.py"
+                  }
+                },
+                {
+                  "line": 249,
+                  "name": "load_checkpoint",
+                  "receiver": "AspireTrainer",
+                  "target": {
+                    "file": "aspire/trainer.py"
+                  }
+                },
+                {
+                  "line": 252,
+                  "name": "_evaluate",
+                  "receiver": "AspireTrainer",
+                  "target": {
+                    "file": "aspire/trainer.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "evaluate"
+            },
+            {
+              "calls": [
+                {
+                  "line": 271,
+                  "name": "exists",
+                  "target": null
+                },
+                {
+                  "branch": "not path.exists()",
+                  "line": 272,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                },
+                {
+                  "line": 274,
+                  "name": "read_text",
+                  "target": null
+                },
+                {
+                  "line": 276,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                },
+                {
+                  "branch": "not ok or not data",
+                  "line": 288,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_read_pairs"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "prompt is not None or response is not None",
+                  "line": 311,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                },
+                {
+                  "line": 271,
+                  "name": "exists",
+                  "target": null,
+                  "via": "_read_pairs"
+                },
+                {
+                  "branch": "not path.exists()",
+                  "line": 272,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  },
+                  "via": "_read_pairs"
+                },
+                {
+                  "line": 274,
+                  "name": "read_text",
+                  "target": null,
+                  "via": "_read_pairs"
+                },
+                {
+                  "line": 276,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  },
+                  "via": "_read_pairs"
+                },
+                {
+                  "branch": "not ok or not data",
+                  "line": 288,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  },
+                  "via": "_read_pairs"
+                },
+                {
+                  "line": 316,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                },
+                {
+                  "line": 323,
+                  "name": "from_checkpoint",
+                  "target": {
+                    "file": "aspire/judge.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "judge"
+            },
+            {
+              "calls": [
+                {
+                  "line": 372,
+                  "name": "get_teacher",
+                  "target": {
+                    "file": "aspire/teachers/registry.py"
+                  }
+                },
+                {
+                  "line": 375,
+                  "name": "DialogueGenerator",
+                  "target": {
+                    "file": "aspire/dialogue/generator.py"
+                  }
+                },
+                {
+                  "line": 382,
+                  "name": "generate_dialogue",
+                  "receiver": "DialogueGenerator",
+                  "target": {
+                    "file": "aspire/dialogue/generator.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "dialogue"
+            },
+            {
+              "calls": [
+                {
+                  "line": 422,
+                  "name": "list",
+                  "target": {
+                    "file": "aspire/teachers/registry.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "teachers"
+            },
+            {
+              "calls": [
+                {
+                  "line": 436,
+                  "name": "AspireConfig",
+                  "target": {
+                    "file": "aspire/config.py"
+                  }
+                },
+                {
+                  "line": 437,
+                  "name": "to_yaml",
+                  "receiver": "AspireConfig",
+                  "target": {
+                    "file": "aspire/config.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "init"
+            }
+          ]
+        },
+        {
+          "hash": "39b65222ef9405b2b16fcd5d3f1d26e7b29d80fa02cbe797941118688adb2d68",
+          "path": "aspire/config.py"
+        },
+        {
+          "hash": "b88b4ddc16480723bf01e4a5c7532fff00a5fa84aa55fcfcfd7e6c9112e4d9d2",
+          "importsFiles": [
+            "aspire/critic/base.py",
+            "aspire/critic/head.py",
+            "aspire/critic/separate.py",
+            "aspire/critic/shared.py"
+          ],
+          "path": "aspire/critic/__init__.py"
+        },
+        {
+          "hash": "577612fd401c3a5c3941ac89c0ead15284b7f4499143bbd24d9def9dce32a97a",
+          "path": "aspire/critic/base.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "_pool",
+              "kind": "raise",
+              "line": 141
+            },
+            {
+              "in": "forward",
+              "kind": "raise",
+              "line": 161
+            }
+          ],
+          "hash": "4499153708521212fddfd0784fccc043465e7b4271630feb22ece2a1ea1a6d7f",
+          "importsFiles": [
+            "aspire/critic/base.py"
+          ],
+          "path": "aspire/critic/head.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "forward",
+              "kind": "raise",
+              "line": 158
+            }
+          ],
+          "hash": "0aaf8b4209f7174070ca0d1e106f39ae640fb179ee5e5102b915201b64c8d626",
+          "importsFiles": [
+            "aspire/critic/base.py"
+          ],
+          "path": "aspire/critic/separate.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "forward",
+              "kind": "raise",
+              "line": 131
+            }
+          ],
+          "hash": "4bfdfb79e4a677b9fe385cee3d903271e557d9703c591c08d73117b5efa883dd",
+          "importsFiles": [
+            "aspire/critic/base.py"
+          ],
+          "path": "aspire/critic/shared.py"
+        },
+        {
+          "hash": "93db6ffa4a337e9c231b5b039120343414c1bd38ae6145ef5f8f047af147bb8d",
+          "importsFiles": [
+            "aspire/dialogue/formatter.py",
+            "aspire/dialogue/generator.py",
+            "aspire/dialogue/manager.py"
+          ],
+          "path": "aspire/dialogue/__init__.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "format_dialogue",
+              "kind": "raise",
+              "line": 76
+            }
+          ],
+          "hash": "3ac1f99a0512f19c0de1fc9bc0e1e37afe66aa042ab25562feea1b846b7a9928",
+          "importsFiles": [
+            "aspire/dialogue/generator.py"
+          ],
+          "path": "aspire/dialogue/formatter.py"
+        },
+        {
+          "exports": [
+            "uses_chat_template"
+          ],
+          "hash": "8fcfe4d0a03767c9f86e810fae72b3d1b6701b567a34856980677603b86e639a",
+          "importsFiles": [
+            "aspire/teachers/base.py"
+          ],
+          "path": "aspire/dialogue/generator.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "_evaluation_from_dict",
+              "kind": "except",
+              "line": 26
+            },
+            {
+              "in": "_load_from_cache",
+              "kind": "except",
+              "line": 109
+            },
+            {
+              "in": "iterate_cached",
+              "kind": "except",
+              "line": 219
+            }
+          ],
+          "hash": "ccb6f469863fbefa9a14bc6cf49ec6c683c617022c5459ecbd081c0a6deecd7a",
+          "importsFiles": [
+            "aspire/dialogue/generator.py",
+            "aspire/teachers/base.py"
+          ],
+          "path": "aspire/dialogue/manager.py"
+        },
+        {
+          "exports": [
+            "missing_api_key"
+          ],
+          "hash": "d53bc32f68c4fba034db95acca129b614c50a67034ef510f73719462a169a087",
+          "path": "aspire/errors.py"
+        },
+        {
+          "entry": "pool_hidden_states",
+          "entryRule": 4,
+          "exports": [
+            "pool_hidden_states"
+          ],
+          "failurePaths": [
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 91
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 93
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 95
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 99
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 101
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 103
+            },
+            {
+              "in": "record_step",
+              "kind": "raise",
+              "line": 161
+            },
+            {
+              "in": "build",
+              "kind": "raise",
+              "line": 185
+            },
+            {
+              "in": "pool_hidden_states",
+              "kind": "raise",
+              "line": 277
+            }
+          ],
+          "hash": "c013b54ea914fbccdc0518c283e552af1958cc0eeedb00bddabd1b41f3413133",
+          "path": "aspire/geometry.py",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 290,
+                  "name": "detach",
+                  "target": null,
+                  "via": "_to_numpy"
+                },
+                {
+                  "line": 292,
+                  "name": "float",
+                  "target": null,
+                  "via": "_to_numpy"
+                },
+                {
+                  "line": 293,
+                  "name": "cpu",
+                  "target": null,
+                  "via": "_to_numpy"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "pool_hidden_states"
+            },
+            {
+              "calls": [
+                {
+                  "line": 290,
+                  "name": "detach",
+                  "target": null
+                },
+                {
+                  "line": 292,
+                  "name": "float",
+                  "target": null
+                },
+                {
+                  "line": 293,
+                  "name": "cpu",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_to_numpy"
+            },
+            {
+              "calls": [
+                {
+                  "line": 333,
+                  "name": "mean",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_project"
+            },
+            {
+              "calls": [
+                {
+                  "line": 393,
+                  "name": "mean",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_participation_ratio"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "scores.shape[1] == 1",
+                  "line": 403,
+                  "name": "var",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_score_spectrum"
+            },
+            {
+              "calls": [
+                {
+                  "line": 423,
+                  "name": "mean",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_professor_direction"
+            }
+          ]
+        },
+        {
+          "entry": "critic_scores",
+          "entryRule": 4,
+          "exports": [
+            "critic_score",
+            "critic_scores",
+            "encode_exchanges",
+            "format_exchange"
+          ],
+          "failurePaths": [
+            {
+              "in": "encode_exchanges",
+              "kind": "raise",
+              "line": 44
+            },
+            {
+              "in": "_device_of",
+              "kind": "except",
+              "line": 61
+            },
+            {
+              "in": "from_checkpoint",
+              "kind": "raise",
+              "line": 130
+            },
+            {
+              "in": "from_checkpoint",
+              "kind": "raise",
+              "line": 137
+            }
+          ],
+          "hash": "e27e6420e741a9b0a5ee1b397d764f741139b2d40f979912d7052fca34b0702d",
+          "importsFiles": [
+            "aspire/config.py",
+            "aspire/critic/__init__.py",
+            "aspire/dialogue/generator.py",
+            "aspire/errors.py"
+          ],
+          "path": "aspire/judge.py",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 28,
+                  "name": "uses_chat_template",
+                  "target": {
+                    "file": "aspire/dialogue/generator.py"
+                  }
+                },
+                {
+                  "branch": "uses_chat_template(tokenizer)",
+                  "line": 29,
+                  "name": "apply_chat_template",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "format_exchange"
+            },
+            {
+              "calls": [
+                {
+                  "line": 28,
+                  "name": "uses_chat_template",
+                  "target": {
+                    "file": "aspire/dialogue/generator.py"
+                  },
+                  "via": "format_exchange"
+                },
+                {
+                  "branch": "uses_chat_template(tokenizer)",
+                  "line": 29,
+                  "name": "apply_chat_template",
+                  "target": null,
+                  "via": "format_exchange"
+                },
+                {
+                  "line": 53,
+                  "name": "uses_chat_template",
+                  "target": {
+                    "file": "aspire/dialogue/generator.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "encode_exchanges"
+            },
+            {
+              "calls": [
+                {
+                  "line": 60,
+                  "name": "parameters",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_device_of"
+            },
+            {
+              "calls": [
+                {
+                  "line": 28,
+                  "name": "uses_chat_template",
+                  "target": {
+                    "file": "aspire/dialogue/generator.py"
+                  },
+                  "via": "format_exchange"
+                },
+                {
+                  "branch": "uses_chat_template(tokenizer)",
+                  "line": 29,
+                  "name": "apply_chat_template",
+                  "target": null,
+                  "via": "format_exchange"
+                },
+                {
+                  "line": 53,
+                  "name": "uses_chat_template",
+                  "target": {
+                    "file": "aspire/dialogue/generator.py"
+                  },
+                  "via": "encode_exchanges"
+                },
+                {
+                  "line": 60,
+                  "name": "parameters",
+                  "target": null,
+                  "via": "_device_of"
+                },
+                {
+                  "line": 78,
+                  "name": "eval",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "critic_scores"
+            },
+            {
+              "calls": [
+                {
+                  "line": 28,
+                  "name": "uses_chat_template",
+                  "target": {
+                    "file": "aspire/dialogue/generator.py"
+                  },
+                  "via": "format_exchange"
+                },
+                {
+                  "branch": "uses_chat_template(tokenizer)",
+                  "line": 29,
+                  "name": "apply_chat_template",
+                  "target": null,
+                  "via": "format_exchange"
+                },
+                {
+                  "line": 53,
+                  "name": "uses_chat_template",
+                  "target": {
+                    "file": "aspire/dialogue/generator.py"
+                  },
+                  "via": "encode_exchanges"
+                },
+                {
+                  "line": 60,
+                  "name": "parameters",
+                  "target": null,
+                  "via": "_device_of"
+                },
+                {
+                  "line": 78,
+                  "name": "eval",
+                  "target": null,
+                  "via": "critic_scores"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "critic_score"
+            }
+          ]
+        },
+        {
+          "hash": "6c61e464db60091eb94926eae13ffec05a20e7a4a386628973585dd24f48207c",
+          "importsFiles": [
+            "aspire/losses/combined.py",
+            "aspire/losses/critic.py",
+            "aspire/losses/student.py"
+          ],
+          "path": "aspire/losses/__init__.py"
+        },
+        {
+          "hash": "e099b3eecd958dc59ac47d031d1460bf0ca23a5059bfd482cc14b43a17393be6",
+          "importsFiles": [
+            "aspire/losses/critic.py",
+            "aspire/losses/student.py"
+          ],
+          "path": "aspire/losses/combined.py"
+        },
+        {
+          "hash": "bb54dbfbd9feb2e4898040da67d0d25e73ad8fdefc519aceca852c4136266057",
+          "path": "aspire/losses/critic.py"
+        },
+        {
+          "hash": "131ba8375bf33b71b81e1c283463095376ecb3df8e8efc4809101c38a73d8c75",
+          "path": "aspire/losses/student.py"
+        },
+        {
+          "hash": "f1c8d48a114247d9ecdb1c2bf8ebb991d43279c417d696937479fd916c5417a0",
+          "importsFiles": [
+            "aspire/perception/character.py",
+            "aspire/perception/controlled_chaos.py",
+            "aspire/perception/empathy_evaluation.py",
+            "aspire/perception/integration.py",
+            "aspire/perception/metacognition.py",
+            "aspire/perception/syntropy.py",
+            "aspire/perception/theory_of_mind.py"
+          ],
+          "path": "aspire/perception/__init__.py"
+        },
+        {
+          "exports": [
+            "create_analytical_character",
+            "create_compassionate_character",
+            "create_socratic_character"
+          ],
+          "failurePaths": [
+            {
+              "in": "save",
+              "kind": "raise",
+              "line": 626
+            },
+            {
+              "in": "save",
+              "kind": "except",
+              "line": 635
+            },
+            {
+              "in": "save",
+              "kind": "raise",
+              "line": 636
+            },
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 689
+            },
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 700
+            },
+            {
+              "in": "load",
+              "kind": "except",
+              "line": 730
+            },
+            {
+              "in": "load",
+              "kind": "raise",
+              "line": 737
+            },
+            {
+              "in": "load",
+              "kind": "except",
+              "line": 764
+            }
+          ],
+          "hash": "3caa01df753a14982835ddb36bf1a85b721457e8f0f53a10443566e466112586",
+          "path": "aspire/perception/character.py"
+        },
+        {
+          "exports": [
+            "apply_chaos_to_batch"
+          ],
+          "hash": "fe9e5dc40c1600fdb4e9dcd92fa57673a8cae881c1ed44233146ebe7e12dbcd1",
+          "path": "aspire/perception/controlled_chaos.py"
+        },
+        {
+          "exports": [
+            "create_perception_enhanced_evaluation_prompt"
+          ],
+          "hash": "5120d7557dcb79ac752c77e3be8057df4d4fe96b06de0ba334fc43d4c963bd69",
+          "importsFiles": [
+            "aspire/teachers/base.py"
+          ],
+          "path": "aspire/perception/empathy_evaluation.py"
+        },
+        {
+          "exports": [
+            "integrate_perception_with_trainer"
+          ],
+          "hash": "23431bf57b16c7030c2e3e31fe2e83f14addb3476f8d8d027dbb9b2bfa83177c",
+          "importsFiles": [
+            "aspire/perception/character.py",
+            "aspire/perception/controlled_chaos.py",
+            "aspire/perception/empathy_evaluation.py",
+            "aspire/perception/metacognition.py",
+            "aspire/perception/theory_of_mind.py"
+          ],
+          "path": "aspire/perception/integration.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "estimate_from_logits",
+              "kind": "raise",
+              "line": 311
+            }
+          ],
+          "hash": "7f2a1831ef683a2c99be155c0ec3eb8effec33c73ed7cc8e1b5987cb7f24def2",
+          "path": "aspire/perception/metacognition.py"
+        },
+        {
+          "exports": [
+            "compute_empathic_syntropy",
+            "compute_negentropy_approximation",
+            "compute_semantic_coherence"
+          ],
+          "failurePaths": [
+            {
+              "in": "compute_negentropy_approximation",
+              "kind": "raise",
+              "line": 237
+            }
+          ],
+          "hash": "2c86b4b02edde94d917fa0a2b9e09badcf0372fc970b30467100a6351b8c5c5e",
+          "path": "aspire/perception/syntropy.py"
+        },
+        {
+          "hash": "e70a08883648ae7aeb3cd7f2440d64356aecfb7467495223bb5321530686598a",
+          "path": "aspire/perception/theory_of_mind.py"
+        },
+        {
+          "hash": "5805f18f7d00d0b88fa6080b2129924af5855cb8ddc73c68f39d1f13638b811f",
+          "importsFiles": [
+            "aspire/teachers/base.py",
+            "aspire/teachers/claude.py",
+            "aspire/teachers/composite.py",
+            "aspire/teachers/local.py",
+            "aspire/teachers/openai.py",
+            "aspire/teachers/personas.py",
+            "aspire/teachers/registry.py"
+          ],
+          "path": "aspire/teachers/__init__.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "_validate_input",
+              "kind": "raise",
+              "line": 208
+            },
+            {
+              "in": "_validate_input",
+              "kind": "raise",
+              "line": 210
+            },
+            {
+              "in": "_validate_input",
+              "kind": "raise",
+              "line": 217
+            },
+            {
+              "in": "_validate_input",
+              "kind": "raise",
+              "line": 221
+            }
+          ],
+          "hash": "1954341ccf65677bdbed06b2877eb7f1b46341a0423c73215510bfa0d7f8930d",
+          "importsFiles": [
+            "aspire/errors.py"
+          ],
+          "path": "aspire/teachers/base.py"
+        },
+        {
+          "exports": [
+            "accepts_temperature",
+            "reply_text"
+          ],
+          "failurePaths": [
+            {
+              "in": "reply_text",
+              "kind": "raise",
+              "line": 49
+            },
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 84
+            },
+            {
+              "in": "challenge",
+              "kind": "except",
+              "line": 159
+            },
+            {
+              "in": "evaluate",
+              "kind": "except",
+              "line": 242
+            },
+            {
+              "in": "evaluate",
+              "kind": "except",
+              "line": 254
+            }
+          ],
+          "hash": "e9d6679356da98cf87f9e75566dbf79916587fe73818dcc5cb8c65a456a04c2c",
+          "importsFiles": [
+            "aspire/errors.py",
+            "aspire/teachers/base.py"
+          ],
+          "path": "aspire/teachers/claude.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 48
+            },
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 55
+            }
+          ],
+          "hash": "27da27194af9a40d5b064aa4722bbcb74522db02d26246ae41797b629c0eda0a",
+          "importsFiles": [
+            "aspire/teachers/base.py"
+          ],
+          "path": "aspire/teachers/composite.py"
+        },
+        {
+          "exports": [
+            "default_device",
+            "evaluation_request",
+            "extract_improved",
+            "extract_json_object",
+            "extract_score",
+            "parse_evaluation"
+          ],
+          "failurePaths": [
+            {
+              "in": "extract_json_object",
+              "kind": "except",
+              "line": 50
+            },
+            {
+              "in": "_clamp_score",
+              "kind": "except",
+              "line": 65
+            },
+            {
+              "in": "parse_evaluation",
+              "kind": "except",
+              "line": 117
+            }
+          ],
+          "hash": "c981c4c921ac4b1f6ac2e93858423aa5e205b312cdf8ba7387d721d955185075",
+          "importsFiles": [
+            "aspire/teachers/base.py"
+          ],
+          "path": "aspire/teachers/local.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 50
+            },
+            {
+              "in": "challenge",
+              "kind": "except",
+              "line": 111
+            },
+            {
+              "in": "evaluate",
+              "kind": "except",
+              "line": 182
+            },
+            {
+              "in": "evaluate",
+              "kind": "except",
+              "line": 194
+            }
+          ],
+          "hash": "939a6bdcea97ad365899b41027ef4c658be3b3559490926df6d06792e35627da",
+          "importsFiles": [
+            "aspire/errors.py",
+            "aspire/teachers/base.py"
+          ],
+          "path": "aspire/teachers/openai.py"
+        },
+        {
+          "exports": [
+            "create_persona_teacher"
+          ],
+          "failurePaths": [
+            {
+              "in": "create_persona_teacher",
+              "kind": "raise",
+              "line": 294
+            }
+          ],
+          "hash": "0e39ae1b518c5917525ec88077c0e755cc1b0f02b018c74d27b04c4283d9bab7",
+          "importsFiles": [
+            "aspire/teachers/base.py",
+            "aspire/teachers/claude.py"
+          ],
+          "path": "aspire/teachers/personas.py"
+        },
+        {
+          "entry": "_register_builtin_teachers",
+          "entryRule": 1,
+          "exports": [
+            "get_teacher",
+            "register_teacher"
+          ],
+          "failurePaths": [
+            {
+              "in": "create",
+              "kind": "raise",
+              "line": 42
+            }
+          ],
+          "hash": "765c28c3a443390d76c0278a1941f27a31e1abfa80b05e5f101f2a5d3e5dc684",
+          "importsFiles": [
+            "aspire/teachers/base.py",
+            "aspire/teachers/claude.py",
+            "aspire/teachers/local.py",
+            "aspire/teachers/openai.py",
+            "aspire/teachers/personas.py"
+          ],
+          "path": "aspire/teachers/registry.py",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 75,
+                  "name": "ClaudeTeacher",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/teachers/claude.py"
+                  }
+                },
+                {
+                  "line": 76,
+                  "name": "OpenAITeacher",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/teachers/openai.py"
+                  }
+                },
+                {
+                  "line": 78,
+                  "name": "LocalTeacher",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/teachers/local.py"
+                  }
+                },
+                {
+                  "line": 81,
+                  "name": "SocraticTeacher",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/teachers/personas.py"
+                  }
+                },
+                {
+                  "line": 82,
+                  "name": "ScientificTeacher",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/teachers/personas.py"
+                  }
+                },
+                {
+                  "line": 83,
+                  "name": "CreativeTeacher",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/teachers/personas.py"
+                  }
+                },
+                {
+                  "line": 84,
+                  "name": "AdversarialTeacher",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/teachers/personas.py"
+                  }
+                },
+                {
+                  "line": 85,
+                  "name": "CompassionateTeacher",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/teachers/personas.py"
+                  }
+                },
+                {
+                  "line": 88,
+                  "name": "SocraticTeacher",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/teachers/personas.py"
+                  }
+                },
+                {
+                  "line": 89,
+                  "name": "ScientificTeacher",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/teachers/personas.py"
+                  }
+                },
+                {
+                  "line": 90,
+                  "name": "CreativeTeacher",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/teachers/personas.py"
+                  }
+                },
+                {
+                  "line": 91,
+                  "name": "AdversarialTeacher",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/teachers/personas.py"
+                  }
+                },
+                {
+                  "line": 92,
+                  "name": "CompassionateTeacher",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/teachers/personas.py"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "_register_builtin_teachers"
+            }
+          ]
+        },
+        {
+          "entry": "main",
+          "entryRule": 1,
+          "exports": [
+            "build_teacher",
+            "describe_teacher",
+            "load_peft_weights_into",
+            "main"
+          ],
+          "failurePaths": [
+            {
+              "kind": "except",
+              "line": 29
+            },
+            {
+              "in": "build_teacher",
+              "kind": "raise",
+              "line": 66
+            },
+            {
+              "in": "build_teacher",
+              "kind": "raise",
+              "line": 74
+            },
+            {
+              "in": "build_teacher",
+              "kind": "raise",
+              "line": 83
+            },
+            {
+              "in": "load_peft_weights_into",
+              "kind": "raise",
+              "line": 107
+            },
+            {
+              "in": "_build_critic",
+              "kind": "raise",
+              "line": 309
+            },
+            {
+              "in": "_init_optimizers",
+              "kind": "raise",
+              "line": 349
+            },
+            {
+              "in": "_init_optimizers",
+              "kind": "raise",
+              "line": 357
+            },
+            {
+              "in": "_write_geometry",
+              "kind": "except",
+              "line": 474
+            }
+          ],
+          "hash": "4c3c6d8813d2bb1e358490b3baf228374001975beea0a6d6aaee4803a8f46505",
+          "importsFiles": [
+            "aspire/config.py",
+            "aspire/critic/__init__.py",
+            "aspire/dialogue/__init__.py",
+            "aspire/errors.py",
+            "aspire/geometry.py",
+            "aspire/judge.py",
+            "aspire/losses/__init__.py",
+            "aspire/teachers/__init__.py"
+          ],
+          "path": "aspire/trainer.py",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "branch": "not cfg.composite_members",
+                  "line": 66,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                },
+                {
+                  "branch": "len(set(names)) != len(names)",
+                  "line": 74,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                },
+                {
+                  "branch": "spec == \"composite\"",
+                  "line": 78,
+                  "name": "CompositeTeacher",
+                  "target": {
+                    "file": "aspire/teachers/composite.py"
+                  }
+                },
+                {
+                  "branch": "not model",
+                  "line": 83,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                },
+                {
+                  "branch": "spec == \"local\" or spec.startswith(\"local:\")",
+                  "line": 87,
+                  "name": "get_teacher",
+                  "target": {
+                    "file": "aspire/teachers/registry.py"
+                  }
+                },
+                {
+                  "line": 97,
+                  "name": "get_teacher",
+                  "target": {
+                    "file": "aspire/teachers/registry.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "build_teacher"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "missing",
+                  "line": 107,
+                  "name": "ConfigError",
+                  "target": {
+                    "file": "aspire/errors.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "load_peft_weights_into"
+            },
+            {
+              "calls": [
+                {
+                  "line": 115,
+                  "name": "CompositeTeacher",
+                  "passed": true,
+                  "target": {
+                    "file": "aspire/teachers/composite.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "describe_teacher"
+            },
+            {
+              "calls": [
+                {
+                  "line": 665,
+                  "name": "AspireConfig",
+                  "target": {
+                    "file": "aspire/config.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "main"
+            }
+          ]
+        }
+      ],
+      "globs": [
+        "aspire/**"
+      ],
+      "importConfidence": "full",
+      "name": "aspire",
+      "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 14,
+          "where": [
+            "caller"
+          ],
+          "writes": 4
+        },
+        {
+          "reads": 1,
+          "where": [
+            "home:.cache/"
+          ],
+          "writes": 0
+        }
+      ],
+      "outsideReads": 15,
+      "outsideWrites": 4,
+      "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
+      "testedBy": 49,
+      "unresolvedNamed": [
+        {
+          "path": "aspire/cli.py",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
+      "unresolvedSites": 1
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "cca92ffd3d9929a2328f4cc6c5273cd6d9cc83c33137f235cec8c9a9fa367a44",
+          "path": "docs/perception-module.md"
+        },
+        {
+          "hash": "d27d5ae88249f857371e331c8ee7b314436c86d9761a52b6173e674ea7263978",
+          "path": "docs/runs/2026-10-06-pod-run.md"
+        },
+        {
+          "hash": "cebe4327c0ca581d4e21d6a362aeb816e9b73bbf7493244d21c6a400ae3014ef",
+          "path": "docs/runs/2026-10-07-next-runs-plan.md"
+        },
+        {
+          "hash": "766c4481a6d783beb53d22304777fd5440f7a6bb0052727ac06263158338164e",
+          "path": "docs/runs/2026-10-07-run-1-seeds.md"
+        },
+        {
+          "hash": "c7cb5c43622d95f466422ec3566106342287827045a429141ca440bb40d934bd",
+          "path": "docs/runs/2026-10-07-runs-2-3.md"
+        },
+        {
+          "hash": "f77b1703536182f935155e44743e67258e90ba3b4ab60d08f0f6567cdf808d1d",
+          "path": "docs/runs/2026-10-07-sft-then-aspire.md"
+        },
+        {
+          "hash": "2d137735c5a6736d6c54e225b61351be8ae91be09a91b030394a845187767e72",
+          "path": "docs/runs/2026-10-08-auditor-plan.md"
+        },
+        {
+          "hash": "6b95d6674e2a40e2bc4c041c89c87591419fab63cf93644d1086462addce9186",
+          "path": "docs/runs/2026-10-08-auditor.md"
+        },
+        {
+          "hash": "dbdf1c44844633aa30554fb4dea8d60e51a661187bf01e49516f0e9307761b74",
+          "path": "docs/runs/2026-10-08-critic-init-plan.md"
+        },
+        {
+          "hash": "ab0f4339149220f85deb0491a507885cabb830461ca4820ed375658cb7807132",
+          "path": "docs/runs/2026-10-08-critic-init.md"
+        },
+        {
+          "hash": "0be0fda33a4cbdd142bf511d24a4936da741cb0feb25cfbb32843c6f563b62d9",
+          "path": "docs/runs/2026-10-08-kev-confirmation-plan.md"
+        },
+        {
+          "hash": "428e60286fe5d4387c7c27eb4245923e5b144185252420752f360c38323eb7fe",
+          "path": "docs/runs/2026-10-08-kev-confirmation.md"
+        },
+        {
+          "hash": "28ea6a60504a2c9bf5e39915e4029fee4ff4e420ab9a8d14daa1436b72f825ac",
+          "path": "docs/runs/2026-10-08-next-step-plan.md"
+        },
+        {
+          "hash": "73803fd1d4d3562e056123eabceb6f3f827db54da86485d5f3bbb4b901f9a687",
+          "path": "docs/runs/2026-10-08-step-2.md"
+        },
+        {
+          "hash": "f3297e68f9ec1f7460974e61d5e1137d888c77ce1d87af98cae9fcef0722f45b",
+          "path": "docs/runs/2026-10-08-step-3-plan.md"
+        },
+        {
+          "hash": "a1efe68ff8f0de27d46f0352e67b694a74b7e8b24480b69fd987b07e4a2b8a02",
+          "path": "docs/runs/receipts/2026-10-08-auditor/B-manifest.json"
+        },
+        {
+          "hash": "d61915ebf4106c3067b6ea08d83c3aace9555113afb8193fe480c7013cb47eb5",
+          "path": "docs/runs/receipts/2026-10-08-auditor/B-readout.json"
+        },
+        {
+          "hash": "9ef063a78593490fecadd77c093944570f03179f392ccd7224a8f42c4ca179a2",
+          "path": "docs/runs/receipts/2026-10-08-auditor/B-selection.json"
+        },
+        {
+          "hash": "49dd0893ed4ce809b326ecec33a3e1b886f9b1b92db8925ae2fa79eda54d0de7",
+          "path": "docs/runs/receipts/2026-10-08-auditor/README.md"
+        },
+        {
+          "hash": "4a68cb7606b39641e1649e9d622f87008e7c561ed41e6d9309cbe6c8382a687c",
+          "path": "docs/runs/receipts/2026-10-08-auditor/judge-control-selection.json"
+        },
+        {
+          "hash": "a1c984b29c3e3631f150019899c704b75e268b356ebec786e186c7b27fde7711",
+          "path": "docs/runs/receipts/2026-10-08-auditor/verdicts-error-B-mistral-small_24b.json"
+        },
+        {
+          "hash": "168412b204d82fab976ee0eea3e0c27a64394acadd5a2cc6cb8a042a2cc21a7a",
+          "path": "docs/spec-feature-enhancements.md"
+        }
+      ],
+      "globs": [
+        "docs/**"
+      ],
+      "importConfidence": "full",
+      "name": "docs",
+      "origin": "authored",
+      "role": "docs",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 10,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "exports": [
+            "main"
+          ],
+          "hash": "5a9e659a23f59a64e38730cf45782f4e91b8ff8782a8667c9f7ae57b5bd785d8",
+          "importOrder": [
+            "aspire/teachers/__init__.py",
+            "aspire/dialogue/__init__.py"
+          ],
+          "importsFiles": [
+            "aspire/dialogue/__init__.py",
+            "aspire/teachers/__init__.py"
+          ],
+          "path": "examples/basic_dialogue.py"
+        },
+        {
+          "exports": [
+            "main"
+          ],
+          "hash": "60715dd0dab65d960da7066316d52647f4a110723167879000ccf3d117bb7e4b",
+          "importOrder": [
+            "aspire/teachers/__init__.py",
+            "aspire/dialogue/__init__.py"
+          ],
+          "importsFiles": [
+            "aspire/dialogue/__init__.py",
+            "aspire/teachers/__init__.py"
+          ],
+          "path": "examples/composite_teacher.py"
+        },
+        {
+          "hash": "1b34a34bf90d3ad5a96fa2efa6414dd57cbb69df01d255c78ee08553d66f86c1",
+          "importOrder": [
+            "aspire/teachers/claude.py",
+            "aspire/teachers/base.py",
+            "aspire/teachers/registry.py",
+            "aspire/dialogue/__init__.py"
+          ],
+          "importsFiles": [
+            "aspire/dialogue/__init__.py",
+            "aspire/teachers/base.py",
+            "aspire/teachers/claude.py",
+            "aspire/teachers/registry.py"
+          ],
+          "path": "examples/custom_teacher.py"
+        },
+        {
+          "entry": "main",
+          "entryRule": 1,
+          "exports": [
+            "main",
+            "simulate"
+          ],
+          "hash": "e420840b8602e539b88115f9fb2ff21adf3f0665f5dffee70fd3e7a8e29d0353",
+          "importsFiles": [
+            "aspire/geometry.py",
+            "aspire/teachers/base.py"
+          ],
+          "path": "examples/geometry_demo.py",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 36,
+                  "name": "GeometryRecorder",
+                  "target": {
+                    "file": "aspire/geometry.py"
+                  }
+                },
+                {
+                  "line": 50,
+                  "name": "record_step",
+                  "receiver": "GeometryRecorder",
+                  "target": {
+                    "file": "aspire/geometry.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "simulate"
+            },
+            {
+              "calls": [
+                {
+                  "line": 36,
+                  "name": "GeometryRecorder",
+                  "target": {
+                    "file": "aspire/geometry.py"
+                  },
+                  "via": "simulate"
+                },
+                {
+                  "line": 50,
+                  "name": "record_step",
+                  "receiver": "GeometryRecorder",
+                  "target": {
+                    "file": "aspire/geometry.py"
+                  },
+                  "via": "simulate"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "main"
+            }
+          ]
+        },
+        {
+          "hash": "cbb86a940a41d60c09b42769e04c6149f4964b296371acf8d6314d803f06d196",
+          "path": "examples/local-run/composite-teacher.yaml"
+        },
+        {
+          "hash": "1e77d5006cd67afc3d1f0babf5d631ce5d291ef503052fc6b88a1b91d9755317",
+          "path": "examples/local-run/local-teacher.yaml"
+        },
+        {
+          "hash": "a709734ca39418f9d315201c85533f4ba789c075f01f54c3b5f18a20462b1de1",
+          "path": "examples/local-run/prompts.json"
+        },
+        {
+          "hash": "a91c5a23d8f435e6bf3f2796e62a53657dbfb19b89ab846143d8793219965c9f",
+          "importsFiles": [
+            "aspire/geometry.py"
+          ],
+          "path": "examples/pod-run/drift.py"
+        },
+        {
+          "exports": [
+            "cos_dist",
+            "states_for"
+          ],
+          "hash": "168d1760cf59e77f1e9ba1419651811794ff6374554edfb922bcfa0144417564",
+          "importsFiles": [
+            "aspire/config.py",
+            "aspire/geometry.py",
+            "aspire/judge.py"
+          ],
+          "path": "examples/pod-run/probe.py"
+        },
+        {
+          "hash": "760847461f46ff6e7e1242150bbb6df281713f0af8b8abafe5f655f89194bddc",
+          "path": "examples/pod-run/real-composite-teacher.yaml"
+        },
+        {
+          "hash": "6c97c3941df987f3e28793814ee9633db64c6943aa1b947dcb5474152564da0e",
+          "path": "examples/pod-run/real-local-teacher.yaml"
+        },
+        {
+          "hash": "4d2182770bc35cde33701964eff86610d0883f50baa82cc85d7dbe6ddffdf59c",
+          "path": "examples/pod-run/setup.sh"
+        },
+        {
+          "hash": "c82180ca28b5b631fa4eaed0832f8b053051257f9a02d8d89cc7bde18c1411d6",
+          "path": "examples/pod-run/train.sh"
+        },
+        {
+          "hash": "0c6565ec1308909f212ab49619652a64677e6ede6abcc8249e87e2debb717e40",
+          "importsFiles": [
+            "aspire/geometry.py"
+          ],
+          "path": "examples/pod-run/upgrade_export.py"
+        },
+        {
+          "exports": [
+            "build",
+            "judge_only",
+            "judge_report",
+            "main",
+            "plant_errors"
+          ],
+          "failurePaths": [
+            {
+              "in": "judge_only",
+              "kind": "raise",
+              "line": 374
+            }
+          ],
+          "hash": "562aebb541b4c2ccffa505b33f2002b3a3e185ec576c446d98f4cde4a0f16a21",
+          "importsFiles": [
+            "examples/sft-experiment/clean_dataset.py",
+            "examples/sft-experiment/lib.py"
+          ],
+          "path": "examples/sft-experiment/build_dataset.py"
+        },
+        {
+          "exports": [
+            "agreement",
+            "ask",
+            "check_server",
+            "file_sha256",
+            "identity",
+            "main",
+            "ollama_version",
+            "readout",
+            "sample_ids",
+            "stop",
+            "verdict",
+            "wilson"
+          ],
+          "failurePaths": [
+            {
+              "in": "check_server",
+              "kind": "raise",
+              "line": 135
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 209
+            }
+          ],
+          "hash": "8a3610868c247ad2e4c2713eedfc66f9b90596350a8c00f4116aebd1e98106e7",
+          "importOrder": [
+            "examples/sft-experiment/matched_set.py",
+            "examples/sft-experiment/critic_heads.py",
+            "examples/sft-experiment/recheck.py",
+            "examples/sft-experiment/skeptic_pairs.py"
+          ],
+          "importsFiles": [
+            "examples/sft-experiment/critic_heads.py",
+            "examples/sft-experiment/matched_set.py",
+            "examples/sft-experiment/recheck.py",
+            "examples/sft-experiment/skeptic_pairs.py"
+          ],
+          "path": "examples/sft-experiment/build_equivalence.py"
+        },
+        {
+          "exports": [
+            "char_similarity",
+            "clean",
+            "example_truncated",
+            "looks_truncated",
+            "main",
+            "pair_problems",
+            "self_flags"
+          ],
+          "hash": "1f18f33e2708f90c7e4ed509065f431e811a872031a02cc5d59b17d0b3c913f9",
+          "importsFiles": [
+            "examples/sft-experiment/lib.py"
+          ],
+          "path": "examples/sft-experiment/clean_dataset.py"
+        },
+        {
+          "hash": "11eb51c7a83d82de0f886929ce9405e48c29557d6bea447d37bbcccdc2ed71d3",
+          "path": "examples/sft-experiment/configs/sft-composite-teacher.yaml"
+        },
+        {
+          "hash": "879b8fb6b09a24974f88c621d6bd31d962745050a53071f797dc89ad799f017e",
+          "path": "examples/sft-experiment/configs/sft-local-teacher.yaml"
+        },
+        {
+          "exports": [
+            "auc",
+            "balanced_flips",
+            "boot",
+            "clusters",
+            "edit_spans",
+            "error_overlap",
+            "found_auditor_reading",
+            "load_pairs",
+            "main",
+            "mid_layer",
+            "near_tie_share",
+            "pair_wins",
+            "paired_diff",
+            "pearson",
+            "permutation_p",
+            "positive_gate",
+            "role_check",
+            "role_scores",
+            "score_answers",
+            "score_set",
+            "skeptic_class",
+            "span_tokens",
+            "standardise",
+            "train_head",
+            "transfer_reading",
+            "two_sample_diff",
+            "with_marker"
+          ],
+          "hash": "f2b9ea331d5a181a367bd22756949db57343ca090987e2406ec4c91eecc32742",
+          "importsFiles": [
+            "aspire/critic/__init__.py",
+            "examples/sft-experiment/critic_heads_run.py",
+            "examples/sft-experiment/skeptic_pairs.py"
+          ],
+          "path": "examples/sft-experiment/critic_heads.py"
+        },
+        {
+          "exports": [
+            "cache_sets",
+            "compare_sources",
+            "family_contrast",
+            "load_results",
+            "readout",
+            "skeptic_readout",
+            "skeptic_role_readable",
+            "train_all",
+            "train_perm",
+            "train_skeptic"
+          ],
+          "failurePaths": [
+            {
+              "in": "cache_sets",
+              "kind": "raise",
+              "line": 114
+            }
+          ],
+          "hash": "84fda58e9189658a48be8c7c3ee8c0681a114871212a70bd5d21bdbe6f482321",
+          "importOrder": [
+            "examples/sft-experiment/critic_heads.py",
+            "aspire/judge.py",
+            "examples/sft-experiment/fast_heads.py"
+          ],
+          "importsFiles": [
+            "aspire/judge.py",
+            "examples/sft-experiment/critic_heads.py",
+            "examples/sft-experiment/fast_heads.py"
+          ],
+          "path": "examples/sft-experiment/critic_heads_run.py"
+        },
+        {
+          "exports": [
+            "answer",
+            "ended",
+            "main",
+            "score_answers"
+          ],
+          "hash": "510bebf704db8f2eacbc258a4ff345fd46dac317b6624b376436fbf83cd73ead",
+          "importsFiles": [
+            "examples/sft-experiment/lib.py",
+            "examples/sft-experiment/probe_models.py"
+          ],
+          "path": "examples/sft-experiment/eval_heldout.py"
+        },
+        {
+          "exports": [
+            "batch_plan",
+            "pair_loss",
+            "score_set_fast",
+            "stack_features",
+            "train_head_fast"
+          ],
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 131
+            },
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 133
+            }
+          ],
+          "hash": "05fe6302d55563f17e057d7e37acda096eb494fb865d5270e464d730fb2cc987",
+          "importOrder": [
+            "examples/sft-experiment/critic_heads.py",
+            "aspire/critic/__init__.py"
+          ],
+          "importsFiles": [
+            "aspire/critic/__init__.py",
+            "examples/sft-experiment/critic_heads.py"
+          ],
+          "path": "examples/sft-experiment/fast_heads.py"
+        },
+        {
+          "exports": [
+            "build",
+            "changed_span",
+            "main",
+            "split",
+            "strong_answers",
+            "write"
+          ],
+          "hash": "d0316469c53b58d847baa679754298c131ab65c6342b5d38e76e0fb3c5b6171a",
+          "importsFiles": [
+            "examples/sft-experiment/build_dataset.py",
+            "examples/sft-experiment/lib.py"
+          ],
+          "path": "examples/sft-experiment/fresh_pairs.py"
+        },
+        {
+          "exports": [
+            "check_speed",
+            "driver_cuda",
+            "gpus",
+            "main",
+            "probe_timeout",
+            "problems",
+            "projected_minutes",
+            "rate_problem",
+            "required_mbps",
+            "shard_rate",
+            "write_rate"
+          ],
+          "hash": "a8074f7cae0dce245665081413ace89ea97afcd7a17cddd9fdc9a0b726d841bb",
+          "path": "examples/sft-experiment/host_check.py"
+        },
+        {
+          "exports": [
+            "add_separable",
+            "evaluate",
+            "from_scores",
+            "main",
+            "prompt_groups",
+            "subset_summary",
+            "summarize",
+            "teacher_detects"
+          ],
+          "hash": "1c9b8050e8b531d920a71d10be83f60bed0c6bcd0da1068e1af6d3adc1905247",
+          "importOrder": [
+            "examples/sft-experiment/lib.py",
+            "aspire/judge.py"
+          ],
+          "importsFiles": [
+            "aspire/judge.py",
+            "examples/sft-experiment/lib.py"
+          ],
+          "path": "examples/sft-experiment/judge_eval.py"
+        },
+        {
+          "exports": [
+            "confirmation_reading",
+            "http_ask",
+            "judge",
+            "main",
+            "order_averaged",
+            "read_choice",
+            "reading",
+            "request"
+          ],
+          "hash": "1a40a592fd7ba3ee1b737be35a6cc848b5a7a425c87917df0086593ddddeb7e4",
+          "path": "examples/sft-experiment/judge_kev.py"
+        },
+        {
+          "exports": [
+            "body",
+            "http_ask",
+            "judge",
+            "letter_probs",
+            "main"
+          ],
+          "hash": "39836589a074f5c0cc159f40066e2246addf0e543d58b159189ac16c209c4519",
+          "importsFiles": [
+            "examples/sft-experiment/judge_kev.py",
+            "examples/sft-experiment/lib.py",
+            "examples/sft-experiment/pairwise_teacher.py"
+          ],
+          "path": "examples/sft-experiment/judge_logprob.py"
+        },
+        {
+          "exports": [
+            "apply_edit",
+            "bootstrap_ci",
+            "challenge_request",
+            "challenge_types",
+            "content_words",
+            "dedupe",
+            "mean_ci",
+            "pairwise_accuracy",
+            "parse_question_list",
+            "question_request",
+            "read_jsonl",
+            "refuse_cloud",
+            "score_of",
+            "scoring_request",
+            "similarity",
+            "split_held_out",
+            "teacher_name",
+            "teacher_system_prompt",
+            "write_jsonl"
+          ],
+          "failurePaths": [
+            {
+              "in": "parse_question_list",
+              "kind": "except",
+              "line": 196
+            },
+            {
+              "in": "generate",
+              "kind": "raise",
+              "line": 355
+            },
+            {
+              "in": "refuse_cloud",
+              "kind": "raise",
+              "line": 432
+            },
+            {
+              "in": "model_id",
+              "kind": "raise",
+              "line": 471
+            }
+          ],
+          "hash": "9b51522c672faa68050b22b50fd7d549e2cac3e669472f4ef39351ddbb09e4da",
+          "importsFiles": [
+            "aspire/teachers/base.py",
+            "aspire/teachers/local.py"
+          ],
+          "path": "examples/sft-experiment/lib.py"
+        },
+        {
+          "exports": [
+            "draw",
+            "main"
+          ],
+          "hash": "0aa3d2b7c6ded6d67b7a88757730b62a078ae5d51fc3d30125fdffb5c1a426d5",
+          "importsFiles": [
+            "examples/sft-experiment/lib.py"
+          ],
+          "path": "examples/sft-experiment/make_prompts.py"
+        },
+        {
+          "exports": [
+            "apply_candidate",
+            "choose_pair",
+            "edit_size",
+            "error_kept",
+            "escalate",
+            "grammar_summary",
+            "judged",
+            "kept_candidates",
+            "main",
+            "ollama_chat",
+            "parse_muse",
+            "planter_request",
+            "prescreen",
+            "rewrite_kept",
+            "schema",
+            "seeded_sample",
+            "stage_confirm",
+            "stage_grammar",
+            "stage_propose",
+            "stage_score",
+            "strong_answers",
+            "unload"
+          ],
+          "hash": "6811eaad7d7bef0addaedd56605dc3eb61f7000726da23fe7e3290231732a1e0",
+          "importOrder": [
+            "examples/sft-experiment/clean_dataset.py",
+            "examples/sft-experiment/critic_heads.py",
+            "examples/sft-experiment/lib.py",
+            "examples/sft-experiment/recheck.py",
+            "examples/sft-experiment/typicality.py",
+            "examples/sft-experiment/skeptic_pairs.py"
+          ],
+          "importsFiles": [
+            "examples/sft-experiment/clean_dataset.py",
+            "examples/sft-experiment/critic_heads.py",
+            "examples/sft-experiment/lib.py",
+            "examples/sft-experiment/recheck.py",
+            "examples/sft-experiment/skeptic_pairs.py",
+            "examples/sft-experiment/typicality.py"
+          ],
+          "path": "examples/sft-experiment/matched_set.py"
+        },
+        {
+          "exports": [
+            "compare",
+            "main",
+            "parse_choice"
+          ],
+          "hash": "03cfed2bb81f9e3123f1628bf08d03b0303ccfc2001db2ba92e3de260c4310e3",
+          "importsFiles": [
+            "examples/sft-experiment/lib.py"
+          ],
+          "path": "examples/sft-experiment/pairwise_teacher.py"
+        },
+        {
+          "hash": "5408dcc64188568afec924b6b077baead125f4df8a6c3f2b2d3d4fecd18aa378",
+          "path": "examples/sft-experiment/pod/plan_a.sh"
+        },
+        {
+          "hash": "ee5598f2f0d96a90d7a475abf58617479706a089cec072b507b7761d724928f1",
+          "path": "examples/sft-experiment/pod/plan_a2.sh"
+        },
+        {
+          "hash": "88ff8cc25f7758aa40eb7747824486c8dcb9655a307f6588d3c5f1796563c6a5",
+          "path": "examples/sft-experiment/pod/plan_a3.sh"
+        },
+        {
+          "hash": "d2c54a37b64dc201201a63745504f85a31c800e72dfc42ea020da56030b987fa",
+          "path": "examples/sft-experiment/pod/plan_b.sh"
+        },
+        {
+          "hash": "925e4c2f1052e9afe3ff5582a22cb629197ac91f2588ae4e35d03abfd9fa2a5b",
+          "path": "examples/sft-experiment/pod/plan_c.sh"
+        },
+        {
+          "hash": "9258ba393349122fc286a6f0b260dd6c384ea3f3b70b35572ae8be55fa9100a8",
+          "path": "examples/sft-experiment/pod/plan_d.sh"
+        },
+        {
+          "hash": "f371e18f7fb3413500701f72f1eb26d6cc52bfcac1f0c86c02d4d394d4658383",
+          "path": "examples/sft-experiment/pod/plan_e.sh"
+        },
+        {
+          "hash": "36302c18722f0a2fe76cffb91f7e488b30748cff8e5419fbe394b82c8c65e8e4",
+          "path": "examples/sft-experiment/pod/plan_f.sh"
+        },
+        {
+          "hash": "9d04efa30fd9dcc11477060de01b4a794a575d42e2a984c93d3d211dfaa15f10",
+          "path": "examples/sft-experiment/pod/plan_g.sh"
+        },
+        {
+          "exports": [
+            "alignment",
+            "drift_summary",
+            "load_pairs",
+            "main",
+            "parse_entry",
+            "write_exports"
+          ],
+          "failurePaths": [
+            {
+              "in": "parse_entry",
+              "kind": "raise",
+              "line": 52
+            }
+          ],
+          "hash": "a1edee1eb19fc09fb0083ea67884b44308db77117f080b4ff81ac32660e3b21b",
+          "importsFiles": [
+            "aspire/geometry.py",
+            "aspire/judge.py"
+          ],
+          "path": "examples/sft-experiment/probe_models.py"
+        },
+        {
+          "hash": "0647761b3d0b385f9cbad7a57fd3e58e03048da994d27e3f5450612d803cff30",
+          "path": "examples/sft-experiment/prompts-128.json"
+        },
+        {
+          "exports": [
+            "combine",
+            "judge_all",
+            "keeps",
+            "main",
+            "parse",
+            "post_get",
+            "request_body"
+          ],
+          "failurePaths": [
+            {
+              "in": "judge_all",
+              "kind": "raise",
+              "line": 248
+            }
+          ],
+          "hash": "afc3c06110b261fcc53db69b0d1129d497c5706395f799e6597d43483d358c4b",
+          "importsFiles": [
+            "examples/sft-experiment/critic_heads.py",
+            "examples/sft-experiment/lib.py",
+            "examples/sft-experiment/skeptic_pairs.py"
+          ],
+          "path": "examples/sft-experiment/recheck.py"
+        },
+        {
+          "exports": [
+            "edit_stats",
+            "main",
+            "plant",
+            "spare_prompts",
+            "write_answers"
+          ],
+          "hash": "24d03b31d14ca45a821991ebfd7039d6fb6b4b5cf43280daaf81d96ddf3c1807",
+          "importsFiles": [
+            "examples/sft-experiment/build_dataset.py",
+            "examples/sft-experiment/fresh_pairs.py",
+            "examples/sft-experiment/lib.py"
+          ],
+          "path": "examples/sft-experiment/second_planter.py"
+        },
+        {
+          "exports": [
+            "main",
+            "prompt_config",
+            "seed_configs",
+            "split_config"
+          ],
+          "hash": "fe1555068d3d87f1aaba49355bd74af9b0038ad1da34063f7610f864cc4e6ac1",
+          "path": "examples/sft-experiment/seed_configs.py"
+        },
+        {
+          "exports": [
+            "append_ledger",
+            "collate",
+            "merge",
+            "parse_args",
+            "prepare_examples",
+            "public_out",
+            "public_student",
+            "sha256_of",
+            "tokenize_example",
+            "train"
+          ],
+          "failurePaths": [
+            {
+              "in": "tokenize_example",
+              "kind": "raise",
+              "line": 76
+            },
+            {
+              "in": "tokenize_example",
+              "kind": "raise",
+              "line": 80
+            },
+            {
+              "in": "prepare_examples",
+              "kind": "except",
+              "line": 108
+            },
+            {
+              "in": "prepare_examples",
+              "kind": "raise",
+              "line": 109
+            },
+            {
+              "in": "prepare_examples",
+              "kind": "raise",
+              "line": 117
+            },
+            {
+              "in": "public_out",
+              "kind": "except",
+              "line": 140
+            }
+          ],
+          "hash": "d67e916b6f4d2b5690fae469c3a4ff1992101930039ceba2ba3863c4e9184ba7",
+          "importsFiles": [
+            "examples/sft-experiment/lib.py"
+          ],
+          "path": "examples/sft-experiment/sft.py"
+        },
+        {
+          "exports": [
+            "apply_swap",
+            "avoid",
+            "context",
+            "edit_chars",
+            "lexical_guard",
+            "main",
+            "overlaps",
+            "plant",
+            "plant_swaps",
+            "quantiles",
+            "sentence_of",
+            "sentences",
+            "size_cap",
+            "strong_items",
+            "verify"
+          ],
+          "hash": "decf4efb249eceb895e34f96c2ee3c3a9daba0f7c666259acc81553203ec19dc",
+          "importOrder": [
+            "examples/sft-experiment/build_dataset.py",
+            "examples/sft-experiment/critic_heads.py",
+            "examples/sft-experiment/fresh_pairs.py",
+            "examples/sft-experiment/lib.py",
+            "examples/sft-experiment/second_planter.py",
+            "examples/sft-experiment/clean_dataset.py"
+          ],
+          "importsFiles": [
+            "examples/sft-experiment/build_dataset.py",
+            "examples/sft-experiment/clean_dataset.py",
+            "examples/sft-experiment/critic_heads.py",
+            "examples/sft-experiment/fresh_pairs.py",
+            "examples/sft-experiment/lib.py",
+            "examples/sft-experiment/second_planter.py"
+          ],
+          "path": "examples/sft-experiment/skeptic_pairs.py"
+        },
+        {
+          "exports": [
+            "baseline",
+            "clustered_auc",
+            "fit_logistic",
+            "folds",
+            "main",
+            "out_of_fold",
+            "predict"
+          ],
+          "hash": "60234cb3b9ee43a76a1dbd153d38d7b9a95da1b50a981c658d3e62ee40fba0f7",
+          "importOrder": [
+            "examples/sft-experiment/critic_heads.py",
+            "examples/sft-experiment/skeptic_pairs.py",
+            "examples/sft-experiment/typicality.py",
+            "aspire/judge.py"
+          ],
+          "importsFiles": [
+            "aspire/judge.py",
+            "examples/sft-experiment/critic_heads.py",
+            "examples/sft-experiment/skeptic_pairs.py",
+            "examples/sft-experiment/typicality.py"
+          ],
+          "path": "examples/sft-experiment/surprisal_baseline.py"
+        },
+        {
+          "exports": [
+            "answer_end",
+            "changed_span",
+            "delta",
+            "delta_tail",
+            "ks_two_sample",
+            "main",
+            "match",
+            "quartiles",
+            "readout",
+            "score",
+            "span_logprob"
+          ],
+          "failurePaths": [
+            {
+              "in": "answer_end",
+              "kind": "raise",
+              "line": 98
+            },
+            {
+              "in": "logprobs",
+              "kind": "raise",
+              "line": 186
+            }
+          ],
+          "hash": "f14589271a5ac90d88abdb85da427c9dcd647a3354f3f57862b5956b993eee92",
+          "importOrder": [
+            "examples/sft-experiment/critic_heads.py",
+            "aspire/judge.py"
+          ],
+          "importsFiles": [
+            "aspire/judge.py",
+            "examples/sft-experiment/critic_heads.py"
+          ],
+          "path": "examples/sft-experiment/typicality.py"
+        }
+      ],
+      "globs": [
+        "examples/**"
+      ],
+      "importConfidence": "full",
+      "name": "examples",
+      "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 49,
+          "where": [
+            "caller"
+          ],
+          "writes": 52
+        }
+      ],
+      "outsideReads": 49,
+      "outsideWrites": 52,
+      "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
+      "testedBy": 10,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 2,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 1,
+      "entryPoints": [],
+      "externalNames": [
+        "openai"
+      ],
+      "externals": 2,
+      "files": [
+        {
+          "hash": "b87b393f5358a80d9413abda9260cea5a5e753943f058d0f0603f79ea02d3f9a",
+          "path": "integrations/code/README.md"
+        },
+        {
+          "hash": "9b5bb3999535849bbf8c9ffce01f2e58e4c86c34996a337f70d0094924a76260",
+          "importOrder": [
+            "integrations/code/code_teacher.py",
+            "integrations/code/code_critic.py",
+            "integrations/code/analysis.py",
+            "integrations/code/trainer.py",
+            "integrations/code/config.py",
+            "integrations/code/data.py"
+          ],
+          "importsFiles": [
+            "integrations/code/analysis.py",
+            "integrations/code/code_critic.py",
+            "integrations/code/code_teacher.py",
+            "integrations/code/config.py",
+            "integrations/code/data.py",
+            "integrations/code/trainer.py"
+          ],
+          "path": "integrations/code/__init__.py"
+        },
+        {
+          "exports": [
+            "detect_language",
+            "extract_code_features",
+            "parse_code",
+            "quick_analyze"
+          ],
+          "failurePaths": [
+            {
+              "in": "parse_code",
+              "kind": "except",
+              "line": 177
+            },
+            {
+              "in": "extract_code_features",
+              "kind": "except",
+              "line": 254
+            },
+            {
+              "in": "_check_tools",
+              "kind": "except",
+              "line": 294
+            },
+            {
+              "in": "_run_ruff",
+              "kind": "except",
+              "line": 403
+            },
+            {
+              "in": "_run_ruff",
+              "kind": "except",
+              "line": 406
+            },
+            {
+              "in": "_run_ruff",
+              "kind": "except",
+              "line": 408
+            },
+            {
+              "in": "_run_mypy",
+              "kind": "except",
+              "line": 439
+            },
+            {
+              "in": "_run_mypy",
+              "kind": "except",
+              "line": 441
+            },
+            {
+              "in": "_run_bandit",
+              "kind": "except",
+              "line": 475
+            },
+            {
+              "in": "_run_bandit",
+              "kind": "except",
+              "line": 478
+            },
+            {
+              "in": "_run_bandit",
+              "kind": "except",
+              "line": 480
+            }
+          ],
+          "hash": "8766c4df2464a809fcaacf5d6a7d63defb3f3d35e6d5597a71677a58c073c267",
+          "importsFiles": [
+            "integrations/code/config.py"
+          ],
+          "path": "integrations/code/analysis.py"
+        },
+        {
+          "exports": [
+            "create_critic_from_pretrained"
+          ],
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "except",
+              "line": 116
+            },
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 117
+            },
+            {
+              "in": "forward",
+              "kind": "raise",
+              "line": 300
+            },
+            {
+              "in": "get_tokenizer",
+              "kind": "except",
+              "line": 391
+            },
+            {
+              "in": "tokenize",
+              "kind": "raise",
+              "line": 410
+            }
+          ],
+          "hash": "530bf2e05383cd78f46fd0b7c210aadb5afda1d1ecd251266883baa6460da137",
+          "importsFiles": [
+            "integrations/code/config.py"
+          ],
+          "path": "integrations/code/code_critic.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "_get_client",
+              "kind": "except",
+              "line": 870
+            },
+            {
+              "in": "_get_client",
+              "kind": "raise",
+              "line": 871
+            },
+            {
+              "in": "_get_client",
+              "kind": "except",
+              "line": 876
+            },
+            {
+              "in": "_get_client",
+              "kind": "raise",
+              "line": 877
+            },
+            {
+              "in": "critique",
+              "kind": "except",
+              "line": 938
+            },
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 980
+            },
+            {
+              "in": "critique",
+              "kind": "raise",
+              "line": 1076
+            }
+          ],
+          "hash": "33120cc87535bdfe1a7c5ec537a8a8546d527122d5c40a7d48e44b610f4d5bc2",
+          "importOrder": [
+            "integrations/code/config.py",
+            "integrations/code/analysis.py"
+          ],
+          "importsFiles": [
+            "integrations/code/analysis.py",
+            "integrations/code/config.py"
+          ],
+          "path": "integrations/code/code_teacher.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 170
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 173
+            }
+          ],
+          "hash": "0eb805e970e48435acd9c057580126ec1fbf5596ec74a07ecbe5fd686fe48044",
+          "path": "integrations/code/config.py"
+        },
+        {
+          "exports": [
+            "create_balanced_dataset",
+            "generate_training_pairs",
+            "load_training_data",
+            "save_training_data"
+          ],
+          "failurePaths": [
+            {
+              "in": "clone_repo",
+              "kind": "except",
+              "line": 164
+            },
+            {
+              "in": "clone_repo",
+              "kind": "raise",
+              "line": 165
+            },
+            {
+              "in": "collect_files",
+              "kind": "except",
+              "line": 223
+            },
+            {
+              "in": "collect_from_quality_repos",
+              "kind": "except",
+              "line": 253
+            },
+            {
+              "in": "generate_training_pairs",
+              "kind": "except",
+              "line": 287
+            },
+            {
+              "in": "__getitem__",
+              "kind": "raise",
+              "line": 398
+            },
+            {
+              "in": "__iter__",
+              "kind": "except",
+              "line": 439
+            },
+            {
+              "in": "__iter__",
+              "kind": "except",
+              "line": 460
+            }
+          ],
+          "hash": "111e4e3902892a604c20383d8e0b949150bfb1757be4caa17a958c5cdb1573e0",
+          "importOrder": [
+            "integrations/code/config.py",
+            "integrations/code/code_teacher.py",
+            "integrations/code/analysis.py"
+          ],
+          "importsFiles": [
+            "integrations/code/analysis.py",
+            "integrations/code/code_teacher.py",
+            "integrations/code/config.py"
+          ],
+          "path": "integrations/code/data.py"
+        },
+        {
+          "exports": [
+            "main"
+          ],
+          "hash": "2e49a8425810d3bab8252f974dc85061f58838f6cfdd09d0933fcb62e41e3d97",
+          "importsFiles": [
+            "integrations/code/__init__.py",
+            "integrations/code/config.py"
+          ],
+          "path": "integrations/code/examples/basic_critique.py"
+        },
+        {
+          "exports": [
+            "main"
+          ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 67
+            }
+          ],
+          "hash": "6a820e9c7ef82712d5600dc7b8df02def832f1e841bdb75f2e730302310971c5",
+          "importsFiles": [
+            "integrations/code/__init__.py",
+            "integrations/code/config.py",
+            "integrations/code/data.py"
+          ],
+          "path": "integrations/code/examples/train_critic.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "except",
+              "line": 115
+            },
+            {
+              "in": "_load_student_model",
+              "kind": "except",
+              "line": 150
+            },
+            {
+              "in": "train_student",
+              "kind": "raise",
+              "line": 305
+            },
+            {
+              "in": "_save_checkpoint",
+              "kind": "raise",
+              "line": 471
+            }
+          ],
+          "hash": "c95361da043f277c2e384a04f2f437fa18127dae43674fee5a8196fcdef4da8f",
+          "importOrder": [
+            "integrations/code/config.py",
+            "integrations/code/code_teacher.py",
+            "integrations/code/code_critic.py",
+            "integrations/code/data.py",
+            "integrations/code/analysis.py"
+          ],
+          "importsFiles": [
+            "integrations/code/analysis.py",
+            "integrations/code/code_critic.py",
+            "integrations/code/code_teacher.py",
+            "integrations/code/config.py",
+            "integrations/code/data.py"
+          ],
+          "path": "integrations/code/trainer.py"
+        },
+        {
+          "hash": "0a56a8cbbe61ec2e94ad60bd7c0aea9a05cb4b5f7e8daf0571ef1d4cc8cefbe8",
+          "path": "integrations/forge/README.md"
+        },
+        {
+          "hash": "08d4049eecd73d85c2fe476e333735714a63a777b477c7344448cf87ee3c4200",
+          "noStatements": true,
+          "path": "integrations/forge/__init__.py"
+        },
+        {
+          "hash": "a7e3581dd6e833f16d48d7a9c6665f91fdb1d377e2c4d21f4d85b8444a529857",
+          "path": "integrations/forge/image_critic.py"
+        },
+        {
+          "hash": "5d6b5dafedbff398d98167e4d8e4a5669060cc92bc57e32f56b65eafbd577b0f",
+          "path": "integrations/forge/metadata.ini"
+        },
+        {
+          "exports": [
+            "preload"
+          ],
+          "hash": "9b20466714d0a198bfb2a6e3c0b36cc94e5189543b14be948c448bbbb27eded3",
+          "path": "integrations/forge/preload.py"
+        },
+        {
+          "hash": "06ba64a417b4e1005bdb0b90b0c754e78e54e7fc5b9a0022940f27d1d69160fa",
+          "path": "integrations/forge/scripts/aspire_generate.py"
+        },
+        {
+          "hash": "41412056f3d3e408054888b8c4ff8c834c7eec48731fa9662ad2903eba65c0bc",
+          "path": "integrations/forge/scripts/aspire_train.py"
+        },
+        {
+          "exports": [
+            "get_vision_teacher"
+          ],
+          "failurePaths": [
+            {
+              "in": "critique",
+              "kind": "except",
+              "line": 233
+            },
+            {
+              "in": "critique",
+              "kind": "except",
+              "line": 314
+            },
+            {
+              "in": "get_vision_teacher",
+              "kind": "raise",
+              "line": 335
+            }
+          ],
+          "hash": "97ab1d08dccaf3ad5e3be3d8ac38147ad92bd687acaeb27cf6b1cc4cd8bf71a4",
+          "path": "integrations/forge/vision_teacher.py"
+        },
+        {
+          "hash": "158247f5d7ad2ee9fa63250112bc4b2a7dc13d685e0f9007b2077a662442fb9d",
+          "path": "integrations/isaac/README.md"
+        },
+        {
+          "hash": "1bfac635e5bc0a8bc5862360f2a11e33a51fc3504edd1034802ccd1d7483d7c8",
+          "importOrder": [
+            "integrations/isaac/motion_teacher.py",
+            "integrations/isaac/trajectory_critic.py",
+            "integrations/isaac/isaac_wrapper.py",
+            "integrations/isaac/trainer.py",
+            "integrations/isaac/config.py"
+          ],
+          "importsFiles": [
+            "integrations/isaac/config.py",
+            "integrations/isaac/isaac_wrapper.py",
+            "integrations/isaac/motion_teacher.py",
+            "integrations/isaac/trainer.py",
+            "integrations/isaac/trajectory_critic.py"
+          ],
+          "path": "integrations/isaac/__init__.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 145
+            }
+          ],
+          "hash": "41c2b2beea54585065ea16c69f6a1c78e270ecb1a6d3f52e820ded1f3cd122f0",
+          "path": "integrations/isaac/config.py"
+        },
+        {
+          "exports": [
+            "main"
+          ],
+          "failurePaths": [
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 47
+            }
+          ],
+          "hash": "16b2ed35fc9613526015880156cb79546381c7945747a035519fca09cf903992",
+          "importsFiles": [
+            "integrations/isaac/__init__.py",
+            "integrations/isaac/isaac_wrapper.py"
+          ],
+          "path": "integrations/isaac/examples/basic_training.py"
+        },
+        {
+          "hash": "aac352bc3db5e6a2d8ad43ddb9147d8b611fc73de4a6f717e7b320006ed84e9f",
+          "importsFiles": [
+            "integrations/isaac/motion_teacher.py"
+          ],
+          "path": "integrations/isaac/examples/custom_teacher.py"
+        },
+        {
+          "exports": [
+            "main"
+          ],
+          "hash": "74a4742dc7f3cae18b3f9e87b6db1c41e9e0c1eab1122b80fd6b8e91e7e1a0e6",
+          "importOrder": [
+            "integrations/isaac/motion_teacher.py",
+            "integrations/isaac/__init__.py",
+            "integrations/isaac/isaac_wrapper.py"
+          ],
+          "importsFiles": [
+            "integrations/isaac/__init__.py",
+            "integrations/isaac/isaac_wrapper.py",
+            "integrations/isaac/motion_teacher.py"
+          ],
+          "path": "integrations/isaac/examples/locomotion.py"
+        },
+        {
+          "exports": [
+            "create_isaac_env"
+          ],
+          "failurePaths": [
+            {
+              "in": "create_isaac_env",
+              "kind": "except",
+              "line": 454
+            },
+            {
+              "in": "create_isaac_env",
+              "kind": "raise",
+              "line": 471
+            },
+            {
+              "in": "create_isaac_env",
+              "kind": "except",
+              "line": 473
+            },
+            {
+              "in": "create_isaac_env",
+              "kind": "raise",
+              "line": 474
+            }
+          ],
+          "hash": "a3f27f327bad9c66ca0d9f9b4b5dbc0fa6c6ed6067bbebeef5d3b6cd4718720c",
+          "importsFiles": [
+            "integrations/isaac/motion_teacher.py"
+          ],
+          "path": "integrations/isaac/isaac_wrapper.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 573
+            },
+            {
+              "in": "critique",
+              "kind": "raise",
+              "line": 661
+            }
+          ],
+          "hash": "61afdc686604386de0083ac9d467ce74aa3fc668767a50385b42b52d0c007284",
+          "path": "integrations/isaac/motion_teacher.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "__init__",
+              "kind": "except",
+              "line": 279
+            }
+          ],
+          "hash": "9fece832a8755beaf195bbda3784b9e506088e25d4e2ef9f13c8562c0e54d5d1",
+          "importOrder": [
+            "integrations/isaac/config.py",
+            "integrations/isaac/motion_teacher.py",
+            "integrations/isaac/trajectory_critic.py",
+            "integrations/isaac/isaac_wrapper.py"
+          ],
+          "importsFiles": [
+            "integrations/isaac/config.py",
+            "integrations/isaac/isaac_wrapper.py",
+            "integrations/isaac/motion_teacher.py",
+            "integrations/isaac/trajectory_critic.py"
+          ],
+          "path": "integrations/isaac/trainer.py"
+        },
+        {
+          "failurePaths": [
+            {
+              "in": "forward",
+              "kind": "raise",
+              "line": 357
+            }
+          ],
+          "hash": "a8e37b731f6a1aacb1f53176af14b2b6940d2291eb19705147640f7fa205edcd",
+          "importsFiles": [
+            "integrations/isaac/config.py"
+          ],
+          "path": "integrations/isaac/trajectory_critic.py"
+        }
+      ],
+      "globs": [
+        "integrations/**"
+      ],
+      "importConfidence": "full",
+      "name": "integrations",
+      "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 4,
+          "where": [
+            "caller"
+          ],
+          "writes": 1
+        }
+      ],
+      "outsideReads": 4,
+      "outsideWrites": 1,
+      "role": "code",
+      "testRunners": [
+        "pytest"
+      ],
+      "testedBy": 21,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "c1270be4ec61f810c42606ba2c0054869b81424fe8a8baa0b1dadb7927135824",
+          "path": ".gitattributes"
+        },
+        {
+          "hash": "8b4ba133a91df8ebef01d7ce6f81752b51732e85e0e510ad1e2f0034295d872d",
+          "path": ".gitignore"
+        },
+        {
+          "hash": "23578240788b1ca10036b226fc8a7f96a47b1a529346d9aef16957b909940b9b",
+          "path": "ASPIRE-SPEC.md"
+        },
+        {
+          "hash": "fd2b96512442e944c3a75159e73ba5c1ec0da27162b986488bae3c9531e1303d",
+          "path": "CHANGELOG.md"
+        },
+        {
+          "hash": "b2e59d2d97dd3af6db23a6e408709d1a5b766a0e55a348345c7c88d256293191",
+          "path": "CODE_OF_CONDUCT.md"
+        },
+        {
+          "hash": "cb81ff383e4908068804cbc43dc33f36c5a5854c795fd9e6b8b4bd1f3ce35332",
+          "path": "CONTRIBUTING.md"
+        },
+        {
+          "hash": "805c19cef0ff0b064a0c231797e51cf386500aa5e58c39e736d9a8b1e21887b1",
+          "path": "ISSUES_PUNCHLIST.md"
+        },
+        {
+          "hash": "fe35c6bc59e2dc3548b0196e7c5130ce41acbb69c0deecf8d102a43cba5be4d6",
+          "path": "LICENSE"
+        },
+        {
+          "hash": "c755a160c3c023545afd5a3ddbd3813210c54fdb7cd2745659591c83f985e559",
+          "path": "Makefile"
+        },
+        {
+          "hash": "c60b691fd9653b027ab2f31b2f80d4c09e2a1f3d5a2e9aec9790ff46eb3c97f2",
+          "path": "PRESS_RELEASE.md"
+        },
+        {
+          "hash": "15daa0ccbaa30a04d94eadd17ef7cbdbe17e58c3263dd57ed0f89525f5f55122",
+          "path": "README.es.md"
+        },
+        {
+          "hash": "c2ce6e12495b6d7dec1e83adeff6d47bdfa3508d7ab505fb6cb10729ba3349fe",
+          "path": "README.fr.md"
+        },
+        {
+          "hash": "c572a3dd9e72019eaae5015bc4c0eac8d9b0b8a1da4be37bb3a7acbd5aa0bad4",
+          "path": "README.hi.md"
+        },
+        {
+          "hash": "19ae5657025ca2f65e145d62abf5f65a1a4286b1c155a8e38c39b9bf7763adfe",
+          "path": "README.it.md"
+        },
+        {
+          "hash": "7e06682bd8771f64110d83f63254ed5a86c5b6e42f261df6520cbfd5ae55310b",
+          "path": "README.ja.md"
+        },
+        {
+          "hash": "a60ec11248336cd8a33345d2c3b65544c390df4b86b20569faf3f20cbe23538f",
+          "path": "README.md"
+        },
+        {
+          "hash": "07aaad2ad17a6f40ab33acd04016364fa235d0785b37dfcc88150aa5285ec033",
+          "path": "README.pt-BR.md"
+        },
+        {
+          "hash": "35bacfe55ee101af9b7d643db8c01299191ea14c532460b0bba4bbe66b5d24bf",
+          "path": "README.zh.md"
+        },
+        {
+          "hash": "aa04f575aefd91bf92a79556d47207ed72942eb33eb0e59b9e8c0519f8da6d1d",
+          "path": "SCORECARD.md"
+        },
+        {
+          "hash": "2771321525a022871087d4d483ff14e8d07082469e522cdb7458955ffeb77f19",
+          "path": "SECURITY.md"
+        },
+        {
+          "hash": "f5c8057b8ff39d35288aee03e2aa4e9bfe705bdb73815f97be3f6dce3126408e",
+          "path": "SHIP_GATE.md"
+        },
+        {
+          "hash": "3df45c4e4303fd250290e334cb5fc70368cb0fa8215943c87042b513c2bb65ea",
+          "path": "TESTS-TODO.md"
+        },
+        {
+          "hash": "af5a5219a98324dde58fb03573c1915cee6cc88a947475fbb842d1909350ec2c",
+          "path": "codecov.yml"
+        },
+        {
+          "hash": "c6100f2d1fa400ae9f87f19b3f12581c01dbe54f8712388d8a4e741949ff754c",
+          "path": "logo.png"
+        },
+        {
+          "hash": "f2c05a7d893ab2200b751e7844c3c9c69f3ba5f93c5f7d980f014e534e4571da",
+          "path": "passport.json"
+        },
+        {
+          "hash": "4aebe9e507da81ab0fe28e7157c3f4e948720bf1fe0b4ff1f7274c9b5e920cf6",
+          "path": "pyproject.toml"
+        },
+        {
+          "hash": "922c8540bcee179b9d7c9f148a5b66ce0796d4c2e03299bf6bd348d37b362de9",
+          "path": "requirements-dev.txt"
+        }
+      ],
+      "globs": [
+        "*"
+      ],
+      "importConfidence": "full",
+      "name": "root",
+      "origin": "authored",
+      "role": "config",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "4d1af33a2e3c480ef5d642447c3293255bd4f240fcb9367cefae0ccc6fb5394a",
+          "path": "site/astro.config.mjs"
+        },
+        {
+          "hash": "0f6fe1ffb88337e4e93a5fe08b880cb6ea07b6646545bb9b9674d7eefa611208",
+          "path": "site/package-lock.json"
+        },
+        {
+          "hash": "94643a24381ca43296261ff90186d0de0f0a7cd94690b813d1b1bb5f13186e3c",
+          "path": "site/package.json"
+        },
+        {
+          "hash": "1f959d9d1f9331dd815b74e9cdbbc429905637fc579800a3956de8e966ee70e0",
+          "path": "site/src/assets/logo.png"
+        },
+        {
+          "constantOnly": true,
+          "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
+          "path": "site/src/content.config.ts"
+        },
+        {
+          "hash": "a9eea7aac3d4e3ed83ae7380248221252781edcd5e2c51e72f7c256a6d7899b4",
+          "path": "site/src/content/docs/handbook/beginners.md"
+        },
+        {
+          "hash": "caba3207a0dede361d43082baf31ba322927f12858be692c3d1d8550f64dc821",
+          "path": "site/src/content/docs/handbook/cli.md"
+        },
+        {
+          "hash": "c2a302dff7f0fc1da68e42373a2098449f702357cfb2c7fde6d65ea778d0aa78",
+          "path": "site/src/content/docs/handbook/getting-started.md"
+        },
+        {
+          "hash": "d98d9b8bcea0492d09d71a78f975f1f5eb05e55b88f5b2ca124711969057aca5",
+          "path": "site/src/content/docs/handbook/how-it-works.md"
+        },
+        {
+          "hash": "93ea49d70033fd6555ec736da6ff70c86ed7d407b8f6f322518ba2e3f966f9a0",
+          "path": "site/src/content/docs/handbook/index.md"
+        },
+        {
+          "hash": "03e16bc4e4d04a71633f98b3daf56475338146bca3b71295bb932b888f71dfdd",
+          "path": "site/src/content/docs/handbook/integrations.md"
+        },
+        {
+          "hash": "956b6bb6ff2c2ce39d9612644584f1d5afefc6933bfb48e599f1cf9691a382f9",
+          "path": "site/src/content/docs/handbook/scalarscope.md"
+        },
+        {
+          "hash": "8715a7cedee1b2b766b013b093a5ec08661557f3c9af27b0a4921a3c0ede18a3",
+          "path": "site/src/content/docs/handbook/teachers.md"
+        },
+        {
+          "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
+          "path": "site/src/pages/index.astro"
+        },
+        {
+          "constantOnly": true,
+          "hash": "51a569a647b341d65be92eaee9518393fd8ecf8e52586559ac7a9dfde5656f84",
+          "path": "site/src/site-config.ts"
+        },
+        {
+          "hash": "29ee8df91833e694bdba973126b34a6177de4cf01dab6d9ef7d3126e8e2b67fb",
+          "path": "site/src/styles/global.css"
+        },
+        {
+          "hash": "51d012e49bcba75b105bdc8aa7a6d1a6733a00ace857b24423c75215ebcff631",
+          "path": "site/src/styles/starlight-custom.css"
+        },
+        {
+          "hash": "b5b0a5b04a14cddd7713c5e1c82e86c79c17c2f86b170e26e9b170b3d5e01cd9",
+          "path": "site/tsconfig.json"
+        }
+      ],
+      "globs": [
+        "site/**"
+      ],
+      "importConfidence": "full",
+      "name": "site",
+      "origin": "authored",
+      "role": "site",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "51ffb1f71a558dcbbea031811ce1baf6cb78c78fb81481a0ff1df2ee24b20168",
+          "noStatements": true,
+          "path": "tests/__init__.py"
+        },
+        {
+          "exports": [
+            "assert_tensor_equal",
+            "assert_tensor_shape",
+            "cpu_device",
+            "device",
+            "mock_anthropic_client",
+            "mock_claude_response_challenge",
+            "mock_claude_response_evaluate",
+            "mock_model",
+            "mock_openai_client",
+            "mock_openai_response_challenge",
+            "mock_openai_response_evaluate",
+            "mock_tokenizer",
+            "pytest_configure",
+            "random_embeddings",
+            "random_logits",
+            "random_scores",
+            "sample_code_bad",
+            "sample_code_good",
+            "sample_code_security_issues",
+            "sample_dialogue",
+            "sample_dialogue_history",
+            "sample_dialogues",
+            "sample_prompt",
+            "sample_student_response",
+            "setup_test_environment"
+          ],
+          "hash": "9f5665eb38f9d2bde784aa73d2bd7d174e9c83891b6d16656cc48f9f4c36aa47",
+          "importsFiles": [
+            "aspire/teachers/base.py"
+          ],
+          "path": "tests/conftest.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "353768ed0c64d1f2303ddefb3ea4f3828d3263f4131ab4eda737de1aefc64e12",
+          "noStatements": true,
+          "path": "tests/core/__init__.py"
+        },
+        {
+          "hash": "b95c92589d28aae0e04647ff4b3dd94200a0e472aea47805c075a2274fcc219f",
+          "importsFiles": [
+            "aspire/losses/critic.py",
+            "aspire/losses/student.py"
+          ],
+          "path": "tests/core/test_losses_comprehensive.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "ac685699a0c0a25fde518d92fd2f8d17c97948008060c87a9e33828cba1092f4",
+          "noStatements": true,
+          "path": "tests/integrations/__init__.py"
+        },
+        {
+          "hash": "a2b73e24809a9b37ce7aeb16ca3736134edcb21ac6e4edb7511baf695e9cd613",
+          "noStatements": true,
+          "path": "tests/integrations/code/__init__.py"
+        },
+        {
+          "exports": [
+            "fake_tokenizer",
+            "tiny_critic",
+            "tiny_critic_config"
+          ],
+          "hash": "bd2e0432f4aef4db35279144c57f3bff7c9c44204429e60e99b5ae235dc0f581",
+          "importsFiles": [
+            "integrations/code/code_critic.py",
+            "integrations/code/config.py"
+          ],
+          "path": "tests/integrations/code/conftest.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "d8eeff1755defbf812b5409e464e2593fbb3ed8cedddcf772286f4caaa44e9de",
+          "importsFiles": [
+            "integrations/code/analysis.py",
+            "integrations/code/config.py"
+          ],
+          "path": "tests/integrations/code/test_code_analysis_comprehensive.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "completed",
+            "issue",
+            "make_analyzer"
+          ],
+          "hash": "c2733f9c61708de4b81b688cb22239aa3e554c07a18dfda23284cb17b34c0023",
+          "importsFiles": [
+            "integrations/code/analysis.py",
+            "integrations/code/config.py"
+          ],
+          "path": "tests/integrations/code/test_code_analysis_unit.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "eb956256f62b3e3996f433d2a7152661bf6ee8676c0a580e66e54ee72b1a2a86",
+          "importsFiles": [
+            "integrations/code/config.py"
+          ],
+          "path": "tests/integrations/code/test_code_config_unit.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "68172e5996a7c167d80a88b3b1ba406b4f22fb9d830539afb2b005c935f1e692",
+          "importsFiles": [
+            "integrations/code/code_critic.py",
+            "integrations/code/config.py"
+          ],
+          "path": "tests/integrations/code/test_code_critic_unit.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "2923c814b97f34c9e384050f31330ba3ac15db451add834e5616d248aced6b68",
+          "importsFiles": [
+            "integrations/code/code_teacher.py",
+            "integrations/code/config.py",
+            "integrations/code/data.py"
+          ],
+          "path": "tests/integrations/code/test_code_data.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "bin_counts",
+            "collector",
+            "make_critique",
+            "make_pair",
+            "pairs_with_scores",
+            "repo_dir",
+            "write_py"
+          ],
+          "hash": "270c4b80f7408369bc8f1eebc911cce0c68463388b579a77f029b42554ead378",
+          "importsFiles": [
+            "integrations/code/code_teacher.py",
+            "integrations/code/config.py",
+            "integrations/code/data.py",
+            "tests/integrations/code/conftest.py"
+          ],
+          "path": "tests/integrations/code/test_code_data_extra.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "f1b072d38ced0dd873b2d5ce616e96d966f48c906425a7feb12aab4bcef7c1a9",
+          "importsFiles": [
+            "integrations/code/code_teacher.py",
+            "integrations/code/config.py"
+          ],
+          "path": "tests/integrations/code/test_code_teachers_comprehensive.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "analysis_with",
+            "function_of_lines",
+            "issue",
+            "no_external_tools",
+            "py",
+            "stub_critique",
+            "with_analysis"
+          ],
+          "hash": "6ab77b77f3a565eaecfc902571a90cd16967df966660c17cb2f8fa4c48f71d27",
+          "importsFiles": [
+            "integrations/code/analysis.py",
+            "integrations/code/code_teacher.py",
+            "integrations/code/config.py"
+          ],
+          "path": "tests/integrations/code/test_code_teachers_unit.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "changed",
+            "config",
+            "make_pairs",
+            "make_trainer",
+            "snapshot",
+            "student_trainer",
+            "teacher",
+            "test_training_metrics_dataclass_fields",
+            "trainer"
+          ],
+          "hash": "5c3f0d0cbf3ed028f45c1846150da4eac98473dab19521c98047b7eb0905d927",
+          "importsFiles": [
+            "integrations/code/code_critic.py",
+            "integrations/code/code_teacher.py",
+            "integrations/code/config.py",
+            "integrations/code/data.py",
+            "integrations/code/trainer.py",
+            "tests/integrations/code/conftest.py"
+          ],
+          "path": "tests/integrations/code/test_code_trainer_unit.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "noStatements": true,
+          "path": "tests/integrations/forge/__init__.py"
+        },
+        {
+          "hash": "925a94835fe46c45c03246418876b96101bb54fd7cf874a81bd40460193ecc56",
+          "importsFiles": [
+            "integrations/forge/image_critic.py"
+          ],
+          "path": "tests/integrations/forge/test_image_critic.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "test_package_docstring_describes_forge_integration"
+          ],
+          "hash": "3c16ef62865d3f91eefc4822bf911b8354343d9ca0df4ad7ddc1d86fb49f047e",
+          "importsFiles": [
+            "integrations/forge/__init__.py",
+            "integrations/forge/preload.py"
+          ],
+          "path": "tests/integrations/forge/test_preload.py"
+        },
+        {
+          "exports": [
+            "claude_client",
+            "gpt_client"
+          ],
+          "hash": "dd11b20844a7cb1f799eab947c14f6b6b1d9503ae662ced8ac3c2b2a0ff0ad6a",
+          "importsFiles": [
+            "integrations/forge/vision_teacher.py"
+          ],
+          "path": "tests/integrations/forge/test_vision_teacher.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "noStatements": true,
+          "path": "tests/integrations/isaac/__init__.py"
+        },
+        {
+          "hash": "f2112742ac7e7171fa36db38a5aea08aee4b801b231a83414a81141a884d0759",
+          "importsFiles": [
+            "integrations/isaac/__init__.py",
+            "integrations/isaac/config.py",
+            "integrations/isaac/trainer.py"
+          ],
+          "path": "tests/integrations/isaac/test_config.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "fake_module",
+            "make_pair",
+            "make_traj"
+          ],
+          "hash": "a04626eae46f13046f707bcfbe24af0f900bd454a25f217bceee9939c0cb2b1e",
+          "importsFiles": [
+            "integrations/isaac/isaac_wrapper.py",
+            "integrations/isaac/motion_teacher.py"
+          ],
+          "path": "tests/integrations/isaac/test_isaac_wrapper.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "make_data",
+            "ramp",
+            "stub_critique"
+          ],
+          "hash": "654224f60c3deb553f897c2a4aac984523c4d01d3f1e7ccc3be5cc62e95ce2d4",
+          "importsFiles": [
+            "integrations/isaac/motion_teacher.py"
+          ],
+          "path": "tests/integrations/isaac/test_motion_teacher.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "make_config",
+            "make_critique",
+            "make_env",
+            "make_trainer",
+            "make_traj",
+            "params_changed",
+            "params_snapshot"
+          ],
+          "hash": "edf9f8b107d9731d53e084000da67957fc1896677b1388dd28bd3debdc24e266",
+          "importsFiles": [
+            "integrations/isaac/config.py",
+            "integrations/isaac/isaac_wrapper.py",
+            "integrations/isaac/motion_teacher.py",
+            "integrations/isaac/trainer.py",
+            "integrations/isaac/trajectory_critic.py"
+          ],
+          "path": "tests/integrations/isaac/test_trainer.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "batch",
+            "make_config",
+            "make_encoder"
+          ],
+          "hash": "c1d8b029c92bb597ad3a8a101408ec9361af9658abe187c6b1d6b3f1c443eb3a",
+          "importsFiles": [
+            "integrations/isaac/config.py",
+            "integrations/isaac/trajectory_critic.py"
+          ],
+          "path": "tests/integrations/isaac/test_trajectory_critic.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "9fc4359bd825a06c9f9984f499ee968cd6f657dc9dc4b0b7d5327c003b5f67a6",
+          "noStatements": true,
+          "path": "tests/perception/__init__.py"
+        },
+        {
+          "hash": "46fd9b64779c642baa3a9c822541ce4d09618cb306f8ffaff5169c8718cff932",
+          "importsFiles": [
+            "aspire/perception/character.py"
+          ],
+          "path": "tests/perception/test_character.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "748565c5e1cac527ff238ce96c7c4c18a819436699c82951724a2e81b9d71e12",
+          "importsFiles": [
+            "aspire/perception/character.py"
+          ],
+          "path": "tests/perception/test_character_more.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "9e8bf9161c7b13560f1293f301ec49d4c12b80dcfde8e6bf6404c47753e229c2",
+          "importsFiles": [
+            "aspire/perception/controlled_chaos.py"
+          ],
+          "path": "tests/perception/test_controlled_chaos.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "fake_random",
+            "first_choice"
+          ],
+          "hash": "7068214dc1ea66a32889a8ca8676ff6091507cc81e9b13d27ddb1968d3efab2b",
+          "importsFiles": [
+            "aspire/perception/controlled_chaos.py"
+          ],
+          "path": "tests/perception/test_controlled_chaos_more.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "3c3cf59e7b3297b8b745b6053c6bae3157daa048eeacb9b69a576150d691de4e",
+          "importsFiles": [
+            "aspire/perception/controlled_chaos.py",
+            "aspire/perception/empathy_evaluation.py",
+            "aspire/teachers/base.py"
+          ],
+          "path": "tests/perception/test_empathy_evaluation.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "b364b60682663ccc41c354d3952f4f80615cdeef7895363d5118975633ba25be",
+          "importsFiles": [
+            "aspire/perception/controlled_chaos.py",
+            "aspire/perception/empathy_evaluation.py",
+            "aspire/perception/integration.py",
+            "aspire/perception/theory_of_mind.py"
+          ],
+          "path": "tests/perception/test_integration.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "98f59b33adf15cbcc2e721719ec9941c9bbb67881245749fe595dc2f2d8f9d2d",
+          "importsFiles": [
+            "aspire/perception/metacognition.py"
+          ],
+          "path": "tests/perception/test_metacognition.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "estimator",
+            "meta"
+          ],
+          "hash": "222bb05c864d6a43ceeea8e95e5efc468793c3c63ad0ac7e60ea49d0f91d9f3e",
+          "importsFiles": [
+            "aspire/perception/metacognition.py"
+          ],
+          "path": "tests/perception/test_metacognition_more.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "57572d031316ca24f5833bc0ba0f490a6876a148fc23a57ce9f5c9299c8f85e2",
+          "importsFiles": [
+            "aspire/perception/syntropy.py"
+          ],
+          "path": "tests/perception/test_syntropy.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "engine"
+          ],
+          "hash": "a23d53df12bc0ed1a44b1f3cd1034ee6ce63a7f0aa325cb7dd312bbf1d3a4d98",
+          "importsFiles": [
+            "aspire/perception/syntropy.py"
+          ],
+          "path": "tests/perception/test_syntropy_more.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "2557b42bcfb324b004386ddaae6696d8fcc0c7e9b92d52fd0abee1a10ea9a495",
+          "importsFiles": [
+            "aspire/perception/theory_of_mind.py"
+          ],
+          "path": "tests/perception/test_theory_of_mind.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "tracker"
+          ],
+          "hash": "c8f1bf1a9f226deb12c78fa08e5c16cc6200ff68ccc8003a723bd0eefc7f87fd",
+          "importsFiles": [
+            "aspire/perception/theory_of_mind.py"
+          ],
+          "path": "tests/perception/test_theory_of_mind_more.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "test_cache_key_includes_teacher_name",
+            "test_get_dialogue_hits_cache_and_avoids_regeneration",
+            "test_get_dialogues_uses_batch_only_for_misses"
+          ],
+          "hash": "fa56c7d814e257f084464e1590b33e911935012e4d22b656ee3cdec45dd52013",
+          "importsFiles": [
+            "aspire/dialogue/generator.py",
+            "aspire/dialogue/manager.py",
+            "aspire/teachers/base.py"
+          ],
+          "path": "tests/performance/test_dialogue_cache_performance.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "runs",
+            "test_a_real_build_difference_stops",
+            "test_a_run_refuses_to_resume_on_a_different_server",
+            "test_a_shortfall_within_the_builds_own_noise_does_not_stop",
+            "test_identical_builds_do_not_stop",
+            "test_identity_records_the_backend_hash",
+            "test_samples_are_seeded_and_order_free",
+            "test_unusable_items_are_left_out_and_wilson_is_sane"
+          ],
+          "hash": "c56259ea040b1ca7919dc3dee53b73a168ef1d0f08dcb491518daf826b072b97",
+          "importsFiles": [
+            "examples/sft-experiment/build_equivalence.py"
+          ],
+          "path": "tests/test_build_equivalence.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "test_crafted_critic_checkpoint_is_refused_without_running",
+            "test_critic_checkpoint_round_trips_under_weights_only",
+            "test_every_torch_load_passes_weights_only"
+          ],
+          "hash": "af3798dce2f76ccf524822d47b4ae7cd87797e364d2a5459f035204b8290fd5d",
+          "importsFiles": [
+            "aspire/critic/__init__.py"
+          ],
+          "path": "tests/test_checkpoint_safety.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "test_diagnose_checks_version",
+            "test_diagnose_json",
+            "test_diagnose_text",
+            "test_doctor_checks_python_version",
+            "test_doctor_checks_pytorch",
+            "test_doctor_checks_transformers",
+            "test_doctor_disk_space_check",
+            "test_doctor_with_anthropic_key_missing",
+            "test_doctor_with_anthropic_key_set",
+            "test_doctor_with_openai_key_set",
+            "test_evaluate_with_mock_checkpoint",
+            "test_init_creates_config_file",
+            "test_init_custom_output_path",
+            "test_no_args_shows_help",
+            "test_teachers_lists_all_teachers",
+            "test_train_with_config_file",
+            "test_train_with_demo_prompts",
+            "test_version_flag_long",
+            "test_version_flag_short"
+          ],
+          "hash": "9bf65d6872b0d3b095a0ce9bc95a358948add5705cb1179a20acb71b77a09984",
+          "importsFiles": [
+            "aspire/__init__.py",
+            "aspire/cli.py"
+          ],
+          "path": "tests/test_cli.py"
+        },
+        {
+          "hash": "a2866fdbdeb086ff7962172ba880e8b45ece53cb7932f56c83aae5e48c40f4e3",
+          "importsFiles": [
+            "aspire/__init__.py",
+            "aspire/cli.py",
+            "aspire/errors.py",
+            "aspire/teachers/base.py"
+          ],
+          "path": "tests/test_cli_errors.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "batch_size",
+            "hidden_dim",
+            "sample_attention_mask",
+            "sample_code_bad",
+            "sample_code_good",
+            "sample_encoding",
+            "sample_input_ids",
+            "seq_len",
+            "vocab_size"
+          ],
+          "hash": "74bfc1269bb09b7d25378093a71807a31cf1ee6f23dfea8fdfc7c9332132ea9c",
+          "importsFiles": [
+            "integrations/code/code_critic.py",
+            "integrations/code/config.py"
+          ],
+          "path": "tests/test_code_critic.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "5d85b299c1506c4b8791f3eba12681f693671e2817103ef7b48c486c7f14cda1",
+          "importsFiles": [
+            "aspire/config.py"
+          ],
+          "path": "tests/test_config.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "patched_hf"
+          ],
+          "hash": "2d33e3234cb4e9c4583ca106df3ebdf870f37580c92eac3d9689e81f0d06ac34",
+          "importsFiles": [
+            "aspire/critic/base.py",
+            "aspire/critic/separate.py",
+            "aspire/critic/shared.py"
+          ],
+          "path": "tests/test_coverage_critic.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "generator",
+            "make_dialogue"
+          ],
+          "hash": "8eb648aa2449e11701ff70e1eeea218cb2b96ea9f0f9043d2aa3feabddc9da76",
+          "importsFiles": [
+            "aspire/dialogue/formatter.py",
+            "aspire/dialogue/generator.py",
+            "aspire/dialogue/manager.py",
+            "aspire/teachers/base.py"
+          ],
+          "path": "tests/test_coverage_dialogue.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "e26729c1f4b0bc5d5006c9a976245e328847ada73b315766d934898917f09b16",
+          "importsFiles": [
+            "aspire/losses/student.py"
+          ],
+          "path": "tests/test_coverage_losses.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "claude_teacher",
+            "local_teacher_factory",
+            "openai_teacher"
+          ],
+          "hash": "8b6bc64db8f9b7a25456a9618bf33fa4449b27e49e94c08874146b51f1bd31c1",
+          "importsFiles": [
+            "aspire/teachers/base.py",
+            "aspire/teachers/claude.py",
+            "aspire/teachers/composite.py",
+            "aspire/teachers/local.py",
+            "aspire/teachers/openai.py"
+          ],
+          "path": "tests/test_coverage_teachers.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "make_trainer"
+          ],
+          "hash": "cfec0b5bd3c08072150c759470b36a526aabdd7fbab1429af4d8a265068e0df6",
+          "importsFiles": [
+            "aspire/config.py",
+            "aspire/trainer.py"
+          ],
+          "path": "tests/test_coverage_trainer.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "a61b23936d9586808d108db6a747dbb2267cda2c7594bb9d2fdb05aad7cb24a2",
+          "importsFiles": [
+            "aspire/critic/base.py",
+            "aspire/critic/head.py"
+          ],
+          "path": "tests/test_critic_edge_cases.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "accuracy",
+            "fake_result",
+            "scored",
+            "synthetic"
+          ],
+          "hash": "920c0b365a68d1e10796440bb7b494110d5fe3b5cd45afb3e4d294cddfc7bd57",
+          "importOrder": [
+            "examples/sft-experiment/critic_heads.py",
+            "examples/sft-experiment/critic_heads_run.py",
+            "examples/sft-experiment/lib.py",
+            "examples/sft-experiment/second_planter.py",
+            "aspire/critic/__init__.py"
+          ],
+          "importsFiles": [
+            "aspire/critic/__init__.py",
+            "examples/sft-experiment/critic_heads.py",
+            "examples/sft-experiment/critic_heads_run.py",
+            "examples/sft-experiment/lib.py",
+            "examples/sft-experiment/second_planter.py"
+          ],
+          "path": "tests/test_critic_heads.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "build",
+            "head",
+            "same"
+          ],
+          "hash": "59c4c460433791d2d3f7e892b1e16fd140126b18755d63114218c4282c17ba18",
+          "importsFiles": [
+            "aspire/config.py",
+            "aspire/trainer.py"
+          ],
+          "path": "tests/test_critic_init_seed.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "e072cfebb6fa80c40408d02bea08b280d0622ce90482b155b46f999d91b37a94",
+          "importsFiles": [
+            "aspire/critic/base.py",
+            "aspire/critic/head.py",
+            "aspire/critic/separate.py",
+            "aspire/critic/shared.py"
+          ],
+          "path": "tests/test_critics.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "mock_student_model",
+            "mock_teacher",
+            "mock_tokenizer",
+            "sample_dialogue_history",
+            "sample_generated_dialogue"
+          ],
+          "hash": "b2b72ad4cedf3fb4a07c76f4b78096fd452bfdd1ef634399ec7fe4f416c1f64c",
+          "importsFiles": [
+            "aspire/dialogue/formatter.py",
+            "aspire/dialogue/generator.py",
+            "aspire/dialogue/manager.py",
+            "aspire/teachers/base.py"
+          ],
+          "path": "tests/test_dialogue.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "mock_student_model",
+            "mock_teacher",
+            "mock_tokenizer"
+          ],
+          "hash": "6106c707d3615230a14c8b374503292b2507b8d41e7eb2444e2f6c91592465b8",
+          "importsFiles": [
+            "aspire/dialogue/formatter.py",
+            "aspire/dialogue/generator.py",
+            "aspire/dialogue/manager.py",
+            "aspire/teachers/base.py"
+          ],
+          "path": "tests/test_dialogue_edge_cases.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "fake_cache",
+            "test_a_head_does_not_depend_on_heads_trained_before_it",
+            "test_batch_plan_matches_the_original_loop",
+            "test_stack_pads_with_a_zero_mask_in_the_stored_dtype",
+            "test_the_fast_eager_path_reproduces_train_head"
+          ],
+          "hash": "65a32cbd871514f4f979e9277f5657273dd6b6c27b3305e2f7b4b16e49e9cea7",
+          "importOrder": [
+            "examples/sft-experiment/fast_heads.py",
+            "examples/sft-experiment/critic_heads.py"
+          ],
+          "importsFiles": [
+            "examples/sft-experiment/critic_heads.py",
+            "examples/sft-experiment/fast_heads.py"
+          ],
+          "path": "tests/test_fast_heads.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "evaluation",
+            "line_run",
+            "recorder"
+          ],
+          "hash": "92cfc74f5ba4a9e1b26c1b9a7e3bafdc71bffed60b85b5ea64c92e23a4a0c078",
+          "importOrder": [
+            "aspire/geometry.py",
+            "aspire/teachers/base.py",
+            "aspire/config.py",
+            "aspire/trainer.py"
+          ],
+          "importsFiles": [
+            "aspire/config.py",
+            "aspire/geometry.py",
+            "aspire/teachers/base.py",
+            "aspire/trainer.py"
+          ],
+          "path": "tests/test_geometry.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "fake_judge"
+          ],
+          "hash": "01d23f658e22bcce9da6e1d24977e8d77d0c912013f72bd5e0ff39213bcb52f3",
+          "importOrder": [
+            "aspire/config.py",
+            "aspire/critic/__init__.py",
+            "aspire/errors.py",
+            "aspire/judge.py",
+            "aspire/__init__.py",
+            "aspire/cli.py"
+          ],
+          "importsFiles": [
+            "aspire/__init__.py",
+            "aspire/cli.py",
+            "aspire/config.py",
+            "aspire/critic/__init__.py",
+            "aspire/errors.py",
+            "aspire/judge.py"
+          ],
+          "path": "tests/test_judge.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "batch_size",
+            "hidden_dim",
+            "random_embeddings",
+            "random_logits",
+            "random_scores",
+            "seq_len",
+            "vocab_size"
+          ],
+          "hash": "cd1bbb5b0d91b37d3bfcf1b5870f9ef0a361398f3974d39018f29cc6992e74ad",
+          "importsFiles": [
+            "aspire/losses/combined.py",
+            "aspire/losses/critic.py",
+            "aspire/losses/student.py"
+          ],
+          "path": "tests/test_losses_combined.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "9b7c51165886d5a50bd743052eb7f799163d67b1622c766ac9461f1a8dee5333",
+          "importsFiles": [
+            "aspire/losses/combined.py",
+            "aspire/losses/critic.py",
+            "aspire/losses/student.py"
+          ],
+          "path": "tests/test_losses_edge_cases.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "cand",
+            "test_one_set_missing_escalates_every_set"
+          ],
+          "hash": "b2fc2cd99b79638d259b7d2121139f22514401d0ce5ec7d3bcbdc73af0c85bf2",
+          "importsFiles": [
+            "examples/sft-experiment/matched_set.py"
+          ],
+          "path": "tests/test_matched_set.py"
+        },
+        {
+          "exports": [
+            "make_local",
+            "manager"
+          ],
+          "hash": "cf8b9a75191d8d6f59edcd54141ea9158f7201e7fff4f9edec9c62d52504b8c6",
+          "importOrder": [
+            "aspire/cli.py",
+            "aspire/config.py",
+            "aspire/critic/head.py",
+            "aspire/dialogue/generator.py",
+            "aspire/dialogue/manager.py",
+            "aspire/errors.py",
+            "aspire/teachers/__init__.py",
+            "aspire/teachers/base.py",
+            "aspire/teachers/local.py",
+            "aspire/teachers/registry.py",
+            "aspire/trainer.py",
+            "aspire/__init__.py",
+            "tests/test_coverage_teachers.py"
+          ],
+          "importsFiles": [
+            "aspire/__init__.py",
+            "aspire/cli.py",
+            "aspire/config.py",
+            "aspire/critic/head.py",
+            "aspire/dialogue/generator.py",
+            "aspire/dialogue/manager.py",
+            "aspire/errors.py",
+            "aspire/teachers/__init__.py",
+            "aspire/teachers/base.py",
+            "aspire/teachers/local.py",
+            "aspire/teachers/registry.py",
+            "aspire/trainer.py",
+            "tests/test_coverage_teachers.py"
+          ],
+          "path": "tests/test_real_run_fixes.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "reply"
+          ],
+          "hash": "a9a94708c6d396765c7840097973a99eea31d228e360cb5818e51879be87eb01",
+          "importsFiles": [
+            "examples/sft-experiment/recheck.py"
+          ],
+          "path": "tests/test_recheck.py"
+        },
+        {
+          "exports": [
+            "fake_teacher",
+            "judge_pair",
+            "lib_config_ok"
+          ],
+          "hash": "ebb808db129c007af9f2ead4a6070d91e138957e2099da7d23610c804171fb37",
+          "importOrder": [
+            "examples/sft-experiment/build_dataset.py",
+            "examples/sft-experiment/clean_dataset.py",
+            "examples/sft-experiment/eval_heldout.py",
+            "examples/sft-experiment/fresh_pairs.py",
+            "examples/sft-experiment/host_check.py",
+            "examples/sft-experiment/judge_eval.py",
+            "examples/sft-experiment/judge_kev.py",
+            "examples/sft-experiment/judge_logprob.py",
+            "examples/sft-experiment/lib.py",
+            "examples/sft-experiment/make_prompts.py",
+            "examples/sft-experiment/pairwise_teacher.py",
+            "examples/sft-experiment/probe_models.py",
+            "examples/sft-experiment/seed_configs.py",
+            "examples/sft-experiment/sft.py",
+            "aspire/config.py"
+          ],
+          "importsFiles": [
+            "aspire/config.py",
+            "examples/sft-experiment/build_dataset.py",
+            "examples/sft-experiment/clean_dataset.py",
+            "examples/sft-experiment/eval_heldout.py",
+            "examples/sft-experiment/fresh_pairs.py",
+            "examples/sft-experiment/host_check.py",
+            "examples/sft-experiment/judge_eval.py",
+            "examples/sft-experiment/judge_kev.py",
+            "examples/sft-experiment/judge_logprob.py",
+            "examples/sft-experiment/lib.py",
+            "examples/sft-experiment/make_prompts.py",
+            "examples/sft-experiment/pairwise_teacher.py",
+            "examples/sft-experiment/probe_models.py",
+            "examples/sft-experiment/seed_configs.py",
+            "examples/sft-experiment/sft.py"
+          ],
+          "path": "tests/test_sft_experiment.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "labelled",
+            "multi_turn",
+            "single_turn",
+            "test_drop_and_truncate_never_mix",
+            "test_multi_turn_labels_on_a_consistent_template_are_every_answer",
+            "test_multi_turn_with_thinking_off_raises_rather_than_mislabelling",
+            "test_prepare_accounts_for_every_item",
+            "test_single_turn_labels_are_exactly_the_answer_and_never_the_prompt"
+          ],
+          "hash": "3c55011b3091f30a6de349338171e14eab3fc654791c29e8ccf53b436a4af376",
+          "importsFiles": [
+            "examples/sft-experiment/sft.py"
+          ],
+          "path": "tests/test_sft_properties.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "head",
+            "scores",
+            "swap"
+          ],
+          "hash": "b53f5e61ab597c7becbf415e8dc69b791006d4bd2c694d6264e3b55a9db67908",
+          "importsFiles": [
+            "examples/sft-experiment/critic_heads.py",
+            "examples/sft-experiment/critic_heads_run.py",
+            "examples/sft-experiment/lib.py",
+            "examples/sft-experiment/skeptic_pairs.py"
+          ],
+          "path": "tests/test_skeptic.py",
+          "testFramework": "pytest"
+        },
+        {
+          "exports": [
+            "rows"
+          ],
+          "hash": "2e96fb724cd835728bf33b3b3456cb89a1cf1d9a08634dff62bc99fe7e449211",
+          "importsFiles": [
+            "examples/sft-experiment/surprisal_baseline.py"
+          ],
+          "path": "tests/test_surprisal_baseline.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "e086d100a3c518e045bc0f66fd1d1160c622db19ecda8cfc03c3ce4594a8f979",
+          "importsFiles": [
+            "aspire/teachers/base.py",
+            "aspire/teachers/composite.py",
+            "aspire/teachers/personas.py",
+            "aspire/teachers/registry.py"
+          ],
+          "path": "tests/test_teachers.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "80ab58477e4be4b784ec1cbb46fcec21d633ef83df9fb03b997f2155ba89d472",
+          "importsFiles": [
+            "aspire/teachers/base.py",
+            "aspire/teachers/claude.py"
+          ],
+          "path": "tests/test_teachers_claude.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "89e5117307c587ca6890ad1426e04316ae029a0a6869c9a8e5cc90289bb7f9af",
+          "importsFiles": [
+            "aspire/teachers/base.py",
+            "aspire/teachers/local.py"
+          ],
+          "path": "tests/test_teachers_local.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "3d054b738d54820ddadeda72a1126f08519fe1191b3243410078608e56df9d53",
+          "importsFiles": [
+            "aspire/teachers/base.py",
+            "aspire/teachers/openai.py"
+          ],
+          "path": "tests/test_teachers_openai.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "64043351077d06728b25d35be6a4bb8ebc7a02987c83e67235025460d6ed18b6",
+          "importOrder": [
+            "aspire/trainer.py",
+            "aspire/config.py",
+            "aspire/critic/__init__.py"
+          ],
+          "importsFiles": [
+            "aspire/config.py",
+            "aspire/critic/__init__.py",
+            "aspire/trainer.py"
+          ],
+          "path": "tests/test_trainer.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "8c27bbb1424466de00b459d5aa1d35bc6c7e27f794e56756d960bc261dee7303",
+          "importsFiles": [
+            "aspire/trainer.py"
+          ],
+          "path": "tests/test_trainer_edge_cases.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "77e495230538afcf0eaadbb167747f59ef80b749923063de109be59128db3612",
+          "importsFiles": [
+            "aspire/config.py",
+            "aspire/trainer.py"
+          ],
+          "path": "tests/test_trainer_unit.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "544d62ce0ad6b37354dc150f31f8c7e147f631a06238f0bf9402beacefc50c27",
+          "importsFiles": [
+            "examples/sft-experiment/typicality.py"
+          ],
+          "path": "tests/test_typicality.py",
+          "testFramework": "pytest"
+        },
+        {
+          "hash": "36758350f1be5ce63e1116535f2047f53138bf1dd05df8db5324d90ba0b4467a",
+          "path": "tests/test_windows_compatibility.py",
+          "testFramework": "pytest"
+        }
+      ],
+      "globs": [
+        "tests/**"
+      ],
+      "importConfidence": "full",
+      "name": "tests",
+      "origin": "authored",
+      "role": "test",
+      "testRunners": [
+        "pytest"
+      ],
+      "testedBy": 0,
+      "unresolvedNamed": [
+        {
+          "path": "tests/test_cli_errors.py",
+          "specifier": null,
+          "why": "dynamic"
+        }
+      ],
+      "unresolvedSites": 1
+    }
+  ],
+  "doors": [
+    {
+      "checksCount": 2,
+      "commands": [
+        {
+          "dir": "",
+          "job": "ci",
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install dependencies"
+        },
+        {
+          "dir": "",
+          "job": "ci",
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
+        },
+        {
+          "dir": "",
+          "job": "ci",
+          "programs": [
+            "ruff"
+          ],
+          "step": "Ruff check"
+        },
+        {
+          "dir": "",
+          "job": "ci",
+          "programs": [
+            "pyright"
+          ],
+          "step": "Pyright"
+        },
+        {
+          "dir": "",
+          "job": "ci",
+          "programs": [
+            "pytest"
+          ],
+          "step": "Run tests with coverage"
+        },
+        {
+          "dir": "",
+          "job": "ci",
+          "programs": [
+            "python"
+          ],
+          "step": "Geometry demo writes ScalarScope exports"
+        },
+        {
+          "dir": "",
+          "job": "ci",
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Build package"
+        },
+        {
+          "dir": "",
+          "job": "ci",
+          "programs": [
+            "pip",
+            "twine"
+          ],
+          "step": "Check package"
+        },
+        {
+          "dir": "",
+          "job": "dep-audit",
+          "programs": [
+            "pip"
+          ],
+          "step": "2"
+        },
+        {
+          "dir": "",
+          "job": "dep-audit",
+          "programs": [
+            "pip-audit"
+          ],
+          "step": "3"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "ci",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                },
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python ${{ matrix.python-version }}",
+              "uses": "actions/setup-python",
+              "version": "${{ matrix.python-version }}"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "3",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "name": "dep-audit",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
+        }
+      ],
+      "landings": [],
+      "mentions": [],
+      "name": "CI",
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "aspire",
+          "depth": 0,
+          "files": 36
+        },
+        {
+          "boundary": "examples",
+          "depth": 0,
+          "files": 25
+        },
+        {
+          "boundary": "integrations",
+          "depth": 0,
+          "files": 24
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 78
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "directory": true,
+          "job": "ci",
+          "path": "aspire/",
+          "runKind": "checks"
+        },
+        {
+          "job": "ci",
+          "path": "examples/geometry_demo.py",
+          "runKind": "executes"
+        },
+        {
+          "directory": true,
+          "job": "ci",
+          "path": "integrations/",
+          "runKind": "checks",
+          "via": "build pyproject.toml"
+        },
+        {
+          "directory": true,
+          "job": "ci",
+          "path": "tests/",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 4,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "tests": [
+        {
+          "config": "pyproject.toml",
+          "coverage": true,
+          "files": 78,
+          "job": "ci",
+          "runner": "pytest",
+          "step": "Run tests with coverage"
+        }
+      ],
+      "triggers": [
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "pull_request",
+          "paths": [
+            ".github/workflows/**",
+            "aspire/**",
+            "atlas/**",
+            "examples/**",
+            "integrations/**",
+            "pyproject.toml",
+            "tests/**"
+          ]
+        },
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "push",
+          "paths": [
+            ".github/workflows/**",
+            "aspire/**",
+            "atlas/**",
+            "examples/**",
+            "integrations/**",
+            "pyproject.toml",
+            "tests/**"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "actions/setup-node",
+        "actions/setup-python",
+        "codecov/codecov-action"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [
+        {
+          "dir": "site",
+          "job": "build",
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
+        },
+        {
+          "dir": "site",
+          "job": "build",
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
+      "landings": [],
+      "mentions": [],
+      "name": "Deploy site to GitHub Pages",
+      "permissions": [
+        "contents:read",
+        "id-token:write",
+        "pages:write"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "job": "build",
+          "matched": true,
+          "path": "site/astro.config.mjs",
+          "runKind": "executes",
+          "via": "astro build"
+        },
+        {
+          "directory": true,
+          "job": "build",
+          "matched": true,
+          "path": "site/src/",
+          "runKind": "executes",
+          "via": "astro build"
+        }
+      ],
+      "runsCount": 2,
+      "secrets": [],
+      "sends": {
+        "deploysPages": true,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "push",
+          "paths": [
+            ".github/workflows/pages.yml",
+            "site/**"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "actions/deploy-pages",
+        "actions/setup-node",
+        "actions/upload-pages-artifact"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 2,
+      "commands": [
+        {
+          "dir": "",
+          "job": "build",
+          "programs": [
+            "pip",
+            "python"
+          ],
+          "step": "Install build tools"
+        },
+        {
+          "dir": "",
+          "job": "build",
+          "programs": [
+            "echo",
+            "python"
+          ],
+          "step": "Tag matches the package version"
+        },
+        {
+          "dir": "",
+          "job": "build",
+          "programs": [
+            "python"
+          ],
+          "step": "Build package"
+        },
+        {
+          "dir": "",
+          "job": "build",
+          "programs": [
+            "twine"
+          ],
+          "step": "Check package"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                }
+              ],
+              "step": "Set up Python",
+              "uses": "actions/setup-python",
+              "version": "3.11"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "pypi"
+          },
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
+      "landings": [],
+      "mentions": [
+        {
+          "job": "build",
+          "path": "pyproject.toml"
+        }
+      ],
+      "name": "Release to PyPI",
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "aspire",
+          "depth": 0,
+          "files": 36
+        },
+        {
+          "boundary": "integrations",
+          "depth": 0,
+          "files": 24
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "directory": true,
+          "job": "build",
+          "path": "aspire/",
+          "runKind": "checks",
+          "via": "build pyproject.toml"
+        },
+        {
+          "directory": true,
+          "job": "build",
+          "path": "integrations/",
+          "runKind": "checks",
+          "via": "build pyproject.toml"
+        }
+      ],
+      "runsCount": 2,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": true,
+        "publishesTo": [
+          "pypi"
+        ],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [
+        {
+          "event": "release",
+          "types": [
+            "published"
+          ]
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "actions/download-artifact",
+        "actions/setup-python",
+        "actions/upload-artifact",
+        "pypa/gh-action-pypi-publish"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "pyproject.toml",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "aspire",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "aspire",
+          "depth": 0,
+          "files": 28
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "aspire/cli.py",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    }
+  ],
+  "edges": [
+    {
+      "from": "examples",
+      "kind": "file",
+      "to": "aspire"
+    },
+    {
+      "from": "tests",
+      "fromTests": true,
+      "kind": "file",
+      "to": "aspire"
+    },
+    {
+      "from": "tests",
+      "fromTests": true,
+      "kind": "file",
+      "to": "examples"
+    },
+    {
+      "from": "tests",
+      "fromTests": true,
+      "kind": "file",
+      "to": "integrations"
+    }
+  ],
+  "engine": "1.26.0",
+  "generatedFrom": {
+    "commit": "021ebf0d1053e700641688a72c5088ff0c1b1521",
+    "tracked": 264
+  },
+  "landings": [
+    {
+      "readers": [
+        {
+          "by": "tests/integrations/code/test_code_analysis_unit.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "Makefile",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "CONTRIBUTING.md",
+          "call": "--cov",
+          "confidence": "text"
+        },
+        {
+          "by": "CONTRIBUTING.md",
+          "call": "--fix",
+          "confidence": "text"
+        },
+        {
+          "by": "TESTS-TODO.md",
+          "call": "--cov",
+          "confidence": "text"
+        }
+      ],
+      "target": "aspire",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "README.es.md",
+          "call": "--config",
+          "confidence": "text"
+        },
+        {
+          "by": "README.fr.md",
+          "call": "--config",
+          "confidence": "text"
+        },
+        {
+          "by": "README.hi.md",
+          "call": "--config",
+          "confidence": "text"
+        },
+        {
+          "by": "README.it.md",
+          "call": "--config",
+          "confidence": "text"
+        },
+        {
+          "by": "README.ja.md",
+          "call": "--config",
+          "confidence": "text"
+        },
+        {
+          "by": "README.md",
+          "call": "--config",
+          "confidence": "text"
+        },
+        {
+          "by": "README.pt-BR.md",
+          "call": "--config",
+          "confidence": "text"
+        },
+        {
+          "by": "README.zh.md",
+          "call": "--config",
+          "confidence": "text"
+        },
+        {
+          "by": "site/src/content/docs/handbook/cli.md",
+          "call": "--config",
+          "confidence": "text"
+        }
+      ],
+      "target": "examples/local-run/local-teacher.yaml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "examples/pod-run/train.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "examples/sft-experiment/pod/plan_b.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "examples/sft-experiment/pod/plan_c.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "examples/sft-experiment/pod/plan_g.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "site/src/content/docs/handbook/cli.md",
+          "call": "--prompts",
+          "confidence": "text"
+        }
+      ],
+      "target": "examples/local-run/prompts.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "examples/sft-experiment/seed_configs.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "examples/pod-run/real-composite-teacher.yaml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "examples/sft-experiment/seed_configs.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "examples/pod-run/real-local-teacher.yaml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_sft_experiment.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_sft_properties.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "examples/sft-experiment",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "examples/sft-experiment/seed_configs.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "examples/sft-experiment/configs/sft-composite-teacher.yaml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "examples/sft-experiment/seed_configs.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "examples/sft-experiment/configs/sft-local-teacher.yaml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "TESTS-TODO.md",
+          "call": "--cov",
+          "confidence": "text"
+        }
+      ],
+      "target": "integrations",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "README.es.md",
+          "call": "cp",
+          "confidence": "text"
+        },
+        {
+          "by": "README.fr.md",
+          "call": "cp",
+          "confidence": "text"
+        },
+        {
+          "by": "README.hi.md",
+          "call": "cp",
+          "confidence": "text"
+        },
+        {
+          "by": "README.it.md",
+          "call": "cp",
+          "confidence": "text"
+        },
+        {
+          "by": "README.ja.md",
+          "call": "cp",
+          "confidence": "text"
+        },
+        {
+          "by": "README.md",
+          "call": "cp",
+          "confidence": "text"
+        },
+        {
+          "by": "README.pt-BR.md",
+          "call": "cp",
+          "confidence": "text"
+        },
+        {
+          "by": "README.zh.md",
+          "call": "cp",
+          "confidence": "text"
+        },
+        {
+          "by": "site/src/content/docs/handbook/integrations.md",
+          "call": "cp",
+          "confidence": "text"
+        }
+      ],
+      "target": "integrations/forge",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
+        }
+      ],
+      "target": "pyproject.toml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs/handbook",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "examples/sft-experiment/pod/plan_g.sh",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "tests/test_critic_init_seed.py",
+      "writers": []
+    }
+  ],
+  "overlaps": [],
+  "submodules": [],
+  "symlinks": [],
+  "testFiles": 78,
+  "unassigned": []
+}

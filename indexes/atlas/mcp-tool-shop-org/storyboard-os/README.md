@@ -1,6 +1,6 @@
 # storyboard-os: how it works
 
-Mapped at 2026-10-05 from commit 5a6b5b0 by Atlas 1.26.0.
+Mapped at 2026-10-12 from commit 1fc45e4 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-05 from commit 5a6b5b0 by Atlas 1.26.0.
 
 ## What changed since 2026-09-30 (736766f)
 
-Nothing structural changed since 2026-09-30; 1 file changed content.
+Nothing structural changed since 2026-09-30; 2 files changed content.
 
 ## What comes in
 

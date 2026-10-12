@@ -1,0 +1,260 @@
+{
+  "authored": [
+    ".github/",
+    "assets/",
+    "docs/",
+    "roles/",
+    "root",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "src",
+      "partLabel": "src"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 1,
+      "changed": 2,
+      "moved": 0,
+      "parts": 2,
+      "removed": 0
+    },
+    "items": [
+      {
+        "kind": "landing",
+        "sentence": "tests/fixtures/t10_round5_must_pass.json is now read by tests/test_generate.py.",
+        "subjects": [
+          "tests/fixtures/t10_round5_must_pass.json",
+          "tests/test_generate.py"
+        ]
+      },
+      {
+        "kind": "counts",
+        "sentence": "1 file added and 2 changed content, across 2 parts.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "0d7d301cffdc4e1fb84b878d3e8c39e2b430d156",
+      "generatedAt": "2026-10-12T13:03:22.514Z"
+    },
+    "unchanged": false
+  },
+  "changesTogether": [
+    {
+      "a": "src/role_set/readout.py",
+      "b": "tests/test_paid_run_data.py",
+      "either": 9,
+      "partLabels": [
+        "src",
+        "tests"
+      ],
+      "parts": [
+        "src",
+        "tests"
+      ],
+      "relation": "b-imports-a",
+      "shared": 6
+    },
+    {
+      "a": "src/role_set/assemble.py",
+      "b": "src/role_set/prompts.py",
+      "either": 17,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 9
+    },
+    {
+      "a": "src/role_set/prompts.py",
+      "b": "src/role_set/runner.py",
+      "either": 21,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 11
+    }
+  ],
+  "changesTogetherNote": [
+    "6 files changed together with their own tests, as expected.",
+    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 6 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 6,
+  "commit": "8d959193d999756c8d1a98c828927a30959c315c",
+  "defaultBranch": "main",
+  "derived": "9 parts, mostly Python (59 files), CSS (2), TypeScript (2), shell (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. People run role-set.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 27
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "files": 31
+        }
+      ],
+      "runs": [
+        "tests/"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a pull request to main",
+        "on a push to main touching 9 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "pyproject.toml",
+      "id": "pyproject.toml#role-set",
+      "kind": "command",
+      "landings": [],
+      "name": "role-set",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 27
+        }
+      ],
+      "runs": [
+        "src/role_set/cli.py"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "engine": "1.26.0",
+  "generated": [],
+  "generatedAt": "2026-10-12T14:47:20.275Z",
+  "limits": [
+    "1 write and 2 reads use paths built at run time and are not named here.",
+    "5 writes and 25 reads go to a path their caller passes, not to this repository.",
+    "7 writes and 5 reads go to the directory the command is run in (plan.json/, roles/ and writers.json) or a path their caller passes, not to this repository.",
+    "9 reads go to the directory the command is run in, not to this repository.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "assets": "assets",
+    "docs": "docs",
+    "roles": "roles",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "site": "site",
+    "src": "src",
+    "tests": "tests"
+  },
+  "parts": 9,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/role-set",
+  "sequences": [],
+  "startDoor": "pyproject.toml#role-set",
+  "startHere": [
+    "src/role_set/cli.py",
+    "src/role_set/puzzle_check.py",
+    "src/role_set/assemble.py",
+    "src/role_set/plan.py"
+  ],
+  "startReason": "This path follows role-set (a command people run) from its entry, since CI runs only tests.",
+  "summary": "role-set plans every slot of a role-shaping batch, has a loopback model write only the writer's parts, and passes each item through aspire-si's gates. It never rents a pod.",
+  "summaryFrom": "person",
+  "testFiles": 33,
+  "testedBy": {
+    "src": 27
+  },
+  "testedCodeParts": 1,
+  "unnamedWrites": 1,
+  "unread": [],
+  "unreadCode": [
+    "scripts"
+  ],
+  "unreadCodeUses": "scripts holds only PowerShell and shell files, which this map does not read, so what uses it cannot be seen.",
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [
+    "scripts holds only PowerShell and shell files, which this map does not read, so whether a test touches it cannot be seen."
+  ],
+  "written": 0
+}

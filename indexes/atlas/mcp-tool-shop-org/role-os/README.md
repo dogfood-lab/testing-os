@@ -1,15 +1,16 @@
 # role-os: how it works
 
-Mapped at 2026-10-05 from commit 5738c96 by Atlas 1.26.0.
+Mapped at 2026-10-12 from commit ce91be8 by Atlas 1.26.0.
 
 ## What this is
 
-15 parts, mostly JavaScript (162 files), Python (30), Astro (2), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run roleos.
+15 parts, mostly JavaScript (170 files), Python (30), Astro (2), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run roleos.
 
-## What changed since 2026-10-01 (91e12b7)
+## What changed since 2026-10-08 (ced8f13)
 
+- starter-pack/schemas/recipe-card.md is now read by starter-pack/examples/auditor-recipe-card.json.
 - test/live-tool-contracts.test.mjs is now read by tools/conformance-dataset/live-tools/RECEIPT.md.
-- 1 file changed content, across 1 part.
+- 5 files added and 13 changed content, across 3 parts.
 
 ## What comes in
 
@@ -21,20 +22,21 @@ Mapped at 2026-10-05 from commit 5738c96 by Atlas 1.26.0.
 ## What happens through CI
 
 1. The workflow runs bin/roleos.mjs in bin, test/ in test and tools/token-budget-dataset/test_harvester.py in tools.
-2. That reaches src (70 files).
-3. It uploads coverage to Codecov.
+2. That reaches src (75 files).
+3. It writes to .claude/calibration, which is not tracked.
+4. It uploads coverage to Codecov.
 
 ## Who reads the results
 
-CI writes nothing this map can see.
+CI writes only to .claude/calibration, which is not tracked.
 
 ## The other doors
 
-**Release** runs test/, reaches src, and publishes to npm on a release event.
+**Release** runs test/, reaches src, writes to .claude/calibration, which is not tracked, and publishes to npm on a release event.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**roleos** (a command people run) runs bin/roleos.mjs and reaches src.
+**roleos** (a command people run) runs bin/roleos.mjs, reaches src, and writes to .claude/calibration, which is not tracked.
 
 ## What breaks what
 
@@ -47,11 +49,11 @@ CI writes nothing this map can see.
 ## What tends to change together
 
 - **src/specialist/training-programs.mjs** and **test/specialist-training-programs.test.mjs** changed together in 5 of 6 commits, and the test part imports the src part.
-- **src/specialist/record.mjs** and **test/specialist-record.test.mjs** changed together in 5 of 9 commits, and the test part imports the src part.
+- **src/specialist/record.mjs** and **test/specialist-record.test.mjs** changed together in 5 of 10 commits, and the test part imports the src part.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 1 source file reaches 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 3 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -88,7 +90,7 @@ People write .github/, .role-os/, assets/, design/, examples/, the repository ro
 
 ## Where to start
 
-.github/workflows/ci.yml → bin/roleos.mjs → src/swarm-cmd.mjs → src/run.mjs → src/entry.mjs → src/mission.mjs → src/route.mjs → src/fs-utils.mjs
+.github/workflows/ci.yml → bin/roleos.mjs → src/swarm-cmd.mjs → src/run.mjs → src/entry.mjs → src/mission.mjs → src/packs.mjs → src/calibration.mjs
 
 Read those in order to follow one pull request end to end.
 
@@ -98,10 +100,10 @@ Beside the path, src/swarm-cmd.mjs also calls src/swarm/domain-detect.mjs, src/a
 
 - 3 imports could not be resolved: `test/knowledge-integration.test.mjs` imports a path built at run time, 3 times.
 - 16 writes and 17 reads use paths built at run time and are not named here.
-- 1 write goes to places this repository does not track, so it is not listed as generated.
-- 28 writes and 88 reads go to the directory the command is run in, not to this repository.
-- 43 writes and 42 reads go to a path their caller passes, not to this repository.
-- 23 writes and 23 reads go to the directory the command is run in or a path their caller passes, not to this repository.
+- 3 writes go to places this repository does not track, so they are not listed as generated.
+- 30 writes and 88 reads go to the directory the command is run in, not to this repository.
+- 43 writes and 56 reads go to a path their caller passes, not to this repository.
+- 23 writes and 25 reads go to the directory the command is run in or a path their caller passes, not to this repository.
 - 8 writes and 1 read go to a temporary directory, not to this repository.
 - 8 commands are built at run time and not followed, 2 of them in tests.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.

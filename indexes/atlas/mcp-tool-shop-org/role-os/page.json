@@ -65,13 +65,21 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 1,
+      "added": 5,
+      "changed": 13,
       "moved": 0,
-      "parts": 1,
+      "parts": 3,
       "removed": 0
     },
     "items": [
+      {
+        "kind": "landing",
+        "sentence": "starter-pack/schemas/recipe-card.md is now read by starter-pack/examples/auditor-recipe-card.json.",
+        "subjects": [
+          "starter-pack/schemas/recipe-card.md",
+          "starter-pack/examples/auditor-recipe-card.json"
+        ]
+      },
       {
         "kind": "landing",
         "sentence": "test/live-tool-contracts.test.mjs is now read by tools/conformance-dataset/live-tools/RECEIPT.md.",
@@ -82,13 +90,13 @@
       },
       {
         "kind": "counts",
-        "sentence": "1 file changed content, across 1 part.",
+        "sentence": "5 files added and 13 changed content, across 3 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "91e12b75f3c679b6be952ae0ffeb65dabe54a25e",
-      "generatedAt": "2026-10-01T02:12:47.775Z"
+      "commit": "ced8f13c8d14fc7cd8c46c7a036b8fea575cc41d",
+      "generatedAt": "2026-10-08T19:46:57.991Z"
     },
     "unchanged": false
   },
@@ -111,7 +119,7 @@
     {
       "a": "src/specialist/record.mjs",
       "b": "test/specialist-record.test.mjs",
-      "either": 9,
+      "either": 10,
       "partLabels": [
         "src",
         "test"
@@ -126,12 +134,12 @@
   ],
   "changesTogetherNote": [
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 1 source file reaches 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 3 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "5738c9634e7765ad5b7c573f8e1ef0c1cf719c6a",
+  "commit": "ce91be8054c54a94c3cfaebe1e79d685e70f46cd",
   "defaultBranch": "main",
-  "derived": "15 parts, mostly JavaScript (162 files), Python (30), Astro (2), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run roleos.",
+  "derived": "15 parts, mostly JavaScript (170 files), Python (30), Astro (2), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run roleos.",
   "doors": [
     {
       "checks": [],
@@ -151,7 +159,7 @@
         {
           "boundary": "test",
           "depth": 0,
-          "files": 72
+          "files": 75
         },
         {
           "boundary": "tools",
@@ -161,7 +169,7 @@
         {
           "boundary": "src",
           "depth": 1,
-          "files": 70
+          "files": 75
         }
       ],
       "runs": [
@@ -179,7 +187,8 @@
         "on a pull request",
         "on a push touching 14 paths",
         "or by hand"
-      ]
+      ],
+      "untracked": ".claude/calibration, which is not tracked"
     },
     {
       "checks": [],
@@ -194,12 +203,12 @@
         {
           "boundary": "test",
           "depth": 0,
-          "files": 72
+          "files": 75
         },
         {
           "boundary": "src",
           "depth": 1,
-          "files": 58
+          "files": 60
         }
       ],
       "runs": [
@@ -214,7 +223,8 @@
       "triggers": [
         "when a release is published",
         "or by hand"
-      ]
+      ],
+      "untracked": ".claude/calibration, which is not tracked"
     },
     {
       "checks": [],
@@ -266,7 +276,7 @@
         {
           "boundary": "src",
           "depth": 1,
-          "files": 60
+          "files": 65
         }
       ],
       "runs": [
@@ -276,7 +286,8 @@
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": []
+      "triggers": [],
+      "untracked": ".claude/calibration, which is not tracked"
     }
   ],
   "duplicates": [],
@@ -361,14 +372,14 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-05T14:02:53.263Z",
+  "generatedAt": "2026-10-12T14:47:12.789Z",
   "limits": [
     "3 imports could not be resolved: `test/knowledge-integration.test.mjs` imports a path built at run time, 3 times.",
     "16 writes and 17 reads use paths built at run time and are not named here.",
-    "1 write goes to places this repository does not track, so it is not listed as generated.",
-    "28 writes and 88 reads go to the directory the command is run in, not to this repository.",
-    "43 writes and 42 reads go to a path their caller passes, not to this repository.",
-    "23 writes and 23 reads go to the directory the command is run in or a path their caller passes, not to this repository.",
+    "3 writes go to places this repository does not track, so they are not listed as generated.",
+    "30 writes and 88 reads go to the directory the command is run in, not to this repository.",
+    "43 writes and 56 reads go to a path their caller passes, not to this repository.",
+    "23 writes and 25 reads go to the directory the command is run in or a path their caller passes, not to this repository.",
     "8 writes and 1 read go to a temporary directory, not to this repository.",
     "8 commands are built at run time and not followed, 2 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
@@ -417,16 +428,16 @@
     "src/run.mjs",
     "src/entry.mjs",
     "src/mission.mjs",
-    "src/route.mjs",
-    "src/fs-utils.mjs"
+    "src/packs.mjs",
+    "src/calibration.mjs"
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 75,
+  "testFiles": 78,
   "testedBy": {
-    "bin": 11,
+    "bin": 14,
     "dossier": 0,
-    "src": 72,
+    "src": 75,
     "tools": 3
   },
   "testedCodeParts": 4,

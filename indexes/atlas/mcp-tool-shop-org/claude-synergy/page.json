@@ -3,7 +3,6 @@
     ".github/",
     "docs/",
     "products/",
-    "root",
     "site/",
     "synergies/"
   ],
@@ -52,16 +51,39 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 2,
+      "added": 1186,
+      "changed": 5,
       "moved": 0,
-      "parts": 2,
+      "parts": 4,
       "removed": 0
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "LATEST.txt is now written by .github/workflows/sync.yml.",
+        "subjects": [
+          "LATEST.txt",
+          ".github/workflows/sync.yml"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "PRODUCTS.txt is now written by .github/workflows/sync.yml.",
+        "subjects": [
+          "PRODUCTS.txt",
+          ".github/workflows/sync.yml"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": "the repository root was authored and is now mixed.",
+        "subjects": [
+          "root"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-01; 2 files changed content.",
+        "sentence": "1186 files added and 5 changed content, across 4 parts.",
         "subjects": []
       }
     ],
@@ -69,7 +91,7 @@
       "commit": "a222e671c2f750517f49444564d3eb2c7144cd0c",
       "generatedAt": "2026-10-01T00:10:24.841Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -138,9 +160,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "2f08e9debf089960f1f3e319ff89d79e5d403b3a",
+  "commit": "26d9752c2b3dd5d3150006eb61ae3085e33596e3",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly Markdown (1273 files) and JSON data (317); code in TypeScript (83), JavaScript (9), CSS (2), Python (2), Astro (1) and shell (1). Work enters through 7 doors; the busiest is Daily sync, which reaches 1 part and commits into the repository (Tests reaches 2 but commits nothing). It publishes to npm. It deploys a site to GitHub Pages. People run claude-synergy-mcp and hk.",
+  "derived": "10 parts, mostly Markdown (2457 files) and JSON data (317); code in TypeScript (83), JavaScript (9), CSS (2), Python (2), Astro (1) and shell (1). Work enters through 7 doors; Tests and Release each reach 2 parts, and Tests is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run claude-synergy-mcp and hk.",
   "doors": [
     {
       "checks": [
@@ -264,12 +286,16 @@
       "checksMore": 0,
       "file": ".github/workflows/sync.yml",
       "id": ".github/workflows/sync.yml",
-      "landings": [],
+      "landings": [
+        "LATEST.txt",
+        "PRODUCTS.txt"
+      ],
       "name": "Daily sync",
       "programs": [
         "gh"
       ],
-      "pushes": true,
+      "pushes": false,
+      "pushesForReview": true,
       "reach": [
         {
           "boundary": "src",
@@ -282,7 +308,9 @@
       ],
       "runsCount": 1,
       "runsMore": 0,
-      "sends": [],
+      "sends": [
+        "opens a pull request"
+      ],
       "stages": [
         "LATEST.txt",
         "PRODUCTS.txt",
@@ -401,6 +429,18 @@
   "engine": "1.26.0",
   "generated": [
     {
+      "place": "LATEST.txt",
+      "writers": [
+        ".github/workflows/sync.yml"
+      ]
+    },
+    {
+      "place": "PRODUCTS.txt",
+      "writers": [
+        ".github/workflows/sync.yml"
+      ]
+    },
+    {
       "place": "dataset/changelog-actions/v1/entries/",
       "writers": [
         "scripts/apply-a3c-review.mjs"
@@ -443,14 +483,14 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-05T13:57:40.452Z",
+  "generatedAt": "2026-10-12T14:45:57.952Z",
   "limits": [
     "9 writes and 32 reads go to a path their caller passes, not to this repository.",
     "1 write and 8 reads go to the directory the command is run in (data/ and synergies/) or a path their caller passes, not to this repository.",
     "8 reads go to the directory the command is run in (products.yaml, schema-vec.sql, schema.sql and 1 more place), not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
-  "mainDoor": ".github/workflows/sync.yml",
+  "mainDoor": ".github/workflows/test.yml",
   "partLabels": {
     ".github": ".github",
     "dataset": "dataset",
@@ -484,6 +524,18 @@
   "testedCodeParts": 2,
   "unnamedWrites": 0,
   "unread": [
+    {
+      "place": "LATEST.txt",
+      "writers": [
+        ".github/workflows/sync.yml"
+      ]
+    },
+    {
+      "place": "PRODUCTS.txt",
+      "writers": [
+        ".github/workflows/sync.yml"
+      ]
+    },
     {
       "place": "dataset/changelog-actions/v1/eval-report-run1.json",
       "writers": [
@@ -522,5 +574,5 @@
     "test/smoke/full-corpus.test.ts runs in no workflow.",
     "verify.sh runs in no workflow."
   ],
-  "written": 7
+  "written": 9
 }

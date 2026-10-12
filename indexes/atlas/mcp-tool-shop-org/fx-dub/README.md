@@ -1,6 +1,6 @@
 # fx-dub: how it works
 
-Mapped at 2026-10-05 from commit a6fb320 by Atlas 1.26.0.
+Mapped at 2026-10-12 from commit f9063f1 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-05 from commit a6fb320 by Atlas 1.26.0.
 
 ## What changed since 2026-09-30 (8bb7ee7)
 
-Nothing structural changed since 2026-09-30; 1 file changed content.
+Nothing structural changed since 2026-09-30; 8 files changed content.
 
 ## What comes in
 
