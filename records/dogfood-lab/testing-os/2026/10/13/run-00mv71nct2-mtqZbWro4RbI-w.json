@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0.0",
+  "policy_version": "1.0.0",
+  "run_id": "00mv71nct2-mtqZbWro4RbI-w",
+  "repo": "dogfood-lab/testing-os",
+  "ref": {
+    "branch": "main",
+    "commit_sha": "6e50665e42cafee2d9bdfb458ec01916abef9abd"
+  },
+  "source": {
+    "actor": "mcp-tool-shop",
+    "attempt": 1,
+    "provider": "github",
+    "provider_run_id": "38449909978",
+    "run_url": "https://github.com/dogfood-lab/testing-os/actions/runs/38449909978",
+    "workflow": "CI"
+  },
+  "timing": {
+    "duration_ms": 0,
+    "finished_at": "2026-10-13T18:58:15.062Z",
+    "started_at": "2026-10-13T18:58:15.062Z"
+  },
+  "scenario_results": [
+    {
+      "evidence": [
+        {
+          "description": "The testing-os CI workflow_run log for the commit under test",
+          "kind": "log",
+          "url": "https://github.com/dogfood-lab/testing-os/actions/runs/38449909978"
+        }
+      ],
+      "execution_mode": "bot",
+      "notes": "Derived from the testing-os CI workflow_run conclusion: success.",
+      "product_surface": "cli",
+      "scenario_id": "self-verify-gate",
+      "scenario_name": "testing-os self-verification gate",
+      "scenario_version": "1.0.0",
+      "step_results": [
+        {
+          "status": "pass",
+          "step_id": "version-sync-gate"
+        },
+        {
+          "status": "pass",
+          "step_id": "doc-drift-gate"
+        },
+        {
+          "status": "pass",
+          "step_id": "regression-pins-gate"
+        },
+        {
+          "status": "pass",
+          "step_id": "build"
+        },
+        {
+          "status": "pass",
+          "step_id": "scripts-suite"
+        },
+        {
+          "status": "pass",
+          "step_id": "workspace-suites"
+        }
+      ],
+      "verdict": "pass"
+    }
+  ],
+  "overall_verdict": {
+    "proposed": "pass",
+    "verified": "pass",
+    "downgraded": false
+  },
+  "verification": {
+    "status": "accepted",
+    "verified_at": "2026-10-13T18:58:34.128Z",
+    "provenance_confirmed": true,
+    "schema_valid": true,
+    "policy_valid": true,
+    "rejection_reasons": []
+  },
+  "integrity": {
+    "submission_digest": "46b781d8319e7337078772d06a81b045c81e94ad673fdd613ea9f758bd39d567",
+    "prev_digest": "463b28e86dad53cf2d21b2de55d0a6b79ccde5a32e021876f8342a9cd8bc8bf1",
+    "seq": 127
+  }
+}
