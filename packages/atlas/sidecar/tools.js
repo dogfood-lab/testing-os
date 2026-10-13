@@ -14,7 +14,7 @@ import { reachAnswer } from './reach-tool.js';
 import { createRefresher } from './refresh.js';
 import { refreshAnswer, REFRESH_ANSWER } from './refresh-tool.js';
 import { reread, rereadFacts } from './reread.js';
-import { chooseRoot, rootsOf } from './roots.js';
+import { chooseRoot, fixRoots } from './roots.js';
 import { outputSchema, problems } from './schema.js';
 import { SIZE_NOTE, SIZE_PROPERTIES, sizeAnswer } from './size.js';
 import { testGapsAnswer } from './test-gaps-tool.js';
@@ -409,7 +409,9 @@ export function createTools({ refresher = createRefresher() } = {}) {
   /**
    * @param {string} name a tool listTools names
    * @param {unknown} args the call's arguments
-   * @param {{ roots: string[], cwd: string, repos?: object[] | null }} context
+   * @param {{ fixed?: object, roots?: string[], cwd: string, repos?: object[] | null }} context
+   *   fixed: the server's roots, resolved once (roots.js fixRoots); a caller
+   *   without them, such as a test, gives the client's roots and --repos list
    * @returns {Promise<object>} the tool result: one text block and the structured content
    */
   async function callTool(name, args, context) {
@@ -418,8 +420,9 @@ export function createTools({ refresher = createRefresher() } = {}) {
     if (invalid.length > 0) {
       return failed(provenance(), { code: 'ATLAS_SIDECAR_INVALID_ARGUMENTS', details: invalid.slice(0, 8), whatToDo: `call ${name} with the arguments its input schema names` });
     }
-    if (tool.listsRoots) return reposAnswer(context, args);
-    const chosen = chooseRoot(context, args.repo);
+    const fixed = context.fixed ?? fixRoots({ cwd: context.cwd, clientDirs: context.roots ?? [], repos: context.repos ?? null });
+    if (tool.listsRoots) return reposAnswer(fixed, args);
+    const chosen = chooseRoot(fixed, args.repo);
     if (chosen.error) return failed(provenance(), chosen.error);
     // An answer names its repository whenever the server has more than one.
     const repo = { ...chosen.repo, shown: chosen.count > 1 };
@@ -503,9 +506,9 @@ export function createTools({ refresher = createRefresher() } = {}) {
    * as that answer would read it, and the commits HEAD holds since. No file
    * of the repository is read beyond its map.
    */
-  function reposAnswer(context, args) {
-    const roots = rootsOf(context);
-    const fallback = chooseRoot(context, undefined).repo ?? null;
+  function reposAnswer(fixed, args) {
+    const { roots } = fixed;
+    const fallback = chooseRoot(fixed, undefined).repo ?? null;
     const items = roots.map((root) => {
       const read = root.exported ? readExportedMap(root.root) : snapshotFor(root);
       const tip = root.exported ? null : head(root.root);
@@ -524,7 +527,7 @@ export function createTools({ refresher = createRefresher() } = {}) {
       };
     });
     const sentences = [
-      `Atlas answers for ${items.length === 1 ? '1 repository' : `${items.length} repositories`}, fixed when it started${context.repos ? ' from the --repos file' : ''}; `
+      `Atlas answers for ${items.length === 1 ? '1 repository' : `${items.length} repositories`}, fixed when it started${fixed.fromFile ? ' from the --repos file' : ''}; `
         + (fallback ? `a call that names no repo answers for ${asName(fallback.name)}.` : 'a call that names no repo is refused, since Atlas was started in none of them.'),
       // A Windows path is shown with forward slashes, which repo takes as well,
       // so it reads as one name and is not quoted for its backslashes.

@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -42,6 +42,18 @@ function mappedAt(fixture, dir) {
   mapIn(dir);
   commitAll(dir, 'map');
   return dir;
+}
+
+// A directory link: a junction on Windows, which needs no privilege, and a
+// symbolic link elsewhere. Retargeted by removing the link and making it again.
+function link(target, path) {
+  symlinkSync(target, path, process.platform === 'win32' ? 'junction' : 'dir');
+  return path;
+}
+
+function retarget(path, target) {
+  unlinkSync(path);
+  return link(target, path);
 }
 
 function mapCommit(dir) {
@@ -178,6 +190,32 @@ describe('atlas mcp --repos', () => {
     await s.close();
   });
 
+  it('keeps the repository it started in when the link it started through is retargeted', async () => {
+    // The roots are resolved once (R&D's review of #169): a working directory
+    // reached through a junction keeps answering for the repository the
+    // junction led to at start, though both are listed.
+    const moving = link(alpha, join(scratch(), 'moving'));
+    const s = await started({ cwd: moving, args: ['--repos', list] });
+    assert.equal((await call(s, 'atlas_overview', {})).structuredContent.atlas.map.commit, commits.alpha);
+    retarget(moving, beta);
+    assert.equal((await call(s, 'atlas_overview', {})).structuredContent.atlas.map.commit, commits.alpha);
+    await s.close();
+  });
+
+  it('writes a root the client offers into its log as data, so it starts no line of its own', async () => {
+    const s = await started({
+      cwd: elsewhere,
+      args: ['--repos', list],
+      capabilities: { roots: {} },
+      onRequest: () => ({ roots: [{ uri: 'file:///x\natlas mcp: forged line', name: 'x' }] }),
+    });
+    await call(s, 'atlas_repos', {});
+    await s.close();
+    const log = s.stderr.join('');
+    assert.match(log, /: file:\/\/\/x\\natlas mcp: forged line\n/);
+    assert.doesNotMatch(log, /^atlas mcp: forged line/m);
+  });
+
   it('logs the client\'s roots and never uses them, and never asks again when they change', async () => {
     const offered = mappedAt('sidecar-reach', join(scratch(), 'offered'));
     let asked = 0;
@@ -229,6 +267,67 @@ describe('atlas mcp without --repos', () => {
     assert.equal(refused.structuredContent.error.code, 'ATLAS_SIDECAR_REPO_NOT_ALLOWED');
     assert.equal(asked, 1, 'a changed list is not asked for');
     await s.close();
+  });
+
+  it('keeps the roots it resolved at initialisation when a link a client root came through is retargeted', async () => {
+    // A client root reached through a junction is resolved once, when the
+    // client answers roots/list; retargeting the junction changes nothing.
+    const moving = link(alpha, join(scratch(), 'moving'));
+    const s = await started({
+      cwd: elsewhere,
+      capabilities: { roots: {} },
+      onRequest: () => ({ roots: [{ uri: pathToFileURL(moving).href, name: 'moving' }] }),
+    });
+    const first = (await call(s, 'atlas_overview', {})).structuredContent.atlas;
+    assert.equal(first.map.commit, commits.alpha);
+    assert.equal(first.checkout.root, alpha, 'git runs in the real path, not the junction it was offered through');
+    retarget(moving, beta);
+    assert.equal((await call(s, 'atlas_overview', {})).structuredContent.atlas.map.commit, commits.alpha);
+    const listing = await call(s, 'atlas_repos', {});
+    assert.deepEqual(listing.structuredContent.answer.facts[0].items.map((item) => item.path), [alpha]);
+    await s.close();
+  });
+
+  it('answers from the repository it started in though the environment points git at another', async () => {
+    // R&D's ruling on #169: a GIT_DIR the host started the server with would
+    // send every git it runs to another repository; the directory alone chooses.
+    const s = await started({ cwd: alpha, env: { GIT_DIR: join(beta, '.git'), GIT_WORK_TREE: beta } });
+    for (const [name, args] of [['atlas_overview', {}], ['atlas_check_change', {}], ['atlas_explain', { path: 'store' }]]) {
+      const result = await call(s, name, args);
+      assert.notEqual(result.isError, true, `${name}: ${result.content[0].text}`);
+      assert.equal(result.structuredContent.atlas.map.commit, commits.alpha, name);
+      assert.equal(result.structuredContent.atlas.checkout.head, git(alpha, ['rev-parse', 'HEAD']), name);
+    }
+    await s.close();
+  });
+
+  it('names the top of an exported tree when it is started inside one', async () => {
+    const tree = join(scratch(), 'tree');
+    cpSync(join(alpha, 'atlas'), join(tree, 'atlas'), { recursive: true });
+    mkdirSync(join(tree, 'lib'));
+    const s = await started({ cwd: join(tree, 'lib') });
+    const refused = await call(s, 'atlas_overview', {});
+    assert.equal(refused.structuredContent.error.code, 'ATLAS_SIDECAR_NOT_A_REPOSITORY');
+    assert.equal(refused.structuredContent.error.whatToDo, `start atlas mcp in ${tree}, or offer it as a root`);
+    await s.close();
+  });
+
+  it('logs the client\'s roots it drops past the limit', async () => {
+    const trees = Array.from({ length: 33 }, (_, i) => {
+      const tree = join(ws, 'many', `tree-${String(i).padStart(2, '0')}`);
+      mkdirSync(join(tree, 'atlas'), { recursive: true });
+      writeFileSync(join(tree, 'atlas', 'structure.json'), '{}\n');
+      return tree;
+    });
+    const s = await started({
+      cwd: elsewhere,
+      capabilities: { roots: {} },
+      onRequest: () => ({ roots: trees.map((tree) => ({ uri: pathToFileURL(tree).href, name: 'tree' })) }),
+    });
+    const listing = await call(s, 'atlas_repos', {});
+    assert.equal(listing.structuredContent.answer.facts[0].total, 32);
+    await s.close();
+    assert.match(s.stderr.join(''), new RegExp(`answers for at most 32 repositories, so 1 the client offered is dropped: .*tree-32`));
   });
 
   it('names no repository in the line when it has one root, as before', async () => {

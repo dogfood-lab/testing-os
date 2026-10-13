@@ -1,5 +1,7 @@
 import { fileURLToPath } from 'node:url';
 import { ENGINE } from '../adapter/engine.js';
+import { neutral } from './data.js';
+import { fixRoots } from './roots.js';
 
 /**
  * The Model Context Protocol as the sidecar speaks it, built to revision
@@ -65,14 +67,14 @@ function validId(id) {
  *   log?: (line: string) => void,
  * }} options
  *   repos: the roots a --repos file named, fixed at start (sidecar/roots.js)
- *   tools.call receives { roots, cwd, era, repos } as its context: the
- *   client's roots as local directories (empty when it offers none, or when
- *   a --repos file names the roots), the working directory, and the --repos
- *   roots, from which the tool finds the repository it answers for
+ *   tools.call receives { fixed, cwd, era } as its context: the roots the
+ *   tool may answer for, resolved once (sidecar/roots.js fixRoots), and the
+ *   working directory
  * @returns {{ receive: (line: string) => Promise<void>, idle: () => Promise<void> }}
  */
 export function createProtocol({ send, tools, cwd, repos = null, log = () => {} }) {
   const legacy = { initialized: false, version: null, capabilities: {}, roots: null };
+  const fixed = new Map();
   const waiting = new Map();
   let requestSeq = 0;
   const inFlight = new Set();
@@ -110,7 +112,9 @@ export function createProtocol({ send, tools, cwd, repos = null, log = () => {} 
     });
     if (repos) {
       legacy.roots.then((roots) => {
-        const offered = (roots ?? []).map((entry) => String(entry?.uri).slice(0, 512));
+        // A client's string is data in the host's log too: a URI holding a
+        // line break would otherwise write a line of its own.
+        const offered = (roots ?? []).map((entry) => neutral(String(entry?.uri).slice(0, 512)));
         log(`atlas mcp: the client offered ${offered.length === 1 ? '1 root' : `${offered.length} roots`}, not used, since --repos names the roots${offered.length > 0 ? `: ${offered.join(', ')}` : ''}`);
       });
     }
@@ -135,6 +139,24 @@ export function createProtocol({ send, tools, cwd, repos = null, log = () => {} 
     return dirs;
   }
 
+  // The roots of an era, resolved once, as soon as the client's roots are
+  // known: before notifications/initialized from a client that offers roots
+  // they are not yet asked for, so that call alone resolves them unkept.
+  function fixedRoots(era) {
+    if (fixed.has(era)) return fixed.get(era);
+    const resolving = rootsFor(era).then((dirs) => {
+      const roots = fixRoots({ cwd, clientDirs: dirs, repos });
+      if (roots.dropped.length > 0) {
+        const n = roots.dropped.length;
+        log(`atlas mcp: Atlas answers for at most ${roots.roots.length} repositories, so ${n === 1 ? '1 the client offered is' : `${n} the client offered are`} dropped: ${roots.dropped.map((path) => neutral(path)).join(', ')}`);
+      }
+      return roots;
+    });
+    const pending = era === 'legacy' && !repos && !legacy.roots && isObject(legacy.capabilities.roots);
+    if (!pending) fixed.set(era, resolving);
+    return resolving;
+  }
+
   async function callTool(id, params, era, finish) {
     if (!isObject(params) || typeof params.name !== 'string') {
       fail(id, INVALID_PARAMS, 'Invalid params: tools/call needs a tool name');
@@ -145,10 +167,10 @@ export function createProtocol({ send, tools, cwd, repos = null, log = () => {} 
       fail(id, INVALID_PARAMS, `Unknown tool: ${params.name.slice(0, 64)}`);
       return;
     }
-    const roots = await rootsFor(era);
+    const roots = await fixedRoots(era);
     let result;
     try {
-      result = await tools.call(params.name, params.arguments ?? {}, { roots, cwd, era, repos });
+      result = await tools.call(params.name, params.arguments ?? {}, { fixed: roots, cwd, era });
     } catch (err) {
       log(`atlas mcp: ${params.name} failed: ${err?.stack ?? err}`);
       fail(id, INTERNAL_ERROR, 'Internal error: the tool failed; the server log has the cause');

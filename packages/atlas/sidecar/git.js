@@ -32,6 +32,28 @@ const MAX_BUFFER = 64 * 1024 * 1024;
 export const READ_ONLY_ENV = Object.freeze({ GIT_NO_LAZY_FETCH: '1', GIT_OPTIONAL_LOCKS: '0', GIT_TERMINAL_PROMPT: '0' });
 
 /**
+ * The variables that tell git which repository to use instead of the
+ * directory it runs in. The sidecar chooses a repository by its directory
+ * alone (docs/atlas-buildup.spec.md, slice AN), so none of them reaches a
+ * git it starts: a GIT_DIR in the environment the host started the server
+ * with would answer every question from another repository.
+ */
+export const LOCATION_VARIABLES = Object.freeze(['GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_OBJECT_DIRECTORY',
+  'GIT_ALTERNATE_OBJECT_DIRECTORIES', 'GIT_COMMON_DIR', 'GIT_NAMESPACE']);
+
+/** An environment without git's location variables, however Windows spells their case. */
+export function withoutGitLocation(env) {
+  const out = { ...env };
+  for (const key of Object.keys(out)) if (LOCATION_VARIABLES.includes(key.toUpperCase())) delete out[key];
+  return out;
+}
+
+// show and diff never run a program a repository's attributes name: no
+// textconv filter and no external diff. A clone carries no driver, but a
+// tree copied with its .git, or one the user's own configuration names, can.
+const NO_DRIVERS = Object.freeze({ show: ['--no-textconv', '--no-ext-diff'], diff: ['--no-textconv', '--no-ext-diff'] });
+
+/**
  * @param {string} cwd
  * @param {string[]} args the subcommand first
  * @param {{ encoding?: 'utf8' | 'buffer', input?: string }} [options]
@@ -39,10 +61,10 @@ export const READ_ONLY_ENV = Object.freeze({ GIT_NO_LAZY_FETCH: '1', GIT_OPTIONA
  */
 export function git(cwd, args, { encoding = 'utf8', input } = {}) {
   if (!READ_COMMANDS.has(args[0])) throw new Error(`atlas sidecar: git ${args[0]} is not a read command`);
-  const result = spawnSync('git', ['-c', 'core.fsmonitor=false', ...args], {
+  const result = spawnSync('git', ['-c', 'core.fsmonitor=false', args[0], ...(NO_DRIVERS[args[0]] ?? []), ...args.slice(1)], {
     cwd,
     encoding: encoding === 'buffer' ? 'buffer' : 'utf8',
-    env: { ...process.env, ...READ_ONLY_ENV },
+    env: { ...withoutGitLocation(process.env), ...READ_ONLY_ENV },
     maxBuffer: MAX_BUFFER,
     windowsHide: true,
     // As bytes: spawnSync would read a string through the output encoding.

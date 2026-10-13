@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import assert from 'node:assert/strict';
 import { after, describe, it } from 'node:test';
-import { chooseRoot, isNetworkPath, MAX_ROOTS, pathKey, readReposFile, rootsOf } from './roots.js';
+import { chooseRoot, fixRoots, isNetworkPath, MAX_ROOTS, readReposFile } from './roots.js';
 
 // docs/atlas-buildup.spec.md, slice AN: the repositories one sidecar answers
 // for are fixed when it starts, compared as real paths, and named by path
@@ -46,10 +46,32 @@ function link(target, path) {
   return path;
 }
 
+// A directory whose names keep their case, so it can hold Repo and repo:
+// natively elsewhere, and on Windows with its case-sensitive flag, which
+// fsutil sets on a directory its owner made. False where it cannot be set.
+function caseSensitive(dir) {
+  if (!WINDOWS) return true;
+  return spawnSync('fsutil.exe', ['file', 'setCaseSensitiveInfo', dir, 'enable'], { encoding: 'utf8' }).status === 0;
+}
+
 function reposFile(dir, lines, name = 'repos.txt') {
   const path = join(dir, name);
   writeFileSync(path, `${lines.join('\n')}\n`);
   return path;
+}
+
+// A server's roots, resolved once as the server resolves them, from the
+// working directory, the client's roots and a --repos list.
+function fixedFor({ cwd, roots = [], repos = null }, options) {
+  return fixRoots({ cwd, clientDirs: roots, repos }, options);
+}
+
+function choose(context, repo, options) {
+  return chooseRoot(fixedFor(context, options), repo, options);
+}
+
+function rootsIn(context) {
+  return fixedFor(context).roots;
 }
 
 describe('a --repos file', () => {
@@ -82,6 +104,28 @@ describe('a --repos file', () => {
     assert.match(read.error.details[1], /is in no git repository and holds no atlas\/structure\.json$/);
     assert.match(read.error.details[2], /is inside the repository at .*alpha; list the repository's top directory$/);
     assert.match(read.error.details[3], /is the repository line 1 names$/);
+  });
+
+  it('reads relative lines from the directory the file really is in, when it is reached through a link', () => {
+    // R&D's ruling on #169: the list names the same repositories however it is reached.
+    const ws = scratch();
+    const alpha = gitRepository(join(ws, 'alpha'));
+    mkdirSync(join(ws, 'lists'));
+    reposFile(join(ws, 'lists'), ['../alpha']);
+    const elsewhere = scratch();
+    const viaLink = link(join(ws, 'lists'), join(elsewhere, 'lists'));
+    const read = readReposFile(join(viaLink, 'repos.txt'));
+    assert.equal(read.ok, true, JSON.stringify(read.error));
+    assert.deepEqual(read.roots.map((root) => root.real), [alpha]);
+  });
+
+  it('refuses a line inside a tree exported without its history, naming its top', () => {
+    const ws = scratch();
+    const tree = exportedTree(join(ws, 'tree'));
+    mkdirSync(join(tree, 'lib'));
+    const read = readReposFile(reposFile(ws, [join(tree, 'lib')]));
+    assert.equal(read.ok, false);
+    assert.deepEqual(read.error.details, [`line 1: ${join(tree, 'lib')} is inside the exported tree at ${tree}; list the directory that holds atlas/structure.json`]);
   });
 
   it('refuses one repository listed twice through a link, since the link resolves to it', () => {
@@ -125,10 +169,6 @@ describe('network paths', () => {
     assert.equal(isNetworkPath('//server/share', 'linux'), false);
   });
 
-  it('compare without case on Windows and exactly elsewhere', () => {
-    assert.equal(pathKey('E:\\AI\\Repo', 'win32'), pathKey('e:\\ai\\repo', 'win32'));
-    assert.notEqual(pathKey('/ws/Repo', 'linux'), pathKey('/ws/repo', 'linux'));
-  });
 });
 
 describe('the repository a call answers for', () => {
@@ -145,9 +185,9 @@ describe('the repository a call answers for', () => {
     const beta = gitRepository(join(ws, 'beta'));
     const repos = listed(alpha, beta);
     const context = { cwd: alpha, repos };
-    assert.equal(chooseRoot(context, beta).repo.real, beta);
-    assert.equal(chooseRoot(context, 'beta').repo.real, beta);
-    assert.equal(chooseRoot(context, undefined).repo.real, alpha, 'with no repo, the directory it was started in, which the list names');
+    assert.equal(choose(context, beta).repo.real, beta);
+    assert.equal(choose(context, 'beta').repo.real, beta);
+    assert.equal(choose(context, undefined).repo.real, alpha, 'with no repo, the directory it was started in, which the list names');
   });
 
   it('is the same root through a link, and a link out of a root is outside it', () => {
@@ -156,9 +196,9 @@ describe('the repository a call answers for', () => {
     const outside = gitRepository(join(scratch('atlas-roots-outside-'), 'outside'));
     const repos = listed(alpha);
     const viaLink = link(alpha, join(ws, 'via-link'));
-    assert.equal(chooseRoot({ cwd: ws, repos }, viaLink).repo.real, alpha);
+    assert.equal(choose({ cwd: ws, repos }, viaLink).repo.real, alpha);
     const escape = link(outside, join(alpha, 'escape'));
-    const refused = chooseRoot({ cwd: ws, repos }, escape);
+    const refused = choose({ cwd: ws, repos }, escape);
     assert.equal(refused.error.code, 'ATLAS_SIDECAR_REPO_NOT_ALLOWED');
     assert.match(refused.error.details[0], /is not one of the roots fixed when atlas mcp started$/);
   });
@@ -169,15 +209,34 @@ describe('the repository a call answers for', () => {
     const repos = listed(alpha);
     const flipped = alpha[0] === alpha[0].toUpperCase() ? alpha[0].toLowerCase() + alpha.slice(1) : alpha[0].toUpperCase() + alpha.slice(1);
     assert.notEqual(flipped, alpha);
-    assert.equal(chooseRoot({ cwd: ws, repos }, flipped).repo.real, alpha);
-    assert.equal(chooseRoot({ cwd: ws, repos }, alpha.toUpperCase()).repo.real, alpha);
+    assert.equal(choose({ cwd: ws, repos }, flipped).repo.real, alpha);
+    assert.equal(choose({ cwd: ws, repos }, alpha.toUpperCase()).repo.real, alpha);
+  });
+
+  it('tells apart two repositories whose paths differ only in case, and refuses a path that matches a root only in case', () => {
+    // Both outside reviews of #169: compared without case, a call for one
+    // answered for the other. The native real path keeps each name's case.
+    const ws = scratch();
+    if (!caseSensitive(ws)) return;
+    const upper = gitRepository(join(ws, 'Repo'));
+    const lower = gitRepository(join(ws, 'repo'));
+    for (const platform of [process.platform, 'win32']) {
+      const fixed = fixedFor({ cwd: upper, roots: [lower] }, { platform });
+      assert.deepEqual(fixed.roots.map((root) => root.real), [lower, upper], platform);
+      assert.equal(chooseRoot(fixed, lower, { platform }).repo.real, lower, platform);
+      assert.equal(chooseRoot(fixed, upper, { platform }).repo.real, upper, platform);
+      const one = fixedFor({ cwd: upper }, { platform });
+      const refused = chooseRoot(one, lower, { platform });
+      assert.equal(refused.error.code, 'ATLAS_SIDECAR_REPO_NOT_ALLOWED', platform);
+      if (platform === 'win32') assert.equal(refused.error.details[0], `${lower} is ${lower}, which differs from the root ${upper} only in case, and so is another directory`);
+    }
   });
 
   it('is refused for a network path before the path is touched', () => {
     const ws = scratch();
     const repos = listed(gitRepository(join(ws, 'alpha')));
     for (const path of ['\\\\localhost\\C$\\Windows', '//localhost/C$/Windows']) {
-      const refused = chooseRoot({ cwd: ws, repos }, path, { platform: 'win32' });
+      const refused = choose({ cwd: ws, repos }, path, { platform: 'win32' });
       assert.equal(refused.error.code, 'ATLAS_SIDECAR_REPO_NOT_ALLOWED', path);
       assert.match(refused.error.details[0], /is a network path, and a root is on this machine$/);
     }
@@ -198,7 +257,7 @@ describe('the repository a call answers for', () => {
       [join(ws, 'missing'), /does not exist$/],
       ['other', /^no root is named other$/],
     ]) {
-      const refused = chooseRoot(context, repo);
+      const refused = choose(context, repo);
       assert.equal(refused.error.code, 'ATLAS_SIDECAR_REPO_NOT_ALLOWED', repo);
       assert.match(refused.error.details[0], said, repo);
       assert.equal(refused.error.details[1], `the roots are alpha (${alpha})`);
@@ -210,16 +269,16 @@ describe('the repository a call answers for', () => {
     const two = gitRepository(join(scratch(), 'twin'));
     const read = readReposFile(reposFile(scratch(), [one, two]));
     assert.equal(read.ok, true, 'two repositories with one folder name are both roots');
-    const refused = chooseRoot({ cwd: one, repos: read.roots }, 'twin');
+    const refused = choose({ cwd: one, repos: read.roots }, 'twin');
     assert.equal(refused.error.code, 'ATLAS_SIDECAR_REPO_AMBIGUOUS');
     assert.deepEqual(refused.error.details, [`2 roots are named twin: ${one}, ${two}`]);
-    assert.equal(chooseRoot({ cwd: one, repos: read.roots }, two).repo.real, two, 'the path still names one');
+    assert.equal(choose({ cwd: one, repos: read.roots }, two).repo.real, two, 'the path still names one');
   });
 
   it('with a --repos list, is refused when the call names none and the list leaves out where it started', () => {
     const ws = scratch();
     const repos = listed(gitRepository(join(ws, 'alpha')));
-    const refused = chooseRoot({ cwd: gitRepository(join(ws, 'unlisted')), repos }, undefined);
+    const refused = choose({ cwd: gitRepository(join(ws, 'unlisted')), repos }, undefined);
     assert.equal(refused.error.code, 'ATLAS_SIDECAR_REPO_NOT_ALLOWED');
     assert.match(refused.error.details[0], /^the directory atlas mcp was started in is not in a repository the --repos file names/);
   });
@@ -231,22 +290,45 @@ describe('the roots without a --repos file', () => {
     const alpha = gitRepository(join(ws, 'alpha'));
     const beta = gitRepository(join(ws, 'beta'));
     mkdirSync(join(beta, 'deep', 'er'), { recursive: true });
-    const roots = rootsOf({ cwd: alpha, roots: [join(beta, 'deep', 'er'), beta] });
+    const roots = rootsIn({ cwd: alpha, roots: [join(beta, 'deep', 'er'), beta] });
     assert.deepEqual(roots.map((root) => [root.name, root.from]), [['beta', 'client root'], ['alpha', 'working directory']]);
-    assert.equal(chooseRoot({ cwd: alpha, roots: [beta] }, undefined).repo.real, beta);
-    assert.equal(chooseRoot({ cwd: alpha, roots: [beta] }, 'alpha').repo.real, alpha);
-    assert.equal(chooseRoot({ cwd: alpha, roots: [beta] }, gitRepository(join(ws, 'gamma'))).error.code, 'ATLAS_SIDECAR_REPO_NOT_ALLOWED');
+    assert.equal(choose({ cwd: alpha, roots: [beta] }, undefined).repo.real, beta);
+    assert.equal(choose({ cwd: alpha, roots: [beta] }, 'alpha').repo.real, alpha);
+    assert.equal(choose({ cwd: alpha, roots: [beta] }, gitRepository(join(ws, 'gamma'))).error.code, 'ATLAS_SIDECAR_REPO_NOT_ALLOWED');
+  });
+
+  it('take a tree exported without its history only at the directory that holds its map, and name that top when started inside one', () => {
+    // R&D's ruling on #169 (spec item 4): no climb to an ancestor's map, so a
+    // stray atlas/ above an offered directory makes no root of all below it.
+    const ws = scratch();
+    const tree = exportedTree(join(ws, 'tree'));
+    mkdirSync(join(tree, 'lib', 'deep'), { recursive: true });
+    assert.deepEqual(rootsIn({ cwd: scratch(), roots: [join(tree, 'lib')] }), []);
+    const inside = fixedFor({ cwd: join(tree, 'lib', 'deep') });
+    assert.deepEqual(inside.roots, []);
+    const refused = chooseRoot(inside, undefined);
+    assert.equal(refused.error.code, 'ATLAS_SIDECAR_NOT_A_REPOSITORY');
+    assert.equal(refused.error.whatToDo, `start atlas mcp in ${tree}, or offer it as a root`);
+    assert.deepEqual(rootsIn({ cwd: tree }).map((root) => [root.real, root.exported]), [[tree, true]]);
+  });
+
+  it('drop the client\'s roots past the limit and name them', () => {
+    const ws = scratch();
+    const trees = Array.from({ length: MAX_ROOTS + 2 }, (_, i) => exportedTree(join(ws, `tree-${String(i).padStart(2, '0')}`)));
+    const fixed = fixedFor({ cwd: scratch(), roots: trees });
+    assert.equal(fixed.roots.length, MAX_ROOTS);
+    assert.deepEqual(fixed.dropped, trees.slice(MAX_ROOTS));
   });
 
   it('put a tree exported without its history after every git repository, as the default was chosen before', () => {
     const ws = scratch();
     const tree = exportedTree(join(ws, 'tree'));
     const alpha = gitRepository(join(ws, 'alpha'));
-    assert.deepEqual(rootsOf({ cwd: alpha, roots: [tree] }).map((root) => root.name), ['alpha', 'tree']);
+    assert.deepEqual(rootsIn({ cwd: alpha, roots: [tree] }).map((root) => root.name), ['alpha', 'tree']);
   });
 
   it('say there is no repository when there is none', () => {
-    const refused = chooseRoot({ cwd: scratch(), roots: [] }, undefined);
+    const refused = choose({ cwd: scratch(), roots: [] }, undefined);
     assert.equal(refused.error.code, 'ATLAS_SIDECAR_NOT_A_REPOSITORY');
   });
 });

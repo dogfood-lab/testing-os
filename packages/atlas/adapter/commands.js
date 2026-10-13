@@ -622,7 +622,7 @@ function committedAtHead(repo, path) {
 }
 
 function committedJson(repo, path) {
-  const result = spawnSync('git', ['show', `HEAD:${path}`], {
+  const result = spawnSync('git', ['show', '--no-textconv', `HEAD:${path}`], {
     cwd: repo,
     encoding: 'utf8',
     maxBuffer: 64 * 1024 * 1024,

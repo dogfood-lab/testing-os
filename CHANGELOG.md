@@ -22,9 +22,10 @@ A red `atlas check` now says how to fix itself, and says it where people look (`
 - **`atlas mcp` answers for several repositories, fixed when it starts** (`docs/atlas-buildup.spec.md`, slice AN, the first of the multi-repository slices R&D approved on 2026-10-13).
   - Every tool but the new `atlas_repos` takes `repo`: a repository's absolute path, or its folder name.
   - `atlas_repos` lists the roots, with each one's map commit and engine, and how many commits its HEAD holds that the map was not made from.
-  - With `atlas mcp --repos <file>`, the file names the roots, one path per line, absolute or relative to the file, and the client's roots are logged and not used. A file with a problem stops the server before it serves anything, with every problem listed (`ATLAS_SIDECAR_REPOS_FILE`).
-  - Without `--repos`, the roots are the repository it started in and those of the client's roots at initialisation. A call that names no repository answers as before.
-  - Roots are compared by real path, with links and junctions resolved and Windows drive letters in either case. A network path is never a root.
+  - With `atlas mcp --repos <file>`, the file names the roots, one path per line, absolute or relative to the directory the file really is in, and the client's roots are logged and not used. A file with a problem stops the server before it serves anything, with every problem listed (`ATLAS_SIDECAR_REPOS_FILE`).
+  - Without `--repos`, the roots are the repository it started in and those of the client's roots at initialisation, at most 32, with any dropped past that logged. A call that names no repository answers as before. A tree exported without its history is a root only at the directory holding its map.
+  - Each root is resolved once, so a junction retargeted later changes nothing, and compared exactly by its real path, which on Windows carries each name's case as it is on disk. A path that matches a root only in case is refused. A network path, a mapped drive's included, is never a root.
+  - git runs in the root's real path without `GIT_DIR`, `GIT_WORK_TREE` or the other variables that point it elsewhere, `show` and `diff` run no textconv filter or external diff, and the refresh's checkout fingerprint hashes a link's text and never follows it.
   - Anything else is refused (`ATLAS_SIDECAR_REPO_NOT_ALLOWED`), and so is a name two roots share (`ATLAS_SIDECAR_REPO_AMBIGUOUS`).
   - With more than one root, every answer names its repository first, and the provenance carries the repository's name.
 

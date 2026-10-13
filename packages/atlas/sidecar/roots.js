@@ -1,5 +1,5 @@
 import { existsSync, readFileSync, realpathSync, statSync } from 'node:fs';
-import { basename, dirname, isAbsolute, resolve, win32 } from 'node:path';
+import { basename, dirname, isAbsolute, join, resolve, win32 } from 'node:path';
 import { topLevel } from './git.js';
 import { exportedRoot } from './map.js';
 
@@ -11,9 +11,13 @@ import { exportedRoot } from './map.js';
  * initialisation. A tool's `repo` argument names one of them by its path or
  * its folder's name, and anything else is refused.
  *
- * Paths are compared as real paths, with links and junctions resolved, and
- * on Windows without regard to case. A network path is never a root: a
- * share can change under a running server, and a junction can lead to one.
+ * Paths are compared exactly as real paths, with links and junctions
+ * resolved. On Windows the native real path carries each name's case as it
+ * is on disk, so one directory always gives one string, and two that differ
+ * only in case are two directories (a case-sensitive one can hold both). A
+ * network path is never a root: a share can change under a running server,
+ * and a junction can lead to one. Every root is kept as its real path, and
+ * git runs there, never in the path it was given as.
  */
 
 /** The most repositories one server answers for. */
@@ -31,11 +35,11 @@ export function isNetworkPath(path, platform = process.platform) {
   return platform === 'win32' && /^[\\/]{2}/.test(String(path));
 }
 
-/** A path's form for comparison: Windows paths compare without case. */
-export function pathKey(path, platform = process.platform) {
-  return platform === 'win32' ? path.toLowerCase() : path;
-}
-
+// The native call, not realpathSync: on Windows it gives a mapped network
+// drive as its share, so Z:\repo comes back as \\server\share\repo and is
+// refused, where the JavaScript one keeps the drive letter (checked on the
+// rig on 2026-10-13 with Z: mapped to \\localhost\C$). It also gives each
+// name's case as it is on disk, which exact comparison relies on.
 function realOf(path) {
   try {
     return realpathSync.native(path);
@@ -56,31 +60,39 @@ function absolute(path, platform) {
   return platform === 'win32' ? win32.isAbsolute(path) : isAbsolute(path);
 }
 
-// The repository a real directory is in: the top of its git working tree,
-// else the nearest directory above it holding atlas/structure.json, for a
-// tree exported without its history. Each top is given as git or the walk
-// gives it, and as its real path, which is what roots are compared by.
-function repositoryOf(dir) {
-  const top = topLevel(dir);
+// A path that is not a root but would be one on a filesystem that ignores
+// case: on Windows, a directory beside a root that differs only in case.
+function caseTwin(roots, real, platform) {
+  if (platform !== 'win32') return null;
+  return roots.find((root) => root.real !== real && root.real.toLowerCase() === real.toLowerCase()) ?? null;
+}
+
+// The repository a real directory is: the top of the git working tree it is
+// in, or the directory itself when it holds atlas/structure.json, for a tree
+// exported without its history. An exported tree is never found by climbing
+// to an ancestor (docs/atlas-production.spec.md, Part 1 item 4: a directory
+// that holds atlas/structure.json), so a stray map above an offered
+// directory cannot make a root of everything under it. Both are kept as
+// their real path, where git runs.
+function repositoryOf(real) {
+  const top = topLevel(real);
   if (top) {
-    const real = realOf(top);
-    return real ? { root: top, real, exported: false } : null;
+    const realTop = realOf(top);
+    return realTop ? { root: realTop, real: realTop, exported: false } : null;
   }
-  const exported = exportedRoot(dir);
-  if (exported) {
-    const real = realOf(exported);
-    return real ? { root: exported, real, exported: true } : null;
-  }
+  if (existsSync(join(real, 'atlas', 'structure.json'))) return { root: real, real, exported: true };
   return null;
 }
 
-function entryOf(repository, from, platform) {
-  return { ...repository, key: pathKey(repository.real, platform), name: basename(repository.real), from };
+function entryOf(repository, from) {
+  return { ...repository, key: repository.real, name: basename(repository.real), from };
 }
 
 /**
- * The repository at or above a directory, as a root: how the working
- * directory and a client's root are taken, as before `repo` existed.
+ * The repository a directory is in, as a root: how the working directory
+ * and a client's root are taken. A directory inside a git repository stands
+ * for the whole repository, as before `repo` existed; a directory inside an
+ * exported tree stands for nothing.
  *
  * @returns {null | { root: string, real: string, key: string, name: string, exported: boolean, from: string }}
  */
@@ -90,16 +102,23 @@ export function rootHolding(dir, from, { platform = process.platform } = {}) {
   if (!real || isNetworkPath(real, platform)) return null;
   const repository = repositoryOf(real);
   if (!repository || isNetworkPath(repository.real, platform)) return null;
-  return entryOf(repository, from, platform);
+  return entryOf(repository, from);
+}
+
+// The top of the exported tree a directory is inside, for a refusal's hint.
+function exportedTopAbove(dir) {
+  const real = realOf(dir);
+  return real ? exportedRoot(real) : null;
 }
 
 /**
  * The roots a --repos file names: one path per line, absolute or relative
- * to the file's own directory, so an experiment can commit one list that
- * works on any machine. Blank lines and lines starting with # are skipped.
- * Each path must be the top of a git working tree, or of a tree exported
- * with its map, and no two may be one repository. Every problem is found
- * before the server starts, and none is skipped over.
+ * to the directory the file really is in (its links resolved), so an
+ * experiment can commit one list that works on any machine. Blank lines and
+ * lines starting with # are skipped; a path that starts with # is written
+ * as ./#name. Each path must be the top of a git working tree, or a
+ * directory holding atlas/structure.json, and no two may be one repository.
+ * Every problem is found before the server starts, and none is skipped over.
  *
  * @param {string} file the file as given, relative to cwd or absolute
  * @returns {{ ok: true, roots: object[] } | { ok: false, error: { code: string, details: string[], whatToDo: string } }}
@@ -120,7 +139,9 @@ export function readReposFile(file, { cwd = process.cwd(), platform = process.pl
   } catch (err) {
     return refuse([`${file} cannot be read: ${err.code ?? err.message}`]);
   }
-  const base = dirname(path);
+  // A list reached through a link is read from where it really is, so its
+  // relative lines name the same repositories however it was reached.
+  const base = dirname(realOf(path) ?? path);
   const roots = [];
   const problems = [];
   text.replace(/^\uFEFF/, '').split(/\r?\n/).forEach((raw, index) => {
@@ -143,14 +164,17 @@ export function readReposFile(file, { cwd = process.cwd(), platform = process.pl
     }
     const repository = repositoryOf(real);
     if (!repository) {
-      problems.push(`${at}: ${given} is in no git repository and holds no atlas/structure.json`);
+      const above = exportedRoot(real);
+      problems.push(above
+        ? `${at}: ${given} is inside the exported tree at ${above}; list the directory that holds atlas/structure.json`
+        : `${at}: ${given} is in no git repository and holds no atlas/structure.json`);
       return;
     }
-    if (pathKey(repository.real, platform) !== pathKey(real, platform)) {
+    if (repository.real !== real) {
       problems.push(`${at}: ${given} is inside the repository at ${repository.real}; list the repository's top directory`);
       return;
     }
-    const entry = { ...entryOf(repository, 'repos file', platform), line: index + 1 };
+    const entry = { ...entryOf(repository, 'repos file'), line: index + 1 };
     const twin = roots.find((root) => root.key === entry.key);
     if (twin) {
       problems.push(`${at}: ${given} is the repository line ${twin.line} names`);
@@ -165,26 +189,37 @@ export function readReposFile(file, { cwd = process.cwd(), platform = process.pl
 }
 
 /**
- * The roots of one call: the --repos list when the server was started with
- * one, else the repositories of the roots the client offered at
- * initialisation and the working directory's. They are in the order the
- * repository answered for was chosen before `repo` existed, so the first is
- * still that one: a client root in git, the working directory in git, then
- * the same two as trees exported without their history.
+ * The roots of one server, resolved once and kept: the --repos list when it
+ * was started with one, else the repositories of the roots the client
+ * offered at initialisation and the working directory's. Resolving them
+ * again on a later call would let a junction retargeted after start change
+ * which repository answers, so the server resolves them when the client's
+ * roots are known and answers from these entries after that.
  *
- * @param {{ cwd: string, roots?: string[], repos?: object[] | null }} context
+ * The roots are in the order the repository answered for was chosen before
+ * `repo` existed, so the first is still that one: a client root in git, the
+ * working directory in git, then the same two as exported trees. The working
+ * directory's own repository is kept apart, for a call with no repo under a
+ * --repos list. Past MAX_ROOTS, the rest are dropped, and named so the
+ * server can log them.
+ *
+ * @param {{ cwd: string, clientDirs?: string[], repos?: object[] | null }} input
+ * @returns {{ roots: object[], own: object | null, fromFile: boolean, offered: number, dropped: string[], exportedAbove: string | null }}
+ *   exportedAbove: the exported tree the working directory is inside, when it is in no repository
  */
-export function rootsOf({ cwd, roots = [], repos = null }, { platform = process.platform } = {}) {
-  if (repos) return repos;
-  const found = [
-    ...roots.map((dir) => rootHolding(dir, 'client root', { platform })),
-    rootHolding(cwd, 'working directory', { platform }),
-  ].filter(Boolean);
-  const out = [];
+export function fixRoots({ cwd, clientDirs = [], repos = null }, { platform = process.platform } = {}) {
+  const own = rootHolding(cwd, 'working directory', { platform });
+  const exportedAbove = own ? null : exportedTopAbove(cwd);
+  if (repos) return { roots: repos, own, fromFile: true, offered: clientDirs.length, dropped: [], exportedAbove };
+  const found = [...clientDirs.map((dir) => rootHolding(dir, 'client root', { platform })), own].filter(Boolean);
+  const roots = [];
+  const dropped = [];
   for (const entry of [...found.filter((root) => !root.exported), ...found.filter((root) => root.exported)]) {
-    if (!out.some((root) => root.key === entry.key) && out.length < MAX_ROOTS) out.push(entry);
+    if (roots.some((root) => root.key === entry.key) || dropped.includes(entry.real)) continue;
+    if (roots.length < MAX_ROOTS) roots.push(entry);
+    else dropped.push(entry.real);
   }
-  return out;
+  return { roots, own, fromFile: false, offered: clientDirs.length, dropped, exportedAbove };
 }
 
 /**
@@ -193,15 +228,16 @@ export function rootsOf({ cwd, roots = [], repos = null }, { platform = process.
  * Without `repo`: with a --repos list, the working directory's repository
  * when the list names it; without one, the first root, as before `repo`
  * existed. With `repo`: the root whose real path the absolute path resolves
- * to, or the one root with that folder name; anything else is refused.
+ * to exactly, or the one root with that folder name; anything else is
+ * refused, a path that differs from a root only in case included.
  *
- * @param {{ cwd: string, roots?: string[], repos?: object[] | null }} context
+ * @param {ReturnType<typeof fixRoots>} fixed the server's roots
  * @param {string | undefined} repo the call's repo argument
  * @returns {{ repo: object, count: number } | { error: { code: string, details: string[], whatToDo: string } }}
  *   count: how many roots there are, so an answer knows to name its repository
  */
-export function chooseRoot(context, repo, { platform = process.platform } = {}) {
-  const roots = rootsOf(context, { platform });
+export function chooseRoot(fixed, repo, { platform = process.platform } = {}) {
+  const { roots } = fixed;
   const chosen = (root) => ({ repo: root, count: roots.length });
   const listed = () => {
     const names = roots.slice(0, NAMED).map((root) => `${root.name} (${root.real})`);
@@ -213,12 +249,11 @@ export function chooseRoot(context, repo, { platform = process.platform } = {}) 
   });
 
   if (repo === undefined) {
-    if (!context.repos) {
+    if (!fixed.fromFile) {
       if (roots.length > 0) return chosen(roots[0]);
-      return { error: notARepository(context) };
+      return { error: notARepository(fixed) };
     }
-    const own = rootHolding(context.cwd, 'working directory', { platform });
-    const match = own && roots.find((root) => root.key === own.key);
+    const match = fixed.own && roots.find((root) => root.key === fixed.own.key);
     if (match) return chosen(match);
     return refuse('the directory atlas mcp was started in is not in a repository the --repos file names, and the call names no repo');
   }
@@ -228,8 +263,10 @@ export function chooseRoot(context, repo, { platform = process.platform } = {}) 
     const real = realOf(repo);
     if (!real) return refuse(`${repo} does not exist`);
     if (isNetworkPath(real, platform)) return refuse(`${repo} resolves to a network path, and a root is on this machine`);
-    const match = roots.find((root) => root.key === pathKey(real, platform));
+    const match = roots.find((root) => root.key === real);
     if (match) return chosen(match);
+    const twin = caseTwin(roots, real, platform);
+    if (twin) return refuse(`${repo} is ${real}, which differs from the root ${twin.real} only in case, and so is another directory`);
     return refuse(`${repo} is not one of the roots fixed when atlas mcp started`);
   }
   if (/[\\/]/.test(repo) || repo === '.' || repo === '..') {
@@ -249,10 +286,17 @@ export function chooseRoot(context, repo, { platform = process.platform } = {}) 
   return refuse(`no root is named ${repo}`);
 }
 
-function notARepository({ roots = [] }) {
+function notARepository({ offered, exportedAbove }) {
+  if (exportedAbove) {
+    return {
+      code: 'ATLAS_SIDECAR_NOT_A_REPOSITORY',
+      details: [`the working directory is inside the exported tree at ${exportedAbove}, and an exported tree is answered for only from the directory that holds atlas/structure.json`],
+      whatToDo: `start atlas mcp in ${exportedAbove}, or offer it as a root`,
+    };
+  }
   return {
     code: 'ATLAS_SIDECAR_NOT_A_REPOSITORY',
-    details: [roots.length > 0 ? 'no client root and not the working directory is inside a git repository' : 'the working directory is not inside a git repository'],
+    details: [offered > 0 ? 'no client root and not the working directory is inside a git repository' : 'the working directory is not inside a git repository'],
     whatToDo: 'start atlas mcp in the repository to answer for, or offer it as a root; outside git, a directory holding atlas/structure.json is answered from as an exported tree',
   };
 }

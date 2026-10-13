@@ -914,8 +914,8 @@ A warning from `atlas map`: a top-level folder, or the repository root, holds tr
 The directory the sidecar answers for is not in a git repository.
 :::
 
-- **Trigger:** no root the client offers is inside a git repository, and neither is the directory `atlas mcp` was started in, and none of them holds `atlas/structure.json` (a directory that does is answered as an exported tree).
-- **Operator action:** start `atlas mcp` in the repository it should answer for, or have the client offer that repository as a root.
+- **Trigger:** no root the client offers is inside a git repository, and neither is the directory `atlas mcp` was started in, and none of them holds `atlas/structure.json` (a directory that does is answered as an exported tree). A directory inside an exported tree is not one: when the server is started in one, the message names the tree's top.
+- **Operator action:** start `atlas mcp` in the repository it should answer for, or at the top of the exported tree the message names, or have the client offer that repository as a root.
 
 ### `ATLAS_SIDECAR_REPO_NOT_ALLOWED`
 
@@ -927,7 +927,8 @@ The repository asked about is not one the sidecar was given when it started.
   - a subdirectory of a root;
   - a relative path;
   - a path that does not exist;
-  - a network path, or one that resolves to a network path through a link or junction;
+  - a network path, or one that resolves to a network path through a link, a junction or a mapped drive;
+  - a path that matches a root only in case, which on Windows is another directory beside it;
   - a root the client adds after start;
   - with `--repos`, a call that names no repository when the list leaves out the directory `atlas mcp` started in.
 
@@ -952,7 +953,7 @@ The --repos file does not name a list of repositories the sidecar can answer for
 - **Trigger:** `atlas mcp --repos <file>` found a problem in the file before serving anything. This is the one sidecar code that prints and exits: on stderr, with exit 2, so the client sees the server fail to start. Every problem is listed with its line:
   - the file cannot be read, or names no repository;
   - a line is not a directory, is a network path, or resolves to one;
-  - a line is in no git repository and holds no `atlas/structure.json`;
+  - a line is in no git repository and holds no `atlas/structure.json`, or is inside an exported tree rather than at its top;
   - a line is inside a repository rather than at its top;
   - a line names a repository an earlier line names, a link included;
   - the file names more than 32 repositories.

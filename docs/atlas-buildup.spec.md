@@ -173,7 +173,13 @@ This is slice AK (`docs/atlas-production.spec.md`, Part 1 item 6), with R&D's ru
   - Without `--repos`, the roots are the working repository and the client's roots at initialisation.
   - Roots never widen after start: a later `roots/list_changed` is refused and logged.
   - The ladder always runs with `--repos`, so its roots are pinned.
-- **Paths are compared as real paths,** after links resolve: junctions, and drive letters in either case. A root at a network (UNC) path is refused at start, and a junction that resolves to one is outside the roots.
+- **Paths are compared exactly as real paths,** after links resolve, each root resolved once and kept (amended after the outside review, 2026-10-13).
+  - On Windows the native real path carries each name's case as it is on disk, so a drive letter in either case resolves to one string. A path that matches a root only in case is another directory and is refused.
+  - A root at a network (UNC) path is refused at start, and a junction or a mapped drive that resolves to one is outside the roots. A mapped drive was checked by hand on the rig.
+  - git runs in the root's real path, without `GIT_DIR`, `GIT_WORK_TREE`, `GIT_INDEX_FILE`, `GIT_OBJECT_DIRECTORY`, `GIT_ALTERNATE_OBJECT_DIRECTORIES`, `GIT_COMMON_DIR` or `GIT_NAMESPACE`, and `show` and `diff` run no textconv filter or external diff.
+  - A tree exported without its history is a root only at the directory that holds `atlas/structure.json`, never found by climbing to an ancestor. Started inside one, the server names its top.
+  - A `--repos` file's relative lines resolve from the directory it really is in.
+  - Client roots past 32 are dropped and logged.
 - **Refusals:**
   - Anything outside the roots is `ATLAS_SIDECAR_REPO_NOT_ALLOWED`.
   - A name that matches two roots, such as two clones or worktrees with one folder name, is refused with every candidate listed. Two publishers of one package name get the same rule in AO.
@@ -182,7 +188,7 @@ This is slice AK (`docs/atlas-production.spec.md`, Part 1 item 6), with R&D's ru
   - its map's commit and engine;
   - whether HEAD is ahead of the map;
   - after AO, each link's skew or orphan state.
-- **Refresh keeps a cache per repository,** as now, under `LOCALAPPDATA` or `XDG_CACHE_HOME`. The cache root an experiment sets for each attempt (rnd's atlas-mcp-utility amendment 4) therefore carries over.
+- **Refresh keeps a cache per repository,** as now, under `LOCALAPPDATA` or `XDG_CACHE_HOME`. The cache root an experiment sets for each attempt (rnd's atlas-mcp-utility amendment 4) therefore carries over. Its checkout fingerprint hashes a link's text and never follows it.
 - **The security review,** the specialised case of the Director's Standing Rule 3:
   1. When AN's pull request is up, R&D writes a targeted brief against its head. It covers traversal, junction and link escapes, UNC paths, case-folded drive letters, roots after start, repository strings as data, and no writes outside the cache.
   2. The Director runs it by hand on Grok, Gemini or Kimi. No session calls an outside model itself.
