@@ -2,6 +2,11 @@
 
 All notable changes to `testing-os` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- **`swarm verify` counts every cargo test target.** A Rust workspace prints one `test result` line per target, and the last is often a doc-test target with `0 passed`. The pytest summary pattern also matched cargo's lines and kept that last zero, so a passing suite was scored `no_tests`. Cargo summaries are now summed, and recognized before pytest's. A run whose every target passed 0 tests is still `no_tests`.
+
 ## [1.26.0] — 2026-10-01
 
 Atlas checks a large repository in seconds and maps the last of the fleet. Adopting the 11 repositories that ran workflows with no map found two things: `atlas check` took 19 minutes in CI on the largest, and the page still said false things in four places. `check` and `init` on that repository went from about eight minutes to 45 seconds, with every answer byte-identical. The four false sentences are fixed at the class, `init` leaves no tracked file in no part, and the verb agrees with a counted subject. Two of the adopted repositories are in C# and PowerShell, which Atlas does not parse; their maps hold their workflows, as the org rule asks.

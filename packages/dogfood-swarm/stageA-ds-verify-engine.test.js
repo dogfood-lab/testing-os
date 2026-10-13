@@ -113,6 +113,18 @@ describe('ds-verify-001 — a clean-compile / zero-test run yields no_tests, not
     assert.equal(result.tests_ran, false);
   });
 
+  it('rust/cargo sums every target so a trailing 0 does not erase a real suite', () => {
+    // A workspace prints one summary per target. The last is often
+    // `test result: ok. 0 passed` from a doc-test target with no tests.
+    // The count is the sum. The trailing zero adds nothing and does not win.
+    const result = runSteps('.', [
+      { name: 'test', cmd: 'node', args: ['-e', '"console.log(\'test result: ok. 34 passed; 0 failed\'); console.log(\'test result: ok. 5 passed; 0 failed\'); console.log(\'test result: ok. 0 passed; 0 failed\')"'] },
+    ]);
+    assert.equal(result.test_count, 39);
+    assert.equal(result.verdict, 'pass');
+    assert.equal(result.tests_ran, true);
+  });
+
   it('a POSITIVE count still yields a clean pass (fix is scoped to zero/no-count)', () => {
     const result = runSteps('.', [
       { name: 'test', cmd: 'node', args: ['-e', '"console.log(\'# tests 3\')"'] },
