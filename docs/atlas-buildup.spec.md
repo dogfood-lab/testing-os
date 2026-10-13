@@ -1,6 +1,6 @@
 # Atlas and testing-os: the build-up before the next pin wave
 
-**Status:** draft for R&D's review, 2026-10-13. The Director set the direction: build up Atlas and testing-os before the fleet moves off Atlas 1.24.0, with R&D shaping the work. The Research and Development session rules scope and reviews each pull request with "[R&D]" verdicts. The Publisher holds the 5090 card grants and decides merges in interlock and rnd. The testing-os session builds.
+**Status:** slice AM approved by R&D on 2026-10-13, with four additions to AM-6, folded in below. The Director set the direction: build up Atlas and testing-os before the fleet moves off Atlas 1.24.0, with R&D shaping the work. The Research and Development session rules scope and reviews each pull request with "[R&D]" verdicts. The Publisher holds the 5090 card grants and decides merges in interlock and rnd. The testing-os session builds.
 
 **Order (R&D, 2026-10-13):** slice AM (below), then Atlas and testing-os as rnd instruments with a pre-registered experiment, then the exit test, then slice AK, then the landing page. The `test_fake_hides_platform` check runs alongside.
 
@@ -86,6 +86,16 @@ The rules for both:
 - **Repository strings are data.** Paths and sentences are escaped as the workflow-command format requires: `%`, CR and LF in a message, plus `:` and `,` in a property. A file whose name holds a newline and `::` cannot start a command of its own.
 - **The only file written** is the one `$GITHUB_STEP_SUMMARY` names, and only when it is set. The checkout is never written, and the read-only test keeps holding.
 - **Outside Actions** (variable unset, or anything but `true`) the output is byte-identical to today's.
+- **Paths are relative to `$GITHUB_WORKSPACE`, not the repository root,** because GitHub resolves `file=` against the workspace. When the repository root is inside the workspace (a checkout with `actions/checkout`'s `path:`), the path is given relative to the workspace. When it is not, `file=` is left out.
+- **The summary's file lists stop at a fixed count with "and N more",** so a failure over thousands of files stays readable and inside GitHub's 1 MiB cap on a step summary.
+
+**Additions from R&D's review of 2026-10-13:**
+- **A live run before release (required for 1.27.0).** Every AM-6 test reads stdout from a fixture, and which annotations GitHub shows, and where, is GitHub's behaviour. Before 1.27.0 ships, one real failing Actions job runs on a scratch branch: an `ATLAS_UNASSIGNED_NEW` with 12 offending files, plus a D1 notice. The release notes record:
+  - the annotations in the checks tab and on the file in the pull request's diff;
+  - whether the cap of ten per kind holds, with the tenth carrying the "N more" count;
+  - the step summary as rendered;
+  - what GitHub's failure email contains. If it does not carry the annotation text, the notes say so, and R&D and the Director decide what the email can carry.
+- **Later, not in this slice:** `check` stops at the first failing comparison, so a tree with two problems needs two red runs. Reporting every failing comparison in one run is a later item, after its cost is measured.
 
 ### Acceptance (the oracle)
 
@@ -108,6 +118,8 @@ Every test is red on the tree before its item.
      - the summary holds the boundary lines;
      - a D1 fixture gives `::warning` with `file=` and `line=`.
    - A file named with a newline and `::` yields escaped output and no extra command.
+   - A repository checked out into a subdirectory of `GITHUB_WORKSPACE` gives `file=` relative to the workspace. A repository outside the workspace gives no `file=`.
+   - An unassigned-new fixture with more files than the cap ends its summary list with "and N more".
    - With the variable unset, stdout is byte-identical to the 1.26.0 output on the same fixtures, and no file is written.
 6. **The existing gates:**
    - `npm run verify` on a clean worktree;
