@@ -46,7 +46,7 @@ const NAMED_TEST = /(\.(test|spec)\.[cm]?[jt]sx?|(^|\/)test_[^/]*\.py|_test\.py|
 const FIXTURE_DIRS = /(^|\/)(fixtures|__fixtures__|testdata)\//;
 
 export function isNamedTest(file) {
-  return (NAMED_TEST.test(file.path) || file.testSuite === true) && !FIXTURE_DIRS.test(file.path);
+  return (NAMED_TEST.test(file.path) || file.testSuite === true || file.scriptTest === true) && !FIXTURE_DIRS.test(file.path);
 }
 
 /** Whether a path lies among fixtures, material a test reads. */
@@ -54,9 +54,9 @@ export function isFixture(path) {
   return FIXTURE_DIRS.test(path);
 }
 
-/** Whether a file is a test: named as one, a suite a runner finds, or a smoke test. */
+/** Whether a file is a test: named as one, a suite a runner finds, a test_ script, or a smoke test. */
 export function isTest(file) {
-  return isTestFile(file.path) || file.testSuite === true || isSmokeTest(file.path);
+  return isTestFile(file.path) || file.testSuite === true || file.scriptTest === true || isSmokeTest(file.path);
 }
 
 // A test a test starts from: a test, and not one of a repository kept among

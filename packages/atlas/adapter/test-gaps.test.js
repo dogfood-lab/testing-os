@@ -200,12 +200,17 @@ describe('G2 and the runner each test file is written for', () => {
 
   it('stays silent for files a runner whose files Atlas does not list may run', () => {
     assert.equal(ofRule(frameworks, 'G2').some((entry) => entry.facts.files.includes('ava/one.test.js')), false);
-    assert.equal(ofRule(frameworks, 'G2').length, 3);
+    // The fourth is scripts/test_gate.py, run on its own (below).
+    assert.equal(ofRule(frameworks, 'G2').length, 4);
   });
 
-  it('names no runner for a test file that imports no framework when CI runs none of its family (role-os)', () => {
+  it('guesses no runner for a test file that imports no framework when CI runs none of its family, and runs it on its own when it fails by itself (role-os)', () => {
+    // It ends with sys.exit(1) under its __main__ guard (testing-os#158).
     assert.ok(frameworks.facts.notRun.includes('scripts/test_gate.py'));
-    assert.equal(ofRule(frameworks, 'G2').some((entry) => entry.facts.files.includes('scripts/test_gate.py')), false);
+    const own = ofRule(frameworks, 'G2').find((entry) => entry.facts.files.includes('scripts/test_gate.py'));
+    assert.deepEqual(own.facts.files, ['scripts/test_gate.py']);
+    assert.equal(own.suggest.runner, 'python');
+    assert.match(own.suggest.text, /^run each in a workflow step from its own folder \(working-directory: scripts, run: python test_gate\.py\)/);
   });
 });
 

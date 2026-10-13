@@ -77,3 +77,51 @@ G1 was held back until runner attribution passed this check; it did (below).
 | 6 | `7f19dd2f` | 304 | 27 | 43 | 11 | 7 |
 
 Round 4 repeated round 3 on a fix that changed no finding, and round 5 was stopped for round 6. Mapping time across the fleet did not change (575 s in total, rounds 4 and 6).
+
+## Test scripts no runner collects (2026-10-13, testing-os#158)
+
+role-os keeps `test_*.mjs` scripts that check a tool and exit 1 when it is wrong. No runner's discovery collects that name, and no workflow ran them, so G2 named the repository's two Python test scripts and missed these two. The change marks a `test_*` file in the JavaScript and TypeScript family as a test (`scriptTest`) when it fails by itself and no file imports it, and gives G2 the command that runs such a script. A Python test that ends with a failing `sys.exit` is said to run on its own where no runner covers it. The name rule is unchanged, so no runner is said to discover these scripts.
+
+**Pre-registered with R&D before any run.** Engine A was the head of #159 (`1c336c15`); engine B was A plus the change. Each of the 96 repositories in the fleet list was mapped by both from its default branch, with no history read, and compared on:
+1. every file B marks `scriptTest`, judged test or not;
+2. every G2 firing new or changed in B, judged right only if each file is a test that no workflow runs, directly or through a script;
+3. every other difference in `structure.json`, in `atlas gaps` and on the page, to be explained by the new tests or counted against the change.
+
+The bar is the one above: wrong at most once in ten, provisional under 20 firings, and each wrong finding fixed at its class with a fixture that fails first. There were fewer than five judgments of each kind, so R&D re-read every one, at the same commits and blind to the reasoning, and agreed with all four.
+
+**Result, round 4, 96 repositories, none failed to map.**
+
+| | Count | Wrong |
+|---|---|---|
+| Files marked `scriptTest` | 2 (role-os) | 0 |
+| G2 firings new or changed | 2 (role-os's two scripts with `node`; ai-jam-sessions' `spaces/jam-actions-live/test_tools_local.py` with `python`) | 0 as findings; the suggestion was wrong once, fixed (round 4) |
+
+Both ship provisional.
+
+**Collateral, all in role-os and all from its two new tests:**
+- `testFiles` went from 78 to 80;
+- one part's `testedBy` went from 3 to 5;
+- `testsNotRun` gained the two scripts;
+- G6 stopped firing on `prep_inputs.mjs`, which one of them spawns. That is G6's meaning: reached by a test, whether or not a workflow runs that test.
+
+No page sentence changed in any repository.
+
+**Rounds:**
+- **Round 1** wrote the evidence fact `selfFails` into the map, which put a stray fact on a testing-os fixture. Since round 2 the map carries only `scriptTest` and `selfRun`.
+- **Round 3** widened the Python evidence after the recall check below found `test_tools_local.py`. It ends with `sys.exit(1 if fails else 0)` at module level, with no `__main__` guard, so a failing exit at module level now counts as well as one under a guard. A module-level exit cannot survive pytest's collection, so such a file is a script by construction. The fixture `scripts/test_flat.py` failed first.
+- **Round 4** fixed the suggestion R&D's re-read found wrong. `test_tools_local.py` opens `app.py` by a relative path, so `python spaces/jam-actions-live/test_tools_local.py` from the repository root fails before it checks anything. Every self-run suggestion now names the script's own folder as the step's `working-directory`. That is safe for a script that resolves paths from its own location, as role-os's do through `import.meta.url`. The fixture `tools/test_relative.mjs` reads beside itself.
+
+**Recall.** The fleet holds exactly two `test_*` scripts in the JavaScript and TypeScript family, and both are flagged. Of the Python test files no workflow runs, 33 stay silent:
+- 25, because a test step whose runner Atlas cannot name silences G2 for its whole repository (19 of them in xrpl-camp; testing-os#162);
+- 7 in ai-jam-sessions (`scripts/test_*.py`), which are pytest-style: `def test_*` with bare asserts, no import and no exit, which pytest would collect (testing-os#161);
+- 1 in readouts, a benchmark that is no test.
+
+**node --test.** A bare `node --test` already runs over Node's own default patterns (`NODE_TEST_DEFAULTS` in `core/tool-configs.js`), so it was never taken to collect a `test_*` script. What was wrong was the suggestion G2 would have given ("let its discovery collect them, or name their directory"), since neither collects that name. A marked script now gets the command that runs it. One written for a framework is to be named in its run, or added to the runner's include. A vitest `include` that names `test_*` collects the file, and G2 stays silent; the fixture pins it.
+
+**Corners written down:**
+- A Python test of bare asserts with no exit, run by no workflow, stays silent (the 7 above, testing-os#161). It needs a runner guessed, which G2 does not do.
+- A Python test that exits inside a `main()` it calls at module level, with no `__main__` guard, stays silent: the exit is inside a function, and nothing guards the call. The fixture `scripts/test_main_call.py` pins it.
+- A script inside a directory a runner is handed (`node --test checks/`) is counted as run, though node collects only its default names there. That errs toward no false gap.
+- A TypeScript script on a package whose `engines` admit a Node that strips no types, with no tsx or ts-node declared, is given no command, only the advice to use a TypeScript runner.
+
+The fixture is `fixtures/atlas/test-scripts`.

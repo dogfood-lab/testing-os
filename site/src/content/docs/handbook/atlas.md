@@ -93,7 +93,7 @@ Then the suggestions. Each names its rule, the facts that triggered it and the s
 | Rule | Fires when |
 |------|------------|
 | G1 | A code part no test reaches is of a kind no runner here tests: a first test of its entry. |
-| G2 | Test files no workflow runs: how the runner they are written for would collect them. |
+| G2 | Test files no workflow runs: how the runner they are written for would collect them, or, for a test script that fails by itself (`test_*.mjs` and kin, or a Python test that exits 1), the command that runs it. |
 | G3 | A command the repository installs, which no test runs and no workflow starts: an end-to-end test that runs it as a person does. |
 | G4 | CI runs a language's tests and collects no coverage: the studio's coverage recipe. |
 | G6 | A code file no test reaches holds failure paths: tests that make them run. |
