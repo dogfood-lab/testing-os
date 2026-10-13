@@ -22,4 +22,4 @@ and no file imports it.
 - Not tests, or run: `tools/test_helpers.mjs` (imported by a test),
   `tools/test_notes.mjs` (no check), `collected/test_collected.mjs` (vitest's
   include collects it), `scripts/test_bare.py` (bare asserts, no guard: a
-  stated limit), `fixtures/test_fixture.mjs` (fixture material).
+  stated limit), `testdata/test_fixture.mjs` (fixture material).

@@ -20,7 +20,7 @@ const PARTS = [
   { name: 'scripts', globs: ['scripts/**'], role: 'code' },
   { name: 'typed', globs: ['typed/**'], role: 'code' },
   { name: 'legacy', globs: ['legacy/**'], role: 'code' },
-  { name: 'fixtures', globs: ['fixtures/**'], role: 'data' },
+  { name: 'testdata', globs: ['testdata/**'], role: 'data' },
   { name: 'config', globs: ['package.json', 'README.md', 'vitest.config.ts', '.github/**'], role: 'config' },
 ];
 const roots = [];
@@ -55,8 +55,9 @@ describe('a test_ script, a test by what it does', () => {
   });
 
   it('is not a test when a file imports it, when it checks nothing, or among fixtures', () => {
-    for (const path of ['tools/test_helpers.mjs', 'tools/test_notes.mjs', 'fixtures/test_fixture.mjs']) {
-      assert.equal(files.get(path)?.scriptTest, undefined, path);
+    for (const path of ['tools/test_helpers.mjs', 'tools/test_notes.mjs', 'testdata/test_fixture.mjs']) {
+      assert.ok(files.has(path), `${path} is in the map`);
+      assert.equal(files.get(path).scriptTest, undefined, path);
     }
   });
 
@@ -129,7 +130,7 @@ describe('G2 for a test_ script no workflow runs', () => {
   });
 
   it('stays silent on a helper, a script that checks nothing, and fixture material', () => {
-    for (const path of ['tools/test_helpers.mjs', 'tools/test_notes.mjs', 'fixtures/test_fixture.mjs']) assert.equal(g2Of(path), undefined, path);
+    for (const path of ['tools/test_helpers.mjs', 'tools/test_notes.mjs', 'testdata/test_fixture.mjs']) assert.equal(g2Of(path), undefined, path);
   });
 });
 
