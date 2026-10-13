@@ -70,7 +70,7 @@ An answer lists the five highest, with a count of the rest (Lin et al. 2026: den
 | Id | Fires when | Suggests |
 |---|---|---|
 | G1 no-runner | A code part of some kind has no test importing or running it, and no runner in the repository covers that kind | The source-ordered runner for that kind |
-| G2 tests-not-run | Test files exist that no CI door runs, including those a glob leaves out | The CI invocation, using the runner's own discovery |
+| G2 tests-not-run | Test files exist that no CI door runs, including those a glob leaves out | The CI invocation, using the runner's own discovery; for a test script that fails by itself, the command that runs it (testing-os#158) |
 | G3 command-untested | An installed command (a `bin`, a console script, a cargo binary) that no test runs | An end-to-end test that runs the command |
 | G4 no-coverage | Tests run in CI but no coverage is collected | The studio's coverage recipe (Full Treatment Phase 4; see Codecov) |
 | G6 failure-paths | Error-handling constructs in files no test imports or runs | Tests that exercise those failure paths, naming the constructs |

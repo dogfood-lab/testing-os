@@ -26,6 +26,11 @@ A red `atlas check` now says how to fix itself, and says it where people look (`
 - **The shared test preload clears `GITHUB_ACTIONS` and `GITHUB_STEP_SUMMARY`,** so a test sees on CI what it sees locally and never writes into this repository's own step summary.
 
 ### Fixed
+- **Atlas sees a test script no runner collects** (testing-os#158). role-os keeps `test_*.mjs` scripts that check a tool and exit 1 when it is wrong. No runner's discovery collects that name, and no workflow ran them, so `atlas gaps` named the repository's two Python test scripts and missed these two.
+  - **A `test_*` file in the JavaScript and TypeScript family is a test only on evidence.** It must fail by itself (a non-zero `process.exit` or `process.exitCode`, or an assert or test-framework import), and no file may import it. The map marks it `scriptTest`. The name rule is unchanged, so no runner is said to discover these scripts, and an imported helper of that name stays code.
+  - **G2 says how to run such a script, from its own folder** (`working-directory`), since a script may read beside it by a relative path: with `node`, or for TypeScript the repository's tsx or ts-node, or `node` where its `engines` strip types. A script written for a framework is to be named in its run.
+  - **A Python test that ends with a failing `sys.exit`**, under its `__main__` guard or at module level, fires G2 with `python` from its folder where no runner covers it. Before, such a file was left silent.
+  - **Held to the precision bar over all 96 fleet repositories:** 2 files marked, 2 G2 firings, none wrong on R&D's blind re-read, so provisional. The record is in `docs/atlas-test-gaps.fleet-check.md`. Two limits it counted are filed as testing-os#161 and #162.
 - **`swarm verify` counts every cargo test target.** A Rust workspace prints one `test result` line per target, and the last is often a doc-test target with `0 passed`. The pytest summary pattern also matched cargo's lines and kept that last zero, so a passing suite was scored `no_tests`. Cargo summaries are now summed, and recognized before pytest's. A run whose every target passed 0 tests is still `no_tests`.
 
 ## [1.26.0] — 2026-10-01
