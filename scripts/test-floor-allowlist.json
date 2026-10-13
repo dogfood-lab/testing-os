@@ -500,6 +500,14 @@
     {
       "path": "fixtures/atlas/unlisted-runs/playwright/e2e/smoke.spec.ts",
       "reason": "Atlas fixture, not a test of this repository. It sits inside the unlisted-runs fixture repository that packages/atlas/adapter/page-unlisted-runs.test.js maps, where a workflow runs playwright test, a runner named from the command alone, so the page must not say this spec runs in no workflow. It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/test-scripts/checks/a.test.mjs",
+      "reason": "Atlas fixture, not a test of this repository. It sits inside the test-scripts fixture repository that packages/atlas/adapter/test-scripts.test.js maps, where a node --test run over checks/ collects it by its name, beside a test_ script that name rule never collects (testing-os#158). It runs only inside that fixture, never here."
+    },
+    {
+      "path": "fixtures/atlas/test-scripts/src/gate.test.mjs",
+      "reason": "Atlas fixture, not a test of this repository. It sits inside the test-scripts fixture repository that packages/atlas/adapter/test-scripts.test.js maps, where a bare node --test collects it by its default names, and it imports tools/test_helpers.mjs, so that helper named test_ is imported and never marked a test (testing-os#158). It runs only inside that fixture, never here."
     }
   ]
 }
