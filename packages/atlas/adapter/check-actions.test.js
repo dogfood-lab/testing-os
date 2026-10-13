@@ -143,6 +143,12 @@ describe('atlas check in GitHub Actions', () => {
     const notice = { code: 'ATLAS_DOOR_TOOLCHAIN', details: ['astro refuses to start.', 'read from a.yml:3'], whatToDo: 'pin Node 22', file: 'a.yml', line: 3 };
     const [line] = annotationLines({ failure: null, notices: [notice], summary: false });
     assert.match(line, / astro refuses to start; read from a\.yml:3\. What to do: pin Node 22\.$/);
+    // A sentence that ends in something other than a word ends once too: a
+    // D1 sentence about requires-python ==3.11.* read ".*.; read from" (R&D's
+    // review of #165). An ellipsis is not a full stop, and stays.
+    const pinned = { ...notice, details: ['requires-python ==3.11.*.', 'wait...', 'the Node it pins is ${{ matrix.node }}.'] };
+    const [pinnedLine] = annotationLines({ failure: null, notices: [pinned], summary: false });
+    assert.match(pinnedLine, / requires-python ==3\.11\.\*; wait\.\.\.; the Node it pins is \$\{\{ matrix\.node \}\}\. What to do: /);
     // A path is data: a file name that ends in a dot keeps it.
     const failure = { code: 'ATLAS_FILE_MOVED', details: ['notes/draft.'], whatToDo: 'run atlas map' };
     const [error] = annotationLines({ failure, notices: [], summary: false });
@@ -155,6 +161,8 @@ describe('atlas check in GitHub Actions', () => {
     const notice = { code: 'ATLAS_DOOR_TOOLCHAIN', details: ['astro refuses to start.', 'read from a.yml:3'], whatToDo: 'pin Node 22', file: 'a.yml', line: 3 };
     const text = stepSummary({ failure: null, notices: [notice] });
     assert.ok(text.includes('`astro refuses to start`; `read from a.yml:3`. **What to do:**'), text);
+    const pinned = stepSummary({ failure: null, notices: [{ ...notice, details: ['requires-python ==3.11.*.', 'wait...'] }] });
+    assert.ok(pinned.includes('`requires-python ==3.11.*`; `wait...`. **What to do:**'), pinned);
   });
 
   it('caps the summary list with how many more', () => {

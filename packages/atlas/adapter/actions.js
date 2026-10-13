@@ -146,9 +146,11 @@ function command(kind, title, file, line, message) {
 
 // A detail may end its own sentence, as a door notice's first does; the
 // joined text, in an annotation or the summary, ends once. A detail with no
-// space is a path, kept as it is, since a file name may end in a dot.
+// space is a path, kept as it is, since a file name may end in a dot. A
+// sentence may end after a version range or an expression (==3.11.*.), so
+// any single final stop goes; an ellipsis stays.
 function unended(detail) {
-  return /\s/.test(detail) ? detail.replace(/(?<=\w)\.$/, '') : detail;
+  return /\s/.test(detail) ? detail.replace(/(?<!\.)\.$/, '') : detail;
 }
 
 function detailText(details) {
