@@ -13,11 +13,13 @@
 import { nodeAdapter } from './adapters/node.js';
 import { pythonAdapter } from './adapters/python.js';
 import { rustAdapter } from './adapters/rust.js';
+import { dotnetAdapter } from './adapters/dotnet.js';
 
 const ADAPTERS = new Map([
   ['node', nodeAdapter],
   ['python', pythonAdapter],
   ['rust', rustAdapter],
+  ['dotnet', dotnetAdapter],
 ]);
 
 /**
@@ -37,6 +39,9 @@ const ADAPTER_TIE_BREAK = new Map([
   ['rust', 3],
   ['python', 2],
   ['node', 1],
+  // A score tie loses to the three older adapters. A .NET repo wins on score
+  // (a solution is worth 60) rather than on this tie-break.
+  ['dotnet', 0],
 ]);
 
 /**

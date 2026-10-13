@@ -1453,7 +1453,7 @@ function cmdHistory(args) {
 function cmdVerify(args) {
   const runId = args[0];
   if (!runId) {
-    console.error('Usage: swarm verify <run-id> [--adapter node|python|rust] [--probe-only] [--format=text|json]');
+    console.error('Usage: swarm verify <run-id> [--adapter node|python|rust|dotnet] [--probe-only] [--format=text|json]');
     process.exit(1);
   }
 
@@ -3971,7 +3971,7 @@ export const USAGE = {
     'other runs\' rows are never touched (re-verified inside the delete',
     'transaction — a violated invariant rolls everything back).',
   ].join('\n'),
-  verify: 'Usage: swarm verify <run-id> [--adapter node|python|rust] [--probe-only] [--format=text|json]',
+  verify: 'Usage: swarm verify <run-id> [--adapter node|python|rust|dotnet] [--probe-only] [--format=text|json]',
   'verify-fixed': 'Usage: swarm verify-fixed <run-id> [--threshold=N] [--format=text|markdown|json] [--legacy-v1]',
   'verify-recurring': 'Usage: swarm verify-recurring <run-id> [--threshold=N] [--format=text|markdown|json]',
   'verify-unverified': 'Usage: swarm verify-unverified <run-id> [--threshold=N] [--format=text|markdown|json]',

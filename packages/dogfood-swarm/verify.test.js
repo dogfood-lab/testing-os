@@ -337,11 +337,12 @@ describe('Registry — selectAdapter', () => {
 });
 
 describe('Registry — listAdapters', () => {
-  it('lists all three adapters', () => {
+  it('lists the adapters', () => {
     const adapters = listAdapters();
     assert.ok(adapters.includes('node'));
     assert.ok(adapters.includes('python'));
     assert.ok(adapters.includes('rust'));
+    assert.ok(adapters.includes('dotnet'));
   });
 });
 

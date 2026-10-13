@@ -616,9 +616,9 @@ function extractTestCount(stdout) {
   //    all; the node branch returning first hid that it was also broken.
   //
   // node and jest/vitest are summed TOGETHER because a real fan-out mixes them.
-  // The pytest/cargo branches below keep their existing first/last-match shape
-  // — they have the same theoretical exposure, but nothing here proves it and a
-  // blind refactor of a gate that is law is not worth the risk.
+  // Cargo is summed the same way: a workspace prints one `test result` per
+  // target, and a trailing doc-test target of 0 passed is real output, not
+  // the suite count. Pytest keeps its last-summary shape.
   let total = 0;
   let found = false;
 
@@ -675,6 +675,20 @@ function extractTestCount(stdout) {
 
   if (found) return total;
 
+  // cargo test: one "test result: ok. N passed" per target. Sum them. A
+  // workspace's last target is often a doc-test crate with `0 passed`, and
+  // the pytest bare matcher below would keep that last zero and erase the
+  // real suites. A sum of 0 stays 0, so a clean compile of an empty suite
+  // is still no_tests. This marker is recognized before pytest on purpose:
+  // a cargo summary line also contains "N passed" and "0 failed".
+  let cargoTotal = 0;
+  let cargoFound = false;
+  for (const m of stdout.matchAll(/test result: \w+\.\s+(\d+)\s+passed/g)) {
+    cargoTotal += parseInt(m[1], 10);
+    cargoFound = true;
+  }
+  if (cargoFound) return cargoTotal;
+
   // pytest: the session-summary line, e.g. "===== 42 passed, 1 skipped in
   // 4.21s =====". DS-PROAC-04: a bare /(\d+)\s+passed/ grabbed the FIRST
   // "<n> passed" anywhere in the log — a progress line or a captured-stdout
@@ -694,9 +708,17 @@ function extractTestCount(stdout) {
     return parseInt(pytestBareAll[pytestBareAll.length - 1][1], 10);
   }
 
-  // cargo test: "test result: ok. 42 passed"
-  const cargoMatch = stdout.match(/test result: \w+\.\s+(\d+)\s+passed/);
-  if (cargoMatch) return parseInt(cargoMatch[1], 10);
+  // dotnet test (VSTest console logger): one flush-left summary per project,
+  // "Passed!  - Failed:     0, Passed:  1401, Skipped:     0, Total:  1401, Duration: ..."
+  // Sum every project. The pytest/cargo branches above do not match this line
+  // (`Passed` precedes the count, and the capital P misses `\d+ passed`).
+  let dotnetTotal = 0;
+  let dotnetFound = false;
+  for (const m of stdout.matchAll(/^Passed!\s*-\s*Failed:\s*[\d,]+\s*,\s*Passed:\s*([\d,]+)/gm)) {
+    dotnetTotal += parseInt(m[1].replace(/,/g, ''), 10);
+    dotnetFound = true;
+  }
+  if (dotnetFound) return dotnetTotal;
 
   return null;
 }
