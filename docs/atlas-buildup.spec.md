@@ -70,8 +70,8 @@ The 10-13 failure had a second cause. The map was made before the receipt was st
 
 When `GITHUB_ACTIONS` is `true`, `check` also emits:
 - **Annotations.** Each failure becomes `::error title=<CODE>,file=<path>,line=<n>::<sentence> What to do: <fix>`.
-  - `file=` is given when the finding names exactly one tracked path, and `line=` when it names a line.
-  - Every offending file of `ATLAS_UNASSIGNED_NEW` gets its own annotation.
+  - Every offending file of `ATLAS_UNASSIGNED_NEW` gets its own annotation with `file=`. The other failures name no single path in their details, so they carry none.
+  - A door notice carries `file=` and `line=` from the first place it was read.
   - The door notices (D1, D2) already carry `file:line` and become `::warning`. The engine and untracked notices become `::notice`.
   - GitHub shows ten annotations of each kind per step. Beyond ten, the tenth says how many more the summary holds.
 - **A step summary,** appended to the file `$GITHUB_STEP_SUMMARY` names. It holds:
@@ -91,7 +91,8 @@ The rules for both:
 - **The summary's file lists stop at a fixed count with "and N more",** so a failure over thousands of files stays readable and inside GitHub's 1 MiB cap on a step summary.
 
 **Additions from R&D's review of 2026-10-13:**
-- **A live run before release (required for 1.27.0).** Every AM-6 test reads stdout from a fixture, and which annotations GitHub shows, and where, is GitHub's behaviour. Before 1.27.0 ships, one real failing Actions job runs on a scratch branch: an `ATLAS_UNASSIGNED_NEW` with 12 offending files, plus a D1 notice. The release notes record:
+- **A live run before release (required for 1.27.0).** Every AM-6 test reads stdout from a fixture, and which annotations GitHub shows, and where, is GitHub's behaviour. Before 1.27.0 ships, one real failing Actions job runs on a scratch branch: an `ATLAS_UNASSIGNED_NEW` with 12 offending files, plus a D1 notice. A second job checks out into a subdirectory (`path:`), to see that `file=` relative to the workspace lands on the file in the pull request's diff.
+- **The test environment.** testing-os's own CI sets `GITHUB_ACTIONS` and `GITHUB_STEP_SUMMARY` for every test process. The shared test preload (`scripts/lib/git-test-env.mjs`) clears both, so a test sees on CI what it sees on a laptop and never writes into this repository's own step summary. A test that exercises them sets them on the process it starts. The release notes record:
   - the annotations in the checks tab and on the file in the pull request's diff;
   - whether the cap of ten per kind holds, with the tenth carrying the "N more" count;
   - the step summary as rendered;
