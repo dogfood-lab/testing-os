@@ -11,6 +11,7 @@ import { httpEdges, httpFacts } from './http.js';
 import { declaredEntries, deriveEntryPoints, manifestCommands, memberCommands, memberPackage, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
 import { failurePaths } from './failure-paths.js';
+import { markScriptTests, readsSelfFail, selfFails } from './script-tests.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, settleRelativePaths, testReadsKept, testWritesKept, textLandings, trackedPlaces } from './landings.js';
 import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
 import { isShellScript, namesFiles, settleMentions, shellWords, stringWords } from './mentions.js';
@@ -206,6 +207,7 @@ export function mapRepository({ repoPath, boundaries, structureOnly = false } = 
   doors.push(...memberDoors);
   markUnshipped(doors, cargoProject(repoPath, trackedSet));
   const graph = importGraph(boundaryList, unassigned, overlaps);
+  markScriptTests(graph.files, (path) => trackedJson(repoPath, trackedSet, path));
   attachTestSpawns(graph.files, spawned, repositoryView({ repoPath, tracked: trackedSet, spawned, builtFrom, emitted }), repositoryView({ repoPath, tracked: trackedSet, spawned, commands, builtFrom, emitted }));
   settleMentions(graph.files);
   const edges = [...resolution.edges, ...spawnEdges(graph), ...httpEdges(graph.files, graph.boundaryOf, isTestMaterial)]
@@ -605,10 +607,15 @@ function markPrivateCommands(doors, manifest) {
 }
 
 function rootManifest(repoPath, tracked) {
-  if (!tracked.has('package.json')) return null;
+  return trackedJson(repoPath, tracked, 'package.json');
+}
+
+// A tracked JSON object, parsed; null for any other file or a parse failure.
+function trackedJson(repoPath, tracked, path) {
+  if (!tracked.has(path)) return null;
   try {
-    const pkg = JSON.parse(readFileSync(join(repoPath, 'package.json'), 'utf8'));
-    return pkg != null && typeof pkg === 'object' && !Array.isArray(pkg) ? pkg : null;
+    const value = JSON.parse(readFileSync(join(repoPath, path), 'utf8'));
+    return value != null && typeof value === 'object' && !Array.isArray(value) ? value : null;
   } catch {
     return null;
   }
@@ -669,7 +676,7 @@ function attachTestSpawns(files, spawned, repo, withCommands) {
   for (const [path, commands] of spawned) {
     const file = files.get(path);
     if (!file) continue;
-    const test = isTestFile(path);
+    const test = isTestFile(path) || file.scriptTest === true;
     const view = test ? withCommands : repo;
     // Production code runs its child processes from where the door that
     // runs it stands, the repository root.
@@ -685,7 +692,7 @@ function attachTestSpawns(files, spawned, repo, withCommands) {
         for (const run of reading(command, dir, view)) {
           // Production code that type-checks or lints another part runs none
           // of it; a test's checks are how it reaches what it checks.
-          if (!isTestFile(path) && run.runKind === 'checks') continue;
+          if (!test && run.runKind === 'checks') continue;
           if (run.path.endsWith('/')) {
             for (const other of codeFilesUnder(run.path)) runs.add(other);
           } else if (run.path !== path) runs.add(run.path);
@@ -866,7 +873,9 @@ function describeFile(repoPath, path, places, facts, spawned, attributes, builds
   const failures = extracted.failurePaths?.length > 0 && !isTestFile(path) ? { failurePaths: extracted.failurePaths } : {};
   // Read once every file is known, then dropped (core/mentions.js settleMentions).
   const mentions = extracted.mentions?.length > 0 ? { mentions: extracted.mentions } : {};
-  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http, ...starts, ...native, ...failures, ...mentions };
+  // A script that ends itself with a failing status (core/script-tests.js).
+  const fails = extracted.selfFails ? { selfFails: true } : {};
+  return { path, hash, language, imports: extracted.imports, ...extracted.landings, ...built, ...programs, ...helpers, ...pending, ...api, ...empty, ...holds, ...http, ...starts, ...native, ...failures, ...mentions, ...fails };
 }
 
 // One parse serves every reading of a file: its imports, its landings, the
@@ -938,6 +947,7 @@ function parseFile(language, path, original, places, { reread = false, structure
         landings: astLandings(language, tree.rootNode, path, places),
         spawned: language === 'python' ? pythonSpawns(tree.rootNode) : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
         failurePaths: failurePaths(language, tree.rootNode),
+        selfFails: readsSelfFail(language, path) && selfFails(language, tree.rootNode),
       };
     }
     if (structure) {
@@ -949,6 +959,7 @@ function parseFile(language, path, original, places, { reread = false, structure
         spawned: language === 'python' ? pythonSpawns(tree.rootNode) : spawnedCommands(tree.rootNode, (node) => scriptPath(node, path)),
         http: language === 'python' ? null : httpFacts(tree.rootNode),
         builds: language === 'python' || isTestFile(path) ? [] : buildCalls(tree.rootNode, (node) => pathShape(node, path)),
+        selfFails: readsSelfFail(language, path) && selfFails(language, tree.rootNode),
       };
     }
     PARSE_COUNTS.sequences += 1;
@@ -965,6 +976,7 @@ function parseFile(language, path, original, places, { reread = false, structure
       builds: language === 'python' || isTestFile(path) ? [] : buildCalls(tree.rootNode, (node) => pathShape(node, path)),
       failurePaths: failurePaths(language, tree.rootNode),
       mentions: namesFiles(path) ? stringWords(language, tree.rootNode) : [],
+      selfFails: readsSelfFail(language, path) && selfFails(language, tree.rootNode),
     };
   } finally {
     tree.delete();

@@ -148,8 +148,9 @@ function testReach(mapped) {
   const byPath = new Map(all.map((file) => [file.path, file]));
   const boundaryOf = new Map();
   for (const boundary of mapped.boundaries) for (const file of boundary.files) boundaryOf.set(file.path, boundary.name);
-  // A GDScript test runner's suite is a test by what it extends.
-  const isTest = (file) => isTestFile(file.path) || file.testSuite === true;
+  // A GDScript test runner's suite is a test by what it extends, and a
+  // test_ script by what it does (core/script-tests.js).
+  const isTest = (file) => isTestFile(file.path) || file.testSuite === true || file.scriptTest === true;
   const tests = all.filter(isTest);
   const byStem = new Map();
   for (const file of all) {
@@ -372,15 +373,17 @@ function carryFile(file) {
   if (file.noStatements) out.noStatements = true;
   if (file.testsInside) out.testsInside = true;
   if (file.testSuite) out.testSuite = true;
+  if (file.scriptTest) out.scriptTest = true;
+  if (file.selfRun) out.selfRun = { ...file.selfRun };
   if (file.failurePaths?.length > 0) out.failurePaths = file.failurePaths.map((site) => ({ ...site }));
   // The framework a test file is written for, by what it imports: the runner
   // that would run it where no workflow does.
-  const framework = isTestFile(file.path) || file.testSuite ? testFramework(file) : null;
+  const framework = isTestFile(file.path) || file.testSuite || file.scriptTest ? testFramework(file) : null;
   if (framework) out.testFramework = framework;
   // What a test runs as a child process, and which of those it runs by the
   // name a manifest installs them as: a test reaches them by running them.
   // A smoke test by its name is a test here too.
-  if ((isTestFile(file.path) || file.testSuite || isSmokeTest(file.path)) && file.spawns?.length > 0) {
+  if ((isTestFile(file.path) || file.testSuite || file.scriptTest || isSmokeTest(file.path)) && file.spawns?.length > 0) {
     out.spawns = file.spawns.filter((path) => !inAtlas(path));
     if (file.spawnsInstalled?.length > 0) out.spawnsInstalled = file.spawnsInstalled.filter((path) => !inAtlas(path));
   }
@@ -412,7 +415,7 @@ function carryFile(file) {
 
 // The test frameworks a file's imports name, and the runner each is run
 // with; the first a file imports is the one it is written for.
-const TEST_FRAMEWORKS = [
+export const TEST_FRAMEWORKS = [
   [/^vitest(?:\/|$)/, 'vitest'],
   [/^@playwright\/test$/, 'playwright test'],
   [/^node:test$/, 'node --test'],

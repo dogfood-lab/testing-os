@@ -14,6 +14,18 @@ export function isTestFile(path) {
   return TEST_NAMED.test(parts[parts.length - 1]);
 }
 
+// A script named as a test in the JavaScript and TypeScript family
+// (test_gate.mjs). No runner's default discovery collects the name: node
+// --test, vitest and jest match .test., .spec., -test, _test, test- and test/
+// names. So the name alone is not a test, since helpers carry it too; the
+// map counts such a file a test only when it fails by itself and nothing
+// imports it (adapter/artifact.js, testing-os#158).
+const SCRIPT_TEST_NAMED = /^test_[^/]*\.[cm]?[jt]sx?$/;
+
+export function isScriptTestName(path) {
+  return SCRIPT_TEST_NAMED.test(path.slice(path.lastIndexOf('/') + 1));
+}
+
 // A smoke test by its name (smoke.mjs, pack-install-smoke.mjs,
 // smoke_test_binary.py): a script that runs the product and fails when it
 // breaks. It is a test for what reaches the code, though no runner

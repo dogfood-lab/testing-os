@@ -190,29 +190,53 @@ function kindForFile(path, kind) {
 // step may be the one that runs them; for a file a runner CI runs may run
 // though Atlas does not list its files; for one a runner's own
 // configuration leaves out on purpose, which the facts name instead; and
-// for one no framework and no runner in CI names.
+// for one no framework and no runner in CI names, unless it fails by itself
+// (a script, testing-os#158), when it is said to run on its own.
 function notRunRule(files, { attributed, notAttributed, fileOf, leftOut, missed }) {
   if (files.length === 0 || notAttributed.length > 0) return [];
   const excluded = new Set(leftOut.map((entry) => entry.path));
   const groups = new Map();
+  const group = (key, entry, path) => {
+    if (!groups.has(key)) groups.set(key, { ...entry, files: [] });
+    groups.get(key).files.push(path);
+  };
   for (const path of files) {
     if (excluded.has(path)) continue;
+    const file = fileOf.get(path);
     const family = LANGUAGE_FAMILY[languageOf(path)] ?? null;
-    const framework = fileOf.get(path)?.testFramework ?? null;
+    const framework = file?.testFramework ?? null;
     const runs = (run) => runnerMayRun(run.runner, path, framework);
     if (attributed.some((run) => run.files == null && runs(run))) continue;
+    // A test_ script is collected by no runner's discovery: one written for a
+    // framework is named in its run; one that runs itself is run on its own.
+    if (file?.scriptTest === true) {
+      if (framework != null) group(`${framework}\0named`, { named: framework }, path);
+      else group(`\0self\0${selfKind(file.selfRun)}`, { self: selfKind(file.selfRun) }, path);
+      continue;
+    }
     const listed = attributed.find((run) => run.files != null && runs(run))?.runner ?? null;
     // A file that imports no framework Atlas knows, of a family CI runs no
-    // runner for, may run itself (python test_gate.py): no runner is guessed.
-    if (listed == null && framework == null) continue;
+    // runner for, may run itself (python test_gate.py): no runner is guessed,
+    // and it is named only when it fails by itself.
+    if (listed == null && framework == null) {
+      if (file?.selfRun) group(`\0self\0${selfKind(file.selfRun)}`, { self: selfKind(file.selfRun) }, path);
+      continue;
+    }
     // sh reads ** as *, so a glob a shell expands can leave files out.
     const star = listed != null && missed.some((entry) => entry.twoStars && path.startsWith(entry.base));
-    const key = `${listed ?? framework ?? `\0${family}`}\0${star}`;
-    if (!groups.has(key)) groups.set(key, { listed, framework, star, files: [] });
-    groups.get(key).files.push(path);
+    group(`${listed ?? framework ?? `\0${family}`}\0${star}`, { listed, framework, star }, path);
   }
-  return [...groups.values()].map(({ listed, framework, star, files: group }) => {
+  return [...groups.values()].map(({ listed, framework, star, named, self, files: group }) => {
     const facts = { files: group.sort(), count: group.length };
+    if (self != null) return selfRunEntry(facts, self, facts.files.map((path) => fileOf.get(path)?.selfRun ?? null));
+    if (named != null) {
+      return {
+        rule: 'G2',
+        facts,
+        suggest: { runner: named, text: `name each file in the ${named} run, or add test_* to the runner's include: its default discovery collects no test_* name` },
+        source: { from: 'external', text: `${named}'s default test patterns, none of which matches test_*` },
+      };
+    }
     if (listed != null && star) {
       return {
         rule: 'G2',
@@ -232,6 +256,46 @@ function notRunRule(files, { attributed, notAttributed, fileOf, leftOut, missed 
       source: { from: 'external', text: `the test framework the files import (${FRAMEWORK_MODULES[framework] ?? framework})` },
     };
   });
+}
+
+// What runs a script on its own: python, node, a TypeScript runner, or
+// nothing this map can name (TypeScript on a Node that strips no types).
+function selfKind(selfRun) {
+  if (selfRun == null) return 'none';
+  return selfRun.run.startsWith('python ') ? 'python' : selfRun.run.startsWith('node ') ? 'node' : 'typescript';
+}
+
+// A step's two fields, from the script's own folder, since a script may read
+// beside it by a relative path.
+function stepOf(selfRun) {
+  return selfRun.in ? `working-directory: ${selfRun.in}, run: ${selfRun.run}` : `run: ${selfRun.run}`;
+}
+
+function selfRunEntry(facts, kind, runs) {
+  const shown = runs.filter(Boolean).map(stepOf);
+  const listed = shown.length > 3 ? `${shown.slice(0, 3).join('; ')} and ${shown.length - 3} more` : shown.join('; ');
+  if (kind === 'none') {
+    return {
+      rule: 'G2',
+      facts,
+      suggest: { text: 'run each in a workflow step from its own folder, with a TypeScript runner such as tsx: the Node versions this package allows strip no types, and no runner\'s discovery collects a test_* script' },
+      source: { from: 'external', text: 'Node, which strips TypeScript types by default from 22.18.0 and 23.6.0' },
+    };
+  }
+  if (kind === 'python') {
+    return {
+      rule: 'G2',
+      facts,
+      suggest: { runner: 'python', text: `run each in a workflow step from its own folder (${listed}): it ends with a failing status itself, and no runner in CI collects it` },
+      source: { from: 'external', text: 'the script\'s own exit status, set under its __main__ guard or at module level' },
+    };
+  }
+  return {
+    rule: 'G2',
+    facts,
+    suggest: { runner: kind === 'node' ? 'node' : runs.find(Boolean).run.split(' ').slice(0, 2).join(' '), text: `run each in a workflow step from its own folder (${listed}): it ends with a failing status itself, and no runner's discovery collects a test_* script` },
+    source: { from: 'external', text: 'node --test, vitest and jest discovery, which match .test., .spec., -test, _test, test- and test/ names' },
+  };
 }
 
 // G4: CI runs a family's tests and collects no coverage. Silent for a
