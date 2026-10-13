@@ -50,7 +50,8 @@ export function formatNotice(code, details, whatToDo) {
 
 export function formatFailure(code, details, { exitCode = 1, whatToDo } = {}) {
   const sentence = ERRORS[code];
-  const action = whatToDo ?? 'run atlas map and commit atlas/, or revert the change';
+  // A map made before new files are staged leaves them out (AM-3).
+  const action = whatToDo ?? 'stage any new files, run atlas map and commit atlas/; or revert the change';
   const lines = [`${code}  ${sentence}`];
   if (details.length > 0) {
     lines.push(`  what changed:   ${details[0]}`);
