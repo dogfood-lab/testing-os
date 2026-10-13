@@ -1,16 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-10-13 from commit 228af7e by Atlas 1.26.0.
+Mapped at 2026-10-13 from commit b2a207b by Atlas 1.26.0.
 
 ## What this is
 
 23 parts, mostly JavaScript (1630 files), Python (243), TypeScript (219), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
 
-## What changed since 2026-10-13 (5f14a24)
+## What changed since 2026-10-13 (228af7e)
 
-- CI runs 2 more files than before.
-- Release runs 2 more files than before.
-- 6 files added and 21 changed content, across 6 parts.
+Nothing structural changed since 2026-10-13; 17 files changed content.
 
 ## What comes in
 
@@ -92,7 +90,7 @@ Mapped at 2026-10-13 from commit 228af7e by Atlas 1.26.0.
 
 ## What tends to change together
 
-- **packages/atlas/sidecar/answer.js** and **packages/atlas/sidecar/tools.js** changed together in 10 of 15 commits, inside the atlas part.
+- **packages/atlas/sidecar/answer.js** and **packages/atlas/sidecar/tools.js** changed together in 10 of 16 commits, inside the atlas part.
 - **site/public/atlas/render.js** and **site/src/components/atlas-page.test.mjs** changed together in 39 of 77 commits, inside the site part.
 
 2 files changed together with their own tests, as expected.
@@ -144,10 +142,10 @@ Read those in order to follow one dogfood submission end to end.
 - 13 files in fixtures use syntax the parser cannot read (fixtures/atlas/grammar-shapes/src/broken.ts, fixtures/atlas/grammars-rust-gdscript/scripts/broken.gd, fixtures/atlas/grammars-rust-gdscript/src/broken.rs and 10 more), so what they import is not known: a bare `&` in JSX text (1) and other syntax (12).
 - 11 writes and 37 reads use paths built at run time and are not named here.
 - 6 writes go to places this repository does not track, so they are not listed as generated.
-- 78 writes and 653 reads go to a path their caller passes, not to this repository.
-- 47 reads go to the directory the command is run in, not to this repository.
+- 78 writes and 655 reads go to a path their caller passes, not to this repository.
+- 58 reads go to the directory the command is run in, not to this repository.
 - 10 writes and 7 reads go to a temporary directory, not to this repository.
-- 2 writes and 9 reads go to the directory the command is run in (.github/, atlas/, dogfood/ and 3 more places) or a path their caller passes, not to this repository.
+- 2 writes and 8 reads go to the directory the command is run in (.github/, dogfood/, policy.example.yaml and 2 more places) or a path their caller passes, not to this repository.
 - 2 writes and 3 reads go to a temporary directory or a path their caller passes, not to this repository.
 - 29 commands are built at run time and not followed, 20 of them in tests.
 - 1 file belongs to no part: packages/.gitkeep.
