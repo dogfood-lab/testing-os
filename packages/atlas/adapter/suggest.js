@@ -29,7 +29,8 @@ export function suggestBoundaries({ paths, boundaries, unassigned }) {
     additions.get(part).add(glob);
   };
   const byTop = groupBy(paths, topOf);
-  for (const top of [...byTop.keys()].sort(cmp)) {
+  // The root last, as the notice that names the folders lists it.
+  for (const top of [...byTop.keys()].sort((a, b) => (a === '' ? 1 : b === '' ? -1 : cmp(a, b)))) {
     const files = byTop.get(top);
     if (top === '') {
       placeRoot(files, owned, names, loose, newParts, add, unplaceable);

@@ -44,6 +44,16 @@ function settle(text) {
     .replace(/"generatedAt": "[^"]*"/g, '"generatedAt": "STAMP"');
 }
 
+// The untracked notice's own lines. The fixture also leaves files in no
+// part, which map names in a notice of its own (ATLAS_MAP_UNASSIGNED_FOLDER).
+function untrackedBlock(stderr) {
+  const lines = stderr.split('\n');
+  const start = lines.findIndex((line) => line.startsWith('ATLAS_MAP_UNTRACKED  '));
+  if (start === -1) return [];
+  const end = lines.findIndex((line, index) => index > start && line.startsWith('  what to do:'));
+  return lines.slice(start, end + 1);
+}
+
 function readMap() {
   return MAP_FILES.map((name) => readFileSync(join(root, 'atlas', name), 'utf8'));
 }
@@ -82,8 +92,7 @@ describe('atlas map with files git does not track', () => {
 
   it('exits 0 and warns on stderr, naming the untracked files outside .gitignore and no ignored one', () => {
     assert.equal(clutteredRun.status, 0, clutteredRun.stdout + clutteredRun.stderr);
-    const lines = clutteredRun.stderr.trimEnd().split('\n');
-    assert.deepEqual(lines, [
+    assert.deepEqual(untrackedBlock(clutteredRun.stderr), [
       'ATLAS_MAP_UNTRACKED  The working tree holds files git does not track, which the map leaves out.',
       '  what changed:   2 untracked files outside .gitignore: notes/draft.md and scripts/extra.js',
       '  what to do:     git add the files the map should hold and run atlas map again, or add them to .gitignore',
@@ -107,7 +116,8 @@ describe('atlas map with files git does not track', () => {
     rmSync(join(root, 'notes'), { recursive: true });
     const quiet = map();
     assert.equal(quiet.status, 0);
-    assert.equal(quiet.stderr, '');
+    assert.deepEqual(untrackedBlock(quiet.stderr), []);
+    assert.doesNotMatch(quiet.stderr, /atlas\/(?:README\.md|page\.json|structure\.json|statistics\.json)/);
   });
 
   it('names the first five and counts the rest', () => {

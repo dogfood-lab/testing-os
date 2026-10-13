@@ -128,6 +128,7 @@ export function mapCommand(cwd, argv = []) {
   process.stderr.write(untrackedWarning(repo));
   const { mapped, artifact, statistics, page } = buildMap({ repo, boundary, commit, origin, previous, baseline });
   writeMap(join(repo, 'atlas'), { artifact, statistics, page });
+  process.stderr.write(unassignedFolderNotice(artifact));
   let divergenceMs = null;
   if (flags.divergence) {
     const started = Date.now();
@@ -281,6 +282,26 @@ function failureWithFix(failure, current) {
   if (isEmptySuggestion(suggestion)) return formatFailure(failure.code, failure.details, { whatToDo: STAGE_THEN_MAP });
   const text = formatFailure(failure.code, failure.details, { whatToDo: `add the lines below to atlas/boundaries.yaml, ${STAGE_THEN_MAP}` });
   return `${text}\nLines for atlas/boundaries.yaml\n${suggestionLines(suggestion).join('\n')}\n`;
+}
+
+/**
+ * The notice for the top-level folders, and the root, holding tracked files
+ * in no part (docs/atlas-buildup.spec.md, AM-2), or '' when there are none:
+ * each new file there fails check, so the folder is named before CI says so.
+ */
+function unassignedFolderNotice(artifact) {
+  const paths = (artifact.unassigned ?? []).map((file) => file.path);
+  if (paths.length === 0) return '';
+  const counts = new Map();
+  for (const path of paths) {
+    const folder = path.includes('/') ? `${path.slice(0, path.indexOf('/'))}/` : '';
+    counts.set(folder, (counts.get(folder) ?? 0) + 1);
+  }
+  const details = [...counts.keys()].sort((a, b) => (a === '' ? 1 : b === '' ? -1 : a < b ? -1 : a > b ? 1 : 0))
+    .map((folder) => `${folder === '' ? 'the repository root' : folder}: ${counts.get(folder) === 1 ? '1 file' : `${counts.get(folder)} files`}`);
+  const notice = formatNotice('ATLAS_MAP_UNASSIGNED_FOLDER', details, 'add the lines below to atlas/boundaries.yaml and run atlas map again');
+  const suggestion = suggestBoundaries({ paths, boundaries: artifact.boundaries, unassigned: artifact.unassigned });
+  return `${notice}Lines for atlas/boundaries.yaml\n${suggestionLines(suggestion).join('\n')}\n`;
 }
 
 // A map made before the new files are staged leaves them out, and the check
