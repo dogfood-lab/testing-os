@@ -57,8 +57,9 @@ The 10-13 failure had a second cause. The map was made before the receipt was st
 
 **AM-4, "moved" (a wrong sentence).** The "What changed" counts call a file "moved" when its part changes. That includes a file going from no part into a part, which is how interlock's page said "80 files moved" for receipts that had only been given a part.
 - "Moved" is kept for a file that goes from one part to another, and for a renamed file with the same content.
-- A file that was in no part and now is in one is counted as such ("80 files that belonged to no part now belong to one").
-- The reverse case is counted as such too ("3 files no longer belong to any part").
+- A file that was in no part and now is in one is counted as given a part ("80 files given a part, across 1 part.").
+- The reverse is counted too ("1 file no longer in any part").
+- `fileCounts` in `page.json`, the diff and the sidecar's changes answer gains `assigned` and `unassigned`. The change is additive.
 
 **AM-5, "People write" for data (a wrong sentence).** The Hand-authored section lists every config, data, docs and site part with no writer the map names as "People write X". For a data part, that claims more than the map knows. interlock's harness writes `receipts/` through paths built at run time and paths relative to where it runs, and the page said "People write receipts/".
 - A data part with no named writer gets its own sentence, which says what is known: who commits it (people, not bots, from the history the origin already uses) and that no code the map names writes there.
