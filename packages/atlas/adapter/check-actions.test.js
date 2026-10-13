@@ -149,6 +149,14 @@ describe('atlas check in GitHub Actions', () => {
     assert.match(error, / notes\/draft\.\. What to do: /);
   });
 
+  it('ends a notice\'s details once in the step summary too', () => {
+    // The second live run's summary, read signed in, still had
+    // "refuses to start.; read from": the summary joins its details itself.
+    const notice = { code: 'ATLAS_DOOR_TOOLCHAIN', details: ['astro refuses to start.', 'read from a.yml:3'], whatToDo: 'pin Node 22', file: 'a.yml', line: 3 };
+    const text = stepSummary({ failure: null, notices: [notice] });
+    assert.ok(text.includes('`astro refuses to start`; `read from a.yml:3`. **What to do:**'), text);
+  });
+
   it('caps the summary list with how many more', () => {
     const repo = receiptsRepo(scratch(), 60);
     const summary = join(scratch(), 'summary.md');

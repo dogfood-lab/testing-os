@@ -107,7 +107,7 @@ export function stepSummary({ failure, notices }) {
     out.push('### Notices', '');
     for (const notice of notices.slice(0, LISTED)) {
       const at = notice.file ? ` at ${inlineCode(notice.line != null ? `${notice.file}:${notice.line}` : notice.file)}` : '';
-      out.push(`- **${notice.code}**${at}: ${notice.details.map(inlineCode).join('; ')}. **What to do:** ${plain(notice.whatToDo)}.`);
+      out.push(`- **${notice.code}**${at}: ${notice.details.map((detail) => inlineCode(unended(detail))).join('; ')}. **What to do:** ${plain(notice.whatToDo)}.`);
     }
     if (notices.length > LISTED) out.push(`- and ${notices.length - LISTED} more`);
     out.push('');
@@ -145,10 +145,14 @@ function command(kind, title, file, line, message) {
 }
 
 // A detail may end its own sentence, as a door notice's first does; the
-// joined text ends once. A detail with no space is a path, kept as it is,
-// since a file name may end in a dot.
+// joined text, in an annotation or the summary, ends once. A detail with no
+// space is a path, kept as it is, since a file name may end in a dot.
+function unended(detail) {
+  return /\s/.test(detail) ? detail.replace(/(?<=\w)\.$/, '') : detail;
+}
+
 function detailText(details) {
-  const shown = details.slice(0, 3).map((detail) => (/\s/.test(detail) ? detail.replace(/(?<=\w)\.$/, '') : detail)).join('; ');
+  const shown = details.slice(0, 3).map(unended).join('; ');
   return details.length > 3 ? `${shown}; and ${details.length - 3} more.` : `${shown}.`;
 }
 
