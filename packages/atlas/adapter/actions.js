@@ -151,8 +151,11 @@ function command(kind, title, file, line, message) {
   return `::${kind} ${properties.join(',')}::${escapeData(message)}`;
 }
 
+// A detail may end its own sentence, as a door notice's first does; the
+// joined text ends once. A detail with no space is a path, kept as it is,
+// since a file name may end in a dot.
 function detailText(details) {
-  const shown = details.slice(0, 3).join('; ');
+  const shown = details.slice(0, 3).map((detail) => (/\s/.test(detail) ? detail.replace(/(?<=\w)\.$/, '') : detail)).join('; ');
   return details.length > 3 ? `${shown}; and ${details.length - 3} more.` : `${shown}.`;
 }
 

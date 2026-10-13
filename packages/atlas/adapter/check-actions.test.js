@@ -157,6 +157,17 @@ describe('atlas check in GitHub Actions', () => {
     assert.ok(readFileSync(summary, 'utf8').startsWith('## Atlas check passed, with notices\n'));
   });
 
+  it('ends the details once, though a detail ends its own sentence', () => {
+    // The live run of 2026-10-13 read "refuses to start.; read from".
+    const notice = { code: 'ATLAS_DOOR_TOOLCHAIN', details: ['astro refuses to start.', 'read from a.yml:3'], whatToDo: 'pin Node 22', file: 'a.yml', line: 3 };
+    const [line] = annotationLines({ failure: null, notices: [notice], repo: FIXTURES, env: { GITHUB_WORKSPACE: FIXTURES }, summary: false });
+    assert.match(line, / astro refuses to start; read from a\.yml:3\. What to do: pin Node 22\.$/);
+    // A path is data: a file name that ends in a dot keeps it.
+    const failure = { code: 'ATLAS_FILE_MOVED', details: ['notes/draft.'], whatToDo: 'run atlas map' };
+    const [error] = annotationLines({ failure, notices: [], repo: FIXTURES, env: { GITHUB_WORKSPACE: FIXTURES }, summary: false });
+    assert.match(error, / notes\/draft\.\. What to do: /);
+  });
+
   it('caps the summary list with how many more', () => {
     const repo = receiptsRepo(scratch(), 60);
     const summary = join(scratch(), 'summary.md');
