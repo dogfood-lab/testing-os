@@ -46,3 +46,16 @@ const quiet = withMaintenanceOff(process.env);
 for (const [key, value] of Object.entries(quiet)) {
   if (process.env[key] !== value) process.env[key] = value;
 }
+
+/**
+ * The variables GitHub Actions sets that change what a command under test
+ * prints or writes: atlas check emits workflow commands when GITHUB_ACTIONS
+ * is true and appends to the file GITHUB_STEP_SUMMARY names
+ * (docs/atlas-buildup.spec.md, AM-6). A test that inherited them in CI would
+ * see output it never sees on a laptop, and would write into this
+ * repository's own step summary. A test that means to exercise them sets
+ * them on the process it starts.
+ */
+export const ACTIONS_OUTPUT_VARIABLES = Object.freeze(['GITHUB_ACTIONS', 'GITHUB_STEP_SUMMARY']);
+
+for (const key of ACTIONS_OUTPUT_VARIABLES) delete process.env[key];
