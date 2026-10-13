@@ -37,7 +37,10 @@ describe('a root that falls back to the working directory', () => {
   it('is the user\'s place, so nothing here generates projects/', () => {
     assert.ok(!section(markdown, 'Generated, never hand-edited').includes('projects/'), markdown);
     assert.ok(!section(markdown, 'What happens through CI').includes('writes to projects/'), markdown);
-    assert.ok(section(markdown, 'Hand-authored').includes('People write projects/'), markdown);
+    // A data part is never said to be written by people (AM-5); the
+    // commands write it from the directory they run in, which the map
+    // cannot rule out.
+    assert.ok(section(markdown, 'Hand-authored').includes('The data in projects/ is written by no code this map names.'), markdown);
   });
 
   it('says where the writes go instead', () => {
