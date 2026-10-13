@@ -1,4 +1,4 @@
-import { fileCounts, structuralChanges } from '../adapter/changes.js';
+import { countTerms, fileCounts, structuralChanges } from '../adapter/changes.js';
 import { basisOf, byBasis, group } from './answer.js';
 import { git } from './git.js';
 import { cannotSeeFor, cannotSeeSentence } from './limits.js';
@@ -93,8 +93,8 @@ export function changesAnswer(snapshot, repo, since) {
     if (factGroup.fact === 'files') continue;
     for (const item of factGroup.items) sentences.push(`Atlas: ${item.sentence}`);
   }
-  const terms = [['added', counts.added], ['removed', counts.removed], ['moved', counts.moved], ['changed content', counts.changed]].filter(([, n]) => n > 0);
-  sentences.push(`Atlas: ${terms.length === 0 ? 'no file changed' : list(terms.map(([word, n]) => `${n} ${word}`))}${counts.parts > 0 ? `, across ${counts.parts} ${counts.parts === 1 ? 'part' : 'parts'}` : ''}.`);
+  const terms = countTerms(counts);
+  sentences.push(`Atlas: ${terms.length === 0 ? 'no file changed' : list(terms.map(([n, word]) => `${n} ${word}`))}${counts.parts > 0 ? `, across ${counts.parts} ${counts.parts === 1 ? 'part' : 'parts'}` : ''}.`);
   // What Atlas cannot see in the parts the changes name.
   const ctx = snapshot.ctx;
   const touched = new Set();
