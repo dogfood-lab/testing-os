@@ -1,14 +1,16 @@
 # testing-os: how it works
 
-Mapped at 2026-10-13 from commit 19c541e by Atlas 1.26.0.
+Mapped at 2026-10-13 from commit c16f405 by Atlas 1.26.0.
 
 ## What this is
 
-23 parts, mostly JavaScript (1610 files), Python (237), TypeScript (215), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
+23 parts, mostly JavaScript (1610 files), Python (237), TypeScript (215), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 16 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
 
-## What changed since 2026-10-13 (601ea71)
+## What changed since 2026-10-13 (19c541e)
 
-Nothing structural changed since 2026-10-13; 3 files added and 10 changed content.
+- AM-6 live D1 door (.github/workflows/am6-live-d1.yml) is a new door. It starts by hand. It runs site/astro.config.mjs and site/src/.
+- AM-6 live subdirectory checkout (.github/workflows/am6-live-path.yml) is a new door. It starts on a push to scratch/am6-live; or by hand. It runs packages/atlas/cli.js.
+- 2 files added, across 1 part.
 
 ## What comes in
 
@@ -18,14 +20,16 @@ Nothing structural changed since 2026-10-13; 3 files added and 10 changed conten
 4. **self-dogfood.** When the workflow CI completes; or by hand. Runs packages/report/cli.js, scripts/build.mjs and scripts/sync-version.mjs; checks packages/schemas/src/.
 5. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs scripts/check-accent-color.test.mjs, scripts/check-atlas-front-door.test.mjs, site/astro.config.mjs and 6 more.
 6. **Atlas render.** On a schedule (`0 6 * * 1`), Monday at 06:00 UTC; or by hand. Runs scripts/atlas-render.mjs.
-7. **swarm** (a command people run). Runs packages/dogfood-swarm/cli.js.
-8. **findings** (a command people run). Runs packages/findings/cli.js.
-9. **dogfood-init** (a command people run). Runs packages/report/init.js.
-10. **dogfood-report** (a command people run). Runs packages/report/cli.js.
-11. **dogfood-verify** (a command people run). Runs packages/verify/cli.js.
-12. **report** (a command people run). Runs packages/report/cli.js.
-13. **atlas** (a command people run). Runs packages/atlas/cli.js.
-14. **atlas-fleet** (a command people run). Runs packages/atlas/bin/atlas-fleet.js.
+7. **AM-6 live D1 door.** By hand. Runs site/astro.config.mjs and site/src/.
+8. **AM-6 live subdirectory checkout.** On a push to scratch/am6-live; or by hand. Runs packages/atlas/cli.js.
+9. **swarm** (a command people run). Runs packages/dogfood-swarm/cli.js.
+10. **findings** (a command people run). Runs packages/findings/cli.js.
+11. **dogfood-init** (a command people run). Runs packages/report/init.js.
+12. **dogfood-report** (a command people run). Runs packages/report/cli.js.
+13. **dogfood-verify** (a command people run). Runs packages/verify/cli.js.
+14. **report** (a command people run). Runs packages/report/cli.js.
+15. **atlas** (a command people run). Runs packages/atlas/cli.js.
+16. **atlas-fleet** (a command people run). Runs packages/atlas/bin/atlas-fleet.js.
 
 ## What happens through Ingest dogfood submission
 
@@ -60,6 +64,10 @@ Nothing structural changed since 2026-10-13; 3 files added and 10 changed conten
 **Deploy site to GitHub Pages** runs scripts/check-accent-color.test.mjs, scripts/check-atlas-front-door.test.mjs, site/astro.config.mjs and 6 more, and deploys the site.
 
 **Atlas render** runs scripts/atlas-render.mjs and reaches atlas.
+
+**AM-6 live D1 door** runs site/astro.config.mjs and site/src/.
+
+**AM-6 live subdirectory checkout** runs packages/atlas/cli.js and runs git.
 
 **swarm** (a command people run) runs packages/dogfood-swarm/cli.js, reaches findings, ingest, report, schemas and verify, writes to dogfood/roadmap/, indexes/, policies/repos/ and records/, and to swarms/control-plane.db, which is not tracked, and runs git.
 
