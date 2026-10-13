@@ -550,9 +550,11 @@ function unassignedItems(previous, current, repoPath) {
 /* ---------- counts ---------- */
 
 /**
- * Files added, removed, moved and changed in content, and how many parts they
- * touch. A file is moved when its path now sits in another part, or when a
- * removed path and an added path carry the same bytes.
+ * Files added, removed, moved, given a part, left in none and changed in
+ * content, and how many parts they touch. A file is moved when its path goes
+ * from one part to another, or when a removed path and an added path carry
+ * the same bytes. A path that was in no part and now is in one was given a
+ * part, not moved (AM-4), and the reverse leaves it in no part.
  */
 export function fileCounts(previous, current) {
   const old = new Map(allFiles(previous).map((entry) => [entry.file.path, entry]));
@@ -563,6 +565,8 @@ export function fileCounts(previous, current) {
   };
   let changed = 0;
   let moved = 0;
+  let assigned = 0;
+  let unassigned = 0;
   const added = [];
   const removed = [];
   for (const [path, entry] of now) {
@@ -572,7 +576,9 @@ export function fileCounts(previous, current) {
       continue;
     }
     if (was.part !== entry.part) {
-      moved += 1;
+      if (was.part == null) assigned += 1;
+      else if (entry.part == null) unassigned += 1;
+      else moved += 1;
       touch(was);
       touch(entry);
     } else if (was.file.hash !== entry.file.hash) {
@@ -597,16 +603,26 @@ export function fileCounts(previous, current) {
     removed.splice(index, 1);
   }
   for (const entry of [...unmatched, ...removed]) touch(entry);
-  return { added: unmatched.length, changed, moved, parts: parts.size, removed: removed.length };
+  return { added: unmatched.length, assigned, changed, moved, parts: parts.size, removed: removed.length, unassigned };
 }
 
-function countsClause(counts) {
-  const terms = [
+/**
+ * The counts as list terms, each a number and what happened to that many
+ * files. The sidecar's changes answer words them the same way.
+ */
+export function countTerms(counts) {
+  return [
     [counts.added, 'added'],
     [counts.removed, 'removed'],
     [counts.moved, 'moved'],
+    [counts.assigned ?? 0, 'given a part'],
+    [counts.unassigned ?? 0, 'no longer in any part'],
     [counts.changed, 'changed content'],
   ].filter(([n]) => n > 0);
+}
+
+function countsClause(counts) {
+  const terms = countTerms(counts);
   if (terms.length === 0) return 'no file changed';
   return list(terms.map(([n, verb], index) => (index === 0 ? `${count(n, 'file')} ${verb}` : `${n} ${verb}`)));
 }

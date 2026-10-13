@@ -4,6 +4,27 @@ All notable changes to `testing-os` are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+A red `atlas check` now says how to fix itself, and says it where people look (`docs/atlas-buildup.spec.md`, slice AM, ruled by R&D on 2026-10-13). The commonest failure in the fleet was a folder with no part, such as interlock's `receipts/`: each new file in it failed `check`, and regenerating the map pardoned only that one file. In the two weeks to 2026-10-13 it reddened main in at least five repositories, and in CI the failure showed only as "exit code 1".
+
+### Added
+- **`check` prints the boundary lines a new unassigned file needs,** after the finding, ready to paste into `atlas/boundaries.yaml`.
+  - A folder no part reaches gets a part of its own, named for the folder, with the role `init` would give it.
+  - A folder a part already reaches into gets a glob in that part. When two parts share the folder, it gets each file's own path, escaped.
+  - Every test applies the printed lines, maps, and requires `check` to pass.
+- **`map` warns about folders whose files are in no part** (`ATLAS_MAP_UNASSIGNED_FOLDER`, on stderr, exit 0). It names each folder with its count and gives the same lines, before CI fails on the next file there.
+- **In GitHub Actions, `check` annotates its findings and writes a step summary.** When `GITHUB_ACTIONS` is `true`:
+  - each failure is an `::error`, and each new unassigned file is one on that file, ten at most, with the tenth counting the rest;
+  - each door notice is a `::warning` on the line it was read from, and other notices are `::notice`;
+  - the finding, its files (capped) and the fix lines are appended to `$GITHUB_STEP_SUMMARY`.
+
+  Each annotation names its file from the repository root, and a finding about a whole file sits on line 1: a live failing run showed GitHub placing an annotation on a pull request's diff only so, and not for workspace-relative paths from a checkout into a subdirectory, or for annotations with no line. Repository strings are escaped, so a file name holding a newline and `::` starts no command of its own. Outside Actions the output is byte-identical.
+
+### Changed
+- **A drift finding's hint says to stage new files before mapping.** A map made before staging leaves the new files out, as on interlock on 2026-10-13. Two tests replay that order and the right one in clean clones.
+- **`fileCounts` gains `assigned` and `unassigned`.** The page, the diff and the sidecar's changes answer say "given a part" and "no longer in any part" where they said "moved". "Moved" now means only from one part to another, or a rename.
+- **A data part with no named writer is "written by no code this map names",** not "People write". Configuration, docs and sites keep "People write".
+- **The shared test preload clears `GITHUB_ACTIONS` and `GITHUB_STEP_SUMMARY`,** so a test sees on CI what it sees locally and never writes into this repository's own step summary.
+
 ### Fixed
 - **`swarm verify` counts every cargo test target.** A Rust workspace prints one `test result` line per target, and the last is often a doc-test target with `0 passed`. The pytest summary pattern also matched cargo's lines and kept that last zero, so a passing suite was scored `no_tests`. Cargo summaries are now summed, and recognized before pytest's. A run whose every target passed 0 tests is still `no_tests`.
 

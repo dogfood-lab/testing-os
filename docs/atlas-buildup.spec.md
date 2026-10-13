@@ -87,11 +87,15 @@ The rules for both:
 - **Repository strings are data.** Paths and sentences are escaped as the workflow-command format requires: `%`, CR and LF in a message, plus `:` and `,` in a property. A file whose name holds a newline and `::` cannot start a command of its own.
 - **The only file written** is the one `$GITHUB_STEP_SUMMARY` names, and only when it is set. The checkout is never written, and the read-only test keeps holding.
 - **Outside Actions** (variable unset, or anything but `true`) the output is byte-identical to today's.
-- **Paths are relative to `$GITHUB_WORKSPACE`, not the repository root,** because GitHub resolves `file=` against the workspace. When the repository root is inside the workspace (a checkout with `actions/checkout`'s `path:`), the path is given relative to the workspace. When it is not, `file=` is left out.
+- **Paths begin at the repository root, and a finding about a whole file sits on line 1** (amended after the live run, 2026-10-13). This item first said paths were relative to `$GITHUB_WORKSPACE`. The live run on a scratch pull request (#160) showed otherwise:
+  - a job that checked out into `path: repo` gave `repo/...` paths, and GitHub showed none of them on the diff, while the same annotations from the root jobs were shown;
+  - every unassigned file's error carried no line, was stored at line 0, and none was shown either.
+
+  `file=` is now the path Atlas holds, from the repository root, always given, and with `line=1` where a finding has no line of its own.
 - **The summary's file lists stop at a fixed count with "and N more",** so a failure over thousands of files stays readable and inside GitHub's 1 MiB cap on a step summary.
 
 **Additions from R&D's review of 2026-10-13:**
-- **A live run before release (required for 1.27.0).** Every AM-6 test reads stdout from a fixture, and which annotations GitHub shows, and where, is GitHub's behaviour. Before 1.27.0 ships, one real failing Actions job runs on a scratch branch: an `ATLAS_UNASSIGNED_NEW` with 12 offending files, plus a D1 notice. A second job checks out into a subdirectory (`path:`), to see that `file=` relative to the workspace lands on the file in the pull request's diff.
+- **A live run before release (required for 1.27.0).** Every AM-6 test reads stdout from a fixture, and which annotations GitHub shows, and where, is GitHub's behaviour. Before 1.27.0 ships, one real failing Actions job runs on a scratch branch: an `ATLAS_UNASSIGNED_NEW` with 12 offending files, plus a D1 notice. A second job checks out into a subdirectory (`path:`), to see where `file=` lands on the pull request's diff. The first run (#160) answered it: see the amended path item above. A second run checks the fix.
 - **The test environment.** testing-os's own CI sets `GITHUB_ACTIONS` and `GITHUB_STEP_SUMMARY` for every test process. The shared test preload (`scripts/lib/git-test-env.mjs`) clears both, so a test sees on CI what it sees on a laptop and never writes into this repository's own step summary. A test that exercises them sets them on the process it starts. The release notes record:
   - the annotations in the checks tab and on the file in the pull request's diff;
   - whether the cap of ten per kind holds, with the tenth carrying the "N more" count;
@@ -120,7 +124,7 @@ Every test is red on the tree before its item.
      - the summary holds the boundary lines;
      - a D1 fixture gives `::warning` with `file=` and `line=`.
    - A file named with a newline and `::` yields escaped output and no extra command.
-   - A repository checked out into a subdirectory of `GITHUB_WORKSPACE` gives `file=` relative to the workspace. A repository outside the workspace gives no `file=`.
+   - A repository checked out into a subdirectory of `GITHUB_WORKSPACE`, or outside it, gives `file=` from the repository root, and a file-level finding gives `line=1` (amended after the live run).
    - An unassigned-new fixture with more files than the cap ends its summary list with "and N more".
    - With the variable unset, stdout is byte-identical to the 1.26.0 output on the same fixtures, and no file is written.
 6. **The existing gates:**

@@ -82,7 +82,7 @@ describe('what changed since the last map', () => {
     const changes = JSON.parse(read(root, 'page.json')).changes;
     assert.equal(changes.unchanged, true);
     assert.equal(changes.since.commit, since);
-    assert.deepEqual(changes.fileCounts, { added: 0, changed: 0, moved: 0, parts: 0, removed: 0 });
+    assert.deepEqual(changes.fileCounts, { added: 0, assigned: 0, changed: 0, moved: 0, parts: 0, removed: 0, unassigned: 0 });
   });
 
   it('counts a content-only change and still says nothing structural changed', () => {
@@ -299,7 +299,31 @@ describe('compareStructures', () => {
   it('counts a file whose bytes moved to a new path as moved, not added and removed', () => {
     const previous = structure({ parts: [part('a', ['a/x.js'])] });
     const current = structure({ parts: [{ ...part('b', []), files: [{ hash: 'h-a/x.js', path: 'b/x.js' }] }] });
-    assert.deepEqual(fileCounts(previous, current), { added: 0, changed: 0, moved: 1, parts: 2, removed: 0 });
+    assert.deepEqual(fileCounts(previous, current), { added: 0, assigned: 0, changed: 0, moved: 1, parts: 2, removed: 0, unassigned: 0 });
+  });
+
+  // docs/atlas-buildup.spec.md, AM-4: interlock's page said "80 files moved"
+  // for receipts that had only been given a part.
+  it('counts files that gain a part as given one, not moved', () => {
+    const receipts = [{ hash: 'h-1', path: 'receipts/1.jsonl' }, { hash: 'h-2', path: 'receipts/2.jsonl' }];
+    const previous = structure({ parts: [part('src', ['src/a.py'])], unassigned: receipts });
+    const current = structure({ parts: [part('src', ['src/a.py']), { ...part('receipts', [], { globs: ['receipts/**'] }), files: receipts }] });
+    assert.deepEqual(fileCounts(previous, current), { added: 0, assigned: 2, changed: 0, moved: 0, parts: 1, removed: 0, unassigned: 0 });
+    assert.equal(sentences(compareStructures(previous, current)).at(-1), '2 files given a part, across 1 part.');
+  });
+
+  it('counts files that lose their part as no longer in any, not moved', () => {
+    const notes = [{ hash: 'h-n', path: 'notes/n.md' }];
+    const previous = structure({ parts: [part('src', ['src/a.py']), { ...part('notes', [], { globs: ['notes/**'] }), files: notes }] });
+    const current = structure({ parts: [part('src', ['src/a.py'])], unassigned: notes });
+    assert.deepEqual(fileCounts(previous, current), { added: 0, assigned: 0, changed: 0, moved: 0, parts: 1, removed: 0, unassigned: 1 });
+    assert.equal(sentences(compareStructures(previous, current)).at(-1), '1 file no longer in any part, across 1 part.');
+  });
+
+  it('keeps moved for a file that goes from one part to another', () => {
+    const previous = structure({ parts: [part('a', ['shared/x.js'], { globs: ['shared/**'] }), part('b', ['b/y.js'])] });
+    const current = structure({ parts: [part('a', []), part('b', ['b/y.js', 'shared/x.js'], { globs: ['b/**', 'shared/**'] })] });
+    assert.deepEqual(fileCounts(previous, current), { added: 0, assigned: 0, changed: 0, moved: 1, parts: 2, removed: 0, unassigned: 0 });
   });
 
   it('tells two commands of one manifest apart, and calls a new one a command, not a door that starts on nothing', () => {

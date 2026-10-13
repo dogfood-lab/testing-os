@@ -2536,12 +2536,28 @@ function unnamedWrites(ctx) {
   return ctx.boundaries.reduce((sum, boundary) => sum + (boundary.dynamicWrites ?? 0), 0);
 }
 
+// That no code the map names writes a part is what it knows; that people
+// write it is read from that for configuration, docs and sites, which people
+// do write. Data is as often a tool's output committed by hand, so a data
+// part is said to be written by no code, never by people (AM-5).
 function authoredSection(ctx, boundaries, shared) {
   const unnamed = unnamedWrites(ctx);
-  const people = `People write ${list(boundaries.map((boundary) => shownPlace(ctx, boundary)))}`;
-  const caveat = unnamed > 0
-    ? `${people}; ${count(unnamed, 'write')} with ${unnamed === 1 ? 'a path' : 'paths'} built at run time may land here.`
-    : absence('authored', unreadCount(ctx), people);
+  const unread = unreadCount(ctx);
+  const byPeople = boundaries.filter((boundary) => boundary.role !== 'data');
+  const data = boundaries.filter((boundary) => boundary.role === 'data');
+  const people = byPeople.length > 0 ? `People write ${list(byPeople.map((boundary) => shownPlace(ctx, boundary)))}` : null;
+  // A write to the directory a command runs in, or to a path its caller
+  // passes, lands in the repository when it is run from there, as
+  // interlock's harness writes receipts/: the map cannot rule it out.
+  const outside = ctx.boundaries.reduce((sum, boundary) => sum + (boundary.outsideWrites ?? 0), 0);
+  const noCode = unnamed > 0 || outside > 0 ? 'no code this map names' : unread > 0 ? 'no code in the files this map could read' : 'no code in this repository';
+  const dataSentence = data.length > 0 ? `The data in ${list(data.map((boundary) => shownPlace(ctx, boundary)))} is written by ${noCode}` : null;
+  let caveat;
+  if (unnamed > 0) {
+    caveat = `${[people, dataSentence].filter(Boolean).join('. ')}; ${count(unnamed, 'write')} with ${unnamed === 1 ? 'a path' : 'paths'} built at run time may land here.`;
+  } else {
+    caveat = [people ? absence('authored', unread, people) : null, dataSentence ? `${dataSentence}.` : null].filter(Boolean).join(' ');
+  }
   const body = boundaries.length > 0 ? caveat : 'No configuration or documentation part is left to people alone.';
   const lines = shared.map((item) => (item.untrackedInputs
     ? `- ${writtenBy(item.place, item.into)} ${list(worded(item.writers, ctx.shown))} from inputs this repository does not keep, and by people.`

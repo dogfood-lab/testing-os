@@ -33,6 +33,7 @@ export const ERRORS = {
   ATLAS_DOOR_LOCKFILE_PLATFORM: "A lockfile a door installs from holds no native binding for the job's platform.",
   ATLAS_MAP_ENGINE_OLDER: 'The map was made by an older Atlas than the one running.',
   ATLAS_MAP_UNTRACKED: 'The working tree holds files git does not track, which the map leaves out.',
+  ATLAS_MAP_UNASSIGNED_FOLDER: 'A top-level folder holds tracked files in no part, so check fails on each new file there.',
 };
 
 /**
@@ -49,7 +50,8 @@ export function formatNotice(code, details, whatToDo) {
 
 export function formatFailure(code, details, { exitCode = 1, whatToDo } = {}) {
   const sentence = ERRORS[code];
-  const action = whatToDo ?? 'run atlas map and commit atlas/, or revert the change';
+  // A map made before new files are staged leaves them out (AM-3).
+  const action = whatToDo ?? 'stage any new files, run atlas map and commit atlas/; or revert the change';
   const lines = [`${code}  ${sentence}`];
   if (details.length > 0) {
     lines.push(`  what changed:   ${details[0]}`);

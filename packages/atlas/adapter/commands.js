@@ -14,6 +14,8 @@ import { formatFailure, formatNotice } from './errors.js';
 import { explainCommand } from './explain.js';
 import { gapsCommand } from './gaps.js';
 import { initCommand } from './init.js';
+import { isEmptySuggestion, suggestBoundaries, suggestionLines } from './suggest.js';
+import { annotationLines, inActions, stepSummary, writeStepSummary } from './actions.js';
 import { buildEnvelope, hitsFromStatistics } from './divergence.js';
 import { buildPage } from './page.js';
 import { buildStatistics, parametersFrom, serializeStatistics, statisticsProblem } from './statistics.js';
@@ -127,6 +129,7 @@ export function mapCommand(cwd, argv = []) {
   process.stderr.write(untrackedWarning(repo));
   const { mapped, artifact, statistics, page } = buildMap({ repo, boundary, commit, origin, previous, baseline });
   writeMap(join(repo, 'atlas'), { artifact, statistics, page });
+  process.stderr.write(unassignedFolderNotice(artifact));
   let divergenceMs = null;
   if (flags.divergence) {
     const started = Date.now();
@@ -229,19 +232,13 @@ export function checkCommand(cwd, argv = []) {
     return 0;
   }
   if (!existsSync(structurePath)) {
-    process.stdout.write(
-      formatFailure('ATLAS_NOT_MAPPED', ['atlas/structure.json is absent'], {
-        whatToDo: 'run atlas map and commit atlas/',
-      }),
-    );
-    return 1;
+    return checkVerdict(repo, { code: 'ATLAS_NOT_MAPPED', details: ['atlas/structure.json is absent'], whatToDo: 'run atlas map and commit atlas/' }, [], strict);
   }
   let committed;
   try {
     committed = JSON.parse(readFileSync(structurePath, 'utf8'));
   } catch {
-    process.stdout.write(formatFailure('ATLAS_STRUCTURE_DRIFT', ['atlas/structure.json is not valid JSON']));
-    return 1;
+    return checkVerdict(repo, { code: 'ATLAS_STRUCTURE_DRIFT', details: ['atlas/structure.json is not valid JSON'], whatToDo: DRIFT_FIX }, [], strict);
   }
   // The check compares the structure and reports the door checks, so the
   // tree is read for those alone; the page's readings are the map's to make.
@@ -251,51 +248,120 @@ export function checkCommand(cwd, argv = []) {
   // computed from the tree as it is now, and a map an older engine made.
   const notices = checkNotices(committed, current);
   const failure = compareArtifacts(committed, current, repo);
-  if (failure) {
-    process.stdout.write(formatFailure(failure.code, failure.details));
-    return withNotices(notices, 1, strict);
-  }
+  if (failure) return checkVerdict(repo, failureWithFix(failure, current), notices, strict);
   const statisticsPath = join(repo, 'atlas', 'statistics.json');
   if (existsSync(statisticsPath)) {
     const problem = statisticsProblem(readFileSync(statisticsPath, 'utf8'));
-    if (problem) {
-      process.stdout.write(formatFailure('ATLAS_STATISTICS_UNDATED', [problem], {
-        whatToDo: 'run atlas map and commit atlas/',
-      }));
-      return withNotices(notices, 1, strict);
-    }
+    if (problem) return checkVerdict(repo, { code: 'ATLAS_STATISTICS_UNDATED', details: [problem], whatToDo: 'run atlas map and commit atlas/' }, notices, strict);
   }
-  process.stdout.write('atlas check\n  boundaries match the committed map\n');
-  return withNotices(notices, 0, strict);
+  return checkVerdict(repo, null, notices, strict);
 }
+
+/**
+ * Prints a check's verdict and notices, and in GitHub Actions says them
+ * again where people look: as annotations, and in the step summary
+ * (docs/atlas-buildup.spec.md, AM-6). Outside Actions the output is the
+ * log's alone, as it was.
+ */
+function checkVerdict(repo, failure, notices, strict) {
+  if (failure) {
+    const text = formatFailure(failure.code, failure.details, { whatToDo: failure.whatToDo });
+    process.stdout.write(failure.suggestion ? `${text}\nLines for atlas/boundaries.yaml\n${failure.suggestion.join('\n')}\n` : text);
+  } else {
+    process.stdout.write('atlas check\n  boundaries match the committed map\n');
+  }
+  const code = withNotices(notices, failure ? 1 : 0, strict);
+  if (inActions()) {
+    const summary = writeStepSummary(stepSummary({ failure, notices }));
+    const lines = annotationLines({ failure, notices, summary });
+    if (lines.length > 0) process.stdout.write(`${lines.join('\n')}\n`);
+  }
+  return code;
+}
+
+// What the error shape says to do for drift when the finding gives nothing
+// of its own (errors.js formatFailure's default).
+const DRIFT_FIX = 'stage any new files, run atlas map and commit atlas/; or revert the change';
+
+/**
+ * A failed comparison as data: its code, its details and what to do. A new
+ * file in no part also carries the boundary lines that would give it one
+ * (docs/atlas-buildup.spec.md, AM-1), printed after the finding so the
+ * finding's own lines keep their shape, and the paths, one annotation each.
+ */
+function failureWithFix(failure, current) {
+  if (failure.code !== 'ATLAS_UNASSIGNED_NEW') return { code: failure.code, details: failure.details, whatToDo: DRIFT_FIX };
+  const suggestion = suggestBoundaries({ paths: failure.details, boundaries: current.boundaries, unassigned: current.unassigned });
+  if (isEmptySuggestion(suggestion)) return { code: failure.code, details: failure.details, whatToDo: STAGE_THEN_MAP, paths: failure.details };
+  return {
+    code: failure.code,
+    details: failure.details,
+    whatToDo: `add the lines below to atlas/boundaries.yaml, ${STAGE_THEN_MAP}`,
+    paths: failure.details,
+    suggestion: suggestionLines(suggestion),
+  };
+}
+
+/**
+ * The notice for the top-level folders, and the root, holding tracked files
+ * in no part (docs/atlas-buildup.spec.md, AM-2), or '' when there are none:
+ * each new file there fails check, so the folder is named before CI says so.
+ */
+function unassignedFolderNotice(artifact) {
+  const paths = (artifact.unassigned ?? []).map((file) => file.path);
+  if (paths.length === 0) return '';
+  const counts = new Map();
+  for (const path of paths) {
+    const folder = path.includes('/') ? `${path.slice(0, path.indexOf('/'))}/` : '';
+    counts.set(folder, (counts.get(folder) ?? 0) + 1);
+  }
+  const details = [...counts.keys()].sort((a, b) => (a === '' ? 1 : b === '' ? -1 : a < b ? -1 : a > b ? 1 : 0))
+    .map((folder) => `${folder === '' ? 'the repository root' : folder}: ${counts.get(folder) === 1 ? '1 file' : `${counts.get(folder)} files`}`);
+  const notice = formatNotice('ATLAS_MAP_UNASSIGNED_FOLDER', details, 'add the lines below to atlas/boundaries.yaml and run atlas map again');
+  const suggestion = suggestBoundaries({ paths, boundaries: artifact.boundaries, unassigned: artifact.unassigned });
+  return `${notice}Lines for atlas/boundaries.yaml\n${suggestionLines(suggestion).join('\n')}\n`;
+}
+
+// A map made before the new files are staged leaves them out, and the check
+// in CI then fails on them again.
+const STAGE_THEN_MAP = 'stage the new files, run atlas map and commit atlas/; or revert the change';
 
 /**
  * The notices of a check (docs/atlas-production.spec.md, Part 4): each
  * finding of a door check on the tree now, and the engine notice when the
- * committed map was made by an older Atlas or carries no stamp. Each is in
- * the error shape, without an exit line.
+ * committed map was made by an older Atlas or carries no stamp. Each is
+ * data: its code, its details, what to do, and for a door's finding the
+ * first file and line it was read from.
  */
 function checkNotices(committed, current) {
   const out = [];
   const made = typeof committed.engine === 'string' ? committed.engine : null;
   if (made == null || (semver.valid(made) && semver.valid(ENGINE) && semver.lt(made, ENGINE))) {
     const said = made == null ? `the map carries no engine stamp; this is Atlas ${ENGINE}` : `the map was made by Atlas ${made}; this is ${ENGINE}`;
-    out.push(formatNotice('ATLAS_MAP_ENGINE_OLDER', [said], 'run atlas map and commit atlas/'));
+    out.push({ code: 'ATLAS_MAP_ENGINE_OLDER', details: [said], whatToDo: 'run atlas map and commit atlas/' });
   }
   for (const door of current.doors ?? []) {
     for (const finding of door.findings ?? []) {
-      const read = (finding.lines ?? []).map((entry) => (entry.line != null ? `${entry.file}:${entry.line}` : entry.file));
-      out.push(formatNotice(FINDING_CODES[finding.rule], [findingSentence(door, finding), ...(read.length > 0 ? [`read from ${read.join(', ')}`] : [])], findingRemedy(finding)));
+      const lines = finding.lines ?? [];
+      const read = lines.map((entry) => (entry.line != null ? `${entry.file}:${entry.line}` : entry.file));
+      const at = lines.find((entry) => entry.line != null) ?? lines[0] ?? null;
+      out.push({
+        code: FINDING_CODES[finding.rule],
+        details: [findingSentence(door, finding), ...(read.length > 0 ? [`read from ${read.join(', ')}`] : [])],
+        whatToDo: findingRemedy(finding),
+        ...(at ? { file: at.file, ...(at.line != null ? { line: at.line } : {}) } : {}),
+      });
     }
   }
   return out;
 }
 
-// Prints the notices after the verdict. They leave the exit code as it is,
-// unless --strict makes any notice fail the check.
+// Prints the notices after the verdict, in the error shape without an exit
+// line. They leave the exit code as it is, unless --strict makes any notice
+// fail the check.
 function withNotices(notices, code, strict) {
   if (notices.length === 0) return code;
-  process.stdout.write(`\nNotices\n${notices.join('')}`);
+  process.stdout.write(`\nNotices\n${notices.map((notice) => formatNotice(notice.code, notice.details, notice.whatToDo)).join('')}`);
   if (!strict || code !== 0) return code;
   process.stdout.write(`--strict: ${notices.length === 1 ? 'a notice fails' : `${notices.length} notices fail`} the check\nexit 1\n`);
   return 1;

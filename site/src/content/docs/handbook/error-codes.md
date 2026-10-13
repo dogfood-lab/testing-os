@@ -684,6 +684,7 @@ Every failure names what changed and what to do; the second line is never option
 | `ATLAS_DOOR_LOCKFILE_PLATFORM` | 0 (1 with `--strict`) | LOW | `adapter/commands.js` |
 | `ATLAS_MAP_ENGINE_OLDER` | 0 (1 with `--strict`) | LOW | `adapter/commands.js` |
 | `ATLAS_MAP_UNTRACKED` | 0 | LOW | `adapter/commands.js` |
+| `ATLAS_MAP_UNASSIGNED_FOLDER` | 0 | LOW | `adapter/commands.js` |
 | `ATLAS_SIDECAR_NOT_A_REPOSITORY` | none | LOW | `sidecar/tools.js` |
 | `ATLAS_SIDECAR_NO_MAP` | none | LOW | `sidecar/map.js` |
 | `ATLAS_SIDECAR_MAP_UNREADABLE` | none | LOW | `sidecar/map.js` |
@@ -768,7 +769,11 @@ A tracked file belongs to no boundary and was not among the unassigned files the
 :::
 
 - **Trigger:** a new file outside every glob. The unassigned set may shrink freely; it may not gain a member. A rename of an unowned file passes when the content hash matches a disappeared entry and the file is at least 100 bytes; below that, or with edits in the same commit, it is a new member.
-- **Operator action:** widen a boundary's globs to claim the file, add a boundary for it, or — if it is genuinely unowned — run `atlas map` to record it as such and commit.
+- **What check prints:** after the finding, the lines that would give each file a part, under `Lines for atlas/boundaries.yaml`.
+  - A top-level folder no part reaches gets a part of its own, named for the folder, with the role `init` would give it.
+  - A folder a part already reaches into gets a glob added to that part, never a second part with the same name. The glob is the folder of the new files, or each file's own path, escaped, when two parts share the folder.
+  - In GitHub Actions, each file is also an `::error` annotation on that file, and the lines go into the step summary.
+- **Operator action:** paste the lines, or widen a glob yourself. Stage the new files, run `atlas map` and commit `atlas/`. Mapping before staging leaves the new files out, and the check in CI fails on them again. If a file is genuinely unowned, `atlas map` records it as such, but the next new file in the same folder fails too. A folder that keeps receiving files (receipts, data packs) wants a part.
 
 ### `ATLAS_FILE_MOVED`
 
@@ -886,6 +891,15 @@ A warning from `atlas map`: the working tree holds files git does not track and 
 
 - **Trigger:** files written and not yet staged when `atlas map` runs. It names the first five and a count, on stderr, and exits 0. `atlas/` itself is not counted.
 - **Operator action:** `git add` the files the map should hold and run `atlas map` again, or add them to `.gitignore`.
+
+### `ATLAS_MAP_UNASSIGNED_FOLDER`
+
+:::tip[Severity: LOW]
+A warning from `atlas map`: a top-level folder, or the repository root, holds tracked files in no part. `atlas check` fails on each new file there.
+:::
+
+- **Trigger:** tracked files that no boundary glob reaches when `atlas map` runs. It names each folder with its count of such files, prints the boundary lines `check` would print for them, writes to stderr, and exits 0. `atlas/` itself is never named.
+- **Operator action:** paste the lines into `atlas/boundaries.yaml` and run `atlas map` again. Leaving the files in no part is allowed, but the next new file in that folder fails `check`.
 
 ### The sidecar's codes
 

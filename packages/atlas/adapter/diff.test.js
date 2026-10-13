@@ -136,7 +136,7 @@ describe('atlas diff', () => {
     assert.deepEqual(Object.keys(diff), ['base', 'fileCounts', 'items', 'unchanged']);
     assert.deepEqual(diff.base, { commit: base, ref: 'HEAD' });
     assert.equal(diff.unchanged, false);
-    assert.deepEqual(diff.fileCounts, { added: 1, changed: 2, moved: 0, parts: 2, removed: 0 });
+    assert.deepEqual(diff.fileCounts, { added: 1, assigned: 0, changed: 2, moved: 0, parts: 2, removed: 0, unassigned: 0 });
     assert.deepEqual(diff.items.map((item) => item.kind), ['cycle', 'door', 'landing', 'unassigned', 'counts']);
     assert.deepEqual(diff.items[0].subjects, ['beta', 'tests', 'alpha']);
     const markdown = atlas(root, ['diff', '--base', 'HEAD']).stdout;
