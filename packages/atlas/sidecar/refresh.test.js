@@ -1,5 +1,5 @@
 import { EventEmitter } from 'node:events';
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -12,7 +12,7 @@ import { readBoundaryFile } from '../adapter/boundary-file.js';
 import { buildMap, writeMap } from '../adapter/commands.js';
 import { ENGINE } from '../adapter/engine.js';
 import { changedRows, checkoutSnapshot } from '../core/checkout-state.js';
-import { cacheRoot, createRefresher, workerEnv } from './refresh.js';
+import { cacheRoot, checkoutFingerprint, createRefresher, workerEnv } from './refresh.js';
 import { git, mappedRepository } from './test-client.js';
 import { createTools } from './tools.js';
 
@@ -125,6 +125,36 @@ describe('where atlas_refresh caches a map', () => {
     assert.deepEqual([env.GIT_CONFIG_KEY_1, env.GIT_CONFIG_VALUE_1], ['core.fsmonitor', 'false']);
     const bare = workerEnv({});
     assert.deepEqual([bare.GIT_CONFIG_COUNT, bare.GIT_CONFIG_KEY_0, bare.GIT_CONFIG_VALUE_0], ['1', 'core.fsmonitor', 'false']);
+  });
+
+  it('starts the worker with no variable that points git at another repository, in any case', () => {
+    // R&D's ruling on #169: the directory alone chooses the repository.
+    const env = workerEnv({ PATH: 'bin', GIT_DIR: '/elsewhere/.git', git_work_tree: '/elsewhere', GIT_INDEX_FILE: 'i', GIT_OBJECT_DIRECTORY: 'o', GIT_ALTERNATE_OBJECT_DIRECTORIES: 'a', GIT_COMMON_DIR: 'c', GIT_NAMESPACE: 'n' });
+    assert.deepEqual(Object.keys(env).filter((key) => !key.startsWith('GIT_CONFIG_') && !['GIT_NO_LAZY_FETCH', 'GIT_OPTIONAL_LOCKS', 'GIT_TERMINAL_PROMPT'].includes(key)), ['PATH']);
+  });
+});
+
+describe('what a finished refresh is checked against', () => {
+  it('hashes a link in the checkout as the text it holds, and never what it leads to', (t) => {
+    // Kimi's review of #169: a link the checkout holds may lead out of the
+    // repository, and reading through it reads outside the roots.
+    const root = mappedRepository(FIXTURE, { prefix: 'atlas-fingerprint-' });
+    scratch.push(root);
+    const outside = mkdtempSync(join(tmpdir(), 'atlas-fingerprint-outside-'));
+    scratch.push(outside);
+    writeFileSync(join(outside, 'secret.txt'), 'one\n');
+    try {
+      symlinkSync(join(outside, 'secret.txt'), join(root, 'lead.txt'), 'file');
+    } catch (err) {
+      if (err.code === 'EPERM') return t.skip('this machine makes no symbolic link to a file without a privilege; Linux CI runs it');
+      throw err;
+    }
+    const before = checkoutFingerprint(root);
+    writeFileSync(join(outside, 'secret.txt'), 'two\n');
+    assert.equal(checkoutFingerprint(root), before, 'what the link leads to is not read');
+    unlinkSync(join(root, 'lead.txt'));
+    symlinkSync(join(outside, 'other.txt'), join(root, 'lead.txt'), 'file');
+    assert.notEqual(checkoutFingerprint(root), before, 'where the link leads is part of the checkout');
   });
 });
 

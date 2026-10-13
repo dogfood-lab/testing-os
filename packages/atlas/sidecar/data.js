@@ -50,6 +50,15 @@ export function capStrings(value) {
   return value;
 }
 
+/**
+ * A name as a sentence of Atlas's gives it: as it is when it reads as one
+ * name, else quoted as a JSON string, as the text quotes the map's names.
+ * For a name that is not the map's, such as a repository's folder.
+ */
+export function asName(name) {
+  return unplain(name) ? JSON.stringify(capped(name)) : name;
+}
+
 /** A line with every control, format and line-break character shown as an escape. */
 export function neutral(line) {
   return line.replace(CONTROL, (char) => {

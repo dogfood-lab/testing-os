@@ -133,9 +133,10 @@ describe('the sidecar asked with a ref', () => {
     assert.equal(foreign.structuredContent.error.code, 'ATLAS_REF_MAP_FOREIGN');
   });
 
-  it('lists ref among the arguments of every tool but atlas_refresh', async () => {
+  it('lists ref among the arguments of every tool that answers from a map', async () => {
+    // atlas_refresh makes a map and atlas_repos lists the roots; neither reads one at a ref.
     const { tools } = await client.listTools();
-    for (const tool of tools) assert.equal('ref' in tool.inputSchema.properties, tool.name !== 'atlas_refresh', tool.name);
+    for (const tool of tools) assert.equal('ref' in tool.inputSchema.properties, !['atlas_refresh', 'atlas_repos'].includes(tool.name), tool.name);
   });
 });
 

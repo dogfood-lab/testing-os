@@ -39,14 +39,27 @@ export function main(argv, cwd) {
 }
 
 // stdout is the protocol channel from the first byte, so a usage error goes
-// to stderr, where a host shows what a server logs.
+// to stderr, where a host shows what a server logs. The one argument is
+// --repos <file>, the repositories the server answers for, read and checked
+// before it serves anything (docs/atlas-buildup.spec.md, slice AN).
 async function mcpCommand(cwd, argv) {
-  if (argv.length > 0) {
-    process.stderr.write(`atlas: mcp takes no arguments, got ${argv[0]}\nexit 2\n`);
+  if (argv.length > 0 && !(argv[0] === '--repos' && argv.length === 2 && argv[1] !== '')) {
+    const got = argv[0] === '--repos' ? (argv.length < 2 ? '--repos with no file' : `${argv.slice(2).join(' ') || 'an empty file name'} after it`) : argv[0];
+    process.stderr.write(`atlas: mcp takes only --repos <file>, got ${got}\nexit 2\n`);
     return 2;
   }
+  let repos = null;
+  if (argv[0] === '--repos') {
+    const { readReposFile } = await import('../sidecar/roots.js');
+    const read = readReposFile(argv[1], { cwd });
+    if (!read.ok) {
+      process.stderr.write(formatFailure(read.error.code, read.error.details, { exitCode: 2, whatToDo: read.error.whatToDo }));
+      return 2;
+    }
+    repos = read.roots;
+  }
   const { serve } = await import('../sidecar/server.js');
-  await serve({ cwd });
+  await serve({ cwd, repos });
   return 0;
 }
 
@@ -609,7 +622,7 @@ function committedAtHead(repo, path) {
 }
 
 function committedJson(repo, path) {
-  const result = spawnSync('git', ['show', `HEAD:${path}`], {
+  const result = spawnSync('git', ['show', '--no-textconv', `HEAD:${path}`], {
     cwd: repo,
     encoding: 'utf8',
     maxBuffer: 64 * 1024 * 1024,

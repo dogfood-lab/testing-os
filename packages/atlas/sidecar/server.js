@@ -1,3 +1,4 @@
+import { LOCATION_VARIABLES } from './git.js';
 import { createProtocol } from './protocol.js';
 import { callTool, listTools, stopTools } from './tools.js';
 
@@ -12,10 +13,15 @@ import { callTool, listTools, stopTools } from './tools.js';
  * answered: a tool call may be waiting for the client's reply to roots/list,
  * which arrives as a later line.
  *
- * @param {{ cwd?: string, input?: NodeJS.ReadableStream, output?: NodeJS.WritableStream, errors?: NodeJS.WritableStream }} [options]
+ * @param {{ cwd?: string, repos?: object[] | null, input?: NodeJS.ReadableStream, output?: NodeJS.WritableStream, errors?: NodeJS.WritableStream }} [options]
+ *   repos: the roots a --repos file named (sidecar/roots.js), or null
  * @returns {Promise<void>} settles when input ends and every answer is sent
  */
-export function serve({ cwd = process.cwd(), input = process.stdin, output = process.stdout, errors = process.stderr } = {}) {
+export function serve({ cwd = process.cwd(), repos = null, input = process.stdin, output = process.stdout, errors = process.stderr } = {}) {
+  // The directory alone chooses a repository: every git this process starts,
+  // the engine's own included, runs without the variables that would point
+  // it at another (docs/atlas-buildup.spec.md, slice AN).
+  for (const key of Object.keys(process.env)) if (LOCATION_VARIABLES.includes(key.toUpperCase())) delete process.env[key];
   const writeOut = output.write.bind(output);
   if (output === process.stdout) {
     const toErrors = errors.write.bind(errors);
@@ -26,6 +32,7 @@ export function serve({ cwd = process.cwd(), input = process.stdin, output = pro
     send: (message) => writeOut(`${JSON.stringify(message)}\n`),
     tools: { list: listTools, call: callTool },
     cwd,
+    repos,
     log,
   });
   return new Promise((resolve) => {

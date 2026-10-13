@@ -31,7 +31,7 @@ export function committedMap(root) {
 /** The map a ref holds, read with git show, in the shape committedMap gives. */
 export function mapAt(root, ref) {
   return mapFrom(root, (file) => {
-    const shown = spawnSync('git', ['show', `${ref}:atlas/${file}`], { cwd: root, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+    const shown = spawnSync('git', ['show', '--no-textconv', `${ref}:atlas/${file}`], { cwd: root, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
     if (shown.status !== 0) throw new Error(`${ref} holds no atlas/${file}`);
     return shown.stdout;
   });

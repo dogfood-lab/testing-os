@@ -28,7 +28,7 @@ export function readBaseMap(repo, ref) {
   const resolved = git(repo, ['rev-parse', '--verify', '--quiet', `${ref}^{commit}`]);
   if (resolved.status !== 0) return { ok: false, details: [`${ref} is not a commit in this clone`] };
   const commit = resolved.stdout.trim();
-  const shown = git(repo, ['show', `${commit}:${STRUCTURE}`]);
+  const shown = git(repo, ['show', '--no-textconv', `${commit}:${STRUCTURE}`]);
   if (shown.status !== 0) {
     return { ok: false, details: [`${ref} (${commit.slice(0, 7)}) has no ${STRUCTURE}`] };
   }

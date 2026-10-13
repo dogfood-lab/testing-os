@@ -1,10 +1,10 @@
 import { fork } from 'node:child_process';
 import { createHash, randomBytes } from 'node:crypto';
-import { existsSync, mkdirSync, readdirSync, readFileSync, realpathSync, renameSync, rmSync, statSync } from 'node:fs';
+import { existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, readlinkSync, realpathSync, renameSync, rmSync, statSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { isAbsolute, posix, relative, resolve, sep, win32 } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { git, head, inHistory, READ_ONLY_ENV } from './git.js';
+import { git, head, inHistory, READ_ONLY_ENV, withoutGitLocation } from './git.js';
 import { readSnapshot } from './map.js';
 
 /**
@@ -60,8 +60,11 @@ export function checkoutFingerprint(root) {
   const status = git(root, ['status', '--porcelain=v1', '-z', '--untracked-files=all', '--no-renames']);
   for (const entry of String(status.stdout).split('\0').filter((line) => line.length >= 4).sort()) {
     hash.update(`\0${entry}`);
+    const path = resolve(root, entry.slice(3));
     try {
-      hash.update(readFileSync(resolve(root, entry.slice(3))));
+      // A link is hashed as the text it holds and never followed: it may lead
+      // out of the repository, and where it leads is what the checkout holds.
+      hash.update(lstatSync(path).isSymbolicLink() ? `\0link\0${readlinkSync(path)}` : readFileSync(path));
     } catch {
       hash.update('\0absent');
     }
@@ -79,7 +82,7 @@ export function workerEnv(env) {
   const count = Number.parseInt(env.GIT_CONFIG_COUNT ?? '', 10);
   const at = Number.isInteger(count) && count > 0 ? count : 0;
   return {
-    ...env,
+    ...withoutGitLocation(env),
     ...READ_ONLY_ENV,
     GIT_CONFIG_COUNT: String(at + 1),
     [`GIT_CONFIG_KEY_${at}`]: 'core.fsmonitor',

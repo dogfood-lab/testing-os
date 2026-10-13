@@ -15,10 +15,11 @@ import { fileURLToPath } from 'node:url';
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 
 /**
- * @param {{ cwd: string, env?: Record<string, string>, onRequest?: (message: object) => unknown }} options
+ * @param {{ cwd: string, args?: string[], env?: Record<string, string>, onRequest?: (message: object) => unknown }} options
+ *   args: what follows `atlas mcp` on the command line, such as --repos and its file
  */
-export function startServer({ cwd, env = {}, onRequest = () => null }) {
-  const child = spawn(process.execPath, [CLI, 'mcp'], { cwd, env: { ...process.env, ...env }, stdio: ['pipe', 'pipe', 'pipe'] });
+export function startServer({ cwd, args = [], env = {}, onRequest = () => null }) {
+  const child = spawn(process.execPath, [CLI, 'mcp', ...args], { cwd, env: { ...process.env, ...env }, stdio: ['pipe', 'pipe', 'pipe'] });
   const lines = [];
   const stderr = [];
   const waiting = new Map();

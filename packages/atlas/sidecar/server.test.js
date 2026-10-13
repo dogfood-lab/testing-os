@@ -187,12 +187,16 @@ describe('atlas mcp: roots', () => {
     const called = (await server.request('tools/call', { name: 'atlas_explain', arguments: { path: 'store' } })).result;
     assert.equal(asked, 1);
     assert.equal(called.structuredContent.atlas.map.commit, commit);
+    // The roots are fixed at start (docs/atlas-buildup.spec.md, slice AN): a
+    // changed list is logged and not asked for, and the answer stays the same.
     server.notify('notifications/roots/list_changed');
     await server.request('ping');
-    await server.request('tools/call', { name: 'atlas_explain', arguments: { path: 'store' } });
-    assert.equal(asked, 2, 'a changed list is asked for again');
+    const again = (await server.request('tools/call', { name: 'atlas_explain', arguments: { path: 'store' } })).result;
+    assert.equal(again.structuredContent.atlas.map.commit, commit);
+    assert.equal(asked, 1, 'a changed list is not asked for');
     await server.close();
     assertProtocolOnly(server);
+    assert.match(server.stderr.join(''), /the roots are fixed at start, so the new list is not asked for or used/);
   });
 
   it('answers for the working directory when no root is offered, and says when that is in no repository', async () => {
@@ -221,6 +225,6 @@ describe('atlas mcp: framing', () => {
     const result = spawnSync(process.execPath, [CLI, 'mcp', '--port', '80'], { cwd: repo, encoding: 'utf8', input: '' });
     assert.equal(result.status, 2);
     assert.equal(result.stdout, '');
-    assert.match(result.stderr, /mcp takes no arguments/);
+    assert.match(result.stderr, /mcp takes only --repos <file>, got --port/);
   });
 });
