@@ -1,18 +1,20 @@
+import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { answered, CANNOT_SEE_SCHEMA, cutMarks, FACT_GROUP_SCHEMA, failed, freshnessSentences, provenance, PROVENANCE_SCHEMA } from './answer.js';
+import { answered, CANNOT_SEE_SCHEMA, cutMarks, FACT_GROUP_SCHEMA, failed, freshnessSentences, group, provenance, PROVENANCE_SCHEMA } from './answer.js';
 import { changesAnswer } from './changes-tool.js';
 import { checkChangeAnswer } from './check-change-tool.js';
 import { explainAnswer } from './explain-tool.js';
-import { unplainNames } from './data.js';
+import { asName, unplainNames } from './data.js';
 import { changedFiles, checkoutState, mapHashes, stateAt } from './freshness.js';
-import { blobAt, head, inHistory, REF_PATTERN, topLevel } from './git.js';
-import { exportedRoot, newerUpstream, noMapAdvice, readCommittedMap, readExportedMap, readSnapshotAt, upstreamMap } from './map.js';
+import { blobAt, distanceFromHead, head, inHistory, REF_PATTERN } from './git.js';
+import { newerUpstream, noMapAdvice, readCommittedMap, readExportedMap, readSnapshotAt, upstreamMap } from './map.js';
 import { overviewAnswer } from './overview-tool.js';
 import { reachAnswer } from './reach-tool.js';
 import { createRefresher } from './refresh.js';
 import { refreshAnswer, REFRESH_ANSWER } from './refresh-tool.js';
 import { reread, rereadFacts } from './reread.js';
+import { chooseRoot, rootsOf } from './roots.js';
 import { outputSchema, problems } from './schema.js';
 import { SIZE_NOTE, SIZE_PROPERTIES, sizeAnswer } from './size.js';
 import { testGapsAnswer } from './test-gaps-tool.js';
@@ -115,6 +117,17 @@ const REF_ARGUMENT = {
   pattern: REF_PATTERN,
   description: 'A ref this clone holds, such as origin/main, a tag or a commit: the answer comes from the Atlas map at that ref, '
     + 'and the files it names are read at that ref. Nothing is fetched. Left out, the map in the checkout answers.',
+};
+
+// Every tool but atlas_repos may be asked about another repository among
+// the roots fixed when the server started (docs/atlas-buildup.spec.md,
+// slice AN); atlas_repos lists them.
+const REPO_ARGUMENT = {
+  type: 'string',
+  minLength: 1,
+  maxLength: 1024,
+  description: 'The repository to answer for, as atlas_repos lists it: its absolute path or its name. Only the repositories '
+    + 'fixed when Atlas started are answered for. Left out, the repository Atlas was started in.',
 };
 
 // atlas_check_change compares the working tree with the map, so the map a ref
@@ -325,20 +338,42 @@ const DEFINED = [
     outputSchema: outputSchema(PROVENANCE_SCHEMA, REFRESH_ANSWER),
     refresh: true,
   },
+  {
+    name: 'atlas_repos',
+    title: 'The repositories Atlas answers for',
+    description: 'The repositories Atlas answers for, fixed when it started: each one\'s name and path, where it came from '
+      + '(the --repos file, a root the client offered, or the directory Atlas was started in), whether it answers a call '
+      + 'that names no repo, the commit and engine of the map it answers from, and how many commits its HEAD holds that '
+      + 'the map was not made from. Pass a name or a path from here as repo to any other tool; any other repository is '
+      + 'refused. An answer is at most 8 KB of JSON; a cut list says complete: false with a cursor for the rest, and '
+      + 'full: true allows 64 KB.',
+    inputSchema: {
+      type: 'object',
+      properties: { full: SIZE_PROPERTIES.full, cursor: SIZE_PROPERTIES.cursor },
+      additionalProperties: false,
+    },
+    outputSchema: outputSchema(PROVENANCE_SCHEMA, answerSchema({ type: 'object' })),
+    listsRoots: true,
+  },
 ];
 
 // Every tool that answers from a map takes the size arguments (full, part,
 // kind, cursor) and says in its description how its answers are cut.
-// Every tool but the refresh also takes a ref to answer from.
-const TOOLS = DEFINED.map((tool) => (tool.refresh ? tool : {
-  ...tool,
-  description: `${tool.description}${SIZE_NOTE}`,
-  inputSchema: { ...tool.inputSchema, properties: { ...tool.inputSchema.properties, ref: tool.readsTree ? CHECK_REF_ARGUMENT : REF_ARGUMENT, ...SIZE_PROPERTIES } },
-}));
+// Every tool but the refresh also takes a ref to answer from, and every
+// tool but atlas_repos a repository.
+const TOOLS = DEFINED.map((tool) => {
+  if (tool.listsRoots) return tool;
+  if (tool.refresh) return { ...tool, inputSchema: { ...tool.inputSchema, properties: { ...tool.inputSchema.properties, repo: REPO_ARGUMENT } } };
+  return {
+    ...tool,
+    description: `${tool.description}${SIZE_NOTE}`,
+    inputSchema: { ...tool.inputSchema, properties: { ...tool.inputSchema.properties, repo: REPO_ARGUMENT, ref: tool.readsTree ? CHECK_REF_ARGUMENT : REF_ARGUMENT, ...SIZE_PROPERTIES } },
+  };
+});
 
 // The order the specification lists the questions in, by how often the
 // evidence says each is asked: reachability first.
-const ORDER = ['atlas_reach', 'atlas_explain', 'atlas_overview', 'atlas_check_change', 'atlas_test_gaps', 'atlas_changes', 'atlas_refresh'];
+const ORDER = ['atlas_reach', 'atlas_explain', 'atlas_overview', 'atlas_check_change', 'atlas_test_gaps', 'atlas_changes', 'atlas_refresh', 'atlas_repos'];
 
 /**
  * The tools of one server process, with the refresher whose snapshots they
@@ -374,7 +409,7 @@ export function createTools({ refresher = createRefresher() } = {}) {
   /**
    * @param {string} name a tool listTools names
    * @param {unknown} args the call's arguments
-   * @param {{ roots: string[], cwd: string }} context
+   * @param {{ roots: string[], cwd: string, repos?: object[] | null }} context
    * @returns {Promise<object>} the tool result: one text block and the structured content
    */
   async function callTool(name, args, context) {
@@ -383,8 +418,11 @@ export function createTools({ refresher = createRefresher() } = {}) {
     if (invalid.length > 0) {
       return failed(provenance(), { code: 'ATLAS_SIDECAR_INVALID_ARGUMENTS', details: invalid.slice(0, 8), whatToDo: `call ${name} with the arguments its input schema names` });
     }
-    const repo = repositoryFor(context);
-    if (repo.error) return failed(provenance(), repo.error);
+    if (tool.listsRoots) return reposAnswer(context, args);
+    const chosen = chooseRoot(context, args.repo);
+    if (chosen.error) return failed(provenance(), chosen.error);
+    // An answer names its repository whenever the server has more than one.
+    const repo = { ...chosen.repo, shown: chosen.count > 1 };
     if (repo.exported) return exportedAnswer(tool, repo, args);
     const ref = tool.refresh ? null : args.ref ?? null;
     const read = ref ? readSnapshotAt(repo.root, ref) : snapshotFor(repo);
@@ -460,7 +498,58 @@ export function createTools({ refresher = createRefresher() } = {}) {
     return answered(sized.atlas, sized.answer, sized.sentences, names);
   }
 
+  /**
+   * atlas_repos: every root, with the map an answer about it would use, read
+   * as that answer would read it, and the commits HEAD holds since. No file
+   * of the repository is read beyond its map.
+   */
+  function reposAnswer(context, args) {
+    const roots = rootsOf(context);
+    const fallback = chooseRoot(context, undefined).repo ?? null;
+    const items = roots.map((root) => {
+      const read = root.exported ? readExportedMap(root.root) : snapshotFor(root);
+      const tip = root.exported ? null : head(root.root);
+      const map = read.ok ? { snapshot: read.snapshot.id, commit: read.snapshot.commit, engine: read.snapshot.engine } : null;
+      const since = map && tip ? distanceFromHead(root.root, map.commit)?.behind ?? null : null;
+      return {
+        name: root.name,
+        path: root.real,
+        from: root.from,
+        default: fallback != null && root.key === fallback.key,
+        exported: root.exported,
+        head: tip,
+        map,
+        ...(read.ok ? {} : { mapProblem: read.error.code }),
+        headAhead: since,
+      };
+    });
+    const sentences = [
+      `Atlas answers for ${items.length === 1 ? '1 repository' : `${items.length} repositories`}, fixed when it started${context.repos ? ' from the --repos file' : ''}; `
+        + (fallback ? `a call that names no repo answers for ${asName(fallback.name)}.` : 'a call that names no repo is refused, since Atlas was started in none of them.'),
+      // A Windows path is shown with forward slashes, which repo takes as well,
+      // so it reads as one name and is not quoted for its backslashes.
+      ...items.map((item) => `${asName(item.name)} at ${asName(item.path.replaceAll('\\', '/'))} (${item.from}): ${mapWords(item)}.`),
+    ];
+    // The roots are the answer's subject: a digest of their real paths keys
+    // its cursors, as a map's commit keys those of an answer from a map.
+    const subject = { id: 'roots', commit: createHash('sha256').update(roots.map((root) => root.key).join('\0')).digest('hex'), structure: { boundaries: [] } };
+    const answer = { question: {}, facts: [group('repositories', 'declared', items)], cannotSee: [] };
+    const sized = sizeAnswer({ tool: 'atlas_repos', snapshot: subject, args, atlas: provenance(), answer, sentences });
+    if (sized.error) return failed(provenance(), sized.error);
+    return answered(sized.atlas, sized.answer, sized.sentences);
+  }
+
   return { listTools, callTool, stop: () => refresher.stopAll() };
+}
+
+// What atlas_repos says of one root's map.
+function mapWords(item) {
+  if (!item.map) return `no map Atlas can answer from (${item.mapProblem})`;
+  const made = `map ${item.map.commit.slice(0, 7)} made by ${item.map.engine ? `Atlas ${item.map.engine}` : 'an Atlas that did not record its version'}`;
+  if (item.exported) return `${made}, a tree exported without its history`;
+  if (item.headAhead == null) return `${made}; HEAD's commits since it cannot be counted`;
+  if (item.headAhead === 0) return `${made}; HEAD holds no commit it was not made from`;
+  return `${made}; HEAD holds ${item.headAhead === 1 ? '1 commit' : `${item.headAhead} commits`} it was not made from`;
 }
 
 const shared = createTools();
@@ -501,31 +590,6 @@ function withNoMapAdvice(root, error) {
     ...error,
     details: [...error.details, ...(offered ? [`${offered.name} (${offered.commit.slice(0, 7)}) holds a map`] : [])],
     whatToDo: steps.join('; else '),
-  };
-}
-
-// The repository an answer is about: the first client root inside one, else
-// the working directory's, each resolved to the top of its working tree.
-function repositoryFor({ roots = [], cwd }) {
-  for (const dir of roots) {
-    const root = topLevel(dir);
-    if (root) return { root, from: 'client root' };
-  }
-  const root = topLevel(cwd);
-  if (root) return { root, from: 'working directory' };
-  // A tree exported without its history still holds its map.
-  for (const dir of roots) {
-    const exported = exportedRoot(dir);
-    if (exported) return { root: exported, from: 'client root', exported: true };
-  }
-  const exported = exportedRoot(cwd);
-  if (exported) return { root: exported, from: 'working directory', exported: true };
-  return {
-    error: {
-      code: 'ATLAS_SIDECAR_NOT_A_REPOSITORY',
-      details: [roots.length > 0 ? 'no client root and not the working directory is inside a git repository' : 'the working directory is not inside a git repository'],
-      whatToDo: 'start atlas mcp in the repository to answer for, or offer it as a root; outside git, a directory holding atlas/structure.json is answered from as an exported tree',
-    },
   };
 }
 

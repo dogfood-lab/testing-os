@@ -90,6 +90,15 @@ describe('the official SDK client', () => {
       const result = await client.callTool({ name: 'atlas_explain', arguments: { path: 'engine' } });
       assert.equal(result.isError, undefined, JSON.stringify(result.structuredContent));
       assert.equal(result.structuredContent.answer.found.kind, 'part');
+      // The listing and an answer for a root named by repo fit their output
+      // schemas too (docs/atlas-buildup.spec.md, slice AN).
+      const listing = await client.callTool({ name: 'atlas_repos', arguments: {} });
+      assert.equal(listing.isError, undefined, JSON.stringify(listing.structuredContent));
+      const [root] = listing.structuredContent.answer.facts[0].items;
+      assert.deepEqual([root.from, root.default], ['client root', true]);
+      const named = await client.callTool({ name: 'atlas_explain', arguments: { path: 'engine', repo: root.name } });
+      assert.equal(named.isError, undefined, JSON.stringify(named.structuredContent));
+      assert.equal(named.structuredContent.atlas.checkout.name, root.name);
     } finally {
       await client.close();
     }

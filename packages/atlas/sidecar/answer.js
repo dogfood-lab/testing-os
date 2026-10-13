@@ -1,6 +1,6 @@
 import { ENGINE } from '../adapter/engine.js';
 import { ERRORS } from '../adapter/errors.js';
-import { asLine, asText, capStrings } from './data.js';
+import { asLine, asName, asText, capStrings } from './data.js';
 import { distanceWords, EXPORTED } from './map.js';
 
 /**
@@ -132,6 +132,9 @@ const CHANGED_NAMED = 3;
 export function provenance({ repo = null, snapshot = null, head = null, changed = [], upstream = null } = {}) {
   const atlas = { engine: ENGINE };
   const parts = [`Atlas ${ENGINE}`];
+  // A server with more than one root names the repository every answer is
+  // about, first, so no answer can be read as another repository's.
+  if (repo?.shown) parts.push(`repository ${asName(repo.name)}`);
   const ref = snapshot?.ref ?? null;
   if (snapshot) {
     atlas.map = { snapshot: snapshot.id, commit: snapshot.commit, date: snapshot.date, engine: snapshot.engine, engineAge: engineAge(snapshot.engine) };
@@ -147,11 +150,11 @@ export function provenance({ repo = null, snapshot = null, head = null, changed 
   if (repo?.exported) {
     // No history to hold the map's commit and no checkout to compare it with:
     // the answer says so, and makes no claim of what changed after the map.
-    atlas.checkout = { root: repo.root, rootFrom: repo.from, head: null };
+    atlas.checkout = { root: repo.root, ...(repo.name ? { name: repo.name } : {}), rootFrom: repo.from, head: null };
     atlas.exported = { historyChecked: false, freshnessChecked: false };
     parts.push(EXPORTED);
   } else if (repo) {
-    atlas.checkout = { root: repo.root, rootFrom: repo.from, head, changed, changedTotal: changed.length };
+    atlas.checkout = { root: repo.root, ...(repo.name ? { name: repo.name } : {}), rootFrom: repo.from, head, changed, changedTotal: changed.length };
     if (head) parts.push(`HEAD ${short(head)}`);
     if (changed.length > 0) {
       const between = ref && !ref.treeCompared ? ref : null;
@@ -264,7 +267,9 @@ export const PROVENANCE_SCHEMA = {
       type: 'object',
       properties: {
         root: { type: 'string' },
-        rootFrom: { type: 'string', enum: ['client root', 'working directory'] },
+        // The repository's folder name, as atlas_repos lists it and repo takes it.
+        name: { type: 'string' },
+        rootFrom: { type: 'string', enum: ['repos file', 'client root', 'working directory'] },
         head: { type: ['string', 'null'] },
         changed: {
           type: 'array',
