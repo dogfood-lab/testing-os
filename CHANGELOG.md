@@ -19,11 +19,21 @@ A red `atlas check` now says how to fix itself, and says it where people look (`
 
   Each annotation names its file from the repository root, and a finding about a whole file sits on line 1: a live failing run showed GitHub placing an annotation on a pull request's diff only so, and not for workspace-relative paths from a checkout into a subdirectory, or for annotations with no line. Repository strings are escaped, so a file name holding a newline and `::` starts no command of its own. Outside Actions the output is byte-identical.
 
+- **`atlas mcp` answers for several repositories, fixed when it starts** (`docs/atlas-buildup.spec.md`, slice AN, the first of the multi-repository slices R&D approved on 2026-10-13).
+  - Every tool but the new `atlas_repos` takes `repo`: a repository's absolute path, or its folder name.
+  - `atlas_repos` lists the roots, with each one's map commit and engine, and how many commits its HEAD holds that the map was not made from.
+  - With `atlas mcp --repos <file>`, the file names the roots, one path per line, absolute or relative to the file, and the client's roots are logged and not used. A file with a problem stops the server before it serves anything, with every problem listed (`ATLAS_SIDECAR_REPOS_FILE`).
+  - Without `--repos`, the roots are the repository it started in and those of the client's roots at initialisation. A call that names no repository answers as before.
+  - Roots are compared by real path, with links and junctions resolved and Windows drive letters in either case. A network path is never a root.
+  - Anything else is refused (`ATLAS_SIDECAR_REPO_NOT_ALLOWED`), and so is a name two roots share (`ATLAS_SIDECAR_REPO_AMBIGUOUS`).
+  - With more than one root, every answer names its repository first, and the provenance carries the repository's name.
+
 ### Changed
 - **A drift finding's hint says to stage new files before mapping.** A map made before staging leaves the new files out, as on interlock on 2026-10-13. Two tests replay that order and the right one in clean clones.
 - **`fileCounts` gains `assigned` and `unassigned`.** The page, the diff and the sidecar's changes answer say "given a part" and "no longer in any part" where they said "moved". "Moved" now means only from one part to another, or a rename.
 - **A data part with no named writer is "written by no code this map names",** not "People write". Configuration, docs and sites keep "People write".
 - **The shared test preload clears `GITHUB_ACTIONS` and `GITHUB_STEP_SUMMARY`,** so a test sees on CI what it sees locally and never writes into this repository's own step summary.
+- **The sidecar no longer asks for the client's roots again when they change.** A later `roots/list_changed` is logged and not used, so the repositories a session answers for never widen after it starts. `atlas mcp` now takes `--repos <file>` and refuses any other argument with "mcp takes only --repos <file>".
 
 ### Fixed
 - **Atlas sees a test script no runner collects** (testing-os#158). role-os keeps `test_*.mjs` scripts that check a tool and exit 1 when it is wrong. No runner's discovery collects that name, and no workflow ran them, so `atlas gaps` named the repository's two Python test scripts and missed these two.

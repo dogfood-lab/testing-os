@@ -685,7 +685,10 @@ Every failure names what changed and what to do; the second line is never option
 | `ATLAS_MAP_ENGINE_OLDER` | 0 (1 with `--strict`) | LOW | `adapter/commands.js` |
 | `ATLAS_MAP_UNTRACKED` | 0 | LOW | `adapter/commands.js` |
 | `ATLAS_MAP_UNASSIGNED_FOLDER` | 0 | LOW | `adapter/commands.js` |
-| `ATLAS_SIDECAR_NOT_A_REPOSITORY` | none | LOW | `sidecar/tools.js` |
+| `ATLAS_SIDECAR_NOT_A_REPOSITORY` | none | LOW | `sidecar/roots.js` |
+| `ATLAS_SIDECAR_REPO_NOT_ALLOWED` | none | LOW | `sidecar/roots.js` |
+| `ATLAS_SIDECAR_REPO_AMBIGUOUS` | none | LOW | `sidecar/roots.js` |
+| `ATLAS_SIDECAR_REPOS_FILE` | 2 | LOW | `sidecar/roots.js` |
 | `ATLAS_SIDECAR_NO_MAP` | none | LOW | `sidecar/map.js` |
 | `ATLAS_SIDECAR_MAP_UNREADABLE` | none | LOW | `sidecar/map.js` |
 | `ATLAS_SIDECAR_MAP_FORMAT` | none | LOW | `sidecar/map.js` |
@@ -913,6 +916,47 @@ The directory the sidecar answers for is not in a git repository.
 
 - **Trigger:** no root the client offers is inside a git repository, and neither is the directory `atlas mcp` was started in, and none of them holds `atlas/structure.json` (a directory that does is answered as an exported tree).
 - **Operator action:** start `atlas mcp` in the repository it should answer for, or have the client offer that repository as a root.
+
+### `ATLAS_SIDECAR_REPO_NOT_ALLOWED`
+
+:::tip[Severity: LOW]
+The repository asked about is not one the sidecar was given when it started.
+:::
+
+- **Trigger:** a tool's `repo` names a repository outside the roots fixed when `atlas mcp` started. The roots are the `--repos` file's list, or else the repository it was started in and those of the roots the client offered at initialisation. Also refused:
+  - a subdirectory of a root;
+  - a relative path;
+  - a path that does not exist;
+  - a network path, or one that resolves to a network path through a link or junction;
+  - a root the client adds after start;
+  - with `--repos`, a call that names no repository when the list leaves out the directory `atlas mcp` started in.
+
+  The message lists the roots.
+- **Operator action:** pass `repo` as one of the roots `atlas_repos` lists, by its absolute path or its name. To answer for another repository, list it in the `--repos` file, or offer it as a root, and start `atlas mcp` again.
+
+### `ATLAS_SIDECAR_REPO_AMBIGUOUS`
+
+:::tip[Severity: LOW]
+More than one repository the sidecar answers for has the name asked about.
+:::
+
+- **Trigger:** `repo` gives a folder name that two or more roots share, such as two clones or worktrees of one repository. The message lists each one's path.
+- **Operator action:** pass `repo` as the absolute path of the one meant.
+
+### `ATLAS_SIDECAR_REPOS_FILE`
+
+:::tip[Severity: LOW]
+The --repos file does not name a list of repositories the sidecar can answer for.
+:::
+
+- **Trigger:** `atlas mcp --repos <file>` found a problem in the file before serving anything. This is the one sidecar code that prints and exits: on stderr, with exit 2, so the client sees the server fail to start. Every problem is listed with its line:
+  - the file cannot be read, or names no repository;
+  - a line is not a directory, is a network path, or resolves to one;
+  - a line is in no git repository and holds no `atlas/structure.json`;
+  - a line is inside a repository rather than at its top;
+  - a line names a repository an earlier line names, a link included;
+  - the file names more than 32 repositories.
+- **Operator action:** list the top directory of each repository, one per line, absolute or relative to the file, and start `atlas mcp` again.
 
 ### `ATLAS_SIDECAR_NO_MAP`
 
