@@ -14,6 +14,7 @@ import { formatFailure, formatNotice } from './errors.js';
 import { explainCommand } from './explain.js';
 import { gapsCommand } from './gaps.js';
 import { initCommand } from './init.js';
+import { isEmptySuggestion, suggestBoundaries, suggestionLines } from './suggest.js';
 import { buildEnvelope, hitsFromStatistics } from './divergence.js';
 import { buildPage } from './page.js';
 import { buildStatistics, parametersFrom, serializeStatistics, statisticsProblem } from './statistics.js';
@@ -252,7 +253,7 @@ export function checkCommand(cwd, argv = []) {
   const notices = checkNotices(committed, current);
   const failure = compareArtifacts(committed, current, repo);
   if (failure) {
-    process.stdout.write(formatFailure(failure.code, failure.details));
+    process.stdout.write(failureWithFix(failure, current));
     return withNotices(notices, 1, strict);
   }
   const statisticsPath = join(repo, 'atlas', 'statistics.json');
@@ -268,6 +269,23 @@ export function checkCommand(cwd, argv = []) {
   process.stdout.write('atlas check\n  boundaries match the committed map\n');
   return withNotices(notices, 0, strict);
 }
+
+/**
+ * A failed check in the error shape. A new file in no part also gets the
+ * boundary lines that would give it one (docs/atlas-buildup.spec.md, AM-1),
+ * after the finding, so the finding's own lines keep their shape.
+ */
+function failureWithFix(failure, current) {
+  if (failure.code !== 'ATLAS_UNASSIGNED_NEW') return formatFailure(failure.code, failure.details);
+  const suggestion = suggestBoundaries({ paths: failure.details, boundaries: current.boundaries, unassigned: current.unassigned });
+  if (isEmptySuggestion(suggestion)) return formatFailure(failure.code, failure.details, { whatToDo: STAGE_THEN_MAP });
+  const text = formatFailure(failure.code, failure.details, { whatToDo: `add the lines below to atlas/boundaries.yaml, ${STAGE_THEN_MAP}` });
+  return `${text}\nLines for atlas/boundaries.yaml\n${suggestionLines(suggestion).join('\n')}\n`;
+}
+
+// A map made before the new files are staged leaves them out, and the check
+// in CI then fails on them again.
+const STAGE_THEN_MAP = 'stage the new files, run atlas map and commit atlas/; or revert the change';
 
 /**
  * The notices of a check (docs/atlas-production.spec.md, Part 4): each
