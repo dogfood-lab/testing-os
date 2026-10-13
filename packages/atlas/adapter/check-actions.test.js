@@ -5,7 +5,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { after, describe, it } from 'node:test';
-import { annotationLines, escapeData, escapeProperty, stepSummary, workspacePath } from './actions.js';
+import { annotationLines, escapeData, escapeProperty, stepSummary } from './actions.js';
 import { mappedRepository } from '../sidecar/test-client.js';
 
 // docs/atlas-buildup.spec.md, slice AM, item AM-6: in GitHub Actions, check
@@ -81,37 +81,16 @@ describe('workflow command escaping', () => {
     const lines = annotationLines({
       failure: { code: 'ATLAS_UNASSIGNED_NEW', details: ['data/x\n::error::forged'], whatToDo: 'stage the new files', paths: ['data/x\n::error::forged'] },
       notices: [],
-      repo: '/w/repo',
-      env: { GITHUB_WORKSPACE: '/w/repo' },
       summary: true,
     });
     assert.equal(lines.length, 1);
     assert.equal(lines[0].split('\n').length, 1);
-    assert.match(lines[0], /^::error title=ATLAS_UNASSIGNED_NEW,file=data\/x%0A%3A%3Aerror%3A%3Aforged::/);
+    assert.match(lines[0], /^::error title=ATLAS_UNASSIGNED_NEW,file=data\/x%0A%3A%3Aerror%3A%3Aforged,line=1::/);
   });
 
   it('sets a repository string in the summary as code, never as Markdown', () => {
     const text = stepSummary({ failure: { code: 'ATLAS_UNASSIGNED_NEW', details: ['a`b[c](http://x)\n## y'], whatToDo: 'stage the new files' }, notices: [] });
     assert.ok(text.includes('- ``a`b[c](http://x)\\n## y``'), text);
-  });
-});
-
-describe('the path an annotation names', () => {
-  it('is relative to the workspace when the repository is the workspace', () => {
-    const ws = scratch();
-    assert.equal(workspacePath(ws, 'receipts/a.jsonl', { GITHUB_WORKSPACE: ws }), 'receipts/a.jsonl');
-  });
-
-  it('carries the subdirectory a checkout went into', () => {
-    const ws = scratch();
-    const repo = join(ws, 'checkout');
-    mkdirSync(repo);
-    assert.equal(workspacePath(repo, 'receipts/a.jsonl', { GITHUB_WORKSPACE: ws }), 'checkout/receipts/a.jsonl');
-  });
-
-  it('is left out for a repository outside the workspace, or no workspace', () => {
-    assert.equal(workspacePath(scratch(), 'receipts/a.jsonl', { GITHUB_WORKSPACE: scratch() }), null);
-    assert.equal(workspacePath(scratch(), 'receipts/a.jsonl', {}), null);
   });
 });
 
@@ -123,26 +102,28 @@ describe('atlas check in GitHub Actions', () => {
     assert.equal(result.status, 1, result.stdout);
     const errors = commands(result.stdout).filter((line) => line.startsWith('::error '));
     assert.equal(errors.length, 10, result.stdout);
-    assert.equal(errors[0], '::error title=ATLAS_UNASSIGNED_NEW,file=receipts/e01.jsonl::A tracked file is unassigned and was not unassigned before. receipts/e01.jsonl. What to do: add the boundary lines in the step summary to atlas/boundaries.yaml, stage the new files, run atlas map and commit atlas/; or revert the change.');
-    assert.match(errors[9], /file=receipts\/e10\.jsonl::.* And 2 more files; the log and the step summary list them all\.$/);
+    // Line 1: on the live run of 2026-10-13 (#160), an annotation with no
+    // line was stored at line 0 and never shown on the pull request's diff.
+    assert.equal(errors[0], '::error title=ATLAS_UNASSIGNED_NEW,file=receipts/e01.jsonl,line=1::A tracked file is unassigned and was not unassigned before. receipts/e01.jsonl. What to do: add the boundary lines in the step summary to atlas/boundaries.yaml, stage the new files, run atlas map and commit atlas/; or revert the change.');
+    assert.match(errors[9], /file=receipts\/e10\.jsonl,line=1::.* And 2 more files; the log and the step summary list them all\.$/);
     const text = readFileSync(summary, 'utf8');
     assert.ok(text.startsWith('## Atlas check failed\n\n**ATLAS_UNASSIGNED_NEW**: A tracked file is unassigned and was not unassigned before.\n'), text);
     assert.ok(text.includes('- `receipts/e12.jsonl`'), text);
     assert.ok(text.includes('```text\na new part, at the end of boundaries:\n  - name: receipts\n    globs:\n      - receipts/**\n    role: data\n```'), text);
   });
 
-  it('names the file through the subdirectory the repository was checked out into', () => {
+  it('names the file from the repository root, wherever the checkout sits in the workspace', () => {
+    // The live run on #160: a job that checked out into path: repo gave
+    // repo/... paths, relative to the workspace, and GitHub showed none of
+    // them on the diff; the jobs whose paths began at the repository root
+    // were shown.
     const ws = scratch();
     const repo = receiptsRepo(join(ws, 'interlock'), 1);
     const result = check(repo, { GITHUB_ACTIONS: 'true', GITHUB_WORKSPACE: ws });
     assert.equal(result.status, 1, result.stdout);
-    assert.match(commands(result.stdout)[0], /^::error title=ATLAS_UNASSIGNED_NEW,file=interlock\/receipts\/e01\.jsonl::.*boundary lines in the log/);
-  });
-
-  it('names no file for a repository outside the workspace', () => {
-    const repo = receiptsRepo(scratch(), 1);
-    const result = check(repo, { GITHUB_ACTIONS: 'true', GITHUB_WORKSPACE: scratch() });
-    assert.match(commands(result.stdout)[0], /^::error title=ATLAS_UNASSIGNED_NEW::/);
+    assert.match(commands(result.stdout)[0], /^::error title=ATLAS_UNASSIGNED_NEW,file=receipts\/e01\.jsonl,line=1::.*boundary lines in the log/);
+    const outside = check(receiptsRepo(scratch(), 1), { GITHUB_ACTIONS: 'true', GITHUB_WORKSPACE: scratch() });
+    assert.match(commands(outside.stdout)[0], /^::error title=ATLAS_UNASSIGNED_NEW,file=receipts\/e01\.jsonl,line=1::/);
   });
 
   it('puts a door notice as a warning on the line it was read from', () => {
@@ -160,11 +141,11 @@ describe('atlas check in GitHub Actions', () => {
   it('ends the details once, though a detail ends its own sentence', () => {
     // The live run of 2026-10-13 read "refuses to start.; read from".
     const notice = { code: 'ATLAS_DOOR_TOOLCHAIN', details: ['astro refuses to start.', 'read from a.yml:3'], whatToDo: 'pin Node 22', file: 'a.yml', line: 3 };
-    const [line] = annotationLines({ failure: null, notices: [notice], repo: FIXTURES, env: { GITHUB_WORKSPACE: FIXTURES }, summary: false });
+    const [line] = annotationLines({ failure: null, notices: [notice], summary: false });
     assert.match(line, / astro refuses to start; read from a\.yml:3\. What to do: pin Node 22\.$/);
     // A path is data: a file name that ends in a dot keeps it.
     const failure = { code: 'ATLAS_FILE_MOVED', details: ['notes/draft.'], whatToDo: 'run atlas map' };
-    const [error] = annotationLines({ failure, notices: [], repo: FIXTURES, env: { GITHUB_WORKSPACE: FIXTURES }, summary: false });
+    const [error] = annotationLines({ failure, notices: [], summary: false });
     assert.match(error, / notes\/draft\.\. What to do: /);
   });
 

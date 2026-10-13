@@ -1,5 +1,4 @@
-import { appendFileSync, realpathSync } from 'node:fs';
-import { isAbsolute, relative, resolve, sep } from 'node:path';
+import { appendFileSync } from 'node:fs';
 import { ERRORS } from './errors.js';
 
 /**
@@ -39,27 +38,21 @@ export function escapeProperty(text) {
   return escapeData(text).replace(/:/g, '%3A').replace(/,/g, '%2C');
 }
 
-/**
- * A repository path as the runner resolves file=, relative to
- * $GITHUB_WORKSPACE, or null when the repository is not inside the
- * workspace or the workspace is not known, so no annotation names a file
- * GitHub would place wrongly.
- */
-export function workspacePath(repo, path, env = process.env) {
-  if (!env.GITHUB_WORKSPACE) return null;
-  const workspace = real(resolve(env.GITHUB_WORKSPACE));
-  const rel = relative(workspace, resolve(real(repo), path));
-  if (rel === '' || rel === '..' || rel.startsWith(`..${sep}`) || isAbsolute(rel)) return null;
-  return rel.split(sep).join('/');
-}
+// An annotation names its file from the repository root, the path Atlas
+// already holds, and a line: the live run of 2026-10-13 (#160) showed
+// GitHub placing on the pull request's diff only those whose path began at
+// the repository root (a checkout into path: repo gave repo/... and none was
+// shown) and that carried a line (one with none was stored at line 0 and
+// never shown). A finding about a whole file is put on its first line.
+const FILE_LINE = 1;
 
 /**
  * The annotation lines for a check's failure and notices.
  *
- * @param {{ failure: null | { code: string, details: string[], whatToDo: string, paths?: string[] }, notices: Array<{ code: string, details: string[], whatToDo: string, file?: string, line?: number }>, repo: string, env?: Record<string, string|undefined>, summary: boolean }} input
+ * @param {{ failure: null | { code: string, details: string[], whatToDo: string, paths?: string[] }, notices: Array<{ code: string, details: string[], whatToDo: string, file?: string, line?: number }>, summary: boolean }} input
  *   failure.paths: the repository paths the finding is about, one annotation each
  */
-export function annotationLines({ failure, notices, repo, env = process.env, summary }) {
+export function annotationLines({ failure, notices, summary }) {
   const where = summary ? 'the log and the step summary list them all' : 'the log lists them all';
   const lines = [];
   if (failure) {
@@ -68,7 +61,7 @@ export function annotationLines({ failure, notices, repo, env = process.env, sum
       const shown = failure.paths.slice(0, PER_KIND);
       shown.forEach((path, index) => {
         const more = index === PER_KIND - 1 && failure.paths.length > PER_KIND ? ` And ${failure.paths.length - PER_KIND} more files; ${where}.` : '';
-        lines.push(command('error', failure.code, workspacePath(repo, path, env), null, `${sentence} ${path}. What to do: ${annotationFix(failure, summary)}.${more}`));
+        lines.push(command('error', failure.code, path, FILE_LINE, `${sentence} ${path}. What to do: ${annotationFix(failure, summary)}.${more}`));
       });
     } else {
       lines.push(command('error', failure.code, null, null, `${sentence} ${detailText(failure.details)} What to do: ${annotationFix(failure, summary)}.`));
@@ -80,8 +73,8 @@ export function annotationLines({ failure, notices, repo, env = process.env, sum
     const list = byKind[kind];
     list.slice(0, PER_KIND).forEach((notice, index) => {
       const more = index === PER_KIND - 1 && list.length > PER_KIND ? ` And ${list.length - PER_KIND} more notices; ${where}.` : '';
-      const file = notice.file ? workspacePath(repo, notice.file, env) : null;
-      lines.push(command(kind, notice.code, file, file ? notice.line ?? null : null, `${ERRORS[notice.code]} ${detailText(notice.details)} What to do: ${notice.whatToDo}.${more}`));
+      const file = notice.file ?? null;
+      lines.push(command(kind, notice.code, file, file ? notice.line ?? FILE_LINE : null, `${ERRORS[notice.code]} ${detailText(notice.details)} What to do: ${notice.whatToDo}.${more}`));
     });
   }
   return lines;
@@ -186,12 +179,4 @@ function longestRun(text, char) {
     if (run > longest) longest = run;
   }
   return longest;
-}
-
-function real(path) {
-  try {
-    return realpathSync(path);
-  } catch {
-    return path;
-  }
 }

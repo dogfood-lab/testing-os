@@ -273,7 +273,7 @@ function checkVerdict(repo, failure, notices, strict) {
   const code = withNotices(notices, failure ? 1 : 0, strict);
   if (inActions()) {
     const summary = writeStepSummary(stepSummary({ failure, notices }));
-    const lines = annotationLines({ failure, notices, repo, summary });
+    const lines = annotationLines({ failure, notices, summary });
     if (lines.length > 0) process.stdout.write(`${lines.join('\n')}\n`);
   }
   return code;
