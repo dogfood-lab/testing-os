@@ -1,0 +1,18 @@
+boundaries:
+  - name: packages
+    globs:
+      - packages/**
+    role: code
+  - name: tools
+    globs:
+      - tools/**
+    role: code
+  - name: fixtures
+    globs:
+      - fixtures/**
+    role: data
+  - name: root
+    globs:
+      - "*"
+      - .github/**
+    role: config

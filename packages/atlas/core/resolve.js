@@ -1,8 +1,8 @@
-import { builtinModules } from 'node:module';
 import fs, { readFileSync, realpathSync } from 'node:fs';
 import { dirname, isAbsolute, join, posix, relative, resolve, sep } from 'node:path';
 import enhancedResolve from 'enhanced-resolve';
 
+import { isNodeBuiltin } from './builtins.js';
 import { bundledSource, bundleIndex } from './bundles.js';
 import { commandLines, repositoryView } from './commands.js';
 import { isTestFile, isTestMaterial } from './landings.js';
@@ -22,7 +22,6 @@ const EXTENSION_ALIAS = {
   '.jsx': ['.tsx', '.jsx'],
 };
 const BUILD_SEGMENTS = new Set(['dist', 'build', 'out']);
-const BUILTINS = new Set(builtinModules);
 
 // Top-level names from the Python 3.11, 3.12 and 3.13 standard libraries.
 // A bundled list, because resolution must not require a Python interpreter.
@@ -411,7 +410,7 @@ function outsideRepository(ctx, fromAbs, specifier) {
 function resolveJavaScript(ctx, fromAbs, specifier) {
   if (outsideRepository(ctx, fromAbs, specifier)) return { outcome: 'external', outside: true };
   const parsed = splitBare(specifier);
-  if (specifier.startsWith('node:') || isBuiltin(specifier, parsed)) return { outcome: 'external' };
+  if (isNodeBuiltin(specifier)) return { outcome: 'external' };
   // astro:content, bun:test, virtual:pwa-register, npm:x, https://...: a
   // module the runtime or the bundler provides, never a package on disk.
   if (parsed && /^[A-Za-z][\w+.-]*:/.test(parsed.name)) return { outcome: 'external' };
@@ -498,12 +497,6 @@ function normalizeWorkspacePath(ctx, absPath) {
   if (!dir) return absPath;
   const sub = rest.slice(parsed.name.length).replace(/^\//, '');
   return sub ? join(dir, sub) : dir;
-}
-
-function isBuiltin(specifier, parsed) {
-  if (BUILTINS.has(specifier) || BUILTINS.has(`node:${specifier}`)) return true;
-  if (!parsed || parsed.name.startsWith('@')) return false;
-  return BUILTINS.has(parsed.name) || BUILTINS.has(`node:${parsed.name}`);
 }
 
 function classifyAbsolute(ctx, absPath) {

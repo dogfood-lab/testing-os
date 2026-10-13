@@ -356,6 +356,16 @@ export function buildArtifact(mapped, commit) {
     unassigned,
     ...(mapped.unseen?.length > 0 ? { unseen: mapped.unseen.map(carryUnseen) } : {}),
     ...(mapped.workspaces?.length > 0 ? { workspaces: mapped.workspaces.filter((dir) => !inAtlas(dir)) } : {}),
+    // What the repository's package.json files declare, what a door publishes,
+    // and the role of each manifest (core/package-facts.js): this
+    // repository's facts alone, joined with others' only when a question asks.
+    ...(mapped.manifests?.length > 0
+      ? {
+        manifests: mapped.manifests.map((entry) => ({ ...entry })),
+        packageDependencies: mapped.packageDependencies.map((entry) => ({ ...entry })),
+        packagesPublished: mapped.packagesPublished.map((entry) => ({ ...entry, doors: [...entry.doors] })),
+      }
+      : {}),
   };
 }
 
@@ -399,6 +409,9 @@ function carryFile(file) {
   if (file.parseError && file.unreadSyntax) out.unreadSyntax = file.unreadSyntax;
   const imported = importTargets(file);
   if (imported.files.length > 0) out.importsFiles = imported.files;
+  // The packages the file's bare imports name, each with the manifest whose
+  // declaration covers it (core/package-facts.js).
+  if (file.packages?.length > 0) out.packages = file.packages.map((entry) => ({ ...entry }));
   // A file whose entry calls into no file has no order of work; the order it
   // imports in is then the order a reader meets what it uses (a CLI that
   // registers its commands as it imports them), carried when it is not the

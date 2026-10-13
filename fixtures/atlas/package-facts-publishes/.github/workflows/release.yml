@@ -1,0 +1,45 @@
+name: Release
+on:
+  push:
+    tags: ['v*', '*-v*']
+  workflow_dispatch:
+jobs:
+  cli:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish the CLI
+        working-directory: cli
+        run: npm publish
+  plugins:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish the plugins
+        run: |
+          for dir in plugins/*/; do
+            (cd "$dir" && npm publish)
+          done
+  theme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pick the theme
+        run: |
+          SLUG="${GITHUB_REF_NAME%%-v*}"
+          PKG_DIR="themes/$SLUG"
+          echo "PKG_DIR=$PKG_DIR" >> "$GITHUB_ENV"
+      - name: Publish the theme
+        working-directory: ${{ env.PKG_DIR }}
+        run: npm publish
+  tools:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned release tools
+        run: |
+          SANDBOX="$HOME/.release-tools"
+          mkdir -p "$SANDBOX"
+          cp tools/release/package.json "$SANDBOX/"
+          cd "$SANDBOX" && npm install

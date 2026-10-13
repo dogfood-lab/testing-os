@@ -11,6 +11,7 @@ import { httpEdges, httpFacts } from './http.js';
 import { declaredEntries, deriveEntryPoints, manifestCommands, memberCommands, memberPackage, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
 import { failurePaths } from './failure-paths.js';
+import { packageFacts } from './package-facts.js';
 import { markScriptTests, readsSelfFail, selfFails } from './script-tests.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, settleRelativePaths, testReadsKept, testWritesKept, textLandings, trackedPlaces } from './landings.js';
 import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
@@ -267,6 +268,15 @@ export function mapRepository({ repoPath, boundaries, structureOnly = false } = 
   // The members a root package.json or pnpm-workspace.yaml declares: a part
   // among them is a package of a monorepo (adapter/test-kinds.js).
   const workspaces = [...unseenView.workspaces().keys()].sort();
+  // The packages the repository declares, imports and publishes
+  // (core/package-facts.js), which check and init compare nothing of.
+  const packaging = structureOnly ? null : packageFacts({ view: unseenView, doors, files: [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned] });
+  if (packaging) {
+    for (const file of [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]) {
+      const entries = packaging.imports.get(file.path);
+      if (entries) file.packages = entries;
+    }
+  }
 
   return {
     generatedFrom: { repoPath, tracked: tracked.regular.length },
@@ -282,6 +292,9 @@ export function mapRepository({ repoPath, boundaries, structureOnly = false } = 
     ...(unseen.length > 0 ? { unseen } : {}),
     ...(collectIgnored(repoPath, trackedSet).length > 0 ? { collectIgnored: collectIgnored(repoPath, trackedSet) } : {}),
     ...(workspaces.length > 0 ? { workspaces } : {}),
+    ...(packaging?.manifests.length > 0
+      ? { manifests: packaging.manifests, packageDependencies: packaging.dependencies, packagesPublished: packaging.published }
+      : {}),
   };
 }
 

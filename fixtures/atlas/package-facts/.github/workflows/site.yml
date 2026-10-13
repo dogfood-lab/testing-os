@@ -1,0 +1,14 @@
+name: Site
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install site dependencies
+        working-directory: tools/site
+        run: npm ci
+      - name: Install docs dependencies
+        run: cd tools/docs && npm install
+      - name: Install web dependencies
+        run: npm --prefix tools/web ci
