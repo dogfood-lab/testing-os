@@ -50,6 +50,15 @@ npx --yes @dogfood-lab/atlas check
 
 It fails when a part gains or loses a dependency, a file changes part, a new file belongs to no part, a named part matches nothing, or a file belongs to two parts. When it fails after a change you meant to make, run `atlas map` and commit the regenerated `atlas/` files with the change; never edit the page by hand, and never change the code to satisfy the map. A repository with no `atlas/` folder is a notice and exit 0, so adopting Atlas reddens nothing. The codes it prints are listed on the [error codes](../error-codes/#atlas-codes) page.
 
+A new file in no part is the failure people meet most often: a folder that keeps receiving files, such as receipts or data packs, with no part to hold them. `check` prints the boundary lines that fix it, ready to paste, and `map` warns about such a folder before CI does. Stage new files before you run `map`, because a map made first leaves them out.
+
+In GitHub Actions, `check` also emits annotations and writes a step summary:
+- a failure is an `::error` on the file it names;
+- a door notice is a `::warning` on the line it was read from;
+- the summary holds the finding and the fix.
+
+So a red run shows its cause on the pull request, not only in the log. Outside Actions the output is unchanged.
+
 `check` also prints notices: facts that leave the exit code alone. Two are about a workflow. `ATLAS_DOOR_TOOLCHAIN`: a job pins a Node version that the tool a step runs does not accept, read from the pin and from the tool's `engines` in the lockfile of the step's directory ("Deploy site pins Node 20 and runs astro build; astro 7.3.3 requires Node >=22.12.0 and refuses to start."). `ATLAS_DOOR_LOCKFILE_PLATFORM`: a job runs `npm ci` on a platform for which the lockfile holds no native binding, the mark of a lock written on another system. A third, `ATLAS_MAP_ENGINE_OLDER`, says the committed map was made by an older Atlas than the one running. Each names the lines it was read from and what to do, and `check --strict` exits 1 when there is any notice. The door checks read committed files only and never predict a run; what they could not judge (no setup step, a version only a run can know, a self-hosted or container runner, a lock they cannot read) is said as not judged, never as a finding.
 
 ## Ask about a file or a part

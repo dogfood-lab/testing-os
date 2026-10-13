@@ -34,6 +34,19 @@ Each file records the Atlas version that made it (`engine`), and the page's date
 
 `check` compares the committed map with the working tree and fails when a part gains or loses a dependency, a file changes part, a new file belongs to no part, a named part matches nothing, or a file belongs to two parts. Run it in the test job so the map moves with the code. A repository with no `atlas/` directory is a notice and exit 0, so adopting Atlas reddens nothing.
 
+When a new file belongs to no part, `check` prints the lines that would give it one, ready to paste into `atlas/boundaries.yaml`.
+- A folder no part reaches gets a part of its own.
+- A folder a part already reaches into gets a glob in that part.
+
+Then stage the new files before `map`, because a map made before staging leaves them out. `map` warns about any top-level folder that still holds files in no part (`ATLAS_MAP_UNASSIGNED_FOLDER`), with the same lines, because each new file there would fail `check`.
+
+When `GITHUB_ACTIONS` is `true`, `check` also says its verdict on the pull request, where its checks tab and diff show it:
+- each failure is an `::error` annotation, on the file when the finding names one;
+- each door notice is a `::warning` on the line it was read from;
+- other notices are `::notice`.
+
+At most ten of each kind are emitted, with the tenth saying how many more there are. The finding, its files and the fix go into the step summary. File paths are relative to `GITHUB_WORKSPACE`. Outside Actions the output is unchanged.
+
 `check` also prints notices: facts that leave the exit code alone. Two are about a workflow. `ATLAS_DOOR_TOOLCHAIN`: a job pins a Node version that the tool a step runs does not accept, read from the pin and from the tool's `engines` in the lockfile of the step's directory ("Deploy site pins Node 20 and runs astro build; astro 7.3.3 requires Node >=22.12.0 and refuses to start."). `ATLAS_DOOR_LOCKFILE_PLATFORM`: a job runs `npm ci` on a platform for which the lockfile holds no native binding, the mark of a lock written on another system. A third, `ATLAS_MAP_ENGINE_OLDER`, says the committed map was made by an older Atlas than the one running. Each names the lines it was read from and what to do, and `check --strict` exits 1 when there is any notice. The door checks read committed files only and never predict a run; what they could not judge (no setup step, a version only a run can know, a self-hosted or container runner, a lock they cannot read) is said as not judged, never as a finding.
 
 `gaps` says what no test reaches and what should reach it, for the repository, a part, a directory or a file:
