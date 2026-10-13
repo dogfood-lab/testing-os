@@ -318,8 +318,12 @@ jobs:
       # `npm run verify` runs `atlas check` between build and test:scripts, so
       # a local pre-commit fails when the committed map no longer matches the
       # tree. CI runs the same check in the same place; without it a push that
-      # skipped the local gate could land a stale map.
+      # skipped the local gate could land a stale map. It runs on the Node 22
+      # leg alone: the map is the same on either Node, and in Actions check
+      # annotates its findings, so a check on both legs put every annotation
+      # on a pull request's diff twice over (the AM-6 live run, #160).
       - run: node packages/atlas/cli.js check
+        if: matrix.node-version == 22
       # What this pull request does to the map, as one comment on it: the
       # structural delta between the map committed on the base branch and a
       # fresh map of the merged tree, updated in place on every push so the

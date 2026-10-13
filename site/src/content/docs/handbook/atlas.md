@@ -59,6 +59,8 @@ In GitHub Actions, `check` also emits annotations and writes a step summary:
 
 So a red run shows its cause on the pull request, not only in the log. Outside Actions the output is unchanged.
 
+Run `atlas check` in one job of one matrix leg, for example with `if: matrix.node-version == 22`. Each run annotates the pull request, so a check on every leg puts every annotation on the diff once per leg: four or five times over on a two-leg matrix run on both push and pull request.
+
 `check` also prints notices: facts that leave the exit code alone. Two are about a workflow. `ATLAS_DOOR_TOOLCHAIN`: a job pins a Node version that the tool a step runs does not accept, read from the pin and from the tool's `engines` in the lockfile of the step's directory ("Deploy site pins Node 20 and runs astro build; astro 7.3.3 requires Node >=22.12.0 and refuses to start."). `ATLAS_DOOR_LOCKFILE_PLATFORM`: a job runs `npm ci` on a platform for which the lockfile holds no native binding, the mark of a lock written on another system. A third, `ATLAS_MAP_ENGINE_OLDER`, says the committed map was made by an older Atlas than the one running. Each names the lines it was read from and what to do, and `check --strict` exits 1 when there is any notice. The door checks read committed files only and never predict a run; what they could not judge (no setup step, a version only a run can know, a self-hosted or container runner, a lock they cannot read) is said as not judged, never as a finding.
 
 ## Ask about a file or a part
