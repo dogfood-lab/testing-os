@@ -120,11 +120,11 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 3,
+      "added": 41,
       "assigned": 0,
-      "changed": 7,
+      "changed": 14,
       "moved": 0,
-      "parts": 5,
+      "parts": 7,
       "removed": 0,
       "unassigned": 0
     },
@@ -145,21 +145,42 @@
       },
       {
         "kind": "landing",
-        "sentence": "package.json is now also read by scripts/codecov-pnpm-major.test.mjs.",
+        "sentence": "fixtures/atlas/ is now also read by packages/atlas/adapter/package-facts-map.test.js.",
         "subjects": [
-          "package.json",
-          "scripts/codecov-pnpm-major.test.mjs"
+          "fixtures/atlas/",
+          "packages/atlas/adapter/package-facts-map.test.js"
         ]
       },
       {
+        "kind": "landing",
+        "sentence": "fixtures/atlas/package-facts/ is now read by packages/atlas/adapter/package-facts-map.test.js.",
+        "subjects": [
+          "fixtures/atlas/package-facts/",
+          "packages/atlas/adapter/package-facts-map.test.js"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "fixtures/atlas/package-facts-pnpm/ is now read by packages/atlas/adapter/package-facts-map.test.js.",
+        "subjects": [
+          "fixtures/atlas/package-facts-pnpm/",
+          "packages/atlas/adapter/package-facts-map.test.js"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 4 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
         "kind": "counts",
-        "sentence": "3 files added and 7 changed content, across 5 parts.",
+        "sentence": "41 files added and 14 changed content, across 7 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "b2a207baa1344403508bdf0c9653be261b2b1a23",
-      "generatedAt": "2026-10-13T21:16:57.814Z"
+      "commit": "89d0a28b9dc5c5fcf2823b4a659b4d478ca8ff61",
+      "generatedAt": "2026-10-15T01:18:46.805Z"
     },
     "unchanged": false
   },
@@ -200,9 +221,9 @@
     "Window: 180 days; a pair counts from 10 shared commits, since 42 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "89d0a28b9dc5c5fcf2823b4a659b4d478ca8ff61",
+  "commit": "34050856ab1a4bdb5449e9c96ef6a0ea415be11d",
   "defaultBranch": "main",
-  "derived": "23 parts, mostly JavaScript (1632 files), Python (243), TypeScript (219), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
+  "derived": "23 parts, mostly JavaScript (1640 files), Python (243), TypeScript (221), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
   "doors": [
     {
       "checks": [
@@ -235,7 +256,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 373
+          "files": 377
         },
         {
           "boundary": "docker",
@@ -491,8 +512,8 @@
         "scripts/check-finding-regression-pins.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 785,
-      "runsMore": 800,
+      "runsCount": 787,
+      "runsMore": 802,
       "sends": [
         "publishes workspace packages to npm and a container image",
         "creates a GitHub release"
@@ -530,7 +551,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 373
+          "files": 377
         },
         {
           "boundary": "dogfood",
@@ -784,8 +805,8 @@
         "scripts/check-handbook-imagery.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 784,
-      "runsMore": 799,
+      "runsCount": 786,
+      "runsMore": 801,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -1237,7 +1258,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 80
+          "files": 82
         }
       ],
       "runs": [
@@ -1448,24 +1469,24 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-15T01:18:46.805Z",
+  "generatedAt": "2026-10-15T04:18:27.429Z",
   "limits": [
     "4 import sites name declared dependencies that share their names with local modules (datasets, docx and xrpl); they are read as the dependencies, which are not in this repository.",
-    "174 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 171 more.",
+    "177 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 174 more.",
     "3 import sites name a path outside this repository, so what they load is not followed.",
     "13 files in fixtures use syntax the parser cannot read (fixtures/atlas/grammar-shapes/src/broken.ts, fixtures/atlas/grammars-rust-gdscript/scripts/broken.gd, fixtures/atlas/grammars-rust-gdscript/src/broken.rs and 10 more), so what they import is not known: a bare `&` in JSX text (1) and other syntax (12).",
     "11 writes and 37 reads use paths built at run time and are not named here.",
     "6 writes go to places this repository does not track, so they are not listed as generated.",
-    "78 writes and 655 reads go to a path their caller passes, not to this repository.",
-    "58 reads go to the directory the command is run in, not to this repository.",
+    "78 writes and 658 reads go to a path their caller passes, not to this repository.",
+    "51 reads go to the directory the command is run in, not to this repository.",
     "10 writes and 7 reads go to a temporary directory, not to this repository.",
     "2 writes and 8 reads go to the directory the command is run in (.github/, dogfood/, policy.example.yaml and 2 more places) or a path their caller passes, not to this repository.",
     "2 writes and 3 reads go to a temporary directory or a path their caller passes, not to this repository.",
     "29 commands are built at run time and not followed, 20 of them in tests.",
     "1 file belongs to no part: packages/.gitkeep.",
     "Readers marked (found by text) come from scanning unparsed files.",
-    "Release runs or checks 789 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 789.",
-    "CI runs or checks 785 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 785."
+    "Release runs or checks 791 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 791.",
+    "CI runs or checks 787 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 787."
   ],
   "mainDoor": ".github/workflows/ingest.yml",
   "partLabels": {
@@ -1520,7 +1541,7 @@
     {
       "readers": [],
       "target": "package-lock.json",
-      "tests": 4
+      "tests": 6
     },
     {
       "readers": [
@@ -1759,9 +1780,9 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 1027,
+  "testFiles": 1029,
   "testedBy": {
-    "atlas": 310,
+    "atlas": 312,
     "dogfood-swarm": 308,
     "findings": 145,
     "ingest": 86,
