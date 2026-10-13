@@ -45,7 +45,7 @@ When `GITHUB_ACTIONS` is `true`, `check` also says its verdict on the pull reque
 - each door notice is a `::warning` on the line it was read from;
 - other notices are `::notice`.
 
-At most ten of each kind are emitted, with the tenth saying how many more there are. The finding, its files and the fix go into the step summary. File paths are relative to `GITHUB_WORKSPACE`. Outside Actions the output is unchanged.
+At most ten of each kind are emitted, with the tenth saying how many more there are. The finding, its files and the fix go into the step summary. File paths begin at the repository root, and a finding about a whole file sits on its first line, which is what GitHub needs to show it on a pull request's diff. Outside Actions the output is unchanged.
 
 `check` also prints notices: facts that leave the exit code alone. Two are about a workflow. `ATLAS_DOOR_TOOLCHAIN`: a job pins a Node version that the tool a step runs does not accept, read from the pin and from the tool's `engines` in the lockfile of the step's directory ("Deploy site pins Node 20 and runs astro build; astro 7.3.3 requires Node >=22.12.0 and refuses to start."). `ATLAS_DOOR_LOCKFILE_PLATFORM`: a job runs `npm ci` on a platform for which the lockfile holds no native binding, the mark of a lock written on another system. A third, `ATLAS_MAP_ENGINE_OLDER`, says the committed map was made by an older Atlas than the one running. Each names the lines it was read from and what to do, and `check --strict` exits 1 when there is any notice. The door checks read committed files only and never predict a run; what they could not judge (no setup step, a version only a run can know, a self-hosted or container runner, a lock they cannot read) is said as not judged, never as a finding.
 

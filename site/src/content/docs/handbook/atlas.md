@@ -53,7 +53,7 @@ It fails when a part gains or loses a dependency, a file changes part, a new fil
 A new file in no part is the failure people meet most often: a folder that keeps receiving files, such as receipts or data packs, with no part to hold them. `check` prints the boundary lines that fix it, ready to paste, and `map` warns about such a folder before CI does. Stage new files before you run `map`, because a map made first leaves them out.
 
 In GitHub Actions, `check` also emits annotations and writes a step summary:
-- a failure is an `::error` on the file it names;
+- a failure is an `::error` on the file it names, from the repository root, on line 1 when it is about the whole file;
 - a door notice is a `::warning` on the line it was read from;
 - the summary holds the finding and the fix.
 

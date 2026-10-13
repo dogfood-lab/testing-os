@@ -17,7 +17,7 @@ A red `atlas check` now says how to fix itself, and says it where people look (`
   - each door notice is a `::warning` on the line it was read from, and other notices are `::notice`;
   - the finding, its files (capped) and the fix lines are appended to `$GITHUB_STEP_SUMMARY`.
 
-  Paths are relative to `GITHUB_WORKSPACE`, or left out when the repository is outside it. Repository strings are escaped, so a file name holding a newline and `::` starts no command of its own. Outside Actions the output is byte-identical.
+  Each annotation names its file from the repository root, and a finding about a whole file sits on line 1: a live failing run showed GitHub placing an annotation on a pull request's diff only so, and not for workspace-relative paths from a checkout into a subdirectory, or for annotations with no line. Repository strings are escaped, so a file name holding a newline and `::` starts no command of its own. Outside Actions the output is byte-identical.
 
 ### Changed
 - **A drift finding's hint says to stage new files before mapping.** A map made before staging leaves the new files out, as on interlock on 2026-10-13. Two tests replay that order and the right one in clean clones.
