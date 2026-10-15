@@ -120,26 +120,48 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 3,
       "assigned": 0,
-      "changed": 17,
+      "changed": 7,
       "moved": 0,
-      "parts": 4,
+      "parts": 5,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI runs 2 more files than before.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release runs 2 more files than before.",
+        "subjects": [
+          ".github/workflows/release.yml"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "package.json is now also read by scripts/codecov-pnpm-major.test.mjs.",
+        "subjects": [
+          "package.json",
+          "scripts/codecov-pnpm-major.test.mjs"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-13; 17 files changed content.",
+        "sentence": "3 files added and 7 changed content, across 5 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "228af7e2f5b653882e3096688ab158d46fd738e7",
-      "generatedAt": "2026-10-13T20:42:39.034Z"
+      "commit": "b2a207baa1344403508bdf0c9653be261b2b1a23",
+      "generatedAt": "2026-10-13T21:16:57.814Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -178,9 +200,9 @@
     "Window: 180 days; a pair counts from 10 shared commits, since 42 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "b2a207baa1344403508bdf0c9653be261b2b1a23",
+  "commit": "89d0a28b9dc5c5fcf2823b4a659b4d478ca8ff61",
   "defaultBranch": "main",
-  "derived": "23 parts, mostly JavaScript (1630 files), Python (243), TypeScript (219), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
+  "derived": "23 parts, mostly JavaScript (1632 files), Python (243), TypeScript (219), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
   "doors": [
     {
       "checks": [
@@ -228,7 +250,7 @@
         {
           "boundary": "dogfood-swarm",
           "depth": 0,
-          "files": 352
+          "files": 353
         },
         {
           "boundary": "findings",
@@ -258,7 +280,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 75
+          "files": 76
         },
         {
           "boundary": "site",
@@ -469,8 +491,8 @@
         "scripts/check-finding-regression-pins.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 783,
-      "runsMore": 798,
+      "runsCount": 785,
+      "runsMore": 800,
       "sends": [
         "publishes workspace packages to npm and a container image",
         "creates a GitHub release"
@@ -518,7 +540,7 @@
         {
           "boundary": "dogfood-swarm",
           "depth": 0,
-          "files": 352
+          "files": 353
         },
         {
           "boundary": "findings",
@@ -548,7 +570,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 75
+          "files": 76
         },
         {
           "boundary": "site",
@@ -762,8 +784,8 @@
         "scripts/check-handbook-imagery.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 782,
-      "runsMore": 797,
+      "runsCount": 784,
+      "runsMore": 799,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -1426,7 +1448,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-13T21:16:57.814Z",
+  "generatedAt": "2026-10-15T01:18:46.805Z",
   "limits": [
     "4 import sites name declared dependencies that share their names with local modules (datasets, docx and xrpl); they are read as the dependencies, which are not in this repository.",
     "174 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 171 more.",
@@ -1442,8 +1464,8 @@
     "29 commands are built at run time and not followed, 20 of them in tests.",
     "1 file belongs to no part: packages/.gitkeep.",
     "Readers marked (found by text) come from scanning unparsed files.",
-    "Release runs or checks 787 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 787.",
-    "CI runs or checks 783 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 783."
+    "Release runs or checks 789 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 789.",
+    "CI runs or checks 785 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 785."
   ],
   "mainDoor": ".github/workflows/ingest.yml",
   "partLabels": {
@@ -1737,16 +1759,16 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 1025,
+  "testFiles": 1027,
   "testedBy": {
-    "atlas": 309,
-    "dogfood-swarm": 307,
+    "atlas": 310,
+    "dogfood-swarm": 308,
     "findings": 145,
     "ingest": 86,
     "portfolio": 23,
     "report": 39,
     "schemas": 115,
-    "scripts": 25,
+    "scripts": 26,
     "site": 2,
     "verify": 93
   },

@@ -6508,7 +6508,7 @@
       "testRunners": [
         "node --test"
       ],
-      "testedBy": 309,
+      "testedBy": 310,
       "unresolvedNamed": [
         {
           "path": "packages/atlas/adapter/divergence-envelope.test.js",
@@ -9368,6 +9368,14 @@
               "name": "main"
             }
           ]
+        },
+        {
+          "hash": "37b5bae74e6d01589bdee9ac8e8ba4c45829ef23d5e774bc0c9549499ca06234",
+          "importsFiles": [
+            "packages/dogfood-swarm/lib/domains.js"
+          ],
+          "path": "packages/dogfood-swarm/collapse-alternation.test.js",
+          "testFramework": "node --test"
         },
         {
           "entry": "runAdjudicate",
@@ -16236,6 +16244,7 @@
             "addDomain",
             "aredomainsFrozen",
             "checkOwnership",
+            "collapseAlternation",
             "detectDomains",
             "editDomain",
             "freezeDomains",
@@ -16306,50 +16315,50 @@
             {
               "in": "freezeDomains",
               "kind": "throw",
-              "line": 714
+              "line": 716
             },
             {
               "in": "freezeDomains",
               "kind": "catch",
-              "line": 733
+              "line": 735
             },
             {
               "in": "freezeDomains",
               "kind": "throw",
-              "line": 748
+              "line": 750
             },
             {
               "in": "checkAtlasDraftBeforeFreeze",
               "kind": "throw",
-              "line": 781
+              "line": 783
             },
             {
               "in": "checkAtlasDraftBeforeFreeze",
               "kind": "throw",
-              "line": 785
+              "line": 787
             },
             {
               "in": "checkAtlasDraftBeforeFreeze",
               "kind": "throw",
-              "line": 791
+              "line": 793
             },
             {
               "in": "unfreezeDomains",
               "kind": "throw",
-              "line": 864
+              "line": 866
             },
             {
               "in": "unfreezeDomains",
               "kind": "throw",
-              "line": 867
+              "line": 869
             },
             {
               "in": "checkOwnership",
               "kind": "throw",
-              "line": 932
+              "line": 934
             }
           ],
-          "hash": "fb8a53a0c69ebd2490b9be59dc99b663fe25a9829554d2c28374b82a09dce74d",
+          "hash": "5411acf778d6564be1241f4a1df4d7d46b601d75828841bae6227e9961c98b58",
           "importsFiles": [
             "packages/dogfood-swarm/db/schema.js",
             "packages/dogfood-swarm/lib/atlas-domains.js",
@@ -16380,7 +16389,7 @@
             {
               "calls": [
                 {
-                  "line": 888,
+                  "line": 890,
                   "name": "prepare",
                   "target": null,
                   "via": "aredomainsFrozen"
@@ -16448,7 +16457,7 @@
                   }
                 },
                 {
-                  "line": 888,
+                  "line": 890,
                   "name": "prepare",
                   "target": null,
                   "via": "aredomainsFrozen"
@@ -16491,14 +16500,14 @@
                   "via": "getDomains"
                 },
                 {
-                  "line": 754,
+                  "line": 756,
                   "name": "readAtlasLineage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/atlas.js"
                   }
                 },
                 {
-                  "line": 783,
+                  "line": 785,
                   "name": "listTrackedFiles",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/atlas.js"
@@ -16506,7 +16515,7 @@
                   "via": "checkAtlasDraftBeforeFreeze"
                 },
                 {
-                  "line": 783,
+                  "line": 785,
                   "name": "verifyDomainCoverage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/atlas-domains.js"
@@ -16515,7 +16524,7 @@
                 },
                 {
                   "branch": "coverage.unowned.length > 0 || coverage.multiOwned.length >…",
-                  "line": 785,
+                  "line": 787,
                   "name": "coverageMessage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/atlas-domains.js"
@@ -16523,7 +16532,7 @@
                   "via": "checkAtlasDraftBeforeFreeze"
                 },
                 {
-                  "line": 788,
+                  "line": 790,
                   "name": "runAtlas",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/atlas.js"
@@ -16531,7 +16540,7 @@
                   "via": "checkAtlasDraftBeforeFreeze"
                 },
                 {
-                  "line": 803,
+                  "line": 805,
                   "name": "draftMatchesLineage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/atlas-domains.js"
@@ -16539,22 +16548,22 @@
                   "via": "checkAtlasDraftBeforeFreeze"
                 },
                 {
-                  "line": 757,
+                  "line": 759,
                   "name": "prepare",
                   "target": null
                 },
                 {
-                  "line": 764,
+                  "line": 766,
                   "name": "transaction",
                   "target": null
                 },
                 {
-                  "line": 765,
+                  "line": 767,
                   "name": "prepare",
                   "target": null
                 },
                 {
-                  "line": 767,
+                  "line": 769,
                   "name": "writeAtlasLineage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/atlas.js"
@@ -16569,14 +16578,14 @@
             {
               "calls": [
                 {
-                  "line": 783,
+                  "line": 785,
                   "name": "listTrackedFiles",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/atlas.js"
                   }
                 },
                 {
-                  "line": 783,
+                  "line": 785,
                   "name": "verifyDomainCoverage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/atlas-domains.js"
@@ -16584,21 +16593,21 @@
                 },
                 {
                   "branch": "coverage.unowned.length > 0 || coverage.multiOwned.length >…",
-                  "line": 785,
+                  "line": 787,
                   "name": "coverageMessage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/atlas-domains.js"
                   }
                 },
                 {
-                  "line": 788,
+                  "line": 790,
                   "name": "runAtlas",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/atlas.js"
                   }
                 },
                 {
-                  "line": 803,
+                  "line": 805,
                   "name": "draftMatchesLineage",
                   "target": {
                     "file": "packages/dogfood-swarm/lib/atlas-domains.js"
@@ -16613,7 +16622,7 @@
             {
               "calls": [
                 {
-                  "line": 839,
+                  "line": 841,
                   "name": "prepare",
                   "target": null
                 }
@@ -16626,7 +16635,7 @@
             {
               "calls": [
                 {
-                  "line": 839,
+                  "line": 841,
                   "name": "prepare",
                   "target": null,
                   "via": "hasActiveWave"
@@ -16640,7 +16649,7 @@
             {
               "calls": [
                 {
-                  "line": 888,
+                  "line": 890,
                   "name": "prepare",
                   "target": null
                 }
@@ -16667,7 +16676,7 @@
             {
               "calls": [
                 {
-                  "line": 918,
+                  "line": 920,
                   "name": "prepare",
                   "target": null
                 }
@@ -20773,7 +20782,7 @@
         "node --test",
         "vitest"
       ],
-      "testedBy": 307,
+      "testedBy": 308,
       "unresolvedNamed": [
         {
           "path": "packages/dogfood-swarm/clean-claims.test.js",
@@ -36615,19 +36624,19 @@
           "path": "indexes/failing.json"
         },
         {
-          "hash": "0c49c5ceacc7720ef2821786c24715bb5be91aed25ee0f4ce68ba55b7e4b055f",
+          "hash": "7918360b3d676eeaa7dd7bf8a7a83410acfd556858ef2f12048a811ab9f4ca52",
           "path": "indexes/integrity/chain.jsonl"
         },
         {
-          "hash": "3033f7b176c5458a02509d5f619f4229fdba0e261cd4baf7f7bc3d5e25765715",
+          "hash": "568e96501f0fae2519b9c894c5931edeefe79de4b670324ae49e1b609d78bbbc",
           "path": "indexes/latest-by-repo.json"
         },
         {
-          "hash": "54672c285bc19ebd39bae1bcb36a86b18ab4b7da0de9995fef27610320f22bf1",
+          "hash": "522e912065428412465029ca5e838ca5b189cfe76c72b362b7a041e508cf168a",
           "path": "indexes/stale.json"
         },
         {
-          "hash": "709a9426c2436d20ff7ba424c55655e4c56b58666474925c7cad29b1b305d095",
+          "hash": "102a72abec1afa1f5fe31117fbe50382492038a95d7400c8b0f68dd1695d5b23",
           "path": "indexes/trends.json"
         }
       ],
@@ -39875,6 +39884,10 @@
           "path": "records/dogfood-lab/testing-os/2026/10/13/run-00mv75679h-HI0uGeMA8FyPYw.json"
         },
         {
+          "hash": "51c13d5274c120bbf500fc2ebf04b4e0eb5653ab1f4d23d807ae1fe0a7190d92",
+          "path": "records/dogfood-lab/testing-os/2026/10/13/run-00mv77s2k9-6YrIIGRD542zKA.json"
+        },
+        {
           "hash": "d80bd628d70f1275786c79da48bfb6da79ef0eb303eceed6fe87960e8c7a308c",
           "path": "records/mcp-tool-shop-org/a11y-demo-site/2026/03/20/run-a11y-demo-site-23329256169-1.json"
         },
@@ -40823,7 +40836,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "b5e10d4348f7e6d7d13c7d9c4f2232a203b44dbbcd36e352611c6bb1e42f7303",
+          "hash": "eb5b70a9c5abfce8821d9f16be2b81cd6fc41346ad1d6482ea6ce2a4ef29bf18",
           "path": "CHANGELOG.md"
         },
         {
@@ -42613,6 +42626,14 @@
           "testFramework": "node --test"
         },
         {
+          "hash": "6d34c369721e0306633a5c93d3467f696dc7a7327e76276dda6ef2ce653968a6",
+          "importsFiles": [
+            "scripts/lib/codecov/runners.mjs"
+          ],
+          "path": "scripts/codecov-pnpm-major.test.mjs",
+          "testFramework": "node --test"
+        },
+        {
           "exports": [
             "main"
           ],
@@ -42881,6 +42902,7 @@
         },
         {
           "exports": [
+            "pnpmMajor",
             "reportEdit"
           ],
           "failurePaths": [
@@ -42897,10 +42919,10 @@
             {
               "in": "vitestSettings",
               "kind": "catch",
-              "line": 327
+              "line": 337
             }
           ],
-          "hash": "65d3ef2073217d260d4c0802ab5fc6e2bbf3946000084e7a54bb569d46691d03",
+          "hash": "95f99cb0fdf4b07f18a40fa41cc7d72cac0d12de13c8aa460a5ad31cc7defe47",
           "importsFiles": [
             "packages/atlas/core/toml.js",
             "scripts/lib/codecov/recipe.mjs",
@@ -43344,7 +43366,7 @@
       "testRunners": [
         "node --test"
       ],
-      "testedBy": 25,
+      "testedBy": 26,
       "unresolvedNamed": [
         {
           "path": "scripts/atlas-render.test.mjs",
@@ -45378,7 +45400,7 @@
         {
           "boundary": "dogfood-swarm",
           "depth": 0,
-          "files": 352
+          "files": 353
         },
         {
           "boundary": "findings",
@@ -45408,7 +45430,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 75
+          "files": 76
         },
         {
           "boundary": "site",
@@ -47651,7 +47673,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 783,
+      "runsCount": 785,
       "runsCut": true,
       "secrets": [],
       "sends": {
@@ -47668,7 +47690,7 @@
       "tests": [
         {
           "coverage": true,
-          "files": 52,
+          "files": 53,
           "job": "build-and-test",
           "junit": true,
           "runner": "node --test",
@@ -47693,7 +47715,7 @@
         {
           "coverage": true,
           "dir": "packages/dogfood-swarm",
-          "files": 262,
+          "files": 263,
           "job": "build-and-test",
           "junit": true,
           "runner": "node --test",
@@ -49491,7 +49513,7 @@
         {
           "boundary": "dogfood-swarm",
           "depth": 0,
-          "files": 352
+          "files": 353
         },
         {
           "boundary": "findings",
@@ -49521,7 +49543,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 75
+          "files": 76
         },
         {
           "boundary": "site",
@@ -51757,7 +51779,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 787,
+      "runsCount": 789,
       "runsCut": true,
       "secrets": [
         "GITHUB_TOKEN"
@@ -51784,7 +51806,7 @@
       "stages": [],
       "tests": [
         {
-          "files": 52,
+          "files": 53,
           "job": "publish",
           "runner": "node --test",
           "step": "Verify (full pre-publish gate)",
@@ -51807,7 +51829,7 @@
         },
         {
           "dir": "packages/dogfood-swarm",
-          "files": 262,
+          "files": 263,
           "job": "publish",
           "runner": "node --test",
           "step": "Verify (full pre-publish gate)",
@@ -53706,8 +53728,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "b2a207baa1344403508bdf0c9653be261b2b1a23",
-    "tracked": 4270
+    "commit": "89d0a28b9dc5c5fcf2823b4a659b4d478ca8ff61",
+    "tracked": 4273
   },
   "landings": [
     {
@@ -61097,6 +61119,12 @@
           "fromTests": true
         },
         {
+          "by": "scripts/codecov-pnpm-major.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "scripts/codecov-runners.test.mjs",
           "call": "literal",
           "confidence": "ast",
@@ -67146,7 +67174,7 @@
       "target": "README.md"
     }
   ],
-  "testFiles": 1025,
+  "testFiles": 1027,
   "unassigned": [
     {
       "hash": "ae8cd9e48976f29e3293dbbe6a4b41aff3f2b9b968fcfb551ce183a0b08ed8cc",
