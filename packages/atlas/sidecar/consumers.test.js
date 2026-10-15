@@ -184,6 +184,8 @@ describe('the consumers of a package a file is in', () => {
     ], 'a tag at the map\'s commit is a match; the map is ahead of an older release and behind a later one');
     const by = (name) => items.find((item) => item.consumer === name);
     assert.equal(by('c-ahead').skew.tag, 'v1.1.0');
+    assert.deepEqual(by('c-ahead').skew.atPublishedCommit, { map: false }, 'no map was committed at the tagged commit, and the link says so');
+    assert.equal(by('c-match').skew.atPublishedCommit, undefined, 'a match needs no second map');
     assert.equal(by('c-old').skew.tag, '@acme/lib@1.0.0', 'the name@version form finds a scoped name whole');
     assert.equal(by('c-behind').skew.tag, '@acme/lib-v1.3.0', 'the name-v<version> form');
     assert.deepEqual(by('c-unknown').skew.tried, ['v<version>', '<version>', '<name>@<version>', '<name>-v<version>'], 'the answer names the forms it tried');
