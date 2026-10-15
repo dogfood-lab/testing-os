@@ -1,14 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-10-15 from commit 7780947 by Atlas 1.26.0.
+Mapped at 2026-10-15 from commit 3b656a5 by Atlas 1.26.0.
 
 ## What this is
 
-23 parts, mostly JavaScript (1645 files), Python (243), TypeScript (227), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
+23 parts, mostly JavaScript (1647 files), Python (243), TypeScript (227), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
 
-## What changed since 2026-10-15 (26cb14e)
+## What changed since 2026-10-15 (7780947)
 
-Nothing structural changed since 2026-10-15; 4 files added and 6 changed content.
+Nothing structural changed since 2026-10-15; 6 files added and 11 changed content.
 
 ## What comes in
 
@@ -137,7 +137,7 @@ Read those in order to follow one dogfood submission end to end.
 ## What this map cannot see
 
 - 4 import sites name declared dependencies that share their names with local modules (datasets, docx and xrpl); they are read as the dependencies, which are not in this repository.
-- 179 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 176 more.
+- 180 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 177 more.
 - 3 import sites name a path outside this repository, so what they load is not followed.
 - 13 files in fixtures use syntax the parser cannot read (fixtures/atlas/grammar-shapes/src/broken.ts, fixtures/atlas/grammars-rust-gdscript/scripts/broken.gd, fixtures/atlas/grammars-rust-gdscript/src/broken.rs and 10 more), so what they import is not known: a bare `&` in JSX text (1) and other syntax (12).
 - 11 writes and 37 reads use paths built at run time and are not named here.

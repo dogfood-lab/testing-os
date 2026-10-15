@@ -17,6 +17,7 @@ import { basename, extname, isAbsolute, join, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parse } from 'yaml';
 import { ENGINE } from './engine.js';
+import { KILL_GRACE_MS, killTree } from './kill-tree.js';
 import { writeArtifactSync } from './write.js';
 
 // All three waits are used, so a transport failure is four attempts. The 60s wait is not dropped.
@@ -114,16 +115,31 @@ export function defaultRun(command, args, opts = {}) {
     let stdout = '';
     let stderr = '';
     let timedOut = false;
+    let settled = false;
+    let graceTimer = null;
     child.stdout.on('data', (chunk) => { stdout += chunk; });
     child.stderr.on('data', (chunk) => { stderr += chunk; });
-    const timer = opts.timeoutMs ? setTimeout(() => { timedOut = true; child.kill(); }, opts.timeoutMs) : null;
+    // The whole tree is ended and `close` is not waited for beyond a grace: a process the child started
+    // (git on Windows is a launcher) can hold the pipes open long after the child itself is gone.
+    const timer = opts.timeoutMs
+      ? setTimeout(() => {
+        timedOut = true;
+        killTree(child);
+        graceTimer = setTimeout(() => settle({ status: 124, stdout, stderr, timedOut }), KILL_GRACE_MS);
+      }, opts.timeoutMs)
+      : null;
+    function settle(result) {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      clearTimeout(graceTimer);
+      resolvePromise(result);
+    }
     child.on('close', (status) => {
-      if (timer) clearTimeout(timer);
-      resolvePromise({ status: timedOut ? 124 : (status ?? 1), stdout, stderr, timedOut });
+      settle({ status: timedOut ? 124 : (status ?? 1), stdout, stderr, timedOut });
     });
     child.on('error', (error) => {
-      if (timer) clearTimeout(timer);
-      resolvePromise({ status: 1, stdout, stderr: error.message });
+      settle({ status: 1, stdout, stderr: error.message });
     });
   });
 }
