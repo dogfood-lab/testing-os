@@ -852,6 +852,7 @@
           ],
           "importsFiles": [
             "packages/atlas/adapter/engine.js",
+            "packages/atlas/adapter/kill-tree.js",
             "packages/atlas/adapter/write.js"
           ],
           "packages": [
@@ -862,6 +863,29 @@
           ],
           "path": "packages/atlas/adapter/fleet.js",
           "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 127,
+                  "name": "killTree",
+                  "target": {
+                    "file": "packages/atlas/adapter/kill-tree.js"
+                  }
+                },
+                {
+                  "line": 128,
+                  "name": "KILL_GRACE_MS",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/atlas/adapter/kill-tree.js"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "defaultRun"
+            },
             {
               "calls": [
                 {
@@ -1286,6 +1310,29 @@
           "spawns": [
             "packages/atlas/cli.js"
           ],
+          "testFramework": "node --test"
+        },
+        {
+          "exports": [
+            "killTree"
+          ],
+          "failurePaths": [
+            {
+              "in": "killChild",
+              "kind": "catch",
+              "line": 18
+            }
+          ],
+          "hash": "f193fe22285b6b9f8d6aacf407316d4b47672fbfbf579d1b01f3c71ce25798ce",
+          "path": "packages/atlas/adapter/kill-tree.js"
+        },
+        {
+          "hash": "f6c9553447974a4130514ff53394802c7ccfa575b05ba3f952c191e2cf28e58b",
+          "importsFiles": [
+            "packages/atlas/adapter/fleet.js",
+            "packages/atlas/adapter/kill-tree.js"
+          ],
+          "path": "packages/atlas/adapter/kill-tree.test.js",
           "testFramework": "node --test"
         },
         {
@@ -6452,7 +6499,7 @@
           "reexportsOnly": true
         },
         {
-          "hash": "34fa83be3ea3317d46e1a308e5f73118005f6dff05ef6bb21538c2b385386b7d",
+          "hash": "44fd6eccb85aace54adf59ebadb519dc4ed0beeaabdd49b3326d8492427817dd",
           "path": "packages/atlas/package.json"
         },
         {
@@ -7609,7 +7656,7 @@
       "testRunners": [
         "node --test"
       ],
-      "testedBy": 313,
+      "testedBy": 314,
       "unresolvedNamed": [
         {
           "path": "packages/atlas/adapter/divergence-envelope.test.js",
@@ -7620,14 +7667,9 @@
           "path": "packages/atlas/adapter/divergence-envelope.test.js",
           "specifier": "ajv-formats",
           "why": "undeclared"
-        },
-        {
-          "path": "packages/atlas/adapter/fleet.js",
-          "specifier": "./kill-tree.js",
-          "why": "missing"
         }
       ],
-      "unresolvedSites": 3
+      "unresolvedSites": 2
     },
     {
       "dynamicReads": 0,
@@ -56033,7 +56075,7 @@
             "file": "packages/atlas/adapter/fleet.js",
             "from": "scripts/atlas-render.mjs"
           },
-          "files": 3
+          "files": 4
         }
       ],
       "readers": [],
@@ -56325,7 +56367,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 379
+          "files": 381
         },
         {
           "boundary": "dogfood",
@@ -58622,7 +58664,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 788,
+      "runsCount": 789,
       "runsCut": true,
       "secrets": [],
       "sends": {
@@ -58651,7 +58693,7 @@
         {
           "coverage": true,
           "dir": "packages/atlas",
-          "files": 291,
+          "files": 292,
           "job": "build-and-test",
           "junit": true,
           "runner": "node --test",
@@ -60464,7 +60506,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 379
+          "files": 381
         },
         {
           "boundary": "docker",
@@ -62759,7 +62801,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 792,
+      "runsCount": 793,
       "runsCut": true,
       "secrets": [
         "GITHUB_TOKEN"
@@ -62797,7 +62839,7 @@
         },
         {
           "dir": "packages/atlas",
-          "files": 291,
+          "files": 292,
           "job": "publish",
           "runner": "node --test",
           "step": "Verify (full pre-publish gate)",
@@ -63471,7 +63513,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 4
+          "files": 5
         }
       ],
       "readers": [],
@@ -64722,8 +64764,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "3b656a50c744f03a47b0100972f37cd7a86e1098",
-    "tracked": 4344
+    "commit": "ae0a0d88b54224e259f59ac7c6447f5d8d5ce69e",
+    "tracked": 4346
   },
   "landings": [
     {
@@ -81743,7 +81785,7 @@
       "target": "README.md"
     }
   ],
-  "testFiles": 1030,
+  "testFiles": 1031,
   "unassigned": [
     {
       "hash": "ae8cd9e48976f29e3293dbbe6a4b41aff3f2b9b968fcfb551ce183a0b08ed8cc",
