@@ -177,8 +177,8 @@ describe('the packages a file imports', () => {
 
 describe('isValidPackageName', () => {
   it('follows npm\'s rules for packages that exist: capitals pass, an empty scope or a $ does not', () => {
-    for (const name of ['react', 'JSONStream', '@types/node', '@scope/pkg', 'a.b', 'pad-left']) assert.equal(isValidPackageName(name), true, name);
-    for (const name of ['', '@/lib', '$lib', '.hidden', '_private', '@scope/.x', '@scope', 'a b', 'it(s)', '#internal', '@']) assert.equal(isValidPackageName(name), false, name);
+    for (const name of ['react', 'JSONStream', '@types/node', '@scope/pkg', 'a.b', 'pad-left', 'it(s)']) assert.equal(isValidPackageName(name), true, name);
+    for (const name of ['', '@/lib', '$lib', '.hidden', '_private', '@scope/.x', '@scope', 'a b', '#internal', '@']) assert.equal(isValidPackageName(name), false, name);
   });
 });
 

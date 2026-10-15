@@ -1,16 +1,14 @@
 # testing-os: how it works
 
-Mapped at 2026-10-15 from commit e75f224 by Atlas 1.26.0.
+Mapped at 2026-10-15 from commit ae36188 by Atlas 1.26.0.
 
 ## What this is
 
 23 parts, mostly JavaScript (1642 files), Python (243), TypeScript (222), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
 
-## What changed since 2026-10-15 (228777d)
+## What changed since 2026-10-15 (e75f224)
 
-- CI's push trigger now also names `main`.
-- fixtures/atlas/package-facts-aliases/ is now read by packages/atlas/adapter/package-facts-map.test.js.
-- 12 files added and 15 changed content, across 8 parts.
+Nothing structural changed since 2026-10-15; 2 files changed content.
 
 ## What comes in
 
@@ -145,7 +143,7 @@ Read those in order to follow one dogfood submission end to end.
 - 11 writes and 37 reads use paths built at run time and are not named here.
 - 6 writes go to places this repository does not track, so they are not listed as generated.
 - 78 writes and 659 reads go to a path their caller passes, not to this repository.
-- 51 reads go to the directory the command is run in, not to this repository.
+- 61 reads go to the directory the command is run in, not to this repository.
 - 10 writes and 7 reads go to a temporary directory, not to this repository.
 - 2 writes and 8 reads go to the directory the command is run in (.github/, dogfood/, policy.example.yaml and 2 more places) or a path their caller passes, not to this repository.
 - 2 writes and 3 reads go to a temporary directory or a path their caller passes, not to this repository.

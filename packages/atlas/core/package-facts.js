@@ -474,7 +474,6 @@ export function isValidPackageName(name) {
   if (typeof name !== 'string' || name.length === 0) return false;
   if (name.startsWith('.') || name.startsWith('_')) return false;
   if (name.trim() !== name) return false;
-  if (/[~)('!*]/.test(name.split('/').pop())) return false;
   if (encodeURIComponent(name) === name) return true;
   const scoped = name.match(/^(?:@([^/]+?)[/])?([^/]+?)$/);
   if (!scoped || scoped[1] === undefined) return false;
