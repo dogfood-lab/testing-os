@@ -151,11 +151,21 @@ function managerFlags(command, index, dashes) {
 // is an error, and --reporter is silently pnpm's) unless a -- comes first,
 // which pnpm strips; from 10 they pass through, and a -- is passed on as an
 // argument, which Vitest reads as the end of its options.
-function pnpmMajor(read, workflowText) {
+export function pnpmMajor(read, workflowText) {
   const declared = /^pnpm@(\d+)/.exec(readJson(read, 'package.json')?.packageManager ?? '');
   if (declared) return Number(declared[1]);
-  const setup = /pnpm\/action-setup@[^\n]*\n(?:[ \t]+[^\n]*\n)*?[ \t]+version:[ \t]*['"]?(\d+)/.exec(workflowText ?? '');
-  return setup ? Number(setup[1]) : null;
+  // A line scan, not one pattern: the version input sits in the indented lines under the
+  // action's own line, and a pattern that skips those lines lazily backtracks without bound
+  // on a step that has many of them.
+  const lines = (workflowText ?? '').split('\n');
+  for (let i = 0; i < lines.length; i += 1) {
+    if (!lines[i].includes('pnpm/action-setup@')) continue;
+    for (let j = i + 1; j < lines.length && /^[ \t]/.test(lines[j]); j += 1) {
+      const version = /^[ \t]+version:[ \t]*['"]?(\d+)/.exec(lines[j]);
+      if (version) return Number(version[1]);
+    }
+  }
+  return null;
 }
 
 function insert(run, at, text) {

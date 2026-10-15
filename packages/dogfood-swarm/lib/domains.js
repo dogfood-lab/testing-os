@@ -492,10 +492,12 @@ function segmentsCanIntersect(a, b) {
  * remains the enforcement of record; this gate is defense-in-depth at the
  * freeze boundary.
  */
-function collapseAlternation(glob) {
+export function collapseAlternation(glob) {
   return glob
-    // `{a,b,c}` -> first alternative (`a`); `{a}` and empty `{}` collapse too.
-    .replace(/\{([^},]*)(?:,[^}]*)*\}/g, '$1')
+    // `{a,b,c}` -> first alternative (`a`); `{a}` and empty `{}` collapse too. The repeated
+    // group excludes the comma it starts with, so an unclosed `{` over many commas cannot
+    // split the same text two ways and backtrack without bound.
+    .replace(/\{([^},]*)(?:,[^},]*)*\}/g, '$1')
     .replace(/\[(\^?)([^\]])[^\]]*\]/g, (_, neg, first) => (neg ? 'x' : first));
 }
 
