@@ -12,7 +12,7 @@ import { join } from 'node:path';
 import assert from 'node:assert/strict';
 import { afterEach, describe, it } from 'node:test';
 import { defaultRun } from './fleet.js';
-import { KILL_GRACE_MS } from './kill-tree.js';
+import { KILL_GRACE_MS, killTree } from './kill-tree.js';
 
 const SLEEP_MS = 15_000;
 const TIMEOUT_MS = 1_500;
@@ -104,5 +104,53 @@ describe('defaultRun without a timeout', () => {
     const result = await defaultRun('atlas-no-such-command-for-this-test', [], { timeoutMs: 10_000 });
     assert.equal(result.status, 1);
     assert.match(result.stderr, /ENOENT|not found|spawn/i);
+  });
+});
+
+describe('killTree', () => {
+  const fakeChild = (pid, kill = () => {}) => ({ pid, killed: [], kill(signal) { this.killed.push(signal); kill(signal); } });
+  const fakeSpawner = () => {
+    const calls = [];
+    const handlers = {};
+    const spawnProcess = (command, args, options) => {
+      calls.push({ command, args, options });
+      return { on: (event, handler) => { handlers[event] = handler; } };
+    };
+    return { calls, handlers, spawnProcess };
+  };
+
+  it('asks taskkill to end the whole tree on Windows, and does not kill the child itself', () => {
+    const child = fakeChild(4242);
+    const { calls, spawnProcess } = fakeSpawner();
+    killTree(child, { platform: 'win32', spawnProcess });
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].command, 'taskkill');
+    assert.deepEqual(calls[0].args, ['/pid', '4242', '/T', '/F']);
+    assert.equal(calls[0].options.windowsHide, true);
+    assert.deepEqual(child.killed, []);
+  });
+
+  it('falls back to killing the child when taskkill cannot start', () => {
+    const child = fakeChild(4242);
+    const { handlers, spawnProcess } = fakeSpawner();
+    killTree(child, { platform: 'win32', spawnProcess });
+    handlers.error(new Error('spawn taskkill ENOENT'));
+    assert.deepEqual(child.killed, ['SIGKILL']);
+  });
+
+  it('kills the child with SIGKILL elsewhere, and with no pid on Windows', () => {
+    const { calls, spawnProcess } = fakeSpawner();
+    const posix = fakeChild(7);
+    killTree(posix, { platform: 'linux', spawnProcess });
+    const unstarted = fakeChild(undefined);
+    killTree(unstarted, { platform: 'win32', spawnProcess });
+    assert.deepEqual(posix.killed, ['SIGKILL']);
+    assert.deepEqual(unstarted.killed, ['SIGKILL']);
+    assert.equal(calls.length, 0);
+  });
+
+  it('does not throw when the child is already gone', () => {
+    const gone = fakeChild(7, () => { throw new Error('ESRCH'); });
+    assert.doesNotThrow(() => killTree(gone, { platform: 'linux' }));
   });
 });

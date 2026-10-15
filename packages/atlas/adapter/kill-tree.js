@@ -24,10 +24,12 @@ function killChild(child) {
  * Ends the child and, on Windows, everything it started.
  *
  * @param {import('node:child_process').ChildProcess} child
+ * @param {{ platform?: string, spawnProcess?: typeof spawn }} [options] the platform and the spawner, so a test can
+ *   take the Windows branch on any host
  */
-export function killTree(child) {
-  if (process.platform === 'win32' && child.pid !== undefined) {
-    const taskkill = spawn('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio: 'ignore', windowsHide: true });
+export function killTree(child, { platform = process.platform, spawnProcess = spawn } = {}) {
+  if (platform === 'win32' && child.pid !== undefined) {
+    const taskkill = spawnProcess('taskkill', ['/pid', String(child.pid), '/T', '/F'], { stdio: 'ignore', windowsHide: true });
     taskkill.on('error', () => killChild(child));
     return;
   }
