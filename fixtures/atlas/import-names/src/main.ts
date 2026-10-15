@@ -1,0 +1,18 @@
+import def, { a as local, type T, b } from 'lib-a';
+import type { Only, Also } from 'lib-a/sub';
+import type Dflt from 'lib-b';
+import * as ns from '@scope/c';
+import 'side-effect-pkg';
+import eq = require('lib-eq');
+export { x as y, type Z } from 'lib-d';
+export type { W } from 'lib-d';
+export * from 'lib-e';
+export * as star from 'lib-f';
+import { "string name" as alias } from 'lib-g';
+import { n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, n21, n22, n23, n24, n25, n26, n27, n28, n29, n30, n31, n32, n33, n34, n35, n36, n37, n38, n39, n40, n41, n42, n43, n44, n45, n46, n47, n48, n49, n50, n51, n52, n53, n54, n55 } from 'lib-big';
+const { p, q: r, ...rest } = require('lib-h');
+const whole = require('lib-i');
+const { s } = await import('lib-j');
+const lazy = import('lib-k');
+const { d = 1, e: f = 2 } = require('lib-assign');
+export const all = [def, local, b, ns, eq, alias, p, r, rest, whole, s, lazy, d, f];

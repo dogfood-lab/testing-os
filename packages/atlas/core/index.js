@@ -11,6 +11,7 @@ import { httpEdges, httpFacts } from './http.js';
 import { declaredEntries, deriveEntryPoints, manifestCommands, memberCommands, memberPackage, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
 import { failurePaths } from './failure-paths.js';
+import { callBinding, exportBinding, importBinding, typeImportBinding, unknownBinding } from './import-names.js';
 import { leftOutCounts, packageFacts } from './package-facts.js';
 import { markScriptTests, readsSelfFail, selfFails } from './script-tests.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, settleRelativePaths, testReadsKept, testWritesKept, textLandings, trackedPlaces } from './landings.js';
@@ -275,6 +276,11 @@ export function mapRepository({ repoPath, boundaries, structureOnly = false } = 
     for (const file of [...boundaryList.flatMap((boundary) => boundary.files), ...unassigned, ...overlaps]) {
       const entries = packaging.imports.get(file.path);
       if (entries) file.packages = entries;
+      const bound = packaging.importNames.get(file.path);
+      if (bound) {
+        file.importNames = bound.records;
+        if (bound.omitted > 0) file.importNamesOmitted = bound.omitted;
+      }
     }
   }
 
@@ -954,7 +960,7 @@ function parseFile(language, path, original, places, { reread = false, structure
   try {
     if (tree.rootNode.hasError) return { parseError: true, imports: [], unreadSyntax: unreadSyntax(tree.rootNode, source) };
     if (!SCRIPT_LANGUAGES.has(language) && language !== 'python') return nativeReadings(language, tree.rootNode);
-    const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : [...collectScript(tree.rootNode, path), ...typeSites];
+    const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : [...collectScript(tree.rootNode, path, language === 'typescript' || language === 'tsx'), ...(language === 'typescript' || language === 'tsx' ? typeSites : typeSites.map((site) => ({ ...site, bound: unknownBinding('dynamic') })))];
     if (reread) {
       return {
         ...REREAD_SKIPS,
@@ -1079,11 +1085,11 @@ function repairSource(source, parse) {
   const sites = [];
   const lineAt = (offset) => source.slice(0, offset).split('\n').length;
   let text = source.replace(TYPEOF_IMPORT, (match, lead, call, quote, specifier, offset) => {
-    sites.push({ specifier, kind: 'dynamic-literal', line: lineAt(offset) });
+    sites.push({ specifier, kind: 'dynamic-literal', line: lineAt(offset), bound: typeImportBinding() });
     return `${lead}${'_'.repeat(call.length)}`;
   });
   text = text.replace(IMPORT_ARRAY, (call, quote, specifier, offset) => {
-    sites.push({ specifier, kind: 'dynamic-literal', line: lineAt(offset) });
+    sites.push({ specifier, kind: 'dynamic-literal', line: lineAt(offset), bound: typeImportBinding() });
     return '_'.repeat(call.length);
   });
   text = text.replace(ABSTRACT_NAME, () => 'abstrac$');
@@ -1479,13 +1485,13 @@ function unreadSyntax(root, source) {
 // A string literal passed to import() or require() names its module as surely
 // as an import statement does, so it resolves as one, kind dynamic-literal.
 // Anything else passed is a dynamic site, left unresolved.
-function collectScript(root, path = null) {
+function collectScript(root, path = null, typed = false) {
   const imports = [];
   walkNamed(root, (node) => {
     if (node.type === 'import_statement' || node.type === 'export_statement') {
       const literal = jsString(node.childForFieldName('source'));
       if (literal == null) return;
-      const site = { specifier: literal, kind: 'static', line: lineOf(node) };
+      const site = { specifier: literal, kind: 'static', line: lineOf(node), bound: node.type === 'import_statement' ? importBinding(node, jsString) : exportBinding(node, jsString) };
       // export * from './x' hands on every name x exports, which is what a
       // barrel index does; export * as ns names one binding, so it is not.
       if (node.type === 'export_statement' && node.children.some((child) => child.type === '*')) site.reexportsAll = true;
@@ -1510,7 +1516,7 @@ function collectScript(root, path = null) {
     const literal = jsString(first) ?? jsString(bound);
     const optional = optionalCall(node) ? { optional: true } : {};
     if (literal != null) {
-      imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node), ...optional });
+      imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node), bound: callBinding(node, isRequire ? 'require' : 'dynamic', jsString, typed), ...optional });
       return;
     }
     // require(join(ROOT, 'package.json')) reads the manifest for its fields;
