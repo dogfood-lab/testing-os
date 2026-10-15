@@ -95,7 +95,7 @@
           "path": "packages/atlas/LICENSE"
         },
         {
-          "hash": "3de6b084d0fc524ecc1ed8b2952540c20d42fcef1a78dc72313fc32b5448fd54",
+          "hash": "7fc249ddc07bfbdc09a323660fbcd7f8e5bdd575efe60808c64f2a753a789b6d",
           "path": "packages/atlas/README.md"
         },
         {
@@ -127,7 +127,7 @@
             "stepPrograms",
             "unresolvedEntry"
           ],
-          "hash": "81b6a39b1b4e1ff7fe9de1cdc08bb6bad44ffe98af5af8e76b763a1ba1e251fb",
+          "hash": "90d840177a4e82d23ff47b94cc1397ffab8af02f870efd3be42d0482ae927121",
           "importOrder": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/languages.js",
@@ -153,21 +153,25 @@
         {
           "exports": [
             "ignoredNotice",
+            "parseBoundaryText",
             "readBoundaryFile"
           ],
           "failurePaths": [
             {
               "in": "readBoundaryFile",
               "kind": "catch",
-              "line": 20
+              "line": 22
             },
             {
-              "in": "readBoundaryFile",
+              "in": "parseBoundaryText",
               "kind": "catch",
-              "line": 27
+              "line": 39
             }
           ],
-          "hash": "679ba4b04dfd217cc4461d4c63558d7f988f1a6dc62ae55b9d19927efa665bfe",
+          "hash": "7b006454a6c7ff45efbdcf98c524e78f71798e20fbf6033b2d31a03e7b55b4d9",
+          "importsFiles": [
+            "packages/atlas/core/package-facts.js"
+          ],
           "packages": [
             {
               "manifest": "packages/atlas/package.json",
@@ -177,7 +181,7 @@
           "path": "packages/atlas/adapter/boundary-file.js"
         },
         {
-          "hash": "4f197d11d02919c5f65b80b42d97ab4d384bf7a9901f5441247ec47c2114b7c8",
+          "hash": "50baa86a921c9e6ca2e42317a007f545c166e2aeebd3b89109c88be76fe7af62",
           "importsFiles": [
             "packages/atlas/adapter/boundary-file.js"
           ],
@@ -396,17 +400,17 @@
             {
               "in": "readBaseMap",
               "kind": "catch",
-              "line": 37
+              "line": 39
             }
           ],
-          "hash": "f821424133024ac513fa294c7c2c4f61e30e6dce4bc488ae47a91492dae58bce",
+          "hash": "2c7118baa00f74b4329eef74d56ef5187a61d44f35bbc0c7a444a566a0431cff",
           "importsFiles": [
             "packages/atlas/adapter/changes.js"
           ],
           "path": "packages/atlas/adapter/diff.js"
         },
         {
-          "hash": "71e9f762145dc625eb6711f2a600ee4d44a5bbda8eea8d6fc4fbfd3ca55a6167",
+          "hash": "2cc2cd17e25fba29d1f8b49c3bb0349ca9b3ccc5281b32ebba1de730b51b47fe",
           "importsFiles": [
             "packages/atlas/adapter/diff.js"
           ],
@@ -1161,7 +1165,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "c457616486680004439449fdef24ccc143d42dafa17eb6ebdf830f89c800ca56",
+          "hash": "f280bd52cfa2df181a798d327e69b9583e10b63abcdcdf2a6d8aa943586ed78d",
           "importsFiles": [
             "packages/atlas/core/package-facts.js",
             "packages/atlas/sidecar/test-client.js"
@@ -4483,47 +4487,42 @@
             {
               "in": "bytesOf",
               "kind": "catch",
-              "line": 357
+              "line": 359
             },
             {
               "in": "collectIgnored",
               "kind": "catch",
-              "line": 521
+              "line": 523
             },
             {
               "in": "trackedJson",
               "kind": "catch",
-              "line": 634
+              "line": 636
             },
             {
               "in": "repositoryManifests",
               "kind": "catch",
-              "line": 653
+              "line": 655
             },
             {
               "in": "validateBoundary",
               "kind": "throw",
-              "line": 768
+              "line": 770
             },
             {
               "in": "validateBoundary",
               "kind": "throw",
-              "line": 772
+              "line": 774
             },
             {
               "in": "listTracked",
               "kind": "throw",
-              "line": 795
+              "line": 797
             },
             {
               "in": "listTracked",
               "kind": "throw",
-              "line": 814
-            },
-            {
-              "in": "parseStageLine",
-              "kind": "throw",
-              "line": 822
+              "line": 816
             },
             {
               "in": "parseStageLine",
@@ -4531,17 +4530,22 @@
               "line": 824
             },
             {
+              "in": "parseStageLine",
+              "kind": "throw",
+              "line": 826
+            },
+            {
               "in": "parseFile",
               "kind": "catch",
-              "line": 950
+              "line": 952
             },
             {
               "in": "manifestOf",
               "kind": "catch",
-              "line": 1194
+              "line": 1196
             }
           ],
-          "hash": "c5d19d29bafd612d119fadca03319798257e85bf762c50711a6336d30b587bf7",
+          "hash": "294ce6147a397774c90438883eff436964d2df5b1fb24b147f71b16f62365682",
           "importOrder": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/doors.js",
@@ -5890,7 +5894,7 @@
           "reexportsOnly": true
         },
         {
-          "hash": "3c8b5730aac7a69fd1302abc6965f077b715d648ef152f8a28f5ed7b3314b6fd",
+          "hash": "72d6339f469d0016128ea6280e086df09edb1a4afa8572508010efb67744f2d5",
           "path": "packages/atlas/package.json"
         },
         {
@@ -5913,7 +5917,7 @@
               "line": 43
             }
           ],
-          "hash": "fadfe55984540727987a017a408bd375e2021351dfa43ae55eff8f9e04400a93",
+          "hash": "711544186a1b2ecd7f71d8ed0789d4190e489c365e7a229059c2d6119f04f275",
           "importsFiles": [
             "packages/atlas/adapter/engine.js",
             "packages/atlas/adapter/errors.js",
@@ -6002,6 +6006,47 @@
           "spawns": [
             "packages/atlas/cli.js"
           ],
+          "testFramework": "node --test"
+        },
+        {
+          "exports": [
+            "consumersFor",
+            "hasPackageFacts"
+          ],
+          "failurePaths": [
+            {
+              "in": "manualProducers",
+              "kind": "catch",
+              "line": 119
+            }
+          ],
+          "hash": "67c0eac9202a408309e20f519e3f0ab6f9a73502d774db0b86aa7bf565c181c8",
+          "importOrder": [
+            "packages/atlas/adapter/boundary-file.js",
+            "packages/atlas/core/package-facts.js",
+            "packages/atlas/sidecar/data.js",
+            "packages/atlas/sidecar/answer.js",
+            "packages/atlas/sidecar/git.js",
+            "packages/atlas/sidecar/map.js",
+            "packages/atlas/sidecar/tags.js"
+          ],
+          "importsFiles": [
+            "packages/atlas/adapter/boundary-file.js",
+            "packages/atlas/core/package-facts.js",
+            "packages/atlas/sidecar/answer.js",
+            "packages/atlas/sidecar/data.js",
+            "packages/atlas/sidecar/git.js",
+            "packages/atlas/sidecar/map.js",
+            "packages/atlas/sidecar/tags.js"
+          ],
+          "path": "packages/atlas/sidecar/consumers.js"
+        },
+        {
+          "hash": "56f2d4ef437ad30e1e98e80d611ac0e3f84d397001cfab69bb721d8b0813bba3",
+          "importsFiles": [
+            "packages/atlas/sidecar/test-client.js"
+          ],
+          "path": "packages/atlas/sidecar/consumers.test.js",
           "testFramework": "node --test"
         },
         {
@@ -6126,15 +6171,15 @@
             {
               "in": "git",
               "kind": "throw",
-              "line": 63
+              "line": 68
             },
             {
               "in": "topLevel",
               "kind": "catch",
-              "line": 82
+              "line": 87
             }
           ],
-          "hash": "339d9734c09e1df573ef38c6e9acaaf3a622efbaa4d5f6aa9b8415981b8d0836",
+          "hash": "a5b0157bf0df9213da5b0adda893f519eb6dfd1354a5ce68f6cbf5b5b03d996f",
           "path": "packages/atlas/sidecar/git.js"
         },
         {
@@ -6161,7 +6206,10 @@
             "doorChecksUnjudged",
             "walkStopsAt"
           ],
-          "hash": "98d7e1f9839cc39f284882ab9f919c3f5d535dd3465ba265a2f90948e200e06b",
+          "hash": "35a00ccdbf0a9b966bfd1d9bbb6efc375380e51cf9b3be93b0f46bc45cebef8b",
+          "importsFiles": [
+            "packages/atlas/sidecar/data.js"
+          ],
           "path": "packages/atlas/sidecar/limits.js"
         },
         {
@@ -6251,10 +6299,11 @@
           "exports": [
             "reachAnswer"
           ],
-          "hash": "5d7d8f583317e61f49ebdf7db27b79813e103967fe5b43aeebb6694f4847bb38",
+          "hash": "4fb4ae495d054e0380650ef18cf15f88e761d58ec127e7499b422080f80f512b",
           "importsFiles": [
             "packages/atlas/core/landings.js",
             "packages/atlas/sidecar/answer.js",
+            "packages/atlas/sidecar/consumers.js",
             "packages/atlas/sidecar/limits.js"
           ],
           "path": "packages/atlas/sidecar/reach-tool.js"
@@ -6536,7 +6585,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "f6a3389658b23d3ab69ae3a7473e14cabb57e606156fd7925411349624261ca0",
+          "hash": "9a36d97a6cb47b9f55ff6b711d6817eaa4a8d42497ebdaddfe3c12f32690b754",
           "importsFiles": [
             "packages/atlas/sidecar/git.js"
           ],
@@ -6563,6 +6612,29 @@
             }
           ],
           "path": "packages/atlas/sidecar/static.test.js",
+          "testFramework": "node --test"
+        },
+        {
+          "exports": [
+            "mayBeGivenToGit",
+            "publishedAt",
+            "tagsFor"
+          ],
+          "hash": "d08b4028e05fb30b6d425df8f3ce7826294d17be7c4d1134307fe065edefa38a",
+          "importsFiles": [
+            "packages/atlas/core/package-facts.js",
+            "packages/atlas/sidecar/git.js"
+          ],
+          "path": "packages/atlas/sidecar/tags.js"
+        },
+        {
+          "hash": "5fe4049152dbf0cc0e1bc4b1892997308807c55021aa36b371108a99682ef10f",
+          "importsFiles": [
+            "packages/atlas/sidecar/git.js",
+            "packages/atlas/sidecar/tags.js",
+            "packages/atlas/sidecar/test-client.js"
+          ],
+          "path": "packages/atlas/sidecar/tags.test.js",
           "testFramework": "node --test"
         },
         {
@@ -6651,7 +6723,7 @@
           "exports": [
             "createTools"
           ],
-          "hash": "9ba5ca3a49d4e230f6354e47a19d50ce2401d0aece54f7cf669266b21aed4db5",
+          "hash": "148cb9f10a556c37f639a114df4c82450b5e8ce60430b84acf1e9869268c455a",
           "importOrder": [
             "packages/atlas/sidecar/answer.js",
             "packages/atlas/sidecar/changes-tool.js",
@@ -6745,7 +6817,7 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 313,
+          "reads": 316,
           "where": [
             "caller"
           ],
@@ -6795,7 +6867,7 @@
           "writes": 0
         },
         {
-          "reads": 10,
+          "reads": 12,
           "where": [
             "cwd:atlas/"
           ],
@@ -6830,13 +6902,13 @@
           "writes": 5
         }
       ],
-      "outsideReads": 365,
+      "outsideReads": 370,
       "outsideWrites": 12,
       "role": "code",
       "testRunners": [
         "node --test"
       ],
-      "testedBy": 312,
+      "testedBy": 314,
       "unresolvedNamed": [
         {
           "path": "packages/atlas/adapter/divergence-envelope.test.js",
@@ -6904,7 +6976,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "0e14f72670b011695170f432d36a31d2a9fc0e86fea47e5dc448e54797e141ea",
+          "hash": "2f01edbb27f5831127e05b11450cf67aacab738d29354dad700091890c5e987c",
           "path": "docs/atlas-buildup.spec.md"
         },
         {
@@ -42748,7 +42820,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "2f0b9074a5df7c336a60d22193a18c1de43338fd151b791fadfb54af74a49cd3",
+          "hash": "00cdf69b227516803d5c82b4680b09b0b05f1183bb639bd13e72a79dd4c81611",
           "path": "CHANGELOG.md"
         },
         {
@@ -45714,7 +45786,7 @@
           "path": "site/src/content/docs/handbook/architecture.md"
         },
         {
-          "hash": "98a6fe475e292ead4372c8f5b4fb908b55e37c72cafa808e1c896dbc755b012d",
+          "hash": "5b03699629bcae59b5ce9c8ee6b141a49ebd5f9a850b7cee633e868e039abe96",
           "path": "site/src/content/docs/handbook/atlas.md"
         },
         {
@@ -47717,7 +47789,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 377
+          "files": 381
         },
         {
           "boundary": "dogfood",
@@ -48344,6 +48416,13 @@
           "target": "package-lock.json"
         },
         {
+          "by": "packages/atlas/sidecar/consumers.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "package-lock.json"
+        },
+        {
           "by": "packages/dogfood-swarm/lib/f-2710aadf-coordinator-ownership-class.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -48877,6 +48956,12 @@
         {
           "job": "build-and-test",
           "matched": true,
+          "path": "packages/atlas/sidecar/consumers.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
           "path": "packages/atlas/sidecar/data.test.js",
           "runKind": "executes"
         },
@@ -48932,12 +49017,6 @@
           "job": "build-and-test",
           "matched": true,
           "path": "packages/atlas/sidecar/refresh.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "build-and-test",
-          "matched": true,
-          "path": "packages/atlas/sidecar/repos.test.js",
           "runKind": "executes"
         },
         {
@@ -50014,7 +50093,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 787,
+      "runsCount": 789,
       "runsCut": true,
       "secrets": [],
       "sends": {
@@ -50043,7 +50122,7 @@
         {
           "coverage": true,
           "dir": "packages/atlas",
-          "files": 290,
+          "files": 292,
           "job": "build-and-test",
           "junit": true,
           "runner": "node --test",
@@ -50986,6 +51065,13 @@
           "target": "package-lock.json"
         },
         {
+          "by": "packages/atlas/sidecar/consumers.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "package-lock.json"
+        },
+        {
           "by": "packages/dogfood-swarm/lib/f-2710aadf-coordinator-ownership-class.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -51856,7 +51942,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 377
+          "files": 381
         },
         {
           "boundary": "docker",
@@ -52488,6 +52574,13 @@
           "target": "package-lock.json"
         },
         {
+          "by": "packages/atlas/sidecar/consumers.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "package-lock.json"
+        },
+        {
           "by": "packages/dogfood-swarm/lib/f-2710aadf-coordinator-ownership-class.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -53027,6 +53120,12 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "packages/atlas/sidecar/consumers.test.js",
+          "runKind": "executes"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "packages/atlas/sidecar/data.test.js",
           "runKind": "executes"
         },
@@ -53082,12 +53181,6 @@
           "job": "publish",
           "matched": true,
           "path": "packages/atlas/sidecar/refresh.test.js",
-          "runKind": "executes"
-        },
-        {
-          "job": "publish",
-          "matched": true,
-          "path": "packages/atlas/sidecar/repos.test.js",
           "runKind": "executes"
         },
         {
@@ -54151,7 +54244,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 791,
+      "runsCount": 793,
       "runsCut": true,
       "secrets": [
         "GITHUB_TOKEN"
@@ -54189,7 +54282,7 @@
         },
         {
           "dir": "packages/atlas",
-          "files": 290,
+          "files": 292,
           "job": "publish",
           "runner": "node --test",
           "step": "Verify (full pre-publish gate)",
@@ -54710,6 +54803,13 @@
           "target": "package-lock.json"
         },
         {
+          "by": "packages/atlas/sidecar/consumers.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true,
+          "target": "package-lock.json"
+        },
+        {
           "by": "packages/dogfood-swarm/lib/f-2710aadf-coordinator-ownership-class.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -54821,7 +54921,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 82
+          "files": 84
         }
       ],
       "readers": [],
@@ -56114,8 +56214,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "ae3618890c70b5bcbb6e28676d68598b5b96c141",
-    "tracked": 4326
+    "commit": "a1b4494976c2a820286628bd59ba89cfd0200ef0",
+    "tracked": 4330
   },
   "landings": [
     {
@@ -56808,6 +56908,12 @@
         },
         {
           "by": "packages/atlas/core/spawn-helpers.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/sidecar/consumers.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -58826,6 +58932,12 @@
       "readers": [
         {
           "by": "packages/atlas/adapter/check-cost.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/adapter/package-facts-map.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -63311,6 +63423,12 @@
           "fromTests": true
         },
         {
+          "by": "packages/atlas/sidecar/consumers.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "packages/dogfood-swarm/lib/f-2710aadf-coordinator-ownership-class.test.js",
           "call": "literal",
           "confidence": "ast",
@@ -63509,6 +63627,12 @@
         },
         {
           "by": "packages/atlas/sidecar/check-change.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/atlas/sidecar/consumers.test.js",
           "call": "literal",
           "confidence": "ast",
           "fromTests": true
@@ -72749,6 +72873,7 @@
       "versionFrom": "site/package-lock.json"
     }
   ],
+  "packageFacts": 1,
   "packagesPublished": [
     {
       "doors": [
@@ -72835,7 +72960,7 @@
       "target": "README.md"
     }
   ],
-  "testFiles": 1029,
+  "testFiles": 1031,
   "unassigned": [
     {
       "hash": "ae8cd9e48976f29e3293dbbe6a4b41aff3f2b9b968fcfb551ce183a0b08ed8cc",

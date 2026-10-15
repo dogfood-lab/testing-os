@@ -1,8 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'yaml';
+import { isValidPackageName } from '../core/package-facts.js';
 
-const TOP_LEVEL = new Set(['summary', 'window', 'thresholds', 'boundaries']);
+const TOP_LEVEL = new Set(['summary', 'window', 'thresholds', 'boundaries', 'producers']);
+const PRODUCER_FIELDS = new Set(['package', 'repository']);
 const BOUNDARY_FIELDS = new Set(['name', 'globs', 'role', 'rebaseline']);
 const ROLES = new Set(['code', 'test', 'docs', 'config', 'site', 'data']);
 
@@ -21,6 +23,16 @@ export function readBoundaryFile(repoPath) {
     if (err.code === 'ENOENT') return { ok: false, code: 'ATLAS_NO_BOUNDARY_FILE', details: ['atlas/boundaries.yaml is absent'] };
     return { ok: false, code: 'ATLAS_BOUNDARY_FILE_INVALID', details: [`atlas/boundaries.yaml could not be read`] };
   }
+  return parseBoundaryText(text);
+}
+
+/**
+ * A boundary file's text as readBoundaryFile reads it, for a caller that holds
+ * the text of the file at some commit and not a checkout.
+ *
+ * @param {string} text
+ */
+export function parseBoundaryText(text) {
   let doc;
   try {
     doc = parse(text);
@@ -35,6 +47,7 @@ export function readBoundaryFile(repoPath) {
     window: doc.window ?? null,
     thresholds: doc.thresholds ?? null,
     boundaries: doc.boundaries.map(carryBoundary),
+    producers: (doc.producers ?? []).map((entry) => ({ package: entry.package, repository: entry.repository })),
     ignored: ignoredKeys(doc),
     personMarked: personMarked(doc),
   };
@@ -78,6 +91,8 @@ function validate(doc) {
   }
   if (doc.summary != null && typeof doc.summary !== 'string') return 'summary must be a string';
   if (!Array.isArray(doc.boundaries)) return 'boundaries must be an array';
+  const producers = producersProblem(doc.producers);
+  if (producers) return producers;
   const names = new Set();
   for (let i = 0; i < doc.boundaries.length; i += 1) {
     const boundary = doc.boundaries[i];
@@ -94,6 +109,27 @@ function validate(doc) {
     }
     if (boundary.role != null && !ROLES.has(boundary.role)) return `${where}.role must be code, test, docs, config, site, or data`;
     if (boundary.rebaseline != null && typeof boundary.rebaseline !== 'string') return `${where}.rebaseline must be a string`;
+  }
+  return null;
+}
+
+// producers: the packages this repository takes from another repository
+// Atlas answers for, named by hand, for the consumers a repository's
+// lockfile and the producer's manifest cannot be tied together for
+// (docs/atlas-buildup.spec.md, slice AP: the manual basis). Never inferred.
+function producersProblem(producers) {
+  if (producers == null) return null;
+  if (!Array.isArray(producers)) return 'producers must be an array';
+  const seen = new Set();
+  for (let i = 0; i < producers.length; i += 1) {
+    const entry = producers[i];
+    const where = `producers[${i}]`;
+    if (entry == null || typeof entry !== 'object' || Array.isArray(entry)) return `${where} must be a mapping`;
+    for (const key of Object.keys(entry)) if (!PRODUCER_FIELDS.has(key)) return `${where}.${key} is not a producer field`;
+    if (typeof entry.package !== 'string' || !isValidPackageName(entry.package)) return `${where}.package must be an npm package name`;
+    if (typeof entry.repository !== 'string' || entry.repository.trim() === '' || entry.repository.length > 1024) return `${where}.repository must be the name of a repository Atlas answers for`;
+    if (seen.has(entry.package)) return `${where}.package duplicates ${entry.package}`;
+    seen.add(entry.package);
   }
   return null;
 }

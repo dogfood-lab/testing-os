@@ -295,6 +295,8 @@ export function mapRepository({ repoPath, boundaries, structureOnly = false } = 
     ...(packaging?.manifests.length > 0
       ? { manifests: packaging.manifests, packageDependencies: packaging.dependencies, packagesPublished: packaging.published }
       : {}),
+    // The marker that the package facts were computed (a map made before them has none, and a repository with no package.json has none of their keys), so a question can tell "declares nothing" from "never read".
+    ...(packaging ? { packageFacts: 1 } : {}),
     // Not in structure.json: what the package facts left out of the files' packages, for statistics.json.
     ...(packaging ? { packageImportsLeftOut: leftOutCounts(packaging.leftOut) } : {}),
   };
