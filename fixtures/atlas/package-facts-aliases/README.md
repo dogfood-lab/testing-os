@@ -9,3 +9,8 @@ but which resolves to src/lib/util.js and which no manifest declares,
 a SvelteKit-style alias nothing here resolves. It also imports `lodash` and
 `JSONStream` (an old package whose name has capitals), which are packages. Only
 those two belong in the file's `packages`.
+
+It also imports `@alias-demo/ext`, a workspace member that no manifest above src/main.ts
+declares (the root lists it only through `workspaces`). The resolver finds it in
+packages/ext/index.js, and it is a real package of this repository, so it stays in
+`packages`, marked `member`.

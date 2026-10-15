@@ -158,11 +158,12 @@ describe('the packages a file imports', () => {
   // and AP and AQ join repositories on the purl.
   it('leave out a path alias, a # import and a name npm rejects, and count them', () => {
     const main = fileIn(aliases, 'src/main.ts');
-    assert.deepEqual(main.importsFiles, ['src/lib/util.js'], 'the aliases that resolve are still file edges');
+    assert.deepEqual(main.importsFiles, ['packages/ext/index.js', 'src/lib/util.js'], 'the aliases that resolve are still file edges');
     assert.deepEqual(main.packages, [
+      { manifest: null, member: true, purl: 'pkg:npm/%40alias-demo/ext' },
       { manifest: 'package.json', purl: 'pkg:npm/JSONStream' },
       { manifest: 'package.json', purl: 'pkg:npm/lodash' },
-    ], '@/lib/util, #internal/util, $lib/unreached and the undeclared alias shared/util are no package; JSONStream is one');
+    ], '@/lib/util, #internal/util, $lib/unreached and the undeclared alias shared/util are no package; JSONStream is one, and so is a workspace member no manifest above the file declares');
     assert.deepEqual(aliasStatistics.packageImports, {
       filesWithLeftOutImports: 1,
       importSitesNotPackageNames: 2,

@@ -408,10 +408,12 @@ function repositoryOf(pkg) {
 // names, and are left out and counted (R&D on slice AO): a package's own
 // `#internal` imports; a name npm's rules reject, such as the `@/lib` of a
 // tsconfig path alias or SvelteKit's `$lib`; and a name the resolver found
-// inside the repository when no manifest declares it, which is a path alias
-// or a rewrite and already a file edge. A tracked file reached through a
-// declared name stays: a workspace member's own name, or the package's own,
-// is what the workspace and self kinds are.
+// inside the repository when no manifest declares it and it is no workspace
+// member, which is a path alias or a rewrite and already a file edge. A
+// tracked file reached through a declared name, a workspace member's name
+// (declared or not: a monorepo's members import each other without listing
+// each other) or the package's own stays: those are what the workspace and
+// self kinds are.
 function importedPackages({ files, view, byPath, dependencies, members }) {
   const declaredAt = new Map();
   for (const entry of dependencies) {
@@ -443,7 +445,7 @@ function importedPackages({ files, view, byPath, dependencies, members }) {
       }
       const entry = coveringDeclaration(file.path, name, { byPath, declaredAt, view, memberNames });
       const inRepository = site.resolved?.outcome === 'file' || site.resolved?.outcome === 'boundary';
-      if (inRepository && entry.manifest === null) {
+      if (inRepository && entry.manifest === null && !entry.member) {
         leftOut.resolvedInRepositorySites += 1;
         leftOut.files.add(file.path);
         tally(leftOut.names, name);
