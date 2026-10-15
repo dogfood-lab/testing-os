@@ -1,4 +1,4 @@
-import { appendFileSync, mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
+import { appendFileSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import assert from 'node:assert/strict';
@@ -41,6 +41,16 @@ function repository(dir) {
   return dir;
 }
 
+// A map as an engine made it before package facts existed (slice AO): none
+// of the package keys and no marker. The committed map is rewritten that way.
+function asPreAoMap(dir) {
+  const path = join(dir, 'atlas', 'structure.json');
+  const structure = JSON.parse(readFileSync(path, 'utf8'));
+  for (const key of ['packageFacts', 'manifests', 'packageDependencies', 'packagesPublished']) delete structure[key];
+  for (const part of structure.boundaries) for (const file of part.files) delete file.packages;
+  writeFileSync(path, `${JSON.stringify(structure, null, 2)}\n`);
+}
+
 const RELEASE = [
   'name: Release',
   'on:',
@@ -79,6 +89,9 @@ function producer(dir) {
   commitAll(dir, 'one');
   git(dir, ['tag', '@acme/lib@1.0.0']);
   appendFileSync(join(dir, 'packages/lib/util.js'), '// two\n');
+  // The map committed at the commit v1.1.0 is tagged at was made before package facts.
+  mapIn(dir);
+  asPreAoMap(dir);
   commitAll(dir, 'two');
   git(dir, ['tag', 'v1.1.0']);
   appendFileSync(join(dir, 'packages/lib/util.js'), '// three\n');
@@ -122,8 +135,8 @@ async function started(options) {
   return s;
 }
 
-async function reach(s, paths) {
-  const result = (await s.request('tools/call', { name: 'atlas_reach', arguments: { repo: 'prod-lib', paths, full: true } })).result;
+async function reach(s, paths, repo = 'prod-lib') {
+  const result = (await s.request('tools/call', { name: 'atlas_reach', arguments: { repo, paths, full: true } })).result;
   assert.notEqual(result.isError, true, result.content[0].text);
   return result;
 }
@@ -152,12 +165,16 @@ before(() => {
   consumer(join(ws, 'c-alien'), { dependencies: { '@acme/alien': '^0.2.0' }, locked: { '@acme/alien': '0.2.0' } });
   consumer(join(ws, 'c-orphan'), { producers: [{ package: '@acme/ghost', repository: 'nowhere-repo' }] });
   consumer(join(ws, 'c-none'), {});
+  // A consumer whose map predates package facts: it does declare @acme/lib, and its map cannot say so.
+  consumer(join(ws, 'c-premap'), lib('1.2.0'));
+  asPreAoMap(join(ws, 'c-premap'));
+  commitAll(join(ws, 'c-premap'), 'a map from before package facts');
   // A root with no map at all.
   const bare = repository(join(ws, 'c-bare'));
   write(bare, 'file.txt', 'no map here\n');
   commitAll(bare, 'bare');
   list = join(ws, 'repos.txt');
-  writeFileSync(list, ['prod-lib', 'c-match', 'c-ahead', 'c-behind', 'c-unknown', 'c-old', 'c odd name', 'c-manual', 'c-alien', 'c-orphan', 'c-none', 'c-bare'].join('\n') + '\n');
+  writeFileSync(list, ['prod-lib', 'c-match', 'c-ahead', 'c-behind', 'c-unknown', 'c-old', 'c odd name', 'c-manual', 'c-alien', 'c-orphan', 'c-none', 'c-premap', 'c-bare'].join('\n') + '\n');
 });
 
 afterEach(async () => {
@@ -184,7 +201,10 @@ describe('the consumers of a package a file is in', () => {
     ], 'a tag at the map\'s commit is a match; the map is ahead of an older release and behind a later one');
     const by = (name) => items.find((item) => item.consumer === name);
     assert.equal(by('c-ahead').skew.tag, 'v1.1.0');
-    assert.deepEqual(by('c-ahead').skew.atPublishedCommit, { map: false }, 'no map was committed at the tagged commit, and the link says so');
+    assert.deepEqual(by('c-ahead').skew.atPublishedCommit, { map: true, packageFacts: false }, 'the map at the tagged commit predates package facts and cannot say what that release held');
+    assert.deepEqual(by('c-old').skew.atPublishedCommit, { map: false }, 'no map was committed at the other tagged commit');
+    assert.match(result.content[0].text, /the producer's map at v1\.1\.0 was made before package facts, so it cannot say whether that release held packages\/lib\/util\.js/);
+    assert.match(result.content[0].text, /no map was committed at the producer's @acme\/lib@1\.0\.0/);
     assert.equal(by('c-match').skew.atPublishedCommit, undefined, 'a match needs no second map');
     assert.equal(by('c-old').skew.tag, '@acme/lib@1.0.0', 'the name@version form finds a scoped name whole');
     assert.equal(by('c-behind').skew.tag, '@acme/lib-v1.3.0', 'the name-v<version> form');
@@ -244,12 +264,59 @@ describe('the consumers of a package a file is in', () => {
     const search = groups(result, 'consumerSearch')[0].items[0];
     assert.equal(search.status, 'unverified');
     assert.equal(search.complete, false);
-    assert.deepEqual(search.notRead.map((entry) => entry.name), ['c-bare']);
+    assert.deepEqual(search.notRead.map((entry) => [entry.name, entry.kind]), [['c-premap', 'old-map'], ['c-bare', 'no-map']]);
     const reasons = result.structuredContent.answer.cannotSee.filter((entry) => entry.what === 'consumer').map((entry) => entry.reason);
     assert.ok(reasons.some((reason) => /provenance attestations \(need the registry\)/.test(reason)), 'attested is named, and unreachable');
     assert.ok(reasons.some((reason) => /files and exports lists are not read/.test(reason)), 'containment by manifest directory is said');
     assert.ok(reasons.some((reason) => /tags may be stale/.test(reason)));
     assert.ok(reasons.some((reason) => /no map Atlas can answer from/.test(reason)));
+    await s.close();
+  });
+
+  // The fleet is on an engine without package facts until a pin wave moves it:
+  // a map from then declares nothing it can be read to declare, and that is not
+  // "none declare it" (R&D's review of #179).
+  it('are not read from a consumer map made before package facts, which is not counted as none', async () => {
+    const s = await started({ cwd: elsewhere, args: ['--repos', list] });
+    const result = await reach(s, ['packages/lib/util.js']);
+    assert.equal(consumersBy(result, 'repository').some((item) => item.consumer === 'c-premap'), false, 'it cannot be read to declare the package');
+    const search = groups(result, 'consumerSearch')[0].items[0];
+    assert.equal(search.searched.includes('c-premap'), false, 'it is not counted as searched');
+    assert.equal(search.complete, false);
+    assert.equal(search.status, 'unverified');
+    const entry = result.structuredContent.answer.cannotSee.find((item) => item.what === 'consumer' && /made before package facts/.test(item.reason));
+    assert.deepEqual(entry.named, ['c-premap']);
+    assert.match(result.content[0].text, /c-premap was not read: its map was made before package facts \(engine [^)]+\), so what it declares is unknown, not none; remap it with this engine/);
+    await s.close();
+  });
+
+  it('are never none when the only other root has a map from before package facts', async () => {
+    const only = join(ws, 'repos-premap.txt');
+    writeFileSync(only, 'prod-lib\nc-premap\n');
+    const s = await started({ cwd: elsewhere, args: ['--repos', only] });
+    const result = await reach(s, ['packages/lib/util.js']);
+    assert.equal(groups(result, 'consumers').length, 0);
+    assert.equal(groups(result, 'consumerSearch')[0].items[0].status, 'unverified');
+    assert.doesNotMatch(result.content[0].text, /none of the/);
+    await s.close();
+  });
+
+  it('say so, and name nothing, when the producer\'s own map is from before package facts', async () => {
+    const old = join(ws, 'prod-old');
+    producer(old);
+    asPreAoMap(old);
+    commitAll(old, 'a map from before package facts');
+    const pair = join(ws, 'repos-old-producer.txt');
+    writeFileSync(pair, 'prod-old\nc-match\n');
+    const s = await started({ cwd: elsewhere, args: ['--repos', pair] });
+    const result = await reach(s, ['packages/lib/util.js'], 'prod-old');
+    assert.equal(groups(result, 'consumers').length, 0);
+    const search = groups(result, 'consumerSearch')[0].items[0];
+    assert.equal(search.status, 'unverified');
+    assert.deepEqual(search.packages, []);
+    assert.ok(result.structuredContent.answer.cannotSee.some((item) => item.what === 'consumer' && /was made before package facts, so which packages hold these files is unknown/.test(item.reason)));
+    assert.match(result.content[0].text, /the map of prod-old was made before package facts \(engine [^)]+\), so which packages hold these files is unknown and the consumers are unverified, not none/);
+    assert.doesNotMatch(result.content[0].text, /none of the|declare @acme/);
     await s.close();
   });
 

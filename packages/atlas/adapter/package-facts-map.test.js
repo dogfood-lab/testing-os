@@ -47,6 +47,22 @@ function fileIn(structure, path) {
   return [...structure.boundaries.flatMap((boundary) => boundary.files), ...structure.unassigned].find((file) => file.path === path);
 }
 
+// R&D's review of #179: a repository with no package.json has none of the
+// package keys, and a map made before the facts existed has none either, so
+// the keys cannot say whether the facts were computed. The marker does.
+describe('the package-facts marker', () => {
+  it('is written whenever the facts were computed, even for a repository with no package.json', () => {
+    assert.equal(npm.packageFacts, 1);
+    const root = mappedRepository(join(FIXTURES, 'doors-py'), { prefix: 'atlas-package-facts-marker-' });
+    roots.push(root);
+    const none = structureOf(root);
+    assert.equal(none.packageFacts, 1, 'it computed the facts and found no manifest');
+    assert.equal(none.manifests, undefined, 'a repository with no package.json carries none of the keys');
+    assert.equal(none.packageDependencies, undefined);
+    assert.equal(none.packagesPublished, undefined);
+  });
+});
+
 describe('the manifests', () => {
   it('are every package.json, each with one role and how it was known', () => {
     assert.deepEqual(npm.manifests.map((manifest) => [manifest.path, manifest.role, manifest.roleFrom]), [

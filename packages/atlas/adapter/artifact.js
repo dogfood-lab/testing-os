@@ -356,6 +356,9 @@ export function buildArtifact(mapped, commit) {
     unassigned,
     ...(mapped.unseen?.length > 0 ? { unseen: mapped.unseen.map(carryUnseen) } : {}),
     ...(mapped.workspaces?.length > 0 ? { workspaces: mapped.workspaces.filter((dir) => !inAtlas(dir)) } : {}),
+    // That the package facts below were computed, even when the repository has
+    // no package.json and so none of their keys (sidecar/consumers.js reads it).
+    ...(mapped.packageFacts ? { packageFacts: mapped.packageFacts } : {}),
     // What the repository's package.json files declare, what a door publishes,
     // and the role of each manifest (core/package-facts.js): this
     // repository's facts alone, joined with others' only when a question asks.

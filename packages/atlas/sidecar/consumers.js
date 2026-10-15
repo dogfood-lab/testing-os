@@ -49,6 +49,33 @@ function normal(url) {
   return typeof url === 'string' && url !== '' ? gitRepositoryUrl(url).toLowerCase() : null;
 }
 
+// Whether a map says its package facts were computed. A repository with no
+// package.json has none of the keys, and a map made before the facts existed
+// has none either, so the keys cannot carry it: the engine writes the marker
+// `packageFacts` whenever it computed them, and a map without it is "not read".
+export function hasPackageFacts(structure) {
+  return Number(structure?.packageFacts) >= 1;
+}
+
+const OLD_MAP = 'its map was made before package facts; remap it with this engine';
+
+// The producer's own map predates package facts: which packages hold the files
+// asked about is unknown, so the consumers are unverified and nothing is said
+// of them (never "none declares it").
+function unmarkedProducer(producer, snapshot) {
+  const engine = snapshot.engine ?? null;
+  return {
+    facts: [group('consumerSearch', 'declared', [{
+      packages: [], searched: [], declaring: [], notRead: [{ name: producer.name, kind: 'old-map', engine, why: OLD_MAP }], ecosystemsNotRead: [], complete: false, status: 'unverified',
+    }])],
+    cannotSee: [{
+      basis: 'unresolved', what: 'consumer', grain: 'repository', count: 1, named: [producer.name],
+      reason: 'the map of the repository asked about was made before package facts, so which packages hold these files is unknown and their consumers are unverified (remap it with this engine)',
+    }],
+    sentences: [`Atlas: the map of ${asName(producer.name)} was made before package facts (engine ${asName(engine ?? 'not recorded')}), so which packages hold these files is unknown and the consumers are unverified, not none; remap it with this engine.`],
+  };
+}
+
 /** The producer root's origin, normalised; credentials in the URL never leave it. */
 function originOf(root) {
   const read = git(root, ['config', '--get', 'remote.origin.url']);
@@ -127,6 +154,9 @@ function skewOf({ producer, snapshot, name, version }) {
  */
 export function consumersFor({ producer, snapshot, files, workspace }) {
   const structure = snapshot.structure;
+  // A map made before the package facts existed says nothing about what its
+  // repository publishes or declares; the missing keys are not "none".
+  if (!hasPackageFacts(structure)) return unmarkedProducer(producer, snapshot);
   const published = structure.packagesPublished ?? [];
   const tracked = trackedPaths(structure);
   const others = workspace.roots.filter((root) => root.key !== producer.key);
@@ -154,8 +184,11 @@ export function consumersFor({ producer, snapshot, files, workspace }) {
   const unmapped = [];
   for (const other of others) {
     const read = workspace.snapshotOf(other);
-    if (read.ok) mapped.push({ root: other, snapshot: read.snapshot });
-    else unmapped.push({ name: other.name, why: read.error?.code ?? 'no map' });
+    if (!read.ok) unmapped.push({ name: other.name, kind: 'no-map', why: read.error?.code ?? 'no map' });
+    // A consumer map made before package facts declares nothing it can be
+    // read to declare: it is not read, and it is never counted as searched.
+    else if (!hasPackageFacts(read.snapshot.structure)) unmapped.push({ name: other.name, kind: 'old-map', engine: read.snapshot.engine ?? null, why: OLD_MAP });
+    else mapped.push({ root: other, snapshot: read.snapshot });
   }
 
   const links = [];
@@ -250,10 +283,18 @@ export function consumersFor({ producer, snapshot, files, workspace }) {
       named: [...unread].sort(), reason: 'a file asked about sits in a package of an ecosystem Atlas does not extract (PyPI and uv, Cargo, NuGet), so the repositories that depend on it are not readable',
     });
   }
-  if (unmapped.length > 0) {
+  const noMap = unmapped.filter((entry) => entry.kind === 'no-map');
+  const oldMap = unmapped.filter((entry) => entry.kind === 'old-map');
+  if (noMap.length > 0) {
     cannotSee.push({
-      basis: 'unresolved', what: 'consumer', grain: 'repository', count: unmapped.length,
-      named: unmapped.map((entry) => entry.name), reason: 'repositories among the roots with no map Atlas can answer from, which may declare the package',
+      basis: 'unresolved', what: 'consumer', grain: 'repository', count: noMap.length,
+      named: noMap.map((entry) => entry.name), reason: 'repositories among the roots with no map Atlas can answer from, which may declare the package',
+    });
+  }
+  if (oldMap.length > 0) {
+    cannotSee.push({
+      basis: 'unresolved', what: 'consumer', grain: 'repository', count: oldMap.length,
+      named: oldMap.map((entry) => entry.name), reason: 'repositories among the roots whose maps were made before package facts and say nothing of what they declare (remap them with this engine)',
     });
   }
   note('provenance attestations (need the registry): a link is never called attested');
@@ -289,7 +330,15 @@ export function consumersFor({ producer, snapshot, files, workspace }) {
     sentences.push(`Atlas: ${asName(orphan.consumer)} names ${asName(orphan.repository)} as the producer of ${asName(orphan.package)}, but ${orphan.why}.`);
   }
   if (unread.size > 0) sentences.push(`Atlas: a file asked about is in a package of an ecosystem Atlas does not extract (${[...unread].sort().join(', ')}); its consumers are unverified, not none.`);
-  if (unmapped.length > 0) sentences.push(`Atlas: ${named(unmapped.map((entry) => entry.name))} ${unmapped.length === 1 ? 'has' : 'have'} no map Atlas can answer from, so ${unmapped.length === 1 ? 'it was' : 'they were'} not searched.`);
+  if (noMap.length > 0) sentences.push(`Atlas: ${named(noMap.map((entry) => entry.name))} ${noMap.length === 1 ? 'has' : 'have'} no map Atlas can answer from, so ${noMap.length === 1 ? 'it was' : 'they were'} not searched.`);
+  for (const entry of oldMap) {
+    sentences.push(`Atlas: ${asName(entry.name)} was not read: its map was made before package facts (engine ${asName(entry.engine ?? 'not recorded')}), so what it declares is unknown, not none; remap it with this engine.`);
+  }
+  for (const link of links) {
+    const at = link.item.skew.atPublishedCommit;
+    if (at?.packageFacts === false) sentences.push(`Atlas: the producer's map at ${asName(link.item.skew.tag)} was made before package facts, so it cannot say whether that release held ${named(link.item.files)}.`);
+    else if (at?.map === false) sentences.push(`Atlas: no map was committed at the producer's ${asName(link.item.skew.tag)}, so what that release held is not read.`);
+  }
   if (links.some((link) => link.item.skew.state !== 'unknown') === false && links.length > 0) {
     sentences.push(`Atlas: the producer's tags were tried in the forms ${TAG_FORM_NAMES.join(', ')} and none matched a resolved version.`);
   }
@@ -309,6 +358,8 @@ function atPublishedCommit({ producer, skew, entry }) {
   if (!cache.has(key)) cache.set(key, readSnapshotAt(producer.root, key));
   const read = cache.get(key);
   if (!read.ok) return { map: false };
+  // A map from before package facts cannot say what it published: not "no".
+  if (!hasPackageFacts(read.snapshot.structure)) return { map: true, packageFacts: false };
   const there = (read.snapshot.structure.packagesPublished ?? []).find((item) => item.manifest === entry.manifest);
   if (!there) return { map: true, publishesPackage: false };
   const present = trackedPaths(read.snapshot.structure);

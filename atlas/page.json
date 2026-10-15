@@ -120,9 +120,9 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 4,
+      "added": 0,
       "assigned": 0,
-      "changed": 15,
+      "changed": 9,
       "moved": 0,
       "parts": 4,
       "removed": 0,
@@ -130,52 +130,22 @@
     },
     "items": [
       {
-        "kind": "door",
-        "sentence": "CI runs 2 more files than before.",
-        "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Release runs 2 more files than before.",
-        "subjects": [
-          ".github/workflows/release.yml"
-        ]
-      },
-      {
         "kind": "landing",
-        "sentence": ".github/workflows/release.yml is now also read by packages/atlas/sidecar/consumers.test.js.",
+        "sentence": "fixtures/atlas/doors-py/ is now also read by packages/atlas/adapter/package-facts-map.test.js.",
         "subjects": [
-          ".github/workflows/release.yml",
-          "packages/atlas/sidecar/consumers.test.js"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "package-lock.json is now also read by packages/atlas/sidecar/consumers.test.js.",
-        "subjects": [
-          "package-lock.json",
-          "packages/atlas/sidecar/consumers.test.js"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "package.json is now also read by packages/atlas/sidecar/consumers.test.js.",
-        "subjects": [
-          "package.json",
-          "packages/atlas/sidecar/consumers.test.js"
+          "fixtures/atlas/doors-py/",
+          "packages/atlas/adapter/package-facts-map.test.js"
         ]
       },
       {
         "kind": "counts",
-        "sentence": "4 files added and 15 changed content, across 4 parts.",
+        "sentence": "9 files changed content, across 4 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "ae3618890c70b5bcbb6e28676d68598b5b96c141",
-      "generatedAt": "2026-10-15T06:47:32.452Z"
+      "commit": "29db144daaf5d0e71deeb8311cdcb853b61323e3",
+      "generatedAt": "2026-10-15T07:09:19.245Z"
     },
     "unchanged": false
   },
@@ -216,7 +186,7 @@
     "Window: 180 days; a pair counts from 10 shared commits, since 42 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "29db144daaf5d0e71deeb8311cdcb853b61323e3",
+  "commit": "a1b4494976c2a820286628bd59ba89cfd0200ef0",
   "defaultBranch": "main",
   "derived": "23 parts, mostly JavaScript (1646 files), Python (243), TypeScript (222), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
   "doors": [
@@ -1464,7 +1434,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-15T07:09:19.245Z",
+  "generatedAt": "2026-10-15T07:23:29.660Z",
   "limits": [
     "4 import sites name declared dependencies that share their names with local modules (datasets, docx and xrpl); they are read as the dependencies, which are not in this repository.",
     "179 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 176 more.",

@@ -303,7 +303,7 @@ The shape below is R&D's ruling of 2026-10-13, which replaced a literal reading 
 - **AN:** every test above passes in a clean verify and in CI; the security review's findings are closed; R&D passes the pull request.
 - **AO:**
   - zero wrong facts in the fleet sample;
-  - every byte of structure.json, page.json, README.md and statistics.json is identical before and after, on this repository's fixtures and on the fleet clones, except the new facts (`manifests`, `packageDependencies`, `packagesPublished`, each file's `packages`, and statistics.json's `packageImports`) and the dates (`generatedAt`, the dated line). AO adds no format version.
+  - every byte of structure.json, page.json, README.md and statistics.json is identical before and after, on this repository's fixtures and on the fleet clones, except the new facts (`manifests`, `packageDependencies`, `packagesPublished`, each file's `packages`, statistics.json's `packageImports`, and AP's marker `packageFacts`) and the dates (`generatedAt`, the dated line). AO adds no format version.
 - **AP:** fixtures with known consumers give each skew state, an orphan, and each basis. No answer says "will break".
 - **AQ:** the report applies the bar above, as written here before mining.
 
@@ -333,6 +333,7 @@ The shape below is R&D's ruling of 2026-10-13, which replaced a literal reading 
 
 - **How a link was made:** `repository` is a purl match plus a manifest `repository` URL equal to the producer clone's origin, both through `gitRepositoryUrl` (compared without regard to case); `manual` is a `producers` entry in the consumer's `atlas/boundaries.yaml`, read at the consumer's map commit; `unverified` is a purl match without a repository match, or a producer manifest that names no repository, shown with its reason and never dropped, and never `repository` on a name alone. `attested` (a provenance attestation, as deps.dev uses the word) needs the registry and is unreachable offline; `cannotSee` names it.
 - **Skew** is read from the producer's local tags only, tried as `v<version>`, `<version>`, `<name>@<version>` (the full `@scope/name` for a scoped package) and `<name>-v<version>` (release-please); the answer names the forms tried, otherwise `unknown, no local tag for <version>`. A shallow clone, or one with unfetched tags, gives `unknown`, never `match`, and `cannotSee` says the tags may be stale. Release runs are not read (the sidecar uses no network).
+- **A map made before package facts is not read** (R&D's review of #179). Absent keys cannot say the facts were not computed, since a repository with no `package.json` has none, and the engine version cannot either, so the engine writes the marker `packageFacts: 1` in structure.json whenever it computed them. A consumer map without it goes to `notRead` and never counts as searched; a producer map without it, or the map at a tagged commit, is reported as unable to tell. The fleet is on 1.26.0 until the pin wave, so without this an unremapped consumer would read as declaring nothing.
 - **A file is in a package by containment:** under the directory of a published package's manifest. The package's `files` and `exports` are not read, and `cannotSee` says so.
 - **The consumers are a "Consumers in the workspace" section of `atlas_reach`,** not a new tool; the local git in the producer's root is the only git it runs.
 
