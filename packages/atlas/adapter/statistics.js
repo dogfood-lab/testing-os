@@ -127,7 +127,7 @@ export function applyMarks(rows, previous, fallen) {
  *   map used, so the floor moves with hysteresis (decideFloor); null when
  *   there is no previous map
  */
-export function buildStatistics({ repo, commit, document, artifact, generatedAt, priorFloor = null }) {
+export function buildStatistics({ repo, commit, document, artifact, generatedAt, priorFloor = null, packageImports = null }) {
   const parameters = parametersFrom(document);
   const history = loadHistory(repo, { ...parameters, priorFloor });
   const empty = {
@@ -214,6 +214,8 @@ export function buildStatistics({ repo, commit, document, artifact, generatedAt,
     strengthDefinition: STRENGTH_DEFINITION,
     pairs: measured.pairs,
     boundaries: applyMarks(rows, previous, measured.floor === 'fallen').sort((a, b) => (a.name < b.name ? -1 : 1)),
+    // What the package facts left out of the files' packages (core/package-facts.js), counted.
+    ...(packageImports ? { packageImports } : {}),
   };
 }
 

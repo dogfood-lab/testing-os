@@ -368,6 +368,82 @@ export function workingDirs(steps) {
   return [...dirs].sort();
 }
 
+/**
+ * Every step that installs a directory's own dependencies, with the
+ * directory, read as the D2 check reads a step: npm ci, or npm install with
+ * no package named, after --prefix; pnpm install with no package named,
+ * after --dir or -C; yarn or yarn install, after --cwd. What gives a
+ * manifest the installed role (core/package-facts.js).
+ *
+ * @returns {Array<{ dir: string, job: string, step: string, index: number, command: string }>}
+ */
+export function installSites(steps) {
+  const out = [];
+  for (const [job, list] of steps) {
+    for (const step of list) {
+      for (const run of step.invocations) {
+        const dir = installedDir(run);
+        if (dir != null) out.push({ dir, job, step: step.step, index: step.index, command: `${run.program} ${firstWord(run)}`.trim() });
+      }
+    }
+  }
+  return out;
+}
+
+// The directory a run installs, or null when it installs none of its own.
+function installedDir(run) {
+  if (run.program === 'npm') return installsHere(run) ? installDir(run) : null;
+  if (run.program === 'pnpm') {
+    const words = wordsOf(run.args, PNPM_VALUE_FLAGS);
+    return ['install', 'i'].includes(words[0]) && words.length === 1 ? movedTo(run, ['--dir', '-C']) : null;
+  }
+  if (run.program === 'yarn') {
+    // A bare yarn installs; yarn --version and yarn --help do not.
+    if (run.args.some((arg) => ['--version', '-v', '--help', '-h'].includes(arg))) return null;
+    const words = wordsOf(run.args, YARN_VALUE_FLAGS);
+    return words.length === 0 || (words[0] === 'install' && words.length === 1) ? movedTo(run, ['--cwd']) : null;
+  }
+  return null;
+}
+
+const PNPM_VALUE_FLAGS = new Set(['--dir', '-C', '--filter', '-F', '--reporter', '--store-dir', '--registry', '--config']);
+const YARN_VALUE_FLAGS = new Set(['--cwd', '--modules-folder', '--cache-folder', '--registry', '--network-timeout']);
+
+function wordsOf(args, valueFlags) {
+  const out = [];
+  for (let i = 0; i < args.length; i += 1) {
+    const arg = args[i];
+    if (arg === '--') break;
+    if (arg.startsWith('-')) {
+      if (valueFlags.has(arg)) i += 1;
+      continue;
+    }
+    out.push(arg);
+  }
+  return out;
+}
+
+function firstWord(run) {
+  if (run.program === 'npm') return positionals(run.args)[0] ?? '';
+  return wordsOf(run.args, run.program === 'pnpm' ? PNPM_VALUE_FLAGS : YARN_VALUE_FLAGS)[0] ?? '';
+}
+
+// The directory a run works in after a flag that moves it (pnpm --dir and
+// -C, yarn --cwd), in either the spaced or the = form; null for one that
+// leaves the repository or is built at run time.
+function movedTo(run, flags) {
+  let dir = run.dir;
+  run.args.forEach((arg, index) => {
+    const flag = flags.find((name) => arg === name || arg.startsWith(`${name}=`));
+    if (!flag || dir == null) return;
+    const value = arg === flag ? run.args[index + 1] : arg.slice(flag.length + 1);
+    if (value == null) return;
+    const joined = posix.normalize(posix.join(dir || '.', value));
+    dir = joined === '.' ? '' : joined.startsWith('..') || joined.startsWith('/') || joined.includes('$') ? null : joined.replace(/\/+$/, '');
+  });
+  return dir;
+}
+
 // The directory an npm command runs in, after --prefix.
 function installDir(run) {
   let dir = run.dir;

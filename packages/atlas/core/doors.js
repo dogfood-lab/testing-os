@@ -6,7 +6,7 @@ import { actionCommand } from './action-commands.js';
 import { better, cleanDir, commandLines, readCommands, readContainer, readProgram, repositoryView, RUNS_RECORDED } from './commands.js';
 import { godotProjects } from './godot.js';
 import { isTestFile } from './landings.js';
-import { checkDoor, workingDirs } from './door-checks.js';
+import { checkDoor, installSites, workingDirs } from './door-checks.js';
 import { jobRuntime } from './runtime.js';
 import { runsAProgram } from './step-programs.js';
 import { storedText } from './text.js';
@@ -628,6 +628,7 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
       ...pushedElsewhere(entry.pushes, entry.sidePushes, entry.sends),
     }))
     .filter((entry) => entry.sends.length > 0 || entry.stages.length > 0 || entry.pushes || entry.pushesForReview || entry.pushesTo);
+  const loops = publishLoops([sends, ...[...gates.values()].map((entry) => entry.sends)]);
   return {
     file,
     name: typeof doc.name === 'string' && doc.name.trim() !== '' ? doc.name : fallback,
@@ -644,6 +645,12 @@ function readWorkflow(repoPath, file, repo, doc, fallback, text, { runtime = fal
     // Read by sidecar/check-change-tool.js, which a changed lock or manifest
     // in one of them touches; adapter/artifact.js does not carry it.
     ...(runtime ? { workingDirs: workingDirs(stepsByJob) } : {}),
+    // Read by index.js for the role of the manifests a step installs
+    // (core/package-facts.js); adapter/artifact.js does not carry it.
+    ...(runtime ? { installs: installSites(stepsByJob) } : {}),
+    // Read by core/package-facts.js for how a publish found what it sends;
+    // adapter/artifact.js does not carry it.
+    ...(loops.length > 0 ? { publishLoops: loops } : {}),
     runs: recorded.kept,
     runsCount: recorded.count,
     ...(recorded.cut ? { runsCut: true } : {}),
@@ -741,7 +748,21 @@ function jobPlatforms(body) {
 
 
 function emptySends() {
-  return { publishesTo: new Set(), packages: new Map(), exports: new Set(), assets: new Set(), crates: [], releases: false, deploysPages: false, opensPullRequests: false };
+  return { publishesTo: new Set(), packages: new Map(), loops: new Map(), exports: new Set(), assets: new Set(), crates: [], releases: false, deploysPages: false, opensPullRequests: false };
+}
+
+// The package directories a door's publishes reach only through a loop over
+// a glob, each with the glob, from its own sends and its gated jobs'.
+function publishLoops(scopes) {
+  const named = new Set();
+  const looped = new Map();
+  for (const sends of scopes) {
+    for (const [dir, over] of sends.loops) {
+      if (over == null) named.add(dir);
+      else if (!looped.has(dir)) looped.set(dir, over);
+    }
+  }
+  return [...looped.entries()].filter(([dir]) => !named.has(dir)).sort(([a], [b]) => compare(a, b)).map(([dir, over]) => ({ dir, over }));
 }
 
 function finishSends(sends, issues, texts) {
@@ -1321,11 +1342,18 @@ function commandSends(run, sends, place) {
   // The directory the last pack in this pass of a loop ran in: npm publish
   // "$tarball" after tarball=$(cd "$dir" && pnpm pack) sends that package.
   let packed = null;
+  // The glob of the loop pass a command runs in, or null outside one.
+  let looped = null;
   for (const tokens of unrolled(commandLines(run), 0, (word) => loopWords(word, place.repo))) {
     if (tokens[0] === LOOP_TURN) {
       if (tokens[1] === 0) loopBase = cwd;
       else cwd = loopBase;
       packed = null;
+      looped = tokens[2];
+      continue;
+    }
+    if (tokens[0] === LOOP_END) {
+      looped = tokens[1];
       continue;
     }
     if (tokens[0] === 'cd' && tokens.length <= 2) {
@@ -1358,7 +1386,13 @@ function commandSends(run, sends, place) {
     if (registry !== 'npm') continue;
     const tarball = words.slice(words.indexOf('publish') + 1).find((word) => !word.startsWith('-'));
     const from = packed != null && tarball != null && (tarball.includes('$') || /\.tgz$/.test(tarball)) ? packed : null;
-    for (const entry of from != null ? publishedPackages(['publish'], from, place) : publishedPackages(words, cwd, place)) sends.packages.set(entry.key, entry.value);
+    for (const entry of from != null ? publishedPackages(['publish'], from, place) : publishedPackages(words, cwd, place)) {
+      sends.packages.set(entry.key, entry.value);
+      if (entry.value.dir == null) continue;
+      // How the publish found it: null when named outright, which wins over a loop.
+      if (looped == null) sends.loops.set(entry.value.dir, null);
+      else if (!sends.loops.has(entry.value.dir)) sends.loops.set(entry.value.dir, looped);
+    }
   }
 }
 
@@ -1380,21 +1414,30 @@ const HUB_UPLOAD = /\b(?:upload_folder|upload_file|upload_large_folder|create_co
 const ZENODO_DEPOSIT = /zenodo\.org\/api\/deposit/;
 const ZENODO_PUBLISH = /\/actions\/publish\b/;
 // Marks the start of one pass through an unrolled loop, with the directory
-// the loop began in: a (cd "$dir" && ...) subshell leaves it there.
+// the loop began in: a (cd "$dir" && ...) subshell leaves it there. It
+// carries the glob the pass's word came from, or null for a word written out.
 const LOOP_TURN = '\0turn';
+// Marks the end of an unrolled loop, with the glob of the pass around it.
+const LOOP_END = '\0end';
 
 /**
  * A shell for over literal words, unrolled: the body once per word, with the
  * loop's variable spelled out, so for dir in packages/a packages/b; do (cd
  * "$dir" && npm publish); done publishes both packages by name. A loop over
- * a glob or a variable is left as it is.
+ * a glob goes through the tracked paths expand finds for it; a loop over a
+ * variable is left as it is.
  */
-function unrolled(lines, depth = 0, expand = () => null) {
+function unrolled(lines, depth = 0, expand = () => null, via = null) {
   const out = [];
   for (let i = 0; i < lines.length; i += 1) {
     const tokens = lines[i];
-    // A glob over tracked directories or files is what sh hands the loop.
-    const words = tokens.slice(3).flatMap((word) => expand(word) ?? [word]);
+    // A glob over tracked directories or files is what sh hands the loop;
+    // each word keeps the glob it came from.
+    const passes = tokens.slice(3).flatMap((word) => {
+      const found = expand(word);
+      return found == null ? [{ word, glob: null }] : found.map((value) => ({ word: value, glob: word }));
+    });
+    const words = passes.map((pass) => pass.word);
     if (tokens[0] !== 'for' || tokens[2] !== 'in' || depth > 2 || words.length === 0 || words.some((word) => /[$*?[{`]/.test(word))) {
       out.push(tokens);
       continue;
@@ -1413,10 +1456,11 @@ function unrolled(lines, depth = 0, expand = () => null) {
       .filter((line) => line.length > 0);
     const name = tokens[1];
     const spelled = (word, value) => word.replaceAll(`\${${name}}`, value).replace(new RegExp(`\\$${name}(?![A-Za-z0-9_])`, 'g'), value);
-    for (const value of words) {
-      out.push([LOOP_TURN, words.indexOf(value)]);
-      out.push(...unrolled(body.map((line) => line.map((word) => spelled(word, value))), depth + 1, expand));
+    for (const { word: value, glob } of passes) {
+      out.push([LOOP_TURN, words.indexOf(value), glob ?? via]);
+      out.push(...unrolled(body.map((line) => line.map((word) => spelled(word, value))), depth + 1, expand, glob ?? via));
     }
+    out.push([LOOP_END, via]);
     i = end;
   }
   return out;

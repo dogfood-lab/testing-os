@@ -1,0 +1,35 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+      vocal-synth-engine:
+        specifier: github:px/vocal-synth-engine#7269cd539b20907743601f66812b3d904d43508e
+        version: '@px/vocal-synth-engine@https://codeload.github.com/px/vocal-synth-engine/tar.gz/7269cd539b20907743601f66812b3d904d43508e'
+
+  packages/shared: {}
+
+  packages/ui:
+    dependencies:
+      '@px/shared':
+        specifier: workspace:*
+        version: link:../shared
+      zod:
+        specifier: ^3.22.0
+        version: 3.23.8
+
+packages:
+
+  react-dom@18.3.1:
+    resolution: {integrity: sha512-AAAA}
+
+  zod@3.23.8:
+    resolution: {integrity: sha512-BBBB}

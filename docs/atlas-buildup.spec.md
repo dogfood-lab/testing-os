@@ -203,26 +203,38 @@ This is slice AK (`docs/atlas-production.spec.md`, Part 1 item 6), with R&D's ru
 
 ### AO: the edge
 
-- **The consumer's side.** Each import of a bare specifier records a `package-import` fact. It holds:
-  - the file;
-  - the package, as a purl in the Package-URL form (ECMA-427): `pkg:npm/name`, and `pkg:npm/%40scope/name` for a scoped name;
-  - the declared range, from the nearest manifest;
-  - the resolved version;
-  - its kind.
-- **Which imports count:**
-  - A subpath import (`pkg/sub`) is recorded against its package.
-  - `node:` builtins are not packages.
-- **The resolved version** is read from `package-lock.json` (v2 or v3) or `pnpm-lock.yaml`. With a v1 lockfile, a yarn lockfile or none, it is `unknown`, with the reason, never a guess.
-- **Kinds:**
-  - registry;
-  - `workspace:`, `file:` and `link:`, each its own kind, since their freshness moves with the tree;
-  - a package importing its own name counts as the workspace kind.
-- **The producer's side.** Each published package's name, version and `repository` field. Today a map records that a repository publishes, not what.
+The shape below is R&D's ruling of 2026-10-13, which replaced a literal reading of this section that put the range, version and kind on every import. It holds the same facts without repeating a declaration on every file, and it keeps the declarations AP's tier 1 needs: a CLI run from a script, a peer and a types package are consumers that no import shows. The page is unchanged.
+
+- **`manifests`:** every tracked `package.json`, as `{ path, role, roleFrom, name, version, private }`.
+  - One role per manifest, by precedence: `root`, then `member` (the workspace's `workspaces` or `pnpm-workspace.yaml`), then `installed` (a door's step runs `npm ci`, `npm install`, `pnpm install` or `yarn` there, read as the D2 check reads a step, through `working-directory`, `cd x &&`, `--prefix`, `--dir` and `--cwd`), then `other` (fixtures, examples, templates), said as "no workspace lists it and no install step Atlas reads runs in its directory", since a step may install a copy of it elsewhere.
+  - `roleFrom` says how the role was known, as every Atlas fact does: "the root manifest", "workspaces in package.json", "door Site, job build, step Install: npm ci in site".
+  - AP's tier 1 counts `root`, `member` and `installed` declarations, and lists `other` in `cannotSee`. A fixture's facts stay true without making its repository a consumer.
+- **`packageDependencies`:** every declaration in every manifest, as `{ manifest, field, name, purl, range, kind, version, versionFrom | unknown }`, with `alias`, `repository` and `kindFrom` where they apply.
+  - The purl follows Package-URL (ECMA-427): `pkg:npm/name`, `pkg:npm/%40scope/name`, with no version.
+  - Kinds: `registry`; `workspace`, `file` and `link`, which move with the tree; `git`; `url` (a tarball).
+  - A name the lock links to a member's directory is `workspace`, with `kindFrom`, whatever its range says: npm workspaces declare a sibling with a plain range.
+  - An `npm:` alias is the package it names, with `alias` kept beside it.
+  - A git dependency records its repository as `https://host/owner/repo`, and as `version` the 40-hex commit its lock pins. When that commit holds a package under another name, the purl is that package's, with the declared name as `alias`. A git dependency on a fleet repository carries an exact commit, the strongest cross-repository edge there is.
+  - The version is read from the tracked `package-lock.json` (v2 or v3) or `pnpm-lock.yaml` (v6 or v9) at or above the manifest, and only for a manifest that lock installs: its own directory, or a member it lists. A fixture below a lock gets no version from it. Anything else (a v1 lock, `npm-shrinkwrap.json`, yarn, bun, none, a pinned value that is not a version or commit) is `unknown`, with the reason, never a guess.
+- **`packagesPublished`:** each manifest a door publishes to npm, as `{ manifest, name, purl, version, repository, doors, how }`.
+  - It covers a package the publish names, one a loop over a glob finds, every member, the members a loop over the workspace picks, or the one package under a directory that the tag or the run picks. A publish in a job an `if:` holds counts.
+  - `how` says which: "named by the publish", "a loop over packages/*/", "every member of the workspace", "a loop over the members of the workspace", "one package under packages/, chosen by the tag".
+  - A private manifest is never in it, and a publish whose packages only a run decides is not expanded.
+- **Each JavaScript or TypeScript file's `packages`:** `[{ purl, manifest, self? }]`, the packages its bare imports name.
+  - **What is not a package** (R&D's review of #173): a specifier starting with `#`, a name npm's rules for existing packages reject (`validForOldPackages`, so `JSONStream` stays and `@/lib` and `$lib` go), and a name the resolver found in a tracked file when no manifest declares it and it is no workspace member. Each is left out and counted in statistics.json under `packageImports`: sites by reason, the files they are in, and the twenty most common names left out.
+  - A tracked file reached through a declared name, a workspace member's name (declared or not: a monorepo's members import each other by name without listing each other) or a package's own name stays, since the workspace and self kinds are those. The first fleet pass of this fix showed why: every one of 132 undeclared in-repository sites in five monorepos was a workspace member, and none was an alias.
+  - Imports counted: static, dynamic with a literal name, and `require`. A subpath counts against its package.
+  - Built-ins, a scheme's modules (`astro:content`) and `require.resolve` are not packages.
+  - `manifest` is the nearest manifest above the file that declares the name or its types package, found as resolution finds it, or null when none does. An alias records the package it names. A package importing its own name is `self`.
+- **Built-ins are told apart by a list fixed in the engine:** Node 22's `builtinModules`, the oldest Node the engine supports. A prefix-only built-in (`node:test`, `node:sqlite`) counts only with its prefix.
+  - The running Node's list would put the classification in structure.json, so a map made on Node 24 and checked on Node 22 could disagree.
+  - A test maps a fixture under a preload that changes the running list, and requires the same bytes.
 - **Two publishers of one name:** every candidate is reported, never one picked.
 - **npm and pnpm come first,** because the ladder's chain is TypeScript. uv comes later.
 - **The fleet check:**
-  - every repository is mapped by the engine before and after;
-  - 22 facts of each kind are sampled and read against the lockfile and the manifest.
+  - every repository, and every fixture here, is mapped by the engine before and after;
+  - 22 facts of each kind (manifest roles, declarations, file imports, published packages) are sampled and read against the lockfile, the manifest and the workflows;
+  - the sample includes a repository with a pnpm lock, one with an alias or a git dependency, a workspace with a private member, testing-os for its fixture manifests, and a repository whose separate packages doors install with no workspace.
 - **The bar for this deterministic extractor is zero wrong facts in the sample.** Any wrong fact is a defect, fixed at its class before the wave. "Provisional under 20" stands for a kind with fewer facts.
 - **It changes every map,** so it ships with the pin wave.
 
@@ -291,7 +303,7 @@ This is slice AK (`docs/atlas-production.spec.md`, Part 1 item 6), with R&D's ru
 - **AN:** every test above passes in a clean verify and in CI; the security review's findings are closed; R&D passes the pull request.
 - **AO:**
   - zero wrong facts in the fleet sample;
-  - every fact other than the new ones is byte-identical before and after, on this repository's fixtures and on the fleet clones.
+  - every byte of structure.json, page.json, README.md and statistics.json is identical before and after, on this repository's fixtures and on the fleet clones, except the new facts (`manifests`, `packageDependencies`, `packagesPublished`, each file's `packages`, and statistics.json's `packageImports`) and the dates (`generatedAt`, the dated line). AO adds no format version.
 - **AP:** fixtures with known consumers give each skew state, an orphan, and each basis. No answer says "will break".
 - **AQ:** the report applies the bar above, as written here before mining.
 

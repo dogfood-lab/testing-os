@@ -1,0 +1,11 @@
+name: CI
+on: push
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Publish the UI
+        run: pnpm publish --filter @px/ui --no-git-checks

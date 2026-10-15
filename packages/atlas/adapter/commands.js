@@ -201,6 +201,7 @@ export function buildMap({ repo, boundary, commit, origin = null, previous = nul
     artifact,
     generatedAt: new Date().toISOString(),
     priorFloor: priorFloor(committed, previous, boundary),
+    packageImports: mapped.packageImportsLeftOut ?? null,
   });
   progress('writing the page');
   const page = buildPage({
