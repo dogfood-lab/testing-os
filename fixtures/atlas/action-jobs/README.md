@@ -9,3 +9,6 @@ repositories, never of this one.
 PR comment lists its own pull request's comments through
 `repos/${REPO}/issues/...`, the workflow's own repository, which is no
 read of another.
+Code Scanning runs CodeQL's own steps (init and analyze). Scorecard uploads
+a SARIF report that another tool made to code scanning, which is no CodeQL
+scan.
