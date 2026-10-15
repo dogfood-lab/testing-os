@@ -2,6 +2,12 @@ name: CI
 
 on:
   push:
+    # Only the default branch: a pull request's own push already runs this
+    # workflow through `pull_request`, and with both triggers a branch with an
+    # open PR ran CI twice and put every `atlas check` annotation on its diff
+    # twice (the AM-6 second live run, #174). The paths filter below still
+    # applies, so this only narrows what a push runs.
+    branches: [main]
     paths:
       - 'packages/**'
       - 'package.json'

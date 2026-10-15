@@ -21,7 +21,7 @@
           "path": ".github/workflows/atlas-render.yml"
         },
         {
-          "hash": "c467407a122ff06b5af1d06a71ecd3d1fb9d28321e1f2ac31126275ee087509c",
+          "hash": "18d283c4f42293b5c0b41eb3c6255b2b22cfab14e5ebd63d902c13a32fa5f545",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -95,7 +95,7 @@
           "path": "packages/atlas/LICENSE"
         },
         {
-          "hash": "31353b08f86502cfde88e86e10c4985e5423305d3ea840b8ba53859295227d91",
+          "hash": "3de6b084d0fc524ecc1ed8b2952540c20d42fcef1a78dc72313fc32b5448fd54",
           "path": "packages/atlas/README.md"
         },
         {
@@ -1161,7 +1161,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "dc1127660437db684c8c28f467c739dc7d0eb6b1c30c3d5c1400dcc049c71de7",
+          "hash": "0190e5d9ac772aef78ca14f181f54cf1649323680b904d1c71b18753bb2c0980",
           "importsFiles": [
             "packages/atlas/core/package-facts.js",
             "packages/atlas/sidecar/test-client.js"
@@ -1173,7 +1173,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "460f77ec789cff607167792c592971a5083a6fe90fc436b24f7b97eaa4588aac",
+          "hash": "92f5ec9a7cbdd2b19560b5bc0df7a19a6f55c1e4b4750a9aecbaa4e8d99de5d3",
           "importOrder": [
             "packages/atlas/core/index.js",
             "packages/atlas/core/fixture-repo.js",
@@ -3029,7 +3029,7 @@
             "words",
             "writtenBy"
           ],
-          "hash": "e5ad12262422e481d51be33049c814f25e23908555c34845aee8455b4af842f0",
+          "hash": "9ccf3f554d040f2c1e2c9d8f3f68cd8734b3445ce7625a7374fa4d3850585c33",
           "importOrder": [
             "packages/atlas/core/door-checks.js",
             "packages/atlas/core/history.js",
@@ -4914,7 +4914,7 @@
               "line": 77
             }
           ],
-          "hash": "2428d1fcd2bd5487eb1182e55bb3a4c889d60b9dba0efe983c2bd9e19a832229",
+          "hash": "f860cba360b7c065f0e31636943910ecb825e16f65f6a170493bd28626d44b8b",
           "importsFiles": [
             "packages/atlas/core/builtins.js",
             "packages/atlas/core/lockfile.js"
@@ -6795,7 +6795,7 @@
           "writes": 0
         },
         {
-          "reads": 10,
+          "reads": 2,
           "where": [
             "cwd:atlas/"
           ],
@@ -6830,7 +6830,7 @@
           "writes": 5
         }
       ],
-      "outsideReads": 365,
+      "outsideReads": 357,
       "outsideWrites": 12,
       "role": "code",
       "testRunners": [
@@ -6904,7 +6904,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "abd3ef601f64ec91374005b5cade19c952c61463df113a6c1ed6342195404925",
+          "hash": "0e14f72670b011695170f432d36a31d2a9fc0e86fea47e5dc448e54797e141ea",
           "path": "docs/atlas-buildup.spec.md"
         },
         {
@@ -7112,6 +7112,11 @@
             "packages/schemas/src/index.ts"
           ],
           "packages": [
+            {
+              "manifest": null,
+              "member": true,
+              "purl": "pkg:npm/%40dogfood-lab/schemas"
+            },
             {
               "manifest": null,
               "purl": "pkg:npm/js-yaml"
@@ -21308,13 +21313,6 @@
           "writes": 0
         },
         {
-          "reads": 2,
-          "where": [
-            "cwd:atlas/"
-          ],
-          "writes": 0
-        },
-        {
           "reads": 1,
           "where": [
             "cwd:dogfood/"
@@ -21343,7 +21341,7 @@
           "writes": 1
         }
       ],
-      "outsideReads": 191,
+      "outsideReads": 189,
       "outsideWrites": 30,
       "role": "code",
       "testRunners": [
@@ -23562,7 +23560,15 @@
           "path": "fixtures/atlas/action-jobs/.github/workflows/guard.yml"
         },
         {
-          "hash": "246e402a5e6c4f8730152eb219785219257a3749547cea9b3037d92f388e9c42",
+          "hash": "6a5392833d7c681877fbec10129f4b75c487747ee27e87a830fd8fba8e407519",
+          "path": "fixtures/atlas/action-jobs/.github/workflows/scan.yml"
+        },
+        {
+          "hash": "8234bc44a3b79dd091970a11c64c719c2432183b2d98f049597c33c941359645",
+          "path": "fixtures/atlas/action-jobs/.github/workflows/scorecard.yml"
+        },
+        {
+          "hash": "06de29e323e39634d8c39d691f8ca869325cd7bb23e81196a1d83e6d77a825c6",
           "path": "fixtures/atlas/action-jobs/README.md"
         },
         {
@@ -30398,6 +30404,57 @@
           ],
           "hash": "c0708dba7b08923a2223835f0bea8a7c5dde2b8ed39e6581c8d1cbf712e52049",
           "path": "fixtures/atlas/package-dir-scripts/tools/receipt.py"
+        },
+        {
+          "hash": "f716c25879fdec0b4f5cf8f3eabc8bedcaaf62c979f2b397e86ee99d18b35473",
+          "path": "fixtures/atlas/package-facts-aliases/README.md"
+        },
+        {
+          "hash": "ed65f69e43f5196e90d912237c538dd343645dee0efe19f72bcb02882e1990ab",
+          "path": "fixtures/atlas/package-facts-aliases/atlas/boundaries.yaml"
+        },
+        {
+          "hash": "4db0f50581e87fb424897bd132899afca6a0f14dcd5d0398573e6b1ab9159c5c",
+          "path": "fixtures/atlas/package-facts-aliases/package.json"
+        },
+        {
+          "constantOnly": true,
+          "hash": "23b11082f349f76dd776511181b1a802e5b11dec20be0babec00b195f2846dc1",
+          "path": "fixtures/atlas/package-facts-aliases/packages/ext/index.js"
+        },
+        {
+          "hash": "644ce6eed1cd6000010ea94e8bf41b4eff110d7591605d1d71354b51c9c12c68",
+          "path": "fixtures/atlas/package-facts-aliases/packages/ext/package.json"
+        },
+        {
+          "hash": "ce762e375989b96dce8b33cdbb9abe355a86b018515fcfc770f9416b19712a24",
+          "path": "fixtures/atlas/package-facts-aliases/src/lib/util.js"
+        },
+        {
+          "constantOnly": true,
+          "hash": "3690acba419b0360f78ece0f45ae07619d5d11f504c824904e8556bb2178f268",
+          "importsFiles": [
+            "fixtures/atlas/package-facts-aliases/src/lib/util.js"
+          ],
+          "packages": [
+            {
+              "manifest": null,
+              "purl": "pkg:npm/%40alias-demo/ext"
+            },
+            {
+              "manifest": "fixtures/atlas/package-facts-aliases/package.json",
+              "purl": "pkg:npm/JSONStream"
+            },
+            {
+              "manifest": "fixtures/atlas/package-facts-aliases/package.json",
+              "purl": "pkg:npm/lodash"
+            }
+          ],
+          "path": "fixtures/atlas/package-facts-aliases/src/main.ts"
+        },
+        {
+          "hash": "c08310fd29cf14653182a8f8a65b04384c8ffa2776d87605d4365615ec1ab330",
+          "path": "fixtures/atlas/package-facts-aliases/tsconfig.json"
         },
         {
           "hash": "60283e713e45ba9d8836cb0bc0671b8f6e5c2bc442b6d0e4bcdd725ca391da2a",
@@ -38122,7 +38179,7 @@
           "why": "undeclared"
         }
       ],
-      "unresolvedSites": 148
+      "unresolvedSites": 150
     },
     {
       "dynamicReads": 0,
@@ -38205,19 +38262,19 @@
           "path": "indexes/failing.json"
         },
         {
-          "hash": "12d18899b8aeb2c5d174c5ae050cdb61c096a2e6eec3558515cc535f6e080095",
+          "hash": "91d9bc940fe5b05792531861f4e8c970a98fb0fb7e4145429b840254524ff48d",
           "path": "indexes/integrity/chain.jsonl"
         },
         {
-          "hash": "2b443ee83e4d753651e3f36ee9ad165bad9b29d16e9bcff91dc8f41a81aef0c6",
+          "hash": "0134dc3a04a8a25858a8776bcdd453f18ebb916538e04f01a0d1cd883f38584f",
           "path": "indexes/latest-by-repo.json"
         },
         {
-          "hash": "8c023161fb4e1a491dc15e8d8db749135275d46d23970b727fda6fa6f91c13aa",
+          "hash": "bc6de59a46507aa6e074cf776482a69594e46748f7ad3059cda4de09578edbb7",
           "path": "indexes/stale.json"
         },
         {
-          "hash": "f3cb272aff25d7d11ebc60bc64216fb91fbd0d8278e66fae42af07c62c750b8a",
+          "hash": "6c55a9f7603f2d950c1ff573d1e8c5aac18f222ec5749bceddfc1ba2cb0aea8c",
           "path": "indexes/trends.json"
         }
       ],
@@ -41667,6 +41724,14 @@
           "path": "records/dogfood-lab/testing-os/2026/10/15/run-00mv8wv85x-iVnuNtbXXyeiqQ.json"
         },
         {
+          "hash": "1eba1967278de163de59d45c9823901ff41c4241806fd701950f74b31e055970",
+          "path": "records/dogfood-lab/testing-os/2026/10/15/run-00mv95b3ir-ZDsnx7zMYeBJHg.json"
+        },
+        {
+          "hash": "8ca457c84ae5058a91719e0cf5d63617a08d87ae00a62497f2d7a7d3b2ab7d36",
+          "path": "records/dogfood-lab/testing-os/2026/10/15/run-00mv961qt8-dd1eitJgkZ6Z3g.json"
+        },
+        {
           "hash": "d80bd628d70f1275786c79da48bfb6da79ef0eb303eceed6fe87960e8c7a308c",
           "path": "records/mcp-tool-shop-org/a11y-demo-site/2026/03/20/run-a11y-demo-site-23329256169-1.json"
         },
@@ -42676,11 +42741,11 @@
           "path": ".gitignore"
         },
         {
-          "hash": "ce99bb90ff824d7f828694be73be44f78832e0e5a2fb8f7b7b4fe4aa0db17d75",
+          "hash": "2f0b9074a5df7c336a60d22193a18c1de43338fd151b791fadfb54af74a49cd3",
           "path": "CHANGELOG.md"
         },
         {
-          "hash": "e0918d6126b86f1b9758067ec135a462ab883e87c72279271a2329a441b56da9",
+          "hash": "f6a01d74c6a6637b5a8252db26b27c60ea09695d66bc85f160177a474b99b23a",
           "path": "CLAUDE.md"
         },
         {
@@ -43489,6 +43554,13 @@
           "importsFiles": [
             "packages/atlas/adapter/fleet.js"
           ],
+          "packages": [
+            {
+              "manifest": null,
+              "member": true,
+              "purl": "pkg:npm/%40dogfood-lab/atlas"
+            }
+          ],
           "path": "scripts/atlas-render.mjs",
           "sequences": [
             {
@@ -43883,6 +43955,11 @@
             "scripts/atlas-render.mjs"
           ],
           "packages": [
+            {
+              "manifest": null,
+              "member": true,
+              "purl": "pkg:npm/%40dogfood-lab/atlas"
+            },
             {
               "manifest": null,
               "purl": "pkg:npm/yaml"
@@ -44596,6 +44673,28 @@
             "packages/dogfood-swarm/lib/case-file/schema.js",
             "packages/dogfood-swarm/lib/validate-agent-output.js"
           ],
+          "packages": [
+            {
+              "manifest": null,
+              "member": true,
+              "purl": "pkg:npm/%40dogfood-lab/findings"
+            },
+            {
+              "manifest": null,
+              "member": true,
+              "purl": "pkg:npm/%40dogfood-lab/ingest"
+            },
+            {
+              "manifest": null,
+              "member": true,
+              "purl": "pkg:npm/%40dogfood-lab/schemas"
+            },
+            {
+              "manifest": null,
+              "member": true,
+              "purl": "pkg:npm/%40dogfood-lab/verify"
+            }
+          ],
           "path": "scripts/check-validator-cache-singleton.test.mjs",
           "testFramework": "node --test"
         },
@@ -44696,6 +44795,11 @@
             "site/public/atlas/render.js"
           ],
           "packages": [
+            {
+              "manifest": null,
+              "member": true,
+              "purl": "pkg:npm/%40dogfood-lab/atlas"
+            },
             {
               "manifest": null,
               "purl": "pkg:npm/yaml"
@@ -45003,6 +45107,11 @@
           "packages": [
             {
               "manifest": null,
+              "member": true,
+              "purl": "pkg:npm/%40dogfood-lab/verify"
+            },
+            {
+              "manifest": null,
               "purl": "pkg:npm/js-yaml"
             }
           ],
@@ -45141,6 +45250,13 @@
           "importsFiles": [
             "packages/dogfood-swarm/lib/roadmap/drain.js",
             "scripts/lib/revalidation-cadence.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": null,
+              "member": true,
+              "purl": "pkg:npm/%40dogfood-lab/dogfood-swarm"
+            }
           ],
           "path": "scripts/revalidation-cadence-drain-parity.test.mjs",
           "testFramework": "node --test"
@@ -45591,7 +45707,7 @@
           "path": "site/src/content/docs/handbook/architecture.md"
         },
         {
-          "hash": "1f9fb6871c9de4cd2d2378ac1224ee2a0dec70df6e33307211a1ba2a8ff86a75",
+          "hash": "98a6fe475e292ead4372c8f5b4fb908b55e37c72cafa808e1c896dbc755b012d",
           "path": "site/src/content/docs/handbook/atlas.md"
         },
         {
@@ -47335,6 +47451,7 @@
           "event": "workflow_dispatch"
         }
       ],
+      "untrackedLandings": [],
       "uses": [
         "actions/checkout",
         "actions/setup-node"
@@ -50065,6 +50182,9 @@
           ]
         },
         {
+          "branches": [
+            "main"
+          ],
           "event": "push",
           "paths": [
             ".github/workflows/**",
@@ -54719,6 +54839,7 @@
       },
       "stages": [],
       "triggers": [],
+      "untrackedLandings": [],
       "uses": [],
       "usesWorkflowToken": false
     },
@@ -54761,6 +54882,7 @@
       },
       "stages": [],
       "triggers": [],
+      "untrackedLandings": [],
       "uses": [],
       "usesWorkflowToken": false
     },
@@ -55988,8 +56110,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "228777d29377cb6afd269c4ed87f73eba4219fcc",
-    "tracked": 4314
+    "commit": "e75f2247ac79a6d232797d2d40185cd0e31f731f",
+    "tracked": 4326
   },
   "landings": [
     {
@@ -59860,6 +59982,18 @@
         }
       ],
       "target": "fixtures/atlas/package-facts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/atlas/adapter/package-facts-map.test.js",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/atlas/package-facts-aliases",
       "writers": []
     },
     {
@@ -70313,6 +70447,21 @@
       "roleFrom": "no workspace lists it and no install step Atlas reads runs in its directory"
     },
     {
+      "name": "alias-demo",
+      "path": "fixtures/atlas/package-facts-aliases/package.json",
+      "private": true,
+      "role": "other",
+      "roleFrom": "no workspace lists it and no install step Atlas reads runs in its directory",
+      "version": "1.0.0"
+    },
+    {
+      "name": "@alias-demo/ext",
+      "path": "fixtures/atlas/package-facts-aliases/packages/ext/package.json",
+      "role": "other",
+      "roleFrom": "no workspace lists it and no install step Atlas reads runs in its directory",
+      "version": "1.0.0"
+    },
+    {
       "name": "px",
       "path": "fixtures/atlas/package-facts-pnpm/package.json",
       "private": true,
@@ -71753,6 +71902,26 @@
       "purl": "pkg:npm/%40f/theme",
       "range": "file:..",
       "unknown": "a file dependency moves with the tree",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "fixtures/atlas/package-facts-aliases/package.json",
+      "name": "JSONStream",
+      "purl": "pkg:npm/JSONStream",
+      "range": "1.3.5",
+      "unknown": "package-lock.json does not install fixtures/atlas/package-facts-aliases",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "fixtures/atlas/package-facts-aliases/package.json",
+      "name": "lodash",
+      "purl": "pkg:npm/lodash",
+      "range": "4.17.21",
+      "unknown": "package-lock.json does not install fixtures/atlas/package-facts-aliases",
       "version": null
     },
     {

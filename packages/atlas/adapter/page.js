@@ -740,6 +740,11 @@ const ACTIONS = new Map([
   ['lycheeverse/lychee-action', 'checks links with lychee'],
   ['trufflesecurity/trufflehog', 'scans for secrets with TruffleHog'],
   ['gitleaks/gitleaks-action', 'scans for secrets with Gitleaks'],
+  // upload-sarif only sends a report, which any tool may have made, to code
+  // scanning; it scans nothing. It sits before the key below because the first
+  // matching key wins; that key stays for init, analyze and autobuild, which
+  // are CodeQL's own scan.
+  ['github/codeql-action/upload-sarif', 'uploads a SARIF report to code scanning'],
   ['github/codeql-action', 'scans code with CodeQL'],
   ['actions/dependency-review-action', 'reviews dependency changes'],
   ['ludeeus/action-shellcheck', 'lints shell scripts with ShellCheck'],
