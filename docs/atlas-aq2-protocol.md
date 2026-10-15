@@ -66,9 +66,12 @@ diff of non-test source files:
 - CommonJS: `module.exports =`, `module.exports.<name> =`, `exports.<name> =`;
 - the package's `exports`, `main`, `bin` and `types` keys in `package.json` (a removed or renamed subpath is a
   removed export);
-- a removed name counts as **removed**; a removed line whose name reappears on an added line with a different
-  signature (parameters, return type, kind) counts as **changed**; a name that reappears unchanged (a move or a
-  reformat) does not count; an added-only export is a compatible addition and does not count.
+- a name removed from the removed side with no added line declaring it counts as **removed**. A name declared on both
+  sides counts as **changed** when its declaration line on the removed side differs from the one on the added side
+  after whitespace is normalised, and does not count when the two are equal (a move or a reformat). This mechanical
+  definition also counts compatible changes, such as a new optional parameter. That inflates step 0, which is an
+  upper bound, and can lower precision, which errs toward the tiers staying off. An added-only export is a
+  compatible addition and does not count.
 
 This is an upper bound by design: it counts commits, once each, and cannot tell whether any consumer was affected.
 
@@ -86,17 +89,19 @@ A **case** is a candidate producer commit `P` together with a consumer `C` that 
   resolved version in the lockfile) from a version before `P`'s release to one at or after it. `B` is the **bump
   commit**. A consumer that never adopted, or whose declaration is a workspace link or a git ref that cannot be
   ordered, is **excluded** (not counted as a negative), and the exclusion count is reported.
-- A consumer must reference the changed name in its own history as text (`grep -w <name>` over its tracked source
-  at the commit before `B`) to enter scoring as a candidate for a tier; a consumer that does not mention the name
-  is kept as a tier 1 consumer only (it takes part in the label step, not in the tier's precision).
+- There is no text pre-filter on which adopted consumers are scored: every consumer a tier flags (see Scoring)
+  counts in that tier's precision, including one that never uses the name, which is a false positive. A text
+  mention of the name is a condition of being labelled positive (Step 2), not of being scored.
 
 ## Step 2: labels
 
 For each case and consumer that adopted:
 
-- **Positive, adapted.** Within the first 30 commits after `B`, or until the consumer's next bump of the same package
-  (whichever comes first), a commit touches a tracked source file that mentions the changed name (`grep -w`) and
-  that file mentioned it at `B`'s parent. Recorded with the commit id.
+- **Positive, adapted.** In a window that starts at `B` itself (a human bump often carries its fix in the same
+  commit or pull request) and runs through the first 30 commits after it, or until the consumer's next bump of the
+  same package (whichever comes first), a commit's diff has an added or removed line matching `\b<name>\b`, in a
+  tracked source file that mentioned the name at `B`'s parent. The commit id and the matching line are recorded
+  with the label.
 - **Positive, red on the bump.** The consumer's CI run on `B` concluded `failure`, read through `gh run list`/`gh run
   view`, **and** the next commit that turns that workflow green touches a file that mentions the changed name. The
   run id of the red run and of the green run are recorded with the label. A red run that does not meet both halves
@@ -112,20 +117,31 @@ excluded and counted.
 For each case and adopted consumer, the engine is run once on the consumer **at `B`'s parent**, and the tier it assigns
 the consumer for the changed name is read from its record of that consumer's imports. A consumer is **flagged** for
 tier 2 when the engine records a value import of the changed name, and for tier 3 when it records a type-only import
-of it. Then, per tier, over the adopted consumers:
+of it. A site whose names include `*` (a namespace import, a bare `require`, an `export * from`) is flagged for every
+name of that package, in tier 2 or tier 3 by its `type` mark: the conservative reading AQ-1 was built for, without
+which a whole-module import would be a recall miss. The report says how many flags came from `*`. Then, per tier,
+over the adopted consumers:
 
 - **recall** = positives flagged by that tier / all positives of that kind (a value positive is one whose adapting
   file imports the name as a value; a type positive, one that imports it only as a type, both read from text);
   reported as a point estimate with its Wilson 95% lower bound;
-- **precision** = positives flagged by that tier / all consumers flagged by that tier.
+- **precision** = positives flagged by that tier / all consumers flagged by that tier, with no text pre-filter.
 
-A tier turns on only if the bar holds for it. Each tier is decided on its own.
+A tier turns on only if the bar holds for it, computed over all cases. Each tier is decided on its own.
+Recall and precision are also reported by kind of change (removed, changed) as a secondary; the decision does not
+use the split.
+
+**B's parent.** The engine runs on the consumer at `B`'s parent, as written. A case whose changed name was removed
+from the consumer before `B`'s parent has no import left to see; it is a recall miss by construction, and the report
+says how many such cases there were.
 
 ## Report
 
 Against the bar exactly as written, the report gives: the repositories and the commit range scanned, the number of
 candidate producer commits (step 0), the pairs and exclusions, the seed size (cases that reached scoring), the labels
-by kind, per tier recall (point and Wilson 95% lower bound) and precision, the decision (on, or off with the reason), the
+by kind, per tier recall (point and Wilson 95% lower bound) and precision with the secondary split by removed and
+changed, the number of flags that came from `*` sites, the number of cases that were recall misses by construction
+(name removed before `B`'s parent), the decision (on, or off with the reason), the
 sha256 of the frozen case file, the commands run, and the wall time with the peak and average CPU. If the seed is
 short the tiers stay off and the report says how short and why; the release says it too.
 
@@ -139,3 +155,11 @@ short the tiers stay off and the report says how short and why; the release says
 | DECOMPOSE_BY_SECRETS | 2 | Selection and labelling (text, history) are separate from scoring (the engine), so a parser blind spot cannot shape the seed. |
 | UNCERTAINTY_GATED_HUMANS | 2 | R&D reads this before the fetch and gets the step-0 count before any pairing; the stop rule asks no one. |
 | EXTERNAL_VERIFIER | n/a | No specialised claim; R&D's read of the protocol and of the report is the check. |
+
+## Amendments
+
+- **2026-10-15, before any fetch (R&D's rulings on the first draft).** The adaptation window includes `B` and needs a
+  diff line matching `\b<name>\b` in a file that mentioned the name at `B`'s parent; "changed" is a whitespace-normalised
+  difference of the declaration line; no text pre-filter on precision; `*` sites are flagged for every name of the
+  package; cases whose name was removed before `B`'s parent are reported as recall misses by construction. The bar,
+  the stop rules and the case freezing are unchanged.
