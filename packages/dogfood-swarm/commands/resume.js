@@ -493,7 +493,7 @@ export function resume(opts) {
       // `ar.domain_name` is already in scope two lines below (`domain:
       // ar.domain_name`) — this was an unwired parameter, not a missing-data
       // problem.
-      const findings = findingsForDomain(db, opts.runId, { name: ar.domain_name, globs });
+      const findings = findingsForDomain(db, opts.runId, { name: ar.domain_name, globs }, getDomains(db, opts.runId));
       prompt = buildAmendPrompt({ ...promptOpts, findings });
       if (skipVerify) prompt += SKIP_VERIFY_DIRECTIVE;
     } else {
