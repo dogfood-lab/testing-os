@@ -28,6 +28,12 @@ updates:
         patterns: ["*"]
         update-types: ["minor", "patch"]
     open-pull-requests-limit: 3
+    # web-tree-sitter is the parser runtime. It moves in lockstep with the
+    # tree-sitter CLI that built the GDScript wasm (packages/atlas/grammars/
+    # manifest.json, pinned by core/grammar-manifest.test.js), and both bump
+    # together in a pull request of their own, so Dependabot leaves it alone.
+    ignore:
+      - dependency-name: "web-tree-sitter"
 
   - package-ecosystem: npm
     # site/ is a separate npm subtree (Astro Starlight handbook, not a
