@@ -1,5 +1,6 @@
 import { isTestFile } from '../core/landings.js';
 import { basisOf, byBasis, group } from './answer.js';
+import { consumersFor } from './consumers.js';
 import { cannotSeeSentence, walkStopsAt } from './limits.js';
 
 /**
@@ -53,9 +54,10 @@ function filesFor(ctx, path) {
 /**
  * @param {object} snapshot from sidecar/map.js
  * @param {string[]} paths the files or directories asked about, from the repository root
+ * @param {{ producer: object, roots: object[], snapshotOf: Function }|null} [workspace] the other repositories Atlas answers for, when it answers for more than one
  * @returns {{ ok: false, error: object } | { ok: true, answer: object, sentences: string[], files: string[] }}
  */
-export function reachAnswer(snapshot, paths) {
+export function reachAnswer(snapshot, paths, workspace = null) {
   const ctx = snapshot.ctx;
   const { structure } = snapshot;
   const asked = new Set();
@@ -223,6 +225,13 @@ export function reachAnswer(snapshot, paths) {
   const cannotSee = walkStopsAt(snapshot, { reached: reachedFiles, reachedParts, doors: doorsNamed, askedParts: [...askedParts] });
 
   const sentences = reachSentences(ctx, { asked, runs, checks, through, passing, production, tests, stepped, pairs, partEdges });
+  // The other repositories whose maps declare a package that holds these files.
+  if (workspace) {
+    const consumers = consumersFor({ producer: workspace.producer, snapshot, files: [...asked].sort(), workspace });
+    facts.push(...consumers.facts);
+    cannotSee.push(...consumers.cannotSee);
+    sentences.push(...consumers.sentences);
+  }
   sentences.push(...cannotSee.map((entry) => cannotSeeSentence(entry, ctx.shown)));
   return {
     ok: true,

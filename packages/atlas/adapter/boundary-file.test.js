@@ -5,7 +5,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { afterEach, describe, it } from 'node:test';
-import { ignoredNotice, readBoundaryFile } from './boundary-file.js';
+import { ignoredNotice, parseBoundaryText, readBoundaryFile } from './boundary-file.js';
 
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 const roots = [];
@@ -97,5 +97,33 @@ describe('atlas boundary file', () => {
     const role = readBoundaryFile(repoWith('boundaries:\n  - name: pkg\n    globs: [pkg/**]\n    role: library\n'));
     assert.equal(role.ok, false);
     assert.deepEqual(role.details, ['boundaries[0].role must be code, test, docs, config, site, or data']);
+  });
+});
+
+// docs/atlas-buildup.spec.md, slice AP: a consumer names, by hand, the
+// repository that produces a package; the manual basis of a link. The sidecar
+// reads it from the file at the commit the consumer's map was made from.
+describe('producers', () => {
+  const FILE = (extra) => `boundaries:\n  - name: pkg\n    globs:\n      - pkg/**\n${extra}`;
+
+  it('are a list of { package, repository } the file may carry, and a file with none carries an empty list', () => {
+    const read = parseBoundaryText(FILE('producers:\n  - package: "@acme/lib"\n    repository: prod-lib\n'));
+    assert.equal(read.ok, true);
+    assert.deepEqual(read.producers, [{ package: '@acme/lib', repository: 'prod-lib' }]);
+    assert.deepEqual(parseBoundaryText(FILE('')).producers, []);
+  });
+
+  it('are refused when they name no npm package, repeat one, or carry another field', () => {
+    for (const [extra, said] of [
+      ['producers:\n  - package: "$lib"\n    repository: x\n', /producers\[0\]\.package must be an npm package name/],
+      ['producers:\n  - package: "@acme/lib"\n', /producers\[0\]\.repository must be the name of a repository/],
+      ['producers:\n  - package: lib\n    repository: a\n  - package: lib\n    repository: b\n', /producers\[1\]\.package duplicates lib/],
+      ['producers:\n  - package: lib\n    repository: a\n    note: x\n', /producers\[0\]\.note is not a producer field/],
+      ['producers: lib\n', /producers must be an array/],
+    ]) {
+      const read = parseBoundaryText(FILE(extra));
+      assert.equal(read.ok, false, extra);
+      assert.match(read.details[0], said, extra);
+    }
   });
 });

@@ -6,7 +6,7 @@ import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
-import { diffAgainstBase, diffMarkdown } from './diff.js';
+import { diffAgainstBase, diffMarkdown, readBaseMap } from './diff.js';
 
 const CLI = fileURLToPath(new URL('../cli.js', import.meta.url));
 const HOST = resolve(dirname(fileURLToPath(import.meta.url)), '../../../fixtures/atlas/host');
@@ -209,5 +209,17 @@ describe('atlas diff on a capped door', () => {
     assert.equal(shifted.unchanged, true, diffMarkdown(shifted));
     const grown = diffAgainstBase(base, map([door(['tests/a/9.test.js', 'tests/b/4.test.js'], 402)]));
     assert.equal(diffMarkdown(grown).split('\n')[2], '- CI runs 2 more files than before.');
+  });
+});
+
+// docs/atlas-buildup.spec.md, slice AP: a ref taken from data is never read
+// as an option, and reaches git after --end-of-options.
+describe('readBaseMap with a ref that is data', () => {
+  it('refuses a value that begins with - before git is started', () => {
+    for (const ref of ['--upload-pack=touch x', '-h', '--help']) {
+      const read = readBaseMap(tmpdir(), ref);
+      assert.equal(read.ok, false, ref);
+      assert.match(read.details[0], /is not a revision/, ref);
+    }
   });
 });

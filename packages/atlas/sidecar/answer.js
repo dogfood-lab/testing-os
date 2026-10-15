@@ -312,6 +312,7 @@ export const FACT_GROUP_SCHEMA = {
     confidence: { type: 'object' },
     source: { type: 'string', enum: ['map', 're-read'] },
     file: { type: 'string' },
+    linkBasis: { type: 'string', enum: ['manual', 'repository', 'unverified'] },
   },
   required: ['fact', 'basis', 'items', 'total', 'complete'],
 };
@@ -320,8 +321,8 @@ export const CANNOT_SEE_SCHEMA = {
   type: 'object',
   properties: {
     basis: { type: 'string', enum: ['unresolved', 'outside'] },
-    what: { type: 'string', enum: ['import', 'read', 'write', 'command', 'file', 'call', 'dispatch', 'check'] },
-    grain: { type: 'string', enum: ['file', 'part', 'door'] },
+    what: { type: 'string', enum: ['import', 'read', 'write', 'command', 'file', 'call', 'dispatch', 'check', 'consumer'] },
+    grain: { type: 'string', enum: ['file', 'part', 'door', 'repository'] },
     count: { type: 'integer', minimum: 0 },
     where: { type: 'string', enum: [...WHERES] },
     part: { type: 'string' },

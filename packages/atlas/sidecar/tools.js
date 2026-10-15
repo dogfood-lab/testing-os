@@ -188,7 +188,9 @@ const DEFINED = [
     description: 'What a change to these files reaches, from the Atlas map: the doors that run them or pass through their part, '
       + 'the files and parts that import them or read what they write (production and tests apart), followed as far as '
       + 'the code says; what is known only by text, a guess or history is listed one step out and not followed, and '
-      + 'where the map stops is listed with what Atlas cannot see.',
+      + 'where the map stops is listed with what Atlas cannot see. With more than one repository among the roots it also '
+      + 'names the other repositories that declare a package holding these files, each link with how it was made and the '
+      + 'skew of the producer\'s map against the version the consumer resolved.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -208,7 +210,8 @@ const DEFINED = [
       properties: { paths: { type: 'array', items: { type: 'string' } } },
       required: ['paths'],
     })),
-    answer: (snapshot, repo, args) => reachAnswer(snapshot, args.paths),
+    // With more than one repository among the roots it also names the others that declare a package holding these files.
+    answer: (snapshot, repo, args, workspace) => reachAnswer(snapshot, args.paths, workspace ? { ...workspace, producer: repo } : null),
   },
   {
     name: 'atlas_test_gaps',
@@ -451,7 +454,8 @@ export function createTools({ refresher = createRefresher() } = {}) {
     // ref to pass; it never switches to it by itself.
     const upstream = ref ? null : upstreamMap(repo.root);
     const shown = newerUpstream(upstream) ? upstream : null;
-    const result = tool.answer(snapshot, repo, args);
+    const workspace = tool.name === 'atlas_reach' && fixed.roots.length > 1 ? { roots: fixed.roots, snapshotOf: (root) => (root.exported ? readExportedMap(root.root) : snapshotFor(root)) } : null;
+    const result = tool.answer(snapshot, repo, args, workspace);
     if (!result.ok) return failed(provenance({ repo, snapshot, head: state.head, upstream: shown }), result.error, unplainNames(snapshot));
     const known = mapHashes(snapshot.structure);
     const files = [...result.files, ...pathsIn(result.answer, known)];

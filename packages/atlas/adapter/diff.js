@@ -25,7 +25,9 @@ function git(repo, args) {
  * @returns {{ ok: true, commit: string, structure: object } | { ok: false, details: string[] }}
  */
 export function readBaseMap(repo, ref) {
-  const resolved = git(repo, ['rev-parse', '--verify', '--quiet', `${ref}^{commit}`]);
+  // A ref may come from another repository's data (a lockfile, a tag): a value that begins with - is never a revision, and --end-of-options keeps git from reading it as one.
+  if (typeof ref !== 'string' || ref.startsWith('-')) return { ok: false, details: [`${String(ref).slice(0, 80)} is not a revision`] };
+  const resolved = git(repo, ['rev-parse', '--verify', '--quiet', '--end-of-options', `${ref}^{commit}`]);
   if (resolved.status !== 0) return { ok: false, details: [`${ref} is not a commit in this clone`] };
   const commit = resolved.stdout.trim();
   const shown = git(repo, ['show', '--no-textconv', `${commit}:${STRUCTURE}`]);

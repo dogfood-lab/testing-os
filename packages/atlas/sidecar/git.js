@@ -12,7 +12,12 @@ import { spawnSync } from 'node:child_process';
  * defect, not an option.
  */
 
-const READ_COMMANDS = new Set(['cat-file', 'diff', 'ls-files', 'ls-tree', 'merge-base', 'rev-list', 'rev-parse', 'show', 'status']);
+const READ_COMMANDS = new Set(['cat-file', 'check-ref-format', 'config', 'diff', 'ls-files', 'ls-tree', 'merge-base', 'rev-list', 'rev-parse', 'show', 'status']);
+
+// config reads only: with --get or --get-all it prints a value and writes nothing.
+function readsOnly(args) {
+  return args[0] !== 'config' || args[1] === '--get' || args[1] === '--get-all';
+}
 
 /**
  * A ref git reads: a commit, a branch, a tag, HEAD~3, origin/main; never an
@@ -60,7 +65,7 @@ const NO_DRIVERS = Object.freeze({ show: ['--no-textconv', '--no-ext-diff'], dif
  * @returns {{ ok: boolean, status: number|null, stdout: string|Buffer, stderr: string }}
  */
 export function git(cwd, args, { encoding = 'utf8', input } = {}) {
-  if (!READ_COMMANDS.has(args[0])) throw new Error(`atlas sidecar: git ${args[0]} is not a read command`);
+  if (!READ_COMMANDS.has(args[0]) || !readsOnly(args)) throw new Error(`atlas sidecar: git ${args.slice(0, 2).join(' ')} is not a read command`);
   const result = spawnSync('git', ['-c', 'core.fsmonitor=false', args[0], ...(NO_DRIVERS[args[0]] ?? []), ...args.slice(1)], {
     cwd,
     encoding: encoding === 'buffer' ? 'buffer' : 'utf8',

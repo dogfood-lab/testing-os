@@ -329,6 +329,13 @@ The shape below is R&D's ruling of 2026-10-13, which replaced a literal reading 
 - **`adapter/diff.js:28`'s `rev-parse` call lacks `--end-of-options`.** It is fixed in AP, since that is the path a ref taken from data reaches.
 - **AP gets a targeted security review before it merges,** as AN did: R&D writes the brief against AP's head, the Director runs it by hand on another family, and R&D reviews the code. This is the specialised case under the Standing Rules.
 
+### AP as built: R&D's rulings of 2026-10-15
+
+- **How a link was made:** `repository` is a purl match plus a manifest `repository` URL equal to the producer clone's origin, both through `gitRepositoryUrl` (compared without regard to case); `manual` is a `producers` entry in the consumer's `atlas/boundaries.yaml`, read at the consumer's map commit; `unverified` is a purl match without a repository match, or a producer manifest that names no repository, shown with its reason and never dropped, and never `repository` on a name alone. `attested` (a provenance attestation, as deps.dev uses the word) needs the registry and is unreachable offline; `cannotSee` names it.
+- **Skew** is read from the producer's local tags only, tried as `v<version>`, `<version>`, `<name>@<version>` (the full `@scope/name` for a scoped package) and `<name>-v<version>` (release-please); the answer names the forms tried, otherwise `unknown, no local tag for <version>`. A shallow clone, or one with unfetched tags, gives `unknown`, never `match`, and `cannotSee` says the tags may be stale. Release runs are not read (the sidecar uses no network).
+- **A file is in a package by containment:** under the directory of a published package's manifest. The package's `files` and `exports` are not read, and `cannotSee` says so.
+- **The consumers are a "Consumers in the workspace" section of `atlas_reach`,** not a new tool; the local git in the producer's root is the only git it runs.
+
 ### AQ: the mining (additions)
 
 - **The mining of fleet history is limited to one session.**

@@ -1,3 +1,5 @@
+import { asName } from './data.js';
+
 /**
  * What Atlas cannot see for a question: the unresolved and outside entries
  * that touch the files and parts it asks about, so the edge of the map is
@@ -261,6 +263,7 @@ const PLACES_NAMED = 4;
 
 /** Atlas's sentence for one cannot-see entry. */
 export function cannotSeeSentence(entry, shown = (name) => name) {
+  if (entry.what === 'consumer') return consumerSentence(entry);
   const within = entry.part ? ` in ${shown(entry.part)}` : '';
   const why = entry.reason && /dependant/.test(entry.reason) ? '; any of them may depend on the files asked about' : '';
   if (entry.basis === 'unresolved') {
@@ -275,4 +278,13 @@ export function cannotSeeSentence(entry, shown = (name) => name) {
     : '';
   const verb = { call: 'call', dispatch: 'dispatch', import: 'import', read: 'read', write: 'write' }[entry.what] ?? entry.what;
   return `Atlas does not follow ${count(entry.count, verb)}${within} that go${entry.count === 1 ? 'es' : ''} to ${WHERE_WORDS[entry.where] ?? entry.where}${places}.`;
+}
+
+// What Atlas cannot see of a package's consumers: the entry's reason is
+// Atlas's own text, and the names it lists are a repository's, so each is
+// quoted as data where it reads as words.
+function consumerSentence(entry) {
+  const names = (entry.named ?? []).map(asName);
+  const who = names.length > 0 ? ` (${names.slice(0, 6).join(', ')}${names.length > 6 ? `, and ${names.length - 6} more` : ''})` : '';
+  return `Atlas cannot see ${entry.reason}${who}.`;
 }
