@@ -46,7 +46,7 @@ A red `atlas check` now says how to fix itself, and says it where people look (`
 
 ### Security
 
-- **Two patterns could take exponential time on hostile text.** `pnpmMajor` (the Codecov rollout tool's reading of a workflow's pnpm version) skipped the indented lines under `pnpm/action-setup` with a lazy repeat whose parts overlapped, so a step with 6 such lines and no `version:` took 2 s to fail and 8 took nearly 3 minutes; it is a line scan now, with the same answers on 20,000 random workflow texts. `collapseAlternation` (the freeze gate's brace-glob collapse in `@dogfood-lab/dogfood-swarm`) let its repeated group match commas too, so an unclosed `{` over 32 commas took 13 s, doubling with each comma; the group now excludes the comma, with identical matches. Both are exported so their tests can call them. Closes two high `js/redos` and `js/polynomial-redos` code-scanning alerts.
+- **Two patterns could take exponential time on hostile text.** `pnpmMajor` (the Codecov rollout tool's reading of a workflow's pnpm version) skipped the indented lines under `pnpm/action-setup` with a lazy repeat whose parts overlapped, so a step with 6 such lines and no `version:` took 2 s to fail and 8 took nearly 3 minutes; it is a line scan now, with the same answers on 20,000 random workflow texts. `collapseAlternation` (the freeze gate's brace-glob collapse in `@dogfood-lab/dogfood-swarm`) let its repeated group match commas too, so an unclosed `{` over 32 commas took 13 s, doubling with each comma; the group now excludes the comma, with identical matches. Both are exported so their tests can call them. Closes two high `js/redos` code-scanning alerts.
 
 ## [1.26.0] — 2026-10-01
 
