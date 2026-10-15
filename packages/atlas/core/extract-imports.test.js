@@ -103,7 +103,9 @@ describe('import extraction', () => {
       assert.ok(file, path);
       assert.equal(file.language, LANGUAGE[path], path);
       assert.equal(file.parseError, undefined, path);
-      assert.deepEqual(file.imports, imports, path);
+      // A script site also carries what it binds (core/import-names.js, read
+      // in adapter/import-names-map.test.js); the sites are compared as they were.
+      assert.deepEqual(file.imports.map(({ bound, ...site }) => site), imports, path);
     }
 
     for (const path of ['js/broken.js', 'ts/broken.ts', 'tsx/broken.tsx', 'py/broken.py']) {

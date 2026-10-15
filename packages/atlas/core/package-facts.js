@@ -1,6 +1,7 @@
 import semver from 'semver';
 import { parse as parseYaml } from 'yaml';
 import { isNodeBuiltin } from './builtins.js';
+import { unknownBinding } from './import-names.js';
 import { lockFor, packageByName } from './lockfile.js';
 
 /**
@@ -302,8 +303,8 @@ export function packageFacts({ view, doors, files }) {
   }
   const byPath = new Map(manifests.map((manifest) => [manifest.path, manifest]));
   const published = publishedManifests({ doors, members, byPath, paths, dirOf, view });
-  const { imports, leftOut } = importedPackages({ files, view, byPath, dependencies, members });
-  return { manifests, dependencies, published, imports, leftOut };
+  const { imports, importNames, leftOut } = importedPackages({ files, view, byPath, dependencies, members });
+  return { manifests, dependencies, published, imports, importNames, leftOut };
 }
 
 // How the workspace's members were listed, for the member role's basis.
@@ -422,10 +423,12 @@ function importedPackages({ files, view, byPath, dependencies, members }) {
   }
   const memberNames = new Set([...members.values()].filter((name) => typeof name === 'string'));
   const out = new Map();
+  const importNames = new Map();
   const leftOut = { packageInternalSites: 0, resolvedInRepositorySites: 0, notPackageNameSites: 0, names: new Map(), files: new Set() };
   for (const file of files) {
     if (!Array.isArray(file.imports) || file.language === 'python' || file.language === 'rust' || file.godot) continue;
     const seen = new Map();
+    const sites = [];
     for (const site of file.imports) {
       if (site.kind !== 'static' && site.kind !== 'dynamic-literal') continue;
       if (site.location || site.locates || site.submodule) continue;
@@ -452,10 +455,40 @@ function importedPackages({ files, view, byPath, dependencies, members }) {
         continue;
       }
       seen.set(`${entry.purl}\0${entry.manifest ?? ''}`, entry);
+      sites.push(importRecord(entry.purl, site));
     }
+    if (sites.length > 0) importNames.set(file.path, boundedRecords(sites));
     if (seen.size > 0) out.set(file.path, [...seen.values()].sort((a, b) => (a.purl < b.purl ? -1 : a.purl > b.purl ? 1 : (a.manifest ?? '') < (b.manifest ?? '') ? -1 : 1)));
   }
-  return { imports: out, leftOut };
+  return { imports: out, importNames, leftOut };
+}
+
+// What one import of a package binds (core/import-names.js): the package, the
+// specifier as written (a subpath says which file of it), the line, how it
+// was written, and the names it takes, each marked when it is only a type.
+const MAX_NAMES = 50;
+const MAX_RECORDS = 200;
+
+function importRecord(purl, site) {
+  const bound = site.bound ?? unknownBinding(site.kind === 'static' ? 'import' : 'dynamic');
+  const many = bound.names.length > MAX_NAMES;
+  return {
+    purl,
+    specifier: site.specifier,
+    line: site.line,
+    form: bound.form,
+    typeOnly: bound.typeOnly,
+    names: many ? [{ name: '*' }] : bound.names.map((entry) => ({ ...entry })),
+    ...(many ? { namesTotal: bound.names.length } : {}),
+    ...(bound.sideEffect ? { sideEffect: true } : {}),
+  };
+}
+
+// In source order, and bounded: a file with more import sites than this keeps
+// the first and says how many it left out.
+function boundedRecords(records) {
+  const sorted = records.sort((a, b) => a.line - b.line || (a.specifier < b.specifier ? -1 : a.specifier > b.specifier ? 1 : 0));
+  return { records: sorted.slice(0, MAX_RECORDS), omitted: Math.max(0, sorted.length - MAX_RECORDS) };
 }
 
 function tally(map, key) {

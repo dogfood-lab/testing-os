@@ -120,26 +120,56 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 9,
       "assigned": 0,
-      "changed": 2,
+      "changed": 11,
       "moved": 0,
-      "parts": 1,
+      "parts": 6,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI runs 1 more file than before.",
+        "subjects": [
+          ".github/workflows/ci.yml"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release runs 1 more file than before.",
+        "subjects": [
+          ".github/workflows/release.yml"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "fixtures/atlas/import-names/ is now read by packages/atlas/adapter/import-names-map.test.js.",
+        "subjects": [
+          "fixtures/atlas/import-names/",
+          "packages/atlas/adapter/import-names-map.test.js"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "packages/atlas/grammars/tree-sitter-typescript.wasm is now also read by probe-tree.mjs.",
+        "subjects": [
+          "packages/atlas/grammars/tree-sitter-typescript.wasm",
+          "probe-tree.mjs"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-15; 2 files changed content.",
+        "sentence": "9 files added and 11 changed content, across 6 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "e75f2247ac79a6d232797d2d40185cd0e31f731f",
-      "generatedAt": "2026-10-15T06:44:14.510Z"
+      "commit": "ae3618890c70b5bcbb6e28676d68598b5b96c141",
+      "generatedAt": "2026-10-15T06:47:32.452Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -178,9 +208,9 @@
     "Window: 180 days; a pair counts from 10 shared commits, since 42 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "ae3618890c70b5bcbb6e28676d68598b5b96c141",
+  "commit": "bc97d8482377651edc64fbb49aa6e569aee41229",
   "defaultBranch": "main",
-  "derived": "23 parts, mostly JavaScript (1642 files), Python (243), TypeScript (222), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
+  "derived": "23 parts, mostly JavaScript (1646 files), Python (243), TypeScript (223), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
   "doors": [
     {
       "checks": [
@@ -213,7 +243,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 377
+          "files": 379
         },
         {
           "boundary": "docker",
@@ -469,8 +499,8 @@
         "scripts/check-finding-regression-pins.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 787,
-      "runsMore": 802,
+      "runsCount": 788,
+      "runsMore": 803,
       "sends": [
         "publishes workspace packages to npm and a container image",
         "creates a GitHub release"
@@ -508,7 +538,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 377
+          "files": 379
         },
         {
           "boundary": "dogfood",
@@ -762,8 +792,8 @@
         "scripts/check-handbook-imagery.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 786,
-      "runsMore": 801,
+      "runsCount": 787,
+      "runsMore": 802,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -1215,7 +1245,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 82
+          "files": 83
         }
       ],
       "runs": [
@@ -1426,10 +1456,10 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-15T06:47:32.452Z",
+  "generatedAt": "2026-10-15T07:49:37.881Z",
   "limits": [
     "4 import sites name declared dependencies that share their names with local modules (datasets, docx and xrpl); they are read as the dependencies, which are not in this repository.",
-    "179 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 176 more.",
+    "181 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 178 more.",
     "3 import sites name a path outside this repository, so what they load is not followed.",
     "13 files in fixtures use syntax the parser cannot read (fixtures/atlas/grammar-shapes/src/broken.ts, fixtures/atlas/grammars-rust-gdscript/scripts/broken.gd, fixtures/atlas/grammars-rust-gdscript/src/broken.rs and 10 more), so what they import is not known: a bare `&` in JSX text (1) and other syntax (12).",
     "11 writes and 37 reads use paths built at run time and are not named here.",
@@ -1442,8 +1472,8 @@
     "29 commands are built at run time and not followed, 20 of them in tests.",
     "1 file belongs to no part: packages/.gitkeep.",
     "Readers marked (found by text) come from scanning unparsed files.",
-    "Release runs or checks 791 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 791.",
-    "CI runs or checks 787 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 787."
+    "Release runs or checks 792 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 792.",
+    "CI runs or checks 788 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 788."
   ],
   "mainDoor": ".github/workflows/ingest.yml",
   "partLabels": {
@@ -1737,9 +1767,9 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 1029,
+  "testFiles": 1030,
   "testedBy": {
-    "atlas": 312,
+    "atlas": 313,
     "dogfood-swarm": 308,
     "findings": 145,
     "ingest": 86,
