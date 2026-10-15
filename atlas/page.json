@@ -120,11 +120,11 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 9,
+      "added": 8,
       "assigned": 0,
-      "changed": 11,
+      "changed": 13,
       "moved": 0,
-      "parts": 6,
+      "parts": 7,
       "removed": 0,
       "unassigned": 0
     },
@@ -152,16 +152,8 @@
         ]
       },
       {
-        "kind": "landing",
-        "sentence": "packages/atlas/grammars/tree-sitter-typescript.wasm is now also read by probe-tree.mjs.",
-        "subjects": [
-          "packages/atlas/grammars/tree-sitter-typescript.wasm",
-          "probe-tree.mjs"
-        ]
-      },
-      {
         "kind": "counts",
-        "sentence": "9 files added and 11 changed content, across 6 parts.",
+        "sentence": "8 files added and 13 changed content, across 7 parts.",
         "subjects": []
       }
     ],
@@ -210,7 +202,7 @@
   "changesTogetherWithTests": 2,
   "commit": "bc97d8482377651edc64fbb49aa6e569aee41229",
   "defaultBranch": "main",
-  "derived": "23 parts, mostly JavaScript (1646 files), Python (243), TypeScript (223), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
+  "derived": "23 parts, mostly JavaScript (1645 files), Python (243), TypeScript (223), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
   "doors": [
     {
       "checks": [
@@ -1456,10 +1448,10 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-15T07:49:37.881Z",
+  "generatedAt": "2026-10-15T07:50:35.596Z",
   "limits": [
     "4 import sites name declared dependencies that share their names with local modules (datasets, docx and xrpl); they are read as the dependencies, which are not in this repository.",
-    "181 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 178 more.",
+    "179 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 176 more.",
     "3 import sites name a path outside this repository, so what they load is not followed.",
     "13 files in fixtures use syntax the parser cannot read (fixtures/atlas/grammar-shapes/src/broken.ts, fixtures/atlas/grammars-rust-gdscript/scripts/broken.gd, fixtures/atlas/grammars-rust-gdscript/src/broken.rs and 10 more), so what they import is not known: a bare `&` in JSX text (1) and other syntax (12).",
     "11 writes and 37 reads use paths built at run time and are not named here.",
