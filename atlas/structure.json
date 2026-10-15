@@ -95,7 +95,7 @@
           "path": "packages/atlas/LICENSE"
         },
         {
-          "hash": "a657a8aa0f0ceeef7d7fdd9094cd017209c0bcfd68529c5751ab94663f563db7",
+          "hash": "31353b08f86502cfde88e86e10c4985e5423305d3ea840b8ba53859295227d91",
           "path": "packages/atlas/README.md"
         },
         {
@@ -299,30 +299,30 @@
             {
               "in": "checkCommand",
               "kind": "catch",
-              "line": 253
+              "line": 254
             },
             {
               "in": "readBaseline",
               "kind": "catch",
-              "line": 503
+              "line": 504
             },
             {
               "in": "readBaseline",
               "kind": "catch",
-              "line": 510
+              "line": 511
             },
             {
               "in": "manifestName",
               "kind": "catch",
-              "line": 564
+              "line": 565
             },
             {
               "in": "committedJson",
               "kind": "catch",
-              "line": 633
+              "line": 634
             }
           ],
-          "hash": "b9d2ae8104f25085975c9215f5b3867a62042c164b41951848c975d08be8564b",
+          "hash": "3f67406037ff36588d7d3b68a774d118fb8d0c105f816588e8cb1c5b96a3606b",
           "importOrder": [
             "packages/atlas/core/index.js",
             "packages/atlas/adapter/artifact.js",
@@ -1161,8 +1161,9 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "2003cd029967615252a6853a4cce6335186068ad2a56236879ce565253d7d847",
+          "hash": "dc1127660437db684c8c28f467c739dc7d0eb6b1c30c3d5c1400dcc049c71de7",
           "importsFiles": [
+            "packages/atlas/core/package-facts.js",
             "packages/atlas/sidecar/test-client.js"
           ],
           "path": "packages/atlas/adapter/package-facts-map.test.js",
@@ -3162,10 +3163,10 @@
             {
               "in": "statisticsProblem",
               "kind": "catch",
-              "line": 264
+              "line": 266
             }
           ],
-          "hash": "a64e0a90267d92e5fd6b9f1b8241fa11d38ecacb8068dec1ad0e274f5bf6ddd0",
+          "hash": "d8ae0a2eb0bdcd2d83938c0a9b73008129d2c34f83df3160bf6646449dd00543",
           "importsFiles": [
             "packages/atlas/core/history.js"
           ],
@@ -4482,47 +4483,42 @@
             {
               "in": "bytesOf",
               "kind": "catch",
-              "line": 355
+              "line": 357
             },
             {
               "in": "collectIgnored",
               "kind": "catch",
-              "line": 519
+              "line": 521
             },
             {
               "in": "trackedJson",
               "kind": "catch",
-              "line": 632
+              "line": 634
             },
             {
               "in": "repositoryManifests",
               "kind": "catch",
-              "line": 651
+              "line": 653
             },
             {
               "in": "validateBoundary",
               "kind": "throw",
-              "line": 766
+              "line": 768
             },
             {
               "in": "validateBoundary",
               "kind": "throw",
-              "line": 770
+              "line": 772
             },
             {
               "in": "listTracked",
               "kind": "throw",
-              "line": 793
+              "line": 795
             },
             {
               "in": "listTracked",
               "kind": "throw",
-              "line": 812
-            },
-            {
-              "in": "parseStageLine",
-              "kind": "throw",
-              "line": 820
+              "line": 814
             },
             {
               "in": "parseStageLine",
@@ -4530,17 +4526,22 @@
               "line": 822
             },
             {
+              "in": "parseStageLine",
+              "kind": "throw",
+              "line": 824
+            },
+            {
               "in": "parseFile",
               "kind": "catch",
-              "line": 948
+              "line": 950
             },
             {
               "in": "manifestOf",
               "kind": "catch",
-              "line": 1192
+              "line": 1194
             }
           ],
-          "hash": "9c40e909f5a4ffa70238199bec8459a8299f37260f617c3504e53df2cfa991ac",
+          "hash": "c5d19d29bafd612d119fadca03319798257e85bf762c50711a6336d30b587bf7",
           "importOrder": [
             "packages/atlas/core/commands.js",
             "packages/atlas/core/doors.js",
@@ -4898,6 +4899,8 @@
           "exports": [
             "declaredDependency",
             "gitRepositoryUrl",
+            "isValidPackageName",
+            "leftOutCounts",
             "npmPurl",
             "packageFacts",
             "packageNameOf",
@@ -4911,7 +4914,7 @@
               "line": 77
             }
           ],
-          "hash": "439434bcedbe79745bf6a36850243a3bcc2982209d8a1c4403c4f8906b63ca5a",
+          "hash": "2428d1fcd2bd5487eb1182e55bb3a4c889d60b9dba0efe983c2bd9e19a832229",
           "importsFiles": [
             "packages/atlas/core/builtins.js",
             "packages/atlas/core/lockfile.js"
@@ -6742,7 +6745,7 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 312,
+          "reads": 313,
           "where": [
             "caller"
           ],
@@ -6792,7 +6795,7 @@
           "writes": 0
         },
         {
-          "reads": 2,
+          "reads": 10,
           "where": [
             "cwd:atlas/"
           ],
@@ -6827,7 +6830,7 @@
           "writes": 5
         }
       ],
-      "outsideReads": 356,
+      "outsideReads": 365,
       "outsideWrites": 12,
       "role": "code",
       "testRunners": [
@@ -6901,7 +6904,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "0185ccaeaa913fe95207cbec0e643b1283602131c3775c520eee3d891bf6ab63",
+          "hash": "abd3ef601f64ec91374005b5cade19c952c61463df113a6c1ed6342195404925",
           "path": "docs/atlas-buildup.spec.md"
         },
         {
@@ -7109,11 +7112,6 @@
             "packages/schemas/src/index.ts"
           ],
           "packages": [
-            {
-              "manifest": null,
-              "member": true,
-              "purl": "pkg:npm/%40dogfood-lab/schemas"
-            },
             {
               "manifest": null,
               "purl": "pkg:npm/js-yaml"
@@ -21310,6 +21308,13 @@
           "writes": 0
         },
         {
+          "reads": 2,
+          "where": [
+            "cwd:atlas/"
+          ],
+          "writes": 0
+        },
+        {
           "reads": 1,
           "where": [
             "cwd:dogfood/"
@@ -21338,7 +21343,7 @@
           "writes": 1
         }
       ],
-      "outsideReads": 189,
+      "outsideReads": 191,
       "outsideWrites": 30,
       "role": "code",
       "testRunners": [
@@ -32658,10 +32663,6 @@
           "packages": [
             {
               "manifest": null,
-              "purl": "pkg:npm/%40alias/alias-target"
-            },
-            {
-              "manifest": null,
               "purl": "pkg:npm/%40example/pkg"
             },
             {
@@ -42675,7 +42676,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "dc27c88cd7a3c4cb35a888d450c9b49486c69f598eea26072d8311b46c148204",
+          "hash": "ce99bb90ff824d7f828694be73be44f78832e0e5a2fb8f7b7b4fe4aa0db17d75",
           "path": "CHANGELOG.md"
         },
         {
@@ -43488,13 +43489,6 @@
           "importsFiles": [
             "packages/atlas/adapter/fleet.js"
           ],
-          "packages": [
-            {
-              "manifest": null,
-              "member": true,
-              "purl": "pkg:npm/%40dogfood-lab/atlas"
-            }
-          ],
           "path": "scripts/atlas-render.mjs",
           "sequences": [
             {
@@ -43889,11 +43883,6 @@
             "scripts/atlas-render.mjs"
           ],
           "packages": [
-            {
-              "manifest": null,
-              "member": true,
-              "purl": "pkg:npm/%40dogfood-lab/atlas"
-            },
             {
               "manifest": null,
               "purl": "pkg:npm/yaml"
@@ -44607,28 +44596,6 @@
             "packages/dogfood-swarm/lib/case-file/schema.js",
             "packages/dogfood-swarm/lib/validate-agent-output.js"
           ],
-          "packages": [
-            {
-              "manifest": null,
-              "member": true,
-              "purl": "pkg:npm/%40dogfood-lab/findings"
-            },
-            {
-              "manifest": null,
-              "member": true,
-              "purl": "pkg:npm/%40dogfood-lab/ingest"
-            },
-            {
-              "manifest": null,
-              "member": true,
-              "purl": "pkg:npm/%40dogfood-lab/schemas"
-            },
-            {
-              "manifest": null,
-              "member": true,
-              "purl": "pkg:npm/%40dogfood-lab/verify"
-            }
-          ],
           "path": "scripts/check-validator-cache-singleton.test.mjs",
           "testFramework": "node --test"
         },
@@ -44729,11 +44696,6 @@
             "site/public/atlas/render.js"
           ],
           "packages": [
-            {
-              "manifest": null,
-              "member": true,
-              "purl": "pkg:npm/%40dogfood-lab/atlas"
-            },
             {
               "manifest": null,
               "purl": "pkg:npm/yaml"
@@ -45041,11 +45003,6 @@
           "packages": [
             {
               "manifest": null,
-              "member": true,
-              "purl": "pkg:npm/%40dogfood-lab/verify"
-            },
-            {
-              "manifest": null,
               "purl": "pkg:npm/js-yaml"
             }
           ],
@@ -45184,13 +45141,6 @@
           "importsFiles": [
             "packages/dogfood-swarm/lib/roadmap/drain.js",
             "scripts/lib/revalidation-cadence.mjs"
-          ],
-          "packages": [
-            {
-              "manifest": null,
-              "member": true,
-              "purl": "pkg:npm/%40dogfood-lab/dogfood-swarm"
-            }
           ],
           "path": "scripts/revalidation-cadence-drain-parity.test.mjs",
           "testFramework": "node --test"
@@ -45641,7 +45591,7 @@
           "path": "site/src/content/docs/handbook/architecture.md"
         },
         {
-          "hash": "3e6fe267c5881104c25a19ca98ad4709986dc37ebb1c45cd87fc10b629085a6d",
+          "hash": "1f9fb6871c9de4cd2d2378ac1224ee2a0dec70df6e33307211a1ba2a8ff86a75",
           "path": "site/src/content/docs/handbook/atlas.md"
         },
         {
@@ -47385,7 +47335,6 @@
           "event": "workflow_dispatch"
         }
       ],
-      "untrackedLandings": [],
       "uses": [
         "actions/checkout",
         "actions/setup-node"
@@ -54770,7 +54719,6 @@
       },
       "stages": [],
       "triggers": [],
-      "untrackedLandings": [],
       "uses": [],
       "usesWorkflowToken": false
     },
@@ -54813,7 +54761,6 @@
       },
       "stages": [],
       "triggers": [],
-      "untrackedLandings": [],
       "uses": [],
       "usesWorkflowToken": false
     },
@@ -56041,7 +55988,7 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "34050856ab1a4bdb5449e9c96ef6a0ea415be11d",
+    "commit": "228777d29377cb6afd269c4ed87f73eba4219fcc",
     "tracked": 4314
   },
   "landings": [
