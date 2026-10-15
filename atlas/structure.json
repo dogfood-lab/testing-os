@@ -1041,7 +1041,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "c3d81f69c965fbf6172e84d0fdeb64b702d001131d06fec344a452251a57a1b7",
+          "hash": "00ee1ee6b8f38309ae72e750d8f2e996d3888bd4571b65480df509155824c558",
           "importsFiles": [
             "packages/atlas/sidecar/test-client.js"
           ],
@@ -4844,7 +4844,7 @@
             "typeImportBinding",
             "unknownBinding"
           ],
-          "hash": "43668629c93f4d660c4e42036a88b96a41e92b566113b0399a5682fb353d2436",
+          "hash": "cf0830ed6158a2ac045788d7a752a78fe9dad23819ab64a72c75aecf2f5521cf",
           "path": "packages/atlas/core/import-names.js"
         },
         {
@@ -5393,7 +5393,7 @@
               "line": 78
             }
           ],
-          "hash": "660e0fadcdbf615e35eb8afcbe2f5871d3ffd4f9c8c2c50cba094c3e6f30621b",
+          "hash": "35c799f6cb1fca37ae83d3f0f5e6cfd3760a0c5311c2b9d9875dc096a6d2c50e",
           "importNames": [
             {
               "form": "import",
@@ -7677,7 +7677,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "beed386f9116b7086253ed5083b1f2e7718c55f7a1cf80025917bf8a3999f780",
+          "hash": "6ccc8fc74900ff1d1f4b0340d0cf72e7e87f4ebbe1f81c69f1858d992ed2dcc1",
           "path": "docs/atlas-buildup.spec.md"
         },
         {
@@ -30965,11 +30965,11 @@
           "path": "fixtures/atlas/import-names/atlas/boundaries.yaml"
         },
         {
-          "hash": "72267add5ee75c23df3efd6b2e94796b099279cb87f8fad5c8355bca6a9ff60b",
+          "hash": "af124b21206861c43ef685b6686157fe86c590c393f641e18db141a2b9195edf",
           "path": "fixtures/atlas/import-names/package.json"
         },
         {
-          "hash": "0bdea9b67caea7de42716c1c793181e11f5e77fbeab3b18c5b62a0ab0550022c",
+          "hash": "e47534caf1b33a3d93b25a7f8772368699b178f1e9046c8262641c9f9cdb8698",
           "importNames": [
             {
               "form": "import",
@@ -31175,6 +31175,21 @@
               "purl": "pkg:npm/lib-k",
               "specifier": "lib-k",
               "typeOnly": false
+            },
+            {
+              "form": "require",
+              "line": 17,
+              "names": [
+                {
+                  "name": "d"
+                },
+                {
+                  "name": "e"
+                }
+              ],
+              "purl": "pkg:npm/lib-assign",
+              "specifier": "lib-assign",
+              "typeOnly": false
             }
           ],
           "packages": [
@@ -31185,6 +31200,10 @@
             {
               "manifest": "fixtures/atlas/import-names/package.json",
               "purl": "pkg:npm/lib-a"
+            },
+            {
+              "manifest": "fixtures/atlas/import-names/package.json",
+              "purl": "pkg:npm/lib-assign"
             },
             {
               "manifest": "fixtures/atlas/import-names/package.json",
@@ -47338,7 +47357,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "fdd71a04f59c012a10c5829b1ac51db4a908038d775eb2da883fbeb980a4bfd5",
+          "hash": "f5d96716e2c05b02740c2e2ab49d000a156f6c283726885a4fb7463216d38e43",
           "path": "CHANGELOG.md"
         },
         {
@@ -62013,7 +62032,7 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "bc97d8482377651edc64fbb49aa6e569aee41229",
+    "commit": "26cb14e9d0dd2096a58914382ede8ab5fd7adb9e",
     "tracked": 4334
   },
   "landings": [
@@ -77691,6 +77710,16 @@
       "field": "dependencies",
       "kind": "registry",
       "manifest": "fixtures/atlas/import-names/package.json",
+      "name": "lib-assign",
+      "purl": "pkg:npm/lib-assign",
+      "range": "1.0.0",
+      "unknown": "package-lock.json does not install fixtures/atlas/import-names",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "fixtures/atlas/import-names/package.json",
       "name": "lib-b",
       "purl": "pkg:npm/lib-b",
       "range": "1.0.0",
@@ -77711,6 +77740,26 @@
       "field": "dependencies",
       "kind": "registry",
       "manifest": "fixtures/atlas/import-names/package.json",
+      "name": "lib-bigtype",
+      "purl": "pkg:npm/lib-bigtype",
+      "range": "1.0.0",
+      "unknown": "package-lock.json does not install fixtures/atlas/import-names",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "fixtures/atlas/import-names/package.json",
+      "name": "lib-cap",
+      "purl": "pkg:npm/lib-cap",
+      "range": "1.0.0",
+      "unknown": "package-lock.json does not install fixtures/atlas/import-names",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "fixtures/atlas/import-names/package.json",
       "name": "lib-d",
       "purl": "pkg:npm/lib-d",
       "range": "1.0.0",
@@ -77723,6 +77772,16 @@
       "manifest": "fixtures/atlas/import-names/package.json",
       "name": "lib-e",
       "purl": "pkg:npm/lib-e",
+      "range": "1.0.0",
+      "unknown": "package-lock.json does not install fixtures/atlas/import-names",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "fixtures/atlas/import-names/package.json",
+      "name": "lib-empty",
+      "purl": "pkg:npm/lib-empty",
       "range": "1.0.0",
       "unknown": "package-lock.json does not install fixtures/atlas/import-names",
       "version": null
@@ -77793,6 +77852,76 @@
       "manifest": "fixtures/atlas/import-names/package.json",
       "name": "lib-k",
       "purl": "pkg:npm/lib-k",
+      "range": "1.0.0",
+      "unknown": "package-lock.json does not install fixtures/atlas/import-names",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "fixtures/atlas/import-names/package.json",
+      "name": "lib-r",
+      "purl": "pkg:npm/lib-r",
+      "range": "1.0.0",
+      "unknown": "package-lock.json does not install fixtures/atlas/import-names",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "fixtures/atlas/import-names/package.json",
+      "name": "lib-s",
+      "purl": "pkg:npm/lib-s",
+      "range": "1.0.0",
+      "unknown": "package-lock.json does not install fixtures/atlas/import-names",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "fixtures/atlas/import-names/package.json",
+      "name": "lib-t",
+      "purl": "pkg:npm/lib-t",
+      "range": "1.0.0",
+      "unknown": "package-lock.json does not install fixtures/atlas/import-names",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "fixtures/atlas/import-names/package.json",
+      "name": "lib-u",
+      "purl": "pkg:npm/lib-u",
+      "range": "1.0.0",
+      "unknown": "package-lock.json does not install fixtures/atlas/import-names",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "fixtures/atlas/import-names/package.json",
+      "name": "lib-v",
+      "purl": "pkg:npm/lib-v",
+      "range": "1.0.0",
+      "unknown": "package-lock.json does not install fixtures/atlas/import-names",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "fixtures/atlas/import-names/package.json",
+      "name": "lib-x",
+      "purl": "pkg:npm/lib-x",
+      "range": "1.0.0",
+      "unknown": "package-lock.json does not install fixtures/atlas/import-names",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "fixtures/atlas/import-names/package.json",
+      "name": "lib-y",
+      "purl": "pkg:npm/lib-y",
       "range": "1.0.0",
       "unknown": "package-lock.json does not install fixtures/atlas/import-names",
       "version": null

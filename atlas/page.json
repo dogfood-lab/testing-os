@@ -120,48 +120,26 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 8,
+      "added": 0,
       "assigned": 0,
-      "changed": 13,
+      "changed": 7,
       "moved": 0,
-      "parts": 7,
+      "parts": 4,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
-        "kind": "door",
-        "sentence": "CI runs 1 more file than before.",
-        "subjects": [
-          ".github/workflows/ci.yml"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Release runs 1 more file than before.",
-        "subjects": [
-          ".github/workflows/release.yml"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "fixtures/atlas/import-names/ is now read by packages/atlas/adapter/import-names-map.test.js.",
-        "subjects": [
-          "fixtures/atlas/import-names/",
-          "packages/atlas/adapter/import-names-map.test.js"
-        ]
-      },
-      {
         "kind": "counts",
-        "sentence": "8 files added and 13 changed content, across 7 parts.",
+        "sentence": "Nothing structural changed since 2026-10-15; 7 files changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "ae3618890c70b5bcbb6e28676d68598b5b96c141",
-      "generatedAt": "2026-10-15T06:47:32.452Z"
+      "commit": "bc97d8482377651edc64fbb49aa6e569aee41229",
+      "generatedAt": "2026-10-15T07:50:35.596Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [
     {
@@ -200,7 +178,7 @@
     "Window: 180 days; a pair counts from 10 shared commits, since 42 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "bc97d8482377651edc64fbb49aa6e569aee41229",
+  "commit": "26cb14e9d0dd2096a58914382ede8ab5fd7adb9e",
   "defaultBranch": "main",
   "derived": "23 parts, mostly JavaScript (1645 files), Python (243), TypeScript (223), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
   "doors": [
@@ -1448,7 +1426,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-15T07:50:35.596Z",
+  "generatedAt": "2026-10-15T09:09:22.406Z",
   "limits": [
     "4 import sites name declared dependencies that share their names with local modules (datasets, docx and xrpl); they are read as the dependencies, which are not in this repository.",
     "179 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 176 more.",
