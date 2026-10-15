@@ -295,6 +295,49 @@ This is slice AK (`docs/atlas-production.spec.md`, Part 1 item 6), with R&D's ru
 - **AP:** fixtures with known consumers give each skew state, an orphan, and each basis. No answer says "will break".
 - **AQ:** the report applies the bar above, as written here before mining.
 
+## Amendments of 2026-10-15: the consult on AO to AQ, the release and the wave
+
+**Status:** from the Publisher's consult of Argon (a different model family) on the rest of the build-up, with the Publisher's dispositions and R&D's ruling on question 1. Argon had no repository access for this round, so these are the dispositions, not Argon's text; the two items that depend on the code (adapter/diff.js:28 and the sidecar's git calls) were checked against testing-os at `228777d2`. Each item below amends the section named. Nothing here changes an earlier ruling that it does not name.
+
+### AO and AQ: where the import names go (R&D's ruling on question 1)
+
+**Ruled:** AO records the packages a file's imports name (`packages: [{ purl, manifest, self?, member? }]`) and nothing about what an import binds. **AQ adds the per-import record, `names` (named, default, namespace) and `typeOnly`.**
+
+**Why:** the extractor keeps only `{ specifier, kind, line }` for an import, so recording names is new extraction, not a rename of AO's facts. AO and AQ ship together in 1.27.0 and no fleet map is regenerated between them, so the map format changes once for every reader whichever slice carries the fields. Putting them in AQ keeps AO's byte-identical oracle exact (its only exclusions are the four new keys and the dates) and keeps AO's recall check meaningful. Argon's alternative, to fold them into AO so the schema locks once, gives readers nothing they do not get from this plan; the ruling is recorded here so it is not reopened.
+
+**Conditions:**
+1. **AQ's new fields get a sampled precision check:** 22 import sites per kind, fixed seed, zero wrong. The kinds are a value import, a type-only import, and a re-export or namespace import where the parser sees them. They also get a **recall check:** an independent text read of the `import type` and named-import sites across the fleet's TypeScript files, compared with what AQ records, in the spirit of AO's publish recall.
+2. **If AQ slips out of 1.27.0, AO ships alone.** The fields then arrive later as a purely additive minor change: new optional keys only, no renames and no change to an existing key's meaning.
+3. AQ's own byte-identical check compares against AO's output and excludes only AQ's new keys.
+
+### AP: reach across repositories (additions)
+
+- **`cannotSee` names the ecosystems Atlas does not extract** (PyPI and uv, Cargo, NuGet) and the roots it was not given. **When any of that applies to the package asked about, reach does not answer "zero consumers".** It answers that the consumers are unverified and names what it could not read. A zero is only said when nothing Atlas cannot see could hold a consumer.
+- **Git calls that take a ref from another repository.** Every such call (a ref read from a lockfile, a release or a tag) refuses any value that begins with `-` before it spawns git, and passes `--end-of-options` (with `--verify` on `rev-parse`) before the ref. A tag is named in full as `refs/tags/<name>` and validated with `git check-ref-format`. (`--` separates paths, not revisions, so it is the wrong tool here. The sidecar's calls already run `rev-parse --verify --quiet --end-of-options` at `sidecar/git.js:107` and `:151`, and use `--end-of-options` at `sidecar/changes-tool.js:38`. What is new is the refusal before the spawn, for every external ref, not only tags.)
+- **`adapter/diff.js:28`'s `rev-parse` call lacks `--end-of-options`.** It is fixed in AP, since that is the path a ref taken from data reaches.
+- **AP gets a targeted security review before it merges,** as AN did: R&D writes the brief against AP's head, the Director runs it by hand on another family, and R&D reviews the code. This is the specialised case under the Standing Rules.
+
+### AQ: the mining (additions)
+
+- **The mining of fleet history is limited to one session.**
+- **Under 20 cases:** the report logs what was scanned (the repositories, the commit range and the case count), keeps the inferred tiers off, and the release is cut with them off. The release is not held for a second attempt (this restates the release section's rule).
+- The seed's repositories include incontrol and interface-audits (see the wave).
+
+### The release (additions)
+
+- **In 1.27.0 beside the ladder:** #171 (the upload-sarif sentence, its own small pull request, after AO), and the Dependabot pull requests #152 and #153. #155 (routing each approved finding to its owning domain) changes routing semantics and is deferred to 1.28.0.
+- **The swarm's Atlas pin.** The release commit sets the dogfood-swarm `ATLAS_VERSION` to 1.27.0 with its pin test, which runs against the candidate before it is published, and #154 is closed then.
+- **The second AM-6 live run** (scratch pull request, GitHub's runners) runs now, on main after #163, #165 and #167, and **once more on the 1.27.0 candidate.** Both go on the AM-6 record.
+- **No package version bumps in the wave** (the Director, 2026-10-15): each wave pull request is the pin and the regenerated map only, as in the 1.24.0 wave. The release itself stays lockstep.
+
+### The wave (additions)
+
+- **A canary first:** interlock, rnd, a Python repository, a pnpm monorepo and a Rust or C# repository, with the incontrol and interface-audits first maps and their one-leg `atlas check` steps. **Then the other 94**, once the canary is green.
+- **Unassigned-folder notices go in the pull request bodies.** Atlas does not edit folder ownership, and the folder fixes go to housekeeping after the wave.
+- **incontrol and interface-audits join the fleet clone set** for AM item 7's count, AO's fleet check and AQ's mining. That needs no commit in either repository, because `map` runs on the clones. Their committed first maps land in the wave's first stage, at 1.27.0, so each is mapped once by the release engine instead of at 1.26.0 and again at 1.27.0.
+- **rnd's pin amendment stays its own pull request.** The "pin amendment in rnd" in the release section is the atlas-mcp-utility experiment's amendment (the CLI, the init fixtures, the stream check, `git -C`, the keying, the rnd #13 points), under R&D's review. It is not rnd's CI pin; rnd's wave pull request already carries its pin and its regenerated map in one commit, which is what the org rule asks. It is not folded into the wave pull request.
+- **Scratch clones.** Any fleet clone-and-map is made in a scratch folder of the testing-os session's own, never in a seat's worktree, and waits for the rig-load rule.
+
 ## Later items
 
 Each gets its own section here, for R&D's review, before it starts.

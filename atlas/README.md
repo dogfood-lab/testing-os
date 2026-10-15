@@ -1,19 +1,20 @@
 # testing-os: how it works
 
-Mapped at 2026-10-15 from commit 4db6ee2 by Atlas 1.26.0.
+Mapped at 2026-10-15 from commit 8740ad6 by Atlas 1.26.0.
 
 ## What this is
 
 23 parts, mostly JavaScript (1632 files), Python (243), TypeScript (219), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.
 
-## What changed since 2026-10-15 (89d0a28)
+## What changed since 2026-10-15 (4db6ee2)
 
-Nothing structural changed since 2026-10-15; 1 file added and 8 changed content.
+- CI's push trigger now also names `main`.
+- 3 files added and 7 changed content, across 6 parts.
 
 ## What comes in
 
 1. **Release.** When a tag matching `v*.*.*` is pushed; or by hand. Runs docker/entrypoint.sh, packages/atlas/cli.js, scripts/build.mjs and 800 more; checks packages/schemas/src/; packs site/public/atlas/hero.webp, site/public/atlas/index.html and site/public/atlas/render.js into an image.
-2. **CI.** On a pull request touching 24 paths; on a push touching 24 paths; or by hand. Runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 799 more; checks packages/schemas/src/.
+2. **CI.** On a pull request touching 24 paths; on a push to main touching 24 paths; or by hand. Runs packages/atlas/cli.js, scripts/build.mjs, scripts/check-doc-drift.mjs and 799 more; checks packages/schemas/src/.
 3. **Ingest dogfood submission.** When a repository sends a `dogfood_submission` event; or by hand. Runs packages/ingest/run.js, packages/portfolio/generate.js, scripts/build.mjs and 1 more; checks packages/schemas/src/.
 4. **self-dogfood.** When the workflow CI completes; or by hand. Runs packages/report/cli.js, scripts/build.mjs and scripts/sync-version.mjs; checks packages/schemas/src/.
 5. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs scripts/check-accent-color.test.mjs, scripts/check-atlas-front-door.test.mjs, site/astro.config.mjs and 6 more.
@@ -143,7 +144,7 @@ Read those in order to follow one dogfood submission end to end.
 - 11 writes and 37 reads use paths built at run time and are not named here.
 - 6 writes go to places this repository does not track, so they are not listed as generated.
 - 78 writes and 655 reads go to a path their caller passes, not to this repository.
-- 58 reads go to the directory the command is run in, not to this repository.
+- 48 reads go to the directory the command is run in, not to this repository.
 - 10 writes and 7 reads go to a temporary directory, not to this repository.
 - 2 writes and 8 reads go to the directory the command is run in (.github/, dogfood/, policy.example.yaml and 2 more places) or a path their caller passes, not to this repository.
 - 2 writes and 3 reads go to a temporary directory or a path their caller passes, not to this repository.
