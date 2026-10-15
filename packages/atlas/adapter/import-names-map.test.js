@@ -89,6 +89,17 @@ describe('importNames', () => {
   });
 
   // R&D's review of #180: the caps keep the type mark, and are tested end to end.
+  // R&D's review of #180: only TypeScript has types. In JavaScript typeof import()
+  // and typeof require() are values that load the module; recording them as
+  // type-only would be the dangerous direction for the tiers.
+  it('keep typeof import() and typeof require() in JavaScript as value imports', () => {
+    assert.deepEqual(shape(at('src/values.mjs', 2)), ['dynamic', false, '*'], 'typeof import() in a .mjs file');
+    assert.deepEqual(shape(at('src/values.mjs', 3)), ['require', false, '*'], 'typeof require() in a .mjs file');
+    assert.deepEqual(shape(at('src/values.cjs', 1)), ['dynamic', false, '*'], 'typeof import() in a .cjs file');
+    assert.deepEqual(shape(at('src/values.cjs', 2)), ['require', false, '*'], 'typeof require() in a .cjs file');
+    assert.deepEqual(shape(at('src/types.ts', 2)), ['type-import', true, 'type *'], 'the same typeof import() in TypeScript is a type query');
+  });
+
   it('keep a type mark past the 50-name cap, and say an empty import still loads the module', () => {
     const big = at('src/caps.ts', 1);
     assert.deepEqual(big.names, [{ name: '*', type: true }], 'an import type of 55 names is a type * past the cap, not a value *');

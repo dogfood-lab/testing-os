@@ -123,10 +123,13 @@ function patternNames(pattern, str) {
  * @param {object} call the call_expression
  * @param {'require'|'dynamic'} form
  * @param {(node: object) => string|null} str the string literal's value
+ * @param {boolean} [typescript] the file is TypeScript, where an import() may be written as a type
  * @returns {Bound}
  */
-export function callBinding(call, form, str) {
-  const typed = typePositionBinding(call);
+export function callBinding(call, form, str, typescript = false) {
+  // Only an import() in a TypeScript file can be a type; in JavaScript, typeof import() and
+  // typeof require() are values that load the module.
+  const typed = typescript && form === 'dynamic' ? typePositionBinding(call) : null;
   if (typed) return typed;
   let value = call;
   let parent = call.parent;

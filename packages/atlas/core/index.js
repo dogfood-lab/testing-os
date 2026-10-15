@@ -11,7 +11,7 @@ import { httpEdges, httpFacts } from './http.js';
 import { declaredEntries, deriveEntryPoints, manifestCommands, memberCommands, memberPackage, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
 import { failurePaths } from './failure-paths.js';
-import { callBinding, exportBinding, importBinding, typeImportBinding } from './import-names.js';
+import { callBinding, exportBinding, importBinding, typeImportBinding, unknownBinding } from './import-names.js';
 import { leftOutCounts, packageFacts } from './package-facts.js';
 import { markScriptTests, readsSelfFail, selfFails } from './script-tests.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, settleRelativePaths, testReadsKept, testWritesKept, textLandings, trackedPlaces } from './landings.js';
@@ -960,7 +960,7 @@ function parseFile(language, path, original, places, { reread = false, structure
   try {
     if (tree.rootNode.hasError) return { parseError: true, imports: [], unreadSyntax: unreadSyntax(tree.rootNode, source) };
     if (!SCRIPT_LANGUAGES.has(language) && language !== 'python') return nativeReadings(language, tree.rootNode);
-    const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : [...collectScript(tree.rootNode, path), ...typeSites];
+    const imports = language === 'python' ? collectPython(tree.rootNode, path, places) : [...collectScript(tree.rootNode, path, language === 'typescript' || language === 'tsx'), ...(language === 'typescript' || language === 'tsx' ? typeSites : typeSites.map((site) => ({ ...site, bound: unknownBinding('dynamic') })))];
     if (reread) {
       return {
         ...REREAD_SKIPS,
@@ -1485,7 +1485,7 @@ function unreadSyntax(root, source) {
 // A string literal passed to import() or require() names its module as surely
 // as an import statement does, so it resolves as one, kind dynamic-literal.
 // Anything else passed is a dynamic site, left unresolved.
-function collectScript(root, path = null) {
+function collectScript(root, path = null, typed = false) {
   const imports = [];
   walkNamed(root, (node) => {
     if (node.type === 'import_statement' || node.type === 'export_statement') {
@@ -1516,7 +1516,7 @@ function collectScript(root, path = null) {
     const literal = jsString(first) ?? jsString(bound);
     const optional = optionalCall(node) ? { optional: true } : {};
     if (literal != null) {
-      imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node), bound: callBinding(node, isRequire ? 'require' : 'dynamic', jsString), ...optional });
+      imports.push({ specifier: literal, kind: 'dynamic-literal', line: lineOf(node), bound: callBinding(node, isRequire ? 'require' : 'dynamic', jsString, typed), ...optional });
       return;
     }
     // require(join(ROOT, 'package.json')) reads the manifest for its fields;
