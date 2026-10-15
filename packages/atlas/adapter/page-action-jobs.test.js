@@ -51,3 +51,18 @@ describe('a job that reads its own repository through gh api', () => {
     assert.ok(markdown.includes('**PR comment** runs no file this map can see.'), markdown);
   });
 });
+
+describe('a workflow that uploads a SARIF report', () => {
+  // github/codeql-action/upload-sarif sends a report any tool may have made
+  // to code scanning (OpenSSF Scorecard's, in interlock); it scans nothing.
+  // Only init, analyze and autobuild are CodeQL's own scan.
+  it('is not said to scan code with CodeQL', () => {
+    const markdown = page();
+    assert.ok(markdown.includes('**Scorecard** runs no file this map can see and uploads a SARIF report to code scanning.'), markdown);
+  });
+
+  it('leaves CodeQL\'s own steps saying they scan code with CodeQL', () => {
+    const markdown = page();
+    assert.ok(markdown.includes('**Code Scanning** runs no file this map can see and scans code with CodeQL.'), markdown);
+  });
+});
