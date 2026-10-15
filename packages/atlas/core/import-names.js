@@ -71,6 +71,8 @@ export function importBinding(node, str) {
       }
     }
   }
+  // import {} from … still loads the module, for its effects, unless it is a type import.
+  if (names.length === 0) return { form: 'import', typeOnly: statementType, names: [], ...(statementType ? {} : { sideEffect: true }) };
   return finish('import', names, statementType);
 }
 
@@ -124,6 +126,8 @@ function patternNames(pattern, str) {
  * @returns {Bound}
  */
 export function callBinding(call, form, str) {
+  const typed = typePositionBinding(call);
+  if (typed) return typed;
   let value = call;
   let parent = call.parent;
   if (parent?.type === 'await_expression') {
@@ -138,6 +142,33 @@ export function callBinding(call, form, str) {
     }
   }
   return unknownBinding(form);
+}
+
+// Where a type, not a value, is written: a type annotation, a type alias, an
+// interface, type arguments and parameters, and a typeof query.
+const TYPE_CONTEXT = new Set(['type_query', 'type_annotation', 'type_alias_declaration', 'type_arguments', 'type_parameters', 'interface_declaration', 'extends_type_clause', 'implements_clause']);
+
+/**
+ * The binding of an import call written as a type, or null when it is a
+ * value: `let x: typeof import(…)`, `type T = import(…).Foo`, a parameter
+ * typed `import(…).Opts`. The vendored grammar also reads
+ * `identity<typeof import(…)>()` as comparisons, so a typeof applied to an
+ * import call is a type query wherever it appears. A member read straight off
+ * the call names the type taken (`Foo`); else the whole module.
+ *
+ * @param {object} call the call_expression
+ * @returns {Bound|null}
+ */
+function typePositionBinding(call) {
+  let typed = call.parent?.type === 'unary_expression' && call.parent.children[0]?.text === 'typeof';
+  for (let node = call.parent; node && !typed; node = node.parent) {
+    if (TYPE_CONTEXT.has(node.type)) typed = true;
+    // A value statement ends the climb: nothing above it is a type.
+    if (node.type === 'variable_declarator' || node.type === 'expression_statement' || node.type === 'return_statement') break;
+  }
+  if (!typed) return null;
+  const member = call.parent?.type === 'member_expression' && call.parent.childForFieldName('object')?.id === call.id ? call.parent.childForFieldName('property') : null;
+  return { form: 'type-import', typeOnly: true, names: [{ name: member ? member.text : '*', type: true }] };
 }
 
 /** What a type-position import call (or typeof of one) binds: a type of the module. */

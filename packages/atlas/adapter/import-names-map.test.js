@@ -71,6 +71,43 @@ describe('importNames', () => {
     assert.deepEqual(shape(at('src/plain.cjs', 1)), ['require', false, 'cjsName'], 'a CommonJS file reads the same way');
   });
 
+  it('record a destructuring with defaults by the names it takes', () => {
+    assert.deepEqual(shape(at('src/main.ts', 17)), ['require', false, 'd,e'], 'const { d = 1, e: f = 2 } = require(): d and e, not f');
+  });
+
+  // The vendored grammar reads identity<typeof import(…)>() as comparisons, and
+  // stops on import(…).Item[]; a type written as an import is never a value.
+  it('mark an import() written as a type, wherever the grammar puts it', () => {
+    const types = (line) => shape(at('src/types.ts', line));
+    assert.deepEqual(types(2), ['type-import', true, 'type *'], 'identity<typeof import(…)>(): a typeof is a type query');
+    assert.deepEqual(types(3), ['type-import', true, 'type *'], 'let query: typeof import(…)');
+    assert.deepEqual(types(4), ['type-import', true, 'type Foo'], 'type Foo = import(…).Foo names the type taken');
+    assert.deepEqual(types(5), ['type-import', true, 'type Opts'], 'a parameter typed import(…).Opts');
+    assert.deepEqual(types(6), ['dynamic', false, '*'], 'an awaited import() in a value position stays a value');
+    assert.deepEqual(shape(at("src/repaired.ts", 5)), ["type-import", true, "type *"], "import(…).Item[] is read by the repair pass: the tree path would name Item, the repair names the module");
+    assert.deepEqual(shape(at('src/repaired.ts', 7)), ['type-import', true, 'type *'], 'typeof import(…) as the type argument of an awaited call');
+  });
+
+  // R&D's review of #180: the caps keep the type mark, and are tested end to end.
+  it('keep a type mark past the 50-name cap, and say an empty import still loads the module', () => {
+    const big = at('src/caps.ts', 1);
+    assert.deepEqual(big.names, [{ name: '*', type: true }], 'an import type of 55 names is a type * past the cap, not a value *');
+    assert.equal(big.namesTotal, 55);
+    assert.equal(big.typeOnly, true);
+    const empty = at('src/empty.ts', 1);
+    assert.deepEqual([empty.names, empty.typeOnly, empty.sideEffect], [[], false, true], 'import {} from … runs the module for its effects');
+    const typeEmpty = at('src/empty.ts', 2);
+    assert.deepEqual([typeEmpty.names, typeEmpty.typeOnly, typeEmpty.sideEffect], [[], true, undefined], 'import type {} from … loads nothing');
+  });
+
+  it('keep 200 sites a file, in source order, and say how many it left out', () => {
+    const caps = fileIn('src/caps.ts');
+    assert.equal(caps.importNames.length, 200);
+    assert.equal(caps.importNamesOmitted, 2, '202 package imports in the file');
+    assert.deepEqual(caps.importNames.map((entry) => entry.line), Array.from({ length: 200 }, (_, index) => index + 1));
+    assert.equal(fileIn('src/main.ts').importNamesOmitted, undefined, 'a file within the cap says nothing');
+  });
+
   it('are bounded: a site that takes more than 50 names says so and keeps the whole module', () => {
     const entry = at('src/main.ts', 12);
     assert.deepEqual(entry.names, [{ name: '*' }]);
@@ -80,7 +117,7 @@ describe('importNames', () => {
   it('are in source order, one record per site, and carry no import that is not a package', () => {
     const lines = fileIn('src/main.ts').importNames.map((entry) => entry.line);
     assert.deepEqual(lines, [...lines].sort((a, b) => a - b));
-    assert.equal(fileIn('src/main.ts').importNames.length, 15, 'one per package import the file makes (the eq = require form is not read)');
-    assert.equal(fileIn('src/main.ts').packages.length, 13, 'packages lists each package once; lib-a and lib-d each appear twice in importNames');
+    assert.equal(fileIn('src/main.ts').importNames.length, 16, 'one per package import the file makes (the eq = require form is not read)');
+    assert.equal(fileIn('src/main.ts').packages.length, 14, 'packages lists each package once; lib-a and lib-d each appear twice in importNames');
   });
 });

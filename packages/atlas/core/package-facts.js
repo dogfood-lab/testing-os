@@ -478,7 +478,8 @@ function importRecord(purl, site) {
     line: site.line,
     form: bound.form,
     typeOnly: bound.typeOnly,
-    names: many ? [{ name: '*' }] : bound.names.map((entry) => ({ ...entry })),
+    // Past the cap the names say the whole module, and as a type when every name was one.
+    names: many ? [{ name: '*', ...(bound.typeOnly ? { type: true } : {}) }] : bound.names.map((entry) => ({ ...entry })),
     ...(many ? { namesTotal: bound.names.length } : {}),
     ...(bound.sideEffect ? { sideEffect: true } : {}),
   };

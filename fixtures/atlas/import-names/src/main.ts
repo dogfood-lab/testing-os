@@ -14,4 +14,5 @@ const { p, q: r, ...rest } = require('lib-h');
 const whole = require('lib-i');
 const { s } = await import('lib-j');
 const lazy = import('lib-k');
-export const all = [def, local, b, ns, eq, alias, p, r, rest, whole, s, lazy];
+const { d = 1, e: f = 2 } = require('lib-assign');
+export const all = [def, local, b, ns, eq, alias, p, r, rest, whole, s, lazy, d, f];
