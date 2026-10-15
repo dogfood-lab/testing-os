@@ -412,6 +412,12 @@ function carryFile(file) {
   // The packages the file's bare imports name, each with the manifest whose
   // declaration covers it (core/package-facts.js).
   if (file.packages?.length > 0) out.packages = file.packages.map((entry) => ({ ...entry }));
+  // What each of those imports binds: the names it takes and which are only
+  // types (core/import-names.js), for the packages' imports alone.
+  if (file.importNames?.length > 0) {
+    out.importNames = file.importNames.map((entry) => ({ ...entry, names: entry.names.map((name) => ({ ...name })) }));
+    if (file.importNamesOmitted > 0) out.importNamesOmitted = file.importNamesOmitted;
+  }
   // A file whose entry calls into no file has no order of work; the order it
   // imports in is then the order a reader meets what it uses (a CLI that
   // registers its commands as it imports them), carried when it is not the
