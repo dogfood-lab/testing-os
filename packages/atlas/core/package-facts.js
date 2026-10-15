@@ -302,7 +302,8 @@ export function packageFacts({ view, doors, files }) {
   }
   const byPath = new Map(manifests.map((manifest) => [manifest.path, manifest]));
   const published = publishedManifests({ doors, members, byPath, paths, dirOf, view });
-  return { manifests, dependencies, published, imports: importedPackages({ files, view, byPath, dependencies, members }) };
+  const { imports, leftOut } = importedPackages({ files, view, byPath, dependencies, members });
+  return { manifests, dependencies, published, imports, leftOut };
 }
 
 // How the workspace's members were listed, for the member role's basis.
@@ -402,6 +403,15 @@ function repositoryOf(pkg) {
 // name or its types package; an alias records the package it names, and a
 // package importing its own name is itself. A name no manifest declares is
 // recorded with no manifest.
+//
+// Three kinds of specifier are not packages, though they look like bare
+// names, and are left out and counted (R&D on slice AO): a package's own
+// `#internal` imports; a name npm's rules reject, such as the `@/lib` of a
+// tsconfig path alias or SvelteKit's `$lib`; and a name the resolver found
+// inside the repository when no manifest declares it, which is a path alias
+// or a rewrite and already a file edge. A tracked file reached through a
+// declared name stays: a workspace member's own name, or the package's own,
+// is what the workspace and self kinds are.
 function importedPackages({ files, view, byPath, dependencies, members }) {
   const declaredAt = new Map();
   for (const entry of dependencies) {
@@ -410,20 +420,82 @@ function importedPackages({ files, view, byPath, dependencies, members }) {
   }
   const memberNames = new Set([...members.values()].filter((name) => typeof name === 'string'));
   const out = new Map();
+  const leftOut = { packageInternalSites: 0, resolvedInRepositorySites: 0, notPackageNameSites: 0, names: new Map(), files: new Set() };
   for (const file of files) {
     if (!Array.isArray(file.imports) || file.language === 'python' || file.language === 'rust' || file.godot) continue;
     const seen = new Map();
     for (const site of file.imports) {
       if (site.kind !== 'static' && site.kind !== 'dynamic-literal') continue;
       if (site.location || site.locates || site.submodule) continue;
+      if (typeof site.specifier === 'string' && site.specifier.startsWith('#')) {
+        leftOut.packageInternalSites += 1;
+        leftOut.files.add(file.path);
+        tally(leftOut.names, packageNameOf(site.specifier) ?? site.specifier);
+        continue;
+      }
       const name = packageNameOf(site.specifier);
       if (name == null) continue;
+      if (!isValidPackageName(name)) {
+        leftOut.notPackageNameSites += 1;
+        tally(leftOut.names, name);
+        leftOut.files.add(file.path);
+        continue;
+      }
       const entry = coveringDeclaration(file.path, name, { byPath, declaredAt, view, memberNames });
+      const inRepository = site.resolved?.outcome === 'file' || site.resolved?.outcome === 'boundary';
+      if (inRepository && entry.manifest === null) {
+        leftOut.resolvedInRepositorySites += 1;
+        leftOut.files.add(file.path);
+        tally(leftOut.names, name);
+        continue;
+      }
       seen.set(`${entry.purl}\0${entry.manifest ?? ''}`, entry);
     }
     if (seen.size > 0) out.set(file.path, [...seen.values()].sort((a, b) => (a.purl < b.purl ? -1 : a.purl > b.purl ? 1 : (a.manifest ?? '') < (b.manifest ?? '') ? -1 : 1)));
   }
-  return out;
+  return { imports: out, leftOut };
+}
+
+function tally(map, key) {
+  map.set(key, (map.get(key) ?? 0) + 1);
+}
+
+/**
+ * Whether npm's naming rules for packages that already exist accept a name:
+ * the rules of `validate-npm-package-name`'s validForOldPackages, so uppercase
+ * names such as JSONStream stay, and a leading dot or underscore, a character
+ * that is not URL-safe, an empty scope (`@/lib`) or `$lib` do not.
+ *
+ * @param {string} name a bare package name, scoped or not
+ */
+export function isValidPackageName(name) {
+  if (typeof name !== 'string' || name.length === 0) return false;
+  if (name.startsWith('.') || name.startsWith('_')) return false;
+  if (name.trim() !== name) return false;
+  if (/[~)('!*]/.test(name.split('/').pop())) return false;
+  if (encodeURIComponent(name) === name) return true;
+  const scoped = name.match(/^(?:@([^/]+?)[/])?([^/]+?)$/);
+  if (!scoped || scoped[1] === undefined) return false;
+  const [, scope, pkg] = scoped;
+  if (pkg.startsWith('.')) return false;
+  return encodeURIComponent(scope) === scope && encodeURIComponent(pkg) === pkg;
+}
+
+/**
+ * The counts of what the package facts left out of a file's `packages`, for
+ * statistics.json: how many import sites, by reason, the files they are in,
+ * and the names left out, the twenty most common.
+ */
+export function leftOutCounts(leftOut) {
+  const names = [...leftOut.names.entries()].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
+  return {
+    filesWithLeftOutImports: leftOut.files.size,
+    importSitesNotPackageNames: leftOut.notPackageNameSites,
+    importSitesPackageInternal: leftOut.packageInternalSites,
+    importSitesResolvedInRepository: leftOut.resolvedInRepositorySites,
+    namesLeftOut: Object.fromEntries(names.slice(0, 20)),
+    namesLeftOutOmitted: Math.max(0, names.length - 20),
+  };
 }
 
 /**

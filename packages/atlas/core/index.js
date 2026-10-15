@@ -11,7 +11,7 @@ import { httpEdges, httpFacts } from './http.js';
 import { declaredEntries, deriveEntryPoints, manifestCommands, memberCommands, memberPackage, pythonScripts } from './entry-points.js';
 import { buildCalls } from './bundles.js';
 import { failurePaths } from './failure-paths.js';
-import { packageFacts } from './package-facts.js';
+import { leftOutCounts, packageFacts } from './package-facts.js';
 import { markScriptTests, readsSelfFail, selfFails } from './script-tests.js';
 import { astLandings, attachLandings, githubChanges, isTestFile, isTestMaterial, noLandings, pathShape, pythonPathValues, scriptPath, settleHelperPaths, settleParamPaths, settleRelativePaths, testReadsKept, testWritesKept, textLandings, trackedPlaces } from './landings.js';
 import { languageOf, SCRIPT_LANGUAGES } from './languages.js';
@@ -295,6 +295,8 @@ export function mapRepository({ repoPath, boundaries, structureOnly = false } = 
     ...(packaging?.manifests.length > 0
       ? { manifests: packaging.manifests, packageDependencies: packaging.dependencies, packagesPublished: packaging.published }
       : {}),
+    // Not in structure.json: what the package facts left out of the files' packages, for statistics.json.
+    ...(packaging ? { packageImportsLeftOut: leftOutCounts(packaging.leftOut) } : {}),
   };
 }
 

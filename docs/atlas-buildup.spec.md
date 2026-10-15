@@ -221,6 +221,8 @@ The shape below is R&D's ruling of 2026-10-13, which replaced a literal reading 
   - `how` says which: "named by the publish", "a loop over packages/*/", "every member of the workspace", "a loop over the members of the workspace", "one package under packages/, chosen by the tag".
   - A private manifest is never in it, and a publish whose packages only a run decides is not expanded.
 - **Each JavaScript or TypeScript file's `packages`:** `[{ purl, manifest, self? }]`, the packages its bare imports name.
+  - **What is not a package** (R&D's review of #173): a specifier starting with `#`, a name npm's rules for existing packages reject (`validForOldPackages`, so `JSONStream` stays and `@/lib` and `$lib` go), and a name the resolver found in a tracked file when no manifest declares it. Each is left out and counted in statistics.json under `packageImports`: sites by reason, the files they are in, and the twenty most common names left out.
+  - A tracked file reached through a declared name stays (a workspace member, or a package's own name), since the workspace and self kinds are those.
   - Imports counted: static, dynamic with a literal name, and `require`. A subpath counts against its package.
   - Built-ins, a scheme's modules (`astro:content`) and `require.resolve` are not packages.
   - `manifest` is the nearest manifest above the file that declares the name or its types package, found as resolution finds it, or null when none does. An alias records the package it names. A package importing its own name is `self`.
@@ -301,7 +303,7 @@ The shape below is R&D's ruling of 2026-10-13, which replaced a literal reading 
 - **AN:** every test above passes in a clean verify and in CI; the security review's findings are closed; R&D passes the pull request.
 - **AO:**
   - zero wrong facts in the fleet sample;
-  - every byte of structure.json, page.json, README.md and statistics.json is identical before and after, on this repository's fixtures and on the fleet clones, except the new facts (`manifests`, `packageDependencies`, `packagesPublished`, each file's `packages`) and the dates (`generatedAt`, the dated line). AO adds no format version.
+  - every byte of structure.json, page.json, README.md and statistics.json is identical before and after, on this repository's fixtures and on the fleet clones, except the new facts (`manifests`, `packageDependencies`, `packagesPublished`, each file's `packages`, and statistics.json's `packageImports`) and the dates (`generatedAt`, the dated line). AO adds no format version.
 - **AP:** fixtures with known consumers give each skew state, an orphan, and each basis. No answer says "will break".
 - **AQ:** the report applies the bar above, as written here before mining.
 

@@ -5,6 +5,7 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
+import { isValidPackageName } from '../core/package-facts.js';
 import { mappedRepository } from '../sidecar/test-client.js';
 
 // docs/atlas-buildup.spec.md, slice AO: the map records the repository's own
@@ -20,8 +21,14 @@ const roots = [];
 let npm;
 let pnpm;
 let publishes;
+let aliases;
+let aliasStatistics;
 
 before(() => {
+  const aliasRoot = mappedRepository(join(FIXTURES, 'package-facts-aliases'), { prefix: 'atlas-package-facts-aliases-' });
+  roots.push(aliasRoot);
+  aliases = JSON.parse(readFileSync(join(aliasRoot, 'atlas', 'structure.json'), 'utf8'));
+  aliasStatistics = JSON.parse(readFileSync(join(aliasRoot, 'atlas', 'statistics.json'), 'utf8'));
   npm = structureOf(mappedRepository(join(FIXTURES, 'package-facts'), { prefix: 'atlas-package-facts-' }));
   pnpm = structureOf(mappedRepository(join(FIXTURES, 'package-facts-pnpm'), { prefix: 'atlas-package-facts-pnpm-' }));
   publishes = structureOf(mappedRepository(join(FIXTURES, 'package-facts-publishes'), { prefix: 'atlas-package-facts-publishes-' }));
@@ -143,6 +150,34 @@ describe('the packages a file imports', () => {
       { manifest: 'packages/ui/package.json', purl: 'pkg:npm/zod' },
     ], 'a git dependency is imported as the package its commit holds');
     assert.equal(fileIn(npm, 'packages/util/index.js').packages, undefined, 'a file that imports no package carries no list');
+  });
+
+  // R&D's review of #173: a path alias, a package's own `#` import and a
+  // SvelteKit `$lib` look like bare names. Left in, `@/lib` became
+  // pkg:npm/%40/lib, a package every repository with that alias would share,
+  // and AP and AQ join repositories on the purl.
+  it('leave out a path alias, a # import and a name npm rejects, and count them', () => {
+    const main = fileIn(aliases, 'src/main.ts');
+    assert.deepEqual(main.importsFiles, ['src/lib/util.js'], 'the aliases that resolve are still file edges');
+    assert.deepEqual(main.packages, [
+      { manifest: 'package.json', purl: 'pkg:npm/JSONStream' },
+      { manifest: 'package.json', purl: 'pkg:npm/lodash' },
+    ], '@/lib/util, #internal/util, $lib/unreached and the undeclared alias shared/util are no package; JSONStream is one');
+    assert.deepEqual(aliasStatistics.packageImports, {
+      filesWithLeftOutImports: 1,
+      importSitesNotPackageNames: 2,
+      importSitesPackageInternal: 1,
+      importSitesResolvedInRepository: 1,
+      namesLeftOut: { '#internal': 1, $lib: 1, '@/lib': 1, shared: 1 },
+      namesLeftOutOmitted: 0,
+    });
+  });
+});
+
+describe('isValidPackageName', () => {
+  it('follows npm\'s rules for packages that exist: capitals pass, an empty scope or a $ does not', () => {
+    for (const name of ['react', 'JSONStream', '@types/node', '@scope/pkg', 'a.b', 'pad-left']) assert.equal(isValidPackageName(name), true, name);
+    for (const name of ['', '@/lib', '$lib', '.hidden', '_private', '@scope/.x', '@scope', 'a b', 'it(s)', '#internal', '@']) assert.equal(isValidPackageName(name), false, name);
   });
 });
 
