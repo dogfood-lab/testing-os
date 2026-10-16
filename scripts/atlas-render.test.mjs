@@ -531,7 +531,7 @@ describe('atlas weekly render', () => {
     assert.deepEqual(workflow.permissions, { contents: 'write', issues: 'write' });
     assert.equal(workflow.concurrency.group, 'atlas-render');
     assert.equal(workflow.concurrency['cancel-in-progress'], false);
-    assert.match(readFileSync(WORKFLOW, 'utf8'), /actions\/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0/);
+    assert.match(readFileSync(WORKFLOW, 'utf8'), /actions\/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1/);
     assert.doesNotMatch(readFileSync(WORKFLOW, 'utf8'), /uses:.*@v\d/);
   });
 });
