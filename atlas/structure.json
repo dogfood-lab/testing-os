@@ -13,7 +13,7 @@
           "path": ".github/CODEOWNERS"
         },
         {
-          "hash": "6f0c7c195b5b86884aebb1d848c9dc8b6da7a0db55ec694cb2e02955c058249f",
+          "hash": "8bd54e2d5168733ce87b4aee1e339396670efe85ee28c009d6bb08e986fa4cf0",
           "path": ".github/dependabot.yml"
         },
         {
@@ -687,67 +687,42 @@
             {
               "in": "earlierWindow",
               "kind": "catch",
-              "line": 53
+              "line": 54
             },
             {
               "in": "readJsonFile",
               "kind": "catch",
-              "line": 316
+              "line": 332
             },
             {
               "in": "renderOne",
               "kind": "catch",
-              "line": 400
+              "line": 416
             },
             {
               "in": "renderOne",
-              "kind": "catch",
-              "line": 430
-            },
-            {
-              "in": "renderOne",
-              "kind": "catch",
-              "line": 431
-            },
-            {
-              "in": "readFleetConfig",
               "kind": "catch",
               "line": 446
             },
             {
-              "in": "readFleetConfig",
-              "kind": "throw",
+              "in": "renderOne",
+              "kind": "catch",
               "line": 447
             },
             {
               "in": "readFleetConfig",
-              "kind": "throw",
-              "line": 450
-            },
-            {
-              "in": "readFleetConfig",
-              "kind": "throw",
-              "line": 452
-            },
-            {
-              "in": "readFleetConfig",
-              "kind": "throw",
-              "line": 457
-            },
-            {
-              "in": "readFleetConfig",
-              "kind": "throw",
-              "line": 459
-            },
-            {
-              "in": "readFleetConfig",
-              "kind": "throw",
+              "kind": "catch",
               "line": 462
             },
             {
               "in": "readFleetConfig",
               "kind": "throw",
-              "line": 464
+              "line": 463
+            },
+            {
+              "in": "readFleetConfig",
+              "kind": "throw",
+              "line": 466
             },
             {
               "in": "readFleetConfig",
@@ -757,17 +732,17 @@
             {
               "in": "readFleetConfig",
               "kind": "throw",
-              "line": 469
+              "line": 473
             },
             {
               "in": "readFleetConfig",
               "kind": "throw",
-              "line": 470
+              "line": 475
             },
             {
               "in": "readFleetConfig",
               "kind": "throw",
-              "line": 472
+              "line": 478
             },
             {
               "in": "readFleetConfig",
@@ -777,65 +752,90 @@
             {
               "in": "readFleetConfig",
               "kind": "throw",
-              "line": 481
+              "line": 484
+            },
+            {
+              "in": "readFleetConfig",
+              "kind": "throw",
+              "line": 485
+            },
+            {
+              "in": "readFleetConfig",
+              "kind": "throw",
+              "line": 486
+            },
+            {
+              "in": "readFleetConfig",
+              "kind": "throw",
+              "line": 488
+            },
+            {
+              "in": "readFleetConfig",
+              "kind": "throw",
+              "line": 496
+            },
+            {
+              "in": "readFleetConfig",
+              "kind": "throw",
+              "line": 497
             },
             {
               "in": "nameFromUrl",
               "kind": "catch",
-              "line": 498
+              "line": 514
             },
             {
               "in": "parseCron",
               "kind": "throw",
-              "line": 530
+              "line": 546
             },
             {
               "in": "parseCron",
               "kind": "throw",
-              "line": 536
+              "line": 552
             },
             {
               "in": "parseCron",
               "kind": "throw",
-              "line": 545
+              "line": 561
             },
             {
               "in": "nextRun",
               "kind": "throw",
-              "line": 586
+              "line": 602
             },
             {
               "in": "runFleetOnce",
               "kind": "catch",
-              "line": 742
+              "line": 758
             },
             {
               "in": "servedShell",
               "kind": "throw",
-              "line": 793
+              "line": 809
             },
             {
               "in": "createFleetServer",
               "kind": "catch",
-              "line": 823
+              "line": 839
             },
             {
               "in": "startFleetService",
               "kind": "throw",
-              "line": 858
+              "line": 874
             },
             {
               "in": "runNow",
               "kind": "catch",
-              "line": 876
+              "line": 892
             },
             {
               "in": "runNow",
               "kind": "catch",
-              "line": 881
+              "line": 897
             }
           ],
-          "hash": "26f152c7237b3d2199fe95f88062241e0488d332a42a703e0c3cdc401593fd8e",
+          "hash": "e97e0b559c380b7f845e5c0313ef11b6a66102499b0fa57b9a851437104ce260",
           "importNames": [
             {
               "form": "import",
@@ -852,6 +852,7 @@
           ],
           "importsFiles": [
             "packages/atlas/adapter/engine.js",
+            "packages/atlas/adapter/kill-tree.js",
             "packages/atlas/adapter/write.js"
           ],
           "packages": [
@@ -865,24 +866,47 @@
             {
               "calls": [
                 {
-                  "line": 387,
+                  "line": 127,
+                  "name": "killTree",
+                  "target": {
+                    "file": "packages/atlas/adapter/kill-tree.js"
+                  }
+                },
+                {
+                  "line": 128,
+                  "name": "KILL_GRACE_MS",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/atlas/adapter/kill-tree.js"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "defaultRun"
+            },
+            {
+              "calls": [
+                {
+                  "line": 403,
                   "name": "divergence",
                   "target": null
                 },
                 {
-                  "line": 394,
+                  "line": 410,
                   "name": "writeArtifactSync",
                   "target": {
                     "file": "packages/atlas/adapter/write.js"
                   }
                 },
                 {
-                  "line": 417,
+                  "line": 433,
                   "name": "history",
                   "target": null
                 },
                 {
-                  "line": 421,
+                  "line": 437,
                   "name": "writeArtifactSync",
                   "target": {
                     "file": "packages/atlas/adapter/write.js"
@@ -897,7 +921,7 @@
             {
               "calls": [
                 {
-                  "line": 602,
+                  "line": 618,
                   "name": "writeArtifactSync",
                   "target": {
                     "file": "packages/atlas/adapter/write.js"
@@ -912,13 +936,13 @@
             {
               "calls": [
                 {
-                  "line": 387,
+                  "line": 403,
                   "name": "divergence",
                   "target": null,
                   "via": "renderOne"
                 },
                 {
-                  "line": 394,
+                  "line": 410,
                   "name": "writeArtifactSync",
                   "target": {
                     "file": "packages/atlas/adapter/write.js"
@@ -926,13 +950,13 @@
                   "via": "renderOne"
                 },
                 {
-                  "line": 417,
+                  "line": 433,
                   "name": "history",
                   "target": null,
                   "via": "renderOne"
                 },
                 {
-                  "line": 421,
+                  "line": 437,
                   "name": "writeArtifactSync",
                   "target": {
                     "file": "packages/atlas/adapter/write.js"
@@ -948,13 +972,13 @@
             {
               "calls": [
                 {
-                  "line": 387,
+                  "line": 403,
                   "name": "divergence",
                   "target": null,
                   "via": "renderOne"
                 },
                 {
-                  "line": 394,
+                  "line": 410,
                   "name": "writeArtifactSync",
                   "target": {
                     "file": "packages/atlas/adapter/write.js"
@@ -962,13 +986,13 @@
                   "via": "renderOne"
                 },
                 {
-                  "line": 417,
+                  "line": 433,
                   "name": "history",
                   "target": null,
                   "via": "renderOne"
                 },
                 {
-                  "line": 421,
+                  "line": 437,
                   "name": "writeArtifactSync",
                   "target": {
                     "file": "packages/atlas/adapter/write.js"
@@ -1286,6 +1310,29 @@
           "spawns": [
             "packages/atlas/cli.js"
           ],
+          "testFramework": "node --test"
+        },
+        {
+          "exports": [
+            "killTree"
+          ],
+          "failurePaths": [
+            {
+              "in": "killChild",
+              "kind": "catch",
+              "line": 18
+            }
+          ],
+          "hash": "8ed02a2ca36855b1ee2b6553c7974cc677a756ec725abfcfa69396c30e48c7f3",
+          "path": "packages/atlas/adapter/kill-tree.js"
+        },
+        {
+          "hash": "aa83636b0c495186b0a000ccaf93dbebc1ce3ec9429b4ef44a0bf4c44c008e87",
+          "importsFiles": [
+            "packages/atlas/adapter/fleet.js",
+            "packages/atlas/adapter/kill-tree.js"
+          ],
+          "path": "packages/atlas/adapter/kill-tree.test.js",
           "testFramework": "node --test"
         },
         {
@@ -6452,7 +6499,7 @@
           "reexportsOnly": true
         },
         {
-          "hash": "30e17d2a837d7bf5d5bf2214c165d47c358dcacf847f51b7bed82ea16d85769d",
+          "hash": "44fd6eccb85aace54adf59ebadb519dc4ed0beeaabdd49b3326d8492427817dd",
           "path": "packages/atlas/package.json"
         },
         {
@@ -7609,7 +7656,7 @@
       "testRunners": [
         "node --test"
       ],
-      "testedBy": 313,
+      "testedBy": 314,
       "unresolvedNamed": [
         {
           "path": "packages/atlas/adapter/divergence-envelope.test.js",
@@ -7676,6 +7723,14 @@
       "entryPoints": [],
       "externals": 0,
       "files": [
+        {
+          "hash": "45207362136db2c0d310cc485d761ab195342f0dee9d63b5d8aa677f1eebf993",
+          "path": "docs/atlas-aq2-protocol.md"
+        },
+        {
+          "hash": "963aa45007ba960e775409ea4f4d22aea9347e9e43592d6fec711414febe4e42",
+          "path": "docs/atlas-aq2-report.md"
+        },
         {
           "hash": "6913aa6f1d51b0548fcbbbb2df8e9d71f56ee0ae1fb2fce45d5f78d3918cebb4",
           "path": "docs/atlas-buildup.spec.md"
@@ -21104,7 +21159,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "e8f171fbc0f81f32c3a03a2fdef63aeda61be0d08f6eece398bdd010db4191f4",
+          "hash": "c47ea26273a97e29c4defa20c2666e905e9fb922a89b8a48bf3eb452b8a729be",
           "path": "packages/dogfood-swarm/package.json"
         },
         {
@@ -33866,6 +33921,86 @@
           "path": "fixtures/atlas/import-names/src/types.ts"
         },
         {
+          "hash": "7a27503de8e4c48085f5092bbdc6a9119c85b6bbec763b87ac31b1774e8a4610",
+          "importNames": [
+            {
+              "form": "dynamic",
+              "line": 1,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/lib-cjsd",
+              "specifier": "lib-cjsd",
+              "typeOnly": false
+            },
+            {
+              "form": "require",
+              "line": 2,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/lib-jsr",
+              "specifier": "lib-jsr",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "fixtures/atlas/import-names/package.json",
+              "purl": "pkg:npm/lib-cjsd"
+            },
+            {
+              "manifest": "fixtures/atlas/import-names/package.json",
+              "purl": "pkg:npm/lib-jsr"
+            }
+          ],
+          "path": "fixtures/atlas/import-names/src/values.cjs"
+        },
+        {
+          "hash": "25f2123148779331623f7d19d9fbaf8fd5a4514930af9ac319af7fd680ea222a",
+          "importNames": [
+            {
+              "form": "dynamic",
+              "line": 2,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/lib-jsd",
+              "specifier": "lib-jsd",
+              "typeOnly": false
+            },
+            {
+              "form": "require",
+              "line": 3,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/lib-jsr",
+              "specifier": "lib-jsr",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "fixtures/atlas/import-names/package.json",
+              "purl": "pkg:npm/lib-jsd"
+            },
+            {
+              "manifest": "fixtures/atlas/import-names/package.json",
+              "purl": "pkg:npm/lib-jsr"
+            }
+          ],
+          "path": "fixtures/atlas/import-names/src/values.mjs"
+        },
+        {
           "hash": "b62c70c3ce15417a2632b6611aba4df65410ff934d40d9f1b9aa3eb80334ceda",
           "path": "fixtures/atlas/import-table/.github/workflows/ci.yml"
         },
@@ -44784,11 +44919,11 @@
           "path": "indexes/failing.json"
         },
         {
-          "hash": "6e58f7b4da0a023f612f517408f886c82046bc96702bafc276ab027b1dbb9dbd",
+          "hash": "e8259b9cd4b2d79b9c7ed09ce9821a3a108df3d4e1d72c39320d6fe3dc3f3ebe",
           "path": "indexes/integrity/chain.jsonl"
         },
         {
-          "hash": "df0c3458e284ef10ebb44d9a3369dd770fbf2fc7b9e1a572e18cc2061f599199",
+          "hash": "9ae24ee05e3c7d198427cc3bab3d741c81b930eb291686717878cd4a4efa488d",
           "path": "indexes/latest-by-repo.json"
         },
         {
@@ -44796,7 +44931,7 @@
           "path": "indexes/stale.json"
         },
         {
-          "hash": "f0717a248705792accdf6d9c932d50c84a40b3517541c71e20c91c27b02edbcb",
+          "hash": "6662ccf8208eb7ecd34f0200634251dda1c8846e4a0cc00f6c1f06a9cf09c87c",
           "path": "indexes/trends.json"
         }
       ],
@@ -48769,6 +48904,14 @@
           "path": "records/dogfood-lab/testing-os/2026/10/15/run-00mv97nv0z-hZTWu2Ng94YdsQ.json"
         },
         {
+          "hash": "2806fb5188351d3a788165d5b66b8aae02b5f351e408142cdefe31f96455b842",
+          "path": "records/dogfood-lab/testing-os/2026/10/15/run-00mv9t26ab-Grb0WnEc1or_UA.json"
+        },
+        {
+          "hash": "d38571b8ef998fed15851bd5a1c98aba9422a601d526446ca0753da338e6a139",
+          "path": "records/dogfood-lab/testing-os/2026/10/15/run-00mv9xgt09-jXzp4HOb7oCmRQ.json"
+        },
+        {
           "hash": "d80bd628d70f1275786c79da48bfb6da79ef0eb303eceed6fe87960e8c7a308c",
           "path": "records/mcp-tool-shop-org/a11y-demo-site/2026/03/20/run-a11y-demo-site-23329256169-1.json"
         },
@@ -49946,7 +50089,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "a09de831350ea752fbdb6e75d613d3fd4c62194c3d9dc8d0acf3f4b661896f38",
+          "hash": "4ded9768d73244d965c87c4c66b4507911ce79cf28b4d3d4d9b7662c1b753bb5",
           "path": "CHANGELOG.md"
         },
         {
@@ -50014,11 +50157,11 @@
           "path": "codecov.yml"
         },
         {
-          "hash": "594328214b4abe1ab28504879b1056e23bb466916eb32bc2f2bcf1052c3696f9",
+          "hash": "59060fd282e7f9c17d1d0444b9a49d9ce2b926ed7e6b0cf340964ae80d5a48cc",
           "path": "package-lock.json"
         },
         {
-          "hash": "2bb1664a943080a5a8e1ca68130afa8a85379a9c046506b87e36584e9e0461d6",
+          "hash": "12555a0445a4d0f73e08cdb90b29e0e54f2fc0fd60e585b486b287279ee350d3",
           "path": "package.json"
         },
         {
@@ -50059,7 +50202,7 @@
           "path": "packages/schemas/README.md"
         },
         {
-          "hash": "4e6868c30b7783fa56470bc8518ff997a6ab3749859d775fef81e98a4e8c5383",
+          "hash": "926aa32f603bc9fc2c5f817dc63af6ea28723254ad4e4b79b1efaafd71a03b68",
           "path": "packages/schemas/package.json"
         },
         {
@@ -51554,24 +51697,24 @@
                 {
                   "inner": [
                     {
-                      "line": 387,
+                      "line": 403,
                       "name": "divergence",
                       "target": null
                     },
                     {
-                      "line": 394,
+                      "line": 410,
                       "name": "writeArtifactSync",
                       "target": {
                         "file": "packages/atlas/adapter/write.js"
                       }
                     },
                     {
-                      "line": 417,
+                      "line": 433,
                       "name": "history",
                       "target": null
                     },
                     {
-                      "line": 421,
+                      "line": 437,
                       "name": "writeArtifactSync",
                       "target": {
                         "file": "packages/atlas/adapter/write.js"
@@ -55932,7 +56075,7 @@
             "file": "packages/atlas/adapter/fleet.js",
             "from": "scripts/atlas-render.mjs"
           },
-          "files": 3
+          "files": 4
         }
       ],
       "readers": [],
@@ -56224,7 +56367,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 379
+          "files": 381
         },
         {
           "boundary": "dogfood",
@@ -58521,7 +58664,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 788,
+      "runsCount": 789,
       "runsCut": true,
       "secrets": [],
       "sends": {
@@ -58550,7 +58693,7 @@
         {
           "coverage": true,
           "dir": "packages/atlas",
-          "files": 291,
+          "files": 292,
           "job": "build-and-test",
           "junit": true,
           "runner": "node --test",
@@ -60363,7 +60506,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 379
+          "files": 381
         },
         {
           "boundary": "docker",
@@ -62658,7 +62801,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 792,
+      "runsCount": 793,
       "runsCut": true,
       "secrets": [
         "GITHUB_TOKEN"
@@ -62696,7 +62839,7 @@
         },
         {
           "dir": "packages/atlas",
-          "files": 291,
+          "files": 292,
           "job": "publish",
           "runner": "node --test",
           "step": "Verify (full pre-publish gate)",
@@ -63370,7 +63513,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 4
+          "files": 5
         }
       ],
       "readers": [],
@@ -64621,8 +64764,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "778094759e1d66793fd233e625d382cd574185b5",
-    "tracked": 4338
+    "commit": "eb67a6b583b1f4b4b1f2e6d380d41eaa3cc2e42e",
+    "tracked": 4346
   },
   "landings": [
     {
@@ -81127,8 +81270,8 @@
       "manifest": "package.json",
       "name": "@modelcontextprotocol/sdk",
       "purl": "pkg:npm/%40modelcontextprotocol/sdk",
-      "range": "1.30.1",
-      "version": "1.30.1",
+      "range": "1.32.1",
+      "version": "1.32.1",
       "versionFrom": "package-lock.json"
     },
     {
@@ -81137,8 +81280,8 @@
       "manifest": "package.json",
       "name": "@types/node",
       "purl": "pkg:npm/%40types/node",
-      "range": "^26.1.0",
-      "version": "26.1.0",
+      "range": "^26.6.5",
+      "version": "26.6.5",
       "versionFrom": "package-lock.json"
     },
     {
@@ -81177,8 +81320,8 @@
       "manifest": "packages/atlas/package.json",
       "name": "enhanced-resolve",
       "purl": "pkg:npm/enhanced-resolve",
-      "range": "5.25.1",
-      "version": "5.25.1",
+      "range": "5.26.0",
+      "version": "5.26.0",
       "versionFrom": "package-lock.json"
     },
     {
@@ -81197,8 +81340,8 @@
       "manifest": "packages/atlas/package.json",
       "name": "semver",
       "purl": "pkg:npm/semver",
-      "range": "7.8.0",
-      "version": "7.8.0",
+      "range": "7.8.5",
+      "version": "7.8.5",
       "versionFrom": "package-lock.json"
     },
     {
@@ -81290,8 +81433,8 @@
       "manifest": "packages/dogfood-swarm/package.json",
       "name": "minimatch",
       "purl": "pkg:npm/minimatch",
-      "range": "^10.0.0",
-      "version": "10.2.5",
+      "range": "^10.2.6",
+      "version": "10.2.6",
       "versionFrom": "package-lock.json"
     },
     {
@@ -81460,8 +81603,8 @@
       "manifest": "packages/schemas/package.json",
       "name": "@types/node",
       "purl": "pkg:npm/%40types/node",
-      "range": "^26.1.0",
-      "version": "26.1.0",
+      "range": "^26.6.5",
+      "version": "26.6.5",
       "versionFrom": "package-lock.json"
     },
     {
@@ -81642,7 +81785,7 @@
       "target": "README.md"
     }
   ],
-  "testFiles": 1030,
+  "testFiles": 1031,
   "unassigned": [
     {
       "hash": "ae8cd9e48976f29e3293dbbe6a4b41aff3f2b9b968fcfb551ce183a0b08ed8cc",

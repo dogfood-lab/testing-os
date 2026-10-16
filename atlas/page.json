@@ -120,24 +120,24 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 4,
+      "added": 0,
       "assigned": 0,
-      "changed": 6,
+      "changed": 2,
       "moved": 0,
-      "parts": 4,
+      "parts": 1,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-15; 4 files added and 6 changed content.",
+        "sentence": "Nothing structural changed since 2026-10-15; 2 files changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "26cb14e9d0dd2096a58914382ede8ab5fd7adb9e",
-      "generatedAt": "2026-10-15T09:09:22.406Z"
+      "commit": "ae0a0d88b54224e259f59ac7c6447f5d8d5ce69e",
+      "generatedAt": "2026-10-15T20:21:01.171Z"
     },
     "unchanged": true
   },
@@ -178,9 +178,9 @@
     "Window: 180 days; a pair counts from 10 shared commits, since 42 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "778094759e1d66793fd233e625d382cd574185b5",
+  "commit": "eb67a6b583b1f4b4b1f2e6d380d41eaa3cc2e42e",
   "defaultBranch": "main",
-  "derived": "23 parts, mostly JavaScript (1645 files), Python (243), TypeScript (227), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
+  "derived": "23 parts, mostly JavaScript (1649 files), Python (243), TypeScript (227), Rust (100), GDScript (35), shell (18), HTML (16), Astro (9), C# (9), CSS (5) and PowerShell (2). Work enters through 14 doors; the busiest is Ingest dogfood submission, which reaches 7 parts and commits into the repository (Release reaches 12 but commits nothing). It publishes workspace packages to npm and a container image. It deploys a site to GitHub Pages. People run atlas, atlas-fleet, dogfood-init, dogfood-report, dogfood-verify, findings, report and swarm.",
   "doors": [
     {
       "checks": [
@@ -213,7 +213,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 379
+          "files": 381
         },
         {
           "boundary": "docker",
@@ -469,8 +469,8 @@
         "scripts/check-finding-regression-pins.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 788,
-      "runsMore": 803,
+      "runsCount": 789,
+      "runsMore": 804,
       "sends": [
         "publishes workspace packages to npm and a container image",
         "creates a GitHub release"
@@ -508,7 +508,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 379
+          "files": 381
         },
         {
           "boundary": "dogfood",
@@ -762,8 +762,8 @@
         "scripts/check-handbook-imagery.test.mjs",
         "site/src/components/"
       ],
-      "runsCount": 787,
-      "runsMore": 802,
+      "runsCount": 788,
+      "runsMore": 803,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -953,7 +953,7 @@
         {
           "boundary": "atlas",
           "depth": 1,
-          "files": 3
+          "files": 4
         }
       ],
       "runs": [
@@ -1241,7 +1241,7 @@
         {
           "boundary": "atlas",
           "depth": 0,
-          "files": 4
+          "files": 5
         }
       ],
       "runs": [
@@ -1426,7 +1426,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-15T09:12:26.292Z",
+  "generatedAt": "2026-10-15T20:38:08.177Z",
   "limits": [
     "4 import sites name declared dependencies that share their names with local modules (datasets, docx and xrpl); they are read as the dependencies, which are not in this repository.",
     "179 imports could not be resolved: `dogfood/scenarios/validate-scenarios.test.mjs` imports `js-yaml`, which is not declared; `fixtures/atlas/build-config/scripts/use.mjs` imports `../dist/index.js`, which a build generates; `fixtures/atlas/build-output/app/use.js` imports `@ws/bundle`, which is not declared; and 176 more.",
@@ -1442,8 +1442,8 @@
     "29 commands are built at run time and not followed, 20 of them in tests.",
     "1 file belongs to no part: packages/.gitkeep.",
     "Readers marked (found by text) come from scanning unparsed files.",
-    "Release runs or checks 792 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 792.",
-    "CI runs or checks 788 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 788."
+    "Release runs or checks 793 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 793.",
+    "CI runs or checks 789 files and directories; the map records 200 of them, some from every directory, and walks its reach from all 789."
   ],
   "mainDoor": ".github/workflows/ingest.yml",
   "partLabels": {
@@ -1737,9 +1737,9 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 1030,
+  "testFiles": 1031,
   "testedBy": {
-    "atlas": 313,
+    "atlas": 314,
     "dogfood-swarm": 308,
     "findings": 145,
     "ingest": 86,
