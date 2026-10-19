@@ -1,0 +1,2200 @@
+{
+  "boundaries": [
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "1777c38111ea8e4c4903378ca15383fd421bf076dd43cb5a9f6cfb3a50299807",
+          "path": ".github/workflows/ci.yml"
+        },
+        {
+          "hash": "cf1ad38464c54f14127d46750a5763f224b286cac09ac46aafc8ebbcd993f3ff",
+          "path": ".github/workflows/pages.yml"
+        }
+      ],
+      "globs": [
+        ".github/**"
+      ],
+      "importConfidence": "full",
+      "name": ".github",
+      "origin": "authored",
+      "role": "config",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 1,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "dataset_desk/desk.py"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "constantOnly": true,
+          "hash": "e32ce58218e0ef1d583b1e98778dee55a39a5b1fd3a04fee8bcd7138fe464d7d",
+          "path": "dataset_desk/__init__.py"
+        },
+        {
+          "hash": "8e05fdd4f268aa90c87e2bad94130b5bb4a70c5b54dee43a5753826fe20ee9dc",
+          "importsFiles": [
+            "dataset_desk/desk.py"
+          ],
+          "path": "dataset_desk/__main__.py"
+        },
+        {
+          "exports": [
+            "cap_threads",
+            "check_device",
+            "enter_torch_region",
+            "make",
+            "make_drafter",
+            "transformers_warnings_off",
+            "unit_rows"
+          ],
+          "failurePaths": [
+            {
+              "in": "_argv_threads",
+              "kind": "except",
+              "line": 24
+            },
+            {
+              "in": "_argv_threads",
+              "kind": "except",
+              "line": 29
+            },
+            {
+              "in": "enter_torch_region",
+              "kind": "except",
+              "line": 87
+            },
+            {
+              "in": "unit_rows",
+              "kind": "raise",
+              "line": 97
+            },
+            {
+              "in": "check_device",
+              "kind": "raise",
+              "line": 104
+            },
+            {
+              "in": "texts",
+              "kind": "raise",
+              "line": 140
+            },
+            {
+              "in": "multimodal",
+              "kind": "raise",
+              "line": 150
+            },
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 177
+            },
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 179
+            },
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 181
+            },
+            {
+              "in": "texts",
+              "kind": "raise",
+              "line": 248
+            },
+            {
+              "in": "multimodal",
+              "kind": "raise",
+              "line": 255
+            },
+            {
+              "in": "transformers_warnings_off",
+              "kind": "except",
+              "line": 285
+            },
+            {
+              "in": "draft",
+              "kind": "raise",
+              "line": 377
+            },
+            {
+              "in": "draft",
+              "kind": "except",
+              "line": 390
+            },
+            {
+              "in": "_ensure_model",
+              "kind": "except",
+              "line": 443
+            },
+            {
+              "in": "_ensure_model",
+              "kind": "except",
+              "line": 457
+            },
+            {
+              "in": "_ensure_model",
+              "kind": "raise",
+              "line": 458
+            },
+            {
+              "in": "_ensure_model",
+              "kind": "except",
+              "line": 494
+            },
+            {
+              "in": "_ensure_model",
+              "kind": "except",
+              "line": 503
+            },
+            {
+              "in": "_ensure_model",
+              "kind": "raise",
+              "line": 507
+            },
+            {
+              "in": "draft",
+              "kind": "raise",
+              "line": 532
+            },
+            {
+              "in": "make_drafter",
+              "kind": "raise",
+              "line": 571
+            },
+            {
+              "in": "make",
+              "kind": "raise",
+              "line": 585
+            }
+          ],
+          "hash": "6e551c2a1419c9d278753b539a19a9643857157e6ba2a04e72e93af05f944e42",
+          "importsFiles": [
+            "dataset_desk/errors.py"
+          ],
+          "path": "dataset_desk/backends.py"
+        },
+        {
+          "exports": [
+            "audit_project",
+            "audit_records",
+            "contains_word_sequence",
+            "content_jaccard",
+            "content_word_set",
+            "content_words",
+            "draft_flagged_records",
+            "link_target",
+            "load_project_records",
+            "load_siglip2_tokenizer",
+            "load_stopwords",
+            "max_contiguous_run",
+            "normalize_text",
+            "prompt_echo_stats",
+            "select_siblings",
+            "siglip2_token_count",
+            "siglip2_token_counts",
+            "stopwords_sha256",
+            "word_set",
+            "word_share",
+            "words",
+            "wraps_canon_subject",
+            "write_review_files"
+          ],
+          "failurePaths": [
+            {
+              "in": "link_target",
+              "kind": "except",
+              "line": 164
+            },
+            {
+              "in": "load_project_records",
+              "kind": "except",
+              "line": 616
+            }
+          ],
+          "hash": "61fe35b49679a4323dee0b9453531714b33bf34279a71745d3363b2a9f986ce0",
+          "importsFiles": [
+            "dataset_desk/__init__.py",
+            "dataset_desk/backends.py"
+          ],
+          "path": "dataset_desk/description_gate.py"
+        },
+        {
+          "entry": "run",
+          "entryRule": 0,
+          "exports": [
+            "ai_eyes_verify",
+            "approved_idx",
+            "cache_dir",
+            "captions",
+            "check_multimodal_pool",
+            "clusters",
+            "coverage",
+            "dhash",
+            "diversity",
+            "dupes",
+            "eg2_fit_accept",
+            "embedding_description_clusters",
+            "hamming",
+            "image_stats",
+            "index",
+            "load_cache",
+            "load_records",
+            "load_wave_metadata",
+            "look_fit",
+            "lower_priority",
+            "main",
+            "mid_rank",
+            "outliers",
+            "pairs_at_least",
+            "reading",
+            "report",
+            "run",
+            "save_cache",
+            "scan",
+            "search",
+            "sha256_file",
+            "swap_check",
+            "top1_percentiles",
+            "vendi"
+          ],
+          "failurePaths": [
+            {
+              "in": "check_multimodal_pool",
+              "kind": "raise",
+              "line": 79
+            },
+            {
+              "in": "check_multimodal_pool",
+              "kind": "raise",
+              "line": 87
+            },
+            {
+              "in": "_png_prompt_meta",
+              "kind": "except",
+              "line": 302
+            },
+            {
+              "in": "load_records",
+              "kind": "except",
+              "line": 374
+            },
+            {
+              "in": "load_wave_metadata",
+              "kind": "except",
+              "line": 444
+            },
+            {
+              "in": "load_wave_metadata",
+              "kind": "except",
+              "line": 467
+            },
+            {
+              "in": "_load_scan_cache",
+              "kind": "except",
+              "line": 486
+            },
+            {
+              "in": "scan",
+              "kind": "except",
+              "line": 573
+            },
+            {
+              "in": "scan",
+              "kind": "raise",
+              "line": 575
+            },
+            {
+              "in": "load_cache",
+              "kind": "except",
+              "line": 651
+            },
+            {
+              "in": "load_cache",
+              "kind": "raise",
+              "line": 652
+            },
+            {
+              "in": "index",
+              "kind": "except",
+              "line": 690
+            },
+            {
+              "in": "_token_counter",
+              "kind": "except",
+              "line": 1209
+            },
+            {
+              "in": "_token_counter",
+              "kind": "raise",
+              "line": 1210
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 1258
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 1261
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 1268
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 1293
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 1296
+            },
+            {
+              "in": "main",
+              "kind": "raise",
+              "line": 1307
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 1325
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 1328
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 1331
+            },
+            {
+              "in": "run",
+              "kind": "raise",
+              "line": 1333
+            }
+          ],
+          "hash": "5996578ad55254a9f633d15594ef46cb73dc31aa6afc482565fcc18d21adce40",
+          "importsFiles": [
+            "dataset_desk/__init__.py",
+            "dataset_desk/backends.py",
+            "dataset_desk/description_gate.py",
+            "dataset_desk/errors.py"
+          ],
+          "path": "dataset_desk/desk.py",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "branch": "arm_acceptance",
+                  "line": 79,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  }
+                },
+                {
+                  "branch": "backend != \"none\" and not images_only",
+                  "line": 87,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "check_multimodal_pool"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "arm_acceptance",
+                  "line": 79,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "check_multimodal_pool"
+                },
+                {
+                  "branch": "backend != \"none\" and not images_only",
+                  "line": 87,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "check_multimodal_pool"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "ai_eyes_verify"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "arm_acceptance",
+                  "line": 79,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "check_multimodal_pool"
+                },
+                {
+                  "branch": "backend != \"none\" and not images_only",
+                  "line": 87,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "check_multimodal_pool"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "eg2_fit_accept"
+            },
+            {
+              "calls": [
+                {
+                  "line": 164,
+                  "name": "convert",
+                  "target": null,
+                  "via": "_dhash"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "dhash"
+            },
+            {
+              "calls": [
+                {
+                  "line": 164,
+                  "name": "convert",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_dhash"
+            },
+            {
+              "calls": [
+                {
+                  "line": 206,
+                  "name": "convert",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_texture_stats"
+            },
+            {
+              "calls": [
+                {
+                  "line": 263,
+                  "name": "convert",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_palette"
+            },
+            {
+              "calls": [
+                {
+                  "line": 164,
+                  "name": "convert",
+                  "target": null,
+                  "via": "_dhash"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "image_stats"
+            },
+            {
+              "calls": [
+                {
+                  "line": 164,
+                  "name": "convert",
+                  "target": null,
+                  "via": "_dhash"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "scan"
+            },
+            {
+              "calls": [
+                {
+                  "line": 652,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "load_cache"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "arm_acceptance",
+                  "line": 79,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "check_multimodal_pool"
+                },
+                {
+                  "branch": "backend != \"none\" and not images_only",
+                  "line": 87,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "check_multimodal_pool"
+                },
+                {
+                  "line": 164,
+                  "name": "convert",
+                  "target": null,
+                  "via": "_dhash"
+                },
+                {
+                  "line": 652,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "load_cache"
+                },
+                {
+                  "line": 694,
+                  "name": "images",
+                  "target": null
+                },
+                {
+                  "line": 708,
+                  "name": "texts",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "index"
+            },
+            {
+              "calls": [
+                {
+                  "line": 1009,
+                  "name": "normalize_text",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "embedding_description_clusters"
+            },
+            {
+              "calls": [
+                {
+                  "line": 1055,
+                  "name": "link_target",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_link"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "arm_acceptance",
+                  "line": 79,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "check_multimodal_pool"
+                },
+                {
+                  "branch": "backend != \"none\" and not images_only",
+                  "line": 87,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "check_multimodal_pool"
+                },
+                {
+                  "line": 1077,
+                  "name": "load_project_records",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  }
+                },
+                {
+                  "line": 1079,
+                  "name": "audit_records",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  }
+                },
+                {
+                  "line": 1085,
+                  "name": "draft_flagged_records",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  }
+                },
+                {
+                  "line": 1087,
+                  "name": "write_review_files",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  }
+                },
+                {
+                  "line": 1009,
+                  "name": "normalize_text",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "embedding_description_clusters"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "report"
+            },
+            {
+              "calls": [
+                {
+                  "line": 1208,
+                  "name": "load_siglip2_tokenizer",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  }
+                },
+                {
+                  "line": 1210,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "_token_counter"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "out_inside",
+                  "line": 1261,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  }
+                },
+                {
+                  "line": 1262,
+                  "name": "check_device",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  }
+                },
+                {
+                  "line": 1263,
+                  "name": "cap_threads",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  }
+                },
+                {
+                  "branch": "arm_acceptance",
+                  "line": 79,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "check_multimodal_pool"
+                },
+                {
+                  "branch": "backend != \"none\" and not images_only",
+                  "line": 87,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "check_multimodal_pool"
+                },
+                {
+                  "branch": "a.backend == \"none\" and a.command in (\"search\", \"coverage\")",
+                  "line": 1268,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  }
+                },
+                {
+                  "branch": "a.command == \"index\"",
+                  "line": 164,
+                  "name": "convert",
+                  "target": null,
+                  "via": "_dhash"
+                },
+                {
+                  "branch": "a.command == \"index\"",
+                  "line": 652,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "load_cache"
+                },
+                {
+                  "branch": "a.command == \"index\"",
+                  "line": 694,
+                  "name": "images",
+                  "target": null,
+                  "via": "index"
+                },
+                {
+                  "branch": "a.command == \"index\"",
+                  "line": 708,
+                  "name": "texts",
+                  "target": null,
+                  "via": "index"
+                },
+                {
+                  "branch": "not a.text and not a.image",
+                  "line": 1293,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  }
+                },
+                {
+                  "branch": "not hasattr(emb, \"multimodal\")",
+                  "line": 1296,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  }
+                },
+                {
+                  "branch": "not subjects",
+                  "line": 1307,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  }
+                },
+                {
+                  "line": 1312,
+                  "name": "make_drafter",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  }
+                },
+                {
+                  "line": 1208,
+                  "name": "load_siglip2_tokenizer",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "_token_counter"
+                },
+                {
+                  "line": 1210,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "_token_counter"
+                },
+                {
+                  "line": 1077,
+                  "name": "load_project_records",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "report"
+                },
+                {
+                  "line": 1079,
+                  "name": "audit_records",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "report"
+                },
+                {
+                  "line": 1085,
+                  "name": "draft_flagged_records",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "report"
+                },
+                {
+                  "line": 1087,
+                  "name": "write_review_files",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "report"
+                },
+                {
+                  "line": 1009,
+                  "name": "normalize_text",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "embedding_description_clusters"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "main"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "out_inside",
+                  "line": 1261,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "main"
+                },
+                {
+                  "line": 1262,
+                  "name": "check_device",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "main"
+                },
+                {
+                  "line": 1263,
+                  "name": "cap_threads",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "main"
+                },
+                {
+                  "branch": "arm_acceptance",
+                  "line": 79,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "check_multimodal_pool"
+                },
+                {
+                  "branch": "backend != \"none\" and not images_only",
+                  "line": 87,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "check_multimodal_pool"
+                },
+                {
+                  "branch": "a.backend == \"none\" and a.command in (\"search\", \"coverage\")",
+                  "line": 1268,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "main"
+                },
+                {
+                  "branch": "a.command == \"index\"",
+                  "line": 164,
+                  "name": "convert",
+                  "target": null,
+                  "via": "_dhash"
+                },
+                {
+                  "branch": "a.command == \"index\"",
+                  "line": 652,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "load_cache"
+                },
+                {
+                  "branch": "a.command == \"index\"",
+                  "line": 694,
+                  "name": "images",
+                  "target": null,
+                  "via": "index"
+                },
+                {
+                  "branch": "a.command == \"index\"",
+                  "line": 708,
+                  "name": "texts",
+                  "target": null,
+                  "via": "index"
+                },
+                {
+                  "branch": "not a.text and not a.image",
+                  "line": 1293,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "main"
+                },
+                {
+                  "branch": "not hasattr(emb, \"multimodal\")",
+                  "line": 1296,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "main"
+                },
+                {
+                  "branch": "not subjects",
+                  "line": 1307,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "main"
+                },
+                {
+                  "line": 1312,
+                  "name": "make_drafter",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "main"
+                },
+                {
+                  "line": 1208,
+                  "name": "load_siglip2_tokenizer",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "_token_counter"
+                },
+                {
+                  "line": 1210,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  },
+                  "via": "_token_counter"
+                },
+                {
+                  "line": 1077,
+                  "name": "load_project_records",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "report"
+                },
+                {
+                  "line": 1079,
+                  "name": "audit_records",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "report"
+                },
+                {
+                  "line": 1085,
+                  "name": "draft_flagged_records",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "report"
+                },
+                {
+                  "line": 1087,
+                  "name": "write_review_files",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "report"
+                },
+                {
+                  "line": 1009,
+                  "name": "normalize_text",
+                  "target": {
+                    "file": "dataset_desk/__init__.py"
+                  },
+                  "via": "embedding_description_clusters"
+                },
+                {
+                  "line": 1326,
+                  "name": "render",
+                  "receiver": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  }
+                },
+                {
+                  "line": 1334,
+                  "name": "DeskError",
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  }
+                },
+                {
+                  "line": 1335,
+                  "name": "EXIT_RUNTIME",
+                  "passed": true,
+                  "target": {
+                    "file": "dataset_desk/errors.py"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "run",
+              "truncated": true
+            }
+          ]
+        },
+        {
+          "hash": "a8e68547ae534dd966df37bbf3473eb7754320cea2d0a53292b38bd82c3d48b7",
+          "path": "dataset_desk/errors.py"
+        },
+        {
+          "hash": "f04dffb10bdd8f7f712a31caabdee13a427f0f15fcd77b35cf6009ef0ec2dd4e",
+          "path": "dataset_desk/stopwords.txt"
+        }
+      ],
+      "globs": [
+        "dataset_desk/**"
+      ],
+      "importConfidence": "full",
+      "name": "dataset_desk",
+      "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 13,
+          "where": [
+            "caller"
+          ],
+          "writes": 5
+        },
+        {
+          "reads": 2,
+          "where": [
+            "cwd:desk-out/"
+          ],
+          "writes": 4
+        }
+      ],
+      "outsideReads": 15,
+      "outsideWrites": 9,
+      "role": "code",
+      "testRunners": [
+        "unittest"
+      ],
+      "testedBy": 4,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "fe650c6ab8826c848e61b6984108aaa759110c1fc165444c63a095fe837f585c",
+          "path": ".gitattributes"
+        },
+        {
+          "hash": "276b7082204e8dacea481da8f36f69b9f4cee5f25288a2b8bfb3ac06fec917fd",
+          "path": ".gitignore"
+        },
+        {
+          "hash": "6e1df79afe9bba653300da72a8a3683f1180c8f6c01f4e3a83f1a7bb9e49865f",
+          "path": "CHANGELOG.md"
+        },
+        {
+          "hash": "367e5141e4f5884e5791c4021f33a9faa958840a5decf44e1b273a87aad1c459",
+          "path": "LICENSE"
+        },
+        {
+          "hash": "6755b21f0f75100e061ab1ba30d2432aaecc6482478c0e319cbd4897c5b03b20",
+          "path": "README.es.md"
+        },
+        {
+          "hash": "6e3bb50d75d05ad9a233a20ff6cead709d850beb86811b32c92004918933d646",
+          "path": "README.fr.md"
+        },
+        {
+          "hash": "c97aee3e934c0fa909c47a328b41f79314397a0b007b2226ee53e0bc8ca052d6",
+          "path": "README.hi.md"
+        },
+        {
+          "hash": "4afb3b16243f159671024e7ff88835fb889c106b1e9bfd71ffa9df0239b2d77f",
+          "path": "README.it.md"
+        },
+        {
+          "hash": "27ef4cc0b405bd7c45bd025ff6915d775f28eece8b355f766423a3cfce28e7ba",
+          "path": "README.ja.md"
+        },
+        {
+          "hash": "2cf30e91b67e73412385b361a8a30cb5700ee9ad422cfb7da94bbe1d81d7f875",
+          "path": "README.md"
+        },
+        {
+          "hash": "bd76ce968f8e227b41ceff0bcc626f47a34df7af0be63bfe68f2c992d99c09cb",
+          "path": "README.pt-BR.md"
+        },
+        {
+          "hash": "a44ccae2cee1b9fa85d4bc9b35716ca26df7831382df1f648c3df969045d9f45",
+          "path": "README.zh.md"
+        },
+        {
+          "hash": "23ed83e254bd16a63dc11d2dda80f5669c7533e50f39eb03fe1b91854f5448b0",
+          "path": "SCORECARD.md"
+        },
+        {
+          "hash": "6e254096eec2b75d86ec6eb71fd7a62d4281fe2799dee1640b2e51e1768dbe7b",
+          "path": "SECURITY.md"
+        },
+        {
+          "hash": "474d4afa26a55d86ca3042f60456eea3f4a1238d512dee5f782ba47546b04863",
+          "path": "SHIP_GATE.md"
+        },
+        {
+          "hash": "3430759e0e9dc78320aa93faa7d9140bf540174bf7bfd0a0fcbbba4b5ec0e08d",
+          "path": "codecov.yml"
+        },
+        {
+          "hash": "5cb60e274c88be97241a9bcc954f7b901596857dd1656889e04ab851a0943da7",
+          "path": "pyproject.toml"
+        },
+        {
+          "hash": "2d05301027d2a5cb2f8ad21f9cd4f6b077805f2d95ebbc2d97e33f97865ffb94",
+          "path": "uv.lock"
+        },
+        {
+          "hash": "0fa9d6fddc9f847885fce80927b838d9618572d5d3ff996735d867c1ca053f77",
+          "path": "verify.sh"
+        }
+      ],
+      "globs": [
+        "*"
+      ],
+      "importConfidence": "full",
+      "name": "root",
+      "origin": "authored",
+      "role": "config",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "1700c5851de8f0c4fa3d6d4aa8f42edb46488ebaf63ae8184256bbefadca6928",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/astro",
+              "specifier": "astro/config",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40tailwindcss/vite",
+              "specifier": "@tailwindcss/vite",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40tailwindcss/vite"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/astro"
+            }
+          ],
+          "path": "site/astro.config.mjs"
+        },
+        {
+          "hash": "e7ee550cc52498b2931d2284108f3273fea178fcbae5a79f2405633476e3a6a2",
+          "path": "site/package-lock.json"
+        },
+        {
+          "hash": "9c39e620ebae2c5718ecd8c6188bd3451409a614ec8f5308dc15d5fd886e5b91",
+          "path": "site/package.json"
+        },
+        {
+          "hash": "db3c76ae1d22efa9f6c9a1cf3d8b1f45a5e94210d34e4b518006018e7d3d097d",
+          "path": "site/public/favicon.svg"
+        },
+        {
+          "hash": "94ecc9a91ecd0a158c271a1fdbb95e858e42ccac42588bcd7ed371e00c6540de",
+          "path": "site/src/assets/logo.png"
+        },
+        {
+          "constantOnly": true,
+          "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "docsLoader"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/loaders",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "docsSchema"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/schema",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            }
+          ],
+          "path": "site/src/content.config.ts"
+        },
+        {
+          "hash": "7fff9481bffa4440c5848bc3aedbe0cc43442bccbcbcf7873523060acdec6948",
+          "path": "site/src/content/docs/handbook/architecture.md"
+        },
+        {
+          "hash": "66954b757822cc5d147671da9b9ae9e7c6ea0b482bec6553a9a003e999e768d5",
+          "path": "site/src/content/docs/handbook/description-gate.md"
+        },
+        {
+          "hash": "fc8f421355e3a1d60840512fd5585f385fe7f1809a59dc3de261fde247d43c79",
+          "path": "site/src/content/docs/handbook/getting-started.md"
+        },
+        {
+          "hash": "e8114ced6ea1e721fdc8a3b5e6fd41e19e1b57aeae5bfb2edd3345063f45d6fd",
+          "path": "site/src/content/docs/handbook/index.md"
+        },
+        {
+          "hash": "b5bf13b17230581cab8134ee4682b48dfb0e496be87d69ee1de4de843f0c4a44",
+          "path": "site/src/content/docs/handbook/reference.md"
+        },
+        {
+          "hash": "c14b20221397fbb432490931427f9b3c95bcf02f751ccf8adf364a9089947027",
+          "path": "site/src/content/docs/handbook/security.md"
+        },
+        {
+          "hash": "6c1a40880286c27c65fff35c2d7fb778ac2b864efce9b7e195c0ef43509d9db0",
+          "path": "site/src/content/docs/handbook/usage.md"
+        },
+        {
+          "hash": "4fb84a646c4d833c33f4058e1ed1775849e855c65e5adb7e45d2a633674bd603",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/BaseLayout.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Hero.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Section.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/FeatureGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/DataTable.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/CodeCardGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/ApiList.astro",
+              "typeOnly": false
+            }
+          ],
+          "importOrder": [
+            "site/src/styles/global.css",
+            "site/src/site-config.ts"
+          ],
+          "importsFiles": [
+            "site/src/site-config.ts",
+            "site/src/styles/global.css"
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
+          "path": "site/src/pages/index.astro"
+        },
+        {
+          "constantOnly": true,
+          "hash": "8beb092efdab070341492ff72930178e9e37b717cbbf61164ec6e66e644d3f32",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "SiteConfig",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme",
+              "typeOnly": true
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
+          "path": "site/src/site-config.ts"
+        },
+        {
+          "hash": "29ee8df91833e694bdba973126b34a6177de4cf01dab6d9ef7d3126e8e2b67fb",
+          "path": "site/src/styles/global.css"
+        },
+        {
+          "hash": "b17173f07c0db8b532533b5de48035355a12d9582f0918d75b12214b07d53a17",
+          "path": "site/src/styles/starlight-custom.css"
+        },
+        {
+          "hash": "b5b0a5b04a14cddd7713c5e1c82e86c79c17c2f86b170e26e9b170b3d5e01cd9",
+          "path": "site/tsconfig.json"
+        }
+      ],
+      "globs": [
+        "site/**"
+      ],
+      "importConfidence": "full",
+      "name": "site",
+      "origin": "authored",
+      "role": "site",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "exports": [
+            "fake_modules",
+            "make_sentence_transformers",
+            "make_torch",
+            "make_transformers"
+          ],
+          "hash": "744a1fec942bf30b01b4d9542186c7b3fe316198f38f22b064cc90ff0eeaf985",
+          "path": "tests/fakes.py",
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "png"
+          ],
+          "hash": "85e1623c6809e3b515b98c8ae2d6c34b76f9ea723bccd91e1a70061f91804fec",
+          "importOrder": [
+            "tests/fakes.py",
+            "dataset_desk/__init__.py",
+            "dataset_desk/backends.py",
+            "dataset_desk/errors.py"
+          ],
+          "importsFiles": [
+            "dataset_desk/__init__.py",
+            "dataset_desk/backends.py",
+            "dataset_desk/errors.py",
+            "tests/fakes.py"
+          ],
+          "path": "tests/test_backends.py",
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "make_project"
+          ],
+          "hash": "7f2ce8e68a1b19ead9c7b64a4e370e37d609b709a15d87783629c5f37b90fae9",
+          "importsFiles": [
+            "dataset_desk/__init__.py",
+            "dataset_desk/backends.py",
+            "dataset_desk/desk.py",
+            "dataset_desk/errors.py"
+          ],
+          "path": "tests/test_cli.py",
+          "spawns": [
+            "dataset_desk/__main__.py"
+          ],
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "pattern",
+            "record"
+          ],
+          "hash": "cefc8a701eebede75f6e53907e0c9cc1a3f0a0b7823075e777c865d8aa41a826",
+          "importOrder": [
+            "tests/fakes.py",
+            "dataset_desk/__init__.py",
+            "dataset_desk/backends.py",
+            "dataset_desk/description_gate.py",
+            "dataset_desk/desk.py"
+          ],
+          "importsFiles": [
+            "dataset_desk/__init__.py",
+            "dataset_desk/backends.py",
+            "dataset_desk/description_gate.py",
+            "dataset_desk/desk.py",
+            "tests/fakes.py"
+          ],
+          "path": "tests/test_desk.py",
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "rec"
+          ],
+          "hash": "bec5c12c335c14349aaeafc1eaf0507966d38547e81e20aa19bf5e973602c818",
+          "importOrder": [
+            "tests/fakes.py",
+            "dataset_desk/__init__.py",
+            "dataset_desk/description_gate.py",
+            "dataset_desk/backends.py"
+          ],
+          "importsFiles": [
+            "dataset_desk/__init__.py",
+            "dataset_desk/backends.py",
+            "dataset_desk/description_gate.py",
+            "tests/fakes.py"
+          ],
+          "path": "tests/test_gate_edges.py",
+          "testFramework": "unittest"
+        }
+      ],
+      "globs": [
+        "tests/**"
+      ],
+      "importConfidence": "full",
+      "name": "tests",
+      "origin": "authored",
+      "role": "test",
+      "testRunners": [
+        "unittest"
+      ],
+      "testedBy": 0,
+      "unresolvedSites": 0
+    }
+  ],
+  "doors": [
+    {
+      "checksCount": 1,
+      "commands": [
+        {
+          "dir": "",
+          "job": "ci",
+          "programs": [
+            "python"
+          ],
+          "step": "Install (the package and its dev tools; no model libraries)"
+        },
+        {
+          "dir": "",
+          "job": "ci",
+          "programs": [
+            "bash"
+          ],
+          "step": "Verify (lint, tests, smoke)"
+        },
+        {
+          "dir": "",
+          "job": "ci",
+          "programs": [
+            "python"
+          ],
+          "step": "Coverage (floor 90)"
+        },
+        {
+          "dir": "",
+          "job": "ci",
+          "programs": [
+            "cd",
+            "python"
+          ],
+          "step": "Package (build, twine check, install smoke) and dependency audit"
+        },
+        {
+          "dir": "",
+          "job": "ci",
+          "programs": [
+            "npx"
+          ],
+          "step": "Atlas check"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/ci.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "ci",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.11",
+                  "range": ">=3.11.0 <3.12.0-0"
+                },
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "Set up Python ${{ matrix.python-version }}",
+              "uses": "actions/setup-python",
+              "version": "${{ matrix.python-version }}"
+            },
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "7",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
+      "landings": [],
+      "mentions": [],
+      "name": "CI",
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "dataset_desk",
+          "depth": 0,
+          "files": 6
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "directory": true,
+          "job": "ci",
+          "path": "dataset_desk/",
+          "runKind": "checks",
+          "via": "build pyproject.toml"
+        },
+        {
+          "directory": true,
+          "job": "ci",
+          "matched": true,
+          "path": "tests/",
+          "runKind": "executes",
+          "via": "unittest"
+        },
+        {
+          "job": "ci",
+          "path": "verify.sh",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 3,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "tests": [
+        {
+          "job": "ci",
+          "ran": [
+            "verify.sh"
+          ],
+          "runner": null,
+          "step": "Verify (lint, tests, smoke)",
+          "through": [
+            "verify.sh"
+          ]
+        },
+        {
+          "coverage": true,
+          "files": 5,
+          "job": "ci",
+          "runner": "unittest",
+          "step": "Coverage (floor 90)"
+        }
+      ],
+      "triggers": [
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "pull_request"
+        },
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "push",
+          "paths": [
+            ".github/workflows/**",
+            "atlas/**",
+            "codecov.yml",
+            "dataset_desk/**",
+            "pyproject.toml",
+            "tests/**",
+            "verify.sh"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "actions/setup-node",
+        "actions/setup-python",
+        "codecov/codecov-action"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [
+        {
+          "dir": "site",
+          "job": "build",
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
+        },
+        {
+          "dir": "site",
+          "job": "build",
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/pages.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
+      "landings": [],
+      "mentions": [],
+      "name": "Deploy site to GitHub Pages",
+      "permissions": [
+        "contents:read",
+        "id-token:write",
+        "pages:write"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "job": "build",
+          "matched": true,
+          "path": "site/astro.config.mjs",
+          "runKind": "executes",
+          "via": "astro build"
+        },
+        {
+          "directory": true,
+          "job": "build",
+          "matched": true,
+          "path": "site/src/",
+          "runKind": "executes",
+          "via": "astro build"
+        }
+      ],
+      "runsCount": 2,
+      "secrets": [],
+      "sends": {
+        "deploysPages": true,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "push",
+          "paths": [
+            ".github/workflows/pages.yml",
+            "site/**"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "actions/deploy-pages",
+        "actions/setup-node",
+        "actions/upload-pages-artifact"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
+      "file": "pyproject.toml",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "dataset-desk",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "dataset_desk",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "dataset_desk/desk.py",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "uses": [],
+      "usesWorkflowToken": false
+    }
+  ],
+  "edges": [
+    {
+      "from": "tests",
+      "fromTests": true,
+      "kind": "file",
+      "to": "dataset_desk"
+    }
+  ],
+  "engine": "1.26.0",
+  "generatedFrom": {
+    "commit": "20d81ade2ed053eeb6e0d15f16a26d13089aa824",
+    "tracked": 51
+  },
+  "landings": [
+    {
+      "readers": [
+        {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "LICENSE",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "dataset_desk/description_gate.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "dataset_desk/stopwords.txt",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs/handbook",
+      "writers": []
+    }
+  ],
+  "manifests": [
+    {
+      "name": "site",
+      "path": "site/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door Deploy site to GitHub Pages, job build, step Install site dependencies: npm ci in site",
+      "version": "0.0.1"
+    }
+  ],
+  "overlaps": [],
+  "packageDependencies": [
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@astrojs/starlight",
+      "purl": "pkg:npm/%40astrojs/starlight",
+      "range": "^0.42.0",
+      "version": "0.42.6",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@mcptoolshop/site-theme",
+      "purl": "pkg:npm/%40mcptoolshop/site-theme",
+      "range": "^2.2.0",
+      "version": "2.2.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@tailwindcss/vite",
+      "purl": "pkg:npm/%40tailwindcss/vite",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "astro",
+      "purl": "pkg:npm/astro",
+      "range": "^7.3.1",
+      "version": "7.4.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "tailwindcss",
+      "purl": "pkg:npm/tailwindcss",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    }
+  ],
+  "packagesPublished": [],
+  "submodules": [],
+  "symlinks": [],
+  "testFiles": 5,
+  "unassigned": []
+}

@@ -1,6 +1,6 @@
 # mcp-tool-registry: how it works
 
-Mapped at 2026-10-05 from commit 4ac0b7c by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 8ca0d25 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-05 from commit 4ac0b7c by Atlas 1.26.0.
 
 ## What changed since 2026-09-30 (2bb195f)
 
-Nothing structural changed since 2026-09-30; 2 files changed content.
+Nothing structural changed since 2026-09-30; 3 files changed content.
 
 ## What comes in
 
@@ -86,7 +86,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, .husky/, assets/, curation/, docs/, fixtures/, schema/ and site/. Nothing in this repository writes to them.
+People write .github/, .husky/, docs/ and site/. Nothing in this repository writes to them. The data in assets/, curation/, fixtures/ and schema/ is written by no code in this repository.
 
 ## Where to start
 

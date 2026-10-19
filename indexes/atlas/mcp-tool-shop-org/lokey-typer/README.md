@@ -1,6 +1,6 @@
 # lokey-typer: how it works
 
-Mapped at 2026-10-05 from commit a01d1a3 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit d3120c3 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,16 +8,9 @@ LoKey Typer is a calm typing practice app: a browser client, a Windows shell for
 
 12 parts, mostly TypeScript (88 files), JavaScript (16), Python (9), C# (7), HTML (4) and CSS (3). Work enters through 3 doors; the busiest is CI, which reaches 6 parts. It publishes a container image. It deploys a site to GitHub Pages.
 
-## What changed since 2026-10-05 (6b47e2c)
+## What changed since 2026-10-15 (c01213c)
 
-- CI no longer checks desktop/LoKeyTyper.Tests/LoKeyTyper.Tests.csproj.
-- Docker now also runs site/astro.config.mjs, site/src/, src/ and 1 more.
-- Docker now also checks docker/nginx.conf, package-lock.json, package.json and 2 more.
-- src/assets/icons/ is now also written by scripts/icons/optimize_icons.py.
-- src/content/packs/ is now written by scripts/generatePhase2Content.mjs.
-- src/content/phase2/accessibility_presets.json is now written by scripts/generatePhase2Content.mjs.
-- And 27 more new writers and readers of places.
-- 294 files changed content, across 11 parts.
+Nothing structural changed since 2026-10-15; 5 files changed content.
 
 ## What comes in
 
@@ -52,7 +45,7 @@ CI writes nothing this map can see.
 ## What tends to change together
 
 - **src/features/home/pages/HomePage.tsx** and **src/features/modes/pages/ModePage.tsx** changed together in 5 of 6 commits, inside the src part.
-- **tests/pages.test.tsx** and **tests/typingSession.test.tsx** changed together in 8 of 13 commits, inside the tests part.
+- **tests/pages.test.tsx** and **tests/typingSession.test.tsx** changed together in 8 of 14 commits, inside the tests part.
 - **src/features/daily/pages/DailySetPage.tsx** and **src/features/run/pages/RunPage.tsx** changed together in 9 of 16 commits, inside the src part.
 - **src/app/components/AudioSettingsPanel.tsx** and **src/app/shell/AppShell.tsx** changed together in 6 of 11 commits, inside the src part.
 - **src/features/daily/pages/DailySetPage.tsx** and **src/features/typing/TypingSession.tsx** changed together in 9 of 18 commits, inside the src part.

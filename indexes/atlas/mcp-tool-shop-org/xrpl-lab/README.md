@@ -1,15 +1,15 @@
 # xrpl-lab: how it works
 
-Mapped at 2026-10-05 from commit 3d8a304 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit aa97f4c by Atlas 1.26.0.
 
 ## What this is
 
 11 parts, mostly Python (173 files), Astro (13), TypeScript (8), CSS (4), JavaScript (2), HTML (1) and shell (1). Work enters through 8 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run xrpl-lab.
 
-## What changed since 2026-10-01 (eef6677)
+## What changed since 2026-10-15 (c73deb4)
 
 - modules/*.md is now read by tests/test_token_escrow.py.
-- 1 file changed content, across 1 part.
+- No file changed.
 
 ## What comes in
 
@@ -60,7 +60,7 @@ No two source files, other than a file and its own test, changed together often 
 
 1 file changed together with its own test, as expected.
 
-Window: 180 days; a pair counts from 3 shared commits, since 5 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 4 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -82,7 +82,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, design/, docs/, modules/, presets/, the repository root and site/; 3 writes with paths built at run time may land here.
+People write .github/, design/, modules/, the repository root and site/. The data in docs/ and presets/ is written by no code this map names; 3 writes with paths built at run time may land here.
 
 ## Where to start
 

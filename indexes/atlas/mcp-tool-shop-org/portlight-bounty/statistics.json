@@ -101,7 +101,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "portlight-cli",
-      "qualifyingSourceCommits": 3,
+      "qualifyingSourceCommits": 7,
       "rebaseline": null
     },
     {
@@ -117,7 +117,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "portlight-godot",
-      "qualifyingSourceCommits": 45,
+      "qualifyingSourceCommits": 68,
       "rebaseline": null
     },
     {
@@ -134,12 +134,12 @@
           "portlight-godot"
         ]
       },
-      "cohesion": 0.71731,
+      "cohesion": 0.74078,
       "cohesionDropped": false,
-      "confidence": "low",
+      "confidence": "full",
       "highWater": null,
       "name": "portlight-sim",
-      "qualifyingSourceCommits": 15,
+      "qualifyingSourceCommits": 40,
       "rebaseline": null
     },
     {
@@ -187,7 +187,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "site",
-      "qualifyingSourceCommits": 2,
+      "qualifyingSourceCommits": 6,
       "rebaseline": null
     },
     {
@@ -201,12 +201,12 @@
         "importsAndCoChanges": [],
         "importsOnly": []
       },
-      "cohesion": 0,
+      "cohesion": 0.347826,
       "cohesionDropped": false,
       "confidence": "low",
       "highWater": null,
       "name": "tools",
-      "qualifyingSourceCommits": 18,
+      "qualifyingSourceCommits": 25,
       "rebaseline": null
     }
   ],
@@ -214,13 +214,13 @@
     "definition": "commits is how many commits in the window touch the file, including merges and commits dropped from coupling. lines is added plus deleted in those commits.",
     "files": [
       {
-        "commits": 37,
-        "lines": 1015,
+        "commits": 53,
+        "lines": 1208,
         "path": ".github/workflows/ci.yml"
       },
       {
-        "commits": 1,
-        "lines": 50,
+        "commits": 2,
+        "lines": 61,
         "path": ".github/workflows/pages.yml"
       },
       {
@@ -229,53 +229,88 @@
         "path": ".gitignore"
       },
       {
-        "commits": 3,
-        "lines": 31,
+        "commits": 7,
+        "lines": 141,
         "path": "CHANGELOG.md"
       },
       {
-        "commits": 2,
-        "lines": 22,
+        "commits": 3,
+        "lines": 25,
         "path": "CONTRIBUTING.md"
       },
       {
-        "commits": 4,
-        "lines": 456,
+        "commits": 8,
+        "lines": 488,
         "path": "Cargo.lock"
       },
       {
-        "commits": 2,
-        "lines": 16,
+        "commits": 7,
+        "lines": 28,
         "path": "Cargo.toml"
       },
       {
-        "commits": 3,
-        "lines": 54,
+        "commits": 4,
+        "lines": 75,
         "path": "LICENSE"
       },
       {
-        "commits": 26,
-        "lines": 593,
+        "commits": 4,
+        "lines": 106,
+        "path": "README.es.md"
+      },
+      {
+        "commits": 4,
+        "lines": 106,
+        "path": "README.fr.md"
+      },
+      {
+        "commits": 4,
+        "lines": 106,
+        "path": "README.hi.md"
+      },
+      {
+        "commits": 4,
+        "lines": 106,
+        "path": "README.it.md"
+      },
+      {
+        "commits": 4,
+        "lines": 106,
+        "path": "README.ja.md"
+      },
+      {
+        "commits": 32,
+        "lines": 652,
         "path": "README.md"
       },
       {
-        "commits": 1,
-        "lines": 26,
-        "path": "SCORECARD.md"
+        "commits": 4,
+        "lines": 106,
+        "path": "README.pt-BR.md"
       },
       {
-        "commits": 1,
-        "lines": 52,
-        "path": "SECURITY.md"
-      },
-      {
-        "commits": 1,
-        "lines": 82,
-        "path": "SHIP_GATE.md"
+        "commits": 4,
+        "lines": 106,
+        "path": "README.zh.md"
       },
       {
         "commits": 6,
-        "lines": 324,
+        "lines": 50,
+        "path": "SCORECARD.md"
+      },
+      {
+        "commits": 5,
+        "lines": 76,
+        "path": "SECURITY.md"
+      },
+      {
+        "commits": 5,
+        "lines": 156,
+        "path": "SHIP_GATE.md"
+      },
+      {
+        "commits": 13,
+        "lines": 442,
         "path": "atlas/README.md"
       },
       {
@@ -284,28 +319,28 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 6,
-        "lines": 1432,
+        "commits": 13,
+        "lines": 1878,
         "path": "atlas/page.json"
       },
       {
-        "commits": 6,
-        "lines": 8009,
+        "commits": 13,
+        "lines": 13807,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 6,
-        "lines": 22164,
+        "commits": 13,
+        "lines": 36757,
         "path": "atlas/structure.json"
       },
       {
-        "commits": 1,
-        "lines": 22,
+        "commits": 2,
+        "lines": 38,
         "path": "codecov.yml"
       },
       {
-        "commits": 2,
-        "lines": 17,
+        "commits": 3,
+        "lines": 20,
         "path": "crates/portlight-chart/Cargo.toml"
       },
       {
@@ -329,8 +364,8 @@
         "path": "crates/portlight-chart/src/harbour.rs"
       },
       {
-        "commits": 6,
-        "lines": 321,
+        "commits": 7,
+        "lines": 355,
         "path": "crates/portlight-chart/src/landing.rs"
       },
       {
@@ -349,8 +384,8 @@
         "path": "crates/portlight-chart/src/project.rs"
       },
       {
-        "commits": 5,
-        "lines": 1058,
+        "commits": 6,
+        "lines": 1071,
         "path": "crates/portlight-chart/src/seam.rs"
       },
       {
@@ -359,18 +394,18 @@
         "path": "crates/portlight-chart/src/view.rs"
       },
       {
-        "commits": 1,
-        "lines": 15,
+        "commits": 2,
+        "lines": 18,
         "path": "crates/portlight-cli/Cargo.toml"
       },
       {
-        "commits": 6,
-        "lines": 305,
+        "commits": 11,
+        "lines": 457,
         "path": "crates/portlight-cli/src/main.rs"
       },
       {
-        "commits": 1,
-        "lines": 15,
+        "commits": 2,
+        "lines": 18,
         "path": "crates/portlight-godot/Cargo.toml"
       },
       {
@@ -384,33 +419,33 @@
         "path": "crates/portlight-godot/src/contract_strip.rs"
       },
       {
-        "commits": 8,
-        "lines": 1403,
+        "commits": 10,
+        "lines": 1534,
         "path": "crates/portlight-godot/src/contracts_screen.rs"
       },
       {
-        "commits": 1,
-        "lines": 155,
+        "commits": 3,
+        "lines": 164,
         "path": "crates/portlight-godot/src/crew_screen.rs"
       },
       {
-        "commits": 10,
-        "lines": 4580,
+        "commits": 13,
+        "lines": 4773,
         "path": "crates/portlight-godot/src/day_report.rs"
       },
       {
-        "commits": 4,
-        "lines": 1096,
+        "commits": 7,
+        "lines": 1249,
         "path": "crates/portlight-godot/src/departure_check.rs"
       },
       {
-        "commits": 13,
-        "lines": 570,
+        "commits": 16,
+        "lines": 658,
         "path": "crates/portlight-godot/src/encounter_screen.rs"
       },
       {
-        "commits": 40,
-        "lines": 14478,
+        "commits": 59,
+        "lines": 19129,
         "path": "crates/portlight-godot/src/game.rs"
       },
       {
@@ -419,28 +454,33 @@
         "path": "crates/portlight-godot/src/harbour.rs"
       },
       {
-        "commits": 7,
-        "lines": 1708,
+        "commits": 11,
+        "lines": 2024,
         "path": "crates/portlight-godot/src/harbour_screen.rs"
       },
       {
-        "commits": 10,
-        "lines": 1223,
-        "path": "crates/portlight-godot/src/hunt_screen.rs"
-      },
-      {
-        "commits": 5,
-        "lines": 1325,
-        "path": "crates/portlight-godot/src/journal_screen.rs"
+        "commits": 1,
+        "lines": 249,
+        "path": "crates/portlight-godot/src/hints.rs"
       },
       {
         "commits": 14,
-        "lines": 30,
+        "lines": 1485,
+        "path": "crates/portlight-godot/src/hunt_screen.rs"
+      },
+      {
+        "commits": 7,
+        "lines": 1397,
+        "path": "crates/portlight-godot/src/journal_screen.rs"
+      },
+      {
+        "commits": 17,
+        "lines": 33,
         "path": "crates/portlight-godot/src/lib.rs"
       },
       {
-        "commits": 23,
-        "lines": 4565,
+        "commits": 37,
+        "lines": 5816,
         "path": "crates/portlight-godot/src/logic.rs"
       },
       {
@@ -454,9 +494,19 @@
         "path": "crates/portlight-godot/src/newgame_screen.rs"
       },
       {
-        "commits": 12,
-        "lines": 1915,
+        "commits": 25,
+        "lines": 2494,
         "path": "crates/portlight-godot/src/playtest.rs"
+      },
+      {
+        "commits": 10,
+        "lines": 3417,
+        "path": "crates/portlight-godot/src/recap.rs"
+      },
+      {
+        "commits": 2,
+        "lines": 460,
+        "path": "crates/portlight-godot/src/recap_card.rs"
       },
       {
         "commits": 4,
@@ -474,23 +524,33 @@
         "path": "crates/portlight-godot/tests/chart_label_filter.rs"
       },
       {
-        "commits": 4,
-        "lines": 21,
+        "commits": 5,
+        "lines": 26,
         "path": "crates/portlight-sim/Cargo.toml"
       },
       {
-        "commits": 7,
-        "lines": 13928,
+        "commits": 11,
+        "lines": 14014,
         "path": "crates/portlight-sim/data/content.json"
       },
       {
-        "commits": 1,
-        "lines": 316,
-        "path": "crates/portlight-sim/src/bounty.rs"
+        "commits": 2,
+        "lines": 219,
+        "path": "crates/portlight-sim/data/tuned_overlay.json"
+      },
+      {
+        "commits": 2,
+        "lines": 198,
+        "path": "crates/portlight-sim/src/bank.rs"
       },
       {
         "commits": 4,
-        "lines": 1817,
+        "lines": 359,
+        "path": "crates/portlight-sim/src/bounty.rs"
+      },
+      {
+        "commits": 6,
+        "lines": 1900,
         "path": "crates/portlight-sim/src/campaign.rs"
       },
       {
@@ -499,23 +559,23 @@
         "path": "crates/portlight-sim/src/combat.rs"
       },
       {
-        "commits": 2,
-        "lines": 336,
+        "commits": 3,
+        "lines": 339,
         "path": "crates/portlight-sim/src/companion.rs"
       },
       {
-        "commits": 2,
-        "lines": 503,
+        "commits": 3,
+        "lines": 828,
         "path": "crates/portlight-sim/src/consequences.rs"
       },
       {
-        "commits": 7,
-        "lines": 1230,
+        "commits": 10,
+        "lines": 1259,
         "path": "crates/portlight-sim/src/content.rs"
       },
       {
-        "commits": 2,
-        "lines": 1121,
+        "commits": 4,
+        "lines": 1133,
         "path": "crates/portlight-sim/src/contracts.rs"
       },
       {
@@ -529,18 +589,18 @@
         "path": "crates/portlight-sim/src/culture.rs"
       },
       {
-        "commits": 2,
-        "lines": 1013,
+        "commits": 5,
+        "lines": 1035,
         "path": "crates/portlight-sim/src/custom_captain.rs"
       },
       {
-        "commits": 1,
-        "lines": 168,
+        "commits": 2,
+        "lines": 171,
         "path": "crates/portlight-sim/src/duel.rs"
       },
       {
-        "commits": 1,
-        "lines": 401,
+        "commits": 4,
+        "lines": 804,
         "path": "crates/portlight-sim/src/economy.rs"
       },
       {
@@ -549,33 +609,33 @@
         "path": "crates/portlight-sim/src/encounter.rs"
       },
       {
-        "commits": 7,
-        "lines": 307,
+        "commits": 11,
+        "lines": 529,
         "path": "crates/portlight-sim/src/error.rs"
       },
       {
-        "commits": 1,
-        "lines": 349,
+        "commits": 2,
+        "lines": 352,
         "path": "crates/portlight-sim/src/fleet.rs"
       },
       {
-        "commits": 1,
-        "lines": 225,
+        "commits": 2,
+        "lines": 227,
         "path": "crates/portlight-sim/src/hunting.rs"
       },
       {
-        "commits": 2,
-        "lines": 1342,
+        "commits": 5,
+        "lines": 1476,
         "path": "crates/portlight-sim/src/infrastructure.rs"
       },
       {
-        "commits": 1,
-        "lines": 256,
+        "commits": 2,
+        "lines": 277,
         "path": "crates/portlight-sim/src/injuries.rs"
       },
       {
-        "commits": 12,
-        "lines": 74,
+        "commits": 14,
+        "lines": 76,
         "path": "crates/portlight-sim/src/lib.rs"
       },
       {
@@ -589,23 +649,23 @@
         "path": "crates/portlight-sim/src/memory.rs"
       },
       {
-        "commits": 1,
-        "lines": 29,
+        "commits": 2,
+        "lines": 126,
         "path": "crates/portlight-sim/src/merchant.rs"
       },
       {
-        "commits": 9,
-        "lines": 988,
+        "commits": 10,
+        "lines": 1006,
         "path": "crates/portlight-sim/src/model.rs"
       },
       {
-        "commits": 2,
-        "lines": 798,
+        "commits": 3,
+        "lines": 804,
         "path": "crates/portlight-sim/src/narrative.rs"
       },
       {
-        "commits": 5,
-        "lines": 951,
+        "commits": 6,
+        "lines": 986,
         "path": "crates/portlight-sim/src/naval.rs"
       },
       {
@@ -624,13 +684,13 @@
         "path": "crates/portlight-sim/src/reputation.rs"
       },
       {
-        "commits": 11,
-        "lines": 4213,
+        "commits": 14,
+        "lines": 4473,
         "path": "crates/portlight-sim/src/save.rs"
       },
       {
-        "commits": 12,
-        "lines": 836,
+        "commits": 18,
+        "lines": 982,
         "path": "crates/portlight-sim/src/script.rs"
       },
       {
@@ -639,8 +699,8 @@
         "path": "crates/portlight-sim/src/sea_culture.rs"
       },
       {
-        "commits": 18,
-        "lines": 5496,
+        "commits": 33,
+        "lines": 8641,
         "path": "crates/portlight-sim/src/session.rs"
       },
       {
@@ -649,19 +709,24 @@
         "path": "crates/portlight-sim/src/ship.rs"
       },
       {
-        "commits": 1,
-        "lines": 228,
+        "commits": 2,
+        "lines": 236,
         "path": "crates/portlight-sim/src/skills.rs"
       },
       {
-        "commits": 10,
-        "lines": 1661,
+        "commits": 11,
+        "lines": 1680,
         "path": "crates/portlight-sim/src/snapshot.rs"
       },
       {
-        "commits": 1,
-        "lines": 135,
+        "commits": 2,
+        "lines": 151,
         "path": "crates/portlight-sim/src/training.rs"
+      },
+      {
+        "commits": 2,
+        "lines": 362,
+        "path": "crates/portlight-sim/src/tuned.rs"
       },
       {
         "commits": 2,
@@ -669,8 +734,8 @@
         "path": "crates/portlight-sim/src/util.rs"
       },
       {
-        "commits": 5,
-        "lines": 1271,
+        "commits": 9,
+        "lines": 1360,
         "path": "crates/portlight-sim/src/voyage.rs"
       },
       {
@@ -679,8 +744,8 @@
         "path": "crates/portlight-sim/src/weapon_provenance.rs"
       },
       {
-        "commits": 1,
-        "lines": 325,
+        "commits": 2,
+        "lines": 353,
         "path": "crates/portlight-sim/src/weapon_quality.rs"
       },
       {
@@ -689,98 +754,903 @@
         "path": "crates/portlight-sim/src/world.rs"
       },
       {
-        "commits": 1,
-        "lines": 765,
-        "path": "crates/portlight-sim/tests/invariants.rs"
-      },
-      {
-        "commits": 10,
-        "lines": 924,
-        "path": "crates/portlight-sim/tests/parity.rs"
-      },
-      {
-        "commits": 8,
-        "lines": 703,
-        "path": "crates/portlight-sim/tests/save_parity.rs"
+        "commits": 5,
+        "lines": 1068,
+        "path": "crates/portlight-sim/tests/balance_bot.rs"
       },
       {
         "commits": 1,
-        "lines": 349,
-        "path": "docs/BUILD-CHECK-WIN-MAC.md"
-      },
-      {
-        "commits": 13,
-        "lines": 805,
-        "path": "docs/HANDOFF-GROK-BOTS.md"
-      },
-      {
-        "commits": 14,
-        "lines": 545,
-        "path": "docs/PORTING-PLAN.md"
+        "lines": 399,
+        "path": "crates/portlight-sim/tests/contraband_probe.rs"
       },
       {
         "commits": 2,
-        "lines": 12,
-        "path": "docs/playtest/README.md"
+        "lines": 800,
+        "path": "crates/portlight-sim/tests/invariants.rs"
+      },
+      {
+        "commits": 15,
+        "lines": 1583,
+        "path": "crates/portlight-sim/tests/parity.rs"
+      },
+      {
+        "commits": 13,
+        "lines": 971,
+        "path": "crates/portlight-sim/tests/save_parity.rs"
+      },
+      {
+        "commits": 3,
+        "lines": 302,
+        "path": "crates/portlight-sim/tests/tuned_overlay.rs"
+      },
+      {
+        "commits": 2,
+        "lines": 698,
+        "path": "docs/BUILD-CHECK-WIN-MAC.md"
+      },
+      {
+        "commits": 15,
+        "lines": 1296,
+        "path": "docs/HANDOFF-GROK-BOTS.md"
+      },
+      {
+        "commits": 24,
+        "lines": 630,
+        "path": "docs/PORTING-PLAN.md"
+      },
+      {
+        "commits": 10,
+        "lines": 278,
+        "path": "docs/canon/README.md"
+      },
+      {
+        "commits": 6,
+        "lines": 52,
+        "path": "docs/canon/captains/README.md"
+      },
+      {
+        "commits": 4,
+        "lines": 53,
+        "path": "docs/canon/captains/bounty_hunter.md"
+      },
+      {
+        "commits": 2,
+        "lines": 43,
+        "path": "docs/canon/captains/corsair.md"
+      },
+      {
+        "commits": 2,
+        "lines": 42,
+        "path": "docs/canon/captains/dockhand.md"
+      },
+      {
+        "commits": 2,
+        "lines": 42,
+        "path": "docs/canon/captains/merchant.md"
+      },
+      {
+        "commits": 2,
+        "lines": 42,
+        "path": "docs/canon/captains/merchant_prince.md"
+      },
+      {
+        "commits": 2,
+        "lines": 42,
+        "path": "docs/canon/captains/navigator.md"
       },
       {
         "commits": 1,
-        "lines": 64,
-        "path": "docs/playtest/fix-a-acceptance-player.md"
+        "lines": 31,
+        "path": "docs/canon/captains/pirates/gnaw.md"
       },
       {
         "commits": 1,
-        "lines": 140,
-        "path": "docs/playtest/playtest-bridge-consult-brief.md"
+        "lines": 31,
+        "path": "docs/canon/captains/pirates/old_coral.md"
+      },
+      {
+        "commits": 1,
+        "lines": 34,
+        "path": "docs/canon/captains/pirates/raj_the_quiet.md"
+      },
+      {
+        "commits": 1,
+        "lines": 35,
+        "path": "docs/canon/captains/pirates/scarlet_ana.md"
+      },
+      {
+        "commits": 1,
+        "lines": 31,
+        "path": "docs/canon/captains/pirates/sergeant_kruze.md"
+      },
+      {
+        "commits": 1,
+        "lines": 31,
+        "path": "docs/canon/captains/pirates/the_butcher.md"
+      },
+      {
+        "commits": 1,
+        "lines": 31,
+        "path": "docs/canon/captains/pirates/the_diver.md"
+      },
+      {
+        "commits": 1,
+        "lines": 31,
+        "path": "docs/canon/captains/pirates/typhoon_mei.md"
+      },
+      {
+        "commits": 3,
+        "lines": 50,
+        "path": "docs/canon/captains/privateer.md"
+      },
+      {
+        "commits": 2,
+        "lines": 42,
+        "path": "docs/canon/captains/scholar.md"
+      },
+      {
+        "commits": 2,
+        "lines": 42,
+        "path": "docs/canon/captains/smuggler.md"
+      },
+      {
+        "commits": 5,
+        "lines": 260,
+        "path": "docs/canon/companions/README.md"
       },
       {
         "commits": 2,
         "lines": 91,
-        "path": "docs/playtest/playtest-contract-strip-criteria-STUB.md"
+        "path": "docs/canon/companions/coin_mariam.md"
       },
       {
         "commits": 2,
-        "lines": 259,
-        "path": "docs/playtest/playtest-criteria-draft.md"
+        "lines": 90,
+        "path": "docs/canon/companions/dockhand_pete.md"
       },
       {
         "commits": 2,
-        "lines": 117,
-        "path": "docs/playtest/playtest-escape-undock-criteria.md"
+        "lines": 98,
+        "path": "docs/canon/companions/dr_amara.md"
       },
       {
         "commits": 2,
-        "lines": 55,
-        "path": "docs/playtest/playtest-harness-status.md"
-      },
-      {
-        "commits": 1,
-        "lines": 76,
-        "path": "docs/playtest/playtest-mike-runbook.md"
+        "lines": 96,
+        "path": "docs/canon/companions/iron_marta.md"
       },
       {
         "commits": 2,
-        "lines": 94,
-        "path": "docs/playtest/playtest-pier-after-fix-a-STUB.md"
+        "lines": 91,
+        "path": "docs/canon/companions/old_henry.md"
       },
       {
         "commits": 2,
-        "lines": 181,
-        "path": "docs/playtest/playtest-plan-portable-for-mike.md"
+        "lines": 92,
+        "path": "docs/canon/companions/patches.md"
       },
       {
-        "commits": 1,
+        "commits": 2,
+        "lines": 93,
+        "path": "docs/canon/companions/red_tomas.md"
+      },
+      {
+        "commits": 2,
+        "lines": 116,
+        "path": "docs/canon/companions/roles/marine.md"
+      },
+      {
+        "commits": 2,
+        "lines": 116,
+        "path": "docs/canon/companions/roles/navigator.md"
+      },
+      {
+        "commits": 2,
+        "lines": 116,
+        "path": "docs/canon/companions/roles/quartermaster.md"
+      },
+      {
+        "commits": 2,
         "lines": 110,
-        "path": "docs/playtest/playtest-portlight-v0.playtest.json"
+        "path": "docs/canon/companions/roles/smuggler.md"
+      },
+      {
+        "commits": 2,
+        "lines": 120,
+        "path": "docs/canon/companions/roles/surgeon.md"
+      },
+      {
+        "commits": 2,
+        "lines": 95,
+        "path": "docs/canon/companions/rosa_the_fence.md"
       },
       {
         "commits": 3,
-        "lines": 55,
-        "path": "docs/playtest/playtest-rpc-choice-ids.md"
+        "lines": 96,
+        "path": "docs/canon/companions/shadow_kai.md"
+      },
+      {
+        "commits": 2,
+        "lines": 93,
+        "path": "docs/canon/companions/star_lila.md"
+      },
+      {
+        "commits": 17,
+        "lines": 825,
+        "path": "docs/canon/data-fixes.md"
       },
       {
         "commits": 1,
-        "lines": 33,
+        "lines": 50,
+        "path": "docs/canon/factions/README.md"
+      },
+      {
+        "commits": 1,
+        "lines": 66,
+        "path": "docs/canon/factions/coral_crown.md"
+      },
+      {
+        "commits": 1,
+        "lines": 70,
+        "path": "docs/canon/factions/crimson_tide.md"
+      },
+      {
+        "commits": 1,
+        "lines": 63,
+        "path": "docs/canon/factions/deep_reef_brotherhood.md"
+      },
+      {
+        "commits": 1,
+        "lines": 65,
+        "path": "docs/canon/factions/exchange_alliance.md"
+      },
+      {
+        "commits": 1,
+        "lines": 65,
+        "path": "docs/canon/factions/free_ports.md"
+      },
+      {
+        "commits": 1,
+        "lines": 64,
+        "path": "docs/canon/factions/gold_coast_compact.md"
+      },
+      {
+        "commits": 1,
+        "lines": 67,
+        "path": "docs/canon/factions/iron_pact.md"
+      },
+      {
+        "commits": 1,
+        "lines": 69,
+        "path": "docs/canon/factions/iron_wolves.md"
+      },
+      {
+        "commits": 1,
+        "lines": 68,
+        "path": "docs/canon/factions/monsoon_syndicate.md"
+      },
+      {
+        "commits": 1,
+        "lines": 65,
+        "path": "docs/canon/factions/shadow_ports.md"
+      },
+      {
+        "commits": 1,
+        "lines": 67,
+        "path": "docs/canon/factions/silk_circle.md"
+      },
+      {
+        "commits": 2,
+        "lines": 88,
+        "path": "docs/canon/landmarks/README.md"
+      },
+      {
+        "commits": 2,
+        "lines": 80,
+        "path": "docs/canon/landmarks/blessing_pool.md"
+      },
+      {
+        "commits": 2,
+        "lines": 75,
+        "path": "docs/canon/landmarks/cliff_tavern.md"
+      },
+      {
+        "commits": 2,
+        "lines": 80,
+        "path": "docs/canon/landmarks/coral_palace.md"
+      },
+      {
+        "commits": 2,
+        "lines": 82,
+        "path": "docs/canon/landmarks/cotton_steps.md"
+      },
+      {
+        "commits": 1,
+        "lines": 67,
+        "path": "docs/canon/landmarks/distillery_row.md"
+      },
+      {
+        "commits": 2,
+        "lines": 76,
+        "path": "docs/canon/landmarks/ember_peak.md"
+      },
+      {
+        "commits": 2,
+        "lines": 76,
+        "path": "docs/canon/landmarks/free_port_bell.md"
+      },
+      {
+        "commits": 1,
+        "lines": 75,
+        "path": "docs/canon/landmarks/gate_fortress.md"
+      },
+      {
+        "commits": 2,
+        "lines": 89,
+        "path": "docs/canon/landmarks/grain_exchange.md"
+      },
+      {
+        "commits": 2,
+        "lines": 80,
+        "path": "docs/canon/landmarks/great_foundry.md"
+      },
+      {
+        "commits": 2,
+        "lines": 79,
+        "path": "docs/canon/landmarks/hanging_market.md"
+      },
+      {
+        "commits": 2,
+        "lines": 81,
+        "path": "docs/canon/landmarks/loom_quarter.md"
+      },
+      {
+        "commits": 2,
+        "lines": 74,
+        "path": "docs/canon/landmarks/master_shipyard.md"
+      },
+      {
+        "commits": 2,
+        "lines": 80,
+        "path": "docs/canon/landmarks/porcelain_quarter.md"
+      },
+      {
+        "commits": 2,
+        "lines": 80,
+        "path": "docs/canon/landmarks/porto_novo_beacon.md"
+      },
+      {
+        "commits": 1,
+        "lines": 69,
+        "path": "docs/canon/landmarks/river_mouth_mines.md"
+      },
+      {
+        "commits": 2,
+        "lines": 78,
+        "path": "docs/canon/landmarks/spice_bazaar.md"
+      },
+      {
+        "commits": 2,
+        "lines": 86,
+        "path": "docs/canon/landmarks/storm_wall.md"
+      },
+      {
+        "commits": 2,
+        "lines": 82,
+        "path": "docs/canon/landmarks/stormwall_fortress.md"
+      },
+      {
+        "commits": 2,
+        "lines": 78,
+        "path": "docs/canon/landmarks/whale_arch.md"
+      },
+      {
+        "commits": 2,
+        "lines": 87,
+        "path": "docs/canon/landmarks/wind_temple.md"
+      },
+      {
+        "commits": 2,
+        "lines": 39,
+        "path": "docs/canon/lanes/README.md"
+      },
+      {
+        "commits": 1,
+        "lines": 58,
+        "path": "docs/canon/lanes/cotton_crossing.md"
+      },
+      {
+        "commits": 1,
+        "lines": 58,
+        "path": "docs/canon/lanes/deep_south_run.md"
+      },
+      {
+        "commits": 2,
+        "lines": 68,
+        "path": "docs/canon/lanes/grain_road.md"
+      },
+      {
+        "commits": 1,
+        "lines": 57,
+        "path": "docs/canon/lanes/iron_strait.md"
+      },
+      {
+        "commits": 2,
+        "lines": 64,
+        "path": "docs/canon/lanes/long_crossing.md"
+      },
+      {
+        "commits": 1,
+        "lines": 58,
+        "path": "docs/canon/lanes/monsoon_shortcut.md"
+      },
+      {
+        "commits": 1,
+        "lines": 57,
+        "path": "docs/canon/lanes/northern_passage.md"
+      },
+      {
+        "commits": 1,
+        "lines": 57,
+        "path": "docs/canon/lanes/porcelain_lane.md"
+      },
+      {
+        "commits": 2,
+        "lines": 59,
+        "path": "docs/canon/lanes/shadow_lane.md"
+      },
+      {
+        "commits": 1,
+        "lines": 57,
+        "path": "docs/canon/lanes/silk_road_by_sea.md"
+      },
+      {
+        "commits": 2,
+        "lines": 61,
+        "path": "docs/canon/lanes/smugglers_run.md"
+      },
+      {
+        "commits": 1,
+        "lines": 57,
+        "path": "docs/canon/lanes/tea_and_tobacco_road.md"
+      },
+      {
+        "commits": 1,
+        "lines": 57,
+        "path": "docs/canon/lanes/timber_run.md"
+      },
+      {
+        "commits": 1,
+        "lines": 59,
+        "path": "docs/canon/lanes/typhoon_alley.md"
+      },
+      {
+        "commits": 1,
+        "lines": 58,
+        "path": "docs/canon/lanes/volcanic_passage.md"
+      },
+      {
+        "commits": 4,
+        "lines": 250,
+        "path": "docs/canon/merchants/README.md"
+      },
+      {
+        "commits": 2,
+        "lines": 100,
+        "path": "docs/canon/merchants/adaeze_arms.md"
+      },
+      {
+        "commits": 2,
+        "lines": 101,
+        "path": "docs/canon/merchants/chen_forge.md"
+      },
+      {
+        "commits": 2,
+        "lines": 101,
+        "path": "docs/canon/merchants/devi_arms.md"
+      },
+      {
+        "commits": 2,
+        "lines": 97,
+        "path": "docs/canon/merchants/fatima_armorworks.md"
+      },
+      {
+        "commits": 3,
+        "lines": 106,
+        "path": "docs/canon/merchants/hamish_iron.md"
+      },
+      {
+        "commits": 2,
+        "lines": 92,
+        "path": "docs/canon/merchants/kofi_leather.md"
+      },
+      {
+        "commits": 3,
+        "lines": 111,
+        "path": "docs/canon/merchants/li_crossbow.md"
+      },
+      {
+        "commits": 2,
+        "lines": 98,
+        "path": "docs/canon/merchants/malia_provisions.md"
+      },
+      {
+        "commits": 2,
+        "lines": 101,
+        "path": "docs/canon/merchants/marco_the_blade.md"
+      },
+      {
+        "commits": 2,
+        "lines": 102,
+        "path": "docs/canon/merchants/old_silva.md"
+      },
+      {
+        "commits": 2,
+        "lines": 104,
+        "path": "docs/canon/merchants/sergeant_gruber.md"
+      },
+      {
+        "commits": 3,
+        "lines": 106,
+        "path": "docs/canon/merchants/tane_warrior.md"
+      },
+      {
+        "commits": 2,
+        "lines": 98,
+        "path": "docs/canon/merchants/widow_kael.md"
+      },
+      {
+        "commits": 2,
+        "lines": 96,
+        "path": "docs/canon/merchants/yaa_sharpedge.md"
+      },
+      {
+        "commits": 1,
+        "lines": 149,
+        "path": "docs/canon/officers/README.md"
+      },
+      {
+        "commits": 1,
+        "lines": 75,
+        "path": "docs/canon/officers/east_indies.md"
+      },
+      {
+        "commits": 1,
+        "lines": 73,
+        "path": "docs/canon/officers/mediterranean.md"
+      },
+      {
+        "commits": 1,
+        "lines": 72,
+        "path": "docs/canon/officers/north_atlantic.md"
+      },
+      {
+        "commits": 1,
+        "lines": 72,
+        "path": "docs/canon/officers/south_seas.md"
+      },
+      {
+        "commits": 1,
+        "lines": 73,
+        "path": "docs/canon/officers/west_africa.md"
+      },
+      {
+        "commits": 2,
+        "lines": 47,
+        "path": "docs/canon/player-types/README.md"
+      },
+      {
+        "commits": 4,
+        "lines": 108,
+        "path": "docs/canon/player-types/bounty_hunter.md"
+      },
+      {
+        "commits": 1,
+        "lines": 100,
+        "path": "docs/canon/player-types/corsair.md"
+      },
+      {
+        "commits": 2,
+        "lines": 99,
+        "path": "docs/canon/player-types/dockhand.md"
+      },
+      {
+        "commits": 1,
+        "lines": 104,
+        "path": "docs/canon/player-types/merchant.md"
+      },
+      {
+        "commits": 1,
+        "lines": 99,
+        "path": "docs/canon/player-types/merchant_prince.md"
+      },
+      {
+        "commits": 1,
+        "lines": 100,
+        "path": "docs/canon/player-types/navigator.md"
+      },
+      {
+        "commits": 3,
+        "lines": 108,
+        "path": "docs/canon/player-types/privateer.md"
+      },
+      {
+        "commits": 1,
+        "lines": 99,
+        "path": "docs/canon/player-types/scholar.md"
+      },
+      {
+        "commits": 2,
+        "lines": 106,
+        "path": "docs/canon/player-types/smuggler.md"
+      },
+      {
+        "commits": 7,
+        "lines": 175,
+        "path": "docs/canon/ports/al_manar.md"
+      },
+      {
+        "commits": 7,
+        "lines": 175,
+        "path": "docs/canon/ports/coral_throne.md"
+      },
+      {
+        "commits": 5,
+        "lines": 178,
+        "path": "docs/canon/ports/corsairs_rest.md"
+      },
+      {
+        "commits": 6,
+        "lines": 169,
+        "path": "docs/canon/ports/crosswind_isle.md"
+      },
+      {
+        "commits": 3,
+        "lines": 170,
+        "path": "docs/canon/ports/dragons_gate.md"
+      },
+      {
+        "commits": 4,
+        "lines": 171,
+        "path": "docs/canon/ports/ember_isle.md"
+      },
+      {
+        "commits": 3,
+        "lines": 157,
+        "path": "docs/canon/ports/iron_point.md"
+      },
+      {
+        "commits": 7,
+        "lines": 179,
+        "path": "docs/canon/ports/ironhaven.md"
+      },
+      {
+        "commits": 7,
+        "lines": 180,
+        "path": "docs/canon/ports/jade_port.md"
+      },
+      {
+        "commits": 7,
+        "lines": 175,
+        "path": "docs/canon/ports/monsoon_reach.md"
+      },
+      {
+        "commits": 5,
+        "lines": 165,
+        "path": "docs/canon/ports/palm_cove.md"
+      },
+      {
+        "commits": 6,
+        "lines": 164,
+        "path": "docs/canon/ports/pearl_shallows.md"
+      },
+      {
+        "commits": 6,
+        "lines": 188,
+        "path": "docs/canon/ports/porto_novo.md"
+      },
+      {
+        "commits": 6,
+        "lines": 179,
+        "path": "docs/canon/ports/silk_haven.md"
+      },
+      {
+        "commits": 6,
+        "lines": 178,
+        "path": "docs/canon/ports/silva_bay.md"
+      },
+      {
+        "commits": 5,
+        "lines": 179,
+        "path": "docs/canon/ports/spice_narrows.md"
+      },
+      {
+        "commits": 5,
+        "lines": 168,
+        "path": "docs/canon/ports/stormwall.md"
+      },
+      {
+        "commits": 9,
+        "lines": 179,
+        "path": "docs/canon/ports/sun_harbor.md"
+      },
+      {
+        "commits": 7,
+        "lines": 167,
+        "path": "docs/canon/ports/thornport.md"
+      },
+      {
+        "commits": 7,
+        "lines": 168,
+        "path": "docs/canon/ports/typhoon_anchorage.md"
+      },
+      {
+        "commits": 1,
+        "lines": 68,
+        "path": "docs/canon/relations-matrix.md"
+      },
+      {
+        "commits": 3,
+        "lines": 170,
+        "path": "docs/canon/skill-trainers/README.md"
+      },
+      {
+        "commits": 2,
+        "lines": 81,
+        "path": "docs/canon/skill-trainers/forge_master_erik.md"
+      },
+      {
+        "commits": 2,
+        "lines": 78,
+        "path": "docs/canon/skill-trainers/monsoon_tinker.md"
+      },
+      {
+        "commits": 2,
+        "lines": 78,
+        "path": "docs/canon/skill-trainers/old_vasquez.md"
+      },
+      {
+        "commits": 2,
+        "lines": 77,
+        "path": "docs/canon/skill-trainers/silva_bay_smiths.md"
+      },
+      {
+        "commits": 2,
+        "lines": 81,
+        "path": "docs/canon/skill-trainers/typhoon_smith.md"
+      },
+      {
+        "commits": 4,
+        "lines": 227,
+        "path": "docs/canon/style-masters/README.md"
+      },
+      {
+        "commits": 2,
+        "lines": 84,
+        "path": "docs/canon/style-masters/dewi_ayu.md"
+      },
+      {
+        "commits": 2,
+        "lines": 84,
+        "path": "docs/canon/style-masters/jarl_solveig.md"
+      },
+      {
+        "commits": 2,
+        "lines": 83,
+        "path": "docs/canon/style-masters/kahoku_the_elder.md"
+      },
+      {
+        "commits": 2,
+        "lines": 84,
+        "path": "docs/canon/style-masters/kolo_the_fist.md"
+      },
+      {
+        "commits": 2,
+        "lines": 85,
+        "path": "docs/canon/style-masters/leilani_bonecatcher.md"
+      },
+      {
+        "commits": 3,
+        "lines": 87,
+        "path": "docs/canon/style-masters/maestro_luciano.md"
+      },
+      {
+        "commits": 2,
+        "lines": 83,
+        "path": "docs/canon/style-masters/nneka_ironfist.md"
+      },
+      {
+        "commits": 2,
+        "lines": 83,
+        "path": "docs/canon/style-masters/pak_reza.md"
+      },
+      {
+        "commits": 2,
+        "lines": 85,
+        "path": "docs/canon/style-masters/red_hamish.md"
+      },
+      {
+        "commits": 3,
+        "lines": 103,
+        "path": "docs/canon/style-masters/senora_vega.md"
+      },
+      {
+        "commits": 3,
+        "lines": 22,
+        "path": "docs/playtest/README.md"
+      },
+      {
+        "commits": 1,
+        "lines": 107,
+        "path": "docs/playtest/balance/contraband-probe.md"
+      },
+      {
+        "commits": 5,
+        "lines": 180,
+        "path": "docs/playtest/balance/pt-s0r-summary.md"
+      },
+      {
+        "commits": 5,
+        "lines": 6207,
+        "path": "docs/playtest/balance/pt-s0r.csv"
+      },
+      {
+        "commits": 2,
+        "lines": 128,
+        "path": "docs/playtest/fix-a-acceptance-player.md"
+      },
+      {
+        "commits": 2,
+        "lines": 280,
+        "path": "docs/playtest/playtest-bridge-consult-brief.md"
+      },
+      {
+        "commits": 3,
+        "lines": 178,
+        "path": "docs/playtest/playtest-contract-strip-criteria-STUB.md"
+      },
+      {
+        "commits": 3,
+        "lines": 504,
+        "path": "docs/playtest/playtest-criteria-draft.md"
+      },
+      {
+        "commits": 4,
+        "lines": 238,
+        "path": "docs/playtest/playtest-escape-undock-criteria.md"
+      },
+      {
+        "commits": 3,
+        "lines": 104,
+        "path": "docs/playtest/playtest-harness-status.md"
+      },
+      {
+        "commits": 2,
+        "lines": 152,
+        "path": "docs/playtest/playtest-mike-runbook.md"
+      },
+      {
+        "commits": 3,
+        "lines": 186,
+        "path": "docs/playtest/playtest-pier-after-fix-a-STUB.md"
+      },
+      {
+        "commits": 3,
+        "lines": 360,
+        "path": "docs/playtest/playtest-plan-portable-for-mike.md"
+      },
+      {
+        "commits": 2,
+        "lines": 220,
+        "path": "docs/playtest/playtest-portlight-v0.playtest.json"
+      },
+      {
+        "commits": 7,
+        "lines": 174,
+        "path": "docs/playtest/playtest-rpc-choice-ids.md"
+      },
+      {
+        "commits": 2,
+        "lines": 66,
         "path": "docs/playtest/playtest-seats-README.md"
       },
       {
@@ -799,7 +1669,17 @@
         "path": "docs/screenshots/chart-cutter-f7.png"
       },
       {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/screenshots/chart-hint-first-contract.png"
+      },
+      {
         "commits": 3,
+        "lines": 0,
+        "path": "docs/screenshots/chart-status-banked.png"
+      },
+      {
+        "commits": 4,
         "lines": 0,
         "path": "docs/screenshots/contract-strip-active.png"
       },
@@ -807,6 +1687,11 @@
         "commits": 5,
         "lines": 0,
         "path": "docs/screenshots/contract-strip-urgent.png"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/screenshots/contracts-abandon-armed.png"
       },
       {
         "commits": 6,
@@ -822,6 +1707,11 @@
         "commits": 3,
         "lines": 0,
         "path": "docs/screenshots/contracts-empty.png"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/screenshots/contracts-recap-abandoned.png"
       },
       {
         "commits": 2,
@@ -864,7 +1754,7 @@
         "path": "docs/screenshots/day-report-full.png"
       },
       {
-        "commits": 1,
+        "commits": 2,
         "lines": 0,
         "path": "docs/screenshots/day-report-over-encounter.png"
       },
@@ -909,7 +1799,7 @@
         "path": "docs/screenshots/encounter-galleon.png"
       },
       {
-        "commits": 1,
+        "commits": 4,
         "lines": 0,
         "path": "docs/screenshots/encounter-loss-outcome.png"
       },
@@ -919,9 +1809,24 @@
         "path": "docs/screenshots/encounter-naval.png"
       },
       {
-        "commits": 7,
+        "commits": 9,
         "lines": 0,
         "path": "docs/screenshots/encounter-outcome.png"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/screenshots/encounter-recap-sunk-full.png"
+      },
+      {
+        "commits": 2,
+        "lines": 0,
+        "path": "docs/screenshots/encounter-recap-sunk.png"
+      },
+      {
+        "commits": 2,
+        "lines": 0,
+        "path": "docs/screenshots/encounter-recap-won.png"
       },
       {
         "commits": 1,
@@ -934,17 +1839,22 @@
         "path": "docs/screenshots/flat-deck-z100.png"
       },
       {
-        "commits": 4,
+        "commits": 2,
+        "lines": 0,
+        "path": "docs/screenshots/harbour-bank.png"
+      },
+      {
+        "commits": 6,
         "lines": 0,
         "path": "docs/screenshots/harbour-broker.png"
       },
       {
-        "commits": 4,
+        "commits": 6,
         "lines": 0,
         "path": "docs/screenshots/harbour-finance.png"
       },
       {
-        "commits": 2,
+        "commits": 3,
         "lines": 0,
         "path": "docs/screenshots/harbour-insurance.png"
       },
@@ -964,22 +1874,22 @@
         "path": "docs/screenshots/harbour-seam-z100.png"
       },
       {
-        "commits": 3,
+        "commits": 5,
         "lines": 0,
         "path": "docs/screenshots/harbour-warehouse.png"
       },
       {
-        "commits": 4,
+        "commits": 6,
         "lines": 0,
         "path": "docs/screenshots/hunt-active.png"
       },
       {
-        "commits": 5,
+        "commits": 6,
         "lines": 0,
         "path": "docs/screenshots/hunt-board.png"
       },
       {
-        "commits": 1,
+        "commits": 3,
         "lines": 0,
         "path": "docs/screenshots/hunt-confirm.png"
       },
@@ -1019,7 +1929,17 @@
         "path": "docs/screenshots/market-contract-progress.png"
       },
       {
+        "commits": 2,
+        "lines": 0,
+        "path": "docs/screenshots/market-contract-recap-paid-two.png"
+      },
+      {
         "commits": 1,
+        "lines": 0,
+        "path": "docs/screenshots/market-contract-recap-paid.png"
+      },
+      {
+        "commits": 2,
         "lines": 0,
         "path": "docs/screenshots/newgame-captains.png"
       },
@@ -1069,6 +1989,11 @@
         "path": "docs/screenshots/shipyard-yard.png"
       },
       {
+        "commits": 2,
+        "lines": 0,
+        "path": "docs/screenshots/storm-recap-sunk.png"
+      },
+      {
         "commits": 1,
         "lines": 1,
         "path": "godot/.godot/extension_list.cfg"
@@ -1089,8 +2014,8 @@
         "path": "godot/assets/catalog/locked-ids.csv"
       },
       {
-        "commits": 6,
-        "lines": 5641,
+        "commits": 7,
+        "lines": 6082,
         "path": "godot/assets/landing/MANIFEST.json"
       },
       {
@@ -1914,8 +2839,8 @@
         "path": "godot/scenes/main.tscn"
       },
       {
-        "commits": 6,
-        "lines": 550,
+        "commits": 12,
+        "lines": 974,
         "path": "parity/expected_divergences.json"
       },
       {
@@ -2054,8 +2979,8 @@
         "path": "parity/golden/board_fleet_ship.json"
       },
       {
-        "commits": 2,
-        "lines": 2470,
+        "commits": 3,
+        "lines": 2472,
         "path": "parity/golden/boarding.json"
       },
       {
@@ -2064,13 +2989,13 @@
         "path": "parity/golden/bounty_board.json"
       },
       {
-        "commits": 3,
-        "lines": 2509,
+        "commits": 4,
+        "lines": 2511,
         "path": "parity/golden/bounty_claim.json"
       },
       {
-        "commits": 2,
-        "lines": 2500,
+        "commits": 3,
+        "lines": 2502,
         "path": "parity/golden/bounty_claim_sail.json"
       },
       {
@@ -2119,13 +3044,13 @@
         "path": "parity/golden/buy_warehouse.json"
       },
       {
-        "commits": 1,
-        "lines": 1829,
+        "commits": 2,
+        "lines": 1831,
         "path": "parity/golden/captain_bounty_hunter_s1.json"
       },
       {
-        "commits": 1,
-        "lines": 1946,
+        "commits": 2,
+        "lines": 1948,
         "path": "parity/golden/captain_bounty_hunter_s42.json"
       },
       {
@@ -2139,13 +3064,13 @@
         "path": "parity/golden/captain_corsair_s42.json"
       },
       {
-        "commits": 1,
-        "lines": 1839,
+        "commits": 2,
+        "lines": 1841,
         "path": "parity/golden/captain_dockhand_s1.json"
       },
       {
-        "commits": 1,
-        "lines": 1931,
+        "commits": 2,
+        "lines": 1933,
         "path": "parity/golden/captain_dockhand_s42.json"
       },
       {
@@ -2179,43 +3104,43 @@
         "path": "parity/golden/captain_navigator_s42.json"
       },
       {
-        "commits": 1,
-        "lines": 1832,
+        "commits": 2,
+        "lines": 1834,
         "path": "parity/golden/captain_privateer_s1.json"
       },
       {
-        "commits": 1,
-        "lines": 1949,
+        "commits": 2,
+        "lines": 1951,
         "path": "parity/golden/captain_privateer_s42.json"
       },
       {
-        "commits": 1,
-        "lines": 1807,
+        "commits": 2,
+        "lines": 1809,
         "path": "parity/golden/captain_scholar_s1.json"
       },
       {
-        "commits": 1,
-        "lines": 1895,
+        "commits": 2,
+        "lines": 1897,
         "path": "parity/golden/captain_scholar_s42.json"
       },
       {
-        "commits": 1,
-        "lines": 1825,
+        "commits": 2,
+        "lines": 1827,
         "path": "parity/golden/captain_smuggler_s1.json"
       },
       {
-        "commits": 1,
-        "lines": 1917,
+        "commits": 2,
+        "lines": 1919,
         "path": "parity/golden/captain_smuggler_s42.json"
       },
       {
-        "commits": 1,
-        "lines": 7674,
+        "commits": 2,
+        "lines": 7676,
         "path": "parity/golden/capture_decline.json"
       },
       {
-        "commits": 1,
-        "lines": 6160,
+        "commits": 2,
+        "lines": 6162,
         "path": "parity/golden/capture_fleet_full.json"
       },
       {
@@ -2224,18 +3149,18 @@
         "path": "parity/golden/capture_prize.json"
       },
       {
-        "commits": 1,
-        "lines": 2445,
+        "commits": 2,
+        "lines": 2447,
         "path": "parity/golden/capture_spare_prefix.json"
       },
       {
-        "commits": 1,
-        "lines": 7629,
+        "commits": 2,
+        "lines": 7631,
         "path": "parity/golden/capture_too_few.json"
       },
       {
-        "commits": 1,
-        "lines": 7629,
+        "commits": 2,
+        "lines": 7631,
         "path": "parity/golden/capture_too_many.json"
       },
       {
@@ -2439,8 +3364,8 @@
         "path": "parity/golden/event_ceremony.json"
       },
       {
-        "commits": 3,
-        "lines": 1853,
+        "commits": 4,
+        "lines": 1855,
         "path": "parity/golden/event_foreign.json"
       },
       {
@@ -2474,13 +3399,13 @@
         "path": "parity/golden/fleet_transfer.json"
       },
       {
-        "commits": 4,
-        "lines": 4740,
+        "commits": 5,
+        "lines": 4742,
         "path": "parity/golden/g9.json"
       },
       {
-        "commits": 1,
-        "lines": 2449,
+        "commits": 2,
+        "lines": 2451,
         "path": "parity/golden/gear_armor.json"
       },
       {
@@ -2514,8 +3439,8 @@
         "path": "parity/golden/hire_sea.json"
       },
       {
-        "commits": 3,
-        "lines": 3378,
+        "commits": 4,
+        "lines": 3380,
         "path": "parity/golden/hull_day20.json"
       },
       {
@@ -2544,8 +3469,8 @@
         "path": "parity/golden/hunt_sea_success.json"
       },
       {
-        "commits": 2,
-        "lines": 2458,
+        "commits": 3,
+        "lines": 2460,
         "path": "parity/golden/injury_heal.json"
       },
       {
@@ -2584,9 +3509,14 @@
         "path": "parity/golden/narrative_beats.json"
       },
       {
-        "commits": 1,
-        "lines": 1894,
+        "commits": 2,
+        "lines": 1896,
         "path": "parity/golden/naval_combat.json"
+      },
+      {
+        "commits": 1,
+        "lines": 1688,
+        "path": "parity/golden/naval_evade_clip.json"
       },
       {
         "commits": 1,
@@ -2684,8 +3614,8 @@
         "path": "parity/golden/skill_spend.json"
       },
       {
-        "commits": 3,
-        "lines": 2911,
+        "commits": 4,
+        "lines": 2913,
         "path": "parity/golden/smuggler.json"
       },
       {
@@ -2704,8 +3634,8 @@
         "path": "parity/golden/train_crew.json"
       },
       {
-        "commits": 1,
-        "lines": 1697,
+        "commits": 2,
+        "lines": 1699,
         "path": "parity/golden/upgrade_naval.json"
       },
       {
@@ -2714,18 +3644,18 @@
         "path": "parity/golden/victory_cases.json"
       },
       {
-        "commits": 1,
-        "lines": 2573,
+        "commits": 2,
+        "lines": 2575,
         "path": "parity/golden/victory_provenance.json"
       },
       {
-        "commits": 1,
-        "lines": 2447,
+        "commits": 2,
+        "lines": 2449,
         "path": "parity/golden/victory_spare.json"
       },
       {
-        "commits": 1,
-        "lines": 2448,
+        "commits": 2,
+        "lines": 2450,
         "path": "parity/golden/victory_takeall.json"
       },
       {
@@ -2750,6 +3680,11 @@
       },
       {
         "commits": 1,
+        "lines": 28571,
+        "path": "parity/rust_tuned_pins.json"
+      },
+      {
+        "commits": 1,
         "lines": 2765,
         "path": "parity/saves/area5_v12.json"
       },
@@ -2757,6 +3692,11 @@
         "commits": 1,
         "lines": 2696,
         "path": "parity/saves/area6_v12.json"
+      },
+      {
+        "commits": 1,
+        "lines": 2833,
+        "path": "parity/saves/bank_v13.json"
       },
       {
         "commits": 1,
@@ -2782,6 +3722,16 @@
         "commits": 1,
         "lines": 2739,
         "path": "parity/saves/infrastructure_v12.json"
+      },
+      {
+        "commits": 1,
+        "lines": 2888,
+        "path": "parity/saves/pre_bank_v12.json"
+      },
+      {
+        "commits": 1,
+        "lines": 2888,
+        "path": "parity/saves/pre_bank_v12_resaved.json"
       },
       {
         "commits": 1,
@@ -3340,6 +4290,11 @@
       },
       {
         "commits": 1,
+        "lines": 4,
+        "path": "parity/scripts/naval_evade_clip.txt"
+      },
+      {
+        "commits": 1,
         "lines": 1,
         "path": "parity/scripts/new_game.txt"
       },
@@ -3474,13 +4429,13 @@
         "path": "parity/scripts/work_at_sea.txt"
       },
       {
-        "commits": 7,
-        "lines": 70,
+        "commits": 10,
+        "lines": 90,
         "path": "playtest/README.md"
       },
       {
-        "commits": 1,
-        "lines": 46,
+        "commits": 2,
+        "lines": 92,
         "path": "playtest/_plumbing-fixture.playtest.json"
       },
       {
@@ -3489,8 +4444,8 @@
         "path": "playtest/portlight-godot.playtest.json"
       },
       {
-        "commits": 5,
-        "lines": 850,
+        "commits": 7,
+        "lines": 869,
         "path": "playtest/probe-bridge.mjs"
       },
       {
@@ -3499,13 +4454,13 @@
         "path": "rust-toolchain.toml"
       },
       {
-        "commits": 1,
-        "lines": 14,
+        "commits": 2,
+        "lines": 23,
         "path": "scripts/verify.ps1"
       },
       {
-        "commits": 1,
-        "lines": 11,
+        "commits": 2,
+        "lines": 18,
         "path": "scripts/verify.sh"
       },
       {
@@ -3539,33 +4494,33 @@
         "path": "site/src/content.config.ts"
       },
       {
-        "commits": 2,
-        "lines": 36,
+        "commits": 6,
+        "lines": 46,
         "path": "site/src/content/docs/handbook/art.md"
       },
       {
-        "commits": 1,
-        "lines": 40,
+        "commits": 3,
+        "lines": 45,
         "path": "site/src/content/docs/handbook/getting-started.md"
       },
       {
-        "commits": 2,
-        "lines": 32,
+        "commits": 6,
+        "lines": 64,
         "path": "site/src/content/docs/handbook/index.md"
       },
       {
-        "commits": 1,
-        "lines": 40,
+        "commits": 3,
+        "lines": 44,
         "path": "site/src/content/docs/handbook/play.md"
       },
       {
-        "commits": 1,
-        "lines": 40,
+        "commits": 7,
+        "lines": 65,
         "path": "site/src/content/docs/handbook/reference.md"
       },
       {
-        "commits": 1,
-        "lines": 42,
+        "commits": 4,
+        "lines": 50,
         "path": "site/src/content/docs/handbook/simulation.md"
       },
       {
@@ -3574,8 +4529,8 @@
         "path": "site/src/pages/index.astro"
       },
       {
-        "commits": 2,
-        "lines": 80,
+        "commits": 6,
+        "lines": 100,
         "path": "site/src/site-config.ts"
       },
       {
@@ -3594,18 +4549,18 @@
         "path": "site/tsconfig.json"
       },
       {
-        "commits": 7,
-        "lines": 1478,
+        "commits": 8,
+        "lines": 1527,
         "path": "tools/build_manifest_pb002.py"
       },
       {
-        "commits": 7,
-        "lines": 798,
+        "commits": 11,
+        "lines": 1068,
         "path": "tools/extract_content.py"
       },
       {
-        "commits": 3,
-        "lines": 803,
+        "commits": 8,
+        "lines": 1092,
         "path": "tools/parity/check.py"
       },
       {
@@ -3617,6 +4572,11 @@
         "commits": 14,
         "lines": 3705,
         "path": "tools/parity/oracle.py"
+      },
+      {
+        "commits": 2,
+        "lines": 266,
+        "path": "tools/parity/pin_tuned.py"
       },
       {
         "commits": 1,
@@ -3639,8 +4599,8 @@
         "path": "tools/parity/session_runner.py"
       },
       {
-        "commits": 2,
-        "lines": 272,
+        "commits": 7,
+        "lines": 737,
         "path": "tools/parity/test_check.py"
       },
       {
@@ -3649,8 +4609,8 @@
         "path": "tools/parity/victory_cases.py"
       },
       {
-        "commits": 4,
-        "lines": 1786,
+        "commits": 6,
+        "lines": 1863,
         "path": "tools/test_build_manifest_gates.py"
       }
     ]
@@ -3659,51 +4619,297 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-10-12T14:46:43.978Z",
+  "generatedAt": "2026-10-19T12:34:58.306Z",
   "generatedFrom": {
-    "commit": "baff06459cf143d60f138c98c04204c31cf8b662"
+    "commit": "11338c3b87af8d274ec2681955ec0ba668b87126"
+  },
+  "packageImports": {
+    "filesWithLeftOutImports": 0,
+    "importSitesNotPackageNames": 0,
+    "importSitesPackageInternal": 0,
+    "importSitesResolvedInRepository": 0,
+    "namesLeftOut": {},
+    "namesLeftOutOmitted": 0
   },
   "pairs": [
     {
+      "a": "CHANGELOG.md",
+      "b": "Cargo.lock",
+      "either": 8,
+      "shared": 4,
+      "strength": 0.5
+    },
+    {
+      "a": "CHANGELOG.md",
+      "b": "SCORECARD.md",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": "CHANGELOG.md",
+      "b": "SECURITY.md",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": "CHANGELOG.md",
+      "b": "SHIP_GATE.md",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": "CHANGELOG.md",
+      "b": "atlas/README.md",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
+    },
+    {
+      "a": "CHANGELOG.md",
+      "b": "atlas/page.json",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
+    },
+    {
+      "a": "CHANGELOG.md",
+      "b": "atlas/statistics.json",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
+    },
+    {
+      "a": "CHANGELOG.md",
+      "b": "atlas/structure.json",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
+    },
+    {
+      "a": "CHANGELOG.md",
+      "b": "site/src/content/docs/handbook/art.md",
+      "either": 7,
+      "shared": 6,
+      "strength": 0.857143
+    },
+    {
+      "a": "CHANGELOG.md",
+      "b": "site/src/content/docs/handbook/index.md",
+      "either": 7,
+      "shared": 6,
+      "strength": 0.857143
+    },
+    {
+      "a": "CHANGELOG.md",
+      "b": "site/src/content/docs/handbook/reference.md",
+      "either": 8,
+      "shared": 5,
+      "strength": 0.625
+    },
+    {
+      "a": "CHANGELOG.md",
+      "b": "site/src/site-config.ts",
+      "either": 7,
+      "shared": 6,
+      "strength": 0.857143
+    },
+    {
+      "a": "Cargo.lock",
+      "b": "SCORECARD.md",
+      "either": 6,
+      "shared": 4,
+      "strength": 0.666667
+    },
+    {
+      "a": "Cargo.lock",
+      "b": "SECURITY.md",
+      "either": 6,
+      "shared": 4,
+      "strength": 0.666667
+    },
+    {
+      "a": "Cargo.lock",
+      "b": "SHIP_GATE.md",
+      "either": 6,
+      "shared": 4,
+      "strength": 0.666667
+    },
+    {
+      "a": "Cargo.lock",
+      "b": "site/src/content/docs/handbook/art.md",
+      "either": 7,
+      "shared": 4,
+      "strength": 0.571429
+    },
+    {
+      "a": "Cargo.lock",
+      "b": "site/src/content/docs/handbook/index.md",
+      "either": 7,
+      "shared": 4,
+      "strength": 0.571429
+    },
+    {
+      "a": "Cargo.lock",
+      "b": "site/src/content/docs/handbook/reference.md",
+      "either": 7,
+      "shared": 4,
+      "strength": 0.571429
+    },
+    {
+      "a": "Cargo.lock",
+      "b": "site/src/site-config.ts",
+      "either": 7,
+      "shared": 4,
+      "strength": 0.571429
+    },
+    {
+      "a": "SCORECARD.md",
+      "b": "SECURITY.md",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "SCORECARD.md",
+      "b": "SHIP_GATE.md",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "SCORECARD.md",
+      "b": "site/src/content/docs/handbook/art.md",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "SCORECARD.md",
+      "b": "site/src/content/docs/handbook/index.md",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "SCORECARD.md",
+      "b": "site/src/content/docs/handbook/reference.md",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "SCORECARD.md",
+      "b": "site/src/site-config.ts",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "SECURITY.md",
+      "b": "SHIP_GATE.md",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "SECURITY.md",
+      "b": "site/src/content/docs/handbook/art.md",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "SECURITY.md",
+      "b": "site/src/content/docs/handbook/index.md",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "SECURITY.md",
+      "b": "site/src/content/docs/handbook/reference.md",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "SECURITY.md",
+      "b": "site/src/site-config.ts",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "SHIP_GATE.md",
+      "b": "site/src/content/docs/handbook/art.md",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "SHIP_GATE.md",
+      "b": "site/src/content/docs/handbook/index.md",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "SHIP_GATE.md",
+      "b": "site/src/content/docs/handbook/reference.md",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "SHIP_GATE.md",
+      "b": "site/src/site-config.ts",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 5,
-      "shared": 5,
+      "either": 11,
+      "shared": 11,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 5,
-      "shared": 5,
+      "either": 11,
+      "shared": 11,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 5,
-      "shared": 5,
+      "either": 11,
+      "shared": 11,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 5,
-      "shared": 5,
+      "either": 11,
+      "shared": 11,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 5,
-      "shared": 5,
+      "either": 11,
+      "shared": 11,
       "strength": 1
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 5,
-      "shared": 5,
+      "either": 11,
+      "shared": 11,
       "strength": 1
     },
     {
@@ -3771,154 +4977,98 @@
     },
     {
       "a": "crates/portlight-godot/src/contracts_screen.rs",
-      "b": "docs/screenshots/contracts-active.png",
-      "either": 9,
-      "shared": 5,
-      "strength": 0.555556
-    },
-    {
-      "a": "crates/portlight-godot/src/contracts_screen.rs",
       "b": "docs/screenshots/contracts-board.png",
-      "either": 8,
+      "either": 10,
       "shared": 5,
-      "strength": 0.625
-    },
-    {
-      "a": "crates/portlight-godot/src/encounter_screen.rs",
-      "b": "docs/screenshots/encounter-outcome.png",
-      "either": 13,
-      "shared": 7,
-      "strength": 0.538462
+      "strength": 0.5
     },
     {
       "a": "crates/portlight-godot/src/game.rs",
       "b": "crates/portlight-godot/src/logic.rs",
-      "either": 39,
-      "shared": 22,
-      "strength": 0.564103
+      "either": 58,
+      "shared": 34,
+      "strength": 0.586207
     },
     {
-      "a": "crates/portlight-godot/src/hunt_screen.rs",
-      "b": "docs/screenshots/hunt-board.png",
-      "either": 10,
-      "shared": 5,
-      "strength": 0.5
-    },
-    {
-      "a": "crates/portlight-godot/src/hunt_screen.rs",
-      "b": "docs/screenshots/hunt-forage.png",
-      "either": 10,
-      "shared": 5,
-      "strength": 0.5
-    },
-    {
-      "a": "crates/portlight-godot/src/playtest.rs",
-      "b": "playtest/README.md",
-      "either": 12,
+      "a": "crates/portlight-sim/data/content.json",
+      "b": "tools/extract_content.py",
+      "either": 7,
       "shared": 7,
-      "strength": 0.583333
+      "strength": 1
+    },
+    {
+      "a": "crates/portlight-sim/src/content.rs",
+      "b": "crates/portlight-sim/tests/parity.rs",
+      "either": 11,
+      "shared": 6,
+      "strength": 0.545455
     },
     {
       "a": "crates/portlight-sim/src/lib.rs",
       "b": "crates/portlight-sim/src/model.rs",
-      "either": 7,
-      "shared": 5,
-      "strength": 0.714286
-    },
-    {
-      "a": "crates/portlight-sim/src/lib.rs",
-      "b": "crates/portlight-sim/src/save.rs",
       "either": 9,
       "shared": 6,
       "strength": 0.666667
     },
     {
       "a": "crates/portlight-sim/src/lib.rs",
-      "b": "crates/portlight-sim/src/script.rs",
-      "either": 8,
-      "shared": 6,
-      "strength": 0.75
-    },
-    {
-      "a": "crates/portlight-sim/src/lib.rs",
-      "b": "crates/portlight-sim/src/session.rs",
+      "b": "crates/portlight-sim/src/save.rs",
       "either": 13,
       "shared": 7,
       "strength": 0.538462
     },
     {
       "a": "crates/portlight-sim/src/lib.rs",
-      "b": "crates/portlight-sim/src/snapshot.rs",
-      "either": 7,
-      "shared": 5,
-      "strength": 0.714286
-    },
-    {
-      "a": "crates/portlight-sim/src/lib.rs",
-      "b": "tools/parity/oracle.py",
-      "either": 10,
-      "shared": 6,
-      "strength": 0.6
-    },
-    {
-      "a": "crates/portlight-sim/src/model.rs",
-      "b": "crates/portlight-sim/src/save.rs",
-      "either": 8,
-      "shared": 5,
-      "strength": 0.625
-    },
-    {
-      "a": "crates/portlight-sim/src/model.rs",
       "b": "crates/portlight-sim/src/script.rs",
-      "either": 7,
-      "shared": 5,
-      "strength": 0.714286
-    },
-    {
-      "a": "crates/portlight-sim/src/model.rs",
-      "b": "crates/portlight-sim/src/snapshot.rs",
-      "either": 6,
-      "shared": 4,
-      "strength": 0.666667
-    },
-    {
-      "a": "crates/portlight-sim/src/model.rs",
-      "b": "crates/portlight-sim/tests/parity.rs",
-      "either": 7,
-      "shared": 4,
-      "strength": 0.571429
-    },
-    {
-      "a": "crates/portlight-sim/src/model.rs",
-      "b": "tools/parity/oracle.py",
-      "either": 9,
-      "shared": 5,
-      "strength": 0.555556
-    },
-    {
-      "a": "crates/portlight-sim/src/save.rs",
-      "b": "crates/portlight-sim/src/script.rs",
-      "either": 10,
-      "shared": 5,
-      "strength": 0.5
-    },
-    {
-      "a": "crates/portlight-sim/src/save.rs",
-      "b": "crates/portlight-sim/src/session.rs",
       "either": 14,
       "shared": 7,
       "strength": 0.5
     },
     {
-      "a": "crates/portlight-sim/src/save.rs",
-      "b": "crates/portlight-sim/tests/parity.rs",
+      "a": "crates/portlight-sim/src/lib.rs",
+      "b": "crates/portlight-sim/src/snapshot.rs",
       "either": 9,
-      "shared": 5,
-      "strength": 0.555556
+      "shared": 6,
+      "strength": 0.666667
     },
     {
-      "a": "crates/portlight-sim/src/script.rs",
-      "b": "crates/portlight-sim/src/session.rs",
+      "a": "crates/portlight-sim/src/lib.rs",
+      "b": "tools/parity/oracle.py",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
+    },
+    {
+      "a": "crates/portlight-sim/src/model.rs",
+      "b": "crates/portlight-sim/src/save.rs",
+      "either": 11,
+      "shared": 6,
+      "strength": 0.545455
+    },
+    {
+      "a": "crates/portlight-sim/src/model.rs",
+      "b": "crates/portlight-sim/src/script.rs",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
+    },
+    {
+      "a": "crates/portlight-sim/src/model.rs",
+      "b": "crates/portlight-sim/src/snapshot.rs",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": "crates/portlight-sim/src/model.rs",
+      "b": "tools/parity/oracle.py",
+      "either": 10,
+      "shared": 5,
+      "strength": 0.5
+    },
+    {
+      "a": "crates/portlight-sim/src/save.rs",
+      "b": "crates/portlight-sim/tests/save_parity.rs",
       "either": 13,
       "shared": 7,
       "strength": 0.538462
@@ -3926,44 +5076,163 @@
     {
       "a": "crates/portlight-sim/src/script.rs",
       "b": "crates/portlight-sim/src/snapshot.rs",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
+    },
+    {
+      "a": "crates/portlight-sim/src/script.rs",
+      "b": "tools/parity/oracle.py",
+      "either": 14,
+      "shared": 7,
+      "strength": 0.5
+    },
+    {
+      "a": "crates/portlight-sim/src/snapshot.rs",
+      "b": "tools/parity/oracle.py",
+      "either": 10,
+      "shared": 5,
+      "strength": 0.5
+    },
+    {
+      "a": "crates/portlight-sim/tests/balance_bot.rs",
+      "b": "docs/playtest/balance/pt-s0r-summary.md",
+      "either": 6,
+      "shared": 4,
+      "strength": 0.666667
+    },
+    {
+      "a": "crates/portlight-sim/tests/balance_bot.rs",
+      "b": "docs/playtest/balance/pt-s0r.csv",
+      "either": 6,
+      "shared": 4,
+      "strength": 0.666667
+    },
+    {
+      "a": "docs/canon/README.md",
+      "b": "docs/canon/data-fixes.md",
+      "either": 14,
+      "shared": 7,
+      "strength": 0.5
+    },
+    {
+      "a": "docs/canon/README.md",
+      "b": "docs/canon/ports/al_manar.md",
       "either": 7,
       "shared": 5,
       "strength": 0.714286
     },
     {
-      "a": "crates/portlight-sim/src/script.rs",
-      "b": "tools/parity/oracle.py",
-      "either": 9,
-      "shared": 7,
-      "strength": 0.777778
+      "a": "docs/canon/README.md",
+      "b": "docs/canon/ports/ironhaven.md",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
     },
     {
-      "a": "crates/portlight-sim/src/session.rs",
-      "b": "tools/parity/oracle.py",
-      "either": 13,
-      "shared": 9,
-      "strength": 0.692308
+      "a": "docs/canon/README.md",
+      "b": "docs/canon/ports/sun_harbor.md",
+      "either": 8,
+      "shared": 5,
+      "strength": 0.625
     },
     {
-      "a": "crates/portlight-sim/src/snapshot.rs",
-      "b": "crates/portlight-sim/tests/parity.rs",
+      "a": "docs/canon/README.md",
+      "b": "docs/canon/ports/thornport.md",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": "docs/canon/README.md",
+      "b": "docs/canon/ports/typhoon_anchorage.md",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": "docs/canon/captains/README.md",
+      "b": "docs/canon/ports/sun_harbor.md",
       "either": 7,
       "shared": 4,
       "strength": 0.571429
     },
     {
-      "a": "crates/portlight-sim/src/snapshot.rs",
-      "b": "tools/parity/oracle.py",
-      "either": 9,
+      "a": "docs/canon/ports/al_manar.md",
+      "b": "docs/canon/ports/ironhaven.md",
+      "either": 5,
       "shared": 5,
-      "strength": 0.555556
+      "strength": 1
     },
     {
-      "a": "crates/portlight-sim/tests/parity.rs",
-      "b": "tools/parity/oracle.py",
-      "either": 10,
+      "a": "docs/canon/ports/al_manar.md",
+      "b": "docs/canon/ports/sun_harbor.md",
+      "either": 6,
       "shared": 5,
-      "strength": 0.5
+      "strength": 0.833333
+    },
+    {
+      "a": "docs/canon/ports/al_manar.md",
+      "b": "docs/canon/ports/thornport.md",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "docs/canon/ports/al_manar.md",
+      "b": "docs/canon/ports/typhoon_anchorage.md",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "docs/canon/ports/ironhaven.md",
+      "b": "docs/canon/ports/sun_harbor.md",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "docs/canon/ports/ironhaven.md",
+      "b": "docs/canon/ports/thornport.md",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "docs/canon/ports/ironhaven.md",
+      "b": "docs/canon/ports/typhoon_anchorage.md",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "docs/canon/ports/sun_harbor.md",
+      "b": "docs/canon/ports/thornport.md",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "docs/canon/ports/sun_harbor.md",
+      "b": "docs/canon/ports/typhoon_anchorage.md",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "docs/canon/ports/thornport.md",
+      "b": "docs/canon/ports/typhoon_anchorage.md",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "docs/playtest/balance/pt-s0r-summary.md",
+      "b": "docs/playtest/balance/pt-s0r.csv",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
     },
     {
       "a": "docs/screenshots/chart-1280.png",
@@ -3980,6 +5249,27 @@
       "strength": 0.833333
     },
     {
+      "a": "docs/screenshots/harbour-broker.png",
+      "b": "docs/screenshots/harbour-finance.png",
+      "either": 6,
+      "shared": 6,
+      "strength": 1
+    },
+    {
+      "a": "docs/screenshots/harbour-broker.png",
+      "b": "docs/screenshots/harbour-warehouse.png",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
+      "a": "docs/screenshots/harbour-finance.png",
+      "b": "docs/screenshots/harbour-warehouse.png",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
+    },
+    {
       "a": "docs/screenshots/harbour-seam-z072.png",
       "b": "docs/screenshots/harbour-seam-z100.png",
       "either": 5,
@@ -3987,11 +5277,25 @@
       "strength": 1
     },
     {
+      "a": "docs/screenshots/hunt-active.png",
+      "b": "docs/screenshots/hunt-board.png",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": "docs/screenshots/hunt-active.png",
+      "b": "docs/screenshots/hunt-forage.png",
+      "either": 7,
+      "shared": 4,
+      "strength": 0.571429
+    },
+    {
       "a": "docs/screenshots/hunt-board.png",
       "b": "docs/screenshots/hunt-forage.png",
-      "either": 5,
+      "either": 6,
       "shared": 5,
-      "strength": 1
+      "strength": 0.833333
     },
     {
       "a": "godot/assets/landing/MANIFEST.json",
@@ -4003,9 +5307,65 @@
     {
       "a": "playtest/README.md",
       "b": "playtest/probe-bridge.mjs",
+      "either": 10,
+      "shared": 6,
+      "strength": 0.6
+    },
+    {
+      "a": "site/src/content/docs/handbook/art.md",
+      "b": "site/src/content/docs/handbook/index.md",
+      "either": 6,
+      "shared": 6,
+      "strength": 1
+    },
+    {
+      "a": "site/src/content/docs/handbook/art.md",
+      "b": "site/src/content/docs/handbook/reference.md",
       "either": 7,
       "shared": 5,
       "strength": 0.714286
+    },
+    {
+      "a": "site/src/content/docs/handbook/art.md",
+      "b": "site/src/site-config.ts",
+      "either": 6,
+      "shared": 6,
+      "strength": 1
+    },
+    {
+      "a": "site/src/content/docs/handbook/index.md",
+      "b": "site/src/content/docs/handbook/reference.md",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": "site/src/content/docs/handbook/index.md",
+      "b": "site/src/site-config.ts",
+      "either": 6,
+      "shared": 6,
+      "strength": 1
+    },
+    {
+      "a": "site/src/content/docs/handbook/reference.md",
+      "b": "site/src/site-config.ts",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": "tools/build_manifest_pb002.py",
+      "b": "tools/test_build_manifest_gates.py",
+      "either": 8,
+      "shared": 4,
+      "strength": 0.5
+    },
+    {
+      "a": "tools/parity/check.py",
+      "b": "tools/parity/test_check.py",
+      "either": 6,
+      "shared": 5,
+      "strength": 0.833333
     }
   ],
   "parameters": {
@@ -4018,16 +5378,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-10-12T04:41:00-07:00",
-    "inScopeFiles": 688,
+    "headDate": "2026-10-18T16:53:32-07:00",
+    "inScopeFiles": 864,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 73,
+    "qualifyingCommits": 120,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-15T11:41:00.000Z",
+    "since": "2026-04-21T23:53:32.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",
@@ -4043,7 +5403,7 @@
     ],
     "sourceFileReach": 20,
     "sourceFileRise": 25,
-    "sourceFilesReachingStrongFloor": 8,
+    "sourceFilesReachingStrongFloor": 14,
     "strength": 0.5,
     "windowDays": 180
   },

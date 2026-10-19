@@ -1,6 +1,6 @@
 # stillpoint: how it works
 
-Mapped at 2026-10-05 from commit ddb08b8 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit c629ce3 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-05 from commit ddb08b8 by Atlas 1.26.0.
 
 ## What changed since 2026-10-01 (95417cd)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-10-01; 3 files changed content.
 
 ## What comes in
 
@@ -64,7 +64,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .claude/, .github/, the repository root and site/. Nothing in this repository writes to them.
+People write .github/, the repository root and site/. Nothing in this repository writes to them. The data in .claude/ is written by no code this map names.
 
 ## Where to start
 

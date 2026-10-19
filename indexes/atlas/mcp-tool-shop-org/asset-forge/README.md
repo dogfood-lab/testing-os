@@ -1,6 +1,6 @@
 # asset-forge: how it works
 
-Mapped at 2026-10-05 from commit ca8d9cf by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit ca8d9cf by Atlas 1.26.0.
 
 ## What this is
 

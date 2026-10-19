@@ -1,14 +1,14 @@
 # .github: how it works
 
-Mapped at 2026-10-05 from commit 37aad02 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 4cefdba by Atlas 1.26.0.
 
 ## What this is
 
 This is the organization's profile page and the community-health files its repositories inherit. 8 parts, in JavaScript (4 files), Astro (1 file), CSS (1 file), Python (1 file), TypeScript (1 file) and shell (1 file). Work enters through 4 doors; the busiest is Org Drift Guard, which reaches 3 parts. It deploys a site to GitHub Pages. Other repositories use the Delta dependency audit action.
 
-## What changed since 2026-10-01 (173f84e)
+## What changed since 2026-10-15 (23aae74)
 
-Nothing structural changed since 2026-10-01; 5 files changed content.
+Nothing structural changed since 2026-10-15; 1 file changed content.
 
 ## What comes in
 
@@ -62,7 +62,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, assets/, brand/, profile/, the repository root and site/. Nothing in this repository writes to them.
+People write .github/, brand/, profile/, the repository root and site/. Nothing in this repository writes to them. The data in assets/ is written by no code this map names.
 
 ## Where to start
 

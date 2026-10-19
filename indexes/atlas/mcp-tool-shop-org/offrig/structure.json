@@ -1,6 +1,110 @@
 {
   "boundaries": [
     {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "2294e887f3431bfb228420a68de631ae027a7e496f8095ae788ad7dee6ac2e5d",
+          "path": "tools/embed-serve/README.md"
+        },
+        {
+          "exports": [
+            "default_threads",
+            "handler_for",
+            "load_encoder",
+            "lower_process_priority",
+            "main",
+            "make_server",
+            "refuse_if_cuda",
+            "thread_env"
+          ],
+          "failurePaths": [
+            {
+              "in": "lower_process_priority",
+              "kind": "except",
+              "line": 85
+            },
+            {
+              "in": "refuse_if_cuda",
+              "kind": "raise",
+              "line": 99
+            },
+            {
+              "in": "__init__",
+              "kind": "raise",
+              "line": 110
+            },
+            {
+              "in": "load_encoder",
+              "kind": "raise",
+              "line": 135
+            },
+            {
+              "in": "load_encoder",
+              "kind": "raise",
+              "line": 154
+            },
+            {
+              "in": "_send",
+              "kind": "except",
+              "line": 205
+            },
+            {
+              "in": "_refuse",
+              "kind": "except",
+              "line": 235
+            },
+            {
+              "in": "do_POST",
+              "kind": "except",
+              "line": 242
+            },
+            {
+              "in": "do_POST",
+              "kind": "except",
+              "line": 259
+            },
+            {
+              "in": "make_server",
+              "kind": "raise",
+              "line": 283
+            }
+          ],
+          "hash": "a9ef145e9ee31de10c4bc4634f3c46075bde1b77aa165ccd83501d0638b34b14",
+          "path": "tools/embed-serve/embed_serve.py"
+        },
+        {
+          "hash": "551cd3c8977df6f592bbee230f70e6ba23d68cb844e2d71c424f0e6955edceae",
+          "path": "tools/embed-serve/requirements.txt"
+        },
+        {
+          "hash": "b4d4e14bdc702fce3ec36cf5b8f24540704f1184a0534785a744920fdac9942d",
+          "importsFiles": [
+            "tools/embed-serve/embed_serve.py"
+          ],
+          "path": "tools/embed-serve/test_embed_serve.py",
+          "testFramework": "unittest"
+        }
+      ],
+      "globs": [
+        "tools/embed-serve/**"
+      ],
+      "importConfidence": "full",
+      "name": "embed-serve",
+      "origin": "authored",
+      "role": "code",
+      "testRunners": [
+        "unittest"
+      ],
+      "testedBy": 1,
+      "unresolvedSites": 0
+    },
+    {
       "dynamicReads": 2,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
@@ -671,7 +775,7 @@
               "line": 1146
             }
           ],
-          "hash": "834d757e9d9df9f7e351330b931b227f7f458039b44821ce2d0e229cd058f249",
+          "hash": "562564a7bcbb07e5c28787cf4c6ff22209ba95c7629e5883172c026991267074",
           "importsFiles": [
             "crates/offrig-cli/src/budget_menu.rs",
             "crates/offrig-cli/src/verify_cmd.rs",
@@ -866,7 +970,7 @@
                 {
                   "inner": [
                     {
-                      "line": 92,
+                      "line": 98,
                       "name": "load",
                       "receiver": "Config",
                       "target": {
@@ -874,7 +978,7 @@
                       }
                     },
                     {
-                      "line": 78,
+                      "line": 84,
                       "name": "Config",
                       "receiver": "Error",
                       "target": {
@@ -884,7 +988,7 @@
                     },
                     {
                       "branch": "let Some(why) = embed_port_conflict(port, tunnel_port)",
-                      "line": 83,
+                      "line": 89,
                       "name": "Config",
                       "receiver": "Error",
                       "target": {
@@ -912,13 +1016,32 @@
                 {
                   "inner": [
                     {
-                      "line": 154,
+                      "line": 202,
                       "name": "Refused",
                       "receiver": "Error",
                       "target": {
                         "file": "crates/offrig-core/src/error.rs"
                       },
                       "via": "check_model"
+                    },
+                    {
+                      "branch": "let Some(l) = loaded.iter().find(|l| l.size_vram > 0)",
+                      "line": 188,
+                      "name": "Refused",
+                      "receiver": "Error",
+                      "target": {
+                        "file": "crates/offrig-core/src/error.rs"
+                      },
+                      "via": "check_cpu_only"
+                    },
+                    {
+                      "line": 215,
+                      "name": "Refused",
+                      "receiver": "Error",
+                      "target": {
+                        "file": "crates/offrig-core/src/error.rs"
+                      },
+                      "via": "check_dim"
                     }
                   ],
                   "line": 584,
@@ -1482,7 +1605,7 @@
           "path": "crates/offrig-cli/src/verify_cmd.rs"
         },
         {
-          "hash": "51770f81bf464fd32d3861a0ef09c514defe63b48d839ccd2cf6510c090f1e4c",
+          "hash": "425f2e485f9443e29ec17c70f16870afa51ed53efafde595d203c2bdd5f2a2f1",
           "importOrder": [
             "crates/offrig-core/src/config.rs",
             "crates/offrig-cli/tests/common/mod.rs",
@@ -2166,7 +2289,7 @@
               "line": 900
             }
           ],
-          "hash": "6d1081106016a82961b43d39385f51de9c352a20ad26925b0c8483364aacb249",
+          "hash": "70206b6108b9eaa3c344ce254619c625c3d398ff0619267b9fa2cbb1bdb15744",
           "importsFiles": [
             "crates/offrig-core/src/error.rs",
             "crates/offrig-core/src/fsutil.rs",
@@ -2382,30 +2505,35 @@
             {
               "in": "resolve_embed_url",
               "kind": "err",
-              "line": 78
+              "line": 84
             },
             {
               "in": "resolve_embed_url",
               "kind": "err",
-              "line": 83
+              "line": 89
+            },
+            {
+              "in": "check_cpu_only",
+              "kind": "err",
+              "line": 188
             },
             {
               "in": "check_model",
               "kind": "err",
-              "line": 154
+              "line": 202
             },
             {
               "in": "check_dim",
               "kind": "err",
-              "line": 167
+              "line": 215
             },
             {
               "in": "plan_mode",
               "kind": "err",
-              "line": 560
+              "line": 608
             }
           ],
-          "hash": "6e955cda56702bfa15958fc7e73ea1b49b1e29b2649cb2a2f4989080b99c5e8a",
+          "hash": "da8f43f8ef1f683da89d232416b33bf6100a6f50596491142fa6dd3a2d3c3a9c",
           "importsFiles": [
             "crates/offrig-core/src/config.rs",
             "crates/offrig-core/src/error.rs",
@@ -2418,7 +2546,7 @@
             {
               "calls": [
                 {
-                  "line": 78,
+                  "line": 84,
                   "name": "Config",
                   "receiver": "Error",
                   "target": {
@@ -2427,7 +2555,7 @@
                 },
                 {
                   "branch": "let Some(why) = embed_port_conflict(port, tunnel_port)",
-                  "line": 83,
+                  "line": 89,
                   "name": "Config",
                   "receiver": "Error",
                   "target": {
@@ -2443,7 +2571,7 @@
             {
               "calls": [
                 {
-                  "line": 92,
+                  "line": 98,
                   "name": "load",
                   "receiver": "Config",
                   "target": {
@@ -2451,7 +2579,7 @@
                   }
                 },
                 {
-                  "line": 78,
+                  "line": 84,
                   "name": "Config",
                   "receiver": "Error",
                   "target": {
@@ -2461,7 +2589,7 @@
                 },
                 {
                   "branch": "let Some(why) = embed_port_conflict(port, tunnel_port)",
-                  "line": 83,
+                  "line": 89,
                   "name": "Config",
                   "receiver": "Error",
                   "target": {
@@ -2478,7 +2606,7 @@
             {
               "calls": [
                 {
-                  "line": 92,
+                  "line": 98,
                   "name": "load",
                   "receiver": "Config",
                   "target": {
@@ -2487,7 +2615,7 @@
                   "via": "embed_url"
                 },
                 {
-                  "line": 78,
+                  "line": 84,
                   "name": "Config",
                   "receiver": "Error",
                   "target": {
@@ -2497,7 +2625,7 @@
                 },
                 {
                   "branch": "let Some(why) = embed_port_conflict(port, tunnel_port)",
-                  "line": 83,
+                  "line": 89,
                   "name": "Config",
                   "receiver": "Error",
                   "target": {
@@ -2506,7 +2634,7 @@
                   "via": "resolve_embed_url"
                 },
                 {
-                  "line": 100,
+                  "line": 106,
                   "name": "new",
                   "receiver": "Ollama",
                   "target": {
@@ -2522,12 +2650,22 @@
             {
               "calls": [
                 {
-                  "line": 142,
+                  "line": 159,
                   "name": "Refused",
                   "receiver": "Error",
                   "target": {
                     "file": "crates/offrig-core/src/error.rs"
                   }
+                },
+                {
+                  "branch": "let Some(l) = loaded.iter().find(|l| l.size_vram > 0)",
+                  "line": 188,
+                  "name": "Refused",
+                  "receiver": "Error",
+                  "target": {
+                    "file": "crates/offrig-core/src/error.rs"
+                  },
+                  "via": "check_cpu_only"
                 }
               ],
               "exported": true,
@@ -2538,7 +2676,24 @@
             {
               "calls": [
                 {
-                  "line": 154,
+                  "branch": "let Some(l) = loaded.iter().find(|l| l.size_vram > 0)",
+                  "line": 188,
+                  "name": "Refused",
+                  "receiver": "Error",
+                  "target": {
+                    "file": "crates/offrig-core/src/error.rs"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "check_cpu_only"
+            },
+            {
+              "calls": [
+                {
+                  "line": 202,
                   "name": "Refused",
                   "receiver": "Error",
                   "target": {
@@ -2554,7 +2709,7 @@
             {
               "calls": [
                 {
-                  "line": 167,
+                  "line": 215,
                   "name": "Refused",
                   "receiver": "Error",
                   "target": {
@@ -2570,13 +2725,32 @@
             {
               "calls": [
                 {
-                  "line": 154,
+                  "line": 202,
                   "name": "Refused",
                   "receiver": "Error",
                   "target": {
                     "file": "crates/offrig-core/src/error.rs"
                   },
                   "via": "check_model"
+                },
+                {
+                  "branch": "let Some(l) = loaded.iter().find(|l| l.size_vram > 0)",
+                  "line": 188,
+                  "name": "Refused",
+                  "receiver": "Error",
+                  "target": {
+                    "file": "crates/offrig-core/src/error.rs"
+                  },
+                  "via": "check_cpu_only"
+                },
+                {
+                  "line": 215,
+                  "name": "Refused",
+                  "receiver": "Error",
+                  "target": {
+                    "file": "crates/offrig-core/src/error.rs"
+                  },
+                  "via": "check_dim"
                 }
               ],
               "exported": true,
@@ -2587,13 +2761,23 @@
             {
               "calls": [
                 {
-                  "line": 142,
+                  "line": 159,
                   "name": "Refused",
                   "receiver": "Error",
                   "target": {
                     "file": "crates/offrig-core/src/error.rs"
                   },
                   "via": "embed_call"
+                },
+                {
+                  "branch": "let Some(l) = loaded.iter().find(|l| l.size_vram > 0)",
+                  "line": 188,
+                  "name": "Refused",
+                  "receiver": "Error",
+                  "target": {
+                    "file": "crates/offrig-core/src/error.rs"
+                  },
+                  "via": "check_cpu_only"
                 }
               ],
               "exported": true,
@@ -2604,13 +2788,32 @@
             {
               "calls": [
                 {
-                  "line": 142,
+                  "line": 159,
                   "name": "Refused",
                   "receiver": "Error",
                   "target": {
                     "file": "crates/offrig-core/src/error.rs"
                   },
                   "via": "embed_call"
+                },
+                {
+                  "branch": "let Some(l) = loaded.iter().find(|l| l.size_vram > 0)",
+                  "line": 188,
+                  "name": "Refused",
+                  "receiver": "Error",
+                  "target": {
+                    "file": "crates/offrig-core/src/error.rs"
+                  },
+                  "via": "check_cpu_only"
+                },
+                {
+                  "line": 215,
+                  "name": "Refused",
+                  "receiver": "Error",
+                  "target": {
+                    "file": "crates/offrig-core/src/error.rs"
+                  },
+                  "via": "check_dim"
                 }
               ],
               "exported": true,
@@ -2621,7 +2824,7 @@
             {
               "calls": [
                 {
-                  "line": 560,
+                  "line": 608,
                   "name": "Refused",
                   "receiver": "Error",
                   "target": {
@@ -2637,7 +2840,7 @@
             {
               "calls": [
                 {
-                  "line": 167,
+                  "line": 215,
                   "name": "Refused",
                   "receiver": "Error",
                   "target": {
@@ -2654,13 +2857,32 @@
             {
               "calls": [
                 {
-                  "line": 560,
+                  "line": 608,
                   "name": "Refused",
                   "receiver": "Error",
                   "target": {
                     "file": "crates/offrig-core/src/error.rs"
                   },
                   "via": "plan_mode"
+                },
+                {
+                  "branch": "let Some(l) = loaded.iter().find(|l| l.size_vram > 0)",
+                  "line": 188,
+                  "name": "Refused",
+                  "receiver": "Error",
+                  "target": {
+                    "file": "crates/offrig-core/src/error.rs"
+                  },
+                  "via": "check_cpu_only"
+                },
+                {
+                  "line": 215,
+                  "name": "Refused",
+                  "receiver": "Error",
+                  "target": {
+                    "file": "crates/offrig-core/src/error.rs"
+                  },
+                  "via": "check_dim"
                 }
               ],
               "exported": true,
@@ -2671,7 +2893,7 @@
             {
               "calls": [
                 {
-                  "line": 92,
+                  "line": 98,
                   "name": "load",
                   "receiver": "Config",
                   "target": {
@@ -2680,7 +2902,7 @@
                   "via": "embed_url"
                 },
                 {
-                  "line": 78,
+                  "line": 84,
                   "name": "Config",
                   "receiver": "Error",
                   "target": {
@@ -2690,7 +2912,7 @@
                 },
                 {
                   "branch": "let Some(why) = embed_port_conflict(port, tunnel_port)",
-                  "line": 83,
+                  "line": 89,
                   "name": "Config",
                   "receiver": "Error",
                   "target": {
@@ -2699,7 +2921,7 @@
                   "via": "resolve_embed_url"
                 },
                 {
-                  "line": 100,
+                  "line": 106,
                   "name": "new",
                   "receiver": "Ollama",
                   "target": {
@@ -2708,13 +2930,32 @@
                   "via": "embed_client"
                 },
                 {
-                  "line": 142,
+                  "line": 159,
                   "name": "Refused",
                   "receiver": "Error",
                   "target": {
                     "file": "crates/offrig-core/src/error.rs"
                   },
                   "via": "embed_call"
+                },
+                {
+                  "branch": "let Some(l) = loaded.iter().find(|l| l.size_vram > 0)",
+                  "line": 188,
+                  "name": "Refused",
+                  "receiver": "Error",
+                  "target": {
+                    "file": "crates/offrig-core/src/error.rs"
+                  },
+                  "via": "check_cpu_only"
+                },
+                {
+                  "line": 215,
+                  "name": "Refused",
+                  "receiver": "Error",
+                  "target": {
+                    "file": "crates/offrig-core/src/error.rs"
+                  },
+                  "via": "check_dim"
                 }
               ],
               "exported": true,
@@ -2725,13 +2966,32 @@
             {
               "calls": [
                 {
-                  "line": 154,
+                  "line": 202,
                   "name": "Refused",
                   "receiver": "Error",
                   "target": {
                     "file": "crates/offrig-core/src/error.rs"
                   },
                   "via": "check_model"
+                },
+                {
+                  "branch": "let Some(l) = loaded.iter().find(|l| l.size_vram > 0)",
+                  "line": 188,
+                  "name": "Refused",
+                  "receiver": "Error",
+                  "target": {
+                    "file": "crates/offrig-core/src/error.rs"
+                  },
+                  "via": "check_cpu_only"
+                },
+                {
+                  "line": 215,
+                  "name": "Refused",
+                  "receiver": "Error",
+                  "target": {
+                    "file": "crates/offrig-core/src/error.rs"
+                  },
+                  "via": "check_dim"
                 }
               ],
               "exported": true,
@@ -3021,7 +3281,7 @@
               "line": 666
             }
           ],
-          "hash": "18b608d1bf6a36754c2ef6251fa3d3691bc2bacc4265e8ebe05c0a4da095dbfd",
+          "hash": "d5b1b343d20a1c8d0dc8e1559e43c8da0cc4724c7da63875a9c466e4a27c45ef",
           "importsFiles": [
             "crates/offrig-core/src/error.rs"
           ],
@@ -4822,7 +5082,7 @@
             "verbose",
             "warn"
           ],
-          "hash": "8b0abdde9b1a648802f0af07e9be7db4f1268a028deeec1da48a2d469da67033",
+          "hash": "693e13e1ddb396f054fe5c7f538ea11524dd3cdad8dcd49f00437300cbd93f3c",
           "path": "crates/offrig-core/src/trace.rs",
           "testsInside": true
         },
@@ -5250,7 +5510,7 @@
           "path": "crates/offrig-core/tests/fixtures/calibrate-gold.jsonl"
         },
         {
-          "hash": "f80a895e89e3e0e67f195171d697a7df19b4ecbac10b9e3fe32fd0d3dacb785a",
+          "hash": "b85e591ed9bde2214ae9a0d5cb80c13982b46cd1be17db00eddd6ef5b631cd6d",
           "importOrder": [
             "crates/offrig-core/tests/support/mod.rs",
             "crates/offrig-core/src/index.rs",
@@ -5288,7 +5548,7 @@
           "testsInside": true
         },
         {
-          "hash": "34cd651d101d8fa790b9d3a4557689a9f4431707ffcd39f7002f75f84adfc74a",
+          "hash": "b6802f19ad7dec44d62eca1fcc9098a311b450fd7ab5caa3065235470f129238",
           "importOrder": [
             "crates/offrig-core/tests/support/mod.rs",
             "crates/offrig-core/src/ollama.rs"
@@ -7099,7 +7359,7 @@
           "testsInside": true
         },
         {
-          "hash": "b2e8246b3291f81a69d7aff663f3d0a737eda1aca465b8c03b2289c8ef3a59b5",
+          "hash": "ea87f05143ebc71bd6af6c3bbce53732b996dae4deb433a571b527d28a156d2c",
           "importOrder": [
             "crates/offrig-mcp/tests/common/mod.rs",
             "crates/offrig-core/src/index.rs",
@@ -7341,7 +7601,7 @@
           "path": ".gitattributes"
         },
         {
-          "hash": "9b709210c3886f2c82ebae7d11b9141beb026d2ce2921403755e5995042d076e",
+          "hash": "b4a5355b7df2b01c434a1766a1cf855b0823084095df217110b42be194993f5f",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -7353,19 +7613,19 @@
           "path": ".github/workflows/release.yml"
         },
         {
-          "hash": "cc7d51b8eb60611fce0b42118db0379f630e0b570f050dff900ad7678088a358",
+          "hash": "209f5fde88632ee289d4556cf69ee592e0dc56231c54ab7de036abed8ea7b9ca",
           "path": ".gitignore"
         },
         {
-          "hash": "917fcfae55448e620d9e0e6f8f5e2f90ace0cf1ee38e1d832c2e5d440391a106",
+          "hash": "72b70812a8905a26d7d5d9fb3b21dff367cc6fd56802353e782dfa68c3645bc2",
           "path": "CHANGELOG.md"
         },
         {
-          "hash": "52adb2c9593e31b3f027c86ed19f65e7915f06a811c6255a38b2dfca598423d1",
+          "hash": "7460a5f1595b82cc70d13b1d7ac0c53e37491805f65485213f0d6de36ef11d22",
           "path": "Cargo.lock"
         },
         {
-          "hash": "9218065aab50daaf993ba6acd1b9dbc26b7068d57bc923ac8f10e2ef62b4e7dd",
+          "hash": "e85e757daf7e63b45e7d701de56cf1e85aa8b753c688d943a0c01b6527971bea",
           "path": "Cargo.toml"
         },
         {
@@ -7393,7 +7653,7 @@
           "path": "README.ja.md"
         },
         {
-          "hash": "93cca70a928a930550049ce03546641250e6a64bdd848022ac87cadc89a83cb4",
+          "hash": "8756aaf64362ebaf1420c07df829c123d73ae9015bbd7b8221786e1bcded9df6",
           "path": "README.md"
         },
         {
@@ -7429,7 +7689,7 @@
           "path": "docs/sidecar-design.md"
         },
         {
-          "hash": "17be66fd7c85126f8402ef207b5f65612c119545925dec4bdfd04fe0927aeacc",
+          "hash": "fc8097360d6b955bded1d01239743d52ef33e82cfdb60f306bee00598a7361cf",
           "path": "docs/verifier-design.md"
         },
         {
@@ -7541,6 +7801,30 @@
             "test"
           ],
           "step": "Release binaries contain no test switches"
+        },
+        {
+          "dir": "tools/embed-serve",
+          "job": "embed-serve",
+          "programs": [
+            "python"
+          ],
+          "step": "Coverage tool"
+        },
+        {
+          "dir": "tools/embed-serve",
+          "job": "embed-serve",
+          "programs": [
+            "python"
+          ],
+          "step": "Test with coverage"
+        },
+        {
+          "dir": "tools/embed-serve",
+          "job": "embed-serve",
+          "programs": [
+            "python"
+          ],
+          "step": "Coverage summary and gate (lines >= 90%)"
         }
       ],
       "elsewhere": [],
@@ -7561,6 +7845,35 @@
               }
             }
           ]
+        },
+        {
+          "basis": "declared",
+          "name": "embed-serve",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "3.12",
+                  "range": ">=3.12.0 <3.13.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-python",
+              "version": "3.12"
+            }
+          ]
         }
       ],
       "landings": [],
@@ -7572,6 +7885,11 @@
       ],
       "pushes": false,
       "reach": [
+        {
+          "boundary": "embed-serve",
+          "depth": 0,
+          "files": 2
+        },
         {
           "boundary": "offrig-app",
           "depth": 0,
@@ -8142,9 +8460,17 @@
           "path": "crates/offrig-mcp/tests/tool_hints.rs",
           "runKind": "executes",
           "via": "cargo clippy"
+        },
+        {
+          "directory": true,
+          "job": "embed-serve",
+          "matched": true,
+          "path": "tools/embed-serve/",
+          "runKind": "executes",
+          "via": "unittest"
         }
       ],
-      "runsCount": 78,
+      "runsCount": 79,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -8172,6 +8498,14 @@
           ],
           "runner": null,
           "step": "Release binaries contain no test switches"
+        },
+        {
+          "coverage": true,
+          "dir": "tools/embed-serve",
+          "files": 2,
+          "job": "embed-serve",
+          "runner": "unittest",
+          "step": "Test with coverage"
         }
       ],
       "triggers": [
@@ -8192,7 +8526,8 @@
             "deny.toml",
             "osv-scanner.toml",
             "rust-toolchain.toml",
-            "rustfmt.toml"
+            "rustfmt.toml",
+            "tools/**"
           ]
         },
         {
@@ -8203,6 +8538,7 @@
         "EmbarkStudios/cargo-deny-action",
         "Swatinem/rust-cache",
         "actions/checkout",
+        "actions/setup-python",
         "codecov/codecov-action",
         "google/osv-scanner-action/osv-scanner-action",
         "taiki-e/install-action"
@@ -8794,8 +9130,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "53977594e5db83386c4aab152fc9a527cbd17f3a",
-    "tracked": 157
+    "commit": "8f0b59ca6bceb47a104dd17eac471c75d5496b45",
+    "tracked": 161
   },
   "landings": [
     {
@@ -9055,10 +9391,73 @@
       "writers": []
     }
   ],
+  "manifests": [
+    {
+      "name": "site",
+      "path": "site/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door Deploy site to GitHub Pages, job build, step Install site dependencies: npm ci in site",
+      "version": "0.0.1"
+    }
+  ],
   "overlaps": [],
+  "packageDependencies": [
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@astrojs/starlight",
+      "purl": "pkg:npm/%40astrojs/starlight",
+      "range": "^0.42.0",
+      "version": "0.42.5",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@mcptoolshop/site-theme",
+      "purl": "pkg:npm/%40mcptoolshop/site-theme",
+      "range": "^2.2.0",
+      "version": "2.2.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@tailwindcss/vite",
+      "purl": "pkg:npm/%40tailwindcss/vite",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "astro",
+      "purl": "pkg:npm/astro",
+      "range": "^7.3.1",
+      "version": "7.3.6",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "tailwindcss",
+      "purl": "pkg:npm/tailwindcss",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    }
+  ],
+  "packagesPublished": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 79,
+  "testFiles": 80,
   "unassigned": [
     {
       "hash": "dcbf41d0fdd670bfc18f0839c46cdb4f4eb14f2e432acd0ce80d9ccc098b9eef",
@@ -9070,6 +9469,58 @@
     },
     {
       "hash": "219daa62450d0763b25fc3d5f4aab12376488245015d1e06a9995c0d999631ed",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 2,
+          "names": [
+            {
+              "name": "defineConfig"
+            }
+          ],
+          "purl": "pkg:npm/astro",
+          "specifier": "astro/config",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 3,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40astrojs/starlight",
+          "specifier": "@astrojs/starlight",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 4,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40tailwindcss/vite",
+          "specifier": "@tailwindcss/vite",
+          "typeOnly": false
+        }
+      ],
+      "packages": [
+        {
+          "manifest": "site/package.json",
+          "purl": "pkg:npm/%40astrojs/starlight"
+        },
+        {
+          "manifest": "site/package.json",
+          "purl": "pkg:npm/%40tailwindcss/vite"
+        },
+        {
+          "manifest": "site/package.json",
+          "purl": "pkg:npm/astro"
+        }
+      ],
       "path": "site/astro.config.mjs"
     },
     {
@@ -9091,6 +9542,38 @@
     {
       "constantOnly": true,
       "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 2,
+          "names": [
+            {
+              "name": "docsLoader"
+            }
+          ],
+          "purl": "pkg:npm/%40astrojs/starlight",
+          "specifier": "@astrojs/starlight/loaders",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 3,
+          "names": [
+            {
+              "name": "docsSchema"
+            }
+          ],
+          "purl": "pkg:npm/%40astrojs/starlight",
+          "specifier": "@astrojs/starlight/schema",
+          "typeOnly": false
+        }
+      ],
+      "packages": [
+        {
+          "manifest": "site/package.json",
+          "purl": "pkg:npm/%40astrojs/starlight"
+        }
+      ],
       "path": "site/src/content.config.ts"
     },
     {
@@ -9110,7 +9593,7 @@
       "path": "site/src/content/docs/handbook/lanes-and-jobs.md"
     },
     {
-      "hash": "7ab1e014b6981616761222c324c5f4630ab5efe0133dcd68790ec20de2adb6c8",
+      "hash": "3d13961bfff4225144cb290845b4b8a561618a420461dd6cdacf727280a391bb",
       "path": "site/src/content/docs/handbook/reference.md"
     },
     {
@@ -9118,15 +9601,101 @@
       "path": "site/src/content/docs/handbook/security.md"
     },
     {
-      "hash": "38cfa9801a1d9a10297949b84260d55fc4e8fb985c3a377a41bf5b5d2644bfef",
+      "hash": "f3f6a751319cde259a62cffc5e47bc752663e81161aca0dfb185320656e3d628",
       "path": "site/src/content/docs/handbook/side-car.md"
     },
     {
-      "hash": "739d4f924991a817d56702427db7cd952bd7a72fe9baa0f50f2646063d662fe5",
+      "hash": "43d82805459b6deef8a0fd521ff8d6eae44dd48a58228605a7b549ff57fcda1d",
       "path": "site/src/content/docs/handbook/usage.md"
     },
     {
       "hash": "4fb84a646c4d833c33f4058e1ed1775849e855c65e5adb7e45d2a633674bd603",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 3,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme/components/BaseLayout.astro",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 4,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme/components/Hero.astro",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 5,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme/components/Section.astro",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 6,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme/components/FeatureGrid.astro",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 7,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme/components/DataTable.astro",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 8,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme/components/CodeCardGrid.astro",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 9,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme/components/ApiList.astro",
+          "typeOnly": false
+        }
+      ],
       "importOrder": [
         "site/src/styles/global.css",
         "site/src/site-config.ts"
@@ -9135,11 +9704,38 @@
         "site/src/site-config.ts",
         "site/src/styles/global.css"
       ],
+      "packages": [
+        {
+          "manifest": "site/package.json",
+          "purl": "pkg:npm/%40mcptoolshop/site-theme"
+        }
+      ],
       "path": "site/src/pages/index.astro"
     },
     {
       "constantOnly": true,
       "hash": "cd61728e438d2840399f16d60c7adda58789f56b2f152bd42541862b19b983e1",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "SiteConfig",
+              "type": true
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme",
+          "typeOnly": true
+        }
+      ],
+      "packages": [
+        {
+          "manifest": "site/package.json",
+          "purl": "pkg:npm/%40mcptoolshop/site-theme"
+        }
+      ],
       "path": "site/src/site-config.ts"
     },
     {

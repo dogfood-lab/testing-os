@@ -1,19 +1,14 @@
 # attestia: how it works
 
-Mapped at 2026-10-05 from commit 4ce59c2 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit bd0176d by Atlas 1.26.0.
 
 ## What this is
 
 23 parts, mostly TypeScript (407 files), JavaScript (3), CSS (2) and Astro (1). Work enters through 5 doors; the busiest is Publish to GHCR, which reaches 16 parts. It publishes @mcptoolshop/attestia to npm and a container image. It deploys a site to GitHub Pages. People import @mcptoolshop/attestia.
 
-## What changed since 2026-10-01 (92c144c)
+## What changed since 2026-10-15 (4ce59c2)
 
-- CI now also runs packages/attestia/bundle-dts.mjs.
-- Publish to GHCR now also runs packages/attestia/bundle-dts.mjs.
-- Release now also runs packages/attestia/bundle-dts.mjs.
-- packages/attestia/dist is now written by packages/attestia/bundle-dts.mjs.
-- In packages/node/src/main.ts, `main` gained a step, `persistenceFromConfig`, before `createApp`.
-- 1 file added and 67 changed content, across 19 parts.
+Nothing structural changed since 2026-10-15; no file changed.
 
 ## What comes in
 
@@ -94,7 +89,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/, resources/, the repository root, site/ and specs/; 5 writes with paths built at run time may land here.
+People write .github/, docs/, resources/, the repository root, site/ and specs/. The data in assets/ is written by no code this map names; 5 writes with paths built at run time may land here.
 
 ## Where to start
 

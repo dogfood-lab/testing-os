@@ -1,14 +1,14 @@
 # codecomfy-vscode: how it works
 
-Mapped at 2026-10-05 from commit 12c955f by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit ae5d8dc by Atlas 1.26.0.
 
 ## What this is
 
 9 parts, mostly TypeScript (50 files), JavaScript (5), CSS (2) and Astro (1). Work enters through 4 doors; CI and Build and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. It deploys a site to GitHub Pages. People install the codecomfy-vscode extension.
 
-## What changed since 2026-10-01 (cf6d5a3)
+## What changed since 2026-10-15 (5c0bd68)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-10-15; no file changed.
 
 ## What comes in
 
@@ -72,7 +72,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/, the repository root, schemas/ and site/; 2 writes with paths built at run time may land here.
+People write .github/, docs/, the repository root and site/. The data in assets/ and schemas/ is written by no code this map names; 2 writes with paths built at run time may land here.
 
 ## Where to start
 

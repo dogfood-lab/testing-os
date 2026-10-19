@@ -113,7 +113,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "scripts",
-      "qualifyingSourceCommits": 4,
+      "qualifyingSourceCommits": 3,
       "rebaseline": null
     },
     {
@@ -142,12 +142,12 @@
         ],
         "importsOnly": []
       },
-      "cohesion": 0.399554,
+      "cohesion": 0.301295,
       "cohesionDropped": false,
       "confidence": "low",
       "highWater": null,
       "name": "src",
-      "qualifyingSourceCommits": 21,
+      "qualifyingSourceCommits": 20,
       "rebaseline": null
     },
     {
@@ -176,12 +176,12 @@
         "importsAndCoChanges": [],
         "importsOnly": []
       },
-      "cohesion": 0.260445,
+      "cohesion": 0.224752,
       "cohesionDropped": false,
       "confidence": "low",
       "highWater": null,
       "name": "test",
-      "qualifyingSourceCommits": 25,
+      "qualifyingSourceCommits": 24,
       "rebaseline": null
     }
   ],
@@ -309,8 +309,8 @@
         "path": "README.ja.md"
       },
       {
-        "commits": 10,
-        "lines": 355,
+        "commits": 9,
+        "lines": 353,
         "path": "README.md"
       },
       {
@@ -3524,8 +3524,8 @@
         "path": "site/src/content/docs/handbook/index.md"
       },
       {
-        "commits": 4,
-        "lines": 121,
+        "commits": 3,
+        "lines": 119,
         "path": "site/src/content/docs/handbook/mcp-server.md"
       },
       {
@@ -3544,8 +3544,8 @@
         "path": "site/src/content/docs/handbook/security.md"
       },
       {
-        "commits": 6,
-        "lines": 425,
+        "commits": 5,
+        "lines": 419,
         "path": "site/src/content/docs/handbook/usage.md"
       },
       {
@@ -3594,8 +3594,8 @@
         "path": "src/cli-exit.ts"
       },
       {
-        "commits": 22,
-        "lines": 4482,
+        "commits": 21,
+        "lines": 4478,
         "path": "src/cli.ts"
       },
       {
@@ -3734,8 +3734,8 @@
         "path": "src/index.ts"
       },
       {
-        "commits": 9,
-        "lines": 1850,
+        "commits": 8,
+        "lines": 1846,
         "path": "src/mcp/server.ts"
       },
       {
@@ -3754,8 +3754,8 @@
         "path": "src/sync/dogfood-suggest.ts"
       },
       {
-        "commits": 7,
-        "lines": 875,
+        "commits": 6,
+        "lines": 863,
         "path": "src/sync/dogfood.ts"
       },
       {
@@ -4109,17 +4109,32 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-10-05T14:02:23.199Z",
+  "generatedAt": "2026-10-19T12:35:41.407Z",
   "generatedFrom": {
     "commit": "bb1c92ad4a38f3b00f1b118bc11d243d558fcbcf"
+  },
+  "packageImports": {
+    "filesWithLeftOutImports": 0,
+    "importSitesNotPackageNames": 0,
+    "importSitesPackageInternal": 0,
+    "importSitesResolvedInRepository": 0,
+    "namesLeftOut": {},
+    "namesLeftOutOmitted": 0
   },
   "pairs": [
     {
       "a": "src/cli.ts",
       "b": "src/db/init.ts",
-      "either": 20,
+      "either": 19,
       "shared": 11,
-      "strength": 0.55
+      "strength": 0.578947
+    },
+    {
+      "a": "src/cli.ts",
+      "b": "test/migration-sequence.test.ts",
+      "either": 18,
+      "shared": 9,
+      "strength": 0.5
     },
     {
       "a": "src/db/init.ts",
@@ -4151,24 +4166,17 @@
     },
     {
       "a": "src/mcp/server.ts",
-      "b": "src/sync/dogfood.ts",
-      "either": 8,
-      "shared": 4,
-      "strength": 0.5
-    },
-    {
-      "a": "src/mcp/server.ts",
       "b": "test/cli-publish.test.ts",
-      "either": 8,
+      "either": 7,
       "shared": 4,
-      "strength": 0.5
+      "strength": 0.571429
     },
     {
       "a": "src/mcp/server.ts",
       "b": "test/mcp-server.test.ts",
-      "either": 7,
+      "either": 6,
       "shared": 6,
-      "strength": 0.857143
+      "strength": 1
     },
     {
       "a": "src/sync/index.ts",
@@ -4206,7 +4214,7 @@
     "inScopeFiles": 783,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 321,
+    "qualifyingCommits": 320,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,

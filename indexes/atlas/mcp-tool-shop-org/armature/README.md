@@ -1,6 +1,6 @@
 # armature: how it works
 
-Mapped at 2026-10-12 from commit f7c9630 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 44b3b06 by Atlas 1.26.0.
 
 ## What this is
 
@@ -11,7 +11,7 @@ Mapped at 2026-10-12 from commit f7c9630 by Atlas 1.26.0.
 - specs/* is now read by tests/test_amend_w14_core_gates.py and tests/test_paid_argv_smoke.py.
 - tests/* is now read by tests/test_packaging.py.
 - tools/* is now read by tests/blender_stub.py, tests/test_amend_w16_builders.py, tests/test_build_payload.py, tests/test_instruments_amend_w22.py, tests/test_packaging.py and tests/test_sheet_pairing.py.
-- 5 files changed content, across 4 parts.
+- 6 files changed content, across 4 parts.
 
 ## What comes in
 
@@ -84,7 +84,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, docs/, the repository root, site/ and specs/; 116 writes with paths built at run time may land here.
+People write .github/, docs/, the repository root and site/. The data in specs/ is written by no code this map names; 116 writes with paths built at run time may land here.
 
 ## Where to start
 

@@ -81,7 +81,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "site",
-      "qualifyingSourceCommits": 2,
+      "qualifyingSourceCommits": 1,
       "rebaseline": null
     },
     {
@@ -97,7 +97,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "tests",
-      "qualifyingSourceCommits": 7,
+      "qualifyingSourceCommits": 4,
       "rebaseline": null
     },
     {
@@ -110,12 +110,12 @@
           "tests"
         ]
       },
-      "cohesion": 1,
+      "cohesion": null,
       "cohesionDropped": false,
       "confidence": "low",
       "highWater": null,
       "name": "xrpl_camp",
-      "qualifyingSourceCommits": 10,
+      "qualifyingSourceCommits": 6,
       "rebaseline": null
     }
   ],
@@ -133,8 +133,8 @@
         "path": ".github/freshness-report.md"
       },
       {
-        "commits": 18,
-        "lines": 576,
+        "commits": 17,
+        "lines": 572,
         "path": ".github/workflows/ci.yml"
       },
       {
@@ -143,18 +143,18 @@
         "path": ".github/workflows/freshness-check.yml"
       },
       {
-        "commits": 4,
-        "lines": 96,
+        "commits": 3,
+        "lines": 88,
         "path": ".github/workflows/pages.yml"
       },
       {
-        "commits": 7,
-        "lines": 656,
+        "commits": 6,
+        "lines": 652,
         "path": ".github/workflows/publish.yml"
       },
       {
-        "commits": 5,
-        "lines": 259,
+        "commits": 4,
+        "lines": 253,
         "path": ".github/workflows/release-binaries.yml"
       },
       {
@@ -173,7 +173,7 @@
         "path": "BUILD.md"
       },
       {
-        "commits": 8,
+        "commits": 4,
         "lines": 367,
         "path": "CHANGELOG.md"
       },
@@ -213,8 +213,8 @@
         "path": "README.ja.md"
       },
       {
-        "commits": 5,
-        "lines": 527,
+        "commits": 3,
+        "lines": 499,
         "path": "README.md"
       },
       {
@@ -433,8 +433,8 @@
         "path": "package.json"
       },
       {
-        "commits": 12,
-        "lines": 131,
+        "commits": 9,
+        "lines": 125,
         "path": "pyproject.toml"
       },
       {
@@ -483,27 +483,27 @@
         "path": "site/src/content/docs/handbook/beginners.md"
       },
       {
-        "commits": 5,
-        "lines": 79,
+        "commits": 3,
+        "lines": 69,
         "path": "site/src/content/docs/handbook/getting-started.md"
       },
       {
-        "commits": 2,
-        "lines": 22,
+        "commits": 1,
+        "lines": 20,
         "path": "site/src/content/docs/handbook/index.md"
       },
       {
-        "commits": 4,
-        "lines": 213,
+        "commits": 3,
+        "lines": 209,
         "path": "site/src/content/docs/handbook/lessons.md"
       },
       {
-        "commits": 4,
-        "lines": 217,
+        "commits": 3,
+        "lines": 215,
         "path": "site/src/content/docs/handbook/proof-pack.md"
       },
       {
-        "commits": 4,
+        "commits": 3,
         "lines": 346,
         "path": "site/src/content/docs/handbook/reference.md"
       },
@@ -513,8 +513,8 @@
         "path": "site/src/pages/index.astro"
       },
       {
-        "commits": 4,
-        "lines": 170,
+        "commits": 3,
+        "lines": 156,
         "path": "site/src/site-config.ts"
       },
       {
@@ -593,8 +593,8 @@
         "path": "tests/test_certificate.py"
       },
       {
-        "commits": 4,
-        "lines": 330,
+        "commits": 3,
+        "lines": 328,
         "path": "tests/test_cli.py"
       },
       {
@@ -603,8 +603,8 @@
         "path": "tests/test_cli_behaviour.py"
       },
       {
-        "commits": 2,
-        "lines": 193,
+        "commits": 1,
+        "lines": 191,
         "path": "tests/test_dry_run.py"
       },
       {
@@ -618,7 +618,7 @@
         "path": "tests/test_failure_gate.py"
       },
       {
-        "commits": 5,
+        "commits": 4,
         "lines": 407,
         "path": "tests/test_features.py"
       },
@@ -678,8 +678,8 @@
         "path": "tests/test_xrpl_models.py"
       },
       {
-        "commits": 9,
-        "lines": 191,
+        "commits": 6,
+        "lines": 185,
         "path": "xrpl_camp/__init__.py"
       },
       {
@@ -693,8 +693,8 @@
         "path": "xrpl_camp/certificate.py"
       },
       {
-        "commits": 9,
-        "lines": 3299,
+        "commits": 6,
+        "lines": 3283,
         "path": "xrpl_camp/cli.py"
       },
       {
@@ -703,8 +703,8 @@
         "path": "xrpl_camp/errors.py"
       },
       {
-        "commits": 9,
-        "lines": 5873,
+        "commits": 6,
+        "lines": 5793,
         "path": "xrpl_camp/lessons.py"
       },
       {
@@ -733,54 +733,19 @@
     "level": "low",
     "reason": "fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions"
   },
-  "generatedAt": "2026-10-05T14:05:34.486Z",
+  "generatedAt": "2026-10-19T12:39:22.982Z",
   "generatedFrom": {
     "commit": "02d8aa8c34bf8911f90e89414a3c7fc6671c7303"
   },
-  "pairs": [
-    {
-      "a": "CHANGELOG.md",
-      "b": "xrpl_camp/__init__.py",
-      "either": 7,
-      "shared": 4,
-      "strength": 0.571429
-    },
-    {
-      "a": "pyproject.toml",
-      "b": "xrpl_camp/__init__.py",
-      "either": 8,
-      "shared": 6,
-      "strength": 0.75
-    },
-    {
-      "a": "pyproject.toml",
-      "b": "xrpl_camp/cli.py",
-      "either": 10,
-      "shared": 5,
-      "strength": 0.5
-    },
-    {
-      "a": "pyproject.toml",
-      "b": "xrpl_camp/lessons.py",
-      "either": 9,
-      "shared": 5,
-      "strength": 0.555556
-    },
-    {
-      "a": "xrpl_camp/__init__.py",
-      "b": "xrpl_camp/lessons.py",
-      "either": 8,
-      "shared": 4,
-      "strength": 0.5
-    },
-    {
-      "a": "xrpl_camp/cli.py",
-      "b": "xrpl_camp/lessons.py",
-      "either": 8,
-      "shared": 5,
-      "strength": 0.625
-    }
-  ],
+  "packageImports": {
+    "filesWithLeftOutImports": 0,
+    "importSitesNotPackageNames": 0,
+    "importSitesPackageInternal": 0,
+    "importSitesResolvedInRepository": 0,
+    "namesLeftOut": {},
+    "namesLeftOutOmitted": 0
+  },
+  "pairs": [],
   "parameters": {
     "appliedChangesetLimit": 22.75,
     "changeset": 50,
@@ -795,7 +760,7 @@
     "inScopeFiles": 91,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 26,
+    "qualifyingCommits": 19,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,

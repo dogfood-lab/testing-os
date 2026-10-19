@@ -46,12 +46,12 @@
           "scripts"
         ]
       },
-      "cohesion": null,
+      "cohesion": 1,
       "cohesionDropped": false,
       "confidence": "full",
-      "highWater": null,
+      "highWater": 1,
       "name": "atlas",
-      "qualifyingSourceCommits": 349,
+      "qualifyingSourceCommits": 372,
       "rebaseline": null
     },
     {
@@ -119,7 +119,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "dogfood-swarm",
-      "qualifyingSourceCommits": 136,
+      "qualifyingSourceCommits": 138,
       "rebaseline": null
     },
     {
@@ -172,7 +172,7 @@
       "confidence": "full",
       "highWater": null,
       "name": "fixtures",
-      "qualifyingSourceCommits": 235,
+      "qualifyingSourceCommits": 242,
       "rebaseline": null
     },
     {
@@ -349,7 +349,7 @@
       "confidence": "full",
       "highWater": 1,
       "name": "scripts",
-      "qualifyingSourceCommits": 110,
+      "qualifyingSourceCommits": 113,
       "rebaseline": null
     },
     {
@@ -414,38 +414,38 @@
         "path": ".github/CODEOWNERS"
       },
       {
-        "commits": 3,
-        "lines": 85,
+        "commits": 6,
+        "lines": 103,
         "path": ".github/dependabot.yml"
       },
       {
-        "commits": 4,
-        "lines": 88,
+        "commits": 5,
+        "lines": 90,
         "path": ".github/workflows/atlas-render.yml"
       },
       {
-        "commits": 32,
-        "lines": 1028,
+        "commits": 39,
+        "lines": 1068,
         "path": ".github/workflows/ci.yml"
       },
       {
-        "commits": 22,
-        "lines": 600,
+        "commits": 23,
+        "lines": 602,
         "path": ".github/workflows/ingest.yml"
       },
       {
-        "commits": 22,
-        "lines": 521,
+        "commits": 23,
+        "lines": 525,
         "path": ".github/workflows/pages.yml"
       },
       {
-        "commits": 20,
-        "lines": 669,
+        "commits": 21,
+        "lines": 673,
         "path": ".github/workflows/release.yml"
       },
       {
-        "commits": 9,
-        "lines": 412,
+        "commits": 10,
+        "lines": 414,
         "path": ".github/workflows/self-dogfood.yml"
       },
       {
@@ -454,13 +454,13 @@
         "path": ".gitignore"
       },
       {
-        "commits": 154,
-        "lines": 1737,
+        "commits": 178,
+        "lines": 1874,
         "path": "CHANGELOG.md"
       },
       {
-        "commits": 73,
-        "lines": 491,
+        "commits": 79,
+        "lines": 503,
         "path": "CLAUDE.md"
       },
       {
@@ -469,8 +469,8 @@
         "path": "CONTRIBUTING.md"
       },
       {
-        "commits": 113,
-        "lines": 1256,
+        "commits": 115,
+        "lines": 1288,
         "path": "HANDOFF.md"
       },
       {
@@ -549,8 +549,8 @@
         "path": "assets/logo.png"
       },
       {
-        "commits": 111,
-        "lines": 3430,
+        "commits": 142,
+        "lines": 3963,
         "path": "atlas/README.md"
       },
       {
@@ -579,18 +579,18 @@
         "path": "atlas/orientation.md"
       },
       {
-        "commits": 111,
-        "lines": 14616,
+        "commits": 142,
+        "lines": 16136,
         "path": "atlas/page.json"
       },
       {
-        "commits": 125,
-        "lines": 117337,
+        "commits": 156,
+        "lines": 126267,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 129,
-        "lines": 190317,
+        "commits": 160,
+        "lines": 232845,
         "path": "atlas/structure.json"
       },
       {
@@ -629,6 +629,21 @@
         "path": "docker/fleet.example.yml"
       },
       {
+        "commits": 3,
+        "lines": 356,
+        "path": "docs/atlas-aq2-protocol.md"
+      },
+      {
+        "commits": 2,
+        "lines": 206,
+        "path": "docs/atlas-aq2-report.md"
+      },
+      {
+        "commits": 26,
+        "lines": 1093,
+        "path": "docs/atlas-buildup.spec.md"
+      },
+      {
         "commits": 9,
         "lines": 1276,
         "path": "docs/atlas-design.dispatch.md"
@@ -649,8 +664,8 @@
         "path": "docs/atlas-pin-bump.md"
       },
       {
-        "commits": 11,
-        "lines": 234,
+        "commits": 13,
+        "lines": 242,
         "path": "docs/atlas-production.spec.md"
       },
       {
@@ -669,13 +684,13 @@
         "path": "docs/atlas-test-gaps.dispatch.md"
       },
       {
-        "commits": 2,
-        "lines": 158,
+        "commits": 4,
+        "lines": 254,
         "path": "docs/atlas-test-gaps.fleet-check.md"
       },
       {
-        "commits": 3,
-        "lines": 185,
+        "commits": 5,
+        "lines": 189,
         "path": "docs/atlas-test-gaps.spec.md"
       },
       {
@@ -1135,7 +1150,17 @@
       },
       {
         "commits": 3,
-        "lines": 22,
+        "lines": 33,
+        "path": "fixtures/atlas/action-jobs/.github/workflows/scan.yml"
+      },
+      {
+        "commits": 3,
+        "lines": 39,
+        "path": "fixtures/atlas/action-jobs/.github/workflows/scorecard.yml"
+      },
+      {
+        "commits": 6,
+        "lines": 31,
         "path": "fixtures/atlas/action-jobs/README.md"
       },
       {
@@ -6094,6 +6119,61 @@
         "path": "fixtures/atlas/import-chain/src/tool/scorecard.py"
       },
       {
+        "commits": 3,
+        "lines": 15,
+        "path": "fixtures/atlas/import-names/README.md"
+      },
+      {
+        "commits": 3,
+        "lines": 27,
+        "path": "fixtures/atlas/import-names/atlas/boundaries.yaml"
+      },
+      {
+        "commits": 5,
+        "lines": 109,
+        "path": "fixtures/atlas/import-names/package.json"
+      },
+      {
+        "commits": 3,
+        "lines": 609,
+        "path": "fixtures/atlas/import-names/src/caps.ts"
+      },
+      {
+        "commits": 3,
+        "lines": 6,
+        "path": "fixtures/atlas/import-names/src/empty.ts"
+      },
+      {
+        "commits": 4,
+        "lines": 56,
+        "path": "fixtures/atlas/import-names/src/main.ts"
+      },
+      {
+        "commits": 3,
+        "lines": 6,
+        "path": "fixtures/atlas/import-names/src/plain.cjs"
+      },
+      {
+        "commits": 3,
+        "lines": 27,
+        "path": "fixtures/atlas/import-names/src/repaired.ts"
+      },
+      {
+        "commits": 3,
+        "lines": 18,
+        "path": "fixtures/atlas/import-names/src/types.ts"
+      },
+      {
+        "commits": 3,
+        "lines": 6,
+        "path": "fixtures/atlas/import-names/src/values.cjs"
+      },
+      {
+        "commits": 3,
+        "lines": 9,
+        "path": "fixtures/atlas/import-names/src/values.mjs"
+      },
+      {
         "commits": 2,
         "lines": 18,
         "path": "fixtures/atlas/import-table/.github/workflows/ci.yml"
@@ -7867,6 +7947,226 @@
         "commits": 2,
         "lines": 4,
         "path": "fixtures/atlas/package-dir-scripts/tools/receipt.py"
+      },
+      {
+        "commits": 3,
+        "lines": 54,
+        "path": "fixtures/atlas/package-facts-aliases/README.md"
+      },
+      {
+        "commits": 3,
+        "lines": 26,
+        "path": "fixtures/atlas/package-facts-aliases/atlas/boundaries.yaml"
+      },
+      {
+        "commits": 3,
+        "lines": 30,
+        "path": "fixtures/atlas/package-facts-aliases/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 2,
+        "path": "fixtures/atlas/package-facts-aliases/packages/ext/index.js"
+      },
+      {
+        "commits": 2,
+        "lines": 10,
+        "path": "fixtures/atlas/package-facts-aliases/packages/ext/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 4,
+        "path": "fixtures/atlas/package-facts-aliases/src/lib/util.js"
+      },
+      {
+        "commits": 3,
+        "lines": 20,
+        "path": "fixtures/atlas/package-facts-aliases/src/main.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 20,
+        "path": "fixtures/atlas/package-facts-aliases/tsconfig.json"
+      },
+      {
+        "commits": 2,
+        "lines": 22,
+        "path": "fixtures/atlas/package-facts-pnpm/.github/workflows/ci.yml"
+      },
+      {
+        "commits": 2,
+        "lines": 20,
+        "path": "fixtures/atlas/package-facts-pnpm/atlas/boundaries.yaml"
+      },
+      {
+        "commits": 2,
+        "lines": 16,
+        "path": "fixtures/atlas/package-facts-pnpm/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 2,
+        "path": "fixtures/atlas/package-facts-pnpm/packages/shared/index.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 8,
+        "path": "fixtures/atlas/package-facts-pnpm/packages/shared/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 12,
+        "path": "fixtures/atlas/package-facts-pnpm/packages/ui/index.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 26,
+        "path": "fixtures/atlas/package-facts-pnpm/packages/ui/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 70,
+        "path": "fixtures/atlas/package-facts-pnpm/pnpm-lock.yaml"
+      },
+      {
+        "commits": 2,
+        "lines": 4,
+        "path": "fixtures/atlas/package-facts-pnpm/pnpm-workspace.yaml"
+      },
+      {
+        "commits": 2,
+        "lines": 90,
+        "path": "fixtures/atlas/package-facts-publishes/.github/workflows/release.yml"
+      },
+      {
+        "commits": 2,
+        "lines": 26,
+        "path": "fixtures/atlas/package-facts-publishes/atlas/boundaries.yaml"
+      },
+      {
+        "commits": 2,
+        "lines": 10,
+        "path": "fixtures/atlas/package-facts-publishes/cli/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 8,
+        "path": "fixtures/atlas/package-facts-publishes/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 8,
+        "path": "fixtures/atlas/package-facts-publishes/plugins/alpha/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 8,
+        "path": "fixtures/atlas/package-facts-publishes/plugins/beta/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 10,
+        "path": "fixtures/atlas/package-facts-publishes/plugins/gamma/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 8,
+        "path": "fixtures/atlas/package-facts-publishes/themes/dark/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 8,
+        "path": "fixtures/atlas/package-facts-publishes/themes/light/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 10,
+        "path": "fixtures/atlas/package-facts-publishes/tools/release/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 26,
+        "path": "fixtures/atlas/package-facts/.github/workflows/release.yml"
+      },
+      {
+        "commits": 2,
+        "lines": 28,
+        "path": "fixtures/atlas/package-facts/.github/workflows/site.yml"
+      },
+      {
+        "commits": 2,
+        "lines": 36,
+        "path": "fixtures/atlas/package-facts/atlas/boundaries.yaml"
+      },
+      {
+        "commits": 2,
+        "lines": 12,
+        "path": "fixtures/atlas/package-facts/fixtures/demo/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 164,
+        "path": "fixtures/atlas/package-facts/package-lock.json"
+      },
+      {
+        "commits": 2,
+        "lines": 42,
+        "path": "fixtures/atlas/package-facts/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 28,
+        "path": "fixtures/atlas/package-facts/packages/lib/index.js"
+      },
+      {
+        "commits": 2,
+        "lines": 20,
+        "path": "fixtures/atlas/package-facts/packages/lib/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 6,
+        "path": "fixtures/atlas/package-facts/packages/lib/sub.js"
+      },
+      {
+        "commits": 2,
+        "lines": 6,
+        "path": "fixtures/atlas/package-facts/packages/private-tool/index.js"
+      },
+      {
+        "commits": 2,
+        "lines": 12,
+        "path": "fixtures/atlas/package-facts/packages/private-tool/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 6,
+        "path": "fixtures/atlas/package-facts/packages/util/index.js"
+      },
+      {
+        "commits": 2,
+        "lines": 18,
+        "path": "fixtures/atlas/package-facts/packages/util/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 8,
+        "path": "fixtures/atlas/package-facts/tools/docs/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 34,
+        "path": "fixtures/atlas/package-facts/tools/site/package-lock.json"
+      },
+      {
+        "commits": 2,
+        "lines": 14,
+        "path": "fixtures/atlas/package-facts/tools/site/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 8,
+        "path": "fixtures/atlas/package-facts/tools/web/package.json"
       },
       {
         "commits": 2,
@@ -12875,6 +13175,161 @@
       },
       {
         "commits": 2,
+        "lines": 38,
+        "path": "fixtures/atlas/test-scripts/.github/workflows/ci.yml"
+      },
+      {
+        "commits": 3,
+        "lines": 52,
+        "path": "fixtures/atlas/test-scripts/README.md"
+      },
+      {
+        "commits": 2,
+        "lines": 10,
+        "path": "fixtures/atlas/test-scripts/checks/a.test.mjs"
+      },
+      {
+        "commits": 2,
+        "lines": 6,
+        "path": "fixtures/atlas/test-scripts/checks/test_dir_script.mjs"
+      },
+      {
+        "commits": 2,
+        "lines": 8,
+        "path": "fixtures/atlas/test-scripts/collected/test_collected.mjs"
+      },
+      {
+        "commits": 1,
+        "lines": 2,
+        "path": "fixtures/atlas/test-scripts/fixtures/test_fixture.mjs"
+      },
+      {
+        "commits": 2,
+        "lines": 10,
+        "path": "fixtures/atlas/test-scripts/legacy/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 4,
+        "path": "fixtures/atlas/test-scripts/legacy/test_old.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 26,
+        "path": "fixtures/atlas/test-scripts/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 4,
+        "path": "fixtures/atlas/test-scripts/scripts/check.py"
+      },
+      {
+        "commits": 2,
+        "lines": 12,
+        "path": "fixtures/atlas/test-scripts/scripts/helper_exit.py"
+      },
+      {
+        "commits": 2,
+        "lines": 6,
+        "path": "fixtures/atlas/test-scripts/scripts/test_bare.py"
+      },
+      {
+        "commits": 2,
+        "lines": 28,
+        "path": "fixtures/atlas/test-scripts/scripts/test_check.py"
+      },
+      {
+        "commits": 2,
+        "lines": 12,
+        "path": "fixtures/atlas/test-scripts/scripts/test_flat.py"
+      },
+      {
+        "commits": 2,
+        "lines": 22,
+        "path": "fixtures/atlas/test-scripts/scripts/test_main_call.py"
+      },
+      {
+        "commits": 2,
+        "lines": 2,
+        "path": "fixtures/atlas/test-scripts/src/gate.cjs"
+      },
+      {
+        "commits": 2,
+        "lines": 8,
+        "path": "fixtures/atlas/test-scripts/src/gate.mjs"
+      },
+      {
+        "commits": 2,
+        "lines": 16,
+        "path": "fixtures/atlas/test-scripts/src/gate.test.mjs"
+      },
+      {
+        "commits": 1,
+        "lines": 2,
+        "path": "fixtures/atlas/test-scripts/testdata/test_fixture.mjs"
+      },
+      {
+        "commits": 2,
+        "lines": 2,
+        "path": "fixtures/atlas/test-scripts/tools/notes.json"
+      },
+      {
+        "commits": 2,
+        "lines": 12,
+        "path": "fixtures/atlas/test-scripts/tools/test_exit.cjs"
+      },
+      {
+        "commits": 2,
+        "lines": 12,
+        "path": "fixtures/atlas/test-scripts/tools/test_gate.mjs"
+      },
+      {
+        "commits": 2,
+        "lines": 16,
+        "path": "fixtures/atlas/test-scripts/tools/test_helpers.mjs"
+      },
+      {
+        "commits": 2,
+        "lines": 6,
+        "path": "fixtures/atlas/test-scripts/tools/test_more.js"
+      },
+      {
+        "commits": 2,
+        "lines": 14,
+        "path": "fixtures/atlas/test-scripts/tools/test_named.mjs"
+      },
+      {
+        "commits": 2,
+        "lines": 6,
+        "path": "fixtures/atlas/test-scripts/tools/test_notes.mjs"
+      },
+      {
+        "commits": 2,
+        "lines": 12,
+        "path": "fixtures/atlas/test-scripts/tools/test_relative.mjs"
+      },
+      {
+        "commits": 2,
+        "lines": 12,
+        "path": "fixtures/atlas/test-scripts/tools/test_typed.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 10,
+        "path": "fixtures/atlas/test-scripts/typed/package.json"
+      },
+      {
+        "commits": 2,
+        "lines": 4,
+        "path": "fixtures/atlas/test-scripts/typed/test_strip.ts"
+      },
+      {
+        "commits": 2,
+        "lines": 14,
+        "path": "fixtures/atlas/test-scripts/vitest.config.ts"
+      },
+      {
+        "commits": 2,
         "lines": 18,
         "path": "fixtures/atlas/test-spawn-joined/.github/workflows/ci.yml"
       },
@@ -14609,33 +15064,33 @@
         "path": "indexes/failing.json"
       },
       {
-        "commits": 129,
-        "lines": 129,
+        "commits": 147,
+        "lines": 148,
         "path": "indexes/integrity/chain.jsonl"
       },
       {
-        "commits": 137,
-        "lines": 972,
+        "commits": 155,
+        "lines": 1080,
         "path": "indexes/latest-by-repo.json"
       },
       {
-        "commits": 53,
-        "lines": 764,
+        "commits": 61,
+        "lines": 852,
         "path": "indexes/stale.json"
       },
       {
-        "commits": 130,
-        "lines": 3093,
+        "commits": 148,
+        "lines": 3440,
         "path": "indexes/trends.json"
       },
       {
-        "commits": 96,
-        "lines": 9911,
+        "commits": 100,
+        "lines": 10107,
         "path": "package-lock.json"
       },
       {
-        "commits": 82,
-        "lines": 228,
+        "commits": 85,
+        "lines": 240,
         "path": "package.json"
       },
       {
@@ -14649,13 +15104,18 @@
         "path": "packages/atlas/LICENSE"
       },
       {
-        "commits": 46,
-        "lines": 408,
+        "commits": 61,
+        "lines": 499,
         "path": "packages/atlas/README.md"
       },
       {
-        "commits": 119,
-        "lines": 4710,
+        "commits": 8,
+        "lines": 458,
+        "path": "packages/atlas/adapter/actions.js"
+      },
+      {
+        "commits": 126,
+        "lines": 4780,
         "path": "packages/atlas/adapter/artifact.js"
       },
       {
@@ -14669,14 +15129,19 @@
         "path": "packages/atlas/adapter/boundary-file.test.js"
       },
       {
-        "commits": 24,
-        "lines": 1610,
+        "commits": 26,
+        "lines": 1670,
         "path": "packages/atlas/adapter/changes.js"
       },
       {
-        "commits": 12,
-        "lines": 716,
+        "commits": 14,
+        "lines": 772,
         "path": "packages/atlas/adapter/changes.test.js"
+      },
+      {
+        "commits": 8,
+        "lines": 470,
+        "path": "packages/atlas/adapter/check-actions.test.js"
       },
       {
         "commits": 3,
@@ -14684,13 +15149,18 @@
         "path": "packages/atlas/adapter/check-cost.test.js"
       },
       {
+        "commits": 2,
+        "lines": 532,
+        "path": "packages/atlas/adapter/check-suggest.test.js"
+      },
+      {
         "commits": 8,
         "lines": 440,
         "path": "packages/atlas/adapter/check.js"
       },
       {
-        "commits": 43,
-        "lines": 1682,
+        "commits": 53,
+        "lines": 1992,
         "path": "packages/atlas/adapter/commands.js"
       },
       {
@@ -14699,13 +15169,13 @@
         "path": "packages/atlas/adapter/determinism.test.js"
       },
       {
-        "commits": 2,
-        "lines": 144,
+        "commits": 4,
+        "lines": 148,
         "path": "packages/atlas/adapter/diff.js"
       },
       {
-        "commits": 6,
-        "lines": 430,
+        "commits": 8,
+        "lines": 434,
         "path": "packages/atlas/adapter/diff.test.js"
       },
       {
@@ -14739,8 +15209,8 @@
         "path": "packages/atlas/adapter/engine.js"
       },
       {
-        "commits": 29,
-        "lines": 142,
+        "commits": 34,
+        "lines": 156,
         "path": "packages/atlas/adapter/errors.js"
       },
       {
@@ -14779,8 +15249,8 @@
         "path": "packages/atlas/adapter/fleet-index.test.js"
       },
       {
-        "commits": 10,
-        "lines": 1868,
+        "commits": 11,
+        "lines": 1894,
         "path": "packages/atlas/adapter/fleet.js"
       },
       {
@@ -14797,6 +15267,11 @@
         "commits": 6,
         "lines": 416,
         "path": "packages/atlas/adapter/gaps.test.js"
+      },
+      {
+        "commits": 5,
+        "lines": 406,
+        "path": "packages/atlas/adapter/import-names-map.test.js"
       },
       {
         "commits": 2,
@@ -14854,6 +15329,16 @@
         "path": "packages/atlas/adapter/init.test.js"
       },
       {
+        "commits": 1,
+        "lines": 37,
+        "path": "packages/atlas/adapter/kill-tree.js"
+      },
+      {
+        "commits": 1,
+        "lines": 156,
+        "path": "packages/atlas/adapter/kill-tree.test.js"
+      },
+      {
         "commits": 4,
         "lines": 276,
         "path": "packages/atlas/adapter/ladder.js"
@@ -14875,6 +15360,11 @@
       },
       {
         "commits": 2,
+        "lines": 172,
+        "path": "packages/atlas/adapter/map-unassigned-folder.test.js"
+      },
+      {
+        "commits": 2,
         "lines": 134,
         "path": "packages/atlas/adapter/no-commit.test.js"
       },
@@ -14884,8 +15374,13 @@
         "path": "packages/atlas/adapter/not-a-repository.test.js"
       },
       {
-        "commits": 4,
-        "lines": 106,
+        "commits": 5,
+        "lines": 434,
+        "path": "packages/atlas/adapter/package-facts-map.test.js"
+      },
+      {
+        "commits": 7,
+        "lines": 151,
         "path": "packages/atlas/adapter/page-action-jobs.test.js"
       },
       {
@@ -14897,6 +15392,11 @@
         "commits": 3,
         "lines": 146,
         "path": "packages/atlas/adapter/page-authored-caveat.test.js"
+      },
+      {
+        "commits": 2,
+        "lines": 236,
+        "path": "packages/atlas/adapter/page-authored-data.test.js"
       },
       {
         "commits": 4,
@@ -15454,8 +15954,8 @@
         "path": "packages/atlas/adapter/page-untracked-outputs.test.js"
       },
       {
-        "commits": 2,
-        "lines": 92,
+        "commits": 4,
+        "lines": 102,
         "path": "packages/atlas/adapter/page-workspace-root.test.js"
       },
       {
@@ -15469,8 +15969,8 @@
         "path": "packages/atlas/adapter/page-written-into.test.js"
       },
       {
-        "commits": 186,
-        "lines": 26976,
+        "commits": 191,
+        "lines": 27039,
         "path": "packages/atlas/adapter/page.js"
       },
       {
@@ -15499,8 +15999,13 @@
         "path": "packages/atlas/adapter/render.test.js"
       },
       {
-        "commits": 11,
-        "lines": 1632,
+        "commits": 2,
+        "lines": 196,
+        "path": "packages/atlas/adapter/stage-then-map.test.js"
+      },
+      {
+        "commits": 13,
+        "lines": 1640,
         "path": "packages/atlas/adapter/statistics.js"
       },
       {
@@ -15519,6 +16024,11 @@
         "path": "packages/atlas/adapter/step-text.test.js"
       },
       {
+        "commits": 3,
+        "lines": 390,
+        "path": "packages/atlas/adapter/suggest.js"
+      },
+      {
         "commits": 28,
         "lines": 1198,
         "path": "packages/atlas/adapter/templates.js"
@@ -15529,13 +16039,13 @@
         "path": "packages/atlas/adapter/templates.test.js"
       },
       {
-        "commits": 7,
-        "lines": 846,
+        "commits": 9,
+        "lines": 1006,
         "path": "packages/atlas/adapter/test-gaps.js"
       },
       {
-        "commits": 6,
-        "lines": 480,
+        "commits": 8,
+        "lines": 502,
         "path": "packages/atlas/adapter/test-gaps.test.js"
       },
       {
@@ -15549,8 +16059,8 @@
         "path": "packages/atlas/adapter/test-kinds.test.js"
       },
       {
-        "commits": 8,
-        "lines": 470,
+        "commits": 10,
+        "lines": 482,
         "path": "packages/atlas/adapter/test-reach.js"
       },
       {
@@ -15562,6 +16072,11 @@
         "commits": 7,
         "lines": 108,
         "path": "packages/atlas/adapter/test-runs.test.js"
+      },
+      {
+        "commits": 3,
+        "lines": 302,
+        "path": "packages/atlas/adapter/test-scripts.test.js"
       },
       {
         "commits": 2,
@@ -15579,8 +16094,8 @@
         "path": "packages/atlas/adapter/ts-probe.test.js"
       },
       {
-        "commits": 2,
-        "lines": 240,
+        "commits": 4,
+        "lines": 272,
         "path": "packages/atlas/adapter/untracked-files.test.js"
       },
       {
@@ -15642,6 +16157,11 @@
         "commits": 4,
         "lines": 86,
         "path": "packages/atlas/core/built-tests.test.js"
+      },
+      {
+        "commits": 2,
+        "lines": 74,
+        "path": "packages/atlas/core/builtins.js"
       },
       {
         "commits": 2,
@@ -15729,8 +16249,8 @@
         "path": "packages/atlas/core/divergence.test.js"
       },
       {
-        "commits": 5,
-        "lines": 998,
+        "commits": 7,
+        "lines": 1150,
         "path": "packages/atlas/core/door-checks.js"
       },
       {
@@ -15754,8 +16274,8 @@
         "path": "packages/atlas/core/doors-conventions.test.js"
       },
       {
-        "commits": 86,
-        "lines": 9348,
+        "commits": 88,
+        "lines": 9480,
         "path": "packages/atlas/core/doors.js"
       },
       {
@@ -15789,8 +16309,8 @@
         "path": "packages/atlas/core/expanded-dirs.test.js"
       },
       {
-        "commits": 16,
-        "lines": 468,
+        "commits": 19,
+        "lines": 480,
         "path": "packages/atlas/core/extract-imports.test.js"
       },
       {
@@ -15884,13 +16404,18 @@
         "path": "packages/atlas/core/http.js"
       },
       {
+        "commits": 5,
+        "lines": 544,
+        "path": "packages/atlas/core/import-names.js"
+      },
+      {
         "commits": 3,
         "lines": 78,
         "path": "packages/atlas/core/import-table.test.js"
       },
       {
-        "commits": 117,
-        "lines": 6782,
+        "commits": 126,
+        "lines": 6920,
         "path": "packages/atlas/core/index.js"
       },
       {
@@ -15989,6 +16514,16 @@
         "path": "packages/atlas/core/package-dir-scripts.test.js"
       },
       {
+        "commits": 9,
+        "lines": 1220,
+        "path": "packages/atlas/core/package-facts.js"
+      },
+      {
+        "commits": 2,
+        "lines": 340,
+        "path": "packages/atlas/core/package-facts.test.js"
+      },
+      {
         "commits": 2,
         "lines": 76,
         "path": "packages/atlas/core/package-files.test.js"
@@ -16084,8 +16619,8 @@
         "path": "packages/atlas/core/resolve-tsconfig-extends.test.js"
       },
       {
-        "commits": 44,
-        "lines": 4756,
+        "commits": 46,
+        "lines": 4778,
         "path": "packages/atlas/core/resolve.js"
       },
       {
@@ -16132,6 +16667,11 @@
         "commits": 4,
         "lines": 272,
         "path": "packages/atlas/core/scaling.test.js"
+      },
+      {
+        "commits": 2,
+        "lines": 320,
+        "path": "packages/atlas/core/script-tests.js"
       },
       {
         "commits": 14,
@@ -16199,9 +16739,14 @@
         "path": "packages/atlas/core/syntax-checks.test.js"
       },
       {
-        "commits": 4,
-        "lines": 50,
+        "commits": 6,
+        "lines": 74,
         "path": "packages/atlas/core/test-names.js"
+      },
+      {
+        "commits": 2,
+        "lines": 56,
+        "path": "packages/atlas/core/test-names.test.js"
       },
       {
         "commits": 8,
@@ -16314,18 +16859,18 @@
         "path": "packages/atlas/index.js"
       },
       {
-        "commits": 111,
-        "lines": 404,
+        "commits": 126,
+        "lines": 436,
         "path": "packages/atlas/package.json"
       },
       {
-        "commits": 13,
-        "lines": 738,
+        "commits": 15,
+        "lines": 764,
         "path": "packages/atlas/sidecar/answer.js"
       },
       {
-        "commits": 2,
-        "lines": 232,
+        "commits": 4,
+        "lines": 244,
         "path": "packages/atlas/sidecar/changes-tool.js"
       },
       {
@@ -16339,13 +16884,13 @@
         "path": "packages/atlas/sidecar/check-change.test.js"
       },
       {
-        "commits": 3,
-        "lines": 198,
+        "commits": 5,
+        "lines": 216,
         "path": "packages/atlas/sidecar/conformance.test.js"
       },
       {
-        "commits": 2,
-        "lines": 368,
+        "commits": 4,
+        "lines": 386,
         "path": "packages/atlas/sidecar/data.js"
       },
       {
@@ -16379,8 +16924,8 @@
         "path": "packages/atlas/sidecar/freshness.test.js"
       },
       {
-        "commits": 8,
-        "lines": 402,
+        "commits": 10,
+        "lines": 454,
         "path": "packages/atlas/sidecar/git.js"
       },
       {
@@ -16414,8 +16959,8 @@
         "path": "packages/atlas/sidecar/overview-tool.js"
       },
       {
-        "commits": 2,
-        "lines": 662,
+        "commits": 5,
+        "lines": 786,
         "path": "packages/atlas/sidecar/protocol.js"
       },
       {
@@ -16429,8 +16974,8 @@
         "path": "packages/atlas/sidecar/read-only.test.js"
       },
       {
-        "commits": 3,
-        "lines": 350,
+        "commits": 5,
+        "lines": 360,
         "path": "packages/atlas/sidecar/ref.test.js"
       },
       {
@@ -16444,14 +16989,19 @@
         "path": "packages/atlas/sidecar/refresh-worker.js"
       },
       {
-        "commits": 2,
-        "lines": 562,
+        "commits": 4,
+        "lines": 584,
         "path": "packages/atlas/sidecar/refresh.js"
       },
       {
-        "commits": 2,
-        "lines": 686,
+        "commits": 4,
+        "lines": 754,
         "path": "packages/atlas/sidecar/refresh.test.js"
+      },
+      {
+        "commits": 3,
+        "lines": 738,
+        "path": "packages/atlas/sidecar/repos.test.js"
       },
       {
         "commits": 5,
@@ -16460,17 +17010,27 @@
       },
       {
         "commits": 3,
+        "lines": 730,
+        "path": "packages/atlas/sidecar/roots.js"
+      },
+      {
+        "commits": 3,
+        "lines": 714,
+        "path": "packages/atlas/sidecar/roots.test.js"
+      },
+      {
+        "commits": 3,
         "lines": 186,
         "path": "packages/atlas/sidecar/schema.js"
       },
       {
-        "commits": 3,
-        "lines": 128,
+        "commits": 6,
+        "lines": 150,
         "path": "packages/atlas/sidecar/server.js"
       },
       {
-        "commits": 3,
-        "lines": 460,
+        "commits": 5,
+        "lines": 480,
         "path": "packages/atlas/sidecar/server.test.js"
       },
       {
@@ -16489,8 +17049,8 @@
         "path": "packages/atlas/sidecar/static.test.js"
       },
       {
-        "commits": 5,
-        "lines": 410,
+        "commits": 7,
+        "lines": 424,
         "path": "packages/atlas/sidecar/test-client.js"
       },
       {
@@ -16504,13 +17064,13 @@
         "path": "packages/atlas/sidecar/test-gaps-tool.test.js"
       },
       {
-        "commits": 8,
-        "lines": 724,
+        "commits": 10,
+        "lines": 728,
         "path": "packages/atlas/sidecar/test-oracle.js"
       },
       {
-        "commits": 16,
-        "lines": 1436,
+        "commits": 19,
+        "lines": 1742,
         "path": "packages/atlas/sidecar/tools.js"
       },
       {
@@ -16702,6 +17262,11 @@
         "commits": 81,
         "lines": 8368,
         "path": "packages/dogfood-swarm/cli.js"
+      },
+      {
+        "commits": 1,
+        "lines": 44,
+        "path": "packages/dogfood-swarm/collapse-alternation.test.js"
       },
       {
         "commits": 12,
@@ -17314,8 +17879,8 @@
         "path": "packages/dogfood-swarm/lib/domain-row.js"
       },
       {
-        "commits": 13,
-        "lines": 1709,
+        "commits": 14,
+        "lines": 1717,
         "path": "packages/dogfood-swarm/lib/domains.js"
       },
       {
@@ -17819,8 +18384,8 @@
         "path": "packages/dogfood-swarm/lib/verify/registry.js"
       },
       {
-        "commits": 16,
-        "lines": 1330,
+        "commits": 18,
+        "lines": 1378,
         "path": "packages/dogfood-swarm/lib/verify/runner.js"
       },
       {
@@ -17914,8 +18479,8 @@
         "path": "packages/dogfood-swarm/output-schema-null-element.test.js"
       },
       {
-        "commits": 74,
-        "lines": 232,
+        "commits": 77,
+        "lines": 238,
         "path": "packages/dogfood-swarm/package.json"
       },
       {
@@ -18024,8 +18589,8 @@
         "path": "packages/dogfood-swarm/stageA-ds-mut-003-ownership-bypass.test.js"
       },
       {
-        "commits": 3,
-        "lines": 236,
+        "commits": 5,
+        "lines": 260,
         "path": "packages/dogfood-swarm/stageA-ds-verify-engine.test.js"
       },
       {
@@ -19369,8 +19934,8 @@
         "path": "packages/schemas/README.md"
       },
       {
-        "commits": 66,
-        "lines": 185,
+        "commits": 69,
+        "lines": 191,
         "path": "packages/schemas/package.json"
       },
       {
@@ -20605,6 +21170,81 @@
       },
       {
         "commits": 1,
+        "lines": 85,
+        "path": "records/dogfood-lab/testing-os/2026/10/13/run-00mv6z15o3-wLMh7Q8cEfFlqg.json"
+      },
+      {
+        "commits": 1,
+        "lines": 85,
+        "path": "records/dogfood-lab/testing-os/2026/10/13/run-00mv71nct2-mtqZbWro4RbI-w.json"
+      },
+      {
+        "commits": 1,
+        "lines": 85,
+        "path": "records/dogfood-lab/testing-os/2026/10/13/run-00mv72x5ro-ibr_ML7uLAajDQ.json"
+      },
+      {
+        "commits": 1,
+        "lines": 85,
+        "path": "records/dogfood-lab/testing-os/2026/10/13/run-00mv73sbnq-1RQCL7FiDU9AfQ.json"
+      },
+      {
+        "commits": 1,
+        "lines": 85,
+        "path": "records/dogfood-lab/testing-os/2026/10/13/run-00mv747mvi-wLhFgIp7m9-YLw.json"
+      },
+      {
+        "commits": 1,
+        "lines": 85,
+        "path": "records/dogfood-lab/testing-os/2026/10/13/run-00mv74qnw3-Kop79xQNi8SKrg.json"
+      },
+      {
+        "commits": 1,
+        "lines": 85,
+        "path": "records/dogfood-lab/testing-os/2026/10/13/run-00mv75679h-HI0uGeMA8FyPYw.json"
+      },
+      {
+        "commits": 1,
+        "lines": 85,
+        "path": "records/dogfood-lab/testing-os/2026/10/13/run-00mv77s2k9-6YrIIGRD542zKA.json"
+      },
+      {
+        "commits": 1,
+        "lines": 85,
+        "path": "records/dogfood-lab/testing-os/2026/10/15/run-00mv8wv85x-iVnuNtbXXyeiqQ.json"
+      },
+      {
+        "commits": 3,
+        "lines": 255,
+        "path": "records/dogfood-lab/testing-os/2026/10/15/run-00mv95b3ir-ZDsnx7zMYeBJHg.json"
+      },
+      {
+        "commits": 2,
+        "lines": 170,
+        "path": "records/dogfood-lab/testing-os/2026/10/15/run-00mv961qt8-dd1eitJgkZ6Z3g.json"
+      },
+      {
+        "commits": 1,
+        "lines": 85,
+        "path": "records/dogfood-lab/testing-os/2026/10/15/run-00mv97nv0z-hZTWu2Ng94YdsQ.json"
+      },
+      {
+        "commits": 2,
+        "lines": 170,
+        "path": "records/dogfood-lab/testing-os/2026/10/15/run-00mv9t26ab-Grb0WnEc1or_UA.json"
+      },
+      {
+        "commits": 1,
+        "lines": 85,
+        "path": "records/dogfood-lab/testing-os/2026/10/15/run-00mv9xgt09-jXzp4HOb7oCmRQ.json"
+      },
+      {
+        "commits": 1,
+        "lines": 85,
+        "path": "records/dogfood-lab/testing-os/2026/10/16/run-00mvad1byu-GjxJImLkbB63kQ.json"
+      },
+      {
+        "commits": 1,
         "lines": 72,
         "path": "records/mcp-tool-shop-org/a11y-demo-site/2026/03/20/run-a11y-demo-site-23329256169-1.json"
       },
@@ -20959,8 +21599,8 @@
         "path": "scripts/atlas-render.mjs"
       },
       {
-        "commits": 20,
-        "lines": 1635,
+        "commits": 21,
+        "lines": 1637,
         "path": "scripts/atlas-render.test.mjs"
       },
       {
@@ -21084,6 +21724,11 @@
         "path": "scripts/codecov-plan.test.mjs"
       },
       {
+        "commits": 1,
+        "lines": 43,
+        "path": "scripts/codecov-pnpm-major.test.mjs"
+      },
+      {
         "commits": 3,
         "lines": 504,
         "path": "scripts/codecov-rollout.mjs"
@@ -21189,8 +21834,8 @@
         "path": "scripts/lib/codecov/recipe.mjs"
       },
       {
-        "commits": 6,
-        "lines": 1391,
+        "commits": 7,
+        "lines": 1407,
         "path": "scripts/lib/codecov/runners.mjs"
       },
       {
@@ -21199,8 +21844,8 @@
         "path": "scripts/lib/codecov/shell.mjs"
       },
       {
-        "commits": 2,
-        "lines": 96,
+        "commits": 4,
+        "lines": 122,
         "path": "scripts/lib/git-test-env.mjs"
       },
       {
@@ -21339,8 +21984,8 @@
         "path": "scripts/sync-version.test.mjs"
       },
       {
-        "commits": 74,
-        "lines": 1018,
+        "commits": 76,
+        "lines": 1034,
         "path": "scripts/test-floor-allowlist.json"
       },
       {
@@ -21459,8 +22104,8 @@
         "path": "site/src/content/docs/handbook/architecture.md"
       },
       {
-        "commits": 49,
-        "lines": 870,
+        "commits": 66,
+        "lines": 949,
         "path": "site/src/content/docs/handbook/atlas.md"
       },
       {
@@ -21479,8 +22124,8 @@
         "path": "site/src/content/docs/handbook/contracts.md"
       },
       {
-        "commits": 51,
-        "lines": 2062,
+        "commits": 56,
+        "lines": 2200,
         "path": "site/src/content/docs/handbook/error-codes.md"
       },
       {
@@ -21645,6 +22290,11 @@
       },
       {
         "commits": 1,
+        "lines": 0,
+        "path": "testdata}/test_fixture.mjs"
+      },
+      {
+        "commits": 1,
         "lines": 17,
         "path": "tsconfig.base.json"
       },
@@ -21659,80 +22309,45 @@
     "level": "full",
     "reason": "at least 30 qualifying commits, and at least 20 source files reach 10 revisions"
   },
-  "generatedAt": "2026-10-01T08:34:14.485Z",
+  "generatedAt": "2026-10-19T12:27:59.621Z",
   "generatedFrom": {
-    "commit": "f34fca0b29be6d0c7147666f1df08d2abe289571"
+    "commit": "5d746cf9a10f4e68d6bdf00b4a6ddf280f4669b2"
+  },
+  "packageImports": {
+    "filesWithLeftOutImports": 2,
+    "importSitesNotPackageNames": 2,
+    "importSitesPackageInternal": 1,
+    "importSitesResolvedInRepository": 2,
+    "namesLeftOut": {
+      "#internal": 1,
+      "$lib": 1,
+      "@/lib": 1,
+      "@alias/alias-target": 1,
+      "shared": 1
+    },
+    "namesLeftOutOmitted": 0
   },
   "pairs": [
     {
       "a": "CLAUDE.md",
-      "b": "README.es.md",
-      "either": 49,
-      "shared": 25,
-      "strength": 0.510204
-    },
-    {
-      "a": "CLAUDE.md",
-      "b": "README.fr.md",
-      "either": 49,
-      "shared": 25,
-      "strength": 0.510204
-    },
-    {
-      "a": "CLAUDE.md",
-      "b": "README.hi.md",
-      "either": 49,
-      "shared": 25,
-      "strength": 0.510204
-    },
-    {
-      "a": "CLAUDE.md",
-      "b": "README.it.md",
-      "either": 49,
-      "shared": 25,
-      "strength": 0.510204
-    },
-    {
-      "a": "CLAUDE.md",
-      "b": "README.ja.md",
-      "either": 49,
-      "shared": 25,
-      "strength": 0.510204
-    },
-    {
-      "a": "CLAUDE.md",
-      "b": "README.pt-BR.md",
-      "either": 49,
-      "shared": 25,
-      "strength": 0.510204
-    },
-    {
-      "a": "CLAUDE.md",
-      "b": "README.zh.md",
-      "either": 49,
-      "shared": 25,
-      "strength": 0.510204
-    },
-    {
-      "a": "CLAUDE.md",
       "b": "SCORECARD.md",
-      "either": 44,
+      "either": 46,
       "shared": 29,
-      "strength": 0.659091
+      "strength": 0.630435
     },
     {
       "a": "CLAUDE.md",
       "b": "SHIP_GATE.md",
-      "either": 52,
+      "either": 54,
       "shared": 27,
-      "strength": 0.519231
+      "strength": 0.5
     },
     {
       "a": "CLAUDE.md",
       "b": "site/public/screenshots/verify-output.svg",
-      "either": 53,
+      "either": 55,
       "shared": 28,
-      "strength": 0.528302
+      "strength": 0.509091
     },
     {
       "a": "README.es.md",
@@ -21799,13 +22414,6 @@
     },
     {
       "a": "README.es.md",
-      "b": "packages/dogfood-swarm/package.json",
-      "either": 56,
-      "shared": 28,
-      "strength": 0.5
-    },
-    {
-      "a": "README.es.md",
       "b": "packages/findings/package.json",
       "either": 48,
       "shared": 28,
@@ -21835,9 +22443,9 @@
     {
       "a": "README.es.md",
       "b": "packages/schemas/package.json",
-      "either": 50,
+      "either": 51,
       "shared": 28,
-      "strength": 0.56
+      "strength": 0.54902
     },
     {
       "a": "README.es.md",
@@ -21911,13 +22519,6 @@
     },
     {
       "a": "README.fr.md",
-      "b": "packages/dogfood-swarm/package.json",
-      "either": 56,
-      "shared": 28,
-      "strength": 0.5
-    },
-    {
-      "a": "README.fr.md",
       "b": "packages/findings/package.json",
       "either": 48,
       "shared": 28,
@@ -21947,9 +22548,9 @@
     {
       "a": "README.fr.md",
       "b": "packages/schemas/package.json",
-      "either": 50,
+      "either": 51,
       "shared": 28,
-      "strength": 0.56
+      "strength": 0.54902
     },
     {
       "a": "README.fr.md",
@@ -22016,13 +22617,6 @@
     },
     {
       "a": "README.hi.md",
-      "b": "packages/dogfood-swarm/package.json",
-      "either": 56,
-      "shared": 28,
-      "strength": 0.5
-    },
-    {
-      "a": "README.hi.md",
       "b": "packages/findings/package.json",
       "either": 48,
       "shared": 28,
@@ -22052,9 +22646,9 @@
     {
       "a": "README.hi.md",
       "b": "packages/schemas/package.json",
-      "either": 50,
+      "either": 51,
       "shared": 28,
-      "strength": 0.56
+      "strength": 0.54902
     },
     {
       "a": "README.hi.md",
@@ -22114,13 +22708,6 @@
     },
     {
       "a": "README.it.md",
-      "b": "packages/dogfood-swarm/package.json",
-      "either": 56,
-      "shared": 28,
-      "strength": 0.5
-    },
-    {
-      "a": "README.it.md",
       "b": "packages/findings/package.json",
       "either": 48,
       "shared": 28,
@@ -22150,9 +22737,9 @@
     {
       "a": "README.it.md",
       "b": "packages/schemas/package.json",
-      "either": 50,
+      "either": 51,
       "shared": 28,
-      "strength": 0.56
+      "strength": 0.54902
     },
     {
       "a": "README.it.md",
@@ -22205,13 +22792,6 @@
     },
     {
       "a": "README.ja.md",
-      "b": "packages/dogfood-swarm/package.json",
-      "either": 56,
-      "shared": 28,
-      "strength": 0.5
-    },
-    {
-      "a": "README.ja.md",
       "b": "packages/findings/package.json",
       "either": 48,
       "shared": 28,
@@ -22241,9 +22821,9 @@
     {
       "a": "README.ja.md",
       "b": "packages/schemas/package.json",
-      "either": 50,
+      "either": 51,
       "shared": 28,
-      "strength": 0.56
+      "strength": 0.54902
     },
     {
       "a": "README.ja.md",
@@ -22276,16 +22856,16 @@
     {
       "a": "README.md",
       "b": "package.json",
-      "either": 65,
+      "either": 66,
       "shared": 42,
-      "strength": 0.646154
+      "strength": 0.636364
     },
     {
       "a": "README.md",
       "b": "packages/dogfood-swarm/package.json",
-      "either": 65,
+      "either": 66,
       "shared": 40,
-      "strength": 0.615385
+      "strength": 0.606061
     },
     {
       "a": "README.md",
@@ -22318,9 +22898,9 @@
     {
       "a": "README.md",
       "b": "packages/schemas/package.json",
-      "either": 59,
+      "either": 60,
       "shared": 40,
-      "strength": 0.677966
+      "strength": 0.666667
     },
     {
       "a": "README.md",
@@ -22352,13 +22932,6 @@
     },
     {
       "a": "README.pt-BR.md",
-      "b": "packages/dogfood-swarm/package.json",
-      "either": 56,
-      "shared": 28,
-      "strength": 0.5
-    },
-    {
-      "a": "README.pt-BR.md",
       "b": "packages/findings/package.json",
       "either": 48,
       "shared": 28,
@@ -22388,9 +22961,9 @@
     {
       "a": "README.pt-BR.md",
       "b": "packages/schemas/package.json",
-      "either": 50,
+      "either": 51,
       "shared": 28,
-      "strength": 0.56
+      "strength": 0.54902
     },
     {
       "a": "README.pt-BR.md",
@@ -22422,13 +22995,6 @@
     },
     {
       "a": "README.zh.md",
-      "b": "packages/dogfood-swarm/package.json",
-      "either": 56,
-      "shared": 28,
-      "strength": 0.5
-    },
-    {
-      "a": "README.zh.md",
       "b": "packages/findings/package.json",
       "either": 48,
       "shared": 28,
@@ -22458,9 +23024,9 @@
     {
       "a": "README.zh.md",
       "b": "packages/schemas/package.json",
-      "either": 50,
+      "either": 51,
       "shared": 28,
-      "strength": 0.56
+      "strength": 0.54902
     },
     {
       "a": "README.zh.md",
@@ -22514,9 +23080,9 @@
     {
       "a": "SCORECARD.md",
       "b": "packages/schemas/package.json",
-      "either": 49,
+      "either": 50,
       "shared": 28,
-      "strength": 0.571429
+      "strength": 0.56
     },
     {
       "a": "SCORECARD.md",
@@ -22570,44 +23136,44 @@
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 66,
-      "shared": 66,
+      "either": 85,
+      "shared": 85,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 75,
-      "shared": 66,
-      "strength": 0.88
+      "either": 94,
+      "shared": 85,
+      "strength": 0.904255
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 78,
-      "shared": 66,
-      "strength": 0.846154
+      "either": 97,
+      "shared": 85,
+      "strength": 0.876289
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 75,
-      "shared": 66,
-      "strength": 0.88
+      "either": 94,
+      "shared": 85,
+      "strength": 0.904255
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 78,
-      "shared": 66,
-      "strength": 0.846154
+      "either": 97,
+      "shared": 85,
+      "strength": 0.876289
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 79,
-      "shared": 74,
-      "strength": 0.936709
+      "either": 98,
+      "shared": 93,
+      "strength": 0.94898
     },
     {
       "a": "indexes/badges/_aggregate.json",
@@ -22633,177 +23199,184 @@
     {
       "a": "indexes/integrity/chain.jsonl",
       "b": "indexes/latest-by-repo.json",
-      "either": 135,
-      "shared": 128,
-      "strength": 0.948148
+      "either": 150,
+      "shared": 143,
+      "strength": 0.953333
     },
     {
       "a": "indexes/integrity/chain.jsonl",
       "b": "indexes/trends.json",
-      "either": 128,
-      "shared": 128,
+      "either": 143,
+      "shared": 143,
       "strength": 1
     },
     {
       "a": "indexes/latest-by-repo.json",
       "b": "indexes/trends.json",
-      "either": 135,
-      "shared": 128,
-      "strength": 0.948148
+      "either": 150,
+      "shared": 143,
+      "strength": 0.953333
     },
     {
       "a": "package-lock.json",
       "b": "package.json",
-      "either": 74,
-      "shared": 47,
-      "strength": 0.635135
+      "either": 76,
+      "shared": 48,
+      "strength": 0.631579
     },
     {
       "a": "package-lock.json",
       "b": "packages/dogfood-swarm/package.json",
-      "either": 78,
-      "shared": 41,
-      "strength": 0.525641
+      "either": 80,
+      "shared": 42,
+      "strength": 0.525
     },
     {
       "a": "package-lock.json",
       "b": "packages/findings/package.json",
-      "either": 71,
+      "either": 73,
       "shared": 40,
-      "strength": 0.56338
+      "strength": 0.547945
     },
     {
       "a": "package-lock.json",
       "b": "packages/ingest/package.json",
+      "either": 75,
+      "shared": 39,
+      "strength": 0.52
+    },
+    {
+      "a": "package-lock.json",
+      "b": "packages/portfolio/package.json",
       "either": 73,
       "shared": 39,
       "strength": 0.534247
     },
     {
       "a": "package-lock.json",
-      "b": "packages/portfolio/package.json",
-      "either": 71,
-      "shared": 39,
-      "strength": 0.549296
-    },
-    {
-      "a": "package-lock.json",
       "b": "packages/report/package.json",
-      "either": 72,
+      "either": 74,
       "shared": 39,
-      "strength": 0.541667
+      "strength": 0.527027
     },
     {
       "a": "package-lock.json",
       "b": "packages/schemas/package.json",
-      "either": 70,
-      "shared": 43,
-      "strength": 0.614286
+      "either": 72,
+      "shared": 44,
+      "strength": 0.611111
     },
     {
       "a": "package-lock.json",
       "b": "packages/verify/package.json",
-      "either": 70,
+      "either": 72,
       "shared": 40,
-      "strength": 0.571429
+      "strength": 0.555556
     },
     {
       "a": "package.json",
       "b": "packages/dogfood-swarm/package.json",
-      "either": 65,
-      "shared": 43,
-      "strength": 0.661538
+      "either": 66,
+      "shared": 44,
+      "strength": 0.666667
     },
     {
       "a": "package.json",
       "b": "packages/findings/package.json",
-      "either": 58,
-      "shared": 42,
-      "strength": 0.724138
-    },
-    {
-      "a": "package.json",
-      "b": "packages/ingest/package.json",
       "either": 59,
       "shared": 42,
       "strength": 0.711864
     },
     {
       "a": "package.json",
-      "b": "packages/portfolio/package.json",
-      "either": 57,
+      "b": "packages/ingest/package.json",
+      "either": 60,
       "shared": 42,
-      "strength": 0.736842
+      "strength": 0.7
     },
     {
       "a": "package.json",
-      "b": "packages/report/package.json",
+      "b": "packages/portfolio/package.json",
       "either": 58,
       "shared": 42,
       "strength": 0.724138
     },
     {
       "a": "package.json",
+      "b": "packages/report/package.json",
+      "either": 59,
+      "shared": 42,
+      "strength": 0.711864
+    },
+    {
+      "a": "package.json",
       "b": "packages/schemas/package.json",
-      "either": 58,
-      "shared": 44,
-      "strength": 0.758621
+      "either": 59,
+      "shared": 45,
+      "strength": 0.762712
     },
     {
       "a": "package.json",
       "b": "packages/verify/package.json",
-      "either": 57,
+      "either": 58,
       "shared": 42,
-      "strength": 0.736842
+      "strength": 0.724138
     },
     {
       "a": "packages/atlas/README.md",
       "b": "site/src/content/docs/handbook/atlas.md",
-      "either": 28,
-      "shared": 20,
-      "strength": 0.714286
+      "either": 38,
+      "shared": 29,
+      "strength": 0.763158
+    },
+    {
+      "a": "packages/atlas/sidecar/answer.js",
+      "b": "packages/atlas/sidecar/tools.js",
+      "either": 16,
+      "shared": 10,
+      "strength": 0.625
     },
     {
       "a": "packages/dogfood-swarm/package.json",
       "b": "packages/findings/package.json",
-      "either": 56,
-      "shared": 42,
-      "strength": 0.75
-    },
-    {
-      "a": "packages/dogfood-swarm/package.json",
-      "b": "packages/ingest/package.json",
       "either": 57,
       "shared": 42,
       "strength": 0.736842
     },
     {
       "a": "packages/dogfood-swarm/package.json",
-      "b": "packages/portfolio/package.json",
-      "either": 55,
-      "shared": 42,
-      "strength": 0.763636
-    },
-    {
-      "a": "packages/dogfood-swarm/package.json",
-      "b": "packages/report/package.json",
-      "either": 56,
-      "shared": 42,
-      "strength": 0.75
-    },
-    {
-      "a": "packages/dogfood-swarm/package.json",
-      "b": "packages/schemas/package.json",
+      "b": "packages/ingest/package.json",
       "either": 58,
       "shared": 42,
       "strength": 0.724138
     },
     {
       "a": "packages/dogfood-swarm/package.json",
-      "b": "packages/verify/package.json",
-      "either": 55,
+      "b": "packages/portfolio/package.json",
+      "either": 56,
       "shared": 42,
-      "strength": 0.763636
+      "strength": 0.75
+    },
+    {
+      "a": "packages/dogfood-swarm/package.json",
+      "b": "packages/report/package.json",
+      "either": 57,
+      "shared": 42,
+      "strength": 0.736842
+    },
+    {
+      "a": "packages/dogfood-swarm/package.json",
+      "b": "packages/schemas/package.json",
+      "either": 59,
+      "shared": 43,
+      "strength": 0.728814
+    },
+    {
+      "a": "packages/dogfood-swarm/package.json",
+      "b": "packages/verify/package.json",
+      "either": 56,
+      "shared": 42,
+      "strength": 0.75
     },
     {
       "a": "packages/findings/package.json",
@@ -22829,9 +23402,9 @@
     {
       "a": "packages/findings/package.json",
       "b": "packages/schemas/package.json",
-      "either": 51,
+      "either": 52,
       "shared": 41,
-      "strength": 0.803922
+      "strength": 0.788462
     },
     {
       "a": "packages/findings/package.json",
@@ -22864,9 +23437,9 @@
     {
       "a": "packages/ingest/package.json",
       "b": "packages/schemas/package.json",
-      "either": 52,
+      "either": 53,
       "shared": 41,
-      "strength": 0.788462
+      "strength": 0.773585
     },
     {
       "a": "packages/ingest/package.json",
@@ -22892,9 +23465,9 @@
     {
       "a": "packages/portfolio/package.json",
       "b": "packages/schemas/package.json",
-      "either": 50,
+      "either": 51,
       "shared": 41,
-      "strength": 0.82
+      "strength": 0.803922
     },
     {
       "a": "packages/portfolio/package.json",
@@ -22913,9 +23486,9 @@
     {
       "a": "packages/report/package.json",
       "b": "packages/schemas/package.json",
-      "either": 51,
+      "either": 52,
       "shared": 41,
-      "strength": 0.803922
+      "strength": 0.788462
     },
     {
       "a": "packages/report/package.json",
@@ -22934,9 +23507,9 @@
     {
       "a": "packages/schemas/package.json",
       "b": "packages/verify/package.json",
-      "either": 50,
+      "either": 51,
       "shared": 41,
-      "strength": 0.82
+      "strength": 0.803922
     },
     {
       "a": "packages/verify/package.json",
@@ -22948,9 +23521,9 @@
     {
       "a": "scripts/atlas-render.mjs",
       "b": "scripts/atlas-render.test.mjs",
-      "either": 15,
+      "either": 16,
       "shared": 10,
-      "strength": 0.666667
+      "strength": 0.625
     },
     {
       "a": "scripts/check-finding-regression-pins.mjs",
@@ -22977,16 +23550,16 @@
     "floor": "strong",
     "floorHeld": false,
     "floorTrigger": null,
-    "headDate": "2026-10-01T08:31:30Z",
-    "inScopeFiles": 4225,
+    "headDate": "2026-10-16T02:40:39Z",
+    "inScopeFiles": 4353,
     "pinnedStart": null,
     "priorFloor": "strong",
-    "qualifyingCommits": 992,
+    "qualifyingCommits": 1069,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 10,
-    "since": "2026-04-04T08:31:30.000Z",
+    "since": "2026-04-19T02:40:39.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",

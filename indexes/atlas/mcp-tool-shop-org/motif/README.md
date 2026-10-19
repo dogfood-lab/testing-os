@@ -1,6 +1,6 @@
 # motif: how it works
 
-Mapped at 2026-10-01 from commit 3bc4bf3 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 92dd855 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-01 from commit 3bc4bf3 by Atlas 1.26.0.
 
 ## What changed since 2026-10-01 (9bd1e9a)
 
-Nothing structural changed since 2026-10-01; no file changed.
+Nothing structural changed since 2026-10-01; 3 files changed content.
 
 ## What comes in
 
@@ -92,13 +92,13 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-- **packages/schema/src/schemas.ts** and **packages/schema/src/types.ts** changed together in 9 of 9 commits, inside the schema part.
-- **apps/studio/src/app/seed-data.ts** and **packages/sample-lab/src/generation/index.ts** changed together in 5 of 8 commits, though neither part imports the other.
+- **packages/schema/src/schemas.ts** and **packages/schema/src/types.ts** changed together in 5 of 5 commits, inside the schema part.
+- **apps/studio/src/app/seed-data.ts** and **packages/sample-lab/src/generation/index.ts** changed together in 5 of 7 commits, though neither part imports the other.
 - **packages/sample-lab/src/generation/index.ts** and **packages/sample-lab/test/generation.test.ts** changed together in 5 of 8 commits, inside the sample-lab part.
 
-Confidence is low: fewer than 25 source files reach 10 revisions in the window.
+Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
-Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
 
 ## What no test touches
 
@@ -119,7 +119,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .claude/, .github/, examples/, handbook/, the repository root and site/. Nothing in this repository writes to them.
+People write .github/, examples/, handbook/, the repository root and site/. Nothing in this repository writes to them. The data in .claude/ is written by no code this map names.
 
 ## Where to start
 
@@ -133,6 +133,6 @@ Read those in order to follow one pull request end to end.
 - 8 reads use paths built at run time and are not named here.
 - 4 writes go to places this repository does not track, so they are not listed as generated.
 - 12 writes and 46 reads go to a path their caller passes, not to this repository.
-- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
+- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

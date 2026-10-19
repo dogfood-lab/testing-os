@@ -1,6 +1,6 @@
 # polyglot-mcp: how it works
 
-Mapped at 2026-10-05 from commit 3431888 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 5b97025 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-05 from commit 3431888 by Atlas 1.26.0.
 
 ## What changed since 2026-10-01 (e0fd93e)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-10-01; 3 files changed content.
 
 ## What comes in
 

@@ -1,26 +1,29 @@
 # forkctl: how it works
 
-Mapped at 2026-10-05 from commit 0363afb by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 84c9f39 by Atlas 1.26.0.
 
 ## What this is
 
-7 parts, mostly TypeScript (128 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI, forkctl and forkctl-mcp each reach 2 parts, and CI is followed because a pull request goes through it. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp.
+7 parts, mostly TypeScript (131 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 6 doors; the busiest is CI, which reaches 2 parts. It publishes to npm. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp. People import @mcptoolshop/forkctl.
 
-## What changed since 2026-10-01 (e8a273f)
+## What changed since 2026-10-15 (f1142aa)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+- Release (.github/workflows/release.yml) is a new door. It starts when a release is published; or by hand. It runs no file this map can see.
+- package.json is now also read by .github/workflows/release.yml.
+- 1 file added and 2 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request; on a push to main touching 12 paths; or by hand. Runs tests/assess.test.ts, tests/audit.test.ts, tests/backend-hardening.test.ts and 47 more; builds src/.
+1. **CI.** On a pull request; on a push to main touching 12 paths; or by hand. Runs tests/assess.test.ts, tests/audit.test.ts, tests/backend-hardening.test.ts and 48 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-3. **forkctl** (a command people run). Runs src/cli.ts.
-4. **forkctl-mcp** (a command people run). Runs src/server.ts.
-5. **@mcptoolshop/forkctl** (the package's entry, not published from here). Loads src/index.ts.
+3. **Release.** When a release is published; or by hand. Runs no file this map can see.
+4. **@mcptoolshop/forkctl** (the package people import). Loads src/index.ts.
+5. **forkctl** (a command people run). Runs src/cli.ts.
+6. **forkctl-mcp** (a command people run). Runs src/server.ts.
 
 ## What happens through CI
 
-1. The workflow runs 50 files in tests; it builds src/ in src.
+1. The workflow runs 51 files in tests; it builds src/ in src.
 2. It uploads coverage to Codecov.
 
 ## Who reads the results
@@ -31,15 +34,16 @@ CI writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
-**forkctl** (a command people run) runs src/cli.ts, reaches tests, runs git, and changes other repositories through the GitHub API.
+**Release** runs no file this map can see and publishes to npm.
 
-**forkctl-mcp** (a command people run) runs src/server.ts, reaches tests, runs git, and changes other repositories through the GitHub API.
+**@mcptoolshop/forkctl** (the package people import) loads src/index.ts.
 
-**@mcptoolshop/forkctl** (the package's entry, not published from here) loads src/index.ts.
+**forkctl** (a command people run) runs src/cli.ts and changes other repositories through the GitHub API.
+
+**forkctl-mcp** (a command people run) runs src/server.ts and changes other repositories through the GitHub API.
 
 ## What breaks what
 
-- **tests** is run as a child process by 1 part (src) and sits on the path of 3 doors.
 - **src** is imported only from tests, by 1 part (tests), and sits on the path of 4 doors.
 
 ## What tends to change together
@@ -66,7 +70,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, assets/, design/, the repository root and site/; 8 writes with paths built at run time may land here.
+People write .github/, design/, the repository root and site/. The data in assets/ is written by no code this map names; 8 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -81,7 +85,7 @@ Beside the path, src/dispatch.ts also calls src/lib/audit.ts.
 - 8 writes and 8 reads use paths built at run time and are not named here.
 - 26 writes and 22 reads go to a path their caller passes, not to this repository.
 - 14 reads go to the directory the command is run in (.env.example, .github/, LICENSE and 4 more places), not to this repository.
-- 2 commands are built at run time and not followed.
+- 1 command is built at run time and not followed.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

@@ -1,6 +1,6 @@
 # xrpl-camp: how it works
 
-Mapped at 2026-10-05 from commit 02d8aa8 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 02d8aa8 by Atlas 1.26.0.
 
 ## What this is
 
@@ -51,10 +51,7 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-- **xrpl_camp/cli.py** and **xrpl_camp/lessons.py** changed together in 5 of 8 commits, inside the xrpl_camp part.
-- **xrpl_camp/__init__.py** and **xrpl_camp/lessons.py** changed together in 4 of 8 commits, inside the xrpl_camp part.
-
-Confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+No two source files changed together often enough to name.
 
 Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
 

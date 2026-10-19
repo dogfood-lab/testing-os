@@ -8,17 +8,6 @@
   ],
   "breaks": [
     {
-      "doors": 3,
-      "importedBy": [],
-      "importedByTests": [],
-      "kind": "part",
-      "name": "tests",
-      "partLabel": "tests",
-      "spawnedBy": [
-        "src"
-      ]
-    },
-    {
       "doors": 4,
       "importedBy": [],
       "importedByTests": [
@@ -31,33 +20,50 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
-      "changed": 1,
+      "added": 1,
+      "assigned": 0,
+      "changed": 2,
       "moved": 0,
-      "parts": 1,
-      "removed": 0
+      "parts": 2,
+      "removed": 0,
+      "unassigned": 0
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "Release (.github/workflows/release.yml) is a new door. It starts when a release is published; or by hand. It runs no file this map can see.",
+        "subjects": [
+          ".github/workflows/release.yml"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "package.json is now also read by .github/workflows/release.yml.",
+        "subjects": [
+          "package.json",
+          ".github/workflows/release.yml"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-01; 1 file changed content.",
+        "sentence": "1 file added and 2 changed content, across 2 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "e8a273fef9be920c134a4c27b4e899bfe6854ec4",
-      "generatedAt": "2026-10-01T02:13:00.338Z"
+      "commit": "f1142aa855a3b87121e4e3f72c65837fa5dc7481",
+      "generatedAt": "2026-10-15T20:05:01.691Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "0363afba1986f89ebb8794a4f853213fe55ed259",
+  "commit": "84c9f39347b93b53351ab7e476ac10599d909666",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly TypeScript (128 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI, forkctl and forkctl-mcp each reach 2 parts, and CI is followed because a pull request goes through it. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp.",
+  "derived": "7 parts, mostly TypeScript (131 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 6 doors; the busiest is CI, which reaches 2 parts. It publishes to npm. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp. People import @mcptoolshop/forkctl.",
   "doors": [
     {
       "builds": [
@@ -75,12 +81,12 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 65
+          "files": 67
         },
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 60
+          "files": 61
         }
       ],
       "runs": [
@@ -119,14 +125,15 @@
         "tests/receipt.test.ts",
         "tests/registry.test.ts",
         "tests/rename/",
+        "tests/run-command.test.ts",
         "tests/scan-drift.test.ts",
         "tests/schemas.test.ts",
         "tests/snapshot.test.ts",
         "tests/state.test.ts",
         "tests/sync.test.ts"
       ],
-      "runsCount": 40,
-      "runsMore": 47,
+      "runsCount": 41,
+      "runsMore": 48,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -172,73 +179,23 @@
       "checks": [],
       "checksCount": 0,
       "checksMore": 0,
-      "file": "package.json",
-      "id": "package.json#forkctl",
-      "kind": "command",
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
       "landings": [],
-      "name": "forkctl",
-      "programs": [
-        "git"
-      ],
+      "name": "Release",
       "pushes": false,
-      "reach": [
-        {
-          "boundary": "src",
-          "depth": 0,
-          "files": 65
-        },
-        {
-          "boundary": "tests",
-          "depth": 4,
-          "files": 60
-        }
-      ],
-      "runs": [
-        "src/cli.ts"
-      ],
-      "runsCount": 1,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
       "runsMore": 0,
       "sends": [
-        "changes other repositories through the GitHub API"
+        "publishes to npm"
       ],
       "stages": [],
-      "triggers": []
-    },
-    {
-      "checks": [],
-      "checksCount": 0,
-      "checksMore": 0,
-      "file": "package.json",
-      "id": "package.json#forkctl-mcp",
-      "kind": "command",
-      "landings": [],
-      "name": "forkctl-mcp",
-      "programs": [
-        "git"
-      ],
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "src",
-          "depth": 0,
-          "files": 65
-        },
-        {
-          "boundary": "tests",
-          "depth": 4,
-          "files": 60
-        }
-      ],
-      "runs": [
-        "src/server.ts"
-      ],
-      "runsCount": 1,
-      "runsMore": 0,
-      "sends": [
-        "changes other repositories through the GitHub API"
-      ],
-      "stages": [],
-      "triggers": []
+      "triggers": [
+        "when a release is published",
+        "or by hand"
+      ]
     },
     {
       "checks": [],
@@ -264,28 +221,77 @@
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": [],
-      "unpublished": true
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
+      "id": "package.json#forkctl",
+      "kind": "command",
+      "landings": [],
+      "name": "forkctl",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 67
+        }
+      ],
+      "runs": [
+        "src/cli.ts"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [
+        "changes other repositories through the GitHub API"
+      ],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "package.json",
+      "id": "package.json#forkctl-mcp",
+      "kind": "command",
+      "landings": [],
+      "name": "forkctl-mcp",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 66
+        }
+      ],
+      "runs": [
+        "src/server.ts"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [
+        "changes other repositories through the GitHub API"
+      ],
+      "stages": [],
+      "triggers": []
     }
   ],
   "duplicates": [],
   "duplicatesLead": null,
   "duplicatesNote": [],
-  "edges": [
-    {
-      "from": "tests",
-      "fromTests": true,
-      "to": "src"
-    }
-  ],
+  "edges": [],
   "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-10-05T13:59:08.792Z",
+  "generatedAt": "2026-10-19T12:32:36.703Z",
   "limits": [
     "8 writes and 8 reads use paths built at run time and are not named here.",
     "26 writes and 22 reads go to a path their caller passes, not to this repository.",
     "14 reads go to the directory the command is run in (.env.example, .github/, LICENSE and 4 more places), not to this repository.",
-    "2 commands are built at run time and not followed.",
+    "1 command is built at run time and not followed.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -320,9 +326,9 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 60,
+  "testFiles": 61,
   "testedBy": {
-    "src": 51
+    "src": 52
   },
   "testedCodeParts": 1,
   "unnamedWrites": 8,

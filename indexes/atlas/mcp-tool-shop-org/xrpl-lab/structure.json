@@ -21,7 +21,7 @@
           "path": ".github/workflows/publish-pypi.yml"
         },
         {
-          "hash": "9b7433e8da91612edfb285ee05d3e3ceadd6e8a51d0c4be4768b458d09093405",
+          "hash": "a81bbcf0ad8dccd4f0aed10a1c3b6fd50b4a98b95fbe24f4d72143a473329c15",
           "path": ".github/workflows/release-binaries.yml"
         },
         {
@@ -54,7 +54,27 @@
       "externals": 0,
       "files": [
         {
-          "hash": "f9a4f30cd4fe1304d717fc239ae39f59f5599032b1ddde61bb42666c43466435",
+          "hash": "bc8951f4126eb19f7b02c184e22c98d604269e5998bf3a82497a4f66c5b95d32",
+          "importNames": [
+            {
+              "form": "require",
+              "line": 15,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/npm-launcher",
+              "specifier": "@mcptoolshop/npm-launcher/bin/mcptoolshop-launch.js",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40mcptoolshop/npm-launcher"
+            }
+          ],
           "path": "bin/xrpl-lab.js"
         }
       ],
@@ -321,7 +341,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "426018438ec52b15b055d5836d1dc9b8f8629f9e0cc3a57b45e0e1736611381f",
+          "hash": "b487a45a3bf3909b1109ab1655659a0ea47a1fc9e7b007eac4c608b63214d973",
           "path": "CHANGELOG.md"
         },
         {
@@ -377,15 +397,15 @@
           "path": "codecov.yml"
         },
         {
-          "hash": "7074aa4a84393a56cb9ed6fcc1f5bea6ec612eab2e20efc21a7645cd10a2672b",
+          "hash": "c59a34be8f451c9f1d9c917177289a86cf57c15c13200c725b74e620616f318f",
           "path": "package.json"
         },
         {
-          "hash": "755e562f20a39cebc55448289fb14523fe0d6104779c8a842da8bc60d3a5dbe6",
+          "hash": "d51a451b82fdde0a33e86b4a7a2073c4fb919bb145a72b15f243875850ce8c70",
           "path": "pyproject.toml"
         },
         {
-          "hash": "f34bec67d8adebc6182eb6c420d7fde65299708a3e2574c2332f81ed0ad79753",
+          "hash": "0fb2c24c23d189066d3b62ee3e56468c9bc6b173658c74bb43a9c56d9c67c361",
           "path": "uv.lock"
         },
         {
@@ -483,6 +503,58 @@
       "files": [
         {
           "hash": "7ae5c4ec9645b9c5f45c3c9385013dfbebfa93caa96384459f25028a1c324c44",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/astro",
+              "specifier": "astro/config",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40tailwindcss/vite",
+              "specifier": "@tailwindcss/vite",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40tailwindcss/vite"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/astro"
+            }
+          ],
           "path": "site/astro.config.mjs"
         },
         {
@@ -500,6 +572,38 @@
         {
           "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "docsLoader"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/loaders",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "docsSchema"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/schema",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            }
+          ],
           "path": "site/src/content.config.ts"
         },
         {
@@ -601,8 +705,34 @@
         },
         {
           "hash": "b5307aeebce2890dad419acf9b1141ead5be9ebda4e2a73f6abc3707dba47d1b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "site/src/lib/artifacts-panels.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "site/src/lib/artifacts-panels.test.ts",
           "testFramework": "vitest"
@@ -628,8 +758,40 @@
         },
         {
           "hash": "91dd2b6ab18ce9b8b626da88ca84a3494005ef5ef5295dcc01349c6d10d1bae4",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "site/src/lib/dashboard-ui.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "site/src/lib/dashboard-ui.test.ts",
           "testFramework": "vitest"
@@ -673,6 +835,32 @@
         },
         {
           "hash": "914479376d1fa029124a292e14b1ab9f0c5cf488257e6cc50ea71bb81cf22e65",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/BaseLayout.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Section.astro",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "site/src/styles/global.css",
             "site/src/site-config.ts"
@@ -680,6 +868,12 @@
           "importsFiles": [
             "site/src/site-config.ts",
             "site/src/styles/global.css"
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
           ],
           "path": "site/src/pages/404.astro"
         },
@@ -764,6 +958,92 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/BaseLayout.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Hero.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Section.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/FeatureGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/DataTable.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/CodeCardGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/ApiList.astro",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "site/src/styles/global.css",
             "site/src/site-config.ts"
@@ -772,13 +1052,40 @@
             "site/src/site-config.ts",
             "site/src/styles/global.css"
           ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
           "constantOnly": true,
           "hash": "6bf261b32cbdcd9ffabe45363ad7f25ad15be9a56ec474196f7ce16fc5e6e227",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "SiteConfig",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "site/src/data/curriculum.json"
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
           ],
           "path": "site/src/site-config.ts"
         },
@@ -1216,6 +1523,10 @@
             "xrpl_lab/curriculum_manifest.py"
           ],
           "path": "tests/test_docs_drift.py",
+          "selfRun": {
+            "in": "tests",
+            "run": "python test_docs_drift.py"
+          },
           "testFramework": "pytest"
         },
         {
@@ -1873,7 +2184,7 @@
             "client",
             "client_with_module"
           ],
-          "hash": "e5d82cca282b80bb504eef23eaf0d0ee119f218577d0d3abdb758796d7eadae1",
+          "hash": "9d6a33332ad04de7d5a1ab923a55ebfd20c99f723c2c181674dd51cb8f76867d",
           "importOrder": [
             "xrpl_lab/api/runner_ws.py",
             "xrpl_lab/modules.py",
@@ -1890,7 +2201,7 @@
           "testFramework": "pytest"
         },
         {
-          "hash": "126148f57e5ec1b700cab8d6ee1ff9f50f861a5e357b08a4a220725170a9333c",
+          "hash": "cdc4307548c1e905a8937af5025101e26d86df7e792c1efb5650039d27c42514",
           "importOrder": [
             "xrpl_lab/errors.py",
             "xrpl_lab/state.py",
@@ -2030,7 +2341,7 @@
             "test_completion_save_failure_no_path_leak_and_still_completes",
             "test_recovery_save_failure_no_path_leak_and_graceful"
           ],
-          "hash": "ca2f818608dce755e3124190f1eb7b8c6c1bf5923f55a467b396916d983973e8",
+          "hash": "e3d8301d904c676b1d3a571b62d36bfbb7940f791e9a114a4ee832d564a8c4bf",
           "importOrder": [
             "xrpl_lab/modules.py",
             "xrpl_lab/state.py",
@@ -2546,7 +2857,7 @@
             "test_strips_userinfo_and_query_credentials_from_embedded_url",
             "test_strips_userinfo_only_url_with_no_password"
           ],
-          "hash": "052f9bc90a0d230c1b997d90ba5aa9d13319cb088dfb87590a6d03739c30c4d7",
+          "hash": "52a0ecd4f855377460d0508ded1bbc1ffa98b5cafb116733cbaae1dffb730c34",
           "importsFiles": [
             "xrpl_lab/api/runner_ws.py"
           ],
@@ -3151,7 +3462,7 @@
               "line": 7
             }
           ],
-          "hash": "d8ce5663695aeb9b3069f0af46ff0d9c92789dda64d13026647cc479204de62a",
+          "hash": "6f78c0bc7be002f3ac7d090bf29a32b315b3eab00d4d7fde69d4452eee792393",
           "path": "xrpl_lab/__init__.py"
         },
         {
@@ -4187,7 +4498,7 @@
               "line": 1320
             }
           ],
-          "hash": "ce60a4e6648295fefdb7930c7cf044e057b9ebd27ca960784920fb1d90583de8",
+          "hash": "d9400dbcbc07ec9e36c5fc42ae85616a84e84181d420e90ddd562f815ea455e6",
           "importOrder": [
             "xrpl_lab/modules.py",
             "xrpl_lab/reporting.py",
@@ -10823,7 +11134,7 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "3d8a3045a246e9190982a8df4e1773773892c3ec",
+    "commit": "aa97f4c4698f7c49e7aee181c26adbea4dc59b7f",
     "tracked": 285
   },
   "landings": [
@@ -11470,7 +11781,119 @@
       "writers": []
     }
   ],
+  "manifests": [
+    {
+      "name": "@mcptoolshop/xrpl-lab",
+      "path": "package.json",
+      "role": "root",
+      "roleFrom": "the root manifest",
+      "version": "2.5.1"
+    },
+    {
+      "name": "site",
+      "path": "site/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door CI, job site-test, step Install site dependencies: npm ci in site",
+      "version": "0.0.1"
+    }
+  ],
   "overlaps": [],
+  "packageDependencies": [
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@mcptoolshop/npm-launcher",
+      "purl": "pkg:npm/%40mcptoolshop/npm-launcher",
+      "range": "^1.0.0",
+      "unknown": "no lockfile",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@astrojs/starlight",
+      "purl": "pkg:npm/%40astrojs/starlight",
+      "range": "^0.37.6",
+      "version": "0.37.6",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@mcptoolshop/site-theme",
+      "purl": "pkg:npm/%40mcptoolshop/site-theme",
+      "range": "^1.1.0",
+      "version": "1.3.1",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@tailwindcss/vite",
+      "purl": "pkg:npm/%40tailwindcss/vite",
+      "range": "^4.2.0",
+      "version": "4.2.1",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "astro",
+      "purl": "pkg:npm/astro",
+      "range": "^5.17.0",
+      "version": "5.18.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "tailwindcss",
+      "purl": "pkg:npm/tailwindcss",
+      "range": "^4.2.0",
+      "version": "4.2.1",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "jsdom",
+      "purl": "pkg:npm/jsdom",
+      "range": "^26.1.0",
+      "version": "26.1.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "vitest",
+      "purl": "pkg:npm/vitest",
+      "range": "^3.2.4",
+      "version": "3.2.7",
+      "versionFrom": "site/package-lock.json"
+    }
+  ],
+  "packagesPublished": [
+    {
+      "doors": [
+        "Release"
+      ],
+      "how": "named by the publish",
+      "manifest": "package.json",
+      "name": "@mcptoolshop/xrpl-lab",
+      "purl": "pkg:npm/%40mcptoolshop/xrpl-lab",
+      "repository": "https://github.com/mcp-tool-shop-org/xrpl-lab",
+      "version": "2.5.1"
+    }
+  ],
   "submodules": [],
   "symlinks": [],
   "testFiles": 127,

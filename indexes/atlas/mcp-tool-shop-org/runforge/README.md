@@ -1,6 +1,6 @@
 # runforge: how it works
 
-Mapped at 2026-10-12 from commit ca3aae2 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit ca3aae2 by Atlas 1.26.0.
 
 ## What this is
 
@@ -84,7 +84,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .cargo/, .github/, docs/, packaging/, the repository root, samples/ and site/; 3 writes with paths built at run time may land here.
+People write .cargo/, .github/, docs/, the repository root and site/. The data in packaging/ and samples/ is written by no code this map names; 3 writes with paths built at run time may land here.
 
 ## Where to start
 

@@ -1,14 +1,14 @@
 # mcp-voice-soundboard: how it works
 
-Mapped at 2026-10-05 from commit 86fe513 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 0348ea0 by Atlas 1.26.0.
 
 ## What this is
 
 14 parts, mostly Python (209 files), TypeScript (89), CSS (2), Astro (1) and JavaScript (1). Work enters through 9 doors; CI, Publish to GHCR, Publish to npm, @mcptoolshop/voice-soundboard-mcp and voice-soundboard-mcp each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to PyPI, @mcptoolshop/voice-soundboard-core (packages/core) and @mcptoolshop/voice-soundboard-mcp (packages/mcp-server) to npm, and a container image. It deploys a site to GitHub Pages. People run voice-soundboard and voice-soundboard-mcp. People import @mcptoolshop/voice-soundboard-core and @mcptoolshop/voice-soundboard-mcp.
 
-## What changed since 2026-10-01 (6cba5e4)
+## What changed since 2026-10-15 (1621d92)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-10-15; 4 files added and 6 changed content.
 
 ## What comes in
 
@@ -84,7 +84,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .claude-plugin/, .github/, assets/, docs/, the repository root, scripts/, site/ and skills/; 6 writes with paths built at run time may land here.
+People write .github/, docs/, the repository root, scripts/, site/ and skills/. The data in .claude-plugin/ and assets/ is written by no code this map names; 6 writes with paths built at run time may land here.
 
 ## Where to start
 

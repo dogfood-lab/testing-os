@@ -1,6 +1,6 @@
 # bytefit: how it works
 
-Mapped at 2026-10-05 from commit 478a32d by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 478a32d by Atlas 1.26.0.
 
 ## What this is
 
@@ -71,7 +71,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/, the repository root and site/. Nothing in this repository writes to them.
+People write .github/, docs/, the repository root and site/. Nothing in this repository writes to them. The data in assets/ is written by no code this map names.
 
 ## Where to start
 

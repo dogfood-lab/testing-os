@@ -1264,6 +1264,58 @@
       "files": [
         {
           "hash": "a567e70c322837a61b9e6e379c4f9ec27f09fadfbf0be4bf069d6cb1955d4ccb",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/astro",
+              "specifier": "astro/config",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40tailwindcss/vite",
+              "specifier": "@tailwindcss/vite",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40tailwindcss/vite"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/astro"
+            }
+          ],
           "path": "site/astro.config.mjs"
         },
         {
@@ -1277,6 +1329,38 @@
         {
           "constantOnly": true,
           "hash": "34b036603793e4eb4bfad87e1fd7f851a84fef6a762257a3b2dc1411983d26df",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "docsLoader"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/loaders",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "docsSchema"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/schema",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            }
+          ],
           "path": "site/src/content.config.ts"
         },
         {
@@ -1297,6 +1381,68 @@
         },
         {
           "hash": "e71929be4c6d9faa255d0cc879051045d1664e8d69160b870a622443c6902c60",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/BaseLayout.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Hero.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Section.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/FeatureGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/CodeCardGrid.astro",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "site/src/styles/global.css",
             "site/src/site-config.ts"
@@ -1305,11 +1451,38 @@
             "site/src/site-config.ts",
             "site/src/styles/global.css"
           ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
           "constantOnly": true,
           "hash": "6ca4ecd61fbdd27648ea38952aafb316af95ae3a2f26b24c6efc5ac16bc084a8",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "SiteConfig",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/types",
+              "typeOnly": true
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/site-config.ts"
         },
         {
@@ -1855,7 +2028,70 @@
       "writers": []
     }
   ],
+  "manifests": [
+    {
+      "name": "site",
+      "path": "site/package.json",
+      "private": true,
+      "role": "other",
+      "roleFrom": "no workspace lists it and no install step Atlas reads runs in its directory",
+      "version": "0.0.1"
+    }
+  ],
   "overlaps": [],
+  "packageDependencies": [
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@astrojs/starlight",
+      "purl": "pkg:npm/%40astrojs/starlight",
+      "range": "^0.42.1",
+      "version": "0.42.1",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@mcptoolshop/site-theme",
+      "purl": "pkg:npm/%40mcptoolshop/site-theme",
+      "range": "^2.2.0",
+      "version": "2.2.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@tailwindcss/vite",
+      "purl": "pkg:npm/%40tailwindcss/vite",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "astro",
+      "purl": "pkg:npm/astro",
+      "range": "^7.3.3",
+      "version": "7.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "tailwindcss",
+      "purl": "pkg:npm/tailwindcss",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    }
+  ],
+  "packagesPublished": [],
   "submodules": [],
   "symlinks": [],
   "testFiles": 18,

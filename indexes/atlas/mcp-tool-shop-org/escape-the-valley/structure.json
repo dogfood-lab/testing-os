@@ -109,6 +109,26 @@
       "files": [
         {
           "hash": "e9981ce44adf519c71c83e505d7154096edb851d57a92bec20583306ea19eeb9",
+          "importNames": [
+            {
+              "form": "require",
+              "line": 22,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/npm-launcher",
+              "specifier": "@mcptoolshop/npm-launcher/bin/mcptoolshop-launch.js",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40mcptoolshop/npm-launcher"
+            }
+          ],
           "path": "bin/escape-the-valley.js"
         }
       ],
@@ -424,6 +444,58 @@
       "files": [
         {
           "hash": "03efe6f926097b72968adbda4e86b82ae562008d0dd83e84a59fe5bc7e4ee265",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/astro",
+              "specifier": "astro/config",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40tailwindcss/vite",
+              "specifier": "@tailwindcss/vite",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40tailwindcss/vite"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/astro"
+            }
+          ],
           "path": "site/astro.config.mjs"
         },
         {
@@ -633,6 +705,38 @@
         {
           "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "docsLoader"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/loaders",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "docsSchema"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/schema",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            }
+          ],
           "path": "site/src/content.config.ts"
         },
         {
@@ -674,6 +778,27 @@
         {
           "constantOnly": true,
           "hash": "26f136ef997b3165e0278b1504f08d96398057f49a69546ea4a74395ff115238",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "SiteConfig",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme",
+              "typeOnly": true
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/site-config.ts"
         },
         {
@@ -6714,7 +6839,99 @@
       "writers": []
     }
   ],
+  "manifests": [
+    {
+      "name": "@mcptoolshop/escape-the-valley",
+      "path": "package.json",
+      "role": "root",
+      "roleFrom": "the root manifest",
+      "version": "1.3.0"
+    },
+    {
+      "name": "site",
+      "path": "site/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door Deploy site to GitHub Pages, job build, step Install site dependencies: npm ci in site",
+      "version": "0.0.1"
+    }
+  ],
   "overlaps": [],
+  "packageDependencies": [
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@mcptoolshop/npm-launcher",
+      "purl": "pkg:npm/%40mcptoolshop/npm-launcher",
+      "range": "^1.0.0",
+      "unknown": "no lockfile",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@astrojs/starlight",
+      "purl": "pkg:npm/%40astrojs/starlight",
+      "range": "^0.42.1",
+      "version": "0.42.1",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@mcptoolshop/site-theme",
+      "purl": "pkg:npm/%40mcptoolshop/site-theme",
+      "range": "^2.2.0",
+      "version": "2.2.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@tailwindcss/vite",
+      "purl": "pkg:npm/%40tailwindcss/vite",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "astro",
+      "purl": "pkg:npm/astro",
+      "range": "^7.3.3",
+      "version": "7.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "tailwindcss",
+      "purl": "pkg:npm/tailwindcss",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    }
+  ],
+  "packagesPublished": [
+    {
+      "doors": [
+        "Release"
+      ],
+      "how": "named by the publish",
+      "manifest": "package.json",
+      "name": "@mcptoolshop/escape-the-valley",
+      "purl": "pkg:npm/%40mcptoolshop/escape-the-valley",
+      "repository": "https://github.com/mcp-tool-shop-org/escape-the-valley",
+      "version": "1.3.0"
+    }
+  ],
   "submodules": [],
   "symlinks": [],
   "testFiles": 26,

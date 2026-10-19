@@ -1,14 +1,14 @@
 # tool-compass: how it works
 
-Mapped at 2026-10-05 from commit 91250a2 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit fc75dc8 by Atlas 1.26.0.
 
 ## What this is
 
 8 parts, mostly Python (46 files), JavaScript (4), shell (4), CSS (2), TypeScript (2) and Astro (1). Work enters through 7 doors; the busiest is CI, which reaches 5 parts. It publishes to PyPI, @mcptoolshop/tool-compass to npm, and a container image. It deploys a site to GitHub Pages. People run tool-compass and tool-compass-ui.
 
-## What changed since 2026-10-01 (e6e5806)
+## What changed since 2026-10-15 (5b2768d)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-10-15; 6 files changed content.
 
 ## What comes in
 
@@ -78,12 +78,13 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
+- **docs/** is written by dependabot[bot], which added every file in it.
 - **npm/bin/tool-compass.js** has a block written by scripts/sync-version.mjs.
 - **npm/package.json** has a block written by scripts/sync-version.mjs.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/ and site/; 11 writes with paths built at run time may land here.
+People write .github/ and site/. The data in assets/ is written by no code this map names; 11 writes with paths built at run time may land here.
 
 ## Where to start
 

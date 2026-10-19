@@ -1,6 +1,6 @@
 # site-theme: how it works
 
-Mapped at 2026-10-05 from commit 1fac977 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 1fac977 by Atlas 1.26.0.
 
 ## What this is
 
@@ -87,7 +87,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .claude/, .github/, assets/, docs/, receipts/, the repository root, site/ and templates/; 5 writes with paths built at run time may land here.
+People write .claude/, .github/, docs/, receipts/, the repository root and site/. The data in assets/ and templates/ is written by no code this map names; 5 writes with paths built at run time may land here.
 
 ## Where to start
 

@@ -1,16 +1,15 @@
 # role-os: how it works
 
-Mapped at 2026-10-12 from commit ce91be8 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 43e187e by Atlas 1.26.0.
 
 ## What this is
 
 15 parts, mostly JavaScript (170 files), Python (30), Astro (2), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run roleos.
 
-## What changed since 2026-10-08 (ced8f13)
+## What changed since 2026-10-14 (bd32c74)
 
-- starter-pack/schemas/recipe-card.md is now read by starter-pack/examples/auditor-recipe-card.json.
 - test/live-tool-contracts.test.mjs is now read by tools/conformance-dataset/live-tools/RECEIPT.md.
-- 5 files added and 13 changed content, across 3 parts.
+- No file changed.
 
 ## What comes in
 
@@ -86,7 +85,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, .role-os/, assets/, design/, examples/, the repository root, site/, specs/ and starter-pack/; 16 writes with paths built at run time may land here.
+People write .github/, design/, examples/, the repository root, site/, specs/ and starter-pack/. The data in .role-os/ and assets/ is written by no code this map names; 16 writes with paths built at run time may land here.
 
 ## Where to start
 

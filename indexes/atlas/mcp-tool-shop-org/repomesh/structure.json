@@ -17,35 +17,35 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "4f8a3a95179e5cfb57a5f19601d9e232df5a81a8bf037e3e5ca51834cf530735",
+          "hash": "c35131798cb646fd79f7adffa758ffe059bbaeca135a2b82e5f58d7d683e3d8f",
           "path": ".github/workflows/anchor-xrpl.yml"
         },
         {
-          "hash": "a200e0127b8e7f66bf09e5d2b80f2a8e1412d9a4553193cd03ce12f23711ecdf",
+          "hash": "4836a224d5dd3396cd9f024690ceae1e8a43ac3023084de2ecbe09d33c4ee950",
           "path": ".github/workflows/attestor-ci.yml"
         },
         {
-          "hash": "8d8e26150866929c2024e45c1cf3c5337895cd89042fea2fa070ffcb0d96aa12",
+          "hash": "9a710ad81c175e23f461d07841f2ffc1b15ebafec281f79d6e814e808bdf9fa0",
           "path": ".github/workflows/ledger-ci.yml"
         },
         {
-          "hash": "1ac688a12040a4983f480d5a1de8dcba70c602402b2c36737ba113a322b3faf8",
+          "hash": "ff5d680357ada12643354505ac6489da4bdced4533d280bb16a507e859a4bbf7",
           "path": ".github/workflows/pages-ci.yml"
         },
         {
-          "hash": "39ac2dc34739758f9c466e6d9ba1b6a1d0ce042f7a52da9060e6787e2dd7fec3",
+          "hash": "ab071a062ca93c04452e2019d1150bbaae62b56224174d0b11670f50816f7bc7",
           "path": ".github/workflows/registry-ci.yml"
         },
         {
-          "hash": "0020094bdc5678e459cd6674eb9209614420f770c5dc95acbba2d8cb7eb6d471",
+          "hash": "942bb2ef16d6823eee975915d6407a836275ad6c3115e652b7fc8ecbb76202f0",
           "path": ".github/workflows/release.yml"
         },
         {
-          "hash": "fa82eeea736248420dc6ad386adf33964f854004bcc19c66548fb2e3932f3541",
+          "hash": "cd486db0045f022ebbb9d7e4e9bf8f96d2d42da816b2c683dd7a81969d926b3e",
           "path": ".github/workflows/repomesh-broadcast.yml"
         },
         {
-          "hash": "e6f393724b0bb2190fe27f54524220458a89b7eb545e8d6b1d2ec5b5aa16a449",
+          "hash": "c40236f7e5fc1447c616fb1db05f33ad6a68457dcf3838f01fe98d800d6d2a14",
           "path": ".github/workflows/xrpl-watch.yml"
         }
       ],
@@ -76,7 +76,7 @@
           "path": "anchor/xrpl/manifests/2026-02-28.json"
         },
         {
-          "hash": "d66059e7d71521acee1a09f09ca4bb3d95f2198cb454d6b6267631f238d234d8",
+          "hash": "baae9b5a8355290599426f4c89e1be0bb768ad90ab84542b39b7376f489b90cd",
           "path": "anchor/xrpl/manifests/all.json"
         },
         {
@@ -94,6 +94,10 @@
         {
           "hash": "6c65186a309f68d3c1a8662ecb70fd117c17f262f34ddde5870480a2a61f0a58",
           "path": "anchor/xrpl/manifests/since-2026-09-24T03-56-02.711Z.json"
+        },
+        {
+          "hash": "db143f19cf698e91533facbd0881571e325e494bdef755692fcba7e7409eb0dc",
+          "path": "anchor/xrpl/manifests/since-2026-10-02T04-50-16.447Z.json"
         },
         {
           "hash": "a29aef08203051802082962f1122e23ce5e5f2ec52a8cdcfa492b153419398d3",
@@ -281,8 +285,28 @@
             }
           ],
           "hash": "c7ccc877a3475486d0b6dd9c2360b56361749da34969dc9a6331dfc2c8f392fa",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 35,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/xrpl",
+              "specifier": "xrpl",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/repomesh-cli/src/trusted-anchor-accounts.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "anchor/xrpl/package.json",
+              "purl": "pkg:npm/xrpl"
+            }
           ],
           "path": "anchor/xrpl/scripts/post-anchor.mjs"
         },
@@ -329,9 +353,29 @@
             }
           ],
           "hash": "e6d777cc7fc7d698fc8eede1ec74103c2ef7bf134f373c5eef5146dcaf186bbf",
+          "importNames": [
+            {
+              "form": "dynamic",
+              "line": 170,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/xrpl",
+              "specifier": "xrpl",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "anchor/xrpl/scripts/merkle.mjs",
             "packages/repomesh-cli/src/trusted-anchor-accounts.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "anchor/xrpl/package.json",
+              "purl": "pkg:npm/xrpl"
+            }
           ],
           "path": "anchor/xrpl/scripts/verify-anchor.mjs"
         },
@@ -370,8 +414,28 @@
             }
           ],
           "hash": "5723cf55e46a2dc7db3b5e19ade1fdfc902e0543c5da9dceb05dcb46938ec7b9",
+          "importNames": [
+            {
+              "form": "dynamic",
+              "line": 42,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/xrpl",
+              "specifier": "xrpl",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/repomesh-cli/src/trusted-anchor-accounts.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "anchor/xrpl/package.json",
+              "purl": "pkg:npm/xrpl"
+            }
           ],
           "path": "anchor/xrpl/scripts/watch.mjs",
           "sequences": [
@@ -986,7 +1050,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "2c3bc254a5830fd724a72085c75753a580931ffcaf6ff0c8fdf6900d7ca79b8c",
+          "hash": "af70c93e4ca043abda890bab81402e55ccc84c3527c422faedf738687a6bee62",
           "path": "ledger/events/events.jsonl"
         },
         {
@@ -1026,7 +1090,7 @@
           "path": "ledger/nodes/mcp-tool-shop-org/shipcheck/repomesh.profile.json"
         },
         {
-          "hash": "ecd4e9a515ec274efb95cc1201e8a6d869b8116bbb33b9631fa2e0c515262654",
+          "hash": "9c755c7dd98bb89c88b4917b6ef6108e9e71ef5aac4c02d0e825d66d45352c4c",
           "path": "ledger/package-lock.json"
         },
         {
@@ -1097,11 +1161,47 @@
             }
           ],
           "hash": "bd21c7dc21dd58c4b9d6e81ea3374b44a485e7dc10122922443259330fef506b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 22,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv",
+              "specifier": "ajv/dist/2020.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 23,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv-formats",
+              "specifier": "ajv-formats",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "ledger/scripts/canonicalize.mjs",
             "verifiers/lib/anchor-notes.mjs",
             "verifiers/lib/key-window.mjs",
             "verifiers/lib/policy.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "ledger/package.json",
+              "purl": "pkg:npm/ajv"
+            },
+            {
+              "manifest": "ledger/package.json",
+              "purl": "pkg:npm/ajv-formats"
+            }
           ],
           "path": "ledger/scripts/validate-ledger.mjs",
           "sequences": [
@@ -1312,9 +1412,45 @@
         },
         {
           "hash": "c9a2c6191505ac1886a9f37aaa59dec4516ad0a41b1db3adf7ed4e29552fc170",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 26,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv",
+              "specifier": "ajv/dist/2020.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 27,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv-formats",
+              "specifier": "ajv-formats",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "ledger/scripts/canonicalize.mjs",
             "verifiers/lib/policy.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "ledger/package.json",
+              "purl": "pkg:npm/ajv"
+            },
+            {
+              "manifest": "ledger/package.json",
+              "purl": "pkg:npm/ajv-formats"
+            }
           ],
           "path": "ledger/tests/verifier-policy-contract.test.mjs",
           "spawns": [
@@ -1600,8 +1736,44 @@
         },
         {
           "hash": "1f31e6ae43217b81a6dec42e418809a680d45f6566c14b5e8efca7c2e0a3320e",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 21,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv",
+              "specifier": "ajv/dist/2020.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 22,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv-formats",
+              "specifier": "ajv-formats",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "policy/scripts/check-policy.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": null,
+              "purl": "pkg:npm/ajv"
+            },
+            {
+              "manifest": null,
+              "purl": "pkg:npm/ajv-formats"
+            }
           ],
           "path": "policy/tests/violation-event-schema.test.mjs",
           "testFramework": "node --test"
@@ -1684,7 +1856,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "28823b0f31b23bf6403759c36514db2a02da7c71d6603e448771c363f3dd9629",
+          "hash": "a986d34a235e72be694ef961aaf3dea2b1aa6929561477fd6d2d59908f1d092e",
           "path": "registry/anchors.json"
         },
         {
@@ -1696,7 +1868,7 @@
           "path": "registry/badges/mcp-tool-shop-org/repomesh/assurance.svg"
         },
         {
-          "hash": "0b2f2022026620650080cb59cdd77695e2df112d0916501d9b7c0bdd9720f71a",
+          "hash": "7d1c5b9c113c88fe64a3c883bc7a6a943b4fd83f04b64db0767620fb1bbb9d65",
           "path": "registry/badges/mcp-tool-shop-org/repomesh/integrity.svg"
         },
         {
@@ -2217,7 +2389,7 @@
           "path": "registry/scripts/verify-trust.mjs"
         },
         {
-          "hash": "7f78707735baa05d5e00fc9174f26cbaf53d67e1873f5e150257dc4349f7a536",
+          "hash": "06d2992bcb6df464e38d84367570c3bbd6a96d58874d364970dcd2b62e1b0caf",
           "path": "registry/snippets/mcp-tool-shop-org/repomesh.md"
         },
         {
@@ -2341,11 +2513,11 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "0c12ff489731c054e6a75c5ffa291b4bc29ee18a2329ca73a4dac18aa1958db5",
+          "hash": "a9820506668d552879b3952169ecfd71134964bf9ceba84accf3f4b72ee24640",
           "path": "registry/trust.json"
         },
         {
-          "hash": "ffcb9ece90fbd6c3dc69e42ee59272d59c434ebe34116d0360d694e8d8de561b",
+          "hash": "cbf8c5b568cf783cbc797b5436bb3191750a0fc0e26e915801443e193610a4d9",
           "path": "registry/verifiers.json"
         }
       ],
@@ -2385,7 +2557,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "217fffd2fabbf9fa90e1a52c5ffd11c89f7c895577b74ea551f6d74accbd4e9e",
+          "hash": "3ed10fcc47ed926f2903c12a24922529d00ce5e304f29f120c04511d3af2b580",
           "path": "packages/repomesh-cli/CHANGELOG.md"
         },
         {
@@ -2397,7 +2569,7 @@
           "path": "packages/repomesh-cli/README.md"
         },
         {
-          "hash": "09aa4f3cfb9f1d81192d7f6798d326a6fad0ce508cb8be64c7b7fef7f737b4f8",
+          "hash": "8d39b87bcdcdb7bc2aeebb3d0f5c456987dfc6f5a11481e5f2e717ef55ee1454",
           "path": "packages/repomesh-cli/package.json"
         },
         {
@@ -2441,6 +2613,23 @@
         },
         {
           "hash": "6e09e19ce85533cb6ff995d2003485e8c34bba3b3e5e3a7e95dada34449f99b1",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "Command"
+                },
+                {
+                  "name": "Option"
+                }
+              ],
+              "purl": "pkg:npm/commander",
+              "specifier": "commander",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/repomesh-cli/src/mode.mjs",
             "packages/repomesh-cli/src/remote-defaults.mjs",
@@ -2463,6 +2652,12 @@
             "packages/repomesh-cli/src/verify/verify-anchor.mjs",
             "packages/repomesh-cli/src/verify/verify-release.mjs"
           ],
+          "packages": [
+            {
+              "manifest": "packages/repomesh-cli/package.json",
+              "purl": "pkg:npm/commander"
+            }
+          ],
           "path": "packages/repomesh-cli/src/cli.mjs"
         },
         {
@@ -2477,6 +2672,42 @@
             }
           ],
           "hash": "1019878a29a7a0c97f631a7f54827b556c8fa83af6a2d260249d2b102888e491",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv",
+              "specifier": "ajv/dist/2020.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv-formats",
+              "specifier": "ajv-formats",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "packages/repomesh-cli/package.json",
+              "purl": "pkg:npm/ajv"
+            },
+            {
+              "manifest": "packages/repomesh-cli/package.json",
+              "purl": "pkg:npm/ajv-formats"
+            }
+          ],
           "path": "packages/repomesh-cli/src/doctor.mjs"
         },
         {
@@ -3051,6 +3282,20 @@
             }
           ],
           "hash": "646dd8e9eb52608fbe82dc1ba13b3ca316d43c8852a86b88ba01945a58124761",
+          "importNames": [
+            {
+              "form": "dynamic",
+              "line": 72,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/xrpl",
+              "specifier": "xrpl",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/repomesh-cli/src/mode.mjs",
             "packages/repomesh-cli/src/http.mjs",
@@ -3070,6 +3315,12 @@
             "packages/repomesh-cli/src/verify/canonicalize.mjs",
             "packages/repomesh-cli/src/verify/merkle.mjs",
             "packages/repomesh-cli/src/verify/safe-json.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/repomesh-cli/package.json",
+              "purl": "pkg:npm/xrpl"
+            }
           ],
           "path": "packages/repomesh-cli/src/verify/verify-anchor.mjs"
         },
@@ -3340,7 +3591,7 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "06b2e305f659e7865da1f61468e45fa1adddca3847d4cc115950881658502471",
+          "hash": "4123b6c01ce38efd0c4dbf897847d6107be41fc48497b8819d7cee8d69aebbd6",
           "names": [
             "packages/repomesh-cli/src/init.mjs",
             "packages/repomesh-cli/src/key/rotate-revoke.mjs"
@@ -3580,7 +3831,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "96415f3f89093867d590347f3460741c05956fb857335dc3e1ac2a663f078e22",
+          "hash": "74b4843d65ec82655e3b20286d599b738c18ad547ef61305e3ecc3404ee9b6c8",
           "path": "CHANGELOG.md"
         },
         {
@@ -3640,7 +3891,7 @@
           "path": "node.json"
         },
         {
-          "hash": "e9400026ed1875f4d867f68565d6fc4f51e88ddb6312a9cfb8b665dad443fe68",
+          "hash": "5496ac7dbdf0a3fe7be5a8c9bd0057d1a74de4be246c49eda58aecfdd06db8fd",
           "path": "package-lock.json"
         },
         {
@@ -3734,19 +3985,103 @@
       "files": [
         {
           "hash": "213346f9eeac406dcdd4195f1aa76fda5b7a8959b356e92b09ba7217e8baa545",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/astro",
+              "specifier": "astro/config",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40tailwindcss/vite",
+              "specifier": "@tailwindcss/vite",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40tailwindcss/vite"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/astro"
+            }
+          ],
           "path": "site/astro.config.mjs"
         },
         {
-          "hash": "0607a19c4f60b635244a906c7ad2424359b50e20c4a83bc140f202abce4a941e",
+          "hash": "8e47fded691d48332579e9c1ec05c6bcbd9c56b48e1c5310875a7197174be51c",
           "path": "site/package-lock.json"
         },
         {
-          "hash": "17ed487ab5049bb52f8c5e35f77f21be7da639f1fb6a3fa70e9b02ffabfe7be6",
+          "hash": "8624db4a3fbf5f3aa0c73f70cd2c8807506009900356bb3b418b883ce3b34035",
           "path": "site/package.json"
         },
         {
           "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "docsLoader"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/loaders",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "docsSchema"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/schema",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            }
+          ],
           "path": "site/src/content.config.ts"
         },
         {
@@ -3779,6 +4114,92 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/BaseLayout.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Hero.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Section.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/FeatureGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/DataTable.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/CodeCardGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/ApiList.astro",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "site/src/styles/global.css",
             "site/src/site-config.ts"
@@ -3787,11 +4208,38 @@
             "site/src/site-config.ts",
             "site/src/styles/global.css"
           ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
           "constantOnly": true,
           "hash": "2eb5158316842d9357ef3b5c476e38b90736f3b1f9e86f936f5efe6f92664c32",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "SiteConfig",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme",
+              "typeOnly": true
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/site-config.ts"
         },
         {
@@ -3886,9 +4334,45 @@
             }
           ],
           "hash": "9c3c20ce4235519508e90a4506bb08409567601cae9cc6ffdbab40832830f245",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 20,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv",
+              "specifier": "ajv/dist/2020.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 21,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv-formats",
+              "specifier": "ajv-formats",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "tools/keygen.mjs",
             "tools/register-node.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": null,
+              "purl": "pkg:npm/ajv"
+            },
+            {
+              "manifest": null,
+              "purl": "pkg:npm/ajv-formats"
+            }
           ],
           "path": "tools/init-node.mjs"
         },
@@ -3916,6 +4400,42 @@
             }
           ],
           "hash": "fe67488e504b6f7fde8e9d28efa78cf6d3b7f4bd2955fd2485f1e716a6b2ff5d",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 16,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv",
+              "specifier": "ajv/dist/2020.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 17,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv-formats",
+              "specifier": "ajv-formats",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": null,
+              "purl": "pkg:npm/ajv"
+            },
+            {
+              "manifest": null,
+              "purl": "pkg:npm/ajv-formats"
+            }
+          ],
           "path": "tools/join-node.mjs"
         },
         {
@@ -4077,6 +4597,42 @@
         },
         {
           "hash": "1a48cc99c0389fc3dc1c9bc0c98376891be0a8f8b7e6f01da61da4615afb9c7f",
+          "importNames": [
+            {
+              "form": "require",
+              "line": 17,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/ajv",
+              "specifier": "ajv/dist/2020.js",
+              "typeOnly": false
+            },
+            {
+              "form": "require",
+              "line": 18,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/ajv-formats",
+              "specifier": "ajv-formats",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": null,
+              "purl": "pkg:npm/ajv"
+            },
+            {
+              "manifest": null,
+              "purl": "pkg:npm/ajv-formats"
+            }
+          ],
           "path": "tools/tests/event-schema-conditional.test.mjs",
           "testFramework": "node --test"
         },
@@ -4180,7 +4736,33 @@
           "testFramework": "node --test"
         },
         {
-          "hash": "33d141a7875df0061af35635b91f760c2c356cac7ec37be0028b2f4a67c47a7c",
+          "hash": "35be7f97cc7975d685170974b6397cb0ae4679d1f21e3856a1d36b0e514fc8be",
+          "importNames": [
+            {
+              "form": "require",
+              "line": 1465,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/ajv",
+              "specifier": "ajv/dist/2020.js",
+              "typeOnly": false
+            },
+            {
+              "form": "require",
+              "line": 1466,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/ajv-formats",
+              "specifier": "ajv-formats",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "tools/keygen.mjs",
             "anchor/xrpl/scripts/merkle.mjs",
@@ -4194,6 +4776,16 @@
           "names": [
             "pages/build-timeline.mjs",
             "tools/register-node.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": null,
+              "purl": "pkg:npm/ajv"
+            },
+            {
+              "manifest": null,
+              "purl": "pkg:npm/ajv-formats"
+            }
           ],
           "path": "tools/tests/tools.test.mjs",
           "spawns": [
@@ -4310,6 +4902,20 @@
             }
           ],
           "hash": "a143c8655da0a1c9d2709521173e75fa19309691f056dcee001f8ce0e9c4a7cc",
+          "importNames": [
+            {
+              "form": "dynamic",
+              "line": 1024,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/xrpl",
+              "specifier": "xrpl",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "anchor/xrpl/scripts/merkle.mjs",
             "anchor/xrpl/scripts/verify-anchor.mjs",
@@ -4323,6 +4929,12 @@
             "packages/repomesh-cli/src/trusted-anchor-accounts.mjs",
             "verifiers/lib/anchor-notes.mjs",
             "verifiers/lib/key-window.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": null,
+              "purl": "pkg:npm/xrpl"
+            }
           ],
           "path": "tools/verify-release.mjs"
         }
@@ -4711,6 +5323,42 @@
             }
           ],
           "hash": "8ae322906dd487fbf957fe27e667b763199d129e57596b46fd4761eb84ae7cbd",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 12,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv",
+              "specifier": "ajv/dist/2020.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 13,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv-formats",
+              "specifier": "ajv-formats",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "verifiers/package.json",
+              "purl": "pkg:npm/ajv"
+            },
+            {
+              "manifest": "verifiers/package.json",
+              "purl": "pkg:npm/ajv-formats"
+            }
+          ],
           "path": "verifiers/lib/load-overrides.mjs"
         },
         {
@@ -10525,8 +11173,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "877a6d136c6c18bf0bb14a1f8841dd8542ced97f",
-    "tracked": 300
+    "commit": "67079b443f7f17d2e6fb84184bea3d5428fb24cf",
+    "tracked": 301
   },
   "landings": [
     {
@@ -13606,7 +14254,214 @@
       "writers": []
     }
   ],
+  "manifests": [
+    {
+      "name": "repomesh-xrpl-anchor",
+      "path": "anchor/xrpl/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door anchor-xrpl, job anchor, step Build anchor image: npm ci in anchor/xrpl",
+      "version": "0.1.0"
+    },
+    {
+      "name": "repomesh-attestor",
+      "path": "attestor/package.json",
+      "private": true,
+      "role": "other",
+      "roleFrom": "no workspace lists it and no install step Atlas reads runs in its directory"
+    },
+    {
+      "name": "repomesh-ledger",
+      "path": "ledger/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door ledger-ci, job validate-ledger, step Install ledger deps: npm ci in ledger"
+    },
+    {
+      "path": "package.json",
+      "private": true,
+      "role": "root",
+      "roleFrom": "the root manifest"
+    },
+    {
+      "name": "@mcptoolshop/repomesh",
+      "path": "packages/repomesh-cli/package.json",
+      "role": "member",
+      "roleFrom": "workspaces in package.json",
+      "version": "2.3.3"
+    },
+    {
+      "name": "site",
+      "path": "site/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door pages-ci, job build-and-deploy, step Install site dependencies: npm ci in site",
+      "version": "0.0.1"
+    },
+    {
+      "name": "repomesh-verifiers",
+      "path": "verifiers/package.json",
+      "private": true,
+      "role": "other",
+      "roleFrom": "no workspace lists it and no install step Atlas reads runs in its directory"
+    }
+  ],
   "overlaps": [],
+  "packageDependencies": [
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "anchor/xrpl/package.json",
+      "name": "xrpl",
+      "purl": "pkg:npm/xrpl",
+      "range": "^5.3.0",
+      "version": "5.3.0",
+      "versionFrom": "anchor/xrpl/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "ledger/package.json",
+      "name": "ajv",
+      "purl": "pkg:npm/ajv",
+      "range": "^8.17.1",
+      "version": "8.18.0",
+      "versionFrom": "ledger/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "ledger/package.json",
+      "name": "ajv-formats",
+      "purl": "pkg:npm/ajv-formats",
+      "range": "^3.0.1",
+      "version": "3.0.1",
+      "versionFrom": "ledger/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "packages/repomesh-cli/package.json",
+      "name": "ajv",
+      "purl": "pkg:npm/ajv",
+      "range": "^8.17.1",
+      "version": "8.18.0",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "packages/repomesh-cli/package.json",
+      "name": "ajv-formats",
+      "purl": "pkg:npm/ajv-formats",
+      "range": "^3.0.1",
+      "version": "3.0.1",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "packages/repomesh-cli/package.json",
+      "name": "commander",
+      "purl": "pkg:npm/commander",
+      "range": "^14.0.3",
+      "version": "14.0.3",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "packages/repomesh-cli/package.json",
+      "name": "xrpl",
+      "purl": "pkg:npm/xrpl",
+      "range": "^5.3.0",
+      "version": "5.3.0",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@astrojs/starlight",
+      "purl": "pkg:npm/%40astrojs/starlight",
+      "range": "^0.42.1",
+      "version": "0.42.6",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@mcptoolshop/site-theme",
+      "purl": "pkg:npm/%40mcptoolshop/site-theme",
+      "range": "^2.2.0",
+      "version": "2.2.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@tailwindcss/vite",
+      "purl": "pkg:npm/%40tailwindcss/vite",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "astro",
+      "purl": "pkg:npm/astro",
+      "range": "^7.3.8",
+      "version": "7.3.8",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "tailwindcss",
+      "purl": "pkg:npm/tailwindcss",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "verifiers/package.json",
+      "name": "ajv",
+      "purl": "pkg:npm/ajv",
+      "range": "^8.17.1",
+      "unknown": "package-lock.json does not install verifiers",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "verifiers/package.json",
+      "name": "ajv-formats",
+      "purl": "pkg:npm/ajv-formats",
+      "range": "^3.0.1",
+      "unknown": "package-lock.json does not install verifiers",
+      "version": null
+    }
+  ],
+  "packagesPublished": [
+    {
+      "doors": [
+        "Release"
+      ],
+      "how": "named by the publish",
+      "manifest": "packages/repomesh-cli/package.json",
+      "name": "@mcptoolshop/repomesh",
+      "purl": "pkg:npm/%40mcptoolshop/repomesh",
+      "repository": "https://github.com/mcp-tool-shop-org/repomesh",
+      "version": "2.3.3"
+    }
+  ],
   "submodules": [],
   "symlinks": [],
   "testFiles": 108,

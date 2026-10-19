@@ -1,6 +1,6 @@
 # escape-the-valley: how it works
 
-Mapped at 2026-10-05 from commit 62ea37f by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 62ea37f by Atlas 1.26.0.
 
 ## What this is
 
@@ -86,7 +86,7 @@ Every tracked place code writes here is edited by people too; see Hand-authored.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/, the repository root and site/; 1 write with a path built at run time may land here.
+People write .github/, docs/, the repository root and site/. The data in assets/ is written by no code this map names; 1 write with a path built at run time may land here.
 
 - **src/escape_the_valley/data/event_skeletons.json** is written by scripts/yaml_to_json.py from inputs this repository does not keep, and by people.
 

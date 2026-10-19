@@ -1,6 +1,6 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-10-12 from commit 5aa092c by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit d35a389 by Atlas 1.26.0.
 
 ## What this is
 
@@ -11,7 +11,7 @@ Mapped at 2026-10-12 from commit 5aa092c by Atlas 1.26.0.
 - experiments/rollout-arc/p4/runs/summary-*.json is now written by experiments/rollout-arc/p4/scripts/score-curriculum.mts.
 - site/public/america-the-beautiful-m*-*.svg is now written by scripts/render-landing-pianoroll.ts.
 - datasets/jam-actions-v0/records/* is now read by experiments/jam-actions-v0-lora/generate_train_jsonl.py.
-- No file changed.
+- 3 files changed content, across 1 part.
 
 ## What comes in
 

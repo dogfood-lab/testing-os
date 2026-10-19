@@ -1,6 +1,6 @@
 # audiobooker: how it works
 
-Mapped at 2026-10-05 from commit 033948f by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 24cec88 by Atlas 1.26.0.
 
 ## What this is
 
@@ -9,7 +9,7 @@ Mapped at 2026-10-05 from commit 033948f by Atlas 1.26.0.
 ## What changed since 2026-09-30 (6fcd238)
 
 - .github/workflows/*.yml is now read by tools/check_ci_policy.py.
-- 1 file changed content, across 1 part.
+- 4 files changed content, across 3 parts.
 
 ## What comes in
 
@@ -96,7 +96,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/, npm/, the repository root and site/; 5 writes with paths built at run time may land here.
+People write .github/, docs/, npm/, the repository root and site/. The data in assets/ is written by no code this map names; 5 writes with paths built at run time may land here.
 
 ## Where to start
 

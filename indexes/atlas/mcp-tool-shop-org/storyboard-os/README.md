@@ -1,14 +1,14 @@
 # storyboard-os: how it works
 
-Mapped at 2026-10-12 from commit 1fc45e4 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 5be9b13 by Atlas 1.26.0.
 
 ## What this is
 
 14 parts, mostly TypeScript (175 files), Astro (19), JavaScript (6) and CSS (2). Work enters through 9 doors; the busiest is CI, which reaches 11 parts. It publishes @storyboard-os/cinematic-domain (packages/cinematic-storyboard-domain), @storyboard-os/marketing-domain (packages/marketing-storyboard-domain), @storyboard-os/rpg-domain (packages/rpg-storyboard-domain), @storyboard-os/canvas (packages/storyboard-canvas), @storyboard-os/core (packages/storyboard-core) and @storyboard-os/routing (packages/storyboard-routing) to npm. It deploys a site to GitHub Pages. People import @storyboard-os/canvas, @storyboard-os/cinematic-domain, @storyboard-os/core, @storyboard-os/marketing-domain, @storyboard-os/routing and @storyboard-os/rpg-domain.
 
-## What changed since 2026-09-30 (736766f)
+## What changed since 2026-10-15 (1fc45e4)
 
-Nothing structural changed since 2026-09-30; 2 files changed content.
+Nothing structural changed since 2026-10-15; 8 files changed content.
 
 ## What comes in
 
@@ -100,7 +100,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, apps/cinematic-storyboard/, apps/marketing-storyboard/, apps/rpg-storyboard/, assets/, docs/, the repository root and site/. Nothing in this repository writes to them.
+People write .github/, apps/cinematic-storyboard/, apps/marketing-storyboard/, apps/rpg-storyboard/, docs/, the repository root and site/. Nothing in this repository writes to them. The data in assets/ is written by no code in this repository.
 
 ## Where to start
 

@@ -1,14 +1,14 @@
 # claude-guardian: how it works
 
-Mapped at 2026-10-05 from commit 1354168 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 01b3022 by Atlas 1.26.0.
 
 ## What this is
 
-7 parts, mostly Markdown (75 files); code in TypeScript (38), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run claude-guardian.
+7 parts, mostly Markdown (75 files); code in TypeScript (41), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run claude-guardian.
 
 ## What changed since 2026-10-01 (d6d8c52)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-10-01; 3 files added and 6 changed content.
 
 ## What comes in
 

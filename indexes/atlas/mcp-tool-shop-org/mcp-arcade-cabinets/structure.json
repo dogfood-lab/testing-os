@@ -43,7 +43,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "c11bd81b04da0a2d295aeabfeb3959488346cbbacaf58e4119b90a3d499ea104",
+          "hash": "e18c40b48180e14a21e2854edf0f4fd600fc25d9cf6356e79da7299fe9944597",
           "path": "packages/cabinet-server/package.json"
         },
         {
@@ -93,6 +93,29 @@
             }
           ],
           "hash": "bc0027d526208ab85088d2541c85b7806915f12baad83fae2b0cb2d2f743ea47",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "PilotIntent",
+                  "type": true
+                },
+                {
+                  "name": "SfxName",
+                  "type": true
+                },
+                {
+                  "name": "WaveKind",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "packages/cabinet-server/src/contract.ts",
             "packages/cabinet-server/src/gate.ts",
@@ -100,6 +123,12 @@
             "packages/cabinet-server/src/step-guard.ts",
             "packages/cabinet-server/src/tool-names.ts",
             "packages/ghost-on-the-menu/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            }
           ],
           "path": "packages/cabinet-server/src/cabinet.ts",
           "sequences": [
@@ -183,6 +212,27 @@
             }
           ],
           "hash": "9d314d561665ab0fe7c658ebf967af6ecfdc7af3a6112aab2cf7bde7072fb2be",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "isCloudModel"
+                },
+                {
+                  "name": "PILOT_INTENTS"
+                },
+                {
+                  "name": "PilotIntent",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/ghost-on-the-menu/src/index.ts",
             "packages/cabinet-server/src/cabinet.ts",
@@ -194,6 +244,12 @@
             "packages/cabinet-server/src/contract.ts",
             "packages/cabinet-server/src/gate.ts",
             "packages/ghost-on-the-menu/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            }
           ],
           "path": "packages/cabinet-server/src/client.ts"
         },
@@ -332,11 +388,31 @@
             }
           ],
           "hash": "1995306300d8abc962049facb8fc5dd2855eead0dab3c29e977ff54b3ec79cc8",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 20,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40anthropic-ai/sdk",
+              "specifier": "@anthropic-ai/sdk",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/cabinet-server/src/client.ts",
             "packages/cabinet-server/src/gate.ts",
             "packages/cabinet-server/src/say.ts",
             "packages/cabinet-server/src/vibe-words.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40anthropic-ai/sdk"
+            }
           ],
           "path": "packages/cabinet-server/src/endless.ts"
         },
@@ -373,11 +449,89 @@
             "tapeCards"
           ],
           "hash": "dc82a2213dd15ec5f51ceaa9a490c3589cb6917219468cd87125aa82c507fd53",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "attachedPatterns"
+                },
+                {
+                  "name": "columnWord"
+                },
+                {
+                  "name": "FIELD"
+                },
+                {
+                  "name": "hpWord"
+                },
+                {
+                  "name": "labelTape"
+                },
+                {
+                  "name": "pickLine"
+                },
+                {
+                  "name": "stickWord"
+                },
+                {
+                  "name": "waveKindAt"
+                },
+                {
+                  "name": "PilotIntent",
+                  "type": true
+                },
+                {
+                  "name": "Round",
+                  "type": true
+                },
+                {
+                  "name": "RoundInput",
+                  "type": true
+                },
+                {
+                  "name": "RoundState",
+                  "type": true
+                },
+                {
+                  "name": "SfxName",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 21,
+              "names": [
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "packages/cabinet-server/src/cabinet.ts",
             "packages/cabinet-server/src/personas.ts",
             "packages/ghost-on-the-menu/src/index.ts",
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            },
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            }
           ],
           "path": "packages/cabinet-server/src/host.ts",
           "sequences": [
@@ -530,6 +684,39 @@
             }
           ],
           "hash": "2373174606473c483b948a865b4573a2bd2b7435f0b93a2b354b972cf279c2ec",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40anthropic-ai/sdk",
+              "specifier": "@anthropic-ai/sdk",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "DEFAULT_PATTERNS"
+                },
+                {
+                  "name": "isCloudModel"
+                },
+                {
+                  "name": "WaveKind",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/ghost-on-the-menu/src/index.ts",
             "packages/cabinet-server/src/cabinet.ts",
@@ -548,6 +735,16 @@
             "packages/cabinet-server/src/seeds.ts",
             "packages/ghost-on-the-menu/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40anthropic-ai/sdk"
+            },
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            }
+          ],
           "path": "packages/cabinet-server/src/say.ts"
         },
         {
@@ -562,6 +759,21 @@
             }
           ],
           "hash": "7ef7539fce61a03cf134dadf262c8e8175efe39701d9850385c6270331578e32",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "PilotIntent",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "packages/ghost-on-the-menu/src/index.ts",
             "packages/cabinet-server/src/cabinet.ts",
@@ -571,6 +783,12 @@
             "packages/cabinet-server/src/cabinet.ts",
             "packages/cabinet-server/src/host.ts",
             "packages/ghost-on-the-menu/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            }
           ],
           "path": "packages/cabinet-server/src/scripted.ts"
         },
@@ -603,7 +821,93 @@
               "line": 93
             }
           ],
-          "hash": "1663ee50d264a8bb3cbaafab9051c88b896c8601a3204eef36d68b9a6ecc1b45",
+          "hash": "920a5c7bf018b329e4dd321ae85bc350a8412e8ee261c9258da4e6052a23c743",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 18,
+              "names": [
+                {
+                  "name": "McpServer"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/server/mcp.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "StdioServerTransport"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/server/stdio.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 20,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 22,
+              "names": [
+                {
+                  "name": "createRun"
+                },
+                {
+                  "name": "nextSeed"
+                },
+                {
+                  "name": "stepRun"
+                },
+                {
+                  "name": "RunState",
+                  "type": true
+                },
+                {
+                  "name": "Snippet",
+                  "type": true
+                },
+                {
+                  "name": "Tier",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 30,
+              "names": [
+                {
+                  "name": "botFor"
+                },
+                {
+                  "name": "integrationFrom"
+                },
+                {
+                  "name": "parseBot"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer/src/play",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "packages/vibe-typer/src/play.ts",
@@ -621,6 +925,20 @@
             "packages/cabinet-server/src/vibe-host.ts",
             "packages/vibe-typer/src/index.ts",
             "packages/vibe-typer/src/play.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            },
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk"
+            },
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "packages/cabinet-server/src/server-vibe.ts"
         },
@@ -672,7 +990,106 @@
               "line": 454
             }
           ],
-          "hash": "047749d574524fb2319dc232da4fa873b767c867dbf7ffec009555116e403f12",
+          "hash": "8883ecf67d8d2178126de27a757babdae502fd0e49839f66c44aae1740f32897",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "McpServer"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/server/mcp.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 12,
+              "names": [
+                {
+                  "name": "StdioServerTransport"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/server/stdio.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 13,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 15,
+              "names": [
+                {
+                  "name": "createRoundState"
+                },
+                {
+                  "name": "DEFAULT_SECONDS"
+                },
+                {
+                  "name": "prepassRound"
+                },
+                {
+                  "name": "stepRound"
+                },
+                {
+                  "name": "Round",
+                  "type": true
+                },
+                {
+                  "name": "RoundInput",
+                  "type": true
+                },
+                {
+                  "name": "RoundState",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 24,
+              "names": [
+                {
+                  "name": "botFor"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu/src/play",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 25,
+              "names": [
+                {
+                  "name": "loadTape"
+                },
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/cabinet-server/src/cabinet.ts",
             "packages/cabinet-server/src/contract.ts",
@@ -683,6 +1100,24 @@
             "packages/ghost-on-the-menu/src/index.ts",
             "packages/ghost-on-the-menu/src/play.ts",
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            },
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            },
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk"
+            },
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "packages/cabinet-server/src/server.ts",
           "sequences": [
@@ -1094,6 +1529,27 @@
             }
           ],
           "hash": "b42ff2e2c03fd2ea9404e6c1a88dbbe55c1b46e0659f96a0b33423fd7514388d",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 20,
+              "names": [
+                {
+                  "name": "lineFault"
+                },
+                {
+                  "name": "productFault"
+                },
+                {
+                  "name": "CodeGateReason",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "packages/cabinet-server/src/contract.ts",
@@ -1108,6 +1564,12 @@
             "packages/cabinet-server/src/tool-names.ts",
             "packages/vibe-typer/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            }
+          ],
           "path": "packages/cabinet-server/src/vibe-cabinet.ts"
         },
         {
@@ -1120,6 +1582,64 @@
             "vibeViewLines"
           ],
           "hash": "3cd783b25a39d1fd6e8a02db5884bfcd606572fb835ac95830e922a2816e8b86",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 12,
+              "names": [
+                {
+                  "name": "corpusOf"
+                },
+                {
+                  "name": "endlessPeek"
+                },
+                {
+                  "name": "feedProduct"
+                },
+                {
+                  "name": "feedReaction"
+                },
+                {
+                  "name": "feedRequests"
+                },
+                {
+                  "name": "gateCode"
+                },
+                {
+                  "name": "leversOf"
+                },
+                {
+                  "name": "planOf"
+                },
+                {
+                  "name": "reactionWaiting"
+                },
+                {
+                  "name": "suppliedAsks"
+                },
+                {
+                  "name": "suppliedCount"
+                },
+                {
+                  "name": "suppliedProductOf"
+                },
+                {
+                  "name": "VALUE_TOLERANCE"
+                },
+                {
+                  "name": "RunState",
+                  "type": true
+                },
+                {
+                  "name": "Snippet",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "packages/cabinet-server/src/gate.ts",
@@ -1131,6 +1651,12 @@
             "packages/cabinet-server/src/vibe-cabinet.ts",
             "packages/cabinet-server/src/vibe-words.ts",
             "packages/vibe-typer/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            }
           ],
           "path": "packages/cabinet-server/src/vibe-host.ts"
         },
@@ -1254,6 +1780,80 @@
         },
         {
           "hash": "254a0e6e1fd0dcc05b44e0ae58ed2a1b4014898a3431b4f93d135f9775882cb6",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "createRoundState"
+                },
+                {
+                  "name": "prepassRound"
+                },
+                {
+                  "name": "stepRound"
+                },
+                {
+                  "name": "RoundInput",
+                  "type": true
+                },
+                {
+                  "name": "RoundState",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 18,
+              "names": [
+                {
+                  "name": "botFor"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu/src/play",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "loadTape"
+                },
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/ghost-on-the-menu/src/index.ts",
             "packages/ghost-on-the-menu/src/play.ts",
@@ -1270,11 +1870,63 @@
             "packages/ghost-on-the-menu/src/play.ts",
             "packages/tape-core/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            },
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/cabinet-server/test/cabinet.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "5a95abc933c548f85492ca57539407f846a87ae50a9b1deb6f6eb7a9d0eae5db",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "MAX_COLS"
+                },
+                {
+                  "name": "MAX_LINES"
+                },
+                {
+                  "name": "MAX_NOTES"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "packages/cabinet-server/src/contract.ts",
@@ -1285,28 +1937,116 @@
             "packages/cabinet-server/src/gate.ts",
             "packages/vibe-typer/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/cabinet-server/test/contract.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "26bf04b24439b4b8820ce09e5a1c6e4d3649fd5767bee0b88208eb617e35f978",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/cabinet-server/src/endless.ts",
             "packages/cabinet-server/src/gate.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/cabinet-server/test/endless.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "74af546ed3a8bdb091a7510341b07d08d01e73fb550764bc79bf0994f057a752",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/cabinet-server/src/gate.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/cabinet-server/test/gate.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "2ca5d85685f59595fa4f58cdaae816c5c3e120a072ac4c04ffb961bdcd7a0d93",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/cabinet-server/personas.json",
             "packages/cabinet-server/src/gate.ts",
@@ -1315,11 +2055,55 @@
           "names": [
             "packages/ghost-on-the-menu/src/patterns.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/cabinet-server/test/personas.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "894b115f0cf8bb5924e9adb40904379293215842083d73ab10e501527fce5b22",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "DEFAULT_PATTERNS"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/ghost-on-the-menu/src/index.ts",
             "packages/cabinet-server/src/cabinet.ts",
@@ -1338,11 +2122,41 @@
             "packages/cabinet-server/src/seeds.ts",
             "packages/ghost-on-the-menu/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/cabinet-server/test/say.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "478be0eda20b4c2fd5f7f5dc2ecdff73bf593dc9bb60e8c1eba5eb54629e1310",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/ghost-on-the-menu/src/play.ts",
             "packages/ghost-on-the-menu/src/types.ts",
@@ -1353,21 +2167,121 @@
             "packages/ghost-on-the-menu/src/play.ts",
             "packages/ghost-on-the-menu/src/types.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/cabinet-server/test/scripted-play.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "c03aa7fbd9c9b55bdd986c02d23cd87cba08c0adf0606d883b3f6f309390304b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/cabinet-server/src/cabinet.ts",
             "packages/cabinet-server/src/client.ts",
             "packages/cabinet-server/src/gate.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/cabinet-server/test/seat.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "22ad267110fe13d9c24607382715ebca23dc1bcf8baaaf422820f66cdc982b80",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "Client"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/client/index.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "StdioClientTransport"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/client/stdio.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 12,
+              "names": [
+                {
+                  "name": "build"
+                }
+              ],
+              "purl": "pkg:npm/esbuild",
+              "specifier": "esbuild",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 13,
+              "names": [
+                {
+                  "name": "afterAll"
+                },
+                {
+                  "name": "beforeAll"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/cabinet-server/src/contract.ts",
             "packages/cabinet-server/src/env.ts",
@@ -1382,19 +2296,103 @@
             "packages/cabinet-server/src/server-vibe.ts",
             "packages/cabinet-server/src/server.ts"
           ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/esbuild"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/cabinet-server/test/server.test.ts",
           "testFramework": "vitest"
         },
         {
-          "hash": "fda0a054172638daabfad88fc75f5f9d2a3f4c9522d330729cf93987c5f53dca",
+          "hash": "b6634c4d400fa86239fea468f99a0f9e65f949d3d8adf22128fed1c83b68dcf5",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/cabinet-server/src/step-guard.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/cabinet-server/test/step-guard.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "646dd89234caf1ee2166c13ae19cef4080c3c1c2506fc85a9f3c96c77a7e0790",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 21,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 23,
+              "names": [
+                {
+                  "name": "SCREEN_FORBIDDEN"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu/src/types",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 24,
+              "names": [
+                {
+                  "name": "SCREEN_FORBIDDEN"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer/src/play",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/ghost-on-the-menu/src/types.ts",
             "packages/vibe-typer/src/play.ts",
@@ -1416,11 +2414,129 @@
             "scripts/play.mjs",
             "scripts/transcript.mjs"
           ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            },
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/cabinet-server/test/surfaces.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "39696ba7402786789420b007ae150427bc51af09b7d1406397c19b9d355f9bee",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 13,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 15,
+              "names": [
+                {
+                  "name": "corpusOf"
+                },
+                {
+                  "name": "createRun"
+                },
+                {
+                  "name": "endlessPeek"
+                },
+                {
+                  "name": "inBand"
+                },
+                {
+                  "name": "integrationSnippets"
+                },
+                {
+                  "name": "leversOf"
+                },
+                {
+                  "name": "planOf"
+                },
+                {
+                  "name": "reactionWaiting"
+                },
+                {
+                  "name": "stepRun"
+                },
+                {
+                  "name": "RunState",
+                  "type": true
+                },
+                {
+                  "name": "Snippet",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 28,
+              "names": [
+                {
+                  "name": "botFor"
+                },
+                {
+                  "name": "DT"
+                },
+                {
+                  "name": "parseBot"
+                },
+                {
+                  "name": "SCREEN_FORBIDDEN"
+                },
+                {
+                  "name": "seedFromTape"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer/src/play",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 35,
+              "names": [
+                {
+                  "name": "loadTape"
+                },
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "packages/vibe-typer/src/play.ts",
@@ -1435,11 +2551,114 @@
             "packages/vibe-typer/src/index.ts",
             "packages/vibe-typer/src/play.ts"
           ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            },
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/cabinet-server/test/vibe-cabinet.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "a820a365b3855b05a8403cbd089d714fbb2b8885ab0e9a0cba1c90fd82094a5e",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "Client"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/client/index.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "StdioClientTransport"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/client/stdio.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "build"
+                }
+              ],
+              "purl": "pkg:npm/esbuild",
+              "specifier": "esbuild",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 12,
+              "names": [
+                {
+                  "name": "afterAll"
+                },
+                {
+                  "name": "beforeAll"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 14,
+              "names": [
+                {
+                  "name": "corpusOf"
+                },
+                {
+                  "name": "endlessPeek"
+                },
+                {
+                  "name": "inBand"
+                },
+                {
+                  "name": "leversOf"
+                },
+                {
+                  "name": "planOf"
+                },
+                {
+                  "name": "suppliedCount"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "packages/cabinet-server/src/contract.ts",
@@ -1456,11 +2675,52 @@
             "packages/cabinet-server/src/server.ts",
             "packages/vibe-typer/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            },
+            {
+              "manifest": "packages/cabinet-server/package.json",
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/esbuild"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/cabinet-server/test/vibe-server.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "1797764704a7deadd7dfe0617075030b49715b04d68005cd0786419b5a691d5a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/cabinet-server/src/voice-vibe.ts",
             "packages/cabinet-server/src/voice.ts",
@@ -1470,12 +2730,44 @@
             "packages/cabinet-server/src/voice-vibe.ts",
             "packages/cabinet-server/src/voice-words.ts",
             "packages/cabinet-server/src/voice.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/cabinet-server/test/voice-vibe.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "2eefa2eefadfe031feed32da0bd7eef80da8f91a343884ed11199012423794e1",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/cabinet-server/src/host.ts",
             "packages/cabinet-server/src/personas.ts",
@@ -1487,6 +2779,12 @@
             "packages/cabinet-server/src/personas.ts",
             "packages/cabinet-server/src/voice-words.ts",
             "packages/cabinet-server/src/voice.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/cabinet-server/test/voice.test.ts",
           "testFramework": "vitest"
@@ -1550,7 +2848,7 @@
           "path": "apps/cabinets/index.html"
         },
         {
-          "hash": "7a27ac057ef548e0bf7e6e26a68a28b386e749aa53e0860d2a497d79e35df97b",
+          "hash": "d0b9f30367c7f85754b82911d40d27cceeb6fb951f1a4d3fac5b707717b2a509",
           "path": "apps/cabinets/package.json"
         },
         {
@@ -2393,6 +3691,194 @@
             }
           ],
           "hash": "433795eb481b73dd8b0c8b5f6c13a0534d7b55322dee2b46544af7b46ee52378",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 23,
+              "names": [
+                {
+                  "name": "askFire"
+                },
+                {
+                  "name": "createCabinet"
+                },
+                {
+                  "name": "createSeat"
+                },
+                {
+                  "name": "createVoicer"
+                },
+                {
+                  "name": "DEFAULT_PERSONAS"
+                },
+                {
+                  "name": "hostForRound"
+                },
+                {
+                  "name": "seatView"
+                },
+                {
+                  "name": "speakLine"
+                },
+                {
+                  "name": "tapeCards"
+                },
+                {
+                  "name": "voiceHealth"
+                },
+                {
+                  "name": "warmUp"
+                },
+                {
+                  "name": "Live",
+                  "type": true
+                },
+                {
+                  "name": "Seat",
+                  "type": true
+                },
+                {
+                  "name": "SeatView",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/cabinet-server",
+              "specifier": "@mcp-arcade-cabinets/cabinet-server/src/browser",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 39,
+              "names": [
+                {
+                  "name": "askNextIntents"
+                },
+                {
+                  "name": "attach"
+                },
+                {
+                  "name": "attachedPatterns"
+                },
+                {
+                  "name": "cadenceAt"
+                },
+                {
+                  "name": "createRoundState"
+                },
+                {
+                  "name": "cues"
+                },
+                {
+                  "name": "DEFAULT_SECONDS"
+                },
+                {
+                  "name": "defaultPilotModel"
+                },
+                {
+                  "name": "FIELD"
+                },
+                {
+                  "name": "isCloudModel"
+                },
+                {
+                  "name": "listPilotModels"
+                },
+                {
+                  "name": "prepassRound"
+                },
+                {
+                  "name": "pushBossVerbs"
+                },
+                {
+                  "name": "renderRound"
+                },
+                {
+                  "name": "snapshot"
+                },
+                {
+                  "name": "SPRITE_KEYS"
+                },
+                {
+                  "name": "stepRound"
+                },
+                {
+                  "name": "TRACK_KEYS"
+                },
+                {
+                  "name": "bagFor"
+                },
+                {
+                  "name": "nextBagLine"
+                },
+                {
+                  "name": "readLineBags"
+                },
+                {
+                  "name": "waveKindAt"
+                },
+                {
+                  "name": "AudioOut",
+                  "type": true
+                },
+                {
+                  "name": "CueSnapshot",
+                  "type": true
+                },
+                {
+                  "name": "DrawContext",
+                  "type": true
+                },
+                {
+                  "name": "Intensity",
+                  "type": true
+                },
+                {
+                  "name": "LineBag",
+                  "type": true
+                },
+                {
+                  "name": "LineBags",
+                  "type": true
+                },
+                {
+                  "name": "MediaBed",
+                  "type": true
+                },
+                {
+                  "name": "Round",
+                  "type": true
+                },
+                {
+                  "name": "RoundInput",
+                  "type": true
+                },
+                {
+                  "name": "RoundState",
+                  "type": true
+                },
+                {
+                  "name": "RoundButton",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 74,
+              "names": [
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "packages/cabinet-server/src/browser.ts",
             "packages/ghost-on-the-menu/src/index.ts",
@@ -2408,6 +3894,20 @@
             "packages/cabinet-server/src/browser.ts",
             "packages/ghost-on-the-menu/src/index.ts",
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/cabinet-server"
+            },
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            },
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            }
           ],
           "path": "apps/cabinets/src/ghost.ts"
         },
@@ -2433,6 +3933,103 @@
             }
           ],
           "hash": "1ee271e67012cafb552449376691d07a21bc43e4af908bbcff0b258478c7b353",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 14,
+              "names": [
+                {
+                  "name": "bossKindFor"
+                },
+                {
+                  "name": "climbAt"
+                },
+                {
+                  "name": "decodeShift"
+                },
+                {
+                  "name": "drawShift"
+                },
+                {
+                  "name": "encodeShift"
+                },
+                {
+                  "name": "hashWords"
+                },
+                {
+                  "name": "kindOfAtom"
+                },
+                {
+                  "name": "labelTape"
+                },
+                {
+                  "name": "lengthWord"
+                },
+                {
+                  "name": "ordinalWord"
+                },
+                {
+                  "name": "shiftCard"
+                },
+                {
+                  "name": "ShiftDraw",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 28,
+              "names": [
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 30,
+              "names": [
+                {
+                  "name": "DEFAULT_PATTERNS"
+                },
+                {
+                  "name": "hashString"
+                },
+                {
+                  "name": "integrationSnippets"
+                },
+                {
+                  "name": "nextSeed"
+                },
+                {
+                  "name": "IntegrationSeed",
+                  "type": true
+                },
+                {
+                  "name": "Snippet",
+                  "type": true
+                },
+                {
+                  "name": "Tier",
+                  "type": true
+                },
+                {
+                  "name": "parseRunCode"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/ghost-on-the-menu/src/index.ts",
             "packages/tape-core/src/index.ts",
@@ -2454,6 +4051,20 @@
             "packages/ghost-on-the-menu/src/index.ts",
             "packages/tape-core/src/index.ts",
             "packages/vibe-typer/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            },
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            },
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            }
           ],
           "path": "apps/cabinets/src/main.ts"
         },
@@ -2484,15 +4095,59 @@
             }
           ],
           "hash": "1a5e3b4a9fd3f37e25bf1804a52c2dd9a8cd237d73494917cb28477dc173ed2c",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 13,
+              "names": [
+                {
+                  "name": "listPilotModels"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/ghost-on-the-menu/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            }
           ],
           "path": "apps/cabinets/src/seats.ts"
         },
         {
           "hash": "1967fc13cb00182b934f972dbfbdad5cd4e696016c33a3a0be6e047a28ec4b2f",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "loadTape"
+                },
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            }
           ],
           "path": "apps/cabinets/src/tapes.ts"
         },
@@ -2579,8 +4234,29 @@
             }
           ],
           "hash": "4b7196337c773c10925db7798db44935f97c810c9e1b9af41f895dc6f9dd23b9",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 15,
+              "names": [
+                {
+                  "name": "Event",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "packages/vibe-typer/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            }
           ],
           "path": "apps/cabinets/src/typer-cues.ts"
         },
@@ -2589,8 +4265,29 @@
             "readKey"
           ],
           "hash": "cb2473d207794bca370d0ad84a047527fd0104960afd737a5a717eb01a5c46b1",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "RunInput",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "packages/vibe-typer/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            }
           ],
           "path": "apps/cabinets/src/typer-keys.ts"
         },
@@ -2600,8 +4297,32 @@
             "pieceKindOf"
           ],
           "hash": "1239879177a90a0dbd7f417b6e2daf84cb1ac2fb158bff1d91058912cdb59cde",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 25,
+              "names": [
+                {
+                  "name": "hashString"
+                },
+                {
+                  "name": "Snippet",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/vibe-typer/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            }
           ],
           "path": "apps/cabinets/src/typer-tiles.ts"
         },
@@ -2689,6 +4410,161 @@
             }
           ],
           "hash": "75859b3be1d5904a0852da4395a50304f7d400b1f07a92508442b9d1440744d4",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 17,
+              "names": [
+                {
+                  "name": "PITCH_CAP"
+                },
+                {
+                  "name": "VALUE_TOLERANCE"
+                },
+                {
+                  "name": "agentNameOf"
+                },
+                {
+                  "name": "codeOf"
+                },
+                {
+                  "name": "corpusOf"
+                },
+                {
+                  "name": "corpusFingerprint"
+                },
+                {
+                  "name": "createRun"
+                },
+                {
+                  "name": "DEFAULT_CORPUS"
+                },
+                {
+                  "name": "endlessPeek"
+                },
+                {
+                  "name": "feedRequests"
+                },
+                {
+                  "name": "gateCode"
+                },
+                {
+                  "name": "leversOf"
+                },
+                {
+                  "name": "nextSeed"
+                },
+                {
+                  "name": "planOf"
+                },
+                {
+                  "name": "seededRandom"
+                },
+                {
+                  "name": "stepRun"
+                },
+                {
+                  "name": "suppliedAsks"
+                },
+                {
+                  "name": "suppliedCount"
+                },
+                {
+                  "name": "syncOf"
+                },
+                {
+                  "name": "NEAR_MISS"
+                },
+                {
+                  "name": "STACKS"
+                },
+                {
+                  "name": "Band",
+                  "type": true
+                },
+                {
+                  "name": "CodeGateReason",
+                  "type": true
+                },
+                {
+                  "name": "RunInput",
+                  "type": true
+                },
+                {
+                  "name": "RunState",
+                  "type": true
+                },
+                {
+                  "name": "Snippet",
+                  "type": true
+                },
+                {
+                  "name": "Stack",
+                  "type": true
+                },
+                {
+                  "name": "Tier",
+                  "type": true
+                },
+                {
+                  "name": "runCodeOf"
+                },
+                {
+                  "name": "CHECK_INS_MAX"
+                },
+                {
+                  "name": "CHECK_INS_MIN"
+                },
+                {
+                  "name": "CHECK_INS_OFF"
+                },
+                {
+                  "name": "cleanCheckIns"
+                },
+                {
+                  "name": "cleanPaceScale"
+                },
+                {
+                  "name": "PACE_MAX"
+                },
+                {
+                  "name": "PACE_MIN"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 57,
+              "names": [
+                {
+                  "name": "createVibeVoicer"
+                },
+                {
+                  "name": "speakLine"
+                },
+                {
+                  "name": "vibeVoiceLine"
+                },
+                {
+                  "name": "voiceHealth"
+                },
+                {
+                  "name": "SpeakAnswer",
+                  "type": true
+                },
+                {
+                  "name": "VibeVoiceJob",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/cabinet-server",
+              "specifier": "@mcp-arcade-cabinets/cabinet-server/src/browser",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "apps/cabinets/src/pointer.ts",
@@ -2711,28 +4587,122 @@
             "packages/cabinet-server/src/browser.ts",
             "packages/vibe-typer/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/cabinet-server"
+            },
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            }
+          ],
           "path": "apps/cabinets/src/vibe-typer.ts"
         },
         {
           "hash": "16c36b99061fb0b9132781b92833b073fc4c5bd555416fc342f270b77ea6dd30",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "apps/cabinets/scripts/cut-avatar.mjs",
             "apps/cabinets/scripts/slice-tiles.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "apps/cabinets/test/avatar-cut.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "8363b343d017bf412c8dfe602bb86b1688d52bf7133081cab001ef2882fe35c4",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "apps/cabinets/scripts/cut-banner.mjs",
             "apps/cabinets/scripts/slice-tiles.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "apps/cabinets/test/banner-cut.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "456f3663e9f9c2e20324514613afa80c6330c46d898a40736ec7bf7b2a37ae58",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "TRACK_KEYS"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 20,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/ghost-on-the-menu/src/index.ts",
             "apps/cabinets/src/typer-audio.ts"
@@ -2741,11 +4711,41 @@
             "apps/cabinets/src/typer-audio.ts",
             "packages/ghost-on-the-menu/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "apps/cabinets/test/bed-length.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "d5740ebc7f09d431cdb87d01fa837497afdffa78b79eb6c9f3b934d747046d02",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 13,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/launcher/src/allow.ts",
             "apps/cabinets/vite.config.ts"
@@ -2754,11 +4754,58 @@
             "apps/cabinets/vite.config.ts",
             "packages/launcher/src/allow.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "apps/cabinets/test/dev-allowlists.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "78c10c32c656fa58e5aabb2ff9a76aef5548ea5593c4150d89089d92158b2167",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "decodeShift"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/ghost-on-the-menu/src/index.ts",
             "apps/cabinets/src/ghost.ts",
@@ -2771,11 +4818,62 @@
             "apps/cabinets/src/tapes.ts",
             "packages/ghost-on-the-menu/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "apps/cabinets/test/ghost-menu.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "9a9e9b89945975ccb38ef3e7cbf096a5216def9c30182e838b78ba68c90660d9",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 12,
+              "names": [
+                {
+                  "name": "TRACK_KEYS"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+              "specifier": "@mcp-arcade-cabinets/ghost-on-the-menu",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/ghost-on-the-menu/src/index.ts",
             "apps/cabinets/src/tapes.ts",
@@ -2786,11 +4884,53 @@
             "apps/cabinets/src/tapes.ts",
             "packages/ghost-on-the-menu/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "apps/cabinets/test/ghost-mount.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "b5baf9d659c72e991f526230a33df0cfe47d67f51f76c644404a0526ef7adc77",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "STACKS"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 12,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "apps/cabinets/src/typer-audio.ts",
@@ -2801,11 +4941,53 @@
             "apps/cabinets/src/typer-cues.ts",
             "packages/vibe-typer/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "apps/cabinets/test/typer-audio.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "f337b7fb94aa6f730d224d78c28b81d0f50c64cf293c2c6203f59d30e01ca139",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 13,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 15,
+              "names": [
+                {
+                  "name": "DEFAULT_PATTERNS"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "apps/cabinets/scripts/slice-tiles.mjs",
@@ -2816,11 +4998,54 @@
             "apps/cabinets/src/typer-cards.ts",
             "packages/vibe-typer/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "apps/cabinets/test/typer-cards.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "f761e56ac8ccee2a3b4a480ad56f58bab11271625a7fb8d41c9c1046a2b8df93",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "Event",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "apps/cabinets/src/typer-cues.ts"
@@ -2829,19 +5054,114 @@
             "apps/cabinets/src/typer-cues.ts",
             "packages/vibe-typer/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "apps/cabinets/test/typer-cues.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "458fd358c7076b85e904831e84aabe3ac4ca82b285033b6912962ced4992fb1f",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "apps/cabinets/src/typer-keys.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "apps/cabinets/test/typer-keys.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "568d61729bb0edb1c23216cc76125b528b46e8e67d07a6bf0ab64a21993e2210",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "DEFAULT_CORPUS"
+                },
+                {
+                  "name": "DEFAULT_PATTERNS"
+                },
+                {
+                  "name": "STACKS"
+                },
+                {
+                  "name": "WEAK_CLEAN"
+                },
+                {
+                  "name": "corpusDigestOf"
+                },
+                {
+                  "name": "corpusFingerprint"
+                },
+                {
+                  "name": "mintRunCode"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "apps/cabinets/src/vibe-typer.ts",
@@ -2854,11 +5174,95 @@
             "apps/cabinets/src/vibe-typer.ts",
             "packages/vibe-typer/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "apps/cabinets/test/typer-menu.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "dc919473669de392ac910dd66f4b0d68fdee93b9c13f012b197db8606945443a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "DEFAULT_CORPUS"
+                },
+                {
+                  "name": "DEFAULT_PATTERNS"
+                },
+                {
+                  "name": "createRun"
+                },
+                {
+                  "name": "endlessPeek"
+                },
+                {
+                  "name": "gateCode"
+                },
+                {
+                  "name": "planOf"
+                },
+                {
+                  "name": "VALUE_TOLERANCE"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 20,
+              "names": [
+                {
+                  "name": "DIGIT"
+                },
+                {
+                  "name": "NAMES"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/cabinet-server",
+              "specifier": "@mcp-arcade-cabinets/cabinet-server/src/browser",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "packages/cabinet-server/src/browser.ts",
@@ -2873,11 +5277,64 @@
             "packages/cabinet-server/src/browser.ts",
             "packages/vibe-typer/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/cabinet-server"
+            },
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "apps/cabinets/test/typer-mount.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "d2daaf60e8b2385e57f63f05ecb7b72129f4e3bcb1849d79fdb71b54ea531b12",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 13,
+              "names": [
+                {
+                  "name": "DEFAULT_CORPUS"
+                },
+                {
+                  "name": "integrationSnippets"
+                },
+                {
+                  "name": "Snippet",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+              "specifier": "@mcp-arcade-cabinets/vibe-typer",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/index.ts",
             "apps/cabinets/src/typer-tiles.ts",
@@ -2887,6 +5344,16 @@
             "apps/cabinets/scripts/slice-tiles.mjs",
             "apps/cabinets/src/typer-tiles.ts",
             "packages/vibe-typer/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "apps/cabinets/test/typer-tiles.test.ts",
           "testFramework": "vitest"
@@ -2921,8 +5388,32 @@
             }
           ],
           "hash": "edb0678157b6782238db7fcac3968d6c1c62353f80bdff959ff33091cdb6c0ea",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "defineConfig"
+                },
+                {
+                  "name": "Plugin",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/vite",
+              "specifier": "vite",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/cabinet-server/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "apps/cabinets/package.json",
+              "purl": "pkg:npm/vite"
+            }
           ],
           "path": "apps/cabinets/vite.config.ts"
         }
@@ -4111,7 +6602,7 @@
           "path": "packages/ghost-on-the-menu/README.md"
         },
         {
-          "hash": "498c70a8d4b4773933ed26d8af75509b9266a4c8d5550a8a5f764908ee5a5289",
+          "hash": "d5217f510b2da04cb7881ddbb44844ad5c60cbd536bd3ac83acfb6e2819fd7d6",
           "path": "packages/ghost-on-the-menu/package.json"
         },
         {
@@ -4289,6 +6780,21 @@
             }
           ],
           "hash": "4744cc8090278b74e3b525eb8cb21adcb3644d66e61b127d718dfdb9ee5aa3cf",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "packages/tape-core/src/index.ts",
             "packages/ghost-on-the-menu/src/patterns.ts",
@@ -4304,6 +6810,12 @@
             "packages/ghost-on-the-menu/src/sim.ts",
             "packages/ghost-on-the-menu/src/types.ts",
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/ghost-on-the-menu/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            }
           ],
           "path": "packages/ghost-on-the-menu/src/endless.ts"
         },
@@ -4344,6 +6856,21 @@
             "labelTape"
           ],
           "hash": "bb53df76ffb2b450eef5ccec50de238755c85cbb3170fb1a3f47594ac04f7dec",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "packages/tape-core/src/index.ts",
             "packages/ghost-on-the-menu/src/patterns.ts",
@@ -4353,6 +6880,12 @@
             "packages/ghost-on-the-menu/src/patterns.ts",
             "packages/ghost-on-the-menu/src/sim.ts",
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/ghost-on-the-menu/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            }
           ],
           "path": "packages/ghost-on-the-menu/src/label.ts"
         },
@@ -4643,6 +7176,27 @@
             }
           ],
           "hash": "52924571c856cff80e087a6b7c363a9c3772b11ea19924e4ae5f9d9b67b7b5c2",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 13,
+              "names": [
+                {
+                  "name": "loadTape"
+                },
+                {
+                  "name": "TapeError"
+                },
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/ghost-on-the-menu/src/endless.ts",
             "packages/ghost-on-the-menu/src/patterns.ts",
@@ -4651,6 +7205,12 @@
             "packages/ghost-on-the-menu/src/sim.ts",
             "packages/ghost-on-the-menu/src/types.ts",
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/ghost-on-the-menu/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            }
           ],
           "path": "packages/ghost-on-the-menu/src/play.ts",
           "sequences": [
@@ -4952,6 +7512,28 @@
             "seedFromTape"
           ],
           "hash": "a256e5d85aa949e3d496e8b8c73b201bb2bf087806291298497109c4eb6e1102",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "factFor"
+                },
+                {
+                  "name": "Tape",
+                  "type": true
+                },
+                {
+                  "name": "TapeRow",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/tape-core/src/index.ts",
             "packages/ghost-on-the-menu/src/patterns.ts",
@@ -4963,6 +7545,12 @@
             "packages/ghost-on-the-menu/src/shift.ts",
             "packages/ghost-on-the-menu/src/types.ts",
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/ghost-on-the-menu/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            }
           ],
           "path": "packages/ghost-on-the-menu/src/prepass.ts"
         },
@@ -5017,6 +7605,21 @@
             }
           ],
           "hash": "79b808e1601d655221eb5a0843e695d40267a6e3031f3e5b31516993c14d62ef",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 14,
+              "names": [
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "packages/tape-core/src/index.ts",
             "packages/ghost-on-the-menu/src/patterns.ts",
@@ -5026,6 +7629,12 @@
             "packages/ghost-on-the-menu/src/patterns.ts",
             "packages/ghost-on-the-menu/src/types.ts",
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/ghost-on-the-menu/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            }
           ],
           "path": "packages/ghost-on-the-menu/src/shift.ts"
         },
@@ -5077,14 +7686,79 @@
         },
         {
           "hash": "e1e4fe3c046674f6e20828ca121729e203108e0b8decad529a26f378e3bdf978",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/ghost-on-the-menu/src/audio.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/ghost-on-the-menu/test/audio.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "eb3cb160d3f93db3b0a3fcd875af1a24c9bde3cf62e8f0bd286d1d0a6fb7c2c7",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 13,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 15,
+              "names": [
+                {
+                  "name": "loadTape"
+                },
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/tape-core/src/index.ts",
             "packages/ghost-on-the-menu/src/play.ts",
@@ -5097,11 +7771,56 @@
             "packages/ghost-on-the-menu/src/shift.ts",
             "packages/tape-core/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "packages/ghost-on-the-menu/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/ghost-on-the-menu/test/band.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "7e9734c1512fe3e24ef75f5e122b87373a13be9dd2d964347115bbd8ec71b700",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "loadTape"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/tape-core/src/index.ts",
             "packages/ghost-on-the-menu/src/play.ts",
@@ -5118,21 +7837,89 @@
             "scripts/sit.mjs",
             "scripts/sweep.mjs"
           ],
+          "packages": [
+            {
+              "manifest": "packages/ghost-on-the-menu/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/ghost-on-the-menu/test/cli.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "df34c75bdebafe3a3d6d412b9d122223915e96cf61a0f59a429536975b6d8eaf",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/ghost-on-the-menu/src/cues.ts",
             "packages/ghost-on-the-menu/src/sim.ts",
             "packages/ghost-on-the-menu/src/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/ghost-on-the-menu/test/cues.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "682482c8718c2519357ab656b13baa19c40b25f7af27e32d9f444462c6f17160",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 17,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "loadTape"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/tape-core/src/index.ts",
             "packages/ghost-on-the-menu/src/endless.ts",
@@ -5149,11 +7936,61 @@
             "packages/ghost-on-the-menu/src/types.ts",
             "packages/tape-core/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "packages/ghost-on-the-menu/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/ghost-on-the-menu/test/endless.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "a1446cc313d27eb3978a1f70082fed5ebaeee1a886a20353205494c69835212d",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "loadTape"
+                },
+                {
+                  "name": "Fact",
+                  "type": true
+                },
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/tape-core/src/index.ts",
             "packages/ghost-on-the-menu/src/label.ts",
@@ -5164,28 +8001,128 @@
             "packages/ghost-on-the-menu/src/patterns.ts",
             "packages/tape-core/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "packages/ghost-on-the-menu/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/ghost-on-the-menu/test/label.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "e6f6b0adb6d2d1b75129a96ba325439e9b44eb5ce44efcf3a5c788c50875c86a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/ghost-on-the-menu/src/patterns.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/ghost-on-the-menu/test/patterns.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "8a72a435fb50b643dbf37ef1060d3a8b93523d43ac100e26a16bbb92cb40eabf",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/ghost-on-the-menu/src/patterns.ts",
             "packages/ghost-on-the-menu/src/pilot.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/ghost-on-the-menu/test/pilot.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "e3b1d8c2b4173e1bbaa90de2be0422df28cfc91386dd9982bc6d376533863187",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "loadTape"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/tape-core/src/index.ts",
             "packages/ghost-on-the-menu/src/play.ts"
@@ -5194,11 +8131,61 @@
             "packages/ghost-on-the-menu/src/play.ts",
             "packages/tape-core/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "packages/ghost-on-the-menu/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/ghost-on-the-menu/test/play.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "190bbeaf974d4df02993fbef3cef03132615b290027eb66a2880642c145b23a9",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "loadTape"
+                },
+                {
+                  "name": "Tape",
+                  "type": true
+                },
+                {
+                  "name": "TapeRow",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/tape-core/src/index.ts",
             "packages/ghost-on-the-menu/src/index.ts",
@@ -5209,11 +8196,57 @@
             "packages/ghost-on-the-menu/src/patterns.ts",
             "packages/tape-core/src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "packages/ghost-on-the-menu/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/ghost-on-the-menu/test/prepass.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "fe0d33ec535b6d59931e35a52a73be8d343a652c1b1b1b07d31edb1213ea6ecb",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 12,
+              "names": [
+                {
+                  "name": "loadTape"
+                },
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/tape-core/src/index.ts",
             "packages/ghost-on-the-menu/src/patterns.ts",
@@ -5225,29 +8258,123 @@
             "packages/ghost-on-the-menu/src/prepass.ts",
             "packages/ghost-on-the-menu/src/types.ts",
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/ghost-on-the-menu/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/ghost-on-the-menu/test/range.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "ab7418ba2be5ffaed18b2038c636fe78398608e07400a18a33fb3502b7831e1d",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/ghost-on-the-menu/src/index.ts",
             "packages/ghost-on-the-menu/src/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/ghost-on-the-menu/test/render.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "3f35da46f1e0f8cee21c91484283b10ff5e0ec2c2f9e37245aa16b2ebd350a37",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/ghost-on-the-menu/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/ghost-on-the-menu/test/scaffold.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "ff615d5223b983a07a20439ed88292da9ec2bb6760e48cecb5097311fcebfcfe",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "loadTape"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/tape-core/src/index.ts",
             "packages/ghost-on-the-menu/src/patterns.ts",
@@ -5261,12 +8388,58 @@
             "packages/ghost-on-the-menu/src/shift.ts",
             "packages/ghost-on-the-menu/src/types.ts",
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/ghost-on-the-menu/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/ghost-on-the-menu/test/shift.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "bbcb75bf2a1ac74bcf2f8c49bed734d07b9131a938a52f2bcebf6736c25cc3f1",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "loadTape"
+                },
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/tape-core/src/index.ts",
             "packages/ghost-on-the-menu/src/index.ts",
@@ -5282,6 +8455,16 @@
             "packages/ghost-on-the-menu/src/sim.ts",
             "packages/ghost-on-the-menu/src/types.ts",
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/ghost-on-the-menu/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/ghost-on-the-menu/test/sim.test.ts",
           "testFramework": "vitest"
@@ -5333,7 +8516,7 @@
           "path": "packages/launcher/README.md"
         },
         {
-          "hash": "fb8ab2fc55c4da12b9e408ecef937611f20edc37cc380ce1df39ddcca807dfa1",
+          "hash": "61d5f7e4e3e85d5958eef74285a20a3a548833ffbe882273fb67b41a61246d4b",
           "path": "packages/launcher/package.json"
         },
         {
@@ -5362,6 +8545,26 @@
             }
           ],
           "hash": "a9ab5cf047483dbdb0cca2b98f8cb40a82203c33c2ede073249d06664be04814",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 40,
+              "names": [
+                {
+                  "name": "build"
+                }
+              ],
+              "purl": "pkg:npm/esbuild",
+              "specifier": "esbuild",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "packages/launcher/package.json",
+              "purl": "pkg:npm/esbuild"
+            }
+          ],
           "path": "packages/launcher/scripts/build.mjs",
           "sequences": []
         },
@@ -6231,35 +9434,145 @@
         },
         {
           "hash": "1ae9115c9e5c2e8ef560a1e9613e90894dd00f4a2e574cac18d7d46be97aebc1",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/launcher/src/allow.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/launcher/test/allow.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "58666e9af78516adbb31368d7696c5e74b390239f18e0e75b42018c2d475b1e1",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/cabinet-server/src/tool-names.ts",
             "packages/launcher/src/cli.ts",
             "packages/launcher/src/levers.ts",
             "packages/launcher/src/serve.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/launcher/test/cli.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "864ee66b16fb3ce401f75e94d67ecd3adbc2e622daf8086d0193736093e45898",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/launcher/src/files.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/launcher/test/files.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "d508b29ecf3b7dc922707579bd39adb3369fbde4460aa9a484f8fb9f89f4aff5",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 25,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/launcher/scripts/build.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/launcher/test/pack-gate.test.ts",
           "testFramework": "vitest"
@@ -6269,13 +9582,71 @@
             "quotedBlocks"
           ],
           "hash": "23bf914d68b5b90a818ae36112b5331db249a20d09157fc3d6894e7762efc2f3",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 15,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/launcher/test/release-workflow.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "cf9fef276347c95a2bc513e4ab2cc04470fd21587551fb07c1dc7c688045ec22",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "afterAll"
+                },
+                {
+                  "name": "beforeAll"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/launcher/src/serve.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/launcher/test/serve.test.ts",
           "testFramework": "vitest"
@@ -6339,7 +9710,7 @@
           "path": "packages/launcher-vibe-typer/README.md"
         },
         {
-          "hash": "e97aff331ed927af42d5022f483a62890bf97df0c3856ca11f3cf139f3f8652f",
+          "hash": "179f402f463af7cdc5436959e4fb563fc3300a6682ca405c95b057541b30c838",
           "path": "packages/launcher-vibe-typer/package.json"
         },
         {
@@ -6704,6 +10075,26 @@
         },
         {
           "hash": "e950f76e0a55240281cc34031cad97ad844583e9313877d6cbc9533c8790daab",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/cabinet-server/src/tool-names.ts",
             "packages/launcher/src/levers.ts",
@@ -6714,13 +10105,51 @@
             "packages/launcher-vibe-typer/src/cli.ts",
             "packages/launcher/src/levers.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/launcher-vibe-typer/test/cli.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "8b5f884fd017f84faa45971e7ab0e87a522fa8b28ac50d04b58aa63e144594e5",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "afterAll"
+                },
+                {
+                  "name": "beforeAll"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/launcher/src/serve.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/launcher-vibe-typer/test/serve.test.ts",
           "testFramework": "vitest"
@@ -6772,7 +10201,7 @@
           "path": ".prettierrc"
         },
         {
-          "hash": "2d67067dd3afd7e8679414807d144e591d901f3d30f9cb74e2cedeb182d61fc5",
+          "hash": "36af72ce6629319246377b96ff0c30819137c07bb1a66112b8933196935f0fa1",
           "path": "CHANGELOG.md"
         },
         {
@@ -6792,35 +10221,35 @@
           "path": "LICENSE"
         },
         {
-          "hash": "c3a781a24eabe843ab6f3e8450dd507be166e8d45ad3241efa28242d289638e0",
+          "hash": "1cf4504d8d2c5e030c486d66b0f0e3bc4364d7cb00cbc55a29ae25bec0a23ff8",
           "path": "README.es.md"
         },
         {
-          "hash": "8a88999ccb4de3a9f9a8372f9c150ebca13fd5b75579acd6fa3ad78a03d42e84",
+          "hash": "fa48d43494879440fec425fe3b86f14ba43103634304c8cfe35b91a8d09e6bae",
           "path": "README.fr.md"
         },
         {
-          "hash": "dc3e1b3b6feac501c7e50d04f8926275f09da6704f80fb4761d81a9360d85a9a",
+          "hash": "337c449fd21b1cccd1dfe975f8a6206bbedf58fd7135566239a1025f3879b17a",
           "path": "README.hi.md"
         },
         {
-          "hash": "ac8e9efde14dfd06b539ceb315de084d31176679b6d59588093a2dde85d2080a",
+          "hash": "17de0ee6f1a26728b3fa7651e6c783a6968b2a38d59e81d967b03d2fe24b1d4b",
           "path": "README.it.md"
         },
         {
-          "hash": "73d16e34f929c033bda70cff6352159240753ceb967272271a368aa8e5b2b092",
+          "hash": "a5d1e12f33fc7dfcb4c73388295df8a213425e82b0d95ec531de50810e4a78d3",
           "path": "README.ja.md"
         },
         {
-          "hash": "5b868810fe1f97bddb5ec0658ac4cf50a75b53b846660b05ffc7ed86037be3a9",
+          "hash": "99a4ea0712bdd4dd737c60b99e5ad3e872b425078ce0213190e230172211f845",
           "path": "README.md"
         },
         {
-          "hash": "db2491ed754bd0915fee01a2f6b04d5e0dfc74226060b52a24e3c0e69f5821db",
+          "hash": "762bc59cdcd6c9a47c974642bf16ed0037047a6a030d0eaa9130ab28df632cb9",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "00fd638cdd58035154c2f37856eef1ddf0661459154c22ae4abf2f583100fbdf",
+          "hash": "dd38552337432a8bda32361954a74bf771960739d96f9e231676e093807380a8",
           "path": "README.zh.md"
         },
         {
@@ -6837,14 +10266,66 @@
         },
         {
           "hash": "1bcf5f23cf078e853d12cb0da9f5a019f7b52f208d38f30d2684df201efe87a3",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40eslint/js",
+              "specifier": "@eslint/js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/globals",
+              "specifier": "globals",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/typescript-eslint",
+              "specifier": "typescript-eslint",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40eslint/js"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/globals"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/typescript-eslint"
+            }
+          ],
           "path": "eslint.config.js"
         },
         {
-          "hash": "d0ee609fc7c9b2e1323163d70c606c1f62ae0c5ae0e20f9f25ab6a0e8c8a6e11",
+          "hash": "0143be7cf0938933e41d3f1a6f21cbc41a3ffefb6cf992904d6fe37765af834c",
           "path": "package.json"
         },
         {
-          "hash": "66c0e3600f672a2e2a08f90620bf0e70dd68e995392feb0bd90ab0abb3034708",
+          "hash": "7421863e2b02774244d521c78bfcde9389825df0719f157ab602aa02c4cac04c",
           "path": "pnpm-lock.yaml"
         },
         {
@@ -6857,6 +10338,26 @@
         },
         {
           "hash": "517c5df69f07fd79183fe152a74f9a7c7ca2c22b65bc33538e3434432fee9914",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest/config",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "vitest.config.ts"
         }
       ],
@@ -7160,8 +10661,28 @@
             }
           ],
           "hash": "1222fad9cc036ed7ad84df729cdd95567ae9292d4be4ea6830785e6878f93303",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "build"
+                }
+              ],
+              "purl": "pkg:npm/esbuild",
+              "specifier": "esbuild",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "scripts/lib/cli.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/esbuild"
+            }
           ],
           "path": "scripts/lib/bundle.mjs"
         },
@@ -7388,8 +10909,28 @@
             }
           ],
           "hash": "ee51638d4e1bf9395f93f8a95d0fe0b4def9087027044e3e77e469b38a1e4aa7",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 44,
+              "names": [
+                {
+                  "name": "build"
+                }
+              ],
+              "purl": "pkg:npm/esbuild",
+              "specifier": "esbuild",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "scripts/lib/cli.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/esbuild"
+            }
           ],
           "path": "scripts/sit-vibe.mjs"
         },
@@ -7448,9 +10989,29 @@
             }
           ],
           "hash": "1d39203e4a178a1b1f81ece52edbabb38c2cbcf2ff6ecbcb795352c85096b2bf",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "build"
+                }
+              ],
+              "purl": "pkg:npm/esbuild",
+              "specifier": "esbuild",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "scripts/lib/cli.mjs",
             "scripts/sit-vibe.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/esbuild"
+            }
           ],
           "path": "scripts/sit.mjs"
         },
@@ -7509,6 +11070,29 @@
         },
         {
           "hash": "d5b87179aaeb7183c4b65154d4a5589f2a27882fee79bbe329b1cdf91b3c2106",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "scripts/lib/cli.mjs"
           ],
@@ -7516,16 +11100,51 @@
             "scripts/film.mjs",
             "scripts/play.mjs"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "scripts/test/cli-lib.test.mjs",
           "testFramework": "vitest"
         },
         {
           "hash": "d04fa1bf6f14912fece3f8d3202c491600d8291624e36002dd565a872f09dbaa",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "scripts/film.mjs",
             "scripts/play.mjs",
             "scripts/transcript.mjs",
             "scripts/voice.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "scripts/test/runners.test.mjs",
           "testFramework": "vitest"
@@ -7762,14 +11381,66 @@
       "files": [
         {
           "hash": "c57d13938d0b229ac4676c9b10887115fa3ef57c5821eab9af86b32c42c95efb",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/astro",
+              "specifier": "astro/config",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40tailwindcss/vite",
+              "specifier": "@tailwindcss/vite",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40tailwindcss/vite"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/astro"
+            }
+          ],
           "path": "site/astro.config.mjs"
         },
         {
-          "hash": "1514dcd9e5bc2ab302880dca1a5ff8759938e7f246592b82aa2d88b4468558b2",
+          "hash": "2ece7237b974c1ad1e68d4c6ef84bb3bbba958ec45830345b8018f4701107ae6",
           "path": "site/package-lock.json"
         },
         {
-          "hash": "cf987ba3ed7a7abcfc191b724a469b624463baef7ae2fa2c6afe39ac3289498b",
+          "hash": "9b760ec648db6abc94f872522053096212d7580df2f0bd58232ea5f4da04c51f",
           "path": "site/package.json"
         },
         {
@@ -7779,6 +11450,38 @@
         {
           "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "docsLoader"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/loaders",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "docsSchema"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/schema",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            }
+          ],
           "path": "site/src/content.config.ts"
         },
         {
@@ -7819,6 +11522,92 @@
         },
         {
           "hash": "29e3f6ea09440520a3cb10d5d49120fac7701d94c8c6f5e6066465340344d056",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/BaseLayout.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Hero.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Section.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/FeatureGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/DataTable.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/CodeCardGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/ApiList.astro",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "site/src/styles/global.css",
             "site/src/site-config.ts"
@@ -7827,11 +11616,38 @@
             "site/src/site-config.ts",
             "site/src/styles/global.css"
           ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
           "constantOnly": true,
-          "hash": "e7b792458b32c1a69b0798409c05600eee556639ecf38cc52798776e9d4bd73b",
+          "hash": "4532f0db351d71b75ce61545db88f8afe96137d0769c1b4cae79a134e942be34",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "SiteConfig",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme",
+              "typeOnly": true
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/site-config.ts"
         },
         {
@@ -7868,7 +11684,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "c987efbef080bf13158ebc57851277a4176212aac1acc78ecd93ab9cac4e1497",
+          "hash": "3f06afc95126dc168b0f0df8e66beef3f84ac92cb0064abc19be94d6c11c5de1",
           "path": "packages/tape-core/package.json"
         },
         {
@@ -8132,33 +11948,137 @@
         },
         {
           "hash": "1f2805315c43a6531170c7d54deaf560fcae10e7112563ec17b1e06c5aa022cd",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/tape-core/test/calibration.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "df0adb15b2a110c56d0eb74d5dd24290db4757d12120d74363d23cf51b3be91a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/tape-core/test/reveal.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "69cebccc8753ec5f713c093c1bb4eae0fffd1223de40c6233d67d5d0004840f4",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/tape-core/src/index.ts",
             "packages/tape-core/src/load.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/tape-core/test/schema.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "774b3513136c59cc39759a72484cb85937dc8e1d008c09cc94d450db57ac9820",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/tape-core/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/tape-core/test/slice.test.ts",
           "testFramework": "vitest"
@@ -8402,7 +12322,7 @@
           "path": "packages/vibe-typer/authoring/2026-09-17-041119373-snippet-reactions.json"
         },
         {
-          "hash": "e169e0502b2e74c283be49d61c2b280b4768d1d36014e9197b1dcde24bfe3c2b",
+          "hash": "d70d0b4666f58f97eccffaf252f23da5b2367825dd2b92f604136eab9a8225ac",
           "path": "packages/vibe-typer/package.json"
         },
         {
@@ -8787,8 +12707,28 @@
             }
           ],
           "hash": "6b66a3a3b0943284ad48bc6eca28ed6d81a7839b6efe025368b06fb70f3c05ed",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 47,
+              "names": [
+                {
+                  "name": "build"
+                }
+              ],
+              "purl": "pkg:npm/esbuild",
+              "specifier": "esbuild",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/vibe-typer/scripts/author-lib.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/esbuild"
+            }
           ],
           "path": "packages/vibe-typer/scripts/author.mjs"
         },
@@ -8812,6 +12752,26 @@
             }
           ],
           "hash": "32a39b1169b036a032a39377a352243e1f5443ad3799588b190e19ce5bcd6fca",
+          "importNames": [
+            {
+              "form": "dynamic",
+              "line": 250,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/prettier",
+              "specifier": "prettier",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/prettier"
+            }
+          ],
           "path": "packages/vibe-typer/scripts/normalize-lines.mjs"
         },
         {
@@ -8834,6 +12794,26 @@
             }
           ],
           "hash": "ef370b73766159d1c12ebc8882b3227b20714689d914a4202e2503f46d6f8146",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 26,
+              "names": [
+                {
+                  "name": "build"
+                }
+              ],
+              "purl": "pkg:npm/esbuild",
+              "specifier": "esbuild",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/esbuild"
+            }
+          ],
           "path": "packages/vibe-typer/scripts/sweep-levels.mjs"
         },
         {
@@ -9102,6 +13082,27 @@
             }
           ],
           "hash": "dcf006f9b92e1bb4e135bb0bd54b46356c0eb23edb7ecbf64bbe6a023de82e52",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "loadTape"
+                },
+                {
+                  "name": "TapeError"
+                },
+                {
+                  "name": "Tape",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/tape-core/src/index.ts",
             "packages/vibe-typer/src/corpus.ts",
@@ -9121,6 +13122,12 @@
             "packages/vibe-typer/src/seed.ts",
             "packages/vibe-typer/src/sim.ts",
             "packages/vibe-typer/src/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/vibe-typer/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            }
           ],
           "path": "packages/vibe-typer/src/play.ts"
         },
@@ -9289,6 +13296,26 @@
         },
         {
           "hash": "07b2b9fc196914703be57138f7c6806c4e0d05ff6f13640e8a1e7260bef7bb15",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/scripts/author-lib.mjs",
             "packages/vibe-typer/src/patterns.ts",
@@ -9304,11 +13331,40 @@
           "names": [
             "packages/vibe-typer/scripts/author.mjs"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/vibe-typer/test/author.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "039a49c4d3add325606a18e3cf648088217f46761002048496d295456c300caf",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/score.ts",
@@ -9323,11 +13379,37 @@
             "packages/vibe-typer/src/types.ts",
             "packages/vibe-typer/test/helpers.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/vibe-typer/test/band.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "26976b8f1926bb74710e3dcefa640e25e94dbebdf8b5a50bf51983989cc05799",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/codegate.ts",
             "packages/vibe-typer/src/corpus.ts",
@@ -9344,35 +13426,119 @@
             "packages/vibe-typer/src/spelling.ts",
             "packages/vibe-typer/src/types.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/vibe-typer/test/codegate.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "122dd03bb9b8bac115a2f48cb95ea784f307adf78a83df768354ae4d4ba13e33",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/vibe-typer/src/context.ts",
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/sim.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/vibe-typer/test/context.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "c87644f6aa875f6defa6dbd501351c166fbef00411dba5fa704a41c5e0f943ce",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/vibe-typer/src/corpus.ts",
             "packages/vibe-typer/src/patterns.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/vibe-typer/test/corpus.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "c9bc985b2ba0b672dc597e6496772b5930c0ff3cc8c38a4e8832c5bb98f132ad",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/vibe-typer/src/corpus.ts",
             "packages/vibe-typer/src/difficulty.ts",
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/vibe-typer/test/difficulty.test.ts",
           "testFramework": "vitest"
@@ -9405,6 +13571,26 @@
         },
         {
           "hash": "aa9a69972affece41a5423e3fbdd6f57ca81fa8def11970ff5739f673b14699b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/corpus.ts",
             "packages/vibe-typer/src/lines.ts",
@@ -9420,23 +13606,75 @@
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/seed.ts",
             "packages/vibe-typer/src/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/vibe-typer/test/level.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "e854688aaeb9efe128f02442a1f7c5e89d1d1c805bd72075cd7a6efedea5daca",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 33,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/vibe-typer/src/corpus.ts",
             "packages/vibe-typer/src/lines.ts",
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/types.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/vibe-typer/test/lines-neutral.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "46b360156fe5329dc698e4b27952dda037444a4d78b27f7c72c1a4d4c8cae023",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/lines.ts",
             "packages/vibe-typer/src/patterns.ts",
@@ -9449,19 +13687,71 @@
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/types.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/vibe-typer/test/lines.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "da5e1eb4c0b2a7d4ab745c341eb1f8621ae7a4837fe7e018cf955a9177e88729",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/vibe-typer/scripts/normalize-lines.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/vibe-typer/test/normalize.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "1e81849998aa6661a7e8f98fb5bad8c068e77380fdea0d3eff4bf8438903150b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/corpus.ts",
@@ -9489,11 +13779,49 @@
           "names": [
             "packages/ghost-on-the-menu/src/patterns.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/vibe-typer/test/patterns.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "84b1db79eeaff1191e77ab1fc8d9b9e63aa5918ae4e56b0f73556e82054eb050",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 22,
+              "names": [
+                {
+                  "name": "loadTape"
+                }
+              ],
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+              "specifier": "@mcp-arcade-cabinets/tape-core",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/play.ts",
             "packages/vibe-typer/src/level.ts",
@@ -9508,6 +13836,16 @@
             "packages/vibe-typer/src/play.ts",
             "scripts/play.mjs"
           ],
+          "packages": [
+            {
+              "manifest": "packages/vibe-typer/package.json",
+              "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/vibe-typer/test/play.test.ts",
           "spawns": [
             "scripts/play.mjs"
@@ -9516,17 +13854,69 @@
         },
         {
           "hash": "9ecada7c5f09c23814455a7de682328075e804eeffec1614d3e144c906bf5816",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/vibe-typer/src/patterns.ts",
             "packages/vibe-typer/src/score.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/vibe-typer/test/score.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "28e11068e5ac487fa3de9f224cdcef62bbadbfa129bd0efed65b3f0c99b4ab3e",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "names": [
             "scripts/transcript.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/vibe-typer/test/scripts.test.ts",
           "spawns": [
@@ -9537,6 +13927,26 @@
         },
         {
           "hash": "4e7d19831ebfe6d21529d33d7e1d2cb6ab212b0cf58dd4eb0a29ebfff48db6d9",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "packages/vibe-typer/src/play.ts",
             "packages/vibe-typer/src/patterns.ts",
@@ -9559,11 +13969,37 @@
             "packages/vibe-typer/src/types.ts",
             "packages/vibe-typer/test/helpers.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "packages/vibe-typer/test/sim.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "9ba3eb366ed53a7b383b325059b7a3c943060d8a987cd6b3f5fa9ab11830ec3b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 25,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "packages/vibe-typer/src/spelling.ts"
           ],
@@ -9574,6 +14010,12 @@
             "apps/cabinets/src/typer-keys.ts",
             "apps/cabinets/src/vibe-typer.ts",
             "packages/vibe-typer/src/lines.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "packages/vibe-typer/test/spelling.test.ts",
           "testFramework": "vitest"
@@ -12288,7 +16730,7 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "1d89b900505102e6096d7a388be03a60cc75d83e",
+    "commit": "fd7039f130cbd2f95da7f99eeaf85954814dec01",
     "tracked": 757
   },
   "landings": [
@@ -15142,7 +19584,425 @@
       "writers": []
     }
   ],
+  "manifests": [
+    {
+      "name": "@mcp-arcade-cabinets/cabinets",
+      "path": "apps/cabinets/package.json",
+      "private": true,
+      "role": "member",
+      "roleFrom": "packages in pnpm-workspace.yaml",
+      "version": "0.13.3"
+    },
+    {
+      "name": "mcp-arcade-cabinets",
+      "path": "package.json",
+      "private": true,
+      "role": "root",
+      "roleFrom": "the root manifest",
+      "version": "0.13.3"
+    },
+    {
+      "name": "@mcp-arcade-cabinets/cabinet-server",
+      "path": "packages/cabinet-server/package.json",
+      "private": true,
+      "role": "member",
+      "roleFrom": "packages in pnpm-workspace.yaml",
+      "version": "0.13.3"
+    },
+    {
+      "name": "@mcp-arcade-cabinets/ghost-on-the-menu",
+      "path": "packages/ghost-on-the-menu/package.json",
+      "private": true,
+      "role": "member",
+      "roleFrom": "packages in pnpm-workspace.yaml",
+      "version": "0.13.3"
+    },
+    {
+      "name": "@mcptoolshop/vibe-typer",
+      "path": "packages/launcher-vibe-typer/package.json",
+      "role": "member",
+      "roleFrom": "packages in pnpm-workspace.yaml",
+      "version": "0.13.3"
+    },
+    {
+      "name": "@mcptoolshop/ghost-on-the-menu",
+      "path": "packages/launcher/package.json",
+      "role": "member",
+      "roleFrom": "packages in pnpm-workspace.yaml",
+      "version": "0.13.3"
+    },
+    {
+      "name": "@mcp-arcade-cabinets/tape-core",
+      "path": "packages/tape-core/package.json",
+      "private": true,
+      "role": "member",
+      "roleFrom": "packages in pnpm-workspace.yaml",
+      "version": "0.13.3"
+    },
+    {
+      "name": "@mcp-arcade-cabinets/vibe-typer",
+      "path": "packages/vibe-typer/package.json",
+      "private": true,
+      "role": "member",
+      "roleFrom": "packages in pnpm-workspace.yaml",
+      "version": "0.13.3"
+    },
+    {
+      "name": "site",
+      "path": "site/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door Site, job build, step Install site dependencies: npm ci in site",
+      "version": "0.13.3"
+    }
+  ],
   "overlaps": [],
+  "packageDependencies": [
+    {
+      "field": "dependencies",
+      "kind": "workspace",
+      "manifest": "apps/cabinets/package.json",
+      "name": "@mcp-arcade-cabinets/cabinet-server",
+      "purl": "pkg:npm/%40mcp-arcade-cabinets/cabinet-server",
+      "range": "workspace:*",
+      "unknown": "a workspace dependency moves with the tree",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "workspace",
+      "manifest": "apps/cabinets/package.json",
+      "name": "@mcp-arcade-cabinets/ghost-on-the-menu",
+      "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+      "range": "workspace:*",
+      "unknown": "a workspace dependency moves with the tree",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "workspace",
+      "manifest": "apps/cabinets/package.json",
+      "name": "@mcp-arcade-cabinets/tape-core",
+      "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+      "range": "workspace:*",
+      "unknown": "a workspace dependency moves with the tree",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "workspace",
+      "manifest": "apps/cabinets/package.json",
+      "name": "@mcp-arcade-cabinets/vibe-typer",
+      "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+      "range": "workspace:*",
+      "unknown": "a workspace dependency moves with the tree",
+      "version": null
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "apps/cabinets/package.json",
+      "name": "vite",
+      "purl": "pkg:npm/vite",
+      "range": "^6.1.0",
+      "version": "6.4.3",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@eslint/js",
+      "purl": "pkg:npm/%40eslint/js",
+      "range": "^9.39.5",
+      "version": "9.39.5",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@types/node",
+      "purl": "pkg:npm/%40types/node",
+      "range": "^26.6.3",
+      "version": "26.6.3",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@vitest/coverage-v8",
+      "purl": "pkg:npm/%40vitest/coverage-v8",
+      "range": "5.0.2",
+      "version": "5.0.2",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "cross-env",
+      "purl": "pkg:npm/cross-env",
+      "range": "^10.1.0",
+      "version": "10.1.0",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "esbuild",
+      "purl": "pkg:npm/esbuild",
+      "range": "^0.28.2",
+      "version": "0.28.2",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "eslint",
+      "purl": "pkg:npm/eslint",
+      "range": "^9.39.5",
+      "version": "9.39.5",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "globals",
+      "purl": "pkg:npm/globals",
+      "range": "^17.12.0",
+      "version": "17.12.0",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "jsdom",
+      "purl": "pkg:npm/jsdom",
+      "range": "^25.0.0",
+      "version": "25.0.1",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "prettier",
+      "purl": "pkg:npm/prettier",
+      "range": "^3.9.9",
+      "version": "3.9.9",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "typescript",
+      "purl": "pkg:npm/typescript",
+      "range": "^5.7.0",
+      "version": "5.9.3",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "typescript-eslint",
+      "purl": "pkg:npm/typescript-eslint",
+      "range": "^8.70.1",
+      "version": "8.70.1",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "vitest",
+      "purl": "pkg:npm/vitest",
+      "range": "^5.0.2",
+      "version": "5.0.2",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "packages/cabinet-server/package.json",
+      "name": "@anthropic-ai/sdk",
+      "purl": "pkg:npm/%40anthropic-ai/sdk",
+      "range": "^0.125.0",
+      "version": "0.125.0",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "dependencies",
+      "kind": "workspace",
+      "manifest": "packages/cabinet-server/package.json",
+      "name": "@mcp-arcade-cabinets/ghost-on-the-menu",
+      "purl": "pkg:npm/%40mcp-arcade-cabinets/ghost-on-the-menu",
+      "range": "workspace:*",
+      "unknown": "a workspace dependency moves with the tree",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "workspace",
+      "manifest": "packages/cabinet-server/package.json",
+      "name": "@mcp-arcade-cabinets/tape-core",
+      "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+      "range": "workspace:*",
+      "unknown": "a workspace dependency moves with the tree",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "workspace",
+      "manifest": "packages/cabinet-server/package.json",
+      "name": "@mcp-arcade-cabinets/vibe-typer",
+      "purl": "pkg:npm/%40mcp-arcade-cabinets/vibe-typer",
+      "range": "workspace:*",
+      "unknown": "a workspace dependency moves with the tree",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "packages/cabinet-server/package.json",
+      "name": "@modelcontextprotocol/sdk",
+      "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+      "range": "^1.32.1",
+      "version": "1.32.1",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "packages/cabinet-server/package.json",
+      "name": "zod",
+      "purl": "pkg:npm/zod",
+      "range": "^4.6.2",
+      "version": "4.6.2",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "dependencies",
+      "kind": "workspace",
+      "manifest": "packages/ghost-on-the-menu/package.json",
+      "name": "@mcp-arcade-cabinets/tape-core",
+      "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+      "range": "workspace:*",
+      "unknown": "a workspace dependency moves with the tree",
+      "version": null
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "packages/launcher-vibe-typer/package.json",
+      "name": "esbuild",
+      "purl": "pkg:npm/esbuild",
+      "range": "^0.28.2",
+      "version": "0.28.2",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "packages/launcher/package.json",
+      "name": "esbuild",
+      "purl": "pkg:npm/esbuild",
+      "range": "^0.28.2",
+      "version": "0.28.2",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "dependencies",
+      "kind": "workspace",
+      "manifest": "packages/vibe-typer/package.json",
+      "name": "@mcp-arcade-cabinets/tape-core",
+      "purl": "pkg:npm/%40mcp-arcade-cabinets/tape-core",
+      "range": "workspace:*",
+      "unknown": "a workspace dependency moves with the tree",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@astrojs/starlight",
+      "purl": "pkg:npm/%40astrojs/starlight",
+      "range": "^0.42.0",
+      "version": "0.42.6",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@mcptoolshop/site-theme",
+      "purl": "pkg:npm/%40mcptoolshop/site-theme",
+      "range": "^2.2.0",
+      "version": "2.2.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@tailwindcss/vite",
+      "purl": "pkg:npm/%40tailwindcss/vite",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "astro",
+      "purl": "pkg:npm/astro",
+      "range": "^7.3.1",
+      "version": "7.3.2",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "tailwindcss",
+      "purl": "pkg:npm/tailwindcss",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    }
+  ],
+  "packagesPublished": [
+    {
+      "doors": [
+        "Publish"
+      ],
+      "how": "named by the publish",
+      "manifest": "packages/launcher-vibe-typer/package.json",
+      "name": "@mcptoolshop/vibe-typer",
+      "purl": "pkg:npm/%40mcptoolshop/vibe-typer",
+      "repository": "https://github.com/mcp-tool-shop-org/mcp-arcade-cabinets",
+      "version": "0.13.3"
+    },
+    {
+      "doors": [
+        "Publish"
+      ],
+      "how": "named by the publish",
+      "manifest": "packages/launcher/package.json",
+      "name": "@mcptoolshop/ghost-on-the-menu",
+      "purl": "pkg:npm/%40mcptoolshop/ghost-on-the-menu",
+      "repository": "https://github.com/mcp-tool-shop-org/mcp-arcade-cabinets",
+      "version": "0.13.3"
+    }
+  ],
   "submodules": [],
   "symlinks": [],
   "testFiles": 76,

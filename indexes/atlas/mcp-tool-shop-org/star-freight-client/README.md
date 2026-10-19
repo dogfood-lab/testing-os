@@ -1,6 +1,6 @@
 # star-freight-client: how it works
 
-Mapped at 2026-10-05 from commit 86e0ff0 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 86e0ff0 by Atlas 1.26.0.
 
 ## What this is
 
@@ -59,7 +59,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, assets/, the repository root and site/. Nothing in this repository writes to them.
+People write .github/, the repository root and site/. Nothing in this repository writes to them. The data in assets/ is written by no code in this repository.
 
 ## Where to start
 

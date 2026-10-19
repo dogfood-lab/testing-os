@@ -1,14 +1,14 @@
 # research-packs: how it works
 
-Mapped at 2026-10-05 from commit 367af69 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 64a8dc1 by Atlas 1.26.0.
 
 ## What this is
 
 7 parts, mostly JSON data (1166 files) and Markdown (430); code in HTML (174), JavaScript (8), CSS (2), TypeScript (2) and Astro (1). Work enters through 2 doors; the busiest is Verify, which reaches 2 parts. It deploys a site to GitHub Pages.
 
-## What changed since 2026-09-30 (3330a26)
+## What changed since 2026-10-14 (5433990)
 
-Nothing structural changed since 2026-09-30; 1 file changed content.
+Nothing structural changed since 2026-10-14; no file changed.
 
 ## What comes in
 
@@ -56,7 +56,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, docs/, packages/, the repository root and site/. Nothing in this repository writes to them.
+People write .github/, docs/, the repository root and site/. Nothing in this repository writes to them. The data in packages/ is written by no code this map names.
 
 ## Where to start
 

@@ -3161,6 +3161,26 @@
             "parseHtml"
           ],
           "hash": "f8e121d1f4edb11d02c2af99a7b0e68d0db03cea9c23f18c1f6ac36516324c0c",
+          "importNames": [
+            {
+              "form": "require",
+              "line": 3,
+              "names": [
+                {
+                  "name": "Parser"
+                }
+              ],
+              "purl": "pkg:npm/htmlparser2",
+              "specifier": "htmlparser2",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "src/a11y-evidence-engine/package.json",
+              "purl": "pkg:npm/htmlparser2"
+            }
+          ],
           "path": "src/a11y-evidence-engine/src/html_parse.js"
         },
         {
@@ -4584,7 +4604,7 @@
           "path": "src/a11y-mcp-tools/fixtures/responses/a11y.evidence.ok.json"
         },
         {
-          "hash": "b54159ab08f1b7ce7578c8cefced59ec2698ffa9474e2123fd2e84d36cea43d4",
+          "hash": "2e1d8e01c34b690fddf0dcc088f79fde1f14ce0dd45b66667246ea3d819b8f44",
           "path": "src/a11y-mcp-tools/package-lock.json"
         },
         {
@@ -4745,8 +4765,28 @@
             }
           ],
           "hash": "4daaa1fd3bc45eb8215e4de5c6ff1b0bfedaafa4bb3ed829b79a00737ad3e2e9",
+          "importNames": [
+            {
+              "form": "require",
+              "line": 15,
+              "names": [
+                {
+                  "name": "Parser"
+                }
+              ],
+              "purl": "pkg:npm/htmlparser2",
+              "specifier": "htmlparser2",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/a11y-mcp-tools/src/schemas/index.js"
+          ],
+          "packages": [
+            {
+              "manifest": "src/a11y-mcp-tools/package.json",
+              "purl": "pkg:npm/htmlparser2"
+            }
           ],
           "path": "src/a11y-mcp-tools/src/tools/evidence.js"
         },
@@ -4764,6 +4804,42 @@
         },
         {
           "hash": "dc4dfeca5b1fade22c4cc7ec9d73c4f6e32bb0a02c688428305b22c3bf7a3e45",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv",
+              "specifier": "ajv/dist/2020.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/ajv-formats",
+              "specifier": "ajv-formats",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "src/a11y-mcp-tools/package.json",
+              "purl": "pkg:npm/ajv"
+            },
+            {
+              "manifest": "src/a11y-mcp-tools/package.json",
+              "purl": "pkg:npm/ajv-formats"
+            }
+          ],
           "path": "src/a11y-mcp-tools/test/contract.test.mjs",
           "testFramework": "node --test"
         },
@@ -4785,6 +4861,42 @@
         },
         {
           "hash": "74593243e3fdc37cad3462a199398bb68221ce5ffc648d698214699b573a2062",
+          "importNames": [
+            {
+              "form": "require",
+              "line": 15,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/ajv",
+              "specifier": "ajv/dist/2020",
+              "typeOnly": false
+            },
+            {
+              "form": "require",
+              "line": 16,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/ajv-formats",
+              "specifier": "ajv-formats",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "src/a11y-mcp-tools/package.json",
+              "purl": "pkg:npm/ajv"
+            },
+            {
+              "manifest": "src/a11y-mcp-tools/package.json",
+              "purl": "pkg:npm/ajv-formats"
+            }
+          ],
           "path": "src/a11y-mcp-tools/test/schema.test.js",
           "testFramework": "node --test"
         }
@@ -5381,19 +5493,103 @@
       "files": [
         {
           "hash": "27b35b41affd837acd3432a3f3f187225c71f826cada5bb7da3034f5725ff5d6",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/astro",
+              "specifier": "astro/config",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40tailwindcss/vite",
+              "specifier": "@tailwindcss/vite",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40tailwindcss/vite"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/astro"
+            }
+          ],
           "path": "site/astro.config.mjs"
         },
         {
-          "hash": "0607a19c4f60b635244a906c7ad2424359b50e20c4a83bc140f202abce4a941e",
+          "hash": "01b4c7259256650c2f468783bdaf2d5edbf6ac868174322bc113e2b7667c47bb",
           "path": "site/package-lock.json"
         },
         {
-          "hash": "17ed487ab5049bb52f8c5e35f77f21be7da639f1fb6a3fa70e9b02ffabfe7be6",
+          "hash": "f70476bbf956f26e144852469081483b247f4867786b127be7c97ffdc39cfb39",
           "path": "site/package.json"
         },
         {
           "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "docsLoader"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/loaders",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "docsSchema"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/schema",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            }
+          ],
           "path": "site/src/content.config.ts"
         },
         {
@@ -5430,6 +5626,92 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/BaseLayout.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Hero.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Section.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/FeatureGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/DataTable.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/CodeCardGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/ApiList.astro",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "site/src/styles/global.css",
             "site/src/site-config.ts"
@@ -5438,11 +5720,38 @@
             "site/src/site-config.ts",
             "site/src/styles/global.css"
           ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
           "constantOnly": true,
           "hash": "15473a27531effc19183f6c86116b57c470435f9fc63ef79cee534dc66cd4307",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "SiteConfig",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme",
+              "typeOnly": true
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/site-config.ts"
         },
         {
@@ -6825,7 +7134,7 @@
   "edges": [],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "7bd5f988a0f102dbb8cd746a141b6332bbfe32f8",
+    "commit": "82394a2500f6a9b07e5b4db9dff2e632fd53ad8e",
     "tracked": 331
   },
   "landings": [
@@ -7890,7 +8199,139 @@
       "writers": []
     }
   ],
+  "manifests": [
+    {
+      "name": "@accessibility-suite/core",
+      "path": "package.json",
+      "private": true,
+      "role": "root",
+      "roleFrom": "the root manifest",
+      "version": "1.0.2"
+    },
+    {
+      "name": "site",
+      "path": "site/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door Deploy site to GitHub Pages, job build, step Install site dependencies: npm ci in site",
+      "version": "0.0.1"
+    },
+    {
+      "name": "@accessibility-suite/ci",
+      "path": "src/a11y-ci/npm/package.json",
+      "role": "other",
+      "roleFrom": "no workspace lists it and no install step Atlas reads runs in its directory",
+      "version": "0.2.2"
+    },
+    {
+      "name": "@accessibility-suite/evidence-engine",
+      "path": "src/a11y-evidence-engine/package.json",
+      "role": "installed",
+      "roleFrom": "door CI, job nodejs, step Install dependencies: npm ci in src/a11y-evidence-engine",
+      "version": "0.2.1"
+    },
+    {
+      "name": "@accessibility-suite/mcp-tools",
+      "path": "src/a11y-mcp-tools/package.json",
+      "role": "installed",
+      "roleFrom": "door CI, job nodejs, step Install dependencies: npm ci in src/a11y-mcp-tools",
+      "version": "0.3.1"
+    }
+  ],
   "overlaps": [],
+  "packageDependencies": [
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@astrojs/starlight",
+      "purl": "pkg:npm/%40astrojs/starlight",
+      "range": "^0.42.1",
+      "version": "0.42.6",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@mcptoolshop/site-theme",
+      "purl": "pkg:npm/%40mcptoolshop/site-theme",
+      "range": "^2.2.0",
+      "version": "2.2.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@tailwindcss/vite",
+      "purl": "pkg:npm/%40tailwindcss/vite",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "astro",
+      "purl": "pkg:npm/astro",
+      "range": "^7.3.3",
+      "version": "7.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "tailwindcss",
+      "purl": "pkg:npm/tailwindcss",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "src/a11y-evidence-engine/package.json",
+      "name": "htmlparser2",
+      "purl": "pkg:npm/htmlparser2",
+      "range": "^9.1.0",
+      "version": "9.1.0",
+      "versionFrom": "src/a11y-evidence-engine/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "src/a11y-mcp-tools/package.json",
+      "name": "htmlparser2",
+      "purl": "pkg:npm/htmlparser2",
+      "range": "^9.1.0",
+      "version": "9.1.0",
+      "versionFrom": "src/a11y-mcp-tools/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "src/a11y-mcp-tools/package.json",
+      "name": "ajv",
+      "purl": "pkg:npm/ajv",
+      "range": "^8.17.1",
+      "version": "8.20.0",
+      "versionFrom": "src/a11y-mcp-tools/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "src/a11y-mcp-tools/package.json",
+      "name": "ajv-formats",
+      "purl": "pkg:npm/ajv-formats",
+      "range": "^3.0.1",
+      "version": "3.0.1",
+      "versionFrom": "src/a11y-mcp-tools/package-lock.json"
+    }
+  ],
+  "packagesPublished": [],
   "submodules": [],
   "symlinks": [],
   "testFiles": 62,

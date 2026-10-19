@@ -79,7 +79,7 @@
           "path": ".npmignore"
         },
         {
-          "hash": "420e5e399a24b5f0b577baa6d9561792c176b4b2dbd43b731ffb6a8d92f84993",
+          "hash": "74d0d2b5fdf9f46cdd4c83e5330e1d92d3c186babd33728de2909a42742d021b",
           "path": "CHANGELOG.md"
         },
         {
@@ -123,7 +123,7 @@
           "path": "README.zh.md"
         },
         {
-          "hash": "5f12917b74e8b43a8808c5212262e0bad4d7f4ad55fe517173a3bb0eabf15d5f",
+          "hash": "83f52bf80d5c676881b1bfdceec815c3ec26d5fc67c558d2522e0069197a3f73",
           "path": "ROADMAP.md"
         },
         {
@@ -147,11 +147,11 @@
           "path": "logo.png"
         },
         {
-          "hash": "b986f1a6f30a7d4c11d06b891b6cf885171fdd529fdd0f8c05d11c25bcab73e4",
+          "hash": "f6ffcdaed2e8f9223d2a4d3bf581023fc5c6f8c83fd1c17d7f2522d46457b184",
           "path": "package-lock.json"
         },
         {
-          "hash": "441f43f81f7f82a295daf981f150aa1371f6ba0913ad7b4390a2b26037b52a6e",
+          "hash": "65712ab20dba0affc3355b09144929cffec9b7954f1d51e9607e5ea940d49826",
           "path": "package.json"
         },
         {
@@ -168,6 +168,26 @@
         },
         {
           "hash": "c41119831b18896926db3c77bfe3af36d5cedbfdf16cfd08ea59690ea106cfaa",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest/config",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "vitest.config.ts"
         }
       ],
@@ -199,10 +219,30 @@
             }
           ],
           "hash": "bd62ca4d4bdee06f3c5b3d6de3bc7db8ed499627a76102fcbf371b3286fac4c5",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "Ollama"
+                }
+              ],
+              "purl": "pkg:npm/ollama",
+              "specifier": "ollama",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/prompts/base.ts",
             "src/prompts/loader.ts",
             "src/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/ollama"
+            }
           ],
           "path": "scripts/ab-scorecard.ts"
         },
@@ -392,10 +432,30 @@
             }
           ],
           "hash": "b4453ad126b0fe7181459e89132f15e15a530e76e1dc670143aff1478c3931e2",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Ollama"
+                }
+              ],
+              "purl": "pkg:npm/ollama",
+              "specifier": "ollama",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/prompts/base.ts",
             "src/prompts/loader.ts",
             "src/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/ollama"
+            }
           ],
           "path": "scripts/smoke.ts"
         },
@@ -498,6 +558,58 @@
       "files": [
         {
           "hash": "ff5a7a2da38d817019d41204c58de49fdd38c3c3ed6dab0ddcb0da95f2978544",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/astro",
+              "specifier": "astro/config",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40tailwindcss/vite",
+              "specifier": "@tailwindcss/vite",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40tailwindcss/vite"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/astro"
+            }
+          ],
           "path": "site/astro.config.mjs"
         },
         {
@@ -511,6 +623,38 @@
         {
           "constantOnly": true,
           "hash": "a0aecee7822bb909cbe50391337cda571f2bf5c13f0b4d6504b05727fcab3134",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "docsLoader"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/loaders",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "docsSchema"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/schema",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            }
+          ],
           "path": "site/src/content.config.ts"
         },
         {
@@ -543,6 +687,92 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/BaseLayout.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Hero.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Section.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/FeatureGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/DataTable.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/CodeCardGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/ApiList.astro",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "site/src/styles/global.css",
             "site/src/site-config.ts"
@@ -551,11 +781,38 @@
             "site/src/site-config.ts",
             "site/src/styles/global.css"
           ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
           "constantOnly": true,
           "hash": "bd5e19a514ee314ad3f750270e02a69c3516256df2f6aaa38b4f781418d68d59",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "SiteConfig",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme",
+              "typeOnly": true
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/site-config.ts"
         },
         {
@@ -651,6 +908,26 @@
             "validateProfile"
           ],
           "hash": "de9f17ac24a8ee68289eb224b887ecf8bac7ddefca82c5df3624df3b9ebc3852",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 20,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
+          ],
           "path": "src/character/voice-schema.ts"
         },
         {
@@ -768,6 +1045,20 @@
             }
           ],
           "hash": "fb40ee1fc138dd8edc1b64b835a83ca138aca570b6305d64aee1020fc9ab3495",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 17,
+              "names": [
+                {
+                  "name": "Ollama"
+                }
+              ],
+              "purl": "pkg:npm/ollama",
+              "specifier": "ollama",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/ollama.ts",
             "src/dataset/eval/judge.ts"
@@ -775,6 +1066,12 @@
           "importsFiles": [
             "src/dataset/eval/judge.ts",
             "src/ollama.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/ollama"
+            }
           ],
           "path": "src/dataset/eval/ollama-judge.ts"
         },
@@ -847,6 +1144,20 @@
             "tupleIdsDistinct"
           ],
           "hash": "2873f2b7e6cd1508a72f51f45bce1e2e9fdfc9c72b1e5f2146e73d8ea8518b28",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/types.ts",
             "src/dataset/label/bws.ts"
@@ -854,6 +1165,12 @@
           "importsFiles": [
             "src/dataset/label/bws.ts",
             "src/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/dataset/label/schema.ts"
         },
@@ -892,6 +1209,20 @@
         },
         {
           "hash": "b5cf9dc0b07e0a3ae983b90c557366d7075e1da02bfb2cdff53a2688e0f5546e",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 14,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/dataset/schema.ts",
             "src/dataset/provenance.ts"
@@ -899,6 +1230,12 @@
           "importsFiles": [
             "src/dataset/provenance.ts",
             "src/dataset/schema.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/dataset/provenance-schema.ts"
         },
@@ -918,8 +1255,28 @@
             "validMatchesDegraded"
           ],
           "hash": "02b58b85ad7599d18b50f11e527bd26f7c9260ffd616e814d58d69081dd76df7",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 12,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/dataset/schema.ts"
         },
@@ -994,7 +1351,45 @@
               "line": 425
             }
           ],
-          "hash": "241ea0f3b4774c8d7496dfd6b9590c1f83aa7915c605ff54e9dd724222d520d5",
+          "hash": "86b44827c5befb6b9dd03e95590666449b65dbc03af9c5ae37bd8e531cae48b7",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "McpServer"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/server/mcp.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "StdioServerTransport"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/server/stdio.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/ollama.ts",
             "src/prompts/base.ts",
@@ -1008,6 +1403,16 @@
             "src/tools/running_gag.ts",
             "src/tools/techniques.ts",
             "src/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/index.ts",
           "sequences": [
@@ -1121,8 +1526,45 @@
             }
           ],
           "hash": "eae2cabee6e4e11fee85001a5fd42d9fda9d540e44b8b0ce83ea2caa38b6d855",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "Ollama"
+                }
+              ],
+              "purl": "pkg:npm/ollama",
+              "specifier": "ollama",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "z",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "src/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/ollama"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/ollama.ts",
           "sequences": [
@@ -1333,6 +1775,20 @@
             "catchphraseGenerate"
           ],
           "hash": "216f46f0f940dc14a5721e78b98147d53cb9060e9e7da794c910bffb8159fcb5",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/session.ts",
             "src/prompts/base.ts",
@@ -1348,6 +1804,12 @@
             "src/session.ts",
             "src/types.ts",
             "src/validators.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/tools/catchphrase.ts"
         },
@@ -1356,6 +1818,20 @@
             "comicTiming"
           ],
           "hash": "c2cb166306bc82401e7b8fd30f6ea4b7b6abd9771e9e79b87f4b41ddd7dab875",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/session.ts",
             "src/prompts/base.ts",
@@ -1375,6 +1851,12 @@
             "src/tools/techniques.ts",
             "src/types.ts",
             "src/validators.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/tools/comic_timing.ts"
         },
@@ -1383,6 +1865,20 @@
             "heckle"
           ],
           "hash": "43972b37ece6f48cd807b19b72118ca6ce3d575d9e9b4d25405d5e53c0aa501c",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/session.ts",
             "src/prompts/base.ts",
@@ -1402,6 +1898,12 @@
             "src/tools/techniques.ts",
             "src/types.ts",
             "src/validators.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/tools/heckle.ts"
         },
@@ -1437,6 +1939,20 @@
             "roast"
           ],
           "hash": "efe9bcfc76e083054f6ebc4c8f6946cefbb52c26d4463760b1ebda4944e9074d",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/session.ts",
             "src/prompts/base.ts",
@@ -1456,6 +1972,12 @@
             "src/tools/techniques.ts",
             "src/types.ts",
             "src/validators.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/tools/roast.ts"
         },
@@ -1675,25 +2197,109 @@
       "files": [
         {
           "hash": "3b460c761c4df65dac8cd5234237efaa31d6599cbfa17bf23e265e32c9bf6629",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "beforeAll"
+                },
+                {
+                  "name": "afterAll"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "afterEach"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/capture.ts",
             "src/session.ts",
             "src/types.ts",
             "tests/setup.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/capture.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "1c1c08a9d3ced47ca8fb0499331aaa19a9e34c2a28d783c2ecddd50159869669",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/character/voice-schema.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/character-voice-schema.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "217573f1c470809878531bee5f10b77d4518322e9658fe1e1192578d43f1b574",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/capture.ts",
             "src/dataset/provenance-schema.ts",
@@ -1704,20 +2310,72 @@
             "src/dataset/enrich.ts",
             "src/dataset/provenance-schema.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/dataset-enrich.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "4cc083082560e26612267745f4f88e47dde0c8118756a54a9be66fa3f3f7a05b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/dataset/eval/caricature.ts",
             "src/dataset/eval/rubric.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/dataset-eval-caricature.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "f3c7e6cf9517e7434ccc05698c7c9a398c2adff13fb7a97934ce0ae1c69b7712",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/dataset/eval/rubric.ts",
             "src/dataset/eval/gates.ts"
@@ -1726,11 +2384,37 @@
             "src/dataset/eval/gates.ts",
             "src/dataset/eval/rubric.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/dataset-eval-core.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "a9d00bfa2b3ffcc5294c1dc44cfc1cebc3be1f34faa50ea001aca3673bc0ff2c",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/dataset/eval/judge.ts",
             "src/dataset/eval/controls.ts",
@@ -1741,11 +2425,37 @@
             "src/dataset/eval/judge.ts",
             "src/types.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/dataset-eval-judge.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "d81df8e95957cc8762bfae365d80d8af5290352225fdd5959e74d2ff6a720245",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/dataset/label/bws.ts",
             "src/dataset/label/bws-active.ts"
@@ -1754,27 +2464,105 @@
             "src/dataset/label/bws-active.ts",
             "src/dataset/label/bws.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/dataset-label-active.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "88e3e33eebe106fce6b60265c091f7ea75259d79c235fe1d3a0d8211bb74191e",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/dataset/label/bws.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/dataset-label-bws.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "449ba29a812ae62f8907b6919b87a88011e0004f278a4af2653b4ae1c7694cbd",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/dataset/label/schema.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/dataset-label-schema.test.ts",
           "testFramework": "vitest"
         },
         {
-          "hash": "1bede4d07927b51aa093de5795ea3731fa4382fd62294d0afafaf49a3a382559",
+          "hash": "440b0fb35addfc8e604d3e00a507a9ffb9ff3f67cb5569330e9354437f2ff2e9",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/capture.ts",
             "src/dataset/pii-scrub.ts",
@@ -1785,30 +2573,153 @@
             "src/dataset/enrich.ts",
             "src/dataset/pii-scrub.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/dataset-pii-scrub.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "2136544b15e39d96bd5d6c5e87863f484f0d305a8482b0d6e6d6f85be9d946fc",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/capture.ts",
             "src/dataset/provenance.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/dataset-provenance.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "a7c0625178fae412f78a64c55719ea1721f9da6cf346631f7a16b1a218c6731f",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/capture.ts",
             "src/dataset/schema.ts",
             "src/dataset/validate.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/dataset-schema.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "bf80be6b13c380edce11681e89e80b403918e993c87d8c28b8dfa93d5f039196",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "vi"
+                },
+                {
+                  "name": "beforeAll"
+                },
+                {
+                  "name": "afterAll"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 101,
+              "names": [
+                {
+                  "name": "McpServer"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/server/mcp.js",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 208,
+              "names": [
+                {
+                  "name": "McpServer"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/server/mcp.js",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 285,
+              "names": [
+                {
+                  "name": "McpServer"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/server/mcp.js",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "tests/setup.ts",
             "src/index.ts",
@@ -1821,11 +2732,47 @@
             "src/session.ts",
             "tests/setup.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/index.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "95bf47b48d583792d256ccba4e89d216baa277e6ecd7c1515fcc16ac9d397ed6",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "afterEach"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/dataset/label/validate.ts",
             "src/dataset/label/schema.ts"
@@ -1833,6 +2780,12 @@
           "importsFiles": [
             "src/dataset/label/schema.ts",
             "src/dataset/label/validate.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/label-cli-smoke.test.ts",
           "spawns": [
@@ -1842,6 +2795,29 @@
         },
         {
           "hash": "f88c4e60a50b8956b813b32d814e17f80b938abbe7fad73ef8f3fe3bc18bc77c",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "afterEach"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/prompts/loader.ts",
             "src/types.ts",
@@ -1852,38 +2828,182 @@
             "src/prompts/loader.ts",
             "src/types.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/loader.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "85fbeaa09181a7ae95c3ca1d710c915121943c0db23baa01c6e3c5e34ff6106b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "vi"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "afterEach"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/ollama.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "tests/ollama.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "c1e6cc7dd8a72d1ceb53c9b331534e520e1e547c163d0216e8695cc8cf711521",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "beforeAll"
+                },
+                {
+                  "name": "afterAll"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/session.ts",
             "src/tools/running_gag.ts",
             "src/validators.ts",
             "tests/setup.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/running_gag.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "0f402b6e71b4df2a1c56c7d473bbb9a051f2998bea2c97a3b3e15681db6a110c",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/scorecard/cli.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/scorecard-cli.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "673133d570f88fbb710908c6c8043888062d726e9e1f9bb1db8455fcb45bb046",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/types.ts",
             "src/prompts/moods/dry.v1.prompt.ts",
@@ -1902,32 +3022,128 @@
             "src/prompts/moods/zoomer.v1.prompt.ts",
             "src/types.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/scorecard-frozen-prompts.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "507a9421bfab65681e36c59134566ad80b8fe407c2c433286b108b41c33804ea",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/scorecard/rules.ts",
             "src/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/scorecard-rules.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "910090a67a726cfba188b6c6a6bf563f3c25123b63e9d52fae2f9f64c070fe64",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/scorecard/stats.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/scorecard-stats.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "653e71744078fb9377bad9a2db5b8408a3e116ab9aa20f8208dc140576d2cfd9",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "beforeAll"
+                },
+                {
+                  "name": "afterAll"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "afterEach"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/session.ts",
             "src/types.ts",
             "tests/setup.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/session.test.ts",
           "testFramework": "vitest"
@@ -1944,15 +3160,76 @@
         },
         {
           "hash": "0c627f6b4d01c646f262fda5c8e961655e5be578255ca5da31b936396e25ec15",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/tools/techniques.ts",
             "src/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/techniques.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "b029e1e8c0f68a6c22073532c46e05096f8d1a816ecb753ba6bf30e0158b0f05",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "beforeAll"
+                },
+                {
+                  "name": "afterAll"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/session.ts",
             "src/types.ts",
@@ -1981,21 +3258,79 @@
             "src/validators.ts",
             "tests/setup.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/tools.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "0b047e834d5cf2f4f6ca33b64fff0b996e66d9b4947a81c40b519fb7caaf1399",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/validators.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/validators.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "5ddcce43743650f29c0bda34d22308c5245ac80895024ed1d1ab8b91f1eeff15",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "names": [
             "src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/version-alignment.test.ts",
           "testFramework": "vitest"
@@ -3257,7 +4592,7 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "de726d7383bc33e32494603274796d160ed7b854",
+    "commit": "aaaa90385dff7af5f6367effd387cb75cd3c792f",
     "tracked": 154
   },
   "landings": [
@@ -3432,7 +4767,169 @@
       "writers": []
     }
   ],
+  "manifests": [
+    {
+      "name": "@mcptoolshop/sensor-humor",
+      "path": "package.json",
+      "role": "root",
+      "roleFrom": "the root manifest",
+      "version": "1.3.2"
+    },
+    {
+      "name": "site",
+      "path": "site/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door Deploy site to GitHub Pages, job build, step Install site dependencies: npm ci in site",
+      "version": "0.0.1"
+    }
+  ],
   "overlaps": [],
+  "packageDependencies": [
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@modelcontextprotocol/sdk",
+      "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+      "range": "^1.12.0",
+      "version": "1.32.1",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "ollama",
+      "purl": "pkg:npm/ollama",
+      "range": "^0.5.14",
+      "version": "0.5.18",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "zod",
+      "purl": "pkg:npm/zod",
+      "range": "^3.24.0",
+      "version": "3.25.76",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@types/node",
+      "purl": "pkg:npm/%40types/node",
+      "range": "^20.17.0",
+      "version": "20.19.37",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@vitest/coverage-v8",
+      "purl": "pkg:npm/%40vitest/coverage-v8",
+      "range": "3.2.4",
+      "version": "3.2.4",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "tsx",
+      "purl": "pkg:npm/tsx",
+      "range": "^4.22.4",
+      "version": "4.22.4",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "typescript",
+      "purl": "pkg:npm/typescript",
+      "range": "^5.7.0",
+      "version": "5.9.3",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "vitest",
+      "purl": "pkg:npm/vitest",
+      "range": "^3.1.0",
+      "version": "3.2.4",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@astrojs/starlight",
+      "purl": "pkg:npm/%40astrojs/starlight",
+      "range": "^0.42.1",
+      "version": "0.42.1",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@mcptoolshop/site-theme",
+      "purl": "pkg:npm/%40mcptoolshop/site-theme",
+      "range": "^2.2.0",
+      "version": "2.2.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@tailwindcss/vite",
+      "purl": "pkg:npm/%40tailwindcss/vite",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "astro",
+      "purl": "pkg:npm/astro",
+      "range": "^7.3.3",
+      "version": "7.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "tailwindcss",
+      "purl": "pkg:npm/tailwindcss",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    }
+  ],
+  "packagesPublished": [
+    {
+      "doors": [
+        "Release"
+      ],
+      "how": "named by the publish",
+      "manifest": "package.json",
+      "name": "@mcptoolshop/sensor-humor",
+      "purl": "pkg:npm/%40mcptoolshop/sensor-humor",
+      "repository": "https://github.com/mcp-tool-shop-org/sensor-humor",
+      "version": "1.3.2"
+    }
+  ],
   "submodules": [],
   "symlinks": [],
   "testFiles": 27,

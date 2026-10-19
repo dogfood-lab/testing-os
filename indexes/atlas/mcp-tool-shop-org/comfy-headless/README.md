@@ -1,17 +1,17 @@
 # comfy-headless: how it works
 
-Mapped at 2026-10-05 from commit f66a4f9 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 1931311 by Atlas 1.26.0.
 
 ## What this is
 
 9 parts, mostly Python (83 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI and a container image. It deploys a site to GitHub Pages. People run comfy-headless.
 
-## What changed since 2026-09-30 (a804d34)
+## What changed since 2026-10-15 (b66ac70)
 
 - kb/**/*.md is now read by scripts/gen_kb.py.
 - kb/workflows/*.json is now read by tests/test_kb.py.
 - kb was generated and is now mixed.
-- 1 file changed content, across 1 part.
+- 2 files changed content, across 1 part.
 
 ## What comes in
 
@@ -67,7 +67,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/, the repository root and site/; 2 writes with paths built at run time may land here.
+People write .github/, the repository root and site/. The data in assets/ and docs/ is written by no code this map names; 2 writes with paths built at run time may land here.
 
 ## Where to start
 

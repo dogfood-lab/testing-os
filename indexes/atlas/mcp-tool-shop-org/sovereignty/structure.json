@@ -152,7 +152,7 @@
           "path": ".github/scripts/stage-tauri-artifacts.sh"
         },
         {
-          "hash": "c86207963ced34c1791c39d985116925edc37f0d24789bb02bbabdbff0cfb322",
+          "hash": "79a9d0c99af77b400be390fddad2bb8896f790e13055f4538825a4fd1f77a037",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -164,7 +164,7 @@
           "path": ".github/workflows/pages.yml"
         },
         {
-          "hash": "1ea05c5b1d65e786385d1c95bcec9660e8fef0675a0372a45fd4bc972634c837",
+          "hash": "c3eefbf3aa7b06ca2c9e1c42262fc9ac1db3013dc1499167146a5f0bd60af044",
           "path": ".github/workflows/publish.yml"
         },
         {
@@ -217,11 +217,11 @@
           "path": "app/index.html"
         },
         {
-          "hash": "2d17740a973d673670d503e4a052c362340af6574c7a2f85dded700893b3a5c7",
+          "hash": "1db64f6c223373a43ccef69cf93f4dfbcd63073af969bd3e107047d01c006781",
           "path": "app/package-lock.json"
         },
         {
-          "hash": "6468efe5091e5532a963e61214adc9ad163287a8926b4b16f7c0d0fb45242350",
+          "hash": "913f44405f909f11ad7dfda634765befff9f2ddffb5c92daf6a648d868c1fb0b",
           "path": "app/package.json"
         },
         {
@@ -229,7 +229,7 @@
           "path": "app/src-tauri/.cargo/audit.toml"
         },
         {
-          "hash": "f7a029677405ff1d62bedf0c59e6afc2b6ba119508fc51f852adbec37ee6eba2",
+          "hash": "be2fed0983740f857198fb9d804fa3d5bc0ac87739d95c26aa84d15297fbb7d1",
           "path": "app/src-tauri/Cargo.lock"
         },
         {
@@ -670,13 +670,83 @@
           ]
         },
         {
-          "hash": "f175a50da009d83e19ed15dc2686a6fda15534f0e0a0fa1702d6738086c0b002",
+          "hash": "cd5bada76bb237907f8f9eaac44623c0b553a1016eec95b970d930cab19fa585",
           "path": "app/src-tauri/tauri.conf.json"
         },
         {
           "hash": "496cba1ded1f6c12be093702ef525722ef285aff375755870a339df292900287",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "waitFor"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "MemoryRouter"
+                }
+              ],
+              "purl": "pkg:npm/react-router-dom",
+              "specifier": "react-router-dom",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/App.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react-router-dom"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/App.test.tsx",
           "testFramework": "vitest"
@@ -686,6 +756,23 @@
             "App"
           ],
           "hash": "23e53259e1caa6dedbe9bf503eb69c6bffe37ce8f20586029e1c8a4379f8223c",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Route"
+                },
+                {
+                  "name": "Routes"
+                }
+              ],
+              "purl": "pkg:npm/react-router-dom",
+              "specifier": "react-router-dom",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/components/DaemonDisconnectedBanner.tsx",
             "app/src/components/PanicModal.tsx",
@@ -695,6 +782,12 @@
             "app/src/routes/Index.tsx",
             "app/src/routes/Settings.tsx"
           ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react-router-dom"
+            }
+          ],
           "path": "app/src/App.tsx"
         },
         {
@@ -703,8 +796,59 @@
         },
         {
           "hash": "631c0a960e6b55c460d5a044dcc45d1ec3fe5f730382303b362d3356865bc9f4",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "fireEvent"
+                },
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "screen"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/components/ConfirmDialog.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/components/ConfirmDialog.test.tsx",
           "testFramework": "vitest"
@@ -714,8 +858,31 @@
             "ConfirmDialog"
           ],
           "hash": "7f7f24c1d0dbdf8074eb6b5ceec6796bb0c469cad28c0c5c69e3ba0bcfd2b5dd",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "useEffect"
+                },
+                {
+                  "name": "useRef"
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/components/ConfirmDialog.module.css"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            }
           ],
           "path": "app/src/components/ConfirmDialog.tsx"
         },
@@ -725,6 +892,68 @@
         },
         {
           "hash": "f69df48483efaa6730014b6d5d75dfeec7ee1aea9ef65d65157590c5da7ce245",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "fireEvent"
+                },
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "screen"
+                },
+                {
+                  "name": "waitFor"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "act"
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/hooks/useDaemon.tsx",
             "app/src/components/DaemonDisconnectedBanner.tsx"
@@ -732,6 +961,20 @@
           "importsFiles": [
             "app/src/components/DaemonDisconnectedBanner.tsx",
             "app/src/hooks/useDaemon.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/components/DaemonDisconnectedBanner.test.tsx",
           "testFramework": "vitest"
@@ -741,6 +984,29 @@
             "DaemonDisconnectedBanner"
           ],
           "hash": "bbdf98f418eaff554129f8b1cba2cd0421b9c5208e42314a3d3330635b00156c",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "useCallback"
+                },
+                {
+                  "name": "useEffect"
+                },
+                {
+                  "name": "useRef"
+                },
+                {
+                  "name": "useState"
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/hooks/useDaemon.tsx",
             "app/src/components/DaemonDisconnectedBanner.module.css"
@@ -748,6 +1014,12 @@
           "importsFiles": [
             "app/src/components/DaemonDisconnectedBanner.module.css",
             "app/src/hooks/useDaemon.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            }
           ],
           "path": "app/src/components/DaemonDisconnectedBanner.tsx"
         },
@@ -757,8 +1029,53 @@
         },
         {
           "hash": "5fafe484a3258c0e5369ae59a5e9066c1f9f5a633f9803e185ec022b0d6ab638",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "screen"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/components/EmptyState.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/components/EmptyState.test.tsx",
           "testFramework": "vitest"
@@ -771,8 +1088,29 @@
             "PausedGameGlyph"
           ],
           "hash": "578f8d601289da502e7583f632a388e5627de1c80cfc83eeff08755f6a84b008",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "ReactNode",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "app/src/components/EmptyState.module.css"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            }
           ],
           "path": "app/src/components/EmptyState.tsx"
         },
@@ -782,8 +1120,53 @@
         },
         {
           "hash": "ca04223e0f155ec4ce07d1bfdbf0cccc8f9dff0ae93e250f8bc46d7469b5e682",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "screen"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/components/EventFeed.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/components/EventFeed.test.tsx",
           "testFramework": "vitest"
@@ -810,8 +1193,59 @@
         },
         {
           "hash": "90943fc988aac75e3a3715122873eb437aaf311989b9b5789ac6a7453e35dab6",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "fireEvent"
+                },
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "screen"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/components/ExpandableRow.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/components/ExpandableRow.test.tsx",
           "testFramework": "vitest"
@@ -821,8 +1255,29 @@
             "ExpandableRow"
           ],
           "hash": "90b7d0c485ffacaf2124611f70f402bbfbfa02d2df1f5b27912ca7bf877a8ea8",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "ReactNode",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "app/src/components/ExpandableRow.module.css"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            }
           ],
           "path": "app/src/components/ExpandableRow.tsx"
         },
@@ -832,8 +1287,53 @@
         },
         {
           "hash": "67a89e7ded1d845d8ba0ce3884d993fd1545bbaca533e0edcf819599b3f5eb49",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "screen"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/components/LoadingSpinner.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/components/LoadingSpinner.test.tsx",
           "testFramework": "vitest"
@@ -854,6 +1354,59 @@
         },
         {
           "hash": "89b34e8b6c8850206044cc899249457ed11bce468c6b6aa7ff0b5d6aebecf4cf",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "act"
+                },
+                {
+                  "name": "fireEvent"
+                },
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "screen"
+                },
+                {
+                  "name": "waitFor"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 12,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/types/daemon.ts",
             "app/src/components/PanicModal.tsx"
@@ -865,6 +1418,16 @@
           "names": [
             "app/src-tauri/src/commands.rs",
             "app/src-tauri/src/lib.rs"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/components/PanicModal.test.tsx",
           "testFramework": "vitest"
@@ -886,6 +1449,38 @@
             }
           ],
           "hash": "7ccd386a5e0d0f5780508f1ecacad2ccfc95d26113fcdf64d226647301ffcb04",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "useEffect"
+                },
+                {
+                  "name": "useRef"
+                },
+                {
+                  "name": "useState"
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 34,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40tauri-apps/api",
+              "specifier": "@tauri-apps/api/event",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/types/daemon.ts",
             "app/src/components/PanicModal.module.css"
@@ -893,6 +1488,16 @@
           "importsFiles": [
             "app/src/components/PanicModal.module.css",
             "app/src/types/daemon.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40tauri-apps/api"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            }
           ],
           "path": "app/src/components/PanicModal.tsx"
         },
@@ -902,8 +1507,53 @@
         },
         {
           "hash": "97f7be0ef15c3182a5a131d08e2f3e13f92f04f56a41e8305004c1bfa79a3c04",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "screen"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/components/Pill.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/components/Pill.test.tsx",
           "testFramework": "vitest"
@@ -924,6 +1574,41 @@
         },
         {
           "hash": "866ddff4b75bdf6618825f3ae6f76b2ecb0318f37e63033799651c3d4c8a7297",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "screen"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/types/game.ts",
             "app/src/components/PlayerCard.tsx"
@@ -931,6 +1616,16 @@
           "importsFiles": [
             "app/src/components/PlayerCard.tsx",
             "app/src/types/game.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/components/PlayerCard.test.tsx",
           "testFramework": "vitest"
@@ -956,8 +1651,50 @@
         },
         {
           "hash": "e40af8a17138fb24bf3a57240dcd127e66ac2db3340f154a1063476d0c6d4d71",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "render"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/components/RoundTimeline.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/components/RoundTimeline.test.tsx",
           "testFramework": "vitest"
@@ -974,8 +1711,68 @@
         },
         {
           "hash": "f41e2fc16e91f36f1f2093c3126ff90afbc431c520501588bf4eb74c01fcb0bd",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "act"
+                },
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "screen"
+                },
+                {
+                  "name": "waitFor"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/hooks/useDaemon.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/hooks/useDaemon.test.tsx",
           "testFramework": "vitest"
@@ -1023,26 +1820,145 @@
             }
           ],
           "hash": "3a61c3eca622e94ed3a8a5e54239d6d90f06c80d0370f0776882f1c58e26dfd1",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "ReactNode",
+                  "type": true
+                },
+                {
+                  "name": "createContext"
+                },
+                {
+                  "name": "useCallback"
+                },
+                {
+                  "name": "useContext"
+                },
+                {
+                  "name": "useEffect"
+                },
+                {
+                  "name": "useState"
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/lib/errorFormat.ts",
             "app/src/lib/invoke.ts",
             "app/src/types/daemon.ts"
           ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            }
+          ],
           "path": "app/src/hooks/useDaemon.tsx"
         },
         {
           "hash": "6e70658e31464adc4fdbc020a21bc805670b19008194f968131bef8ad5c7d6c0",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "act"
+                },
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "waitFor"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/hooks/useDaemon.tsx",
             "app/src/hooks/useDaemonEvents.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/hooks/useDaemonEvents.hook.test.tsx",
           "testFramework": "vitest"
         },
         {
           "hash": "999ac85ca50b27769cf0351b7a77694629cdd527ab9209c313c0ba335e976e62",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/hooks/useDaemonEvents.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/hooks/useDaemonEvents.test.ts",
           "testFramework": "vitest"
@@ -1075,6 +1991,23 @@
             }
           ],
           "hash": "41c61cc37bbdac24c7b7bc1bd689191dab5b8a0c67e88aa77f39505f894b8291",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 16,
+              "names": [
+                {
+                  "name": "useEffect"
+                },
+                {
+                  "name": "useRef"
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/types/daemon.ts",
             "app/src/hooks/useDaemon.tsx"
@@ -1083,10 +2016,63 @@
             "app/src/hooks/useDaemon.tsx",
             "app/src/types/daemon.ts"
           ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            }
+          ],
           "path": "app/src/hooks/useDaemonEvents.ts"
         },
         {
           "hash": "c0c9b91d5a7a7394e8a22ec4dea1d036f43bae480fe6f9ca444e24ccddad6efc",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "act"
+                },
+                {
+                  "name": "renderHook"
+                },
+                {
+                  "name": "waitFor"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/types/daemon.ts",
             "app/src/types/game.ts",
@@ -1096,6 +2082,16 @@
             "app/src/hooks/useGameState.ts",
             "app/src/types/daemon.ts",
             "app/src/types/game.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/hooks/useGameState.test.tsx",
           "testFramework": "vitest"
@@ -1113,6 +2109,29 @@
             }
           ],
           "hash": "f8b15d9e77393697649fa3b0bd2dae54676d9f9895ee1bd0177169daf5d03a82",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "useCallback"
+                },
+                {
+                  "name": "useEffect"
+                },
+                {
+                  "name": "useRef"
+                },
+                {
+                  "name": "useState"
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/lib/daemonClient.ts",
             "app/src/types/daemon.ts",
@@ -1127,12 +2146,75 @@
             "app/src/types/daemon.ts",
             "app/src/types/game.ts"
           ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            }
+          ],
           "path": "app/src/hooks/useGameState.ts"
         },
         {
           "hash": "ad9534f08b7c28464658288fb1b22e7ea6ea5dc7dacad4866b91a1a538b5b84d",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "act"
+                },
+                {
+                  "name": "renderHook"
+                },
+                {
+                  "name": "waitFor"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/hooks/useVerifyFlow.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/hooks/useVerifyFlow.test.tsx",
           "testFramework": "vitest"
@@ -1171,6 +2253,26 @@
             }
           ],
           "hash": "06d6f71c8771137a7c40a749607e96a065c0b30ba291b8d671d83317bcfb56ea",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 14,
+              "names": [
+                {
+                  "name": "useCallback"
+                },
+                {
+                  "name": "useRef"
+                },
+                {
+                  "name": "useState"
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/lib/daemonClient.ts",
             "app/src/hooks/useDaemon.tsx"
@@ -1179,10 +2281,45 @@
             "app/src/hooks/useDaemon.tsx",
             "app/src/lib/daemonClient.ts"
           ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            }
+          ],
           "path": "app/src/hooks/useVerifyFlow.ts"
         },
         {
-          "hash": "e212f0f12ad09f49da040838b1e9c658bff4822a585b9147a0e92489b81eebae",
+          "hash": "7de66c8158d05fa27080cfdc927e04a1615d20af63db5688a449bd26340fb4ec",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/types/daemon.ts",
             "app/src/lib/daemonClient.ts"
@@ -1190,6 +2327,12 @@
           "importsFiles": [
             "app/src/lib/daemonClient.ts",
             "app/src/types/daemon.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/lib/daemonClient.test.ts",
           "testFramework": "vitest"
@@ -1249,8 +2392,34 @@
         },
         {
           "hash": "ab9dd83766261d46fa091183428eb2c9fa68c37039db067f25b0dd1462401b96",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/lib/errorFormat.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/lib/errorFormat.test.ts",
           "testFramework": "vitest"
@@ -1277,15 +2446,61 @@
             "getDaemonConfig"
           ],
           "hash": "b93f4d38451ab5bbef6e78cb96b4feb7108254a5bd7a7223b7fa98345c4fdcdd",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "invoke"
+                }
+              ],
+              "purl": "pkg:npm/%40tauri-apps/api",
+              "specifier": "@tauri-apps/api/core",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/types/daemon.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40tauri-apps/api"
+            }
           ],
           "path": "app/src/lib/invoke.ts"
         },
         {
           "hash": "76094924ac009501fbeebf69ac375d8ef25086a6f393c781fbe2ab8743e39247",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/lib/url.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/lib/url.test.ts",
           "testFramework": "vitest"
@@ -1306,8 +2521,34 @@
         },
         {
           "hash": "212c6ce03dd0d4d7febf14860d24bbe779fa0464468badf119a61a72d3dca5ca",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/lib/verifyDisplay.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/lib/verifyDisplay.test.ts",
           "testFramework": "vitest"
@@ -1332,6 +2573,44 @@
             }
           ],
           "hash": "bdead5f71ffc84454a053f19f79144c127c307a6098285f5b2fa8c53b1a461c2",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/react-dom",
+              "specifier": "react-dom/client",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "BrowserRouter"
+                }
+              ],
+              "purl": "pkg:npm/react-router-dom",
+              "specifier": "react-router-dom",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/App.tsx",
             "app/src/styles/theme.css",
@@ -1342,6 +2621,20 @@
             "app/src/styles/globals.css",
             "app/src/styles/theme.css"
           ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react-dom"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react-router-dom"
+            }
+          ],
           "path": "app/src/main.tsx"
         },
         {
@@ -1350,9 +2643,88 @@
         },
         {
           "hash": "39dc778df3691ae652d9392538367ba94fa201680e7d0872d679ba948c656640",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "act"
+                },
+                {
+                  "name": "fireEvent"
+                },
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "screen"
+                },
+                {
+                  "name": "waitFor"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 18,
+              "names": [
+                {
+                  "name": "MemoryRouter"
+                }
+              ],
+              "purl": "pkg:npm/react-router-dom",
+              "specifier": "react-router-dom",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/hooks/useDaemon.tsx",
             "app/src/routes/Audit.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react-router-dom"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/routes/Audit.test.tsx",
           "testFramework": "vitest"
@@ -1385,6 +2757,44 @@
             }
           ],
           "hash": "162d1b49fb144ca9a807898cddb6c05dc2c917fafd73b462e993209fb98010a6",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "useCallback"
+                },
+                {
+                  "name": "useEffect"
+                },
+                {
+                  "name": "useMemo"
+                },
+                {
+                  "name": "useRef"
+                },
+                {
+                  "name": "useState"
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "Link"
+                }
+              ],
+              "purl": "pkg:npm/react-router-dom",
+              "specifier": "react-router-dom",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/components/EmptyState.tsx",
             "app/src/components/EventFeed.tsx",
@@ -1417,6 +2827,16 @@
             "app/src/routes/Audit.module.css",
             "app/src/types/daemon.ts"
           ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react-router-dom"
+            }
+          ],
           "path": "app/src/routes/Audit.tsx"
         },
         {
@@ -1425,9 +2845,82 @@
         },
         {
           "hash": "da2b97cc6b1ed8cf925d466e1cbd6e0addb4f24d30f152c76184b2c65974939b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "screen"
+                },
+                {
+                  "name": "waitFor"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 18,
+              "names": [
+                {
+                  "name": "MemoryRouter"
+                }
+              ],
+              "purl": "pkg:npm/react-router-dom",
+              "specifier": "react-router-dom",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/hooks/useDaemon.tsx",
             "app/src/routes/Game.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react-router-dom"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/routes/Game.test.tsx",
           "testFramework": "vitest"
@@ -1437,6 +2930,38 @@
             "Game"
           ],
           "hash": "2e5255bb25891e56259ea3114ec614e90a062d4b23fae16196c08d14cc49b6e3",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "useCallback"
+                },
+                {
+                  "name": "useEffect"
+                },
+                {
+                  "name": "useState"
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 12,
+              "names": [
+                {
+                  "name": "Link"
+                }
+              ],
+              "purl": "pkg:npm/react-router-dom",
+              "specifier": "react-router-dom",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/components/EmptyState.tsx",
             "app/src/components/EventFeed.tsx",
@@ -1463,6 +2988,16 @@
             "app/src/routes/Game.module.css",
             "app/src/types/daemon.ts"
           ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react-router-dom"
+            }
+          ],
           "path": "app/src/routes/Game.tsx"
         },
         {
@@ -1471,9 +3006,82 @@
         },
         {
           "hash": "7fd4afd2c4713c7f6dc79d500912692872fe2f49140c4e19a5364be21407de20",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "screen"
+                },
+                {
+                  "name": "waitFor"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 18,
+              "names": [
+                {
+                  "name": "MemoryRouter"
+                }
+              ],
+              "purl": "pkg:npm/react-router-dom",
+              "specifier": "react-router-dom",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/hooks/useDaemon.tsx",
             "app/src/routes/Index.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react-router-dom"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/routes/Index.test.tsx",
           "testFramework": "vitest"
@@ -1483,6 +3091,35 @@
             "Index"
           ],
           "hash": "5515e73d9df538ed99e1a01e4c7cf050694c61cd1d6e005ec92351c1c1a22d49",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "useEffect"
+                },
+                {
+                  "name": "useState"
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "Link"
+                }
+              ],
+              "purl": "pkg:npm/react-router-dom",
+              "specifier": "react-router-dom",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/components/EmptyState.tsx",
             "app/src/components/LoadingSpinner.tsx",
@@ -1503,6 +3140,16 @@
             "app/src/routes/Index.module.css",
             "app/src/types/daemon.ts"
           ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react-router-dom"
+            }
+          ],
           "path": "app/src/routes/Index.tsx"
         },
         {
@@ -1511,9 +3158,88 @@
         },
         {
           "hash": "ee1cbc80675d90ee5d0932a59acfb43c8be8149362f09f0afdaf09a1eacd583f",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "act"
+                },
+                {
+                  "name": "fireEvent"
+                },
+                {
+                  "name": "render"
+                },
+                {
+                  "name": "screen"
+                },
+                {
+                  "name": "waitFor"
+                }
+              ],
+              "purl": "pkg:npm/%40testing-library/react",
+              "specifier": "@testing-library/react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "MemoryRouter"
+                }
+              ],
+              "purl": "pkg:npm/react-router-dom",
+              "specifier": "react-router-dom",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/hooks/useDaemon.tsx",
             "app/src/routes/Settings.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40testing-library/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react-router-dom"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/routes/Settings.test.tsx",
           "testFramework": "vitest"
@@ -1545,6 +3271,38 @@
             }
           ],
           "hash": "2aecff3a8b46c1d7030cb4d49bea16add33ac11a1dcbb8cf6dcc606c85054c6f",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 15,
+              "names": [
+                {
+                  "name": "useCallback"
+                },
+                {
+                  "name": "useEffect"
+                },
+                {
+                  "name": "useState"
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 16,
+              "names": [
+                {
+                  "name": "Link"
+                }
+              ],
+              "purl": "pkg:npm/react-router-dom",
+              "specifier": "react-router-dom",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "app/src/components/ConfirmDialog.tsx",
             "app/src/components/EmptyState.tsx",
@@ -1567,6 +3325,16 @@
             "app/src/routes/Settings.module.css",
             "app/src/types/daemon.ts"
           ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/react-router-dom"
+            }
+          ],
           "path": "app/src/routes/Settings.tsx"
         },
         {
@@ -1575,6 +3343,32 @@
         },
         {
           "hash": "3d63fc24981603aa5ba4389b463d8840056b822c935c5d6cab9db2c80143b0cc",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 14,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "app/src/styles/globals.test.ts",
           "testFramework": "vitest"
         },
@@ -1584,9 +3378,35 @@
         },
         {
           "hash": "c6ba0d3b46f35b623d61674314f7e6a0901de5aeddfadfe8b8b72437b6125f94",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/routes/Audit.tsx",
             "app/src/types/daemon.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/test/anchor-status-wire-shape.test.ts",
           "testFramework": "vitest"
@@ -1604,18 +3424,67 @@
             "makeGameState"
           ],
           "hash": "1c74730cb9d2350882ff9f1425f0bb880630468ae1983602413399bb5d644f75",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "http"
+                },
+                {
+                  "name": "HttpResponse"
+                }
+              ],
+              "purl": "pkg:npm/msw",
+              "specifier": "msw",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/types/game.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/msw"
+            }
           ],
           "path": "app/src/test/msw-handlers.ts"
         },
         {
           "hash": "d9e8f695fa545a96607c1ceea3caa11a768c1cb34ed3d9948e6f303dc2cd5ea6",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/types/daemon.ts"
           ],
           "names": [
             "app/src/routes/Audit.tsx"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/test/proofs-wire-shape.test.ts",
           "testFramework": "vitest"
@@ -1630,12 +3499,38 @@
         },
         {
           "hash": "3e926c0614bf199c1860c56ea062317d6dc7c8407b3dea0fd7bbe4abf656d3e1",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "app/src/types/daemon.ts"
           ],
           "names": [
             "app/src-tauri/src/commands.rs",
             "app/src-tauri/src/lib.rs"
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "app/src/types/daemon.test.ts",
           "testFramework": "vitest"
@@ -1657,6 +3552,42 @@
         },
         {
           "hash": "b55b56f7055aebd32e31c19c9623c3130100342cf70af6b82be7b160e717f8f2",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40vitejs/plugin-react",
+              "specifier": "@vitejs/plugin-react",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/vite",
+              "specifier": "vite",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/%40vitejs/plugin-react"
+            },
+            {
+              "manifest": "app/package.json",
+              "purl": "pkg:npm/vite"
+            }
+          ],
           "path": "app/vite.config.ts"
         }
       ],
@@ -1940,6 +3871,26 @@
             }
           ],
           "hash": "5fdab57d6e5f5894f5087d8bb00651dc276af9f1c35536ea46ce822c59a50301",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 15,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/puppeteer-core",
+              "specifier": "puppeteer-core",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": null,
+              "purl": "pkg:npm/puppeteer-core"
+            }
+          ],
           "path": "assets/print/source/render.mjs"
         },
         {
@@ -2685,6 +4636,26 @@
             }
           ],
           "hash": "35f4f974f4b2bcd44da73963347f8952e341f83909e4498227d4e26b98f66f0d",
+          "importNames": [
+            {
+              "form": "require",
+              "line": 13,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/react",
+              "specifier": "react",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": null,
+              "purl": "pkg:npm/react"
+            }
+          ],
           "path": "assets/print/source/vendor/react-dom.production.min.js"
         },
         {
@@ -2982,14 +4953,34 @@
         },
         {
           "hash": "57b0f257a32a9801bac1712b97b69a77026acb35998866a9e3904cedff8ed007",
+          "importNames": [
+            {
+              "form": "require",
+              "line": 18,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/npm-launcher",
+              "specifier": "@mcptoolshop/npm-launcher/bin/mcptoolshop-launch.js",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "npm/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/npm-launcher"
+            }
+          ],
           "path": "npm/bin/sovereignty.js"
         },
         {
-          "hash": "b033468daebfc197e15e1a0504d5829ca6a9bd517c316b2a9543dd87d5a91f5b",
+          "hash": "e6e823cafceb150be7a5a14b01dbc2b6dfbd5306cbe674a09bf974e7a48ebbd5",
           "path": "npm/package-lock.json"
         },
         {
-          "hash": "2e7c8550fbd89ff4696ab33b313055a90a332da81dc858fdf82e248309771252",
+          "hash": "a6f5bdd639167863af81c255bff85dc4a3859289367b68d4360ad84d1d6e4408",
           "path": "npm/package.json"
         },
         {
@@ -3044,11 +5035,11 @@
           "path": "BUILD.md"
         },
         {
-          "hash": "c228e986c4efd0308dbaeb561191170d353a2f101e575d4046ac18db4568ad08",
+          "hash": "c28e4a49097205d0967e4fb82cd7c1f5c954fb157639cf1eebf2c0e43880d9e7",
           "path": "CHANGELOG.md"
         },
         {
-          "hash": "f3b85bc2052217127aa5f442b2f0539d48adb4fb7c67ce645871627dbca05c4d",
+          "hash": "a92a79549257fb43b239b2bcd6a9b6347e48184e6077b4015f3f60bb14f2692b",
           "path": "CLAUDE.md"
         },
         {
@@ -3064,35 +5055,35 @@
           "path": "LICENSE"
         },
         {
-          "hash": "0c2dc54f1cb8f24c9c30f3f4e4369321a2d42e17e9b033d15e60156ef676e062",
+          "hash": "9d72b7eec1ddcede7b6159cb7c9b57889eb6b683953069599be972d4777a30ed",
           "path": "README.es.md"
         },
         {
-          "hash": "0cf4ef87f3d02eb2d18049c474402c582d60a93b2dc7bb199b015188b1ea89b6",
+          "hash": "6b6e47e0ea0fe26f847b6165ad9ed07f1b4670c87457344e5b20e0dbc7bd1495",
           "path": "README.fr.md"
         },
         {
-          "hash": "574d794dd8db7cc704cf3d7e753e2a286f5cf1f8301d9c2659409400cb6dc4f9",
+          "hash": "45dfb867d9390bc87768d915bedcad902941fc9934e23cea814271dfce0c065d",
           "path": "README.hi.md"
         },
         {
-          "hash": "5683f4653b0c6f234f992f124a648c73a9fad0020e5db7d4737934d1fe352868",
+          "hash": "dc6d19e6802d62eae6acb6c448fd3a1966c3925336e74e4ed0a7e73ada51e324",
           "path": "README.it.md"
         },
         {
-          "hash": "ef12e9d775d40ec6ac57876faf35637de27bb11ef1af9dd0615321cad3363cc6",
+          "hash": "ad9d6dc517d6de188839d242b681b5be3ed170b5c03823de7feb3ee7776d2966",
           "path": "README.ja.md"
         },
         {
-          "hash": "b8807d2ae0347326cf5cb36f478517e0044b1d15dfa3649c30f9caedcc53736b",
+          "hash": "c718807f1f4193c1fb362ac01d18b64c39d5812be4c2fc2dab94f6154340e9fa",
           "path": "README.md"
         },
         {
-          "hash": "fcef8c803c77bbfeebdf20afd4f06810db0a4b3892b000bba0c69c383ef385a2",
+          "hash": "506a6cbc7f6dc55e3f067e12befa86853049884fbe4477c3253b5b90bb871112",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "e91aa4c182222f58effbf7f14dc45d828245dd719290df88d14b793d4216def3",
+          "hash": "604f4f0fa417d4c58d4a37fd2a5c3fd95c13c3a5416f8d961126a0a6db5e7528",
           "path": "README.zh.md"
         },
         {
@@ -3116,11 +5107,11 @@
           "path": "compose.yaml"
         },
         {
-          "hash": "65c4ac5a9b18637761218ce3ac5c0e5b737a7543ffc1444a92504fe8b67f5a58",
+          "hash": "102bbb6d96ffbf276a2d4fe1b0e4648cd2d466e28d02a73f9e592415ddc44ea0",
           "path": "pyproject.toml"
         },
         {
-          "hash": "cfd6efd6c04171e00efa2f0f7ec0d89d7e8e87ce3e1407b64dcf5ab50bfe8426",
+          "hash": "145c006113a888fa407aba6d4de668264ba8ad4c3f8e579939c2524df8243ca2",
           "path": "uv.lock"
         }
       ],
@@ -3175,14 +5166,66 @@
       "files": [
         {
           "hash": "f8b6c756d9001bcfb70b787ac2664e3597807b56df9870f9d9c11a77772117a7",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/astro",
+              "specifier": "astro/config",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40tailwindcss/vite",
+              "specifier": "@tailwindcss/vite",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40tailwindcss/vite"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/astro"
+            }
+          ],
           "path": "site/astro.config.mjs"
         },
         {
-          "hash": "638dc357a17db0a7ed9f5568ff209a0d95143311ce8e47ba24b665fa34297a90",
+          "hash": "79b129c7431d7b4b4357e93170145fa2edcf65f9b8cfb26f08da932e70f7db9e",
           "path": "site/package-lock.json"
         },
         {
-          "hash": "d033cdca0ab3937f50b412c1907a0aa5bbd18bf92a7973cbe9479b9b61056df6",
+          "hash": "226793926caf039b4d9969d918e65ef05b03d139341d37bddbb5487dd1d4679b",
           "path": "site/package.json"
         },
         {
@@ -3216,6 +5259,38 @@
         {
           "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "docsLoader"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/loaders",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "docsSchema"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/schema",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            }
+          ],
           "path": "site/src/content.config.ts"
         },
         {
@@ -3231,7 +5306,7 @@
           "path": "site/src/content/docs/handbook/docker.md"
         },
         {
-          "hash": "6b419fa5b564e06a2f39b8700359ddb9f74d49dcbdd44db35ba62baff2c0291c",
+          "hash": "4d65c4f1f6aadc25297a67b095c65446387a66e96ddf0d083bcf0e3a20cb26fe",
           "path": "site/src/content/docs/handbook/getting-started.md"
         },
         {
@@ -3263,6 +5338,80 @@
             }
           ],
           "hash": "f8190ef4a5ea119b49d367dc87cc0794a184a6fb39615920ae6d1a9445187d6b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Hero.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Section.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/FeatureGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/DataTable.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/CodeCardGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/ApiList.astro",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "site/src/styles/global.css",
             "site/src/components/BaseLayout.astro",
@@ -3273,11 +5422,38 @@
             "site/src/site-config.ts",
             "site/src/styles/global.css"
           ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
           "constantOnly": true,
           "hash": "23306c1cae1b5d939722d5327bea8b368687cc1ed6e7be23456c708880d39dcf",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "SiteConfig",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme",
+              "typeOnly": true
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/site-config.ts"
         },
         {
@@ -9628,7 +11804,7 @@
       "externals": 5,
       "files": [
         {
-          "hash": "5d1237462dc554ddb2935c8995f7cc7eb59be7dbc3b5fac4eaa3cd5d89b4120f",
+          "hash": "b064afa4d6bf37c6bc3082dc11e99b760ccc349e994fcbd38096574320308c13",
           "importsFiles": [
             "sov_daemon/lifecycle.py"
           ],
@@ -14187,7 +16363,7 @@
             "test_daemon010_subprocess_env_signer_file_does_not_forward_xrpl_seed",
             "test_readonly_subprocess_env_omits_seed_material"
           ],
-          "hash": "ab66ecd77c08d86ad7a7b48636c3f74b2fa1f084309f39b61829f403171a2056",
+          "hash": "532e54a66d4cee5ac8053d628c54889ffc31b7da89b8234cc17705be4c5095f8",
           "importOrder": [
             "sov_daemon/server.py",
             "sov_daemon/lifecycle.py",
@@ -14265,7 +16441,7 @@
             "test_options_preflight_does_not_require_authorization",
             "test_wrong_token_returns_403_with_auth_invalid_code"
           ],
-          "hash": "a783f9d691919e81da09daad7f58ca536baa63ddffc315f0c9eb2c375c26126f",
+          "hash": "a0aed9334a63bef8f4a7576a0c4cea7ec187fc3f36efcd7bd6e14de238bca07c",
           "importsFiles": [
             "sov_daemon/server.py"
           ],
@@ -18150,7 +20326,7 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "b8effeee46989129cc6315165d3e33c4671bd0ac",
+    "commit": "b7c2bfa66d2f6508478dba07b3239cd9730018de",
     "tracked": 426
   },
   "landings": [
@@ -19342,7 +21518,267 @@
       "writers": []
     }
   ],
+  "manifests": [
+    {
+      "name": "sovereignty-app",
+      "path": "app/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door CI, job tauri-and-frontend, step Install frontend deps: npm ci in app",
+      "version": "2.3.6"
+    },
+    {
+      "name": "@mcptoolshop/sovereignty",
+      "path": "npm/package.json",
+      "role": "installed",
+      "roleFrom": "door npm launcher, job publish, step Install and test: npm ci in npm",
+      "version": "2.3.6"
+    },
+    {
+      "name": "site",
+      "path": "site/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door Deploy site to GitHub Pages, job build, step Install site dependencies: npm ci in site",
+      "version": "0.0.1"
+    }
+  ],
   "overlaps": [],
+  "packageDependencies": [
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "@tauri-apps/api",
+      "purl": "pkg:npm/%40tauri-apps/api",
+      "range": "^2.12.3",
+      "version": "2.12.3",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "@tauri-apps/plugin-updater",
+      "purl": "pkg:npm/%40tauri-apps/plugin-updater",
+      "range": "^2.10.1",
+      "version": "2.10.1",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "react",
+      "purl": "pkg:npm/react",
+      "range": "^19.2.8",
+      "version": "19.2.8",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "react-dom",
+      "purl": "pkg:npm/react-dom",
+      "range": "^19.2.8",
+      "version": "19.2.8",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "react-router-dom",
+      "purl": "pkg:npm/react-router-dom",
+      "range": "^7.18.3",
+      "version": "7.18.3",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "@biomejs/biome",
+      "purl": "pkg:npm/%40biomejs/biome",
+      "range": "^1.9.0",
+      "version": "1.9.4",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "@tauri-apps/cli",
+      "purl": "pkg:npm/%40tauri-apps/cli",
+      "range": "^2.11.4",
+      "version": "2.11.4",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "@testing-library/react",
+      "purl": "pkg:npm/%40testing-library/react",
+      "range": "^16.3.3",
+      "version": "16.3.3",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "@types/react",
+      "purl": "pkg:npm/%40types/react",
+      "range": "^19.2.18",
+      "version": "19.2.18",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "@types/react-dom",
+      "purl": "pkg:npm/%40types/react-dom",
+      "range": "^19.2.7",
+      "version": "19.2.7",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "@vitejs/plugin-react",
+      "purl": "pkg:npm/%40vitejs/plugin-react",
+      "range": "^4.3.0",
+      "version": "4.7.0",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "happy-dom",
+      "purl": "pkg:npm/happy-dom",
+      "range": "^20.14.0",
+      "version": "20.14.0",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "msw",
+      "purl": "pkg:npm/msw",
+      "range": "^2.15.0",
+      "version": "2.15.0",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "typescript",
+      "purl": "pkg:npm/typescript",
+      "range": "^5.7.0",
+      "version": "5.9.3",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "vite",
+      "purl": "pkg:npm/vite",
+      "range": "^6.0.0",
+      "version": "6.4.2",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "app/package.json",
+      "name": "vitest",
+      "purl": "pkg:npm/vitest",
+      "range": "^2.0.0",
+      "version": "2.1.9",
+      "versionFrom": "app/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "npm/package.json",
+      "name": "@mcptoolshop/npm-launcher",
+      "purl": "pkg:npm/%40mcptoolshop/npm-launcher",
+      "range": "^1.0.0",
+      "version": "1.1.1",
+      "versionFrom": "npm/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@astrojs/starlight",
+      "purl": "pkg:npm/%40astrojs/starlight",
+      "range": "^0.42.4",
+      "version": "0.42.4",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@mcptoolshop/site-theme",
+      "purl": "pkg:npm/%40mcptoolshop/site-theme",
+      "range": "^2.2.0",
+      "version": "2.2.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@tailwindcss/vite",
+      "purl": "pkg:npm/%40tailwindcss/vite",
+      "range": "^4.2.4",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "astro",
+      "purl": "pkg:npm/astro",
+      "range": "^7.3.5",
+      "version": "7.3.5",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "tailwindcss",
+      "purl": "pkg:npm/tailwindcss",
+      "range": "^4.2.4",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    }
+  ],
+  "packagesPublished": [
+    {
+      "doors": [
+        "npm launcher"
+      ],
+      "how": "named by the publish",
+      "manifest": "npm/package.json",
+      "name": "@mcptoolshop/sovereignty",
+      "purl": "pkg:npm/%40mcptoolshop/sovereignty",
+      "repository": "https://github.com/mcp-tool-shop-org/sovereignty",
+      "version": "2.3.6"
+    }
+  ],
   "submodules": [],
   "symlinks": [],
   "testFiles": 119,

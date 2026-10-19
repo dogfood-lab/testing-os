@@ -2,7 +2,6 @@
   "authored": [
     ".github/",
     "docs/",
-    "evals/",
     "root"
   ],
   "breaks": [
@@ -50,29 +49,31 @@
   "changes": {
     "fileCounts": {
       "added": 0,
-      "changed": 1,
+      "assigned": 0,
+      "changed": 7,
       "moved": 0,
-      "parts": 1,
-      "removed": 0
+      "parts": 2,
+      "removed": 0,
+      "unassigned": 0
     },
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-01; 1 file changed content.",
+        "sentence": "Nothing structural changed since 2026-10-15; 7 files changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "c9172cea7dd811660a2cba73feb42a509e3d3c85",
-      "generatedAt": "2026-10-01T02:36:07.954Z"
+      "commit": "8cad98f5730cb13929a0babec675451bf7906c20",
+      "generatedAt": "2026-10-15T19:33:43.917Z"
     },
     "unchanged": true
   },
   "changesTogether": [
     {
-      "a": "src/tools/changeBrief.ts",
-      "b": "src/tools/repoBrief.ts",
-      "either": 9,
+      "a": "src/tools/packs/changePack.ts",
+      "b": "src/tools/packs/repoPack.ts",
+      "either": 7,
       "partLabels": [
         "src",
         "src"
@@ -87,7 +88,7 @@
     {
       "a": "src/tools/changeBrief.ts",
       "b": "src/tools/incidentBrief.ts",
-      "either": 10,
+      "either": 5,
       "partLabels": [
         "src",
         "src"
@@ -97,12 +98,27 @@
         "src"
       ],
       "relation": "inside",
-      "shared": 7
+      "shared": 5
+    },
+    {
+      "a": "src/tools/changeBrief.ts",
+      "b": "src/tools/repoBrief.ts",
+      "either": 5,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 5
     },
     {
       "a": "src/tools/incidentBrief.ts",
       "b": "src/tools/repoBrief.ts",
-      "either": 10,
+      "either": 5,
       "partLabels": [
         "src",
         "src"
@@ -112,12 +128,12 @@
         "src"
       ],
       "relation": "inside",
-      "shared": 7
+      "shared": 5
     },
     {
       "a": "src/tools/packs/changePack.ts",
       "b": "src/tools/packs/incidentPack.ts",
-      "either": 12,
+      "either": 7,
       "partLabels": [
         "src",
         "src"
@@ -127,33 +143,18 @@
         "src"
       ],
       "relation": "inside",
-      "shared": 8
-    },
-    {
-      "a": "src/tools/packs/changePack.ts",
-      "b": "src/tools/packs/repoPack.ts",
-      "either": 12,
-      "partLabels": [
-        "src",
-        "src"
-      ],
-      "parts": [
-        "src",
-        "src"
-      ],
-      "relation": "inside",
-      "shared": 8
+      "shared": 5
     }
   ],
   "changesTogetherNote": [
     "2 files changed together with their own tests, as expected.",
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 15 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 5 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "dcbf82e670a8f22f1f897813598c9aed866a1587",
+  "commit": "769b4a6fb8e1696d00149f17a190cffc9836a7d7",
   "defaultBranch": "main",
-  "derived": "11 parts, mostly TypeScript (196 files), JavaScript (10), CSS (2), Python (2) and Astro (1). Work enters through 8 doors; CI and Doc Drift each reach 4 parts, and CI is followed because it comes first by name. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run ollama-intern-mcp. People import ollama-intern-mcp.",
+  "derived": "11 parts, mostly TypeScript (198 files), JavaScript (10), CSS (2), Python (2) and Astro (1). Work enters through 8 doors; CI and Doc Drift each reach 4 parts, and CI is followed because it comes first by name. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run ollama-intern-mcp. People import ollama-intern-mcp.",
   "doors": [
     {
       "builds": [
@@ -201,12 +202,12 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 92
+          "files": 93
         },
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 101
+          "files": 102
         }
       ],
       "runs": [
@@ -227,6 +228,7 @@
         "tests/evals/",
         "tests/guardrails/",
         "tests/integration/",
+        "tests/killTree.test.ts",
         "tests/logTailRoster.test.ts",
         "tests/mcpGolden.test.ts",
         "tests/numCtx.test.ts",
@@ -254,8 +256,8 @@
         "tests/tools/",
         "tests/version.test.ts"
       ],
-      "runsCount": 43,
-      "runsMore": 98,
+      "runsCount": 44,
+      "runsMore": 99,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -293,12 +295,12 @@
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 101
+          "files": 102
         },
         {
           "boundary": "src",
           "depth": 1,
-          "files": 90
+          "files": 91
         }
       ],
       "runs": [
@@ -317,6 +319,7 @@
         "tests/evals/",
         "tests/guardrails/",
         "tests/integration/",
+        "tests/killTree.test.ts",
         "tests/logTailRoster.test.ts",
         "tests/mcpGolden.test.ts",
         "tests/numCtx.test.ts",
@@ -344,8 +347,8 @@
         "tests/tools/",
         "tests/version.test.ts"
       ],
-      "runsCount": 41,
-      "runsMore": 96,
+      "runsCount": 42,
+      "runsMore": 97,
       "sends": [],
       "stages": [],
       "triggers": [
@@ -381,12 +384,12 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 92
+          "files": 93
         },
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 101
+          "files": 102
         }
       ],
       "runs": [
@@ -405,6 +408,7 @@
         "tests/evals/",
         "tests/guardrails/",
         "tests/integration/",
+        "tests/killTree.test.ts",
         "tests/logTailRoster.test.ts",
         "tests/mcpGolden.test.ts",
         "tests/numCtx.test.ts",
@@ -432,8 +436,8 @@
         "tests/tools/",
         "tests/version.test.ts"
       ],
-      "runsCount": 41,
-      "runsMore": 96,
+      "runsCount": 42,
+      "runsMore": 97,
       "sends": [
         "creates a GitHub release on a tag push",
         "publishes to npm and a container image (on a run by hand, only with dry_run false)"
@@ -534,7 +538,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 91
+          "files": 92
         }
       ],
       "runs": [
@@ -560,7 +564,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 91
+          "files": 92
         }
       ],
       "runs": [
@@ -591,6 +595,16 @@
   "engine": "1.26.0",
   "generated": [
     {
+      "addedBy": "dependabot[bot]",
+      "place": "bench/",
+      "writers": []
+    },
+    {
+      "addedBy": "dependabot[bot]",
+      "place": "evals/",
+      "writers": []
+    },
+    {
       "block": true,
       "place": "site/src/content/docs/handbook/tools.md",
       "writers": [
@@ -598,7 +612,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-05T14:01:44.862Z",
+  "generatedAt": "2026-10-19T12:34:31.465Z",
   "limits": [
     "1 import could not be resolved: `scripts/gen-tool-docs.mjs` imports a path built at run time.",
     "3 writes and 9 reads use paths built at run time and are not named here.",
@@ -723,13 +737,13 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 101,
+  "testFiles": 102,
   "testedBy": {
     "bench": 0,
     "examples": 0,
     "scripts": 1,
     "smoke": 1,
-    "src": 97
+    "src": 98
   },
   "testedCodeParts": 5,
   "unnamedWrites": 3,

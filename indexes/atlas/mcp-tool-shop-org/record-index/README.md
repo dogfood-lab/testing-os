@@ -1,6 +1,6 @@
 # record-index: how it works
 
-Mapped at 2026-10-05 from commit e7c5b77 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit e7c5b77 by Atlas 1.26.0.
 
 ## What this is
 
@@ -63,7 +63,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, docs/, the repository root and site/. Nothing in this repository writes to them.
+People write .github/, the repository root and site/. Nothing in this repository writes to them. The data in docs/ is written by no code this map names.
 
 ## Where to start
 

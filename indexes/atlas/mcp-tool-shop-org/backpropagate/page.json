@@ -71,11 +71,13 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 1,
-      "changed": 36,
+      "added": 0,
+      "assigned": 0,
+      "changed": 0,
       "moved": 0,
-      "parts": 6,
-      "removed": 0
+      "parts": 0,
+      "removed": 0,
+      "unassigned": 0
     },
     "items": [
       {
@@ -96,22 +98,22 @@
       },
       {
         "kind": "counts",
-        "sentence": "1 file added and 36 changed content, across 6 parts.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "dd2ed9840442bf0248451ab959072de55830cfca",
-      "generatedAt": "2026-10-03T04:52:24.630Z"
+      "commit": "88625c9aa7ff3bd5877a4684f7dbe3c1e040b686",
+      "generatedAt": "2026-10-15T03:14:15.382Z"
     },
     "unchanged": false
   },
   "changesTogether": [],
   "changesTogetherNote": [
-    "Window: 180 days; a pair counts from 10 shared commits, since 31 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
+    "Window: 180 days; a pair counts from 10 shared commits, since 27 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "2250a9f21db83ab6d54aabbbf96ecbbef7f39452",
+  "commit": "498c26b2e926ea295f70109d81400407d9704623",
   "defaultBranch": "main",
   "derived": "13 parts, mostly Python (273 files), shell (11), Astro (2), CSS (2), JavaScript (2) and TypeScript (2). Work enters through 13 doors; the busiest is CI, which reaches 6 parts. It publishes to npm and PyPI, and a container image. It deploys a site to GitHub Pages. People run backprop and backpropagate.",
   "doors": [
@@ -177,7 +179,7 @@
       "runsMore": 1,
       "sends": [
         "uploads coverage to Codecov",
-        "scans code with CodeQL"
+        "uploads a SARIF report to code scanning"
       ],
       "stages": [],
       "triggers": [
@@ -463,7 +465,7 @@
       "runsCount": 0,
       "runsMore": 0,
       "sends": [
-        "scans code with CodeQL"
+        "uploads a SARIF report to code scanning"
       ],
       "stages": [],
       "triggers": [
@@ -576,7 +578,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-12T14:45:38.377Z",
+  "generatedAt": "2026-10-19T12:30:47.291Z",
   "limits": [
     "56 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
     "16 imports could not be resolved: `backpropagate/trainer.py` imports a path built at run time; `tests/test_fp8_smoke.py` imports a path built at run time; `tests/test_full_ft_offload_smoke.py` imports a path built at run time; and 13 more.",

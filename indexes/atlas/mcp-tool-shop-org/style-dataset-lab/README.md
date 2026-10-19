@@ -1,6 +1,6 @@
 # style-dataset-lab: how it works
 
-Mapped at 2026-10-05 from commit a881cb5 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit a881cb5 by Atlas 1.26.0.
 
 ## What this is
 
@@ -67,7 +67,7 @@ CI writes nothing this map can see.
 
 No two source files changed together often enough to name.
 
-Window: 180 days; a pair counts from 3 shared commits, since 1 source file reaches 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -112,7 +112,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, docs/, the repository root, runtime/, schemas/, site/, templates/ and workflows/; 38 writes with paths built at run time may land here.
+People write .github/, docs/, the repository root, site/ and workflows/. The data in runtime/, schemas/ and templates/ is written by no code this map names; 38 writes with paths built at run time may land here.
 
 ## Where to start
 

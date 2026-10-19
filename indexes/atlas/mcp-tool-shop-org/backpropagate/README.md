@@ -1,16 +1,16 @@
 # backpropagate: how it works
 
-Mapped at 2026-10-12 from commit 2250a9f by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 498c26b by Atlas 1.26.0.
 
 ## What this is
 
 13 parts, mostly Python (273 files), shell (11), Astro (2), CSS (2), JavaScript (2) and TypeScript (2). Work enters through 13 doors; the busiest is CI, which reaches 6 parts. It publishes to npm and PyPI, and a container image. It deploys a site to GitHub Pages. People run backprop and backpropagate.
 
-## What changed since 2026-10-03 (dd2ed98)
+## What changed since 2026-10-15 (88625c9)
 
 - .github/workflows/*.yml is now read by scripts/check_doc_drift.py.
 - backpropagate/**/*.py is now read by tests/test_error_codes_catalog.py.
-- 1 file added and 36 changed content, across 6 parts.
+- No file changed.
 
 ## What comes in
 
@@ -34,7 +34,7 @@ Mapped at 2026-10-12 from commit 2250a9f by Atlas 1.26.0.
    1. Inside backpropagate/cli.py, `main` does, in order: `logging_config.py` (5 steps).
 2. That reaches fuzz (6 files).
 3. It uploads coverage to Codecov.
-4. It scans code with CodeQL.
+4. It uploads a SARIF report to code scanning.
 
 ## Who reads the results
 
@@ -58,7 +58,7 @@ CI writes nothing this map can see.
 
 **Fuzz** runs no file this map can see.
 
-**OpenSSF Scorecard** runs no file this map can see and scans code with CodeQL.
+**OpenSSF Scorecard** runs no file this map can see and uploads a SARIF report to code scanning.
 
 **backprop** (a command people run) runs backpropagate/cli.py.
 
@@ -79,7 +79,7 @@ CI writes nothing this map can see.
 
 No two source files changed together often enough to name.
 
-Window: 180 days; a pair counts from 10 shared commits, since 31 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do.
+Window: 180 days; a pair counts from 10 shared commits, since 27 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do.
 
 ## What no test touches
 

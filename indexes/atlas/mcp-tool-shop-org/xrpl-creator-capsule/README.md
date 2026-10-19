@@ -1,6 +1,6 @@
 # xrpl-creator-capsule: how it works
 
-Mapped at 2026-10-05 from commit e94f89e by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit e94f89e by Atlas 1.26.0.
 
 ## What this is
 
@@ -67,7 +67,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, artifacts/, docs/, fixtures/, the repository root and site/; 6 writes with paths built at run time may land here.
+People write .github/, artifacts/, docs/, the repository root and site/. The data in fixtures/ is written by no code this map names; 6 writes with paths built at run time may land here.
 
 ## Where to start
 

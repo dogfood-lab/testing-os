@@ -1,6 +1,6 @@
 # prompt-craft: how it works
 
-Mapped at 2026-10-05 from commit f787191 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit f787191 by Atlas 1.26.0.
 
 ## What this is
 
@@ -84,7 +84,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, docs/, the repository root and site/; 5 writes with paths built at run time may land here.
+People write .github/, the repository root and site/. The data in docs/ is written by no code this map names; 5 writes with paths built at run time may land here.
 
 ## Where to start
 

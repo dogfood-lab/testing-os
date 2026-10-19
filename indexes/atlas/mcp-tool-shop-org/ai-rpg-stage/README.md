@@ -1,6 +1,6 @@
 # ai-rpg-stage: how it works
 
-Mapped at 2026-10-01 from commit 0c744e3 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 0c744e3 by Atlas 1.26.0.
 
 ## What this is
 
@@ -76,7 +76,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write audio/, docs/, the repository root and site/. Nothing in this repository writes to them.
+People write the repository root and site/. Nothing in this repository writes to them. The data in audio/ and docs/ is written by no code this map names.
 
 - **.github/upstream-pins.env** is written by .github/workflows/bump-upstream-pins.yml, and by people: 5 of its 5 commits in the window are theirs.
 

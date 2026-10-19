@@ -3,12 +3,14 @@
     ".claude/",
     ".github/",
     "catalogs/",
+    "datapacks/",
     "docs/"
   ],
   "breaks": [
     {
       "doors": 3,
       "importedBy": [
+        "experiments",
         "rnd"
       ],
       "importedByTests": [
@@ -17,16 +19,6 @@
       "kind": "part",
       "name": "mcptoolshop_rnd",
       "partLabel": "mcptoolshop_rnd"
-    },
-    {
-      "doors": 2,
-      "importedBy": [],
-      "importedByTests": [
-        "tests"
-      ],
-      "kind": "part",
-      "name": "rnd",
-      "partLabel": "rnd"
     },
     {
       "doors": 2,
@@ -47,6 +39,16 @@
       "partLabel": "experiments"
     },
     {
+      "doors": 1,
+      "importedBy": [],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "rnd",
+      "partLabel": "rnd"
+    },
+    {
       "kind": "place",
       "readers": [
         "experiments"
@@ -57,52 +59,57 @@
       ]
     },
     {
+      "into": true,
       "kind": "place",
       "readers": [
-        "experiments"
+        "experiments",
+        "mcptoolshop_rnd"
       ],
-      "target": "experiments/natural-errors/data/split.json",
+      "target": "entries/",
+      "tests": 2,
       "writers": [
-        "experiments"
+        "mcptoolshop_rnd"
       ]
     }
   ],
   "changes": {
     "fileCounts": {
-      "added": 185,
-      "changed": 18,
+      "added": 22,
+      "assigned": 0,
+      "changed": 7,
       "moved": 0,
-      "parts": 6,
-      "removed": 0
+      "parts": 4,
+      "removed": 0,
+      "unassigned": 0
     },
     "items": [
       {
         "kind": "landing",
-        "sentence": "experiments/charts/ now holds files written by experiments/charts/make_charts.py.",
+        "sentence": "experiments/colab-golden-path/data/windows/window*/gate.jsonl is now read by experiments/colab-golden-path/figures.py.",
         "subjects": [
-          "experiments/charts/",
+          "experiments/colab-golden-path/data/windows/window*/gate.jsonl",
+          "experiments/colab-golden-path/figures.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "experiments/stage1-regeneration/critic-signal/data/ is now read by experiments/charts/make_charts.py.",
+        "subjects": [
+          "experiments/stage1-regeneration/critic-signal/data/",
           "experiments/charts/make_charts.py"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "experiments/charts/manifest.json is now written by experiments/charts/make_charts.py.",
+        "sentence": "experiments/stage1-regeneration/critic-signal/data/calls.csv is now read by experiments/charts/manifest.json.",
         "subjects": [
-          "experiments/charts/manifest.json",
-          "experiments/charts/make_charts.py"
+          "experiments/stage1-regeneration/critic-signal/data/calls.csv",
+          "experiments/charts/manifest.json"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "site/public/charts/ is now written by experiments/charts/make_charts.py.",
-        "subjects": [
-          "site/public/charts/",
-          "experiments/charts/make_charts.py"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 73 more new writers and readers of places.",
+        "sentence": "And 3 more new writers and readers of places.",
         "subjects": []
       },
       {
@@ -113,25 +120,33 @@
         ]
       },
       {
-        "kind": "origin",
-        "sentence": "site was authored and is now mixed.",
-        "subjects": [
-          "site"
-        ]
-      },
-      {
         "kind": "counts",
-        "sentence": "185 files added and 18 changed content, across 6 parts.",
+        "sentence": "22 files added and 7 changed content, across 4 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "4abb0ee7e2a36fa1097fd38281e8e97fcdbb8957",
-      "generatedAt": "2026-10-09T07:45:13.518Z"
+      "commit": "d3db5396d47a4e5202a2bd5c8a91e3b75e0a1ce4",
+      "generatedAt": "2026-10-18T13:46:52.237Z"
     },
     "unchanged": false
   },
   "changesTogether": [
+    {
+      "a": "experiments/atlas-mcp-utility/run.py",
+      "b": "tests/test_atlas_mcp_utility_run.py",
+      "either": 15,
+      "partLabels": [
+        null,
+        null
+      ],
+      "parts": [
+        null,
+        null
+      ],
+      "relation": "unassigned",
+      "shared": 15
+    },
     {
       "a": "rnd/cli.py",
       "b": "tests/test_rnd.py",
@@ -150,25 +165,26 @@
   ],
   "changesTogetherNote": [
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 2 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 4 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "95ebd8c74cb9beb1cb3a44839788ee7a72581023",
+  "commit": "49d19b67ad0b1042f2abdfba40a55051a2843468",
   "defaultBranch": "main",
-  "derived": "12 parts, mostly Python (66 files), shell (14), CSS (2), TypeScript (2), Astro (1), HTML (1) and JavaScript (1). Work enters through 4 doors; the busiest is CI, which reaches 5 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run rnd.",
+  "derived": "14 parts, mostly Python (126 files), shell (28), CSS (2), HTML (2), TypeScript (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 4 doors; the busiest is CI, which reaches 5 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run rnd.",
   "doors": [
     {
       "checks": [
-        "mcptoolshop_rnd/",
-        "rnd/"
+        "mcptoolshop_rnd/"
       ],
-      "checksCount": 2,
+      "checksCount": 1,
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [
         "entries/",
-        "instruments/"
+        "experiments/charts/",
+        "instruments/",
+        "site/public/charts/"
       ],
       "name": "CI",
       "pushes": false,
@@ -176,12 +192,7 @@
         {
           "boundary": "mcptoolshop_rnd",
           "depth": 0,
-          "files": 10
-        },
-        {
-          "boundary": "rnd",
-          "depth": 0,
-          "files": 2
+          "files": 23
         },
         {
           "boundary": "root",
@@ -191,10 +202,15 @@
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 7
+          "files": 23
         },
         {
           "boundary": "experiments",
+          "depth": 1,
+          "files": 6
+        },
+        {
+          "boundary": "rnd",
           "depth": 1,
           "files": 1
         }
@@ -217,10 +233,9 @@
     },
     {
       "checks": [
-        "mcptoolshop_rnd/",
-        "rnd/"
+        "mcptoolshop_rnd/"
       ],
-      "checksCount": 2,
+      "checksCount": 1,
       "checksMore": 0,
       "file": ".github/workflows/release.yml",
       "id": ".github/workflows/release.yml",
@@ -231,12 +246,7 @@
         {
           "boundary": "mcptoolshop_rnd",
           "depth": 0,
-          "files": 10
-        },
-        {
-          "boundary": "rnd",
-          "depth": 0,
-          "files": 2
+          "files": 23
         },
         {
           "boundary": "root",
@@ -255,7 +265,8 @@
       ],
       "stages": [],
       "triggers": [
-        "when a release is published"
+        "when a release is published",
+        "or by hand"
       ]
     },
     {
@@ -306,7 +317,7 @@
         {
           "boundary": "mcptoolshop_rnd",
           "depth": 0,
-          "files": 9
+          "files": 13
         }
       ],
       "runs": [
@@ -319,10 +330,31 @@
       "triggers": []
     }
   ],
-  "duplicates": [],
-  "duplicatesLead": null,
+  "duplicates": [
+    {
+      "files": [
+        "experiments/npu-probe/probe.py",
+        "mcptoolshop_rnd/localbuilders/probe.py"
+      ],
+      "name": "main",
+      "partLabels": [
+        "experiments",
+        "mcptoolshop_rnd"
+      ],
+      "parts": [
+        "experiments",
+        "mcptoolshop_rnd"
+      ]
+    }
+  ],
+  "duplicatesLead": "These are candidates from names and call order, not a judgement.",
   "duplicatesNote": [],
   "edges": [
+    {
+      "from": "experiments",
+      "fromTests": false,
+      "to": "mcptoolshop_rnd"
+    },
     {
       "from": "rnd",
       "fromTests": false,
@@ -346,6 +378,18 @@
       "place": "experiments/charts/",
       "writers": [
         "experiments/charts/make_charts.py"
+      ]
+    },
+    {
+      "place": "experiments/colab-golden-path/figures.json",
+      "writers": [
+        "experiments/colab-golden-path/figures.py"
+      ]
+    },
+    {
+      "place": "experiments/e4b/results/",
+      "writers": [
+        "experiments/e4b/extract.py"
       ]
     },
     {
@@ -389,6 +433,27 @@
     },
     {
       "into": true,
+      "place": "experiments/ollama-cuda-backend/",
+      "sources": [
+        "experiments/ollama-cuda-backend/diag_test-v4-draft.py"
+      ],
+      "writers": [
+        "experiments/ollama-cuda-backend/diag_test-v4-draft.py"
+      ]
+    },
+    {
+      "into": true,
+      "place": "experiments/ollama-cuda-backend/diag/",
+      "sources": [
+        "experiments/ollama-cuda-backend/diag/diag_test.FROZEN.sha256",
+        "experiments/ollama-cuda-backend/diag/diag_test.py"
+      ],
+      "writers": [
+        "experiments/ollama-cuda-backend/diag/diag_test.py (a test)"
+      ]
+    },
+    {
+      "into": true,
       "place": "experiments/verifier-gold/crossfamily/",
       "writers": [
         "experiments/verifier-gold/crossfamily/run_labeller.py"
@@ -419,21 +484,29 @@
       ]
     },
     {
+      "block": true,
+      "place": "licences/registry.json",
+      "writers": [
+        "licences/snapshot.py"
+      ]
+    },
+    {
       "place": "site/public/charts/",
       "writers": [
         "experiments/charts/make_charts.py"
       ]
     }
   ],
-  "generatedAt": "2026-10-12T14:47:01.278Z",
+  "generatedAt": "2026-10-19T12:36:11.957Z",
   "limits": [
-    "7 imports could not be resolved: `experiments/data-designer/tests/test_lockdown.py` imports `egress`, which is no module on its import path and no declared dependency; `experiments/data-designer/tests/test_lockdown.py` imports `studio_lock`, which is no module on its import path and no declared dependency; `experiments/verifier-gold/build_grounded.py` imports a path built at run time; and 4 more.",
-    "7 writes and 7 reads use paths built at run time and are not named here.",
-    "1 write goes to places this repository does not track, so it is not listed as generated.",
-    "11 writes and 29 reads go to a path their caller passes, not to this repository.",
-    "3 reads go to the directory the command is run in (entries and instruments), not to this repository.",
+    "9 imports could not be resolved: `experiments/data-designer/tests/test_lockdown.py` imports `egress`, which is no module on its import path and no declared dependency; `experiments/data-designer/tests/test_lockdown.py` imports `studio_lock`, which is no module on its import path and no declared dependency; `experiments/verifier-gold/build_grounded.py` imports a path built at run time; and 6 more.",
+    "20 writes and 27 reads use paths built at run time and are not named here.",
+    "7 writes go to places this repository does not track, so they are not listed as generated.",
+    "29 writes and 88 reads go to a path their caller passes, not to this repository.",
+    "5 reads go to the directory the command is run in (entries, instruments and licences), not to this repository.",
     "2 reads go to the directory the command is run in or a path their caller passes, not to this repository.",
-    "7 files belong to no part: datapacks/hymn-arrangements/datapack.json, datapacks/hymn-arrangements/hosted.json, datapacks/hymn-arrangements/spec.json and 4 more.",
+    "2 reads go to the home directory (.claude/), not to this repository.",
+    "3 files belong to no part: scripts/colab/collect_windows.py, scripts/colab/probe.py and scripts/colab/rates.sh.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -441,26 +514,40 @@
     ".claude": ".claude",
     ".github": ".github",
     "catalogs": "catalogs",
+    "datapacks": "datapacks",
     "docs": "docs",
     "entries": "entries",
     "experiments": "experiments",
     "instruments": "instruments",
+    "licences": "licences",
     "mcptoolshop_rnd": "mcptoolshop_rnd",
     "rnd": "rnd",
     "root": "the repository root",
     "site": "site",
     "tests": "tests"
   },
-  "parts": 12,
+  "parts": 14,
   "readers": [
     {
-      "readers": [],
+      "readers": [
+        "experiments/embeddinggemma-2/harness/build_corpus.py"
+      ],
       "target": "entries/",
       "tests": 2
     },
     {
       "readers": [],
+      "target": "experiments/charts/"
+    },
+    {
+      "readers": [
+        "experiments/embeddinggemma-2/harness/build_corpus.py"
+      ],
       "target": "instruments/"
+    },
+    {
+      "readers": [],
+      "target": "site/public/charts/"
     }
   ],
   "repo": "mcp-tool-shop-org/rnd",
@@ -468,25 +555,26 @@
   "startDoor": "pyproject.toml#rnd",
   "startHere": [
     "mcptoolshop_rnd/cli.py",
-    "mcptoolshop_rnd/catalog.py",
-    "mcptoolshop_rnd/frontmatter.py"
+    "entries/",
+    "experiments/embeddinggemma-2/harness/build_corpus.py"
   ],
   "startReason": "This path follows rnd (a command people run) from its entry, since CI runs only tests and checks.",
   "summary": "The studio research bench: Markdown entries with tiered sources and checked claims, rig experiments, an instrument registry and rated catalogues, indexed and searched by the rnd CLI (Python, standard library only).",
   "summaryFrom": "person",
-  "testFiles": 9,
+  "testFiles": 56,
   "testedBy": {
-    "experiments": 2,
-    "mcptoolshop_rnd": 4,
+    "experiments": 6,
+    "mcptoolshop_rnd": 17,
     "rnd": 1
   },
   "testedCodeParts": 3,
-  "unnamedWrites": 7,
+  "unnamedWrites": 20,
   "unread": [
     {
       "into": true,
       "mayRead": {
         "by": [
+          "experiments/embeddinggemma-2/harness/score.py",
           "mcptoolshop_rnd/store.py"
         ],
         "patterns": [
@@ -501,6 +589,22 @@
     {
       "mayRead": {
         "by": [
+          "experiments/embeddinggemma-2/harness/score.py",
+          "mcptoolshop_rnd/store.py"
+        ],
+        "patterns": [
+          "*.json"
+        ]
+      },
+      "place": "experiments/colab-golden-path/figures.json",
+      "writers": [
+        "experiments/colab-golden-path/figures.py"
+      ]
+    },
+    {
+      "mayRead": {
+        "by": [
+          "experiments/embeddinggemma-2/harness/score.py",
           "mcptoolshop_rnd/store.py"
         ],
         "patterns": [
@@ -515,6 +619,7 @@
     {
       "mayRead": {
         "by": [
+          "experiments/embeddinggemma-2/harness/score.py",
           "mcptoolshop_rnd/store.py"
         ],
         "patterns": [
@@ -530,10 +635,33 @@
       "into": true,
       "mayRead": {
         "by": [
+          "experiments/embeddinggemma-2/harness/check_grades.py",
+          "experiments/embeddinggemma-2/harness/grading.py",
+          "experiments/embeddinggemma-2/harness/score.py",
           "mcptoolshop_rnd/store.py"
         ],
         "patterns": [
-          "*.json"
+          "*.json",
+          "*.jsonl"
+        ]
+      },
+      "place": "experiments/ollama-cuda-backend/",
+      "writers": [
+        "experiments/ollama-cuda-backend/diag_test-v4-draft.py"
+      ]
+    },
+    {
+      "into": true,
+      "mayRead": {
+        "by": [
+          "experiments/embeddinggemma-2/harness/check_grades.py",
+          "experiments/embeddinggemma-2/harness/grading.py",
+          "experiments/embeddinggemma-2/harness/score.py",
+          "mcptoolshop_rnd/store.py"
+        ],
+        "patterns": [
+          "*.json",
+          "*.jsonl"
         ]
       },
       "place": "experiments/verifier-gold/crossfamily/",
@@ -544,6 +672,7 @@
     {
       "mayRead": {
         "by": [
+          "experiments/embeddinggemma-2/harness/score.py",
           "mcptoolshop_rnd/store.py"
         ],
         "patterns": [
@@ -556,21 +685,18 @@
       ]
     },
     {
+      "mayRead": {
+        "by": [
+          "experiments/embeddinggemma-2/harness/check_grades.py",
+          "experiments/embeddinggemma-2/harness/grading.py"
+        ],
+        "patterns": [
+          "*.jsonl"
+        ]
+      },
       "place": "experiments/verifier-gold/crossfamily/sample.jsonl",
       "writers": [
         "experiments/verifier-gold/crossfamily/make_sample.py"
-      ]
-    },
-    {
-      "place": "instruments/",
-      "writers": [
-        "mcptoolshop_rnd/cli.py"
-      ]
-    },
-    {
-      "place": "site/public/charts/",
-      "writers": [
-        "experiments/charts/make_charts.py"
       ]
     }
   ],
@@ -579,11 +705,13 @@
   ],
   "unreadCodeUses": "the repository root holds only shell files, which this map does not read, so what uses it cannot be seen.",
   "unreadFiles": 0,
-  "unreadNote": [],
+  "unreadNote": [
+    "And 1 more place."
+  ],
   "untested": [],
   "untestedNote": [
     "the repository root holds only shell files, which this map does not read, so whether a test touches it cannot be seen.",
-    "2 test files run in no workflow: experiments/cuda-graphs/test_graphed_heads.py and experiments/data-designer/tests/test_lockdown.py."
+    "5 test files run in no workflow: experiments/cuda-graphs/test_graphed_heads.py, experiments/data-designer/tests/test_lockdown.py, experiments/interlock-relay/stage1/test_analyze.py and 2 more."
   ],
-  "written": 13
+  "written": 18
 }

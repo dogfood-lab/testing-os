@@ -1,14 +1,14 @@
 # shipcheck: how it works
 
-Mapped at 2026-10-05 from commit 2e5a656 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit dee5731 by Atlas 1.26.0.
 
 ## What this is
 
 10 parts, mostly Markdown (79 files); code in JavaScript (5), CSS (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run shipcheck.
 
-## What changed since 2026-10-01 (8561c6d)
+## What changed since 2026-10-15 (90be536)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-10-15; 2 files changed content.
 
 ## What comes in
 
@@ -48,7 +48,7 @@ CI writes nothing this map can see.
 
 No two source files changed together often enough to name.
 
-Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
+Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -80,6 +80,6 @@ Start at bin/shipcheck.mjs to follow one run of shipcheck end to end. This path 
 - 4 writes and 31 reads go to the directory the command is run in, not to this repository.
 - 18 reads go to a path their caller passes, not to this repository.
 - 1 read goes to the directory the command is run in or a path its caller passes, not to this repository.
-- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

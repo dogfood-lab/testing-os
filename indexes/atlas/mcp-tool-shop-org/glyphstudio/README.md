@@ -1,6 +1,6 @@
 # glyphstudio: how it works
 
-Mapped at 2026-10-05 from commit d2be33c by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit d2be33c by Atlas 1.26.0.
 
 ## What this is
 
@@ -116,7 +116,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, assets/, audit/, dogfood/, the repository root and site/; 59 writes with paths built at run time may land here.
+People write .github/, audit/, the repository root and site/. The data in assets/ and dogfood/ is written by no code this map names; 59 writes with paths built at run time may land here.
 
 ## Where to start
 

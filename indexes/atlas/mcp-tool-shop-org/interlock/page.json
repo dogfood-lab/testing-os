@@ -1,0 +1,372 @@
+{
+  "authored": [
+    ".github/",
+    "assets/",
+    "docs/",
+    "experiments/",
+    "receipts/",
+    "root",
+    "table/"
+  ],
+  "breaks": [
+    {
+      "doors": 3,
+      "importedBy": [
+        "scripts"
+      ],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "src",
+      "partLabel": "src"
+    },
+    {
+      "doors": 1,
+      "importedBy": [],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "scripts",
+      "partLabel": "scripts"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 13,
+      "assigned": 0,
+      "changed": 26,
+      "moved": 0,
+      "parts": 6,
+      "removed": 0,
+      "unassigned": 0
+    },
+    "items": [
+      {
+        "kind": "landing",
+        "sentence": "experiments/relay-s1/ is now read by scripts/relay_s1.py.",
+        "subjects": [
+          "experiments/relay-s1/",
+          "scripts/relay_s1.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "experiments/relay-s1/decode.yaml is now read by scripts/relay_s1.py and tests/test_relay_s1_driver.py.",
+        "subjects": [
+          "experiments/relay-s1/decode.yaml",
+          "scripts/relay_s1.py",
+          "tests/test_relay_s1_driver.py"
+        ]
+      },
+      {
+        "kind": "counts",
+        "sentence": "13 files added and 26 changed content, across 6 parts.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "0deac11d46af4fa1c35d96c42591e7d3e3423c31",
+      "generatedAt": "2026-10-14T05:02:40.059Z"
+    },
+    "unchanged": false
+  },
+  "changesTogether": [
+    {
+      "a": "src/switchyard/adapters/openvino.py",
+      "b": "tests/test_openvino_adapter.py",
+      "either": 22,
+      "partLabels": [
+        null,
+        "tests"
+      ],
+      "parts": [
+        null,
+        "tests"
+      ],
+      "relation": "unassigned",
+      "shared": 17
+    },
+    {
+      "a": "src/interlock/harness/fill.py",
+      "b": "tests/test_e5_preflight.py",
+      "either": 8,
+      "partLabels": [
+        "src",
+        "tests"
+      ],
+      "parts": [
+        "src",
+        "tests"
+      ],
+      "relation": "b-imports-a",
+      "shared": 5
+    },
+    {
+      "a": "src/interlock/harness/runner.py",
+      "b": "tests/test_e5_preflight.py",
+      "either": 8,
+      "partLabels": [
+        "src",
+        "tests"
+      ],
+      "parts": [
+        "src",
+        "tests"
+      ],
+      "relation": "b-imports-a",
+      "shared": 5
+    },
+    {
+      "a": "src/interlock/harness/fill.py",
+      "b": "src/interlock/harness/runner.py",
+      "either": 10,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 6
+    },
+    {
+      "a": "src/interlock/harness/fill.py",
+      "b": "tests/test_fill_card_live.py",
+      "either": 13,
+      "partLabels": [
+        "src",
+        "tests"
+      ],
+      "parts": [
+        "src",
+        "tests"
+      ],
+      "relation": "b-imports-a",
+      "shared": 7
+    }
+  ],
+  "changesTogetherNote": [
+    "1 file changed together with its own test, as expected.",
+    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 1,
+  "commit": "7fbc75bb9a882000bfed9a6db245ea79071b1692",
+  "defaultBranch": "main",
+  "derived": "10 parts, mostly Python (96 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run interlock.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 42
+        },
+        {
+          "boundary": "scripts",
+          "depth": 1,
+          "files": 2
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "files": 50
+        }
+      ],
+      "runs": [
+        "tests/fuzz_receipts.py",
+        "tests/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a pull request to main",
+        "on a push to main touching 11 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "src/interlock/"
+      ],
+      "checksCount": 1,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 52
+        }
+      ],
+      "runs": [],
+      "runsCount": 0,
+      "runsMore": 0,
+      "sends": [
+        "publishes to PyPI",
+        "uploads dist/*.tar.gz and dist/*.whl to the release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/scorecard.yml",
+      "id": ".github/workflows/scorecard.yml",
+      "landings": [],
+      "name": "OpenSSF Scorecard",
+      "pushes": false,
+      "reach": [],
+      "runs": [],
+      "runsCount": 0,
+      "runsMore": 0,
+      "sends": [
+        "uploads a SARIF report to code scanning"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a `branch_protection_rule` event",
+        "on a schedule (`43 15 * * 1`), Monday at 15:43 UTC",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "pyproject.toml",
+      "id": "pyproject.toml#interlock",
+      "kind": "command",
+      "landings": [],
+      "name": "interlock",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 45
+        }
+      ],
+      "runs": [
+        "src/interlock/cli.py"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "scripts",
+      "fromTests": false,
+      "to": "src"
+    }
+  ],
+  "engine": "1.26.0",
+  "generated": [],
+  "generatedAt": "2026-10-19T12:33:06.429Z",
+  "limits": [
+    "1 import site names a declared dependency that shares its name with a local module (openvino); it is read as the dependency, which is not in this repository.",
+    "5 writes and 4 reads use paths built at run time and are not named here.",
+    "17 writes and 41 reads go to a path their caller passes, not to this repository.",
+    "5 reads go to the directory the command is run in (logs/, pilot-e4b/ and receipts/), not to this repository.",
+    "18 files belong to no part: site/astro.config.mjs, site/package-lock.json, site/package.json and 15 more.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "assets": "assets",
+    "docs": "docs",
+    "experiments": "experiments",
+    "receipts": "receipts",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "src": "src",
+    "table": "table",
+    "tests": "tests"
+  },
+  "parts": 10,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/interlock",
+  "sequences": [],
+  "startDoor": "pyproject.toml#interlock",
+  "startHere": [
+    "src/interlock/cli.py",
+    "src/interlock/receipt.py",
+    "src/interlock/families.py"
+  ],
+  "startReason": "This path follows interlock (a command people run) from its entry, since CI runs only tests.",
+  "summary": "interlock routes each job to a model, engine and device from a receipt-backed table.",
+  "summaryFrom": "person",
+  "testFiles": 65,
+  "testedBy": {
+    "scripts": 2,
+    "src": 39
+  },
+  "testedCodeParts": 2,
+  "unnamedWrites": 5,
+  "unread": [],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [
+    "verify.sh runs in no workflow."
+  ],
+  "written": 0
+}

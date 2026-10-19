@@ -1,19 +1,19 @@
 # prism-verify: how it works
 
-Mapped at 2026-10-05 from commit 59f839d by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit eb48656 by Atlas 1.26.0.
 
 ## What this is
 
 18 parts, mostly Python (200 files), JavaScript (6), CSS (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 9 parts, and CI is followed because a pull request goes through it. It publishes to PyPI and @mcptoolshop/prism-verify to npm. It deploys a site to GitHub Pages. People run prism.
 
-## What changed since 2026-10-01 (2d54775)
+## What changed since 2026-10-15 (551c163)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-10-15; no file changed.
 
 ## What comes in
 
 1. **CI.** On a pull request; on a push touching 9 paths; or by hand. Runs tests/; checks src/.
-2. **Release.** When a release is published; or by hand. Builds src/prism/__main__.py; checks npm/bin/prism.js and src/prism/.
+2. **Release.** When a release is published; or by hand. Checks npm/bin/prism.js and src/prism/. On a run by hand with tag false, it also builds src/prism/__main__.py.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **prism** (a command people run, from pyproject.toml). Runs src/prism/cli/main.py.
 5. **prism** (a command people run, from npm/package.json). Runs npm/bin/prism.js.
@@ -51,9 +51,9 @@ CI writes only to eval/corpus-familyab-v3/, which is not tracked.
 
 ## What tends to change together
 
-- **src/prism/http/app.py** and **tests/integration/test_http.py** changed together in 5 of 6 commits, and the tests part imports the servers part.
 - **src/prism/providers/ollama.py** and **src/prism/providers/openai.py** changed together in 5 of 6 commits, inside the providers part.
-- **src/prism/receipts/store.py** and **tests/unit/test_receipts.py** changed together in 9 of 11 commits, and the tests part imports the receipts part.
+- **src/prism/receipts/store.py** and **tests/unit/test_receipts.py** changed together in 9 of 12 commits, and the tests part imports the receipts part.
+- **src/prism/http/app.py** and **tests/integration/test_http.py** changed together in 6 of 8 commits, and the tests part imports the servers part.
 - **src/prism/providers/anthropic.py** and **src/prism/providers/openai.py** changed together in 4 of 6 commits, inside the providers part.
 - **src/prism/providers/anthropic.py** and **src/prism/providers/ollama.py** changed together in 4 of 7 commits, inside the providers part.
 
@@ -104,7 +104,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, assets/, design/, the repository root and site/; 3 writes with paths built at run time may land here.
+People write .github/, design/, the repository root and site/. The data in assets/ is written by no code this map names; 3 writes with paths built at run time may land here.
 
 ## Where to start
 

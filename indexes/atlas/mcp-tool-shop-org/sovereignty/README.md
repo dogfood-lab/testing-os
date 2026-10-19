@@ -1,6 +1,6 @@
 # sovereignty: how it works
 
-Mapped at 2026-10-05 from commit b8effee by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit b7c2bfa by Atlas 1.26.0.
 
 ## What this is
 
@@ -11,7 +11,7 @@ Mapped at 2026-10-05 from commit b8effee by Atlas 1.26.0.
 - app/src-tauri/gen/schemas is now read by tests/test_tauri_updater_secrets.py.
 - assets/print/source/print-bundle.js is now also read by tests/test_tauri_updater_secrets.py.
 - sov_daemon/**/*.py is now read by tests/test_daemon_amend_wave9.py.
-- 1 file changed content, across 1 part.
+- 27 files changed content, across 7 parts.
 
 ## What comes in
 

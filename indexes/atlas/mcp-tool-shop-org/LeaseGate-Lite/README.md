@@ -1,14 +1,14 @@
 # LeaseGate-Lite: how it works
 
-Mapped at 2026-10-05 from commit 1e4962f by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 293eddd by Atlas 1.26.0.
 
 ## What this is
 
 9 parts, mostly C# (28 files), PowerShell (8), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 2 doors; CI and Deploy site to GitHub Pages each reach 1 part, and CI is followed because a pull request goes through it. It deploys a site to GitHub Pages.
 
-## What changed since 2026-10-01 (2461665)
+## What changed since 2026-10-15 (1e4962f)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-10-15; 3 files changed content.
 
 ## What comes in
 
@@ -53,19 +53,11 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-- **.github/** is written by dependabot[bot], which added every file in it.
-- **the repository root** is written by dependabot[bot], which added every file in it.
-- **scripts/** is written by dependabot[bot], which added every file in it.
-- **site/** is written by dependabot[bot], which added every file in it.
-- **src/LeaseGateLite.App/** is written by dependabot[bot], which added every file in it.
-- **src/LeaseGateLite.Contracts/** is written by dependabot[bot], which added every file in it.
-- **src/LeaseGateLite.Daemon/** is written by dependabot[bot], which added every file in it.
-- **src/LeaseGateLite.Tray/** is written by dependabot[bot], which added every file in it.
-- **tests/** is written by dependabot[bot], which added every file in it.
+Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-No configuration or documentation part is left to people alone.
+People write .github/, the repository root and site/. Nothing in this repository writes to them.
 
 ## Where to start
 

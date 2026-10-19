@@ -1,14 +1,14 @@
 # accessibility-suite: how it works
 
-Mapped at 2026-10-05 from commit 7bd5f98 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 82394a2 by Atlas 1.26.0.
 
 ## What this is
 
 15 parts, mostly Python (74 files), JavaScript (32), HTML (7), CSS (2), TypeScript (2), shell (2), Astro (1) and PowerShell (1). Work enters through 10 doors; the busiest is CI, which reaches 6 parts. It deploys a site to GitHub Pages. People run a11y, a11y-assist, a11y-ci, a11y-engine, a11y-lint, a11y-mcp and assist-run.
 
-## What changed since 2026-10-01 (3b49cbb)
+## What changed since 2026-10-15 (a6a0e20)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-10-15; 2 files changed content.
 
 ## What comes in
 
@@ -94,7 +94,7 @@ These are candidates from names and call order, not a judgement.
 
 ## Hand-authored
 
-People write .a11y_artifacts_test/, .github/, assets/, examples/, pipelines/, the repository root and site/. Nothing in this repository writes to them.
+People write .github/, the repository root and site/. Nothing in this repository writes to them. The data in .a11y_artifacts_test/, assets/, examples/ and pipelines/ is written by no code this map names.
 
 ## Where to start
 

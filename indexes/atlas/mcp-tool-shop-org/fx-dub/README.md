@@ -1,6 +1,6 @@
 # fx-dub: how it works
 
-Mapped at 2026-10-12 from commit f9063f1 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit f9063f1 by Atlas 1.26.0.
 
 ## What this is
 
@@ -70,7 +70,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, docs/, the repository root, runs/, site/ and workflows/. Nothing in this repository writes to them.
+People write .github/, docs/, the repository root, runs/ and site/. Nothing in this repository writes to them. The data in workflows/ is written by no code this map names.
 
 ## Where to start
 

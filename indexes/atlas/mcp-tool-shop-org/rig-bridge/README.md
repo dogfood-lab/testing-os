@@ -1,6 +1,6 @@
 # rig-bridge: how it works
 
-Mapped at 2026-10-05 from commit a762b7a by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 012aa48 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-05 from commit a762b7a by Atlas 1.26.0.
 
 ## What changed since 2026-10-01 (c27c7b0)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-10-01; 3 files changed content.
 
 ## What comes in
 
@@ -105,7 +105,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, docs/, the repository root, schemas/ and site/. Nothing in this repository writes to them.
+People write .github/, docs/, the repository root and site/. Nothing in this repository writes to them. The data in schemas/ is written by no code this map names.
 
 ## Where to start
 

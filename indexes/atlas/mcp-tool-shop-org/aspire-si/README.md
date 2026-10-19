@@ -1,6 +1,6 @@
 # aspire-si: how it works
 
-Mapped at 2026-10-12 from commit 021ebf0 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit b8ab54d by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,13 +8,9 @@ ASPIRE training system (student, critic, teachers) with a training-dynamics expo
 
 8 parts, mostly Python (169 files), shell (11), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run aspire.
 
-## What changed since 2026-10-07 (5c5346d)
+## What changed since 2026-10-14 (021ebf0)
 
-- examples/local-run/prompts.json is now also read by examples/sft-experiment/pod/plan_c.sh and examples/sft-experiment/pod/plan_g.sh.
-- examples/pod-run/real-composite-teacher.yaml is now read by examples/sft-experiment/seed_configs.py.
-- examples/pod-run/real-local-teacher.yaml is now read by examples/sft-experiment/seed_configs.py.
-- And 4 more new writers and readers of places.
-- 53 files added and 18 changed content, across 6 parts.
+Nothing structural changed since 2026-10-14; 3 files changed content.
 
 ## What comes in
 

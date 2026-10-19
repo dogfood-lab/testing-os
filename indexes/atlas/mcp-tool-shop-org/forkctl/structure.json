@@ -15,6 +15,10 @@
         {
           "hash": "6394820ca8a31e253077bf03affc5151a3361d9d75d408080c90ba406262ea45",
           "path": ".github/workflows/pages.yml"
+        },
+        {
+          "hash": "35f45cf8a9fb01f29c78a6b4e0c276e192be00476b7a8c46bbe361a52132d4a4",
+          "path": ".github/workflows/release.yml"
         }
       ],
       "globs": [
@@ -98,7 +102,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "b822a361124ab57cd895cd2a43d98861e0d045381ec4ba00aca5c6c04e4220d2",
+          "hash": "72a79795406b140a925624b9dd1bd6d75c4adcfd2ac34224a875fde506df6318",
           "path": "CHANGELOG.md"
         },
         {
@@ -150,11 +154,11 @@
           "path": "codecov.yml"
         },
         {
-          "hash": "2f95f5adfb76c5c7b0a7ee2e0eb083a142cd4ee3bfea067057982592d4c2e7e3",
+          "hash": "2f5222205bdd7850ca654c1814ef1291053feab91316b98ea5ca63c89aa1b419",
           "path": "package-lock.json"
         },
         {
-          "hash": "5266628a30672b3eed4d6c3a8d56f37be14d249832242591e83b3332b6c7f5dc",
+          "hash": "d46eb40102b3696c614943b51e5c680285100c486f58e14bdeaa9ee8e4f26ab4",
           "path": "package.json"
         },
         {
@@ -162,7 +166,27 @@
           "path": "tsconfig.json"
         },
         {
-          "hash": "2c0344341b8e7b391315390ff47c41c2325ab26ecdb0158f5fd714b5495be55c",
+          "hash": "e3abd37464085891d648b634a9a90f86c0a449012f059ef8a87b842a0bf000bd",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest/config",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "vitest.config.ts"
         }
       ],
@@ -187,6 +211,58 @@
       "files": [
         {
           "hash": "20d5ee4878a62a9de7ed1606676a4abcdb76ba13806e366e0579613a421f41a4",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/astro",
+              "specifier": "astro/config",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40tailwindcss/vite",
+              "specifier": "@tailwindcss/vite",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40tailwindcss/vite"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/astro"
+            }
+          ],
           "path": "site/astro.config.mjs"
         },
         {
@@ -200,6 +276,38 @@
         {
           "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "docsLoader"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/loaders",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "docsSchema"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/schema",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            }
+          ],
           "path": "site/src/content.config.ts"
         },
         {
@@ -248,6 +356,92 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/BaseLayout.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Hero.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Section.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/FeatureGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/DataTable.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/CodeCardGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/ApiList.astro",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "site/src/styles/global.css",
             "site/src/site-config.ts"
@@ -256,13 +450,40 @@
             "site/src/site-config.ts",
             "site/src/styles/global.css"
           ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
           "constantOnly": true,
           "hash": "bf6128deea8688d7a923a7ccace0bb085a436cfdc53075fe283a39462b4dc910",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "SiteConfig",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "site/src/data/counts.json"
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
           ],
           "path": "site/src/site-config.ts"
         },
@@ -291,7 +512,7 @@
     },
     {
       "dynamicReads": 8,
-      "dynamicSpawns": 2,
+      "dynamicSpawns": 1,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 8,
       "entryPoints": [
@@ -310,6 +531,20 @@
             }
           ],
           "hash": "cb97699e72cbf7308ac8f19f7135bfa14fb08d25e875fabf1654a1c8ccc8fdb3",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "Command"
+                }
+              ],
+              "purl": "pkg:npm/commander",
+              "specifier": "commander",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/dispatch.ts",
             "src/lib/github.ts",
@@ -331,6 +566,12 @@
             "src/server.ts",
             "src/tools/registry.ts",
             "src/tools/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/commander"
+            }
           ],
           "path": "src/cli.ts",
           "sequences": [
@@ -410,11 +651,31 @@
             }
           ],
           "hash": "59f3d514e3e1f3b2b400669dfefbaadb29b5519282d6ca986b96cd780d3d4517",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "ZodError"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/lib/audit.ts",
             "src/lib/errors.ts",
             "src/lib/result.ts",
             "src/tools/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/dispatch.ts",
           "sequences": [
@@ -483,6 +744,27 @@
         },
         {
           "hash": "5fb4fa32327aa8ba398b2bd2189c2925476413c73d3720bce279fc1af1072e0a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Database",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/better-sqlite3",
+              "specifier": "better-sqlite3",
+              "typeOnly": true
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/better-sqlite3"
+            }
+          ],
           "path": "src/lib/audit.ts"
         },
         {
@@ -514,9 +796,30 @@
             }
           ],
           "hash": "6a7dac4830a04bb3754945f57481872cf93f95ad195fe7e3738f00ca45563e45",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "src/lib/github.ts",
             "src/lib/profiles.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
           ],
           "path": "src/lib/bootstrap-steps.ts"
         },
@@ -562,9 +865,77 @@
             }
           ],
           "hash": "f47861b937cf1cb5a51f562c659b93f60b0a9b96f44eccf3cf4ac1089d992795",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Octokit"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "retry"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/plugin-retry",
+              "specifier": "@octokit/plugin-retry",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "throttling"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/plugin-throttling",
+              "specifier": "@octokit/plugin-throttling",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "RequestError"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/request-error",
+              "specifier": "@octokit/request-error",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/lib/errors.ts",
             "src/lib/logger.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/plugin-retry"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/plugin-throttling"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/request-error"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
           ],
           "path": "src/lib/github.ts",
           "sequences": [
@@ -584,6 +955,20 @@
               "name": "buildOctokit"
             }
           ]
+        },
+        {
+          "exports": [
+            "killTree"
+          ],
+          "failurePaths": [
+            {
+              "in": "killChild",
+              "kind": "catch",
+              "line": 33
+            }
+          ],
+          "hash": "d1ca2c11ac284994168dd09b5ac8115549ddb18be79207bb6cd1aa3fc083a731",
+          "path": "src/lib/kill-tree.ts"
         },
         {
           "exports": [
@@ -617,8 +1002,29 @@
             }
           ],
           "hash": "f8162bbbb82f9c98404fbc5547d113d792d3e0c34410b992a5be0f02b4d43d27",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "Database",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/better-sqlite3",
+              "specifier": "better-sqlite3",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "src/lib/errors.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/better-sqlite3"
+            }
           ],
           "path": "src/lib/operations.ts"
         },
@@ -650,9 +1056,30 @@
             }
           ],
           "hash": "5f413fb7c3fdde037f90653cc072ff43cd7a4d13b53824edcc20997682f872c1",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "src/lib/errors.ts",
             "src/lib/github.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
           ],
           "path": "src/lib/policy.ts"
         },
@@ -722,6 +1149,46 @@
             }
           ],
           "hash": "849e1755c55ef57b8ae7c366912f3d6c3004446ca22be15a61bcd2e3259822e2",
+          "importNames": [
+            {
+              "form": "type-import",
+              "line": 34,
+              "names": [
+                {
+                  "name": "*",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/ts-morph",
+              "specifier": "ts-morph",
+              "typeOnly": true
+            },
+            {
+              "form": "dynamic",
+              "line": 42,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/ts-morph",
+              "specifier": "ts-morph",
+              "typeOnly": false
+            },
+            {
+              "form": "type-import",
+              "line": 189,
+              "names": [
+                {
+                  "name": "Node",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/ts-morph",
+              "specifier": "ts-morph",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "src/schemas/rename.ts",
             "src/lib/logger.ts",
@@ -731,6 +1198,12 @@
             "src/lib/logger.ts",
             "src/lib/rename/variants.ts",
             "src/schemas/rename.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/ts-morph"
+            }
           ],
           "path": "src/lib/rename/deep-ts.ts"
         },
@@ -900,6 +1373,20 @@
             }
           ],
           "hash": "eb6e8bc6eb8b61f765b6169a56c74fc0d9dd05e3a8927f3380b43922181fac01",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40iarna/toml",
+              "specifier": "@iarna/toml",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/schemas/rename.ts",
             "src/lib/rename/identity/types.ts"
@@ -907,6 +1394,12 @@
           "importsFiles": [
             "src/lib/rename/identity/types.ts",
             "src/schemas/rename.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40iarna/toml"
+            }
           ],
           "path": "src/lib/rename/identity/toml-based.ts"
         },
@@ -963,50 +1456,57 @@
               "line": 57
             },
             {
-              "in": "runCommand",
-              "kind": "catch",
-              "line": 75
-            },
-            {
               "in": "recur",
               "kind": "catch",
-              "line": 104
+              "line": 86
             },
             {
               "in": "performMove",
               "kind": "catch",
-              "line": 165
+              "line": 147
             },
             {
               "in": "performMove",
               "kind": "catch",
-              "line": 182
+              "line": 164
             },
             {
               "in": "runPostPass",
               "kind": "catch",
-              "line": 241
+              "line": 223
             },
             {
               "in": "detectAndRunVerify",
               "kind": "catch",
-              "line": 291
+              "line": 273
             }
           ],
-          "hash": "703f61683af509671d8177d3b6983f3929e520fcfc385496835ba18ee67081f3",
+          "hash": "edb2e98abb1d1587554e06d0a51f49774c890347cdf51216bde9a67c31a0ef65",
           "importOrder": [
             "src/schemas/rename.ts",
             "src/lib/rename/variants.ts",
             "src/lib/rename/walk.ts",
-            "src/lib/rename/exclusions.ts"
+            "src/lib/rename/exclusions.ts",
+            "src/lib/rename/run-command.ts"
           ],
           "importsFiles": [
             "src/lib/rename/exclusions.ts",
+            "src/lib/rename/run-command.ts",
             "src/lib/rename/variants.ts",
             "src/lib/rename/walk.ts",
             "src/schemas/rename.ts"
           ],
           "path": "src/lib/rename/post.ts"
+        },
+        {
+          "exports": [
+            "runCommand"
+          ],
+          "hash": "dcc1e963b4ddbe7761f904f86d46e07be8eaa71b87865bdb000e9e5b6d3a167d",
+          "importsFiles": [
+            "src/lib/kill-tree.ts"
+          ],
+          "path": "src/lib/rename/run-command.ts"
         },
         {
           "exports": [
@@ -1016,59 +1516,55 @@
           ],
           "failurePaths": [
             {
-              "in": "runCommand",
-              "kind": "catch",
-              "line": 38
-            },
-            {
               "in": "exists",
               "kind": "catch",
-              "line": 52
+              "line": 31
             },
             {
               "in": "takeSnapshot",
               "kind": "throw",
-              "line": 73
+              "line": 52
             },
             {
               "in": "recur",
               "kind": "catch",
-              "line": 120
+              "line": 99
             },
             {
               "in": "rollbackSnapshot",
               "kind": "throw",
-              "line": 161
+              "line": 140
             },
             {
               "in": "rollbackSnapshot",
               "kind": "throw",
-              "line": 167
+              "line": 146
             },
             {
               "in": "rollbackSnapshot",
               "kind": "throw",
-              "line": 177
+              "line": 156
             },
             {
               "in": "rollbackSnapshot",
               "kind": "throw",
-              "line": 201
+              "line": 180
             },
             {
               "in": "gcSnapshots",
               "kind": "catch",
-              "line": 234
+              "line": 213
             },
             {
               "in": "gcSnapshots",
               "kind": "catch",
-              "line": 242
+              "line": 221
             }
           ],
-          "hash": "e1bd0d1634e25c17ebf0db345eaa4319dbee9d9e04cf6acfd18f9e7fbc8f2455",
+          "hash": "1cf5f9b1ceec5debf126519b391b4c71e1cb59fc3f4dbbe40132414f5ea9f9b1",
           "importsFiles": [
-            "src/lib/errors.ts"
+            "src/lib/errors.ts",
+            "src/lib/rename/run-command.ts"
           ],
           "path": "src/lib/rename/snapshot.ts"
         },
@@ -1119,6 +1615,191 @@
             }
           ],
           "hash": "be4d38c72899372ae3cea17b91f8090c9339596beb02a927a5dd4609811a2536",
+          "importNames": [
+            {
+              "form": "type-import",
+              "line": 20,
+              "names": [
+                {
+                  "name": "*",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/napi",
+              "specifier": "@ast-grep/napi",
+              "typeOnly": true
+            },
+            {
+              "form": "type-import",
+              "line": 21,
+              "names": [
+                {
+                  "name": "*",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/napi",
+              "specifier": "@ast-grep/napi",
+              "typeOnly": true
+            },
+            {
+              "form": "dynamic",
+              "line": 24,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/napi",
+              "specifier": "@ast-grep/napi",
+              "typeOnly": false
+            },
+            {
+              "form": "type-import",
+              "line": 83,
+              "names": [
+                {
+                  "name": "*",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/napi",
+              "specifier": "@ast-grep/napi",
+              "typeOnly": true
+            },
+            {
+              "form": "dynamic",
+              "line": 90,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/lang-bash",
+              "specifier": "@ast-grep/lang-bash",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 90,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/lang-c",
+              "specifier": "@ast-grep/lang-c",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 90,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/lang-cpp",
+              "specifier": "@ast-grep/lang-cpp",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 90,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/lang-csharp",
+              "specifier": "@ast-grep/lang-csharp",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 90,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/lang-go",
+              "specifier": "@ast-grep/lang-go",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 90,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/lang-java",
+              "specifier": "@ast-grep/lang-java",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 90,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/lang-json",
+              "specifier": "@ast-grep/lang-json",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 90,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/lang-python",
+              "specifier": "@ast-grep/lang-python",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 90,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/lang-ruby",
+              "specifier": "@ast-grep/lang-ruby",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 90,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/lang-rust",
+              "specifier": "@ast-grep/lang-rust",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 90,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40ast-grep/lang-yaml",
+              "specifier": "@ast-grep/lang-yaml",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/schemas/rename.ts",
             "src/lib/rename/variants.ts",
@@ -1128,6 +1809,56 @@
             "src/lib/rename/variants.ts",
             "src/lib/rename/walk.ts",
             "src/schemas/rename.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40ast-grep/lang-bash"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40ast-grep/lang-c"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40ast-grep/lang-cpp"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40ast-grep/lang-csharp"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40ast-grep/lang-go"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40ast-grep/lang-java"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40ast-grep/lang-json"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40ast-grep/lang-python"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40ast-grep/lang-ruby"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40ast-grep/lang-rust"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40ast-grep/lang-yaml"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40ast-grep/napi"
+            }
           ],
           "path": "src/lib/rename/symbols.ts"
         },
@@ -1173,8 +1904,43 @@
             "rewriteTextual"
           ],
           "hash": "ec6ea224f42d9bca2e2eaf4697e58139152bcfcb4be46220ed584abe9ce26781",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "camelCase"
+                },
+                {
+                  "name": "kebabCase"
+                },
+                {
+                  "name": "noCase"
+                },
+                {
+                  "name": "pascalCase"
+                },
+                {
+                  "name": "snakeCase"
+                },
+                {
+                  "name": "capitalCase"
+                }
+              ],
+              "purl": "pkg:npm/change-case",
+              "specifier": "change-case",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/schemas/rename.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/change-case"
+            }
           ],
           "path": "src/lib/rename/variants.ts"
         },
@@ -1280,9 +2046,30 @@
             }
           ],
           "hash": "6959feb4753f9ce43786c63c0fe2dacfeb4d8f824e80814b5cfb71b4ff19b1ef",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "src/lib/github.ts",
             "src/lib/readiness.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
           ],
           "path": "src/lib/snapshot.ts"
         },
@@ -1319,8 +2106,48 @@
             }
           ],
           "hash": "8e14062cccc54e49c2efed47e600a4261a53cc38a646ad8d1bbb9a92901e0b65",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                },
+                {
+                  "name": "Database",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/better-sqlite3",
+              "specifier": "better-sqlite3",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/env-paths",
+              "specifier": "env-paths",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/lib/errors.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/better-sqlite3"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/env-paths"
+            }
           ],
           "path": "src/lib/state.ts",
           "sequences": [
@@ -1385,48 +2212,208 @@
         },
         {
           "hash": "6caba051adadb3431f860cf8ca5869e2604b256d4c889783ba07d3fc52d7d4db",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/schemas/common.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/schemas/assess.ts"
         },
         {
           "hash": "b4eb36fdc4c36a72c67db6f925299a92a78b35c7ab91e9783b173e8f844a455d",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/schemas/common.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/schemas/bootstrap.ts"
         },
         {
           "hash": "47d64de58eceb05670065abcff459f03258cb77cffb1c851f4839cf9989ddbbb",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
+          ],
           "path": "src/schemas/common.ts"
         },
         {
           "hash": "1571e25d2b3045aa6ab054ac3ce8fbabc5b93b873a348fbb6abd2e216b0db10f",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/schemas/common.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/schemas/execution.ts"
         },
         {
           "hash": "bc2461589e7d6023ec54054034ccc03b60a7273151b04f5d7efbe7694f375182",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/schemas/common.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/schemas/fleet.ts"
         },
         {
           "hash": "b6f7e84df7adda336221dc01740ef0314953c8817d579fcec7811fc6ee769a49",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
+          ],
           "path": "src/schemas/receipts.ts"
         },
         {
           "hash": "f1d5bc88a819cb19af6b1ad1a80ac9239d0ada7b15870bb4773a8d3d99f42086",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
+          ],
           "path": "src/schemas/rename.ts"
         },
         {
           "hash": "76970a60bff0cebd399ea0409716f72cda5a27aa0d98ec0271873b41613d0548",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/schemas/common.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/schemas/sync.ts"
         },
@@ -1434,6 +2421,59 @@
           "entry": "main",
           "entryRule": 1,
           "hash": "31ed8b9247fe0c2bb11c58634a3721c8656fda47956318c55cdad37c6e94962f",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "Server"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/server/index.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "StdioServerTransport"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/server/stdio.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "CallToolRequestSchema"
+                },
+                {
+                  "name": "ListToolsRequestSchema"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/types.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "zodToJsonSchema"
+                }
+              ],
+              "purl": "pkg:npm/zod-to-json-schema",
+              "specifier": "zod-to-json-schema",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/dispatch.ts",
             "src/index.ts",
@@ -1441,6 +2481,16 @@
             "src/lib/operations.ts",
             "src/lib/state.ts",
             "src/tools/registry.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod-to-json-schema"
+            }
           ],
           "path": "src/server.ts",
           "sequences": [
@@ -1537,11 +2587,32 @@
             }
           ],
           "hash": "5dba43781d2cea5a213311aff85cdd73c5f8a205bf47215c1075c1c3c8ee593c",
+          "importNames": [
+            {
+              "form": "type-import",
+              "line": 79,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "src/lib/github.ts",
             "src/lib/result.ts",
             "src/schemas/fleet.ts",
             "src/tools/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
           ],
           "path": "src/tools/batch-sync.ts"
         },
@@ -1664,6 +2735,21 @@
             }
           ],
           "hash": "530997b16c9d12fe5b26daa471aa9702d08ac7a2bc4bb4f283b8495747a5f3e1",
+          "importNames": [
+            {
+              "form": "type-import",
+              "line": 87,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "src/lib/errors.ts",
             "src/lib/github.ts",
@@ -1681,6 +2767,12 @@
             "src/lib/result.ts",
             "src/schemas/execution.ts",
             "src/tools/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
           ],
           "path": "src/tools/create-fork.ts"
         },
@@ -1775,11 +2867,45 @@
             }
           ],
           "hash": "b27eb8a6e16da3343063637a16736cb86ad5ee20f1b715c1578925a0171360e9",
+          "importNames": [
+            {
+              "form": "type-import",
+              "line": 78,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            },
+            {
+              "form": "type-import",
+              "line": 99,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "src/lib/github.ts",
             "src/lib/result.ts",
             "src/schemas/fleet.ts",
             "src/tools/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
           ],
           "path": "src/tools/fleet-health.ts"
         },
@@ -1807,11 +2933,45 @@
             }
           ],
           "hash": "c6d0cc88cb638cdc75d2bc2f7443356eadc16878d9cf3f4da54bcebfe4864676",
+          "importNames": [
+            {
+              "form": "type-import",
+              "line": 42,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            },
+            {
+              "form": "type-import",
+              "line": 72,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "src/lib/github.ts",
             "src/lib/result.ts",
             "src/schemas/fleet.ts",
             "src/tools/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
           ],
           "path": "src/tools/list-forks.ts"
         },
@@ -1879,6 +3039,21 @@
             }
           ],
           "hash": "85c73b1c7bc355e07d3e386b421417d4369b7dc45248bb5b33dbf6936a0f6c6f",
+          "importNames": [
+            {
+              "form": "type-import",
+              "line": 100,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "src/lib/errors.ts",
             "src/lib/github.ts",
@@ -1896,6 +3071,12 @@
             "src/lib/snapshot.ts",
             "src/schemas/assess.ts",
             "src/tools/types.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
           ],
           "path": "src/tools/make-forkable.ts"
         },
@@ -2242,6 +3423,51 @@
         },
         {
           "hash": "003dbd963a0afcccb69c64fa765c5356a40c213093f7cb60a3cb22d141759ed2",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "ZodType",
+                  "type": true
+                },
+                {
+                  "name": "ZodTypeDef",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "Database",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/better-sqlite3",
+              "specifier": "better-sqlite3",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "src/lib/result.ts",
             "src/lib/operations.ts"
@@ -2249,6 +3475,20 @@
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/result.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/better-sqlite3"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
           ],
           "path": "src/tools/types.ts"
         }
@@ -2326,7 +3566,7 @@
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 51,
+      "testedBy": 52,
       "unresolvedSites": 0
     },
     {
@@ -2342,6 +3582,43 @@
             "bootstrapFakeOctokit"
           ],
           "hash": "bccf100366c5780963d0a50e7127ea07773dcd00fac45ad6d148f8c69ec613b8",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "RequestError"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/request-error",
+              "specifier": "@octokit/request-error",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/request-error"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
+          ],
           "path": "tests/_helpers/bootstrap-octokit.ts"
         },
         {
@@ -2349,8 +3626,29 @@
             "execFakeOctokit"
           ],
           "hash": "951b45b2e41681046bd0797b8c6ada8d6e761637718c9ed76f7c9b7d92d4a7f4",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "tests/_helpers/octokit-fake.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
           ],
           "path": "tests/_helpers/exec-octokit.ts"
         },
@@ -2360,6 +3658,43 @@
             "fleetFakeOctokit"
           ],
           "hash": "2fd851fc5db9de5429edd8faa15eeb25dd0ae80edfc5f00af83c25457a621d4f",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "RequestError"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/request-error",
+              "specifier": "@octokit/request-error",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/request-error"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
+          ],
           "path": "tests/_helpers/fleet-octokit.ts"
         },
         {
@@ -2367,6 +3702,43 @@
             "makeForkableFakeOctokit"
           ],
           "hash": "8ff7dc3df1e431fa79a53440bad4202b94275a2531cd0d9766c8aaa7f5ef4b5d",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "RequestError"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/request-error",
+              "specifier": "@octokit/request-error",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/request-error"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
+          ],
           "path": "tests/_helpers/make-forkable-octokit.ts"
         },
         {
@@ -2379,6 +3751,26 @@
             "rateLimitedError"
           ],
           "hash": "01125b63c60ae615bd046fe7230b12bff658b08f0c403c72aa6a6740647213dc",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "RequestError"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/request-error",
+              "specifier": "@octokit/request-error",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/request-error"
+            }
+          ],
           "path": "tests/_helpers/network-errors.ts"
         },
         {
@@ -2387,6 +3779,43 @@
             "makeRequestError"
           ],
           "hash": "3f959f6ee501807699916234446aa82745d40ee6ce30eb4fd2ae16f9c8f520bf",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "RequestError"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/request-error",
+              "specifier": "@octokit/request-error",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/request-error"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
+          ],
           "path": "tests/_helpers/octokit-fake.ts"
         },
         {
@@ -2394,6 +3823,43 @@
             "fakeOctokit"
           ],
           "hash": "45ae42d0adef3210bedd6fae66339f2af6ede39578ec6111f6d3c5a6c0bbc94b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "RequestError"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/request-error",
+              "specifier": "@octokit/request-error",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/request-error"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
+          ],
           "path": "tests/_helpers/octokit.ts"
         },
         {
@@ -2424,10 +3890,67 @@
             "syncFakeOctokit"
           ],
           "hash": "3de211849e38455a939eacd075c3ba5299c471c4376ca667fe320030ceb5831a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "RequestError"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/request-error",
+              "specifier": "@octokit/request-error",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/request-error"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            }
+          ],
           "path": "tests/_helpers/sync-octokit.ts"
         },
         {
           "hash": "84622dd7792c722808d1aa14083005d4a51ded0e1fc216ae654f13a82ace32cc",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/assess.ts",
             "tests/_helpers/octokit.ts",
@@ -2440,28 +3963,158 @@
             "src/tools/assess.ts",
             "tests/_helpers/octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/assess.test.ts",
           "testFramework": "vitest"
         },
         {
-          "hash": "31d5c3aaa68e703bd5ab45ca73495ff6e7e81898b3c20a2bc8662cbc64c5d243",
+          "hash": "36309039178bdb5201be56106a8b79c3c6beb1e2d60301e6d090f7ada4ba428a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "Database",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/better-sqlite3",
+              "specifier": "better-sqlite3",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "src/lib/audit.ts",
             "src/lib/state.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/better-sqlite3"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/audit.test.ts",
           "testFramework": "vitest"
         },
         {
-          "hash": "3bf2dbf63e951d8560029943490c1a08964caaed345989b99cc81da114f06950",
+          "hash": "ed226c49127618a9b3d4d00380d30e06d06ed8201ded525b238ea98bb079943b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 55,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/plugin-retry",
+              "specifier": "@octokit/plugin-retry",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 61,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/plugin-throttling",
+              "specifier": "@octokit/plugin-throttling",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/lib/github.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/plugin-retry"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/plugin-throttling"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/backend-hardening.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "bca56fd8243be571234288f582ed5c40f1d5239944bd6df33e7ea6fc3dd2a72a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/batch-sync.ts",
             "tests/_helpers/fleet-octokit.ts",
@@ -2474,11 +4127,37 @@
             "src/tools/batch-sync.ts",
             "tests/_helpers/fleet-octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/batch-sync.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "9737e8452a0445060d3e961f25203b9706d214e2ea67e1c98d1ae1317919b463",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/bootstrap.ts",
             "tests/_helpers/bootstrap-octokit.ts",
@@ -2491,11 +4170,37 @@
             "src/tools/bootstrap.ts",
             "tests/_helpers/bootstrap-octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/bootstrap.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "fc7b705017ea19afe124ce2a785b94889beaff48090f6e43b70c4f69c2902ab7",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/check-operation.ts",
             "tests/_helpers/exec-octokit.ts",
@@ -2508,11 +4213,37 @@
             "src/tools/check-operation.ts",
             "tests/_helpers/exec-octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/check-operation.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "966843a1d53192693e56b8b53a81693b57b68d74a08faa3bd2f0a6906786d747",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/choose-path.ts",
             "tests/_helpers/octokit.ts",
@@ -2525,11 +4256,37 @@
             "src/tools/choose-path.ts",
             "tests/_helpers/octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/choose-path.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "8fee09fd55550ab456aec17ef5f0e4f4de6f3f97869d32a2f6c4fdcb6fba7fbb",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/configure-upstream.ts",
             "tests/_helpers/bootstrap-octokit.ts",
@@ -2542,11 +4299,37 @@
             "src/tools/configure-upstream.ts",
             "tests/_helpers/bootstrap-octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/configure-upstream.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "70906a92ae66e2ad14efd1249d62e0ca640a17a5548f19d2cb08f867802ef5ec",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/create-fork.ts",
             "tests/_helpers/exec-octokit.ts",
@@ -2558,12 +4341,38 @@
             "src/lib/state.ts",
             "src/tools/create-fork.ts",
             "tests/_helpers/exec-octokit.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/create-fork.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "0060fad71220d2000b06ea8cfaf9edf45d74fc601d322925b8d54db89fc17564",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/create-from-template.ts",
             "tests/_helpers/exec-octokit.ts",
@@ -2576,11 +4385,37 @@
             "src/tools/create-from-template.ts",
             "tests/_helpers/exec-octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/create-from-template.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "b754f46c4a016172792657d7a0f59ed098a0294388d8f04d23df80dcd8711c2e",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/diagnose-divergence.ts",
             "tests/_helpers/sync-octokit.ts",
@@ -2593,11 +4428,49 @@
             "src/tools/diagnose-divergence.ts",
             "tests/_helpers/sync-octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/diagnose-divergence.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "99e5647d91491d1be70f6aa6b01aca239994f9495a66bc280de231fad2c9b693",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "z"
+                }
+              ],
+              "purl": "pkg:npm/zod",
+              "specifier": "zod",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/dispatch.ts",
             "src/lib/audit.ts",
@@ -2618,11 +4491,41 @@
             "src/tools/types.ts",
             "tests/_helpers/octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/zod"
+            }
+          ],
           "path": "tests/dispatch-error-operation-id.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "ec0ea0e05cce71013bdf8beef7b871ad7092a2af0f5f29d7e4416879f7d55183",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/dispatch.ts",
             "src/tools/assess.ts",
@@ -2643,19 +4546,71 @@
             "tests/_helpers/exec-octokit.ts",
             "tests/_helpers/octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/dispatch.test.ts",
           "testFramework": "vitest"
         },
         {
-          "hash": "a99cd73611ae693e51808527c784e8f241aab3caf010bab3863ca5ca11d6a0ec",
+          "hash": "80f13c0041fb70e942dacf812cce076436bc663423ed878dfd945f51b595f1f2",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/lib/drift.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/drift.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "7fca0d07052e32d6c6d29c4d85323ba9af12dc5dd75685f6c9f4602aa37d8de6",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/emit-handoff.ts",
             "tests/_helpers/bootstrap-octokit.ts",
@@ -2668,20 +4623,72 @@
             "src/tools/emit-handoff.ts",
             "tests/_helpers/bootstrap-octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/emit-handoff.test.ts",
           "testFramework": "vitest"
         },
         {
-          "hash": "5b0a8beb6975a98dcd40162d800782daf21c27164cf8e6a27c90e075372465de",
+          "hash": "9a8cf2db4e33e1137e6f71dbc03b4644ddcea94cd8b0e9518e1157b2f440d2a5",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/lib/errors.ts",
             "src/lib/result.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/errors.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "c9fd986e3d7b844286f849c21a2190c35669cbd8e9d8517fdaa6f272742bc45e",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/fleet-health.ts",
             "tests/_helpers/fleet-octokit.ts",
@@ -2693,12 +4700,38 @@
             "src/lib/state.ts",
             "src/tools/fleet-health.ts",
             "tests/_helpers/fleet-octokit.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/fleet-health.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "d1bc934a313353044275a4d748bdd9dcae79ae3e4f49133081b3c335ee33f57c",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "tests/_helpers/fleet-octokit.ts",
             "src/tools/fleet-health.ts",
@@ -2711,11 +4744,49 @@
             "src/tools/fleet-health.ts",
             "tests/_helpers/fleet-octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/fleet-octokit-dispatch.test.ts",
           "testFramework": "vitest"
         },
         {
-          "hash": "ecc4f4eb894f1c7048fbd606ff264efd15305393247e9aad9a88e8e61dcdc303",
+          "hash": "0bb911c71357faef893efc84c4f4a68998a2c98f00da1404cb4112e29352fd06",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "RequestError"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/request-error",
+              "specifier": "@octokit/request-error",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/lib/github.ts",
             "src/lib/errors.ts"
@@ -2724,11 +4795,41 @@
             "src/lib/errors.ts",
             "src/lib/github.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/request-error"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/github.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "4cce4e0ecf1a8cfb3e21285c2fe8758fb301ff6e56b047970846a56b820908d5",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/list-forks.ts",
             "tests/_helpers/fleet-octokit.ts",
@@ -2741,19 +4842,93 @@
             "src/tools/list-forks.ts",
             "tests/_helpers/fleet-octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/list-forks.test.ts",
           "testFramework": "vitest"
         },
         {
-          "hash": "8950da957adfe820e9dc940426767b3cb45bbb0079c543cf2bd46ff667e9fa44",
+          "hash": "34b4d3f1000f05864436cd6c92d83f4ab70abff34004e6e5aeb2d4d88a97f673",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/lib/logger.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/logger.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "ce94eadaf4db99aeef6e4f16a506f4b5987273c6b6b423d7dbd6263237a00744",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "src/tools/make-forkable.ts",
             "tests/_helpers/octokit.ts",
@@ -2770,19 +4945,107 @@
             "tests/_helpers/make-forkable-octokit.ts",
             "tests/_helpers/octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/make-forkable.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "357e0cbc17b90390d1408bc21523ab9068d9e1a92ce805181bbbcb9b7599098b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/better-sqlite3",
+              "specifier": "better-sqlite3",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/lib/state.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/better-sqlite3"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/migration-runner.test.ts",
           "testFramework": "vitest"
         },
         {
-          "hash": "d6cb391a0885f2ecfb42f28333118f2455145b7b23b7feffbc8ca3af54ade518",
+          "hash": "028467aae11a05dbb8cab5cd2cdb2a9c7783133e98e1389a9bfa9ece23a4c869",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "src/tools/assess.ts",
             "src/tools/scan-drift.ts",
@@ -2801,20 +5064,109 @@
             "src/tools/scan-drift.ts",
             "tests/_helpers/network-errors.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/network-errors.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "b260c0c01e51ddef9dc47c8277a2fbfd27534a7c855643e1ee6c5cd809a690b6",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "Database",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/better-sqlite3",
+              "specifier": "better-sqlite3",
+              "typeOnly": true
+            }
+          ],
           "importsFiles": [
             "src/lib/operations.ts",
             "src/lib/state.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/better-sqlite3"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/operations.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "5fb31028b068845e936a2c028dfa67da1c2edf1687ce9fa3aa0ca3360d4b68ec",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "src/lib/github.ts",
             "src/tools/diagnose-divergence.ts",
@@ -2827,11 +5179,66 @@
             "src/lib/state.ts",
             "src/tools/diagnose-divergence.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/parse-repo-ref.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "405dc49f20ffb315a24681d11ad00487f20d20a5a0dee6b370f1530a5a246cec",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            },
+            {
+              "form": "dynamic",
+              "line": 132,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/request-error",
+              "specifier": "@octokit/request-error",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/lib/policy.ts",
             "src/lib/errors.ts"
@@ -2840,11 +5247,45 @@
             "src/lib/errors.ts",
             "src/lib/policy.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/request-error"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/policy.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "921a5ad9190ee02badb8f3dac3c148fcd816007c8ffcf80d65ac5e22fea7a80d",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/preflight-policy.ts",
             "tests/_helpers/exec-octokit.ts",
@@ -2857,19 +5298,71 @@
             "src/tools/preflight-policy.ts",
             "tests/_helpers/exec-octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/preflight-policy.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "803c96318856611c988a9bdefff99432e7168c4cdb89784df3081ef8188b8d8b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/lib/profiles.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/profiles.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "62fec92861cfa1c65a8dcc4abfcd78232781e4cedebc3507de11c403b1f07e51",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/propose-sync-pr.ts",
             "tests/_helpers/sync-octokit.ts",
@@ -2882,11 +5375,50 @@
             "src/tools/propose-sync-pr.ts",
             "tests/_helpers/sync-octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/propose-sync-pr.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "2fe57b6b5f16cf393bf629462ee7bf1f5832f54d9e024d898313fd0c6ca1ff4d",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "src/tools/assess.ts",
             "src/tools/fleet-health.ts",
@@ -2903,20 +5435,89 @@
             "src/tools/scan-drift.ts",
             "tests/_helpers/network-errors.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/rate-limit.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "3dddb85e3b9f3964b0102f55871aac4129c1c468a5cee24a1ffb138c2b31cf99",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/lib/readiness.ts",
             "tests/_helpers/snapshot.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/readiness.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "2ea10167d0e26e91ff18ff2950404595176c4e076bd9bc8fef4c7a5ee1bb8e24",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "Octokit",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40octokit/rest",
+              "specifier": "@octokit/rest",
+              "typeOnly": true
+            }
+          ],
           "importOrder": [
             "src/tools/receipt.ts",
             "src/tools/audit-log.ts",
@@ -2931,36 +5532,144 @@
             "src/tools/audit-log.ts",
             "src/tools/receipt.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40octokit/rest"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/receipt.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "23f29abff5d79bef0e8f303ecb4312764acf9b069fdd50ecf48d58970f212cbe",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/tools/registry.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/registry.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "9b7c3dcdc9706570e64fb383fd390a0e70f4c1056be1c512882f559201773247",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/lib/rename/categories.ts",
             "src/schemas/rename.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/rename/categories.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "c9937136cbba999df24b592ebeef7fcf53f89aa07314f9dc424d80ac68981ac9",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "names": [
             "src/lib/rename/deep-ts.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/rename/deep-ts.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "f780fa7cd18e58ebd656b4b9a6fdd3e803581c076a5824de06fed59360205673",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "tests/_helpers/rename-fixtures.ts",
             "src/dispatch.ts",
@@ -2985,11 +5694,52 @@
             "tests/_helpers/octokit.ts",
             "tests/_helpers/rename-fixtures.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/rename/dispatch.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "365c12f85bcbbe3993428d8e17057a6b9dc5dbed50a54df82aa17a4f3516433e",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40iarna/toml",
+              "specifier": "@iarna/toml",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "tests/_helpers/rename-fixtures.ts",
             "src/lib/rename/variants.ts",
@@ -3008,11 +5758,44 @@
             "src/lib/rename/variants.ts",
             "tests/_helpers/rename-fixtures.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/%40iarna/toml"
+            },
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/rename/identity.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "610a8d2269de81f3cae648cf491deda41e0f9df92a931161805a93f8130599cb",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "tests/_helpers/rename-fixtures.ts",
             "src/lib/rename/variants.ts",
@@ -3025,22 +5808,77 @@
             "src/lib/rename/walk.ts",
             "tests/_helpers/rename-fixtures.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/rename/post.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "0ff8f81a328a41f6ae50022306c4931e14a43b9c64cd63995b3e3cbb476eb06b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/schemas/rename.ts"
           ],
           "names": [
             "src/index.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/rename/schemas.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "b7e56c2763deff24a68ac404aff7f74855da22ec3331a788fc947d0120414935",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "tests/_helpers/rename-fixtures.ts",
             "src/lib/rename/snapshot.ts"
@@ -3049,11 +5887,40 @@
             "src/lib/rename/snapshot.ts",
             "tests/_helpers/rename-fixtures.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/rename/snapshot-rollback.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "4b293e79d5a1e9540942aeea0be143e5d210da30aebe9d150df3d52a257e228c",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "tests/_helpers/rename-fixtures.ts",
             "src/lib/rename/variants.ts",
@@ -3065,12 +5932,41 @@
             "src/lib/rename/variants.ts",
             "src/lib/rename/walk.ts",
             "tests/_helpers/rename-fixtures.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/rename/symbols.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "50a8b48c950d935246038fd8f4490f703ddd67a607af09225a04e5ff2d06016c",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "tests/_helpers/rename-fixtures.ts",
             "src/lib/rename/variants.ts",
@@ -3083,11 +5979,40 @@
             "src/lib/rename/walk.ts",
             "tests/_helpers/rename-fixtures.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/rename/textual.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "cc782c3c9e3e88337314efafde383c4c8809e20ebf6c111aa707d9511c1cfdec",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "tests/_helpers/rename-fixtures.ts",
             "src/tools/rename-plan.ts",
@@ -3108,19 +6033,113 @@
             "tests/_helpers/octokit.ts",
             "tests/_helpers/rename-fixtures.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/rename/tools.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "5166d88293a88170d53a430231af94f28370eda5f08b50b2e3d4d76abdc65251",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/lib/rename/variants.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/rename/variants.test.ts",
           "testFramework": "vitest"
         },
         {
-          "hash": "7aed4ff355466ddefd0950c0a79b8c1686d882950094861cd06d57ba6c08048e",
+          "hash": "8843e824b027c6563b21dd0188d36053f1f8e9cdf2a1132db696fb2ef72b6a58",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "afterEach"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "importOrder": [
+            "src/lib/rename/run-command.ts",
+            "src/lib/kill-tree.ts"
+          ],
+          "importsFiles": [
+            "src/lib/kill-tree.ts",
+            "src/lib/rename/run-command.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "tests/run-command.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "bd98b16d96d7f3592cad249d2e0ad2f506b44eb6269c421b27110dd5e43263a7",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/scan-drift.ts",
             "tests/_helpers/bootstrap-octokit.ts",
@@ -3133,36 +6152,143 @@
             "src/tools/scan-drift.ts",
             "tests/_helpers/bootstrap-octokit.ts"
           ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
           "path": "tests/scan-drift.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "18e4423ad1eb9eeea8c535ec8654b7bdfea2b8295ce6895b2f797d155d0e0d6e",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/schemas/common.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/schemas.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "8459a82ddd74067b1e98d59d66286fd06136444124aaf398b31e39169ca9d036",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/lib/snapshot.ts",
             "tests/_helpers/octokit.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/snapshot.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "fe6f5f8937b0b3653a7ffe8b4fab9df71c1ea99139d99671eeebbac9236e8f4f",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/lib/state.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/state.test.ts",
           "testFramework": "vitest"
         },
         {
           "hash": "698b61f9acb62627e3089d51919836b16161e318b04e248bb149b40c754708ae",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "src/tools/sync.ts",
             "tests/_helpers/sync-octokit.ts",
@@ -3174,6 +6300,12 @@
             "src/lib/state.ts",
             "src/tools/sync.ts",
             "tests/_helpers/sync-octokit.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
           ],
           "path": "tests/sync.test.ts",
           "testFramework": "vitest"
@@ -3414,12 +6546,12 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 65
+          "files": 67
         },
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 60
+          "files": 61
         }
       ],
       "readers": [],
@@ -3691,6 +6823,13 @@
         {
           "job": "verify",
           "matched": true,
+          "path": "tests/run-command.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "verify",
+          "matched": true,
           "path": "tests/scan-drift.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -3724,7 +6863,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 41,
+      "runsCount": 42,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -3741,7 +6880,7 @@
         {
           "config": "vitest.config.ts",
           "coverage": true,
-          "files": 50,
+          "files": 51,
           "job": "verify",
           "junit": true,
           "runner": "vitest",
@@ -3941,6 +7080,135 @@
     },
     {
       "checksCount": 0,
+      "commands": [
+        {
+          "dir": "",
+          "job": "publish",
+          "programs": [
+            "echo",
+            "mkdir",
+            "npm",
+            "popd",
+            "pushd"
+          ],
+          "step": "Install npm >=11.5 in a sandbox for OIDC trusted-publishing auth"
+        },
+        {
+          "dir": "",
+          "job": "publish",
+          "programs": [
+            "echo",
+            "node"
+          ],
+          "step": "Verify the tag matches package.json"
+        },
+        {
+          "dir": "",
+          "job": "publish",
+          "programs": [
+            "npm"
+          ],
+          "step": "4"
+        },
+        {
+          "dir": "",
+          "job": "publish",
+          "programs": [
+            "npm"
+          ],
+          "step": "Publish to npm with provenance (OIDC trusted publisher, no token)"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/release.yml",
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "publish",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        }
+      ],
+      "landings": [],
+      "mentions": [
+        {
+          "job": "publish",
+          "path": "package.json"
+        }
+      ],
+      "name": "Release",
+      "permissions": [
+        "contents:read",
+        "id-token:write"
+      ],
+      "pushes": false,
+      "reach": [],
+      "readers": [],
+      "runs": [],
+      "runsCount": 0,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "packages": [
+          {
+            "dir": "",
+            "name": "@mcptoolshop/forkctl",
+            "registry": "npm"
+          }
+        ],
+        "publishes": true,
+        "publishesTo": [
+          "npm"
+        ],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [
+        {
+          "event": "release",
+          "types": [
+            "published"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "actions/setup-node"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
       "commands": [],
       "elsewhere": [],
       "entry": "src/index.ts",
@@ -3979,7 +7247,6 @@
       },
       "stages": [],
       "triggers": [],
-      "unpublished": true,
       "uses": [],
       "usesWorkflowToken": false
     },
@@ -3993,24 +7260,12 @@
       "mentions": [],
       "name": "forkctl",
       "permissions": [],
-      "programs": [
-        "git"
-      ],
       "pushes": false,
       "reach": [
         {
           "boundary": "src",
           "depth": 0,
-          "files": 65
-        },
-        {
-          "boundary": "tests",
-          "depth": 4,
-          "enters": {
-            "file": "tests/assess.test.ts",
-            "from": "src/lib/rename/post.ts"
-          },
-          "files": 60
+          "files": 67
         }
       ],
       "readers": [],
@@ -4048,24 +7303,12 @@
       "mentions": [],
       "name": "forkctl-mcp",
       "permissions": [],
-      "programs": [
-        "git"
-      ],
       "pushes": false,
       "reach": [
         {
           "boundary": "src",
           "depth": 0,
-          "files": 65
-        },
-        {
-          "boundary": "tests",
-          "depth": 4,
-          "enters": {
-            "file": "tests/assess.test.ts",
-            "from": "src/lib/rename/post.ts"
-          },
-          "files": 60
+          "files": 66
         }
       ],
       "readers": [],
@@ -4096,11 +7339,6 @@
   ],
   "edges": [
     {
-      "from": "src",
-      "kind": "spawns",
-      "to": "tests"
-    },
-    {
       "from": "tests",
       "fromTests": true,
       "kind": "file",
@@ -4109,15 +7347,241 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "0363afba1986f89ebb8794a4f853213fe55ed259",
-    "tracked": 170
+    "commit": "84c9f39347b93b53351ab7e476ac10599d909666",
+    "tracked": 174
   },
   "landings": [
     {
       "readers": [
         {
+          "by": "tests/_helpers/rename-fixtures.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/assess.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/drift.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/make-forkable.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/rename/textual.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/snapshot.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": ".env.example",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/_helpers/rename-fixtures.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/rename/identity.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": ".github/workflows/ci.yml",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/_helpers/rename-fixtures.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/rename/textual.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "CHANGELOG.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/_helpers/rename-fixtures.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/rename/identity.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "LICENSE",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/_helpers/rename-fixtures.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/_helpers/sync-octokit.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/drift.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/emit-handoff.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/rename/identity.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/rename/tools.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/scan-drift.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/assess.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/make-forkable.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/snapshot.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "SECURITY.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/_helpers/rename-fixtures.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/rename/identity.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/rename/post.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "package-lock.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": ".github/workflows/ci.yml",
           "confidence": "config"
+        },
+        {
+          "by": ".github/workflows/release.yml",
+          "confidence": "config"
+        },
+        {
+          "by": "tests/_helpers/rename-fixtures.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/rename/identity.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/rename/post.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/rename/tools.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/scan-drift.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "package.json",
@@ -4148,6 +7612,42 @@
     {
       "readers": [
         {
+          "by": "tests/_helpers/rename-fixtures.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/rename/textual.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "site/src/pages/index.astro",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/_helpers/rename-fixtures.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/rename/schemas.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "src/index.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": ".github/workflows/ci.yml",
           "confidence": "config"
         }
@@ -4156,9 +7656,391 @@
       "writers": []
     }
   ],
+  "manifests": [
+    {
+      "name": "@mcptoolshop/forkctl",
+      "path": "package.json",
+      "role": "root",
+      "roleFrom": "the root manifest",
+      "version": "2.1.1"
+    },
+    {
+      "name": "site",
+      "path": "site/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door Deploy site to GitHub Pages, job build, step Install site dependencies: npm ci in site",
+      "version": "0.0.1"
+    }
+  ],
   "overlaps": [],
+  "packageDependencies": [
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@ast-grep/napi",
+      "purl": "pkg:npm/%40ast-grep/napi",
+      "range": "^0.42.1",
+      "version": "0.42.1",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@iarna/toml",
+      "purl": "pkg:npm/%40iarna/toml",
+      "range": "^2.2.5",
+      "version": "2.2.5",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@modelcontextprotocol/sdk",
+      "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+      "range": "^1.0.0",
+      "version": "1.32.1",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@octokit/plugin-retry",
+      "purl": "pkg:npm/%40octokit/plugin-retry",
+      "range": "^8.1.0",
+      "version": "8.1.0",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@octokit/plugin-throttling",
+      "purl": "pkg:npm/%40octokit/plugin-throttling",
+      "range": "^11.0.3",
+      "version": "11.0.3",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@octokit/request-error",
+      "purl": "pkg:npm/%40octokit/request-error",
+      "range": "^6.1.0",
+      "version": "6.1.8",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@octokit/rest",
+      "purl": "pkg:npm/%40octokit/rest",
+      "range": "^21.0.0",
+      "version": "21.1.1",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "better-sqlite3",
+      "purl": "pkg:npm/better-sqlite3",
+      "range": "^11.3.0",
+      "version": "11.10.0",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "change-case",
+      "purl": "pkg:npm/change-case",
+      "range": "^5.4.4",
+      "version": "5.4.4",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "commander",
+      "purl": "pkg:npm/commander",
+      "range": "^12.1.0",
+      "version": "12.1.0",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "env-paths",
+      "purl": "pkg:npm/env-paths",
+      "range": "^3.0.0",
+      "version": "3.0.0",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "ts-morph",
+      "purl": "pkg:npm/ts-morph",
+      "range": "^28.0.0",
+      "version": "28.0.0",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "zod",
+      "purl": "pkg:npm/zod",
+      "range": "^3.23.8",
+      "version": "3.25.76",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "zod-to-json-schema",
+      "purl": "pkg:npm/zod-to-json-schema",
+      "range": "^3.23.0",
+      "version": "3.25.2",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@types/better-sqlite3",
+      "purl": "pkg:npm/%40types/better-sqlite3",
+      "range": "^7.6.11",
+      "version": "7.6.13",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@types/node",
+      "purl": "pkg:npm/%40types/node",
+      "range": "^20.16.0",
+      "version": "20.19.39",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@vitest/coverage-v8",
+      "purl": "pkg:npm/%40vitest/coverage-v8",
+      "range": "4.1.4",
+      "version": "4.1.4",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "typescript",
+      "purl": "pkg:npm/typescript",
+      "range": "^5.6.0",
+      "version": "5.9.3",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "vitest",
+      "purl": "pkg:npm/vitest",
+      "range": "^4.1.4",
+      "version": "4.1.4",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "optionalDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@ast-grep/lang-bash",
+      "purl": "pkg:npm/%40ast-grep/lang-bash",
+      "range": "^0.0.8",
+      "version": "0.0.8",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "optionalDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@ast-grep/lang-c",
+      "purl": "pkg:npm/%40ast-grep/lang-c",
+      "range": "^0.0.6",
+      "version": "0.0.6",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "optionalDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@ast-grep/lang-cpp",
+      "purl": "pkg:npm/%40ast-grep/lang-cpp",
+      "range": "^0.0.6",
+      "version": "0.0.6",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "optionalDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@ast-grep/lang-csharp",
+      "purl": "pkg:npm/%40ast-grep/lang-csharp",
+      "range": "^0.0.6",
+      "version": "0.0.6",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "optionalDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@ast-grep/lang-go",
+      "purl": "pkg:npm/%40ast-grep/lang-go",
+      "range": "^0.0.6",
+      "version": "0.0.6",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "optionalDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@ast-grep/lang-java",
+      "purl": "pkg:npm/%40ast-grep/lang-java",
+      "range": "^0.0.7",
+      "version": "0.0.7",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "optionalDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@ast-grep/lang-json",
+      "purl": "pkg:npm/%40ast-grep/lang-json",
+      "range": "^0.0.7",
+      "version": "0.0.7",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "optionalDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@ast-grep/lang-python",
+      "purl": "pkg:npm/%40ast-grep/lang-python",
+      "range": "^0.0.6",
+      "version": "0.0.6",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "optionalDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@ast-grep/lang-ruby",
+      "purl": "pkg:npm/%40ast-grep/lang-ruby",
+      "range": "^0.0.7",
+      "version": "0.0.7",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "optionalDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@ast-grep/lang-rust",
+      "purl": "pkg:npm/%40ast-grep/lang-rust",
+      "range": "^0.0.7",
+      "version": "0.0.7",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "optionalDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "@ast-grep/lang-yaml",
+      "purl": "pkg:npm/%40ast-grep/lang-yaml",
+      "range": "^0.0.6",
+      "version": "0.0.6",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@astrojs/starlight",
+      "purl": "pkg:npm/%40astrojs/starlight",
+      "range": "^0.42.1",
+      "version": "0.42.1",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@mcptoolshop/site-theme",
+      "purl": "pkg:npm/%40mcptoolshop/site-theme",
+      "range": "^2.2.0",
+      "version": "2.2.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@tailwindcss/vite",
+      "purl": "pkg:npm/%40tailwindcss/vite",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "astro",
+      "purl": "pkg:npm/astro",
+      "range": "^7.3.3",
+      "version": "7.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "tailwindcss",
+      "purl": "pkg:npm/tailwindcss",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    }
+  ],
+  "packagesPublished": [
+    {
+      "doors": [
+        "Release"
+      ],
+      "how": "named by the publish",
+      "manifest": "package.json",
+      "name": "@mcptoolshop/forkctl",
+      "purl": "pkg:npm/%40mcptoolshop/forkctl",
+      "repository": "https://github.com/mcp-tool-shop-org/forkctl",
+      "version": "2.1.1"
+    }
+  ],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 60,
+  "testFiles": 61,
   "unassigned": []
 }

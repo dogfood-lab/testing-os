@@ -66,83 +66,25 @@
   "changes": {
     "fileCounts": {
       "added": 0,
-      "changed": 294,
+      "assigned": 0,
+      "changed": 5,
       "moved": 0,
-      "parts": 11,
-      "removed": 0
+      "parts": 3,
+      "removed": 0,
+      "unassigned": 0
     },
     "items": [
       {
-        "kind": "door",
-        "sentence": "CI no longer checks desktop/LoKeyTyper.Tests/LoKeyTyper.Tests.csproj.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "desktop/LoKeyTyper.Tests/LoKeyTyper.Tests.csproj"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Docker now also runs site/astro.config.mjs, site/src/, src/ and 1 more.",
-        "subjects": [
-          ".github/workflows/docker.yml",
-          "site/astro.config.mjs",
-          "site/src/",
-          "src/",
-          "vite.config.ts"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Docker now also checks docker/nginx.conf, package-lock.json, package.json and 2 more.",
-        "subjects": [
-          ".github/workflows/docker.yml",
-          "docker/nginx.conf",
-          "package-lock.json",
-          "package.json",
-          "site/package-lock.json",
-          "site/package.json"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "src/assets/icons/ is now also written by scripts/icons/optimize_icons.py.",
-        "subjects": [
-          "src/assets/icons/",
-          "scripts/icons/optimize_icons.py"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "src/content/packs/ is now written by scripts/generatePhase2Content.mjs.",
-        "subjects": [
-          "src/content/packs/",
-          "scripts/generatePhase2Content.mjs"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "src/content/phase2/accessibility_presets.json is now written by scripts/generatePhase2Content.mjs.",
-        "subjects": [
-          "src/content/phase2/accessibility_presets.json",
-          "scripts/generatePhase2Content.mjs"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 27 more new writers and readers of places.",
-        "subjects": []
-      },
-      {
         "kind": "counts",
-        "sentence": "294 files changed content, across 11 parts.",
+        "sentence": "Nothing structural changed since 2026-10-15; 5 files changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "6b47e2c2e1cd79968aba6968797874bd1fd43a17",
-      "generatedAt": "2026-10-05T05:57:57.796Z"
+      "commit": "c01213c34c38e8e91f237981d2edb980e6f484dd",
+      "generatedAt": "2026-10-15T03:18:58.899Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [
     {
@@ -163,7 +105,7 @@
     {
       "a": "tests/pages.test.tsx",
       "b": "tests/typingSession.test.tsx",
-      "either": 13,
+      "either": 14,
       "partLabels": [
         "tests",
         "tests"
@@ -226,7 +168,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 5 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "a01d1a3fdaab0016226ee1d74cc3d4fd609f4232",
+  "commit": "d3120c3900d820efe86148484b0af52ba13b5d3c",
   "defaultBranch": "main",
   "derived": "12 parts, mostly TypeScript (88 files), JavaScript (16), Python (9), C# (7), HTML (4) and CSS (3). Work enters through 3 doors; the busiest is CI, which reaches 6 parts. It publishes a container image. It deploys a site to GitHub Pages.",
   "doors": [
@@ -475,7 +417,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-05T13:59:53.975Z",
+  "generatedAt": "2026-10-19T12:33:26.544Z",
   "limits": [
     "79 imports could not be resolved: `desktop/LoKeyTyper/WebContent/assets/index-uLDiQ1uZ.js` imports a path built at run time; `src/app/App.tsx` imports `@app/components/Icon`, which is not declared; `src/app/App.tsx` imports `@app/shell`, which is not declared; and 76 more.",
     "3 reads use paths built at run time and are not named here.",

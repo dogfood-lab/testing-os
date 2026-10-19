@@ -21,7 +21,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "c9bd433ebaa40ce4b7f3bbe66f2f297d9c0ef51aab408d66028b381be1e8af77",
+          "hash": "571016133bab8677d5549cf122f818b3a10e6bdfc1535256327202bd22417cca",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -29,7 +29,7 @@
           "path": ".github/workflows/pages.yml"
         },
         {
-          "hash": "7eb8edcd609f83a7015d9d3979b60c4635b7936092fe9d6c2a978fc9f472290b",
+          "hash": "12950f630f810055209d21b460b1f05a8a779ac1ddced0f0ddf3eb2d056cca2c",
           "path": ".github/workflows/publish.yml"
         }
       ],
@@ -250,7 +250,7 @@
         },
         {
           "constantOnly": true,
-          "hash": "8dbdc168006f92b19f132685032395699a9c7fd3839c1fa22034a17eee891514",
+          "hash": "86a7e283b465e722629f6db17d3dfbe90dce81aec1cf537c38efbb7f2562a2a0",
           "path": "comfy_headless/_version.py"
         },
         {
@@ -1496,7 +1496,11 @@
           "names": [
             "comfy_headless/__init__.py"
           ],
-          "path": "comfy_headless/test_runner_ui.py"
+          "path": "comfy_headless/test_runner_ui.py",
+          "selfRun": {
+            "in": "comfy_headless",
+            "run": "python test_runner_ui.py"
+          }
         },
         {
           "exports": [
@@ -2083,7 +2087,7 @@
           "path": "kb/addressing.md"
         },
         {
-          "hash": "255ee421c70b3f1625ece94ba06df12d7b159166227ab4dfb45658a683f19ef0",
+          "hash": "bb81a81ed58ea8f68c777e11d30cee8ec4a2fe573ea3a80da840cc44f327c9aa",
           "path": "kb/index.json"
         },
         {
@@ -2258,7 +2262,7 @@
           "path": ".pre-commit-config.yaml"
         },
         {
-          "hash": "65289c7eabc74df0eea68ce37225e6ba84ec83aaefc35392608d5e80cf156839",
+          "hash": "5dce1668286d8f248731bbc6f75ee25c9457c77dcf213d9316fa2ea0e53e9c79",
           "path": "CHANGELOG.md"
         },
         {
@@ -2358,7 +2362,7 @@
           "path": "logo.png"
         },
         {
-          "hash": "ddca9f179e8401345a4a292579ef0aba7a3c1417ae06702866b9e989807eb35a",
+          "hash": "e90f77fb75b1c958611ebba073413a845c0c45cf9f5564a1237eb49061a6b48a",
           "path": "pyproject.toml"
         }
       ],
@@ -2438,19 +2442,103 @@
       "files": [
         {
           "hash": "0eb1e9add84d5f12fde1771092c4c360dc33cbc462cff79bbb9fce63d8f3efe3",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/astro",
+              "specifier": "astro/config",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40tailwindcss/vite",
+              "specifier": "@tailwindcss/vite",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40tailwindcss/vite"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/astro"
+            }
+          ],
           "path": "site/astro.config.mjs"
         },
         {
-          "hash": "8b4e3750bace16f021a17d0a3d7c21895aacb44c66dd2d3bc4975db675487f82",
+          "hash": "e73c414d980ca4ca98b0c4918bd7d0f71d0b97698c8bb2875a8a262c48bc02f9",
           "path": "site/package-lock.json"
         },
         {
-          "hash": "07bd21d241392acfb75506461325500f6d9ae20b3753bcd32deee3dbd48b1fd0",
+          "hash": "c1a30f1c6d1e4abe8b46397f48f1743b845830c8eef2b56231fe4d25f16b9e83",
           "path": "site/package.json"
         },
         {
           "constantOnly": true,
           "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "docsLoader"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/loaders",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "docsSchema"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/schema",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            }
+          ],
           "path": "site/src/content.config.ts"
         },
         {
@@ -2491,6 +2579,92 @@
         },
         {
           "hash": "391533713539035d3c92282579d43de0f137067867fdb502d7eaea3c74601d2a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/BaseLayout.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Hero.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Section.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/FeatureGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/DataTable.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/CodeCardGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/ApiList.astro",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "site/src/styles/global.css",
             "site/src/site-config.ts"
@@ -2499,11 +2673,38 @@
             "site/src/site-config.ts",
             "site/src/styles/global.css"
           ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
           "constantOnly": true,
           "hash": "0e66f1f22b88af099c7c6f6d60cadfcd6f8a3204e75c71709158c2e63ecd1e35",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "SiteConfig",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme",
+              "typeOnly": true
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/site-config.ts"
         },
         {
@@ -2564,7 +2765,11 @@
             "comfy_headless/validation.py",
             "comfy_headless/workflows.py"
           ],
-          "path": "tests/atheris_runner.py"
+          "path": "tests/atheris_runner.py",
+          "selfRun": {
+            "in": "tests",
+            "run": "python atheris_runner.py"
+          }
         },
         {
           "exports": [
@@ -2587,7 +2792,11 @@
             "run_targeted_fuzz"
           ],
           "hash": "824f6c619d67d1d16f32af1980651d56a745ee77a5a63c1184675fd6862759d9",
-          "path": "tests/run_fuzz.py"
+          "path": "tests/run_fuzz.py",
+          "selfRun": {
+            "in": "tests",
+            "run": "python run_fuzz.py"
+          }
         },
         {
           "hash": "b3f2c0be2837c1d2f3febb725e1e3a1a9fb80b8a1aae6a7e3ab89f2f869fb391",
@@ -4146,7 +4355,7 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "f66a4f9dc88a69acdf9e28fab7b26321a5096332",
+    "commit": "1931311b6f3e9d8ff4ea2c482efbb84a36b0891b",
     "tracked": 180
   },
   "landings": [
@@ -4362,7 +4571,70 @@
       "writers": []
     }
   ],
+  "manifests": [
+    {
+      "name": "site",
+      "path": "site/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door Deploy site to GitHub Pages, job build, step Install site dependencies: npm ci in site",
+      "version": "0.0.1"
+    }
+  ],
   "overlaps": [],
+  "packageDependencies": [
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@astrojs/starlight",
+      "purl": "pkg:npm/%40astrojs/starlight",
+      "range": "^0.42.1",
+      "version": "0.42.6",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@mcptoolshop/site-theme",
+      "purl": "pkg:npm/%40mcptoolshop/site-theme",
+      "range": "^0.2.4",
+      "version": "0.2.6",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@tailwindcss/vite",
+      "purl": "pkg:npm/%40tailwindcss/vite",
+      "range": "^4.2.0",
+      "version": "4.2.1",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "astro",
+      "purl": "pkg:npm/astro",
+      "range": "^7.3.3",
+      "version": "7.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "tailwindcss",
+      "purl": "pkg:npm/tailwindcss",
+      "range": "^4.2.0",
+      "version": "4.2.1",
+      "versionFrom": "site/package-lock.json"
+    }
+  ],
+  "packagesPublished": [],
   "submodules": [],
   "symlinks": [],
   "testFiles": 55,

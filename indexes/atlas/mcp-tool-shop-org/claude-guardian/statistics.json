@@ -65,7 +65,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "root",
-      "qualifyingSourceCommits": 0,
+      "qualifyingSourceCommits": 1,
       "rebaseline": null
     },
     {
@@ -99,7 +99,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "src",
-      "qualifyingSourceCommits": 0,
+      "qualifyingSourceCommits": 1,
       "rebaseline": null
     },
     {
@@ -115,7 +115,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "tests",
-      "qualifyingSourceCommits": 0,
+      "qualifyingSourceCommits": 1,
       "rebaseline": null
     }
   ],
@@ -398,8 +398,8 @@
         "path": ".github/workflows/ci.yml"
       },
       {
-        "commits": 2,
-        "lines": 176,
+        "commits": 1,
+        "lines": 170,
         "path": ".github/workflows/dogfood.yml"
       },
       {
@@ -418,8 +418,8 @@
         "path": ".gitignore"
       },
       {
-        "commits": 1,
-        "lines": 119,
+        "commits": 2,
+        "lines": 130,
         "path": "CHANGELOG.md"
       },
       {
@@ -523,13 +523,13 @@
         "path": "docs/preview-runtime-spec.md"
       },
       {
-        "commits": 3,
-        "lines": 3583,
+        "commits": 4,
+        "lines": 3587,
         "path": "package-lock.json"
       },
       {
-        "commits": 1,
-        "lines": 59,
+        "commits": 2,
+        "lines": 61,
         "path": "package.json"
       },
       {
@@ -664,6 +664,11 @@
       },
       {
         "commits": 1,
+        "lines": 36,
+        "path": "src/kill-tree.ts"
+      },
+      {
+        "commits": 1,
         "lines": 452,
         "path": "src/log-manager.ts"
       },
@@ -708,8 +713,8 @@
         "path": "src/watch-daemon.ts"
       },
       {
-        "commits": 1,
-        "lines": 280,
+        "commits": 2,
+        "lines": 285,
         "path": "src/watchdog.ts"
       },
       {
@@ -741,6 +746,11 @@
         "commits": 1,
         "lines": 135,
         "path": "tests/incident.test.ts"
+      },
+      {
+        "commits": 1,
+        "lines": 94,
+        "path": "tests/kill-tree.test.ts"
       },
       {
         "commits": 1,
@@ -789,6 +799,11 @@
       },
       {
         "commits": 1,
+        "lines": 146,
+        "path": "tests/watchdog-kill-tree.test.ts"
+      },
+      {
+        "commits": 1,
         "lines": 150,
         "path": "tests/watchdog.test.ts"
       },
@@ -798,8 +813,8 @@
         "path": "tsconfig.json"
       },
       {
-        "commits": 1,
-        "lines": 8,
+        "commits": 2,
+        "lines": 13,
         "path": "vitest.config.ts"
       }
     ]
@@ -808,13 +823,21 @@
     "level": "low",
     "reason": "fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions"
   },
-  "generatedAt": "2026-10-05T13:57:27.618Z",
+  "generatedAt": "2026-10-19T12:31:03.234Z",
   "generatedFrom": {
-    "commit": "135416869122b07e1a5d6ca86316b8dd31a0ae69"
+    "commit": "01b3022a35cb93f17b098b457c285b381da9b30a"
+  },
+  "packageImports": {
+    "filesWithLeftOutImports": 0,
+    "importSitesNotPackageNames": 0,
+    "importSitesPackageInternal": 0,
+    "importSitesResolvedInRepository": 0,
+    "namesLeftOut": {},
+    "namesLeftOutOmitted": 0
   },
   "pairs": [],
   "parameters": {
-    "appliedChangesetLimit": 34,
+    "appliedChangesetLimit": 34.75,
     "changeset": 50,
     "changesetFraction": 0.25,
     "cohesionDrop": 0.2,
@@ -823,8 +846,8 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "both",
-    "headDate": "2026-10-01T13:36:24-07:00",
-    "inScopeFiles": 136,
+    "headDate": "2026-10-15T13:35:27-07:00",
+    "inScopeFiles": 139,
     "pinnedStart": null,
     "priorFloor": "fallen",
     "qualifyingCommits": 12,
@@ -832,7 +855,7 @@
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-04T20:36:24.000Z",
+    "since": "2026-04-18T20:35:27.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",

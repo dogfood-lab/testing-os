@@ -1,6 +1,6 @@
 # backprop-trace: how it works
 
-Mapped at 2026-10-05 from commit a3a6437 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit e1d9d4a by Atlas 1.26.0.
 
 ## What this is
 
@@ -12,7 +12,7 @@ Mapped at 2026-10-05 from commit a3a6437 by Atlas 1.26.0.
 - fixtures/bad/external.bad-*.jsonl is now written by scripts/generate-external-bad-fixtures.ts.
 - fixtures/bad/multi-step-external.bad-*.jsonl is now written by scripts/generate-multi-step-external-bad-fixtures.ts.
 - And 1 more new writer or reader of a place.
-- 1 file changed content, across 1 part.
+- 4 files changed content, across 2 parts.
 
 ## What comes in
 

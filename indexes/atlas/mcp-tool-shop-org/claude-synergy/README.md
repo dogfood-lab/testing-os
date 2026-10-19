@@ -1,6 +1,6 @@
 # claude-synergy: how it works
 
-Mapped at 2026-10-12 from commit 26d9752 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 4e59215 by Atlas 1.26.0.
 
 ## What this is
 
@@ -11,7 +11,7 @@ Mapped at 2026-10-12 from commit 26d9752 by Atlas 1.26.0.
 - LATEST.txt is now written by .github/workflows/sync.yml.
 - PRODUCTS.txt is now written by .github/workflows/sync.yml.
 - the repository root was authored and is now mixed.
-- 1186 files added and 5 changed content, across 4 parts.
+- 1186 files added and 6 changed content, across 4 parts.
 
 ## What comes in
 
@@ -99,7 +99,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, docs/, products/, site/ and synergies/. Nothing in this repository writes to them.
+People write .github/, products/, site/ and synergies/. Nothing in this repository writes to them. The data in docs/ is written by no code this map names.
 
 ## Where to start
 

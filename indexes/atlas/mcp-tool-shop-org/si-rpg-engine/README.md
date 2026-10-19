@@ -1,6 +1,6 @@
 # si-rpg-engine: how it works
 
-Mapped at 2026-10-01 from commit 06c9367 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 06c9367 by Atlas 1.26.0.
 
 ## What this is
 
@@ -167,7 +167,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, docs/, predicates/beliefs/, predicates/hazards/, predicates/intents/, predicates/roles/, the repository root and worlds/; 2 writes with paths built at run time may land here.
+People write .github/, docs/ and the repository root. The data in predicates/beliefs/, predicates/hazards/, predicates/intents/, predicates/roles/ and worlds/ is written by no code this map names; 2 writes with paths built at run time may land here.
 
 ## Where to start
 

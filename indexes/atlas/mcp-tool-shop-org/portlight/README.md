@@ -1,6 +1,6 @@
 # portlight: how it works
 
-Mapped at 2026-10-05 from commit 1404fa9 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 1404fa9 by Atlas 1.26.0.
 
 ## What this is
 
@@ -83,7 +83,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, docs/, the repository root, site/, world-map/ and world/. Nothing in this repository writes to them.
+People write .github/, docs/, the repository root and site/. Nothing in this repository writes to them. The data in world-map/ and world/ is written by no code this map names.
 
 ## Where to start
 

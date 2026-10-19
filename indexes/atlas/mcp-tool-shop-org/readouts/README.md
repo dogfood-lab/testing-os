@@ -1,18 +1,18 @@
 # readouts: how it works
 
-Mapped at 2026-10-01 from commit 7bb43b0 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit f32097d by Atlas 1.26.0.
 
 ## What this is
 
-20 parts, mostly Python (161 files), HTML (57), Rust (6), JavaScript (3), CSS (2), TypeScript (2) and Astro (1). Work enters through 2 doors; verify and Deploy site to GitHub Pages each reach 2 parts, and verify is followed because a pull request goes through it. It deploys a site to GitHub Pages.
+20 parts, mostly Python (163 files), HTML (57), Rust (6), JavaScript (3), CSS (2), PowerShell (2), TypeScript (2) and Astro (1). Work enters through 2 doors; verify and Deploy site to GitHub Pages each reach 2 parts, and verify is followed because a pull request goes through it. It deploys a site to GitHub Pages.
 
-## What changed since 2026-10-01 (85e5452)
+## What changed since 2026-10-15 (28c0163)
 
 - rust-knowledge/catalog/engine-*.md is now written by rust-knowledge/scripts/gen_catalog.py.
 - tensor-engine-knowledge/verifier/results-real-*.json is now written by tensor-engine-knowledge/verifier/citation_panel_eval.py and tensor-engine-knowledge/verifier/citation_panel_eval_3family.py.
 - xrpl-knowledge/catalog/track-*.md is now written by xrpl-knowledge/scripts/gen_catalog.py.
 - And 83 more new writers and readers of places.
-- No file changed.
+- 2 files changed content, across 1 part.
 
 ## What comes in
 
@@ -66,7 +66,7 @@ tensor-engine-knowledge/baselines/_triton_test.py runs in no workflow.
 - **tensor-engine-knowledge/baselines/sage2-results.json** is written by tensor-engine-knowledge/baselines/_sage2_bench.py and read by nothing else in this repository.
 - **tensor-engine-knowledge/baselines/sage2-zimage-results.json** is written by tensor-engine-knowledge/baselines/_sage2_zimage.py and read by nothing else in this repository.
 
-And 14 more places.
+And 15 more places.
 
 ## Helpers that look duplicated
 
@@ -152,6 +152,7 @@ And 15 more candidates.
 - **vocology-knowledge/.claude/loadout/index.json** is written by vocology-knowledge/scripts/gen_loadout.py.
 - **vocology-knowledge/catalog/** is written by vocology-knowledge/scripts/gen_catalog.py.
 - **vocology-knowledge/findings.db** is written by vocology-knowledge (4 files).
+- **vocology-knowledge/scripts/zed-speech/kokoro_gen.py** is written by vocology-knowledge/scripts/zed-speech/speak.ps1.
 - **xrpl-knowledge/.claude/loadout/index.json** is written by xrpl-knowledge/scripts/gen_loadout.py.
 - **xrpl-knowledge/catalog/** is written by xrpl-knowledge/scripts/gen_catalog.py.
 - **xrpl-knowledge/module-drafts/** is written by xrpl-knowledge/scripts/gen_module_drafts.py.
@@ -178,7 +179,7 @@ Read those in order to follow one pull request end to end.
 - 1 import site names a path outside this repository, so what it loads is not followed.
 - 31 writes and 22 reads use paths built at run time and are not named here.
 - 10 writes go to places this repository does not track, so they are not listed as generated.
-- 23 writes and 60 reads go to a path their caller passes, not to this repository.
+- 23 writes and 62 reads go to a path their caller passes, not to this repository.
 - 6 writes and 2 reads go to a temporary directory, not to this repository.
 - 5 reads go to the home directory (.cargo/), not to this repository.
 - 3 reads go to the directory the command is run in, not to this repository.

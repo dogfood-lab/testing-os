@@ -1,14 +1,14 @@
 # gpu-container: how it works
 
-Mapped at 2026-10-05 from commit 82f20f2 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 4f6efda by Atlas 1.26.0.
 
 ## What this is
 
 10 parts, mostly Python (33 files), JavaScript (3), CSS (2), TypeScript (2) and Astro (1). Work enters through 10 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI, gpu-container to npm, and a container image. It deploys a site to GitHub Pages. People run gpu-container, gpu-container-concentration, gpu-container-plan, gpu-container-profile, gpu-container-receipt and gpu-container-watchdog.
 
-## What changed since 2026-10-01 (6873773)
+## What changed since 2026-10-15 (82f20f2)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-10-15; 2 files changed content.
 
 ## What comes in
 
@@ -83,7 +83,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .claude/, .github/, assets/, docs/, the repository root and site/; 4 writes with paths built at run time may land here.
+People write .claude/, .github/, docs/, the repository root and site/. The data in assets/ is written by no code this map names; 4 writes with paths built at run time may land here.
 
 ## Where to start
 

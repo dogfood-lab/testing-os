@@ -2053,7 +2053,7 @@
           "path": "AUDIT-TESTS-all-components.md"
         },
         {
-          "hash": "21e6bcb5c4f4cb073647ac25247d8c63061237a827a7f8124108cc3fcc5c2c6e",
+          "hash": "35a014533508fa9a7cd16ababf2e03a7c9dafa60ff3f84431eac8b8d7cdfccb6",
           "path": "CHANGELOG.md"
         },
         {
@@ -2109,11 +2109,11 @@
           "path": "codecov.yml"
         },
         {
-          "hash": "0c8deff4fa2dfb094ce5c6899d69138f4246a7654899c21e9fcfd93001e2bbe4",
+          "hash": "fc8935f4fa5511c84129d71bc70f1fdb076a395c7d39ebdaee6c0265efdcd2c6",
           "path": "package-lock.json"
         },
         {
-          "hash": "507b9b8f020b8fd364f91b5629ee7d6178d6c4b23d0d6ee089ec1220ab7a440b",
+          "hash": "bc269146f1c689b138f53ca121076751cde6c8185b7b0290798027d67ea8e9cb",
           "path": "package.json"
         }
       ],
@@ -2138,6 +2138,58 @@
       "files": [
         {
           "hash": "154e006c4d28feb6e60ddc9a992d7b15aa7cad0a1cfa9b5141998bb6a67fafd5",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "defineConfig"
+                }
+              ],
+              "purl": "pkg:npm/astro",
+              "specifier": "astro/config",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40tailwindcss/vite",
+              "specifier": "@tailwindcss/vite",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40tailwindcss/vite"
+            },
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/astro"
+            }
+          ],
           "path": "site/astro.config.mjs"
         },
         {
@@ -2163,6 +2215,38 @@
         {
           "constantOnly": true,
           "hash": "34b036603793e4eb4bfad87e1fd7f851a84fef6a762257a3b2dc1411983d26df",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "docsLoader"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/loaders",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "docsSchema"
+                }
+              ],
+              "purl": "pkg:npm/%40astrojs/starlight",
+              "specifier": "@astrojs/starlight/schema",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40astrojs/starlight"
+            }
+          ],
           "path": "site/src/content.config.ts"
         },
         {
@@ -2219,6 +2303,20 @@
         },
         {
           "hash": "69f73df9efe5bcd68c6d75eae005024e6a5a6ff6ed6e25d89494267e4bf94453",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/BaseLayout.astro",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "site/src/styles/global.css",
             "site/src/site-config.ts"
@@ -2226,11 +2324,103 @@
           "importsFiles": [
             "site/src/site-config.ts",
             "site/src/styles/global.css"
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
           ],
           "path": "site/src/pages/404.astro"
         },
         {
           "hash": "257b7f107404268a56c0c139bbca72a37c8e0679a99bbc0622c913fabeb4e00b",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/BaseLayout.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Hero.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/Section.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/FeatureGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/DataTable.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/CodeCardGrid.astro",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme/components/ApiList.astro",
+              "typeOnly": false
+            }
+          ],
           "importOrder": [
             "site/src/styles/global.css",
             "site/src/site-config.ts"
@@ -2239,10 +2429,37 @@
             "site/src/site-config.ts",
             "site/src/styles/global.css"
           ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/pages/index.astro"
         },
         {
           "hash": "c1b17697075d834a556071567727c54de237420436d6dbfdefc25c80eda24ee2",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "SiteConfig",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/site-theme",
+              "specifier": "@mcptoolshop/site-theme",
+              "typeOnly": true
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "site/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/site-theme"
+            }
+          ],
           "path": "site/src/site-config.ts"
         },
         {
@@ -7674,7 +7891,15 @@
         },
         {
           "hash": "b65f0aab86296a7b113a8bb7a963f3913d7af7aa04ffe0bc112804e88e62eee1",
-          "path": "tools/conformance-dataset/live-tools/test_prep_inputs_empty.mjs"
+          "path": "tools/conformance-dataset/live-tools/test_prep_inputs_empty.mjs",
+          "scriptTest": true,
+          "selfRun": {
+            "in": "tools/conformance-dataset/live-tools",
+            "run": "node test_prep_inputs_empty.mjs"
+          },
+          "spawns": [
+            "tools/conformance-dataset/live-tools/prep_inputs.mjs"
+          ]
         },
         {
           "hash": "c36b15f6d482a36c473b5c53b58bff56f2894ea8b973e9b8038e8d7a2a740c7a",
@@ -7746,7 +7971,11 @@
             "tools/conformance-dataset/certify_conformance.py",
             "tools/conformance-dataset/config.py"
           ],
-          "path": "tools/conformance-dataset/test_certify_ship_stamp.py"
+          "path": "tools/conformance-dataset/test_certify_ship_stamp.py",
+          "selfRun": {
+            "in": "tools/conformance-dataset",
+            "run": "python test_certify_ship_stamp.py"
+          }
         },
         {
           "exports": [
@@ -7762,14 +7991,23 @@
             "tools/conformance-dataset/build_conformance_dataset.py",
             "tools/conformance-dataset/config.py"
           ],
-          "path": "tools/conformance-dataset/test_empty_write_gate.py"
+          "path": "tools/conformance-dataset/test_empty_write_gate.py",
+          "selfRun": {
+            "in": "tools/conformance-dataset",
+            "run": "python test_empty_write_gate.py"
+          }
         },
         {
           "hash": "712e97f569720447e0ab515cbf49a43277ae8c99d7e9a881470ece241af733c8",
           "importsFiles": [
             "tools/conformance-dataset/ood_floor_gate.mjs"
           ],
-          "path": "tools/conformance-dataset/test_ood_floor_gate.mjs"
+          "path": "tools/conformance-dataset/test_ood_floor_gate.mjs",
+          "scriptTest": true,
+          "selfRun": {
+            "in": "tools/conformance-dataset",
+            "run": "node test_ood_floor_gate.mjs"
+          }
         },
         {
           "hash": "04311ed32536d074d5fc307bf3e7aacceb2f79aa3cf6c2766bc541d4dfc7f015",
@@ -8189,7 +8427,7 @@
             "test_scrub_redacts_real_secrets",
             "test_skipped_parse_counts"
           ],
-          "hash": "0123e29ef64a77704c6e35c435ef01239b508d846d9136524fe6c169d719db7c",
+          "hash": "b5dd6a4eeb1f4f51de1984e4340d55a3c3b5a8fcee9b02b682e73288ad26a36b",
           "importOrder": [
             "tools/token-budget-dataset/harvester/__init__.py",
             "tools/token-budget-dataset/harvester/scrub.py",
@@ -8221,25 +8459,29 @@
             "tools/token-budget-dataset/harvester/scrub.py"
           ],
           "path": "tools/token-budget-dataset/test_harvester.py",
+          "selfRun": {
+            "in": "tools/token-budget-dataset",
+            "run": "python test_harvester.py"
+          },
           "sequences": [
             {
               "calls": [
                 {
-                  "line": 65,
+                  "line": 71,
                   "name": "andon_rescan",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
                   }
                 },
                 {
-                  "line": 67,
+                  "line": 73,
                   "name": "scrub_text",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
                   }
                 },
                 {
-                  "line": 70,
+                  "line": 76,
                   "name": "andon_rescan",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8254,7 +8496,7 @@
             {
               "calls": [
                 {
-                  "line": 78,
+                  "line": 85,
                   "name": "andon_rescan",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8269,7 +8511,7 @@
             {
               "calls": [
                 {
-                  "line": 92,
+                  "line": 99,
                   "name": "contamination_check",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8284,7 +8526,7 @@
             {
               "calls": [
                 {
-                  "line": 110,
+                  "line": 117,
                   "name": "scrub_record",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8299,42 +8541,28 @@
             {
               "calls": [
                 {
-                  "line": 141,
+                  "line": 148,
                   "name": "andon_rescan",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
                   }
                 },
                 {
-                  "line": 144,
+                  "line": 151,
                   "name": "scrub_text",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
                   }
                 },
                 {
-                  "line": 149,
+                  "line": 156,
                   "name": "andon_rescan",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
                   }
                 },
                 {
-                  "line": 154,
-                  "name": "scrub_text",
-                  "target": {
-                    "file": "tools/token-budget-dataset/harvester/__init__.py"
-                  }
-                },
-                {
-                  "line": 160,
-                  "name": "andon_rescan",
-                  "target": {
-                    "file": "tools/token-budget-dataset/harvester/__init__.py"
-                  }
-                },
-                {
-                  "line": 162,
+                  "line": 161,
                   "name": "scrub_text",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8356,6 +8584,20 @@
                 },
                 {
                   "line": 174,
+                  "name": "andon_rescan",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 176,
+                  "name": "scrub_text",
+                  "target": {
+                    "file": "tools/token-budget-dataset/harvester/__init__.py"
+                  }
+                },
+                {
+                  "line": 181,
                   "name": "scrub_record",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8370,7 +8612,7 @@
             {
               "calls": [
                 {
-                  "line": 181,
+                  "line": 188,
                   "name": "baseline_spend",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8385,7 +8627,7 @@
             {
               "calls": [
                 {
-                  "line": 188,
+                  "line": 195,
                   "name": "cost_weighted_spend",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8400,14 +8642,14 @@
             {
               "calls": [
                 {
-                  "line": 242,
+                  "line": 249,
                   "name": "build_swarm_index",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
                   }
                 },
                 {
-                  "line": 246,
+                  "line": 253,
                   "name": "join_dispatch",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8422,7 +8664,7 @@
             {
               "calls": [
                 {
-                  "line": 277,
+                  "line": 284,
                   "name": "freeze",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8437,21 +8679,21 @@
             {
               "calls": [
                 {
-                  "line": 302,
+                  "line": 309,
                   "name": "level1_spot_driver",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
                   }
                 },
                 {
-                  "line": 309,
+                  "line": 316,
                   "name": "level2_which_costs_more",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
                   }
                 },
                 {
-                  "line": 316,
+                  "line": 323,
                   "name": "level3_fit_or_split",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8466,7 +8708,7 @@
             {
               "calls": [
                 {
-                  "line": 325,
+                  "line": 332,
                   "name": "scrub_record",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8481,7 +8723,7 @@
             {
               "calls": [
                 {
-                  "line": 350,
+                  "line": 357,
                   "name": "load_roleos_verdicts",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8496,7 +8738,7 @@
             {
               "calls": [
                 {
-                  "line": 378,
+                  "line": 385,
                   "name": "run",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8511,7 +8753,7 @@
             {
               "calls": [
                 {
-                  "line": 397,
+                  "line": 404,
                   "name": "refuse_empty_write",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8526,7 +8768,7 @@
             {
               "calls": [
                 {
-                  "line": 450,
+                  "line": 457,
                   "name": "parse_agent_transcript",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8541,7 +8783,7 @@
             {
               "calls": [
                 {
-                  "line": 475,
+                  "line": 482,
                   "name": "freeze",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8556,7 +8798,7 @@
             {
               "calls": [
                 {
-                  "line": 493,
+                  "line": 500,
                   "name": "print_task_preview",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8571,7 +8813,7 @@
             {
               "calls": [
                 {
-                  "line": 515,
+                  "line": 522,
                   "name": "write_dataset",
                   "target": {
                     "file": "tools/token-budget-dataset/harvester/__init__.py"
@@ -8614,7 +8856,7 @@
       "testRunners": [
         "python"
       ],
-      "testedBy": 3,
+      "testedBy": 5,
       "unresolvedSites": 0
     }
   ],
@@ -9286,7 +9528,7 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "ce91be8054c54a94c3cfaebe1e79d685e70f46cd",
+    "commit": "43e187e91d53ac8c1fd1e56b5f208baf4aefa76f",
     "tracked": 642
   },
   "landings": [
@@ -11029,13 +11271,97 @@
       "writers": []
     }
   ],
+  "manifests": [
+    {
+      "name": "role-os",
+      "path": "package.json",
+      "role": "root",
+      "roleFrom": "the root manifest",
+      "version": "2.12.1"
+    },
+    {
+      "name": "site",
+      "path": "site/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door Deploy site to GitHub Pages, job build, step Install site dependencies: npm ci in site",
+      "version": "0.0.1"
+    }
+  ],
   "overlaps": [],
+  "packageDependencies": [
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@astrojs/starlight",
+      "purl": "pkg:npm/%40astrojs/starlight",
+      "range": "^0.42.1",
+      "version": "0.42.1",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@mcptoolshop/site-theme",
+      "purl": "pkg:npm/%40mcptoolshop/site-theme",
+      "range": "^2.2.0",
+      "version": "2.2.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@tailwindcss/vite",
+      "purl": "pkg:npm/%40tailwindcss/vite",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "astro",
+      "purl": "pkg:npm/astro",
+      "range": "^7.3.3",
+      "version": "7.3.3",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "tailwindcss",
+      "purl": "pkg:npm/tailwindcss",
+      "range": "^4.2.0",
+      "version": "4.3.3",
+      "versionFrom": "site/package-lock.json"
+    }
+  ],
+  "packagesPublished": [
+    {
+      "doors": [
+        "Release"
+      ],
+      "how": "named by the publish",
+      "manifest": "package.json",
+      "name": "role-os",
+      "purl": "pkg:npm/role-os",
+      "repository": "https://github.com/mcp-tool-shop-org/role-os",
+      "version": "2.12.1"
+    }
+  ],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 78,
+  "testFiles": 80,
   "testsNotRun": [
+    "tools/conformance-dataset/live-tools/test_prep_inputs_empty.mjs",
     "tools/conformance-dataset/test_certify_ship_stamp.py",
-    "tools/conformance-dataset/test_empty_write_gate.py"
+    "tools/conformance-dataset/test_empty_write_gate.py",
+    "tools/conformance-dataset/test_ood_floor_gate.mjs"
   ],
   "unassigned": []
 }

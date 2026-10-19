@@ -1,6 +1,6 @@
 # study-swarm: how it works
 
-Mapped at 2026-10-05 from commit f5a37fa by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit f5a37fa by Atlas 1.26.0.
 
 ## What this is
 
@@ -64,7 +64,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, assets/, examples/, the repository root and site/; 6 writes with paths built at run time may land here.
+People write .github/, examples/, the repository root and site/. The data in assets/ is written by no code this map names; 6 writes with paths built at run time may land here.
 
 ## Where to start
 

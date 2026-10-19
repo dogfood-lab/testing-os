@@ -1,6 +1,6 @@
 # sprite-foundry: how it works
 
-Mapped at 2026-10-05 from commit 9f0f3f7 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 9f0f3f7 by Atlas 1.26.0.
 
 ## What this is
 
@@ -68,7 +68,7 @@ These are candidates from names and call order, not a judgement.
 
 ## Hand-authored
 
-People write .github/, pipeline/chars/, the repository root and site/; 15 writes with paths built at run time may land here.
+People write .github/, the repository root and site/. The data in pipeline/chars/ is written by no code this map names; 15 writes with paths built at run time may land here.
 
 ## Where to start
 

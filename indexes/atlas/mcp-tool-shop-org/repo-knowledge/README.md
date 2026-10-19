@@ -1,6 +1,6 @@
 # repo-knowledge: how it works
 
-Mapped at 2026-10-05 from commit bb1c92a by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit bb1c92a by Atlas 1.26.0.
 
 ## What this is
 
@@ -46,7 +46,7 @@ CI writes only to dist/, which is not tracked.
 
 ## What tends to change together
 
-- **src/mcp/server.ts** and **test/mcp-server.test.ts** changed together in 6 of 7 commits, and the test part imports the src part.
+- **src/mcp/server.ts** and **test/mcp-server.test.ts** changed together in 6 of 6 commits, and the test part imports the src part.
 - **src/db/init.ts** and **test/migration-sequence.test.ts** changed together in 10 of 13 commits, and the test part imports the src part.
 - **src/index.ts** and **test/migration-sequence.test.ts** changed together in 7 of 10 commits, and the test part imports the src part.
 - **src/index.ts** and **src/sync/index.ts** changed together in 5 of 8 commits, inside the src part.

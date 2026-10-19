@@ -1,6 +1,6 @@
 # claude-rpg: how it works
 
-Mapped at 2026-10-05 from commit e39fc82 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit e39fc82 by Atlas 1.26.0.
 
 ## What this is
 

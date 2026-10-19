@@ -1,14 +1,14 @@
 # synthesis: how it works
 
-Mapped at 2026-10-05 from commit 6abbaae by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 02864f0 by Atlas 1.26.0.
 
 ## What this is
 
 12 parts, mostly Markdown (83 files) and JSON data (16); code in TypeScript (36), JavaScript (6), Astro (3) and CSS (2). Work enters through 5 doors; CI and Release (npm via Trusted Publishing) each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run synthesis. People import @mcptoolshop/synthesis.
 
-## What changed since 2026-09-30 (dd0e1de)
+## What changed since 2026-10-15 (481a0bc)
 
-Nothing structural changed since 2026-09-30; 1 file changed content.
+Nothing structural changed since 2026-10-15; 4 files changed content.
 
 ## What comes in
 

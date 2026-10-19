@@ -1,6 +1,6 @@
 # db-cluster: how it works
 
-Mapped at 2026-10-05 from commit a4d9691 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 0ae53ee by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-05 from commit a4d9691 by Atlas 1.26.0.
 
 ## What changed since 2026-10-01 (193d70c)
 
-Nothing structural changed since 2026-10-01; 5 files changed content.
+Nothing structural changed since 2026-10-01; 6 files changed content.
 
 ## What comes in
 

@@ -1,6 +1,6 @@
 # scalarscope: how it works
 
-Mapped at 2026-10-12 from commit a01dd88 by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 8e5060c by Atlas 1.26.0.
 
 ## What this is
 
@@ -10,7 +10,7 @@ A review of two machine-learning runs. The app is the Rust program in rust/, pac
 
 ## What changed since 2026-10-08 (0270985)
 
-Nothing structural changed since 2026-10-08; no file changed.
+Nothing structural changed since 2026-10-08; 2 files changed content.
 
 ## What comes in
 
@@ -88,7 +88,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, UI_Reference/, assets/, docs/, the repository root and site/; 5 writes with paths built at run time may land here.
+People write .github/, docs/, the repository root and site/. The data in UI_Reference/ and assets/ is written by no code this map names; 5 writes with paths built at run time may land here.
 
 ## Where to start
 

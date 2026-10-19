@@ -1,6 +1,6 @@
 # runforge-vscode: how it works
 
-Mapped at 2026-10-05 from commit 7bda38c by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit 7bda38c by Atlas 1.26.0.
 
 ## What this is
 
@@ -69,7 +69,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, assets/, docs/, resources/, the repository root and site/; 1 write with a path built at run time may land here.
+People write .github/, docs/, the repository root and site/. The data in assets/ and resources/ is written by no code this map names; 1 write with a path built at run time may land here.
 
 ## Where to start
 

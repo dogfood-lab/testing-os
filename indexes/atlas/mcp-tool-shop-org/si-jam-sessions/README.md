@@ -1,6 +1,6 @@
 # si-jam-sessions: how it works
 
-Mapped at 2026-10-01 from commit c3c787d by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit c3c787d by Atlas 1.26.0.
 
 ## What this is
 
@@ -170,7 +170,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, docs/, golden/, research/, the repository root, scores/ and site/; 20 writes with paths built at run time may land here.
+People write .github/, docs/, golden/, the repository root, scores/ and site/. The data in research/ is written by no code this map names; 20 writes with paths built at run time may land here.
 
 ## Where to start
 

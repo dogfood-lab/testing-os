@@ -1,6 +1,6 @@
 # mcp-arcade: how it works
 
-Mapped at 2026-10-05 from commit b30f8bc by Atlas 1.26.0.
+Mapped at 2026-10-19 from commit b30f8bc by Atlas 1.26.0.
 
 ## What this is
 
@@ -68,7 +68,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, docs/, the repository root and site/; 2 writes with paths built at run time may land here.
+People write .github/, the repository root and site/. The data in docs/ is written by no code this map names; 2 writes with paths built at run time may land here.
 
 ## Where to start
 
