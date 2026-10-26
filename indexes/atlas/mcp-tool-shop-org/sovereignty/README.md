@@ -1,6 +1,6 @@
 # sovereignty: how it works
 
-Mapped at 2026-10-19 from commit b7c2bfa by Atlas 1.26.0.
+Mapped at 2026-10-26 from commit 8fce39e by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,10 +8,11 @@ Mapped at 2026-10-19 from commit b7c2bfa by Atlas 1.26.0.
 
 ## What changed since 2026-09-30 (83f9b40)
 
+- app/src-tauri/Cargo.lock is now read by tests/test_tauri_updater_secrets.py.
 - app/src-tauri/gen/schemas is now read by tests/test_tauri_updater_secrets.py.
 - assets/print/source/print-bundle.js is now also read by tests/test_tauri_updater_secrets.py.
-- sov_daemon/**/*.py is now read by tests/test_daemon_amend_wave9.py.
-- 27 files changed content, across 7 parts.
+- And 1 more new writer or reader of a place.
+- 29 files changed content, across 7 parts.
 
 ## What comes in
 

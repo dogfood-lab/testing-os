@@ -1,6 +1,6 @@
 # prism-verify: how it works
 
-Mapped at 2026-10-19 from commit eb48656 by Atlas 1.26.0.
+Mapped at 2026-10-26 from commit 025f4b6 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-19 from commit eb48656 by Atlas 1.26.0.
 
 ## What changed since 2026-10-15 (551c163)
 
-Nothing structural changed since 2026-10-15; no file changed.
+Nothing structural changed since 2026-10-15; 1 file changed content.
 
 ## What comes in
 

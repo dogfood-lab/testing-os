@@ -306,7 +306,11 @@
           "path": ".npmignore"
         },
         {
-          "hash": "8963c7a0fdf37eeef7dbebadad31c1eea9f8be11ca4e83295093b9ba6fd5c62f",
+          "hash": "b665a46090fe387568acc587f0a29cffc3190f2922a43c5f869ea17699a03786",
+          "path": ".polyglot-pins.json"
+        },
+        {
+          "hash": "521a48234a2bfc825782cdaa391791f7c4f778c9a2ff9935dda378302f175f7d",
           "path": "CHANGELOG.md"
         },
         {
@@ -314,35 +318,35 @@
           "path": "LICENSE"
         },
         {
-          "hash": "9ff28143c16f36885dc29c463406e66a07d8d993dbf2b68df77c4815cca10f54",
+          "hash": "cc20aa868e99264b22a9b48c9342e139b9737a765d1c02935784837373910920",
           "path": "README.es.md"
         },
         {
-          "hash": "7122307722240e756c996598e7bfc3802840d4f16d22b68f788c828d5ea16b69",
+          "hash": "b4177a1958f2a3c0b470f456677f9d2d2b65cc9f930c29296a47414d3f59816d",
           "path": "README.fr.md"
         },
         {
-          "hash": "0103070305de1c95e06249f1cf5aaae841dae84d73ff0051431cef033b6d1997",
+          "hash": "709ee44fe81c4a357beda9d49ba6cba2ab38374f551f1f4d03968a93a4dcd6f2",
           "path": "README.hi.md"
         },
         {
-          "hash": "8c697ecaaf9b80f3c1219b3be3df1fd6b044a6a64b72f5c4c0d5546b9c57e440",
+          "hash": "98877bdaeb3ddd8c2c842276e4ca093ac1ad5d69d5145fb780cfe9235132f4c4",
           "path": "README.it.md"
         },
         {
-          "hash": "51c7ab5df28bff50909c3284f336514ecdd7ea519dd3535649fc4bf1db383f19",
+          "hash": "c21eee8621cbc53ace197cdb5510dee9f87aac8988be75d03b2612b850e15890",
           "path": "README.ja.md"
         },
         {
-          "hash": "9ffa75f7c10db64997c87489195ede3e3c74c5a5ad115819421601d0fca6beba",
+          "hash": "9ce43a557e4c0abb09637432ce7d14e611450a853de2061d04cce25b8a26341c",
           "path": "README.md"
         },
         {
-          "hash": "592585d34c17f21b8030c466650e12216fd75944f0fba7e8d9a8aead47646198",
+          "hash": "073dc903f867caa94ff05e0cab5936c728196dbca1067687978bf8e7448b4a7a",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "62eae25ea91a2d92646e3dc2bb8981e2aedb025ef3a8c58cfe3415ba79e17fd5",
+          "hash": "5c4862bf17a5762875d5999e07801bd38730b95451731155aeaffd2b15b7ef8a",
           "path": "README.zh.md"
         },
         {
@@ -358,7 +362,7 @@
           "path": "SHIP_GATE.md"
         },
         {
-          "hash": "59ca3f6a5be96b80fee73bebf2b778211208d17cd3fb82e2134608dff0729c76",
+          "hash": "09b658dca5e6502b2619a136f9bf9b2b00eb30819573f14e47cbfd66cf6dd864",
           "path": "codecov.yml"
         },
         {
@@ -366,11 +370,11 @@
           "path": "logo.png"
         },
         {
-          "hash": "247ec88ece0bc5d492251076a6a3aac46ec3002f5b3d19603d4f8c5bc8dcff0a",
+          "hash": "973540d5928d19c1414502544ff0d4e82f0cd79137ecf32bb410dd9a02bb7aa7",
           "path": "package-lock.json"
         },
         {
-          "hash": "5e6bf90f9e672ab9eff70043b53a0122582e4500809e7dfda97a6618058b1f4e",
+          "hash": "e7ecae7c1e8692ef703da7d443cc324d8bcddf261a4c8c785b212cc45d35b2a0",
           "path": "package.json"
         },
         {
@@ -378,7 +382,7 @@
           "path": "tsconfig.json"
         },
         {
-          "hash": "f7b586a422f3f36b69adaf976772e35ca6780a6eadc96cb7e88fbce6d3b76723",
+          "hash": "5f1300d3f95f37659bdc1f4f80e37c36da967bc00e3eef37a5388e8e0ceaa5b3",
           "importNames": [
             {
               "form": "import",
@@ -414,7 +418,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 5,
+      "dynamicReads": 6,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 3,
@@ -422,7 +426,29 @@
       "externals": 0,
       "files": [
         {
-          "hash": "2dfed3e31050caa84a90d9666fb25329af040a3deae8905b4830be83d3ceca54",
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 57
+            }
+          ],
+          "hash": "8943ac23e6685c7fa33008a2250a36a6422a7c34382871c0c2659b9352e4e216",
+          "importsFiles": [
+            "src/pinCorrections.ts"
+          ],
+          "path": "scripts/pin-translation.mjs"
+        },
+        {
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 60
+            }
+          ],
+          "hash": "e46a3598a543f1c50dcec84d1fc479995db843781acb74715ec8475bba955410",
+          "importsFiles": [
+            "src/survival.ts"
+          ],
           "path": "scripts/translate-all.mjs"
         },
         {
@@ -440,8 +466,27 @@
           "path": "scripts/translate-readme-batch.mjs"
         },
         {
-          "hash": "93a63e8cd1cc38282ded4e9701dce4e44f4d84a3f873de2cc2875287e85d07ab",
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 64
+            },
+            {
+              "kind": "catch",
+              "line": 98
+            },
+            {
+              "kind": "throw",
+              "line": 107
+            }
+          ],
+          "hash": "c1889209074a21ce6331f91e370fa7732f398f36785336906acdd6456d93eef1",
+          "importOrder": [
+            "src/translateMarkdown.ts",
+            "src/survival.ts"
+          ],
           "importsFiles": [
+            "src/survival.ts",
             "src/translateMarkdown.ts"
           ],
           "path": "scripts/translate-readme.mjs"
@@ -571,7 +616,7 @@
           "path": "site/src/content/docs/handbook/beginners.md"
         },
         {
-          "hash": "d89554dce3e4944331fccc08ea2b06071066f5f4cad18887f7f1bb009b98a29d",
+          "hash": "d048425cd8c77e9570e25f70a3d45e8039c4397dcca7be94286a1f95435e0277",
           "path": "site/src/content/docs/handbook/features.md"
         },
         {
@@ -583,7 +628,7 @@
           "path": "site/src/content/docs/handbook/index.md"
         },
         {
-          "hash": "f3555dfff13f3b1917c16995df69c180039573ec286c8469ba4cf3eefa38af3f",
+          "hash": "cf6788be01b2729da8d8bdb2a31df2b3fd73e6213834f0dccfc1f09fde69a450",
           "path": "site/src/content/docs/handbook/reference.md"
         },
         {
@@ -745,8 +790,8 @@
     },
     {
       "dynamicReads": 0,
-      "dynamicSpawns": 4,
-      "dynamicSpawnsInTests": 2,
+      "dynamicSpawns": 12,
+      "dynamicSpawnsInTests": 10,
       "dynamicWrites": 0,
       "entryPoints": [
         "src/index.ts"
@@ -871,69 +916,69 @@
             {
               "in": "readCacheFile",
               "kind": "catch",
-              "line": 58
+              "line": 68
             },
             {
               "in": "readCacheFile",
               "kind": "throw",
-              "line": 60
+              "line": 70
             },
             {
               "in": "readCacheFile",
               "kind": "catch",
-              "line": 65
+              "line": 75
             },
             {
               "in": "loadCache",
               "kind": "catch",
-              "line": 77
+              "line": 87
             },
             {
               "in": "withLock",
               "kind": "catch",
-              "line": 185
+              "line": 195
             },
             {
               "in": "writeFileAtomic",
               "kind": "catch",
-              "line": 207
+              "line": 217
             },
             {
               "in": "writeFileAtomic",
               "kind": "throw",
-              "line": 209
+              "line": 219
             },
             {
               "in": "retryOnWindows",
               "kind": "catch",
-              "line": 222
+              "line": 232
             },
             {
               "in": "retryOnWindows",
               "kind": "throw",
-              "line": 225
+              "line": 235
             },
             {
               "in": "fileAgeMs",
               "kind": "catch",
-              "line": 234
+              "line": 244
             },
             {
               "in": "removeFile",
               "kind": "catch",
-              "line": 242
+              "line": 252
             },
             {
               "in": "getCachePath",
               "kind": "throw",
-              "line": 499
+              "line": 509
             }
           ],
-          "hash": "a417e1d34a4aeacd27ed367c56e28367dfa1abda70ad76a8a61fc5c6c50d1ec5",
+          "hash": "e2643a34d6cea90443347e842fd07f76f78b6790f8099033aac88e2879eeacdb",
           "path": "src/cache.ts"
         },
         {
-          "hash": "417653aff4de45a2960c3d9ef063a78a36d1dbeee19f3b214e2dd0de581a27c9",
+          "hash": "32d5a2a203787d369eef928c35dbc9d0b480efd73eafd91331f841dfe3a96a61",
           "importNames": [
             {
               "form": "import",
@@ -967,14 +1012,43 @@
           "testFramework": "vitest"
         },
         {
+          "entry": "maskCodeSpans",
+          "entryRule": 4,
           "exports": [
             "codePlaceholder",
             "containsCodePlaceholder",
             "maskCodeSpans",
             "restoreCodeSpans"
           ],
-          "hash": "fc23f4c4adaed67c93f0bb9ea5cd31e4a5f7f81850ab35f9e7dc1011d516ad6c",
-          "path": "src/codeSpans.ts"
+          "hash": "efe41fed17a81b2d1b93ade544e30c6f3a52b9e000ade03507677db8b57ca067",
+          "importsFiles": [
+            "src/protectedTerms.ts"
+          ],
+          "path": "src/codeSpans.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 98,
+                  "name": "findProtectedSpans",
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  }
+                },
+                {
+                  "line": 111,
+                  "name": "hashRules",
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "maskCodeSpans"
+            }
+          ]
         },
         {
           "hash": "547671a18164f295066ab274e5c2fd2621c1a904b71a22c055ce834bbf69b37f",
@@ -1014,8 +1088,72 @@
           "exports": [
             "friendlyError"
           ],
-          "hash": "062dbf0a61f462262435ac976ce3692b3dae514c34ab8fb56acfad7766d58f13",
+          "hash": "edb957480cf823e14905d2a1a6042f27aec1f7eece0399a9f2aa6bdd93a5663b",
           "path": "src/errors.ts"
+        },
+        {
+          "hash": "b89cc1ce4c4a7472b063ef318685b7c10eff3b23011ba9f8f2743bf8b4dc7894",
+          "path": "src/fixtures/issue-44/ai-jam-sessions.README.5f8d1e2-parent.md"
+        },
+        {
+          "hash": "a7352a7d27534fb2f5a45b8c8aca493769bd35b020e74b0fc7c6dacb85556e17",
+          "path": "src/fixtures/issue-44/ai-jam-sessions.README.hi.5f8d1e2.md"
+        },
+        {
+          "hash": "0f7583c97f5311a399aabd8f7544bdce60673d3ce3013353baf3915d88dfb705",
+          "path": "src/fixtures/issue-44/ai-jam-sessions.README.zh.5f8d1e2-parent.md"
+        },
+        {
+          "hash": "9ec6047cdff42d9e99d620c72c3615931846199136b976a10722a65a60ba29a7",
+          "path": "src/fixtures/issue-44/ai-jam-sessions.polyglot-cache.5f8d1e2.json"
+        },
+        {
+          "hash": "1a8eaf9903d74e5929f9aae2eb3558abb8101766e57fff39c7673f5c6f18cb91",
+          "path": "src/fixtures/issue-44/xrpl-lab.README.7acc67c.md"
+        },
+        {
+          "hash": "4aae7dd1b5f8c2afe6ce1f3cbcdfc2488fdeca25b66604c8c3c8026f01a3b3a0",
+          "path": "src/fixtures/issue-44/xrpl-lab.README.hi.7acc67c.md"
+        },
+        {
+          "hash": "2187a27b6339c5744eae90356f94376e60c1342b314dc2da636ba1b07321f53a",
+          "path": "src/fixtures/issue-46/github-slugs.json"
+        },
+        {
+          "hash": "45ad11e073f87c8bfdb083a7625894c96051a182537bf3460fe441ad89e68c36",
+          "path": "src/fixtures/issue-46/polyglot-mcp.README.9fbe43a.md"
+        },
+        {
+          "hash": "1edcde54b1c2cf88fd84291f18a0b99bbf51460495f805a252e55c761dfb71d8",
+          "path": "src/fixtures/issue-46/polyglot-mcp.README.es.9fbe43a.md"
+        },
+        {
+          "hash": "a45d6b1ca4fd595caec3774867737ba042feb6e8d649de012870b91fb1b6392f",
+          "path": "src/fixtures/issue-46/polyglot-mcp.README.fr.9fbe43a.md"
+        },
+        {
+          "hash": "256aeb6afdd80c6d391b11d362f01b8b796b1a876c6bf7a83cc1ebf5b1ac2bea",
+          "path": "src/fixtures/issue-46/polyglot-mcp.README.hi.9fbe43a.md"
+        },
+        {
+          "hash": "bedf7b591a5f887334ebcd94aa57645af0c9afeb997279f47edc7e0f531302c6",
+          "path": "src/fixtures/issue-46/polyglot-mcp.README.ja.9fbe43a.md"
+        },
+        {
+          "hash": "79c8247b25261c0bcbf0512b1c4b91c4302b3c6ab767b888bb44889508722813",
+          "path": "src/fixtures/issue-46/polyglot-mcp.README.zh.9fbe43a.md"
+        },
+        {
+          "hash": "0e892dcdc4fc8ddd6867622eb515d2eb5f564a2287c86e95320761c3a8a2bdb8",
+          "path": "src/fixtures/issue-46/synthetic-headings.md"
+        },
+        {
+          "hash": "e354ca4c63940cb9f2de4e46cbf9492ad6bf3f461a2a7ade3000be3de6441eee",
+          "path": "src/fixtures/issue-50/pins-99b69e6.json"
+        },
+        {
+          "hash": "361b0400e537d66f5d6051fc9d5e17b139549dca597385f546d5ccef6f14a767",
+          "path": "src/fixtures/issue-50/slips.json"
         },
         {
           "hash": "9ab8a8fef80bdbb4582ab9d18ec35202ede8f01ef6f386f9080392680a1864a4",
@@ -1117,22 +1255,22 @@
           "failurePaths": [
             {
               "kind": "catch",
-              "line": 116
+              "line": 146
             },
             {
               "kind": "catch",
-              "line": 193
+              "line": 229
             },
             {
               "kind": "catch",
-              "line": 276
+              "line": 321
             },
             {
               "kind": "catch",
-              "line": 373
+              "line": 424
             }
           ],
-          "hash": "185174b72bbd69cdb2b8815e62788046a0d36fe616b18f3e335cc7bc1a178d57",
+          "hash": "ddcb9dd40bb4356b143d1d4759da14174dcb8ba3d145bcfdaf2d597fa8545e6a",
           "importNames": [
             {
               "form": "import",
@@ -1192,12 +1330,14 @@
             "src/languages.ts",
             "src/ollama.ts",
             "src/version.ts",
-            "src/errors.ts"
+            "src/errors.ts",
+            "src/survival.ts"
           ],
           "importsFiles": [
             "src/errors.ts",
             "src/languages.ts",
             "src/ollama.ts",
+            "src/survival.ts",
             "src/translate.ts",
             "src/translateAll.ts",
             "src/translateMarkdown.ts",
@@ -1215,7 +1355,38 @@
             }
           ],
           "path": "src/index.ts",
-          "sequences": []
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 46,
+                  "name": "untranslatedBlockText",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "untranslatedBlock"
+            },
+            {
+              "calls": [
+                {
+                  "line": 53,
+                  "name": "formatLostSpans",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "lostSpanBlock"
+            }
+          ]
         },
         {
           "hash": "2b6d04fbf1eefdf01ec5e665ce39579d52f765bfcf4235f280bac2249a6b1c69",
@@ -1490,6 +1661,581 @@
           "path": "src/ollama.ts"
         },
         {
+          "entry": "pinCorrections",
+          "entryRule": 3,
+          "exports": [
+            "pinCorrections"
+          ],
+          "failurePaths": [
+            {
+              "in": "pinCorrections",
+              "kind": "throw",
+              "line": 74
+            }
+          ],
+          "hash": "f3914935f4de1cef4525e39575e62472ff0af7c939b86d86d57904a6a3638946",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 14,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/github-slugger",
+              "specifier": "github-slugger",
+              "typeOnly": false
+            }
+          ],
+          "importsFiles": [
+            "src/cache.ts",
+            "src/codeSpans.ts",
+            "src/errors.ts",
+            "src/pins.ts",
+            "src/protectedTerms.ts",
+            "src/survival.ts",
+            "src/translateMarkdown.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/github-slugger"
+            }
+          ],
+          "path": "src/pinCorrections.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 70,
+                  "name": "loadProtectedTerms",
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  }
+                },
+                {
+                  "line": 72,
+                  "name": "alignUnits",
+                  "target": {
+                    "file": "src/translateMarkdown.ts"
+                  }
+                },
+                {
+                  "line": 82,
+                  "name": "loadCache",
+                  "target": {
+                    "file": "src/cache.ts"
+                  }
+                },
+                {
+                  "line": 83,
+                  "name": "loadPins",
+                  "target": {
+                    "file": "src/pins.ts"
+                  }
+                },
+                {
+                  "line": 85,
+                  "name": "anchorsEnabled",
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  }
+                },
+                {
+                  "line": 90,
+                  "name": "stripHeadingMarkup",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                },
+                {
+                  "line": 90,
+                  "name": "safeDecodeSlug",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 51,
+                      "name": "canonicalWhitespace",
+                      "target": {
+                        "file": "src/cache.ts"
+                      },
+                      "via": "pinKey"
+                    }
+                  ],
+                  "line": 91,
+                  "name": "getPin",
+                  "target": {
+                    "file": "src/pins.ts"
+                  }
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 98,
+                      "name": "findProtectedSpans",
+                      "target": {
+                        "file": "src/protectedTerms.ts"
+                      }
+                    },
+                    {
+                      "line": 111,
+                      "name": "hashRules",
+                      "target": {
+                        "file": "src/protectedTerms.ts"
+                      }
+                    }
+                  ],
+                  "line": 154,
+                  "name": "maskCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "currentTranslation"
+                },
+                {
+                  "branch": "!/\\p{L}/u.test(masked)",
+                  "line": 155,
+                  "name": "restoreCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "currentTranslation"
+                },
+                {
+                  "line": 157,
+                  "name": "cacheKey",
+                  "target": {
+                    "file": "src/cache.ts"
+                  },
+                  "via": "currentTranslation"
+                },
+                {
+                  "line": 157,
+                  "name": "getCached",
+                  "target": {
+                    "file": "src/cache.ts"
+                  },
+                  "via": "currentTranslation"
+                },
+                {
+                  "line": 157,
+                  "name": "getFuzzyCached",
+                  "target": {
+                    "file": "src/cache.ts"
+                  },
+                  "via": "currentTranslation"
+                },
+                {
+                  "line": 159,
+                  "name": "cleanTranslation",
+                  "target": {
+                    "file": "src/translateMarkdown.ts"
+                  },
+                  "via": "currentTranslation"
+                },
+                {
+                  "line": 161,
+                  "name": "restoreCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "currentTranslation"
+                },
+                {
+                  "line": 92,
+                  "name": "stripHeadingMarkup",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                },
+                {
+                  "line": 97,
+                  "name": "getPinsPath",
+                  "target": {
+                    "file": "src/pins.ts"
+                  }
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 51,
+                      "name": "canonicalWhitespace",
+                      "target": {
+                        "file": "src/cache.ts"
+                      },
+                      "via": "pinKey"
+                    }
+                  ],
+                  "line": 100,
+                  "name": "getPin",
+                  "target": {
+                    "file": "src/pins.ts"
+                  }
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 514,
+                      "name": "safeDecodeSlug",
+                      "target": {
+                        "file": "src/survival.ts"
+                      }
+                    }
+                  ],
+                  "line": 102,
+                  "name": "rewriteAnchors",
+                  "target": {
+                    "file": "src/translateMarkdown.ts"
+                  }
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 98,
+                      "name": "findProtectedSpans",
+                      "target": {
+                        "file": "src/protectedTerms.ts"
+                      }
+                    },
+                    {
+                      "line": 111,
+                      "name": "hashRules",
+                      "target": {
+                        "file": "src/protectedTerms.ts"
+                      }
+                    }
+                  ],
+                  "line": 135,
+                  "name": "maskCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "handTranslatedProse"
+                },
+                {
+                  "line": 136,
+                  "name": "restoreCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "handTranslatedProse"
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 1073,
+                      "name": "CODE_SPAN_PATTERN",
+                      "passed": true,
+                      "target": {
+                        "file": "src/codeSpans.ts"
+                      },
+                      "via": "proseText"
+                    }
+                  ],
+                  "line": 137,
+                  "name": "survivingProse",
+                  "target": {
+                    "file": "src/survival.ts"
+                  },
+                  "via": "handTranslatedProse"
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 51,
+                      "name": "canonicalWhitespace",
+                      "target": {
+                        "file": "src/cache.ts"
+                      },
+                      "via": "pinKey"
+                    }
+                  ],
+                  "line": 118,
+                  "name": "setPin",
+                  "target": {
+                    "file": "src/pins.ts"
+                  }
+                },
+                {
+                  "line": 119,
+                  "name": "segmentLabel",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "pinCorrections",
+              "truncated": true
+            },
+            {
+              "calls": [
+                {
+                  "line": 135,
+                  "name": "maskCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  }
+                },
+                {
+                  "line": 136,
+                  "name": "restoreCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  }
+                },
+                {
+                  "line": 137,
+                  "name": "survivingProse",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "handTranslatedProse"
+            },
+            {
+              "calls": [
+                {
+                  "line": 154,
+                  "name": "maskCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  }
+                },
+                {
+                  "branch": "!/\\p{L}/u.test(masked)",
+                  "line": 155,
+                  "name": "restoreCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  }
+                },
+                {
+                  "line": 157,
+                  "name": "cacheKey",
+                  "target": {
+                    "file": "src/cache.ts"
+                  }
+                },
+                {
+                  "line": 157,
+                  "name": "getCached",
+                  "target": {
+                    "file": "src/cache.ts"
+                  }
+                },
+                {
+                  "line": 157,
+                  "name": "getFuzzyCached",
+                  "target": {
+                    "file": "src/cache.ts"
+                  }
+                },
+                {
+                  "line": 159,
+                  "name": "cleanTranslation",
+                  "target": {
+                    "file": "src/translateMarkdown.ts"
+                  }
+                },
+                {
+                  "line": 161,
+                  "name": "restoreCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "currentTranslation"
+            }
+          ]
+        },
+        {
+          "hash": "4c89a116351c40b4eb150f1fe4da43abc53af95ff3f29081ac562f823530c184",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 13,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "vi"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "afterEach"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "importOrder": [
+            "src/translateMarkdown.ts",
+            "src/translate.ts",
+            "src/pins.ts",
+            "src/pinCorrections.ts",
+            "src/protectedTerms.ts",
+            "src/errors.ts"
+          ],
+          "importsFiles": [
+            "src/errors.ts",
+            "src/pinCorrections.ts",
+            "src/pins.ts",
+            "src/protectedTerms.ts",
+            "src/translate.ts",
+            "src/translateMarkdown.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "src/pins.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "entry": "pinKey",
+          "entryRule": 4,
+          "exports": [
+            "createPins",
+            "getPin",
+            "getPinsPath",
+            "loadPins",
+            "pinKey",
+            "savePins",
+            "setPin"
+          ],
+          "failurePaths": [
+            {
+              "in": "loadPins",
+              "kind": "catch",
+              "line": 80
+            },
+            {
+              "in": "loadPins",
+              "kind": "throw",
+              "line": 82
+            },
+            {
+              "in": "loadPins",
+              "kind": "catch",
+              "line": 87
+            },
+            {
+              "in": "loadPins",
+              "kind": "throw",
+              "line": 88
+            },
+            {
+              "in": "loadPins",
+              "kind": "throw",
+              "line": 92
+            },
+            {
+              "in": "loadPins",
+              "kind": "throw",
+              "line": 95
+            },
+            {
+              "in": "savePins",
+              "kind": "catch",
+              "line": 108
+            },
+            {
+              "in": "savePins",
+              "kind": "catch",
+              "line": 111
+            },
+            {
+              "in": "savePins",
+              "kind": "throw",
+              "line": 114
+            }
+          ],
+          "hash": "a30a51ea74cf10892d690007ade76e1fba98e7ac7999100574884b7a677b97bf",
+          "importsFiles": [
+            "src/cache.ts",
+            "src/errors.ts"
+          ],
+          "path": "src/pins.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 51,
+                  "name": "canonicalWhitespace",
+                  "target": {
+                    "file": "src/cache.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "pinKey"
+            },
+            {
+              "calls": [
+                {
+                  "line": 51,
+                  "name": "canonicalWhitespace",
+                  "target": {
+                    "file": "src/cache.ts"
+                  },
+                  "via": "pinKey"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "getPin"
+            },
+            {
+              "calls": [
+                {
+                  "line": 51,
+                  "name": "canonicalWhitespace",
+                  "target": {
+                    "file": "src/cache.ts"
+                  },
+                  "via": "pinKey"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "setPin"
+            }
+          ]
+        },
+        {
           "hash": "6d1dd1f8304464979b02352750d91ec690ab94354027a3ddc0584ccd919acde7",
           "importNames": [
             {
@@ -1536,6 +2282,130 @@
           "sequences": []
         },
         {
+          "hash": "f62fc4dc58649de05d80ef589b03e7a471732b70700412a30566e271ddf3959f",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "afterEach"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "importOrder": [
+            "src/protectedTerms.ts",
+            "src/codeSpans.ts",
+            "src/errors.ts"
+          ],
+          "importsFiles": [
+            "src/codeSpans.ts",
+            "src/errors.ts",
+            "src/protectedTerms.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "src/protectedTerms.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "entry": "buildProtectedTerms",
+          "entryRule": 1,
+          "exports": [
+            "anchorsEnabled",
+            "buildProtectedTerms",
+            "findProtectedSpans",
+            "getTermsPath",
+            "hashRules",
+            "linkTargetsEnabled",
+            "loadProtectedTerms",
+            "urlsEnabled"
+          ],
+          "failurePaths": [
+            {
+              "in": "buildProtectedTerms",
+              "kind": "throw",
+              "line": 207
+            },
+            {
+              "in": "buildProtectedTerms",
+              "kind": "catch",
+              "line": 215
+            },
+            {
+              "in": "buildProtectedTerms",
+              "kind": "throw",
+              "line": 216
+            },
+            {
+              "in": "buildProtectedTerms",
+              "kind": "throw",
+              "line": 228
+            },
+            {
+              "in": "loadProtectedTerms",
+              "kind": "catch",
+              "line": 279
+            },
+            {
+              "in": "loadProtectedTerms",
+              "kind": "throw",
+              "line": 281
+            },
+            {
+              "in": "loadProtectedTerms",
+              "kind": "catch",
+              "line": 286
+            },
+            {
+              "in": "loadProtectedTerms",
+              "kind": "throw",
+              "line": 287
+            },
+            {
+              "in": "loadProtectedTerms",
+              "kind": "throw",
+              "line": 289
+            },
+            {
+              "in": "loadProtectedTerms",
+              "kind": "throw",
+              "line": 292
+            },
+            {
+              "in": "loadProtectedTerms",
+              "kind": "throw",
+              "line": 294
+            }
+          ],
+          "hash": "1e948ae3a27f9a73e3cf91569852d2eb435cb17e6436a80f763d0ec6301f67f9",
+          "importsFiles": [
+            "src/errors.ts"
+          ],
+          "path": "src/protectedTerms.ts",
+          "sequences": []
+        },
+        {
           "hash": "24df3e630127502073eab0a98b3f0274e41204f1a212b3a4779069a2e0d89f1d",
           "importNames": [
             {
@@ -1579,6 +2449,513 @@
           ],
           "hash": "67b580a5f9198fff2da01c60ae47750ef9df427299603ea35db4b9a57d31f680",
           "path": "src/semaphore.ts"
+        },
+        {
+          "hash": "fb748aca42fd7be8f5dd0f1001036191c98be28e7cdd845ecf84a9de7c137725",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 18,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "importOrder": [
+            "src/translateMarkdown.ts",
+            "src/survival.ts",
+            "src/protectedTerms.ts",
+            "src/errors.ts"
+          ],
+          "importsFiles": [
+            "src/errors.ts",
+            "src/protectedTerms.ts",
+            "src/survival.ts",
+            "src/translateMarkdown.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "src/survival.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "entry": "checkSegment",
+          "entryRule": 4,
+          "exports": [
+            "cellNumbersMatch",
+            "checkAnchors",
+            "checkCodeStructure",
+            "checkLinks",
+            "checkPlaceholders",
+            "checkSegment",
+            "countCodeStructure",
+            "enforceLostSpanPolicy",
+            "enforceUntranslatedPolicy",
+            "expectedSpans",
+            "extractDocumentAnchors",
+            "extractLinks",
+            "extractRefDefinitions",
+            "formatFallbacks",
+            "formatLostSpans",
+            "formatUntranslated",
+            "isProseLine",
+            "normalizeDigits",
+            "normalizeRefLabel",
+            "numberMultiset",
+            "parseLostSpanPolicy",
+            "parseUntranslatedPolicy",
+            "proseWords",
+            "safeDecodeSlug",
+            "segmentLabel",
+            "slugifyHeadings",
+            "stripHeadingMarkup",
+            "survivingProse",
+            "untranslatedBlockText"
+          ],
+          "failurePaths": [
+            {
+              "in": "safeDecodeSlug",
+              "kind": "catch",
+              "line": 595
+            },
+            {
+              "in": "enforceLostSpanPolicy",
+              "kind": "throw",
+              "line": 962
+            },
+            {
+              "in": "parseLostSpanPolicy",
+              "kind": "throw",
+              "line": 969
+            },
+            {
+              "in": "enforceUntranslatedPolicy",
+              "kind": "throw",
+              "line": 1236
+            },
+            {
+              "in": "parseUntranslatedPolicy",
+              "kind": "throw",
+              "line": 1243
+            }
+          ],
+          "hash": "d68d00c81a0f184c2f55111720e0bb64796814986d0285bd49c865c87696fcab",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 20,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/github-slugger",
+              "specifier": "github-slugger",
+              "typeOnly": false
+            }
+          ],
+          "importsFiles": [
+            "src/codeSpans.ts",
+            "src/errors.ts",
+            "src/protectedTerms.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/github-slugger"
+            }
+          ],
+          "path": "src/survival.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 73,
+                  "name": "maskCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  }
+                },
+                {
+                  "line": 140,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "maskInlineCodeForScan"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "expectedSpans"
+            },
+            {
+              "calls": [
+                {
+                  "line": 97,
+                  "name": "normalize",
+                  "target": null
+                },
+                {
+                  "line": 100,
+                  "name": "codePointAt",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "digitValue"
+            },
+            {
+              "calls": [
+                {
+                  "line": 140,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "maskInlineCodeForScan"
+            },
+            {
+              "calls": [
+                {
+                  "line": 140,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "maskInlineCodeForScan"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "extractRefDefinitions"
+            },
+            {
+              "calls": [
+                {
+                  "line": 140,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "maskInlineCodeForScan"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "extractLinks"
+            },
+            {
+              "calls": [
+                {
+                  "line": 429,
+                  "name": "urlsEnabled",
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  }
+                },
+                {
+                  "line": 429,
+                  "name": "DEFAULT_PROTECTED_TERMS",
+                  "passed": true,
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  }
+                },
+                {
+                  "line": 430,
+                  "name": "linkTargetsEnabled",
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  }
+                },
+                {
+                  "line": 430,
+                  "name": "DEFAULT_PROTECTED_TERMS",
+                  "passed": true,
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  }
+                },
+                {
+                  "line": 140,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "maskInlineCodeForScan"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "checkLinks"
+            },
+            {
+              "calls": [
+                {
+                  "line": 509,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "strip"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "checkPlaceholders"
+            },
+            {
+              "calls": [
+                {
+                  "inner": [
+                    {
+                      "line": 98,
+                      "name": "findProtectedSpans",
+                      "target": {
+                        "file": "src/protectedTerms.ts"
+                      }
+                    },
+                    {
+                      "line": 111,
+                      "name": "hashRules",
+                      "target": {
+                        "file": "src/protectedTerms.ts"
+                      }
+                    }
+                  ],
+                  "line": 73,
+                  "name": "maskCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "expectedSpans"
+                },
+                {
+                  "line": 140,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "maskInlineCodeForScan"
+                },
+                {
+                  "line": 429,
+                  "name": "urlsEnabled",
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  },
+                  "via": "checkLinks"
+                },
+                {
+                  "line": 429,
+                  "name": "DEFAULT_PROTECTED_TERMS",
+                  "passed": true,
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  },
+                  "via": "checkLinks"
+                },
+                {
+                  "line": 430,
+                  "name": "linkTargetsEnabled",
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  },
+                  "via": "checkLinks"
+                },
+                {
+                  "line": 430,
+                  "name": "DEFAULT_PROTECTED_TERMS",
+                  "passed": true,
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  },
+                  "via": "checkLinks"
+                },
+                {
+                  "line": 509,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "strip"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "checkSegment"
+            },
+            {
+              "calls": [
+                {
+                  "line": 711,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "extractDocumentAnchors"
+            },
+            {
+              "calls": [
+                {
+                  "line": 711,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "extractDocumentAnchors"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "checkAnchors"
+            },
+            {
+              "calls": [
+                {
+                  "line": 895,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "countCodeStructure"
+            },
+            {
+              "calls": [
+                {
+                  "line": 895,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "countCodeStructure"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "checkCodeStructure"
+            },
+            {
+              "calls": [
+                {
+                  "line": 1073,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "proseText"
+            },
+            {
+              "calls": [
+                {
+                  "line": 1073,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "proseText"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "proseWords"
+            },
+            {
+              "calls": [
+                {
+                  "line": 1073,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "proseText"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "isProseLine"
+            },
+            {
+              "calls": [
+                {
+                  "line": 1073,
+                  "name": "CODE_SPAN_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "proseText"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "survivingProse"
+            }
+          ]
         },
         {
           "hash": "3ad7d392959cfc8891c06a9e7d8f28e7741de7f86c7eaec78697574d485f75d2",
@@ -1642,35 +3019,35 @@
             {
               "in": "resolveSetup",
               "kind": "throw",
-              "line": 166
+              "line": 180
             },
             {
               "in": "resolveSetup",
               "kind": "throw",
-              "line": 176
+              "line": 190
             },
             {
               "in": "resolveSetup",
               "kind": "throw",
-              "line": 185
+              "line": 199
             },
             {
               "in": "resolveSetup",
               "kind": "throw",
-              "line": 197
+              "line": 211
             },
             {
               "in": "resolveSetup",
               "kind": "throw",
-              "line": 206
+              "line": 220
             },
             {
               "in": "translate",
               "kind": "catch",
-              "line": 272
+              "line": 286
             }
           ],
-          "hash": "dd56d8307d4597ba919e2a6d8091979094e6de69fb8fcc46d899f7c3eacf5ffb",
+          "hash": "4191c8e62848b699c9a67310d0fcec9b05b21298c56b5612548eb2943e172353",
           "importsFiles": [
             "src/codeSpans.ts",
             "src/errors.ts",
@@ -1685,7 +3062,7 @@
             {
               "calls": [
                 {
-                  "line": 98,
+                  "line": 112,
                   "name": "containsCodePlaceholder",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -1700,7 +3077,7 @@
             {
               "calls": [
                 {
-                  "line": 113,
+                  "line": 127,
                   "name": "containsCodePlaceholder",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -1715,14 +3092,14 @@
             {
               "calls": [
                 {
-                  "line": 164,
+                  "line": 178,
                   "name": "resolveLanguage",
                   "target": {
                     "file": "src/languages.ts"
                   }
                 },
                 {
-                  "line": 196,
+                  "line": 210,
                   "name": "ensureRunning",
                   "receiver": "OllamaClient",
                   "target": {
@@ -1730,7 +3107,7 @@
                   }
                 },
                 {
-                  "line": 205,
+                  "line": 219,
                   "name": "ensureModel",
                   "receiver": "OllamaClient",
                   "target": {
@@ -1746,7 +3123,7 @@
             {
               "calls": [
                 {
-                  "line": 164,
+                  "line": 178,
                   "name": "resolveLanguage",
                   "target": {
                     "file": "src/languages.ts"
@@ -1754,7 +3131,7 @@
                   "via": "resolveSetup"
                 },
                 {
-                  "line": 196,
+                  "line": 210,
                   "name": "ensureRunning",
                   "receiver": "OllamaClient",
                   "target": {
@@ -1763,7 +3140,7 @@
                   "via": "resolveSetup"
                 },
                 {
-                  "line": 205,
+                  "line": 219,
                   "name": "ensureModel",
                   "receiver": "OllamaClient",
                   "target": {
@@ -1772,14 +3149,14 @@
                   "via": "resolveSetup"
                 },
                 {
-                  "line": 245,
+                  "line": 259,
                   "name": "buildGlossaryHint",
                   "target": {
                     "file": "src/glossary.ts"
                   }
                 },
                 {
-                  "line": 98,
+                  "line": 112,
                   "name": "containsCodePlaceholder",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -1787,14 +3164,14 @@
                   "via": "buildPrompt"
                 },
                 {
-                  "line": 264,
+                  "line": 278,
                   "name": "polish",
                   "target": {
                     "file": "src/polish.ts"
                   }
                 },
                 {
-                  "line": 270,
+                  "line": 284,
                   "name": "validateTranslation",
                   "target": {
                     "file": "src/validate.ts"
@@ -1809,7 +3186,7 @@
             {
               "calls": [
                 {
-                  "line": 164,
+                  "line": 178,
                   "name": "resolveLanguage",
                   "target": {
                     "file": "src/languages.ts"
@@ -1817,7 +3194,7 @@
                   "via": "resolveSetup"
                 },
                 {
-                  "line": 196,
+                  "line": 210,
                   "name": "ensureRunning",
                   "receiver": "OllamaClient",
                   "target": {
@@ -1826,7 +3203,7 @@
                   "via": "resolveSetup"
                 },
                 {
-                  "line": 205,
+                  "line": 219,
                   "name": "ensureModel",
                   "receiver": "OllamaClient",
                   "target": {
@@ -1835,14 +3212,14 @@
                   "via": "resolveSetup"
                 },
                 {
-                  "line": 334,
+                  "line": 349,
                   "name": "buildGlossaryHint",
                   "target": {
                     "file": "src/glossary.ts"
                   }
                 },
                 {
-                  "line": 98,
+                  "line": 112,
                   "name": "containsCodePlaceholder",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -1850,21 +3227,21 @@
                   "via": "buildPrompt"
                 },
                 {
-                  "line": 343,
+                  "line": 358,
                   "name": "polish",
                   "target": {
                     "file": "src/polish.ts"
                   }
                 },
                 {
-                  "line": 348,
+                  "line": 364,
                   "name": "buildGlossaryHint",
                   "target": {
                     "file": "src/glossary.ts"
                   }
                 },
                 {
-                  "line": 113,
+                  "line": 127,
                   "name": "containsCodePlaceholder",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -1872,21 +3249,21 @@
                   "via": "buildBatchPrompt"
                 },
                 {
-                  "line": 363,
+                  "line": 379,
                   "name": "polish",
                   "target": {
                     "file": "src/polish.ts"
                   }
                 },
                 {
-                  "line": 369,
+                  "line": 386,
                   "name": "buildGlossaryHint",
                   "target": {
                     "file": "src/glossary.ts"
                   }
                 },
                 {
-                  "line": 378,
+                  "line": 395,
                   "name": "polish",
                   "target": {
                     "file": "src/polish.ts"
@@ -1901,7 +3278,7 @@
           ]
         },
         {
-          "hash": "966e4b2c2da3df2e8700b81179517de4b96263423c9a446f4364dc43157cbadd",
+          "hash": "ce847b8c0ced6e08cb894d33c9a1cb848dbaa05069e67eae1496b34fb37e1bef",
           "importNames": [
             {
               "form": "import",
@@ -1928,7 +3305,13 @@
               "typeOnly": false
             }
           ],
+          "importOrder": [
+            "src/translateAll.ts",
+            "src/translateMarkdown.ts",
+            "src/survival.ts"
+          ],
           "importsFiles": [
+            "src/survival.ts",
             "src/translateAll.ts",
             "src/translateMarkdown.ts"
           ],
@@ -1953,12 +3336,15 @@
             {
               "in": "translateAll",
               "kind": "catch",
-              "line": 180
+              "line": 218
             }
           ],
-          "hash": "14e289d603c0c99c5029fc01d48830c58eed84e831b6be4bb22a4bbedef36fd5",
+          "hash": "2c893d6b7c8e5fa57b1581a51cac4b852fd226e42ba232a945d727d996038f75",
           "importsFiles": [
+            "src/pins.ts",
+            "src/protectedTerms.ts",
             "src/semaphore.ts",
+            "src/survival.ts",
             "src/translateMarkdown.ts"
           ],
           "path": "src/translateAll.ts",
@@ -1966,7 +3352,7 @@
             {
               "calls": [
                 {
-                  "line": 157,
+                  "line": 188,
                   "name": "acquire",
                   "receiver": "Semaphore",
                   "target": {
@@ -1976,49 +3362,78 @@
                 {
                   "inner": [
                     {
-                      "line": 322,
+                      "line": 823,
                       "name": "resolveLanguage",
                       "target": {
                         "file": "src/languages.ts"
                       }
                     },
                     {
-                      "line": 350,
+                      "line": 853,
+                      "name": "loadProtectedTerms",
+                      "target": {
+                        "file": "src/protectedTerms.ts"
+                      }
+                    },
+                    {
+                      "line": 854,
+                      "name": "loadPins",
+                      "target": {
+                        "file": "src/pins.ts"
+                      }
+                    },
+                    {
+                      "line": 854,
+                      "name": "createPins",
+                      "target": {
+                        "file": "src/pins.ts"
+                      }
+                    },
+                    {
+                      "line": 859,
                       "name": "loadCache",
                       "target": {
                         "file": "src/cache.ts"
                       }
                     },
                     {
-                      "line": 354,
+                      "line": 863,
                       "name": "clearCache",
                       "target": {
                         "file": "src/cache.ts"
                       }
                     },
                     {
-                      "line": 355,
+                      "line": 864,
                       "name": "saveCache",
                       "target": {
                         "file": "src/cache.ts"
                       }
                     },
                     {
-                      "line": 357,
+                      "line": 866,
                       "name": "pruneCache",
                       "target": {
                         "file": "src/cache.ts"
                       }
                     },
                     {
-                      "line": 360,
+                      "line": 869,
                       "name": "createCache",
                       "target": {
                         "file": "src/cache.ts"
                       }
                     },
                     {
-                      "line": 402,
+                      "line": 917,
+                      "name": "getPin",
+                      "target": {
+                        "file": "src/pins.ts"
+                      },
+                      "via": "enqueue"
+                    },
+                    {
+                      "line": 923,
                       "name": "maskCodeSpans",
                       "target": {
                         "file": "src/codeSpans.ts"
@@ -2026,51 +3441,24 @@
                       "via": "enqueue"
                     },
                     {
-                      "line": 403,
-                      "name": "cacheKey",
+                      "line": 923,
+                      "name": "DEFAULT_PROTECTED_TERMS",
+                      "passed": true,
                       "target": {
-                        "file": "src/cache.ts"
+                        "file": "src/protectedTerms.ts"
                       },
                       "via": "enqueue"
-                    },
-                    {
-                      "line": 404,
-                      "name": "getCached",
-                      "target": {
-                        "file": "src/cache.ts"
-                      },
-                      "via": "enqueue"
-                    },
-                    {
-                      "line": 406,
-                      "name": "getFuzzyCached",
-                      "target": {
-                        "file": "src/cache.ts"
-                      },
-                      "via": "enqueue"
-                    },
-                    {
-                      "line": 477,
-                      "name": "onProgress",
-                      "target": null
-                    },
-                    {
-                      "line": 485,
-                      "name": "translateBatch",
-                      "target": {
-                        "file": "src/translate.ts"
-                      }
                     }
                   ],
                   "innerTruncated": true,
-                  "line": 165,
+                  "line": 200,
                   "name": "translateMarkdown",
                   "target": {
                     "file": "src/translateMarkdown.ts"
                   }
                 },
                 {
-                  "line": 178,
+                  "line": 216,
                   "name": "onProgress",
                   "target": null
                 }
@@ -2083,7 +3471,48 @@
           ]
         },
         {
-          "hash": "aa022a74e811fdfe18ed09b17dcbabd63990f728eadd674df46e94939c9669cd",
+          "hash": "ced166d82878f6bd394d054d7d3edd0a7884c47b5ea4b57445776dca145ff3e3",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 11,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "beforeAll"
+                },
+                {
+                  "name": "afterAll"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "names": [
+            "scripts/translate-all.mjs",
+            "scripts/translate-readme.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "src/translateAll.untranslated.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "71ec78f48cb83e7744965c864fad46f496d97c9bf41c4caba4c9fc4884fc4714",
           "importNames": [
             {
               "form": "import",
@@ -2115,9 +3544,13 @@
           ],
           "importOrder": [
             "src/translateMarkdown.ts",
-            "src/translate.ts"
+            "src/translate.ts",
+            "src/codeSpans.ts",
+            "src/protectedTerms.ts"
           ],
           "importsFiles": [
+            "src/codeSpans.ts",
+            "src/protectedTerms.ts",
             "src/translate.ts",
             "src/translateMarkdown.ts"
           ],
@@ -2131,7 +3564,7 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "e36e73781781c1a8ff4f8599f83bee6f1c87a550aa22592eb060a170e1b7f0d3",
+          "hash": "0ba2a76076c4eebc909ad4e4cc8abc7fd09588387e95259d6456a487e63aa0cf",
           "importNames": [
             {
               "form": "import",
@@ -2224,6 +3657,64 @@
           "testFramework": "vitest"
         },
         {
+          "hash": "342987a435461ffb5c749be39eccff841aa13ca1b85acd9e1cb72974d4187a67",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 12,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "vi"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "afterEach"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "importOrder": [
+            "src/translateMarkdown.ts",
+            "src/translate.ts",
+            "src/cache.ts",
+            "src/codeSpans.ts",
+            "src/protectedTerms.ts",
+            "src/pins.ts",
+            "src/survival.ts"
+          ],
+          "importsFiles": [
+            "src/cache.ts",
+            "src/codeSpans.ts",
+            "src/pins.ts",
+            "src/protectedTerms.ts",
+            "src/survival.ts",
+            "src/translate.ts",
+            "src/translateMarkdown.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "src/translateMarkdown.protected.test.ts",
+          "testFramework": "vitest"
+        },
+        {
           "hash": "8fc1c4e3fb1083c16b16545f21aa92623962e7d9feaa69b4f7b623ba33b20166",
           "importNames": [
             {
@@ -2269,7 +3760,7 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "3d748ccb659576b802b4c48ab1349b32967888290b3847c009afc8c44542e9b2",
+          "hash": "785a1dab9fbd17aab4f8a93df2e47b0bd0f10ac075ef57662e6b8caebe54eee5",
           "importNames": [
             {
               "form": "import",
@@ -2306,89 +3797,406 @@
           "entry": "translateMarkdown",
           "entryRule": 3,
           "exports": [
+            "alignUnits",
+            "buildHeadingSlugMap",
+            "checkSurvival",
             "cleanTranslation",
+            "collectUnits",
             "extractTaglineText",
             "isTranslatableCell",
             "parseTable",
             "reassembleTable",
             "rebuildTagline",
+            "rewriteAnchors",
             "segmentMarkdown",
-            "translateMarkdown"
+            "translateMarkdown",
+            "unusableReason"
           ],
           "failurePaths": [
             {
               "in": "translateMarkdown",
               "kind": "throw",
-              "line": 324
+              "line": 825
             },
             {
               "in": "translateMarkdown",
               "kind": "throw",
-              "line": 334
+              "line": 835
             },
             {
               "in": "translateMarkdown",
               "kind": "catch",
-              "line": 533
+              "line": 1148
             }
           ],
-          "hash": "40570b0fa694cef157b7e543d58f9d1fda7f0dbfe87915709291a7c01ee32873",
+          "hash": "403989cd99a649b6b08803c640151a64cb8394524e2a596131c2b3a4c631e610",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 13,
+              "names": [
+                {
+                  "name": "default"
+                }
+              ],
+              "purl": "pkg:npm/github-slugger",
+              "specifier": "github-slugger",
+              "typeOnly": false
+            }
+          ],
           "importsFiles": [
             "src/cache.ts",
             "src/codeSpans.ts",
             "src/errors.ts",
             "src/languages.ts",
+            "src/pins.ts",
+            "src/protectedTerms.ts",
+            "src/survival.ts",
             "src/translate.ts",
             "src/validate.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/github-slugger"
+            }
           ],
           "path": "src/translateMarkdown.ts",
           "sequences": [
             {
               "calls": [
                 {
-                  "line": 322,
+                  "line": 452,
+                  "name": "stripHeadingMarkup",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                },
+                {
+                  "line": 452,
+                  "name": "safeDecodeSlug",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                },
+                {
+                  "line": 454,
+                  "name": "stripHeadingMarkup",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "buildHeadingSlugMap"
+            },
+            {
+              "calls": [
+                {
+                  "line": 514,
+                  "name": "safeDecodeSlug",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "rewriteAnchors"
+            },
+            {
+              "calls": [
+                {
+                  "line": 543,
+                  "name": "extractRefDefinitions",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                },
+                {
+                  "line": 550,
+                  "name": "checkSegment",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                },
+                {
+                  "line": 561,
+                  "name": "expectedSpans",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                },
+                {
+                  "line": 561,
+                  "name": "DEFAULT_PROTECTED_TERMS",
+                  "passed": true,
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  }
+                },
+                {
+                  "line": 572,
+                  "name": "checkLinks",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                },
+                {
+                  "line": 578,
+                  "name": "checkPlaceholders",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                },
+                {
+                  "line": 584,
+                  "name": "checkCodeStructure",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                },
+                {
+                  "line": 585,
+                  "name": "anchorsEnabled",
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  }
+                },
+                {
+                  "line": 585,
+                  "name": "DEFAULT_PROTECTED_TERMS",
+                  "passed": true,
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  }
+                },
+                {
+                  "line": 586,
+                  "name": "extractLinks",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                },
+                {
+                  "line": 599,
+                  "name": "checkAnchors",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "checkSurvival"
+            },
+            {
+              "calls": [
+                {
+                  "line": 643,
+                  "name": "PLACEHOLDER_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "localiseLine"
+            },
+            {
+              "calls": [
+                {
+                  "line": 761,
+                  "name": "PLACEHOLDER_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  }
+                },
+                {
+                  "line": 766,
+                  "name": "translateBatch",
+                  "target": {
+                    "file": "src/translate.ts"
+                  }
+                },
+                {
+                  "branch": "spans.length === 0",
+                  "line": 803,
+                  "name": "survivingProse",
+                  "target": {
+                    "file": "src/survival.ts"
+                  },
+                  "via": "unusableReason"
+                },
+                {
+                  "line": 804,
+                  "name": "restoreCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "unusableReason"
+                },
+                {
+                  "line": 806,
+                  "name": "survivingProse",
+                  "target": {
+                    "file": "src/survival.ts"
+                  },
+                  "via": "unusableReason"
+                },
+                {
+                  "line": 773,
+                  "name": "PLACEHOLDER_PATTERN",
+                  "passed": true,
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "translateByPieces"
+            },
+            {
+              "calls": [
+                {
+                  "branch": "spans.length === 0",
+                  "line": 803,
+                  "name": "survivingProse",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                },
+                {
+                  "line": 804,
+                  "name": "restoreCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  }
+                },
+                {
+                  "line": 806,
+                  "name": "survivingProse",
+                  "target": {
+                    "file": "src/survival.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "unusableReason"
+            },
+            {
+              "calls": [
+                {
+                  "line": 823,
                   "name": "resolveLanguage",
                   "target": {
                     "file": "src/languages.ts"
                   }
                 },
                 {
-                  "line": 350,
+                  "line": 853,
+                  "name": "loadProtectedTerms",
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  }
+                },
+                {
+                  "line": 854,
+                  "name": "loadPins",
+                  "target": {
+                    "file": "src/pins.ts"
+                  }
+                },
+                {
+                  "line": 854,
+                  "name": "createPins",
+                  "target": {
+                    "file": "src/pins.ts"
+                  }
+                },
+                {
+                  "line": 859,
                   "name": "loadCache",
                   "target": {
                     "file": "src/cache.ts"
                   }
                 },
                 {
-                  "line": 354,
+                  "line": 863,
                   "name": "clearCache",
                   "target": {
                     "file": "src/cache.ts"
                   }
                 },
                 {
-                  "line": 355,
+                  "line": 864,
                   "name": "saveCache",
                   "target": {
                     "file": "src/cache.ts"
                   }
                 },
                 {
-                  "line": 357,
+                  "line": 866,
                   "name": "pruneCache",
                   "target": {
                     "file": "src/cache.ts"
                   }
                 },
                 {
-                  "line": 360,
+                  "line": 869,
                   "name": "createCache",
                   "target": {
                     "file": "src/cache.ts"
                   }
                 },
                 {
-                  "line": 402,
+                  "inner": [
+                    {
+                      "line": 51,
+                      "name": "canonicalWhitespace",
+                      "target": {
+                        "file": "src/cache.ts"
+                      },
+                      "via": "pinKey"
+                    }
+                  ],
+                  "line": 917,
+                  "name": "getPin",
+                  "target": {
+                    "file": "src/pins.ts"
+                  },
+                  "via": "enqueue"
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 98,
+                      "name": "findProtectedSpans",
+                      "target": {
+                        "file": "src/protectedTerms.ts"
+                      }
+                    },
+                    {
+                      "line": 111,
+                      "name": "hashRules",
+                      "target": {
+                        "file": "src/protectedTerms.ts"
+                      }
+                    }
+                  ],
+                  "line": 923,
                   "name": "maskCodeSpans",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -2396,7 +4204,16 @@
                   "via": "enqueue"
                 },
                 {
-                  "line": 403,
+                  "line": 923,
+                  "name": "DEFAULT_PROTECTED_TERMS",
+                  "passed": true,
+                  "target": {
+                    "file": "src/protectedTerms.ts"
+                  },
+                  "via": "enqueue"
+                },
+                {
+                  "line": 924,
                   "name": "cacheKey",
                   "target": {
                     "file": "src/cache.ts"
@@ -2404,7 +4221,16 @@
                   "via": "enqueue"
                 },
                 {
-                  "line": 404,
+                  "branch": "!/\\p{L}/u.test(masked)",
+                  "line": 929,
+                  "name": "restoreCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "enqueue"
+                },
+                {
+                  "line": 935,
                   "name": "getCached",
                   "target": {
                     "file": "src/cache.ts"
@@ -2412,7 +4238,54 @@
                   "via": "enqueue"
                 },
                 {
-                  "line": 406,
+                  "branch": "spans.length === 0",
+                  "inner": [
+                    {
+                      "line": 1073,
+                      "name": "CODE_SPAN_PATTERN",
+                      "passed": true,
+                      "target": {
+                        "file": "src/codeSpans.ts"
+                      },
+                      "via": "proseText"
+                    }
+                  ],
+                  "line": 803,
+                  "name": "survivingProse",
+                  "target": {
+                    "file": "src/survival.ts"
+                  },
+                  "via": "unusableReason"
+                },
+                {
+                  "line": 804,
+                  "name": "restoreCodeSpans",
+                  "target": {
+                    "file": "src/codeSpans.ts"
+                  },
+                  "via": "unusableReason"
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 1073,
+                      "name": "CODE_SPAN_PATTERN",
+                      "passed": true,
+                      "target": {
+                        "file": "src/codeSpans.ts"
+                      },
+                      "via": "proseText"
+                    }
+                  ],
+                  "line": 806,
+                  "name": "survivingProse",
+                  "target": {
+                    "file": "src/survival.ts"
+                  },
+                  "via": "unusableReason"
+                },
+                {
+                  "line": 941,
                   "name": "getFuzzyCached",
                   "target": {
                     "file": "src/cache.ts"
@@ -2420,14 +4293,14 @@
                   "via": "enqueue"
                 },
                 {
-                  "line": 477,
+                  "line": 986,
                   "name": "onProgress",
                   "target": null
                 },
                 {
                   "inner": [
                     {
-                      "line": 164,
+                      "line": 178,
                       "name": "resolveLanguage",
                       "target": {
                         "file": "src/languages.ts"
@@ -2435,7 +4308,7 @@
                       "via": "resolveSetup"
                     },
                     {
-                      "line": 196,
+                      "line": 210,
                       "name": "ensureRunning",
                       "receiver": "OllamaClient",
                       "target": {
@@ -2444,7 +4317,7 @@
                       "via": "resolveSetup"
                     },
                     {
-                      "line": 205,
+                      "line": 219,
                       "name": "ensureModel",
                       "receiver": "OllamaClient",
                       "target": {
@@ -2453,14 +4326,14 @@
                       "via": "resolveSetup"
                     },
                     {
-                      "line": 334,
+                      "line": 349,
                       "name": "buildGlossaryHint",
                       "target": {
                         "file": "src/glossary.ts"
                       }
                     },
                     {
-                      "line": 98,
+                      "line": 112,
                       "name": "containsCodePlaceholder",
                       "target": {
                         "file": "src/codeSpans.ts"
@@ -2468,21 +4341,21 @@
                       "via": "buildPrompt"
                     },
                     {
-                      "line": 343,
+                      "line": 358,
                       "name": "polish",
                       "target": {
                         "file": "src/polish.ts"
                       }
                     },
                     {
-                      "line": 348,
+                      "line": 364,
                       "name": "buildGlossaryHint",
                       "target": {
                         "file": "src/glossary.ts"
                       }
                     },
                     {
-                      "line": 113,
+                      "line": 127,
                       "name": "containsCodePlaceholder",
                       "target": {
                         "file": "src/codeSpans.ts"
@@ -2490,83 +4363,259 @@
                       "via": "buildBatchPrompt"
                     },
                     {
-                      "line": 363,
+                      "line": 379,
                       "name": "polish",
                       "target": {
                         "file": "src/polish.ts"
                       }
                     },
                     {
-                      "line": 369,
+                      "line": 386,
                       "name": "buildGlossaryHint",
                       "target": {
                         "file": "src/glossary.ts"
                       }
                     },
                     {
-                      "line": 378,
+                      "line": 395,
                       "name": "polish",
                       "target": {
                         "file": "src/polish.ts"
                       }
                     }
                   ],
-                  "line": 485,
+                  "line": 1000,
                   "name": "translateBatch",
                   "target": {
                     "file": "src/translate.ts"
                   }
                 },
                 {
-                  "line": 500,
-                  "name": "cacheKey",
+                  "line": 1042,
+                  "name": "segmentLabel",
                   "target": {
-                    "file": "src/cache.ts"
+                    "file": "src/survival.ts"
                   }
                 },
                 {
-                  "line": 501,
-                  "name": "setCached",
+                  "inner": [
+                    {
+                      "line": 178,
+                      "name": "resolveLanguage",
+                      "target": {
+                        "file": "src/languages.ts"
+                      },
+                      "via": "resolveSetup"
+                    },
+                    {
+                      "line": 210,
+                      "name": "ensureRunning",
+                      "receiver": "OllamaClient",
+                      "target": {
+                        "file": "src/ollama.ts"
+                      },
+                      "via": "resolveSetup"
+                    },
+                    {
+                      "line": 219,
+                      "name": "ensureModel",
+                      "receiver": "OllamaClient",
+                      "target": {
+                        "file": "src/ollama.ts"
+                      },
+                      "via": "resolveSetup"
+                    },
+                    {
+                      "line": 349,
+                      "name": "buildGlossaryHint",
+                      "target": {
+                        "file": "src/glossary.ts"
+                      }
+                    },
+                    {
+                      "line": 112,
+                      "name": "containsCodePlaceholder",
+                      "target": {
+                        "file": "src/codeSpans.ts"
+                      },
+                      "via": "buildPrompt"
+                    },
+                    {
+                      "line": 358,
+                      "name": "polish",
+                      "target": {
+                        "file": "src/polish.ts"
+                      }
+                    },
+                    {
+                      "line": 364,
+                      "name": "buildGlossaryHint",
+                      "target": {
+                        "file": "src/glossary.ts"
+                      }
+                    },
+                    {
+                      "line": 127,
+                      "name": "containsCodePlaceholder",
+                      "target": {
+                        "file": "src/codeSpans.ts"
+                      },
+                      "via": "buildBatchPrompt"
+                    },
+                    {
+                      "line": 379,
+                      "name": "polish",
+                      "target": {
+                        "file": "src/polish.ts"
+                      }
+                    },
+                    {
+                      "line": 386,
+                      "name": "buildGlossaryHint",
+                      "target": {
+                        "file": "src/glossary.ts"
+                      }
+                    },
+                    {
+                      "line": 395,
+                      "name": "polish",
+                      "target": {
+                        "file": "src/polish.ts"
+                      }
+                    }
+                  ],
+                  "line": 1061,
+                  "name": "translateBatch",
                   "target": {
-                    "file": "src/cache.ts"
+                    "file": "src/translate.ts"
                   }
                 },
                 {
-                  "line": 508,
-                  "name": "onProgress",
-                  "target": null
-                },
-                {
-                  "line": 527,
-                  "name": "validateTranslation",
-                  "target": {
-                    "file": "src/validate.ts"
-                  }
-                },
-                {
-                  "line": 546,
-                  "name": "restoreCodeSpans",
+                  "line": 761,
+                  "name": "PLACEHOLDER_PATTERN",
+                  "passed": true,
                   "target": {
                     "file": "src/codeSpans.ts"
-                  }
-                },
-                {
-                  "line": 609,
-                  "name": "saveCache",
-                  "target": {
-                    "file": "src/cache.ts"
-                  }
+                  },
+                  "via": "translateByPieces"
                 }
               ],
               "exported": true,
               "invokedAtTopLevel": false,
               "isDefaultExport": false,
-              "name": "translateMarkdown"
+              "name": "translateMarkdown",
+              "truncated": true
             }
           ]
         },
         {
-          "hash": "50fe944032c3ac1306431f19d834a4b9be21e699c7e68940e5b340e4f2166ff7",
+          "hash": "6eb755f9313652c0fa2d7a555c494af8ca3f9c4c26baddc4a97d175b63b5546d",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 17,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "vi"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "afterEach"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "importOrder": [
+            "src/translateMarkdown.ts",
+            "src/translateAll.ts",
+            "src/translateReadme.ts",
+            "src/pinCorrections.ts",
+            "src/pins.ts",
+            "src/survival.ts"
+          ],
+          "importsFiles": [
+            "src/pinCorrections.ts",
+            "src/pins.ts",
+            "src/survival.ts",
+            "src/translateAll.ts",
+            "src/translateMarkdown.ts",
+            "src/translateReadme.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "src/translateMarkdown.untranslated.fixes.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "d89dea4b1449dcd316bbf79925b063730e7395c33a39123e112ccf0d6baacaf7",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 19,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "vi"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "afterEach"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "importOrder": [
+            "src/translateMarkdown.ts",
+            "src/survival.ts",
+            "src/pins.ts"
+          ],
+          "importsFiles": [
+            "src/pins.ts",
+            "src/survival.ts",
+            "src/translateMarkdown.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "src/translateMarkdown.untranslated.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "d94e12c9bfb8f8c1f7a7ee9187aa2d8496842af5fd488f88f8fe38f8cca9c1d1",
           "importNames": [
             {
               "form": "import",
@@ -2610,12 +4659,18 @@
           "exports": [
             "translateReadme"
           ],
-          "hash": "92f1a9b459109d7e41dc0ab82630c9477b42da5a2326fe5d92c4c92e31830038",
+          "hash": "0fde15526990b42651c63a387c35de0acf1420669758586ba259f683ea0124e8",
           "importOrder": [
             "src/translateAll.ts",
-            "src/translate.ts"
+            "src/translate.ts",
+            "src/protectedTerms.ts",
+            "src/pins.ts",
+            "src/survival.ts"
           ],
           "importsFiles": [
+            "src/pins.ts",
+            "src/protectedTerms.ts",
+            "src/survival.ts",
             "src/translate.ts",
             "src/translateAll.ts"
           ],
@@ -2731,20 +4786,27 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 6,
+          "reads": 11,
           "where": [
             "caller"
           ],
-          "writes": 5
+          "writes": 6
+        },
+        {
+          "reads": 1,
+          "where": [
+            "cwd:LICENSE"
+          ],
+          "writes": 0
         }
       ],
-      "outsideReads": 6,
-      "outsideWrites": 5,
+      "outsideReads": 12,
+      "outsideWrites": 6,
       "role": "code",
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 20,
+      "testedBy": 26,
       "unresolvedSites": 0
     }
   ],
@@ -2911,7 +4973,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 36
+          "files": 47
         }
       ],
       "readers": [],
@@ -2991,6 +5053,13 @@
         {
           "job": "quality-gates",
           "matched": true,
+          "path": "src/pins.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
           "path": "src/polish.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -2998,7 +5067,21 @@
         {
           "job": "quality-gates",
           "matched": true,
+          "path": "src/protectedTerms.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
           "path": "src/semaphore.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/survival.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -3013,6 +5096,13 @@
           "job": "quality-gates",
           "matched": true,
           "path": "src/translateAll.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/translateAll.untranslated.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -3040,6 +5130,13 @@
         {
           "job": "quality-gates",
           "matched": true,
+          "path": "src/translateMarkdown.protected.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
           "path": "src/translateMarkdown.roundtrip.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -3048,6 +5145,20 @@
           "job": "quality-gates",
           "matched": true,
           "path": "src/translateMarkdown.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/translateMarkdown.untranslated.fixes.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/translateMarkdown.untranslated.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -3073,7 +5184,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 22,
+      "runsCount": 29,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -3090,7 +5201,7 @@
         {
           "config": "vitest.config.ts",
           "coverage": true,
-          "files": 21,
+          "files": 28,
           "job": "quality-gates",
           "junit": true,
           "runner": "vitest",
@@ -3420,7 +5531,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 36
+          "files": 47
         }
       ],
       "readers": [],
@@ -3500,6 +5611,13 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "src/pins.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "src/polish.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -3507,7 +5625,21 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "src/protectedTerms.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "src/semaphore.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/survival.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -3522,6 +5654,13 @@
           "job": "publish",
           "matched": true,
           "path": "src/translateAll.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/translateAll.untranslated.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -3549,6 +5688,13 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "src/translateMarkdown.protected.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "src/translateMarkdown.roundtrip.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -3557,6 +5703,20 @@
           "job": "publish",
           "matched": true,
           "path": "src/translateMarkdown.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/translateMarkdown.untranslated.fixes.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/translateMarkdown.untranslated.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -3582,7 +5742,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 22,
+      "runsCount": 29,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -3607,7 +5767,7 @@
       "tests": [
         {
           "config": "vitest.config.ts",
-          "files": 21,
+          "files": 28,
           "job": "publish",
           "runner": "vitest",
           "step": "4",
@@ -3649,7 +5809,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 15
+          "files": 19
         }
       ],
       "readers": [],
@@ -3679,11 +5839,27 @@
           "runKind": "executes"
         },
         {
+          "path": "src/pinCorrections.ts",
+          "runKind": "executes"
+        },
+        {
+          "path": "src/pins.ts",
+          "runKind": "executes"
+        },
+        {
           "path": "src/polish.ts",
           "runKind": "executes"
         },
         {
+          "path": "src/protectedTerms.ts",
+          "runKind": "executes"
+        },
+        {
           "path": "src/semaphore.ts",
+          "runKind": "executes"
+        },
+        {
+          "path": "src/survival.ts",
           "runKind": "executes"
         },
         {
@@ -3703,7 +5879,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 12,
+      "runsCount": 16,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -3735,7 +5911,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 15
+          "files": 18
         }
       ],
       "readers": [],
@@ -3772,10 +5948,27 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "5b9702556cb1a0af4cb9a5b2452219617a94baad",
-    "tracked": 133
+    "commit": "3a8402389f0b8706f07a5c706d0dc97147d37f3d",
+    "tracked": 162
   },
   "landings": [
+    {
+      "readers": [
+        {
+          "by": "src/pins.ts",
+          "call": "readFileSync",
+          "confidence": "weak"
+        }
+      ],
+      "target": ".polyglot-pins.json",
+      "writers": [
+        {
+          "by": "src/pins.ts",
+          "confidence": "weak",
+          "stamps": true
+        }
+      ]
+    },
     {
       "readers": [
         {
@@ -3786,6 +5979,42 @@
         }
       ],
       "target": "CHANGELOG.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/protectedTerms.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "LICENSE",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/translateMarkdown.untranslated.fixes.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.es.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/translateMarkdown.untranslated.fixes.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.fr.md",
       "writers": []
     },
     {
@@ -3927,6 +6156,60 @@
       ],
       "target": "src/cache.ts",
       "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/pins.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "src/fixtures/issue-44/ai-jam-sessions.README.hi.5f8d1e2.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/pins.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "src/translateMarkdown.protected.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "src/fixtures/issue-44/ai-jam-sessions.polyglot-cache.5f8d1e2.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/survival.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "src/fixtures/issue-50/pins-99b69e6.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/survival.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "src/fixtures/issue-50/slips.json",
+      "writers": []
     }
   ],
   "manifests": [
@@ -3935,7 +6218,7 @@
       "path": "package.json",
       "role": "root",
       "roleFrom": "the root manifest",
-      "version": "1.8.0"
+      "version": "1.10.1"
     },
     {
       "name": "site",
@@ -3962,10 +6245,20 @@
       "field": "dependencies",
       "kind": "registry",
       "manifest": "package.json",
+      "name": "github-slugger",
+      "purl": "pkg:npm/github-slugger",
+      "range": "2.0.0",
+      "version": "2.0.0",
+      "versionFrom": "package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "package.json",
       "name": "zod",
       "purl": "pkg:npm/zod",
       "range": "^4.3.6",
-      "version": "4.6.5",
+      "version": "4.6.7",
       "versionFrom": "package-lock.json"
     },
     {
@@ -3984,8 +6277,8 @@
       "manifest": "package.json",
       "name": "@vitest/coverage-v8",
       "purl": "pkg:npm/%40vitest/coverage-v8",
-      "range": "4.1.4",
-      "version": "4.1.4",
+      "range": "4.1.12",
+      "version": "4.1.12",
       "versionFrom": "package-lock.json"
     },
     {
@@ -4014,8 +6307,8 @@
       "manifest": "package.json",
       "name": "vitest",
       "purl": "pkg:npm/vitest",
-      "range": "^4.1.4",
-      "version": "4.1.4",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "package-lock.json"
     },
     {
@@ -4079,11 +6372,11 @@
       "name": "@mcptoolshop/polyglot-mcp",
       "purl": "pkg:npm/%40mcptoolshop/polyglot-mcp",
       "repository": "https://github.com/mcp-tool-shop-org/polyglot-mcp",
-      "version": "1.8.0"
+      "version": "1.10.1"
     }
   ],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 21,
+  "testFiles": 28,
   "unassigned": []
 }

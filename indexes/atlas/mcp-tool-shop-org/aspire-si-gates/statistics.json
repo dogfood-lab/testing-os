@@ -1,0 +1,214 @@
+{
+  "authorship": {
+    "parts": [],
+    "places": []
+  },
+  "boundaries": [],
+  "churn": {
+    "definition": "commits is how many commits in the window touch the file, including merges and commits dropped from coupling. lines is added plus deleted in those commits.",
+    "files": [
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": ".gitattributes"
+      },
+      {
+        "commits": 1,
+        "lines": 41,
+        "path": ".github/workflows/ci.yml"
+      },
+      {
+        "commits": 1,
+        "lines": 7,
+        "path": ".gitignore"
+      },
+      {
+        "commits": 1,
+        "lines": 8,
+        "path": "CHANGELOG.md"
+      },
+      {
+        "commits": 1,
+        "lines": 21,
+        "path": "LICENSE"
+      },
+      {
+        "commits": 1,
+        "lines": 42,
+        "path": "README.md"
+      },
+      {
+        "commits": 1,
+        "lines": 6,
+        "path": "SECURITY.md"
+      },
+      {
+        "commits": 1,
+        "lines": 57,
+        "path": "atlas/README.md"
+      },
+      {
+        "commits": 1,
+        "lines": 2,
+        "path": "atlas/boundaries.yaml"
+      },
+      {
+        "commits": 1,
+        "lines": 95,
+        "path": "atlas/page.json"
+      },
+      {
+        "commits": 1,
+        "lines": 186,
+        "path": "atlas/statistics.json"
+      },
+      {
+        "commits": 1,
+        "lines": 1067,
+        "path": "atlas/structure.json"
+      },
+      {
+        "commits": 1,
+        "lines": 13,
+        "path": "pyproject.toml"
+      },
+      {
+        "commits": 1,
+        "lines": 28,
+        "path": "src/aspire_si_gates/__init__.py"
+      },
+      {
+        "commits": 1,
+        "lines": 16,
+        "path": "src/aspire_si_gates/answer_format.py"
+      },
+      {
+        "commits": 1,
+        "lines": 45,
+        "path": "src/aspire_si_gates/constants.py"
+      },
+      {
+        "commits": 1,
+        "lines": 116,
+        "path": "src/aspire_si_gates/context.py"
+      },
+      {
+        "commits": 1,
+        "lines": 1519,
+        "path": "src/aspire_si_gates/gates.py"
+      },
+      {
+        "commits": 1,
+        "lines": 69,
+        "path": "src/aspire_si_gates/scorer_rules.py"
+      },
+      {
+        "commits": 1,
+        "lines": 4,
+        "path": "tests/conftest.py"
+      },
+      {
+        "commits": 1,
+        "lines": 38,
+        "path": "tests/fixtures/apply-C.json"
+      },
+      {
+        "commits": 1,
+        "lines": 32,
+        "path": "tests/fixtures/apply-D.json"
+      },
+      {
+        "commits": 1,
+        "lines": 2,
+        "path": "tests/fixtures/role-set-stamp/sample.jsonl"
+      },
+      {
+        "commits": 1,
+        "lines": 2,
+        "path": "tests/fixtures/role-set-stamp/sample.models.jsonl"
+      },
+      {
+        "commits": 1,
+        "lines": 84,
+        "path": "tests/test_apply_item.py"
+      },
+      {
+        "commits": 1,
+        "lines": 222,
+        "path": "tests/test_closed_form.py"
+      },
+      {
+        "commits": 1,
+        "lines": 50,
+        "path": "tests/test_material_and_puzzles.py"
+      },
+      {
+        "commits": 1,
+        "lines": 80,
+        "path": "tests/test_model_signature.py"
+      },
+      {
+        "commits": 1,
+        "lines": 367,
+        "path": "tests/test_package.py"
+      }
+    ]
+  },
+  "confidence": {
+    "level": "low",
+    "reason": "fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions"
+  },
+  "generatedAt": "2026-10-26T12:27:39.944Z",
+  "generatedFrom": {
+    "commit": "8ed78f2fee388e81443953f8dd3753c73e1ff2bd"
+  },
+  "packageImports": {
+    "filesWithLeftOutImports": 0,
+    "importSitesNotPackageNames": 0,
+    "importSitesPackageInternal": 0,
+    "importSitesResolvedInRepository": 0,
+    "namesLeftOut": {},
+    "namesLeftOutOmitted": 0
+  },
+  "pairs": [],
+  "parameters": {
+    "appliedChangesetLimit": 7.25,
+    "changeset": 50,
+    "changesetFraction": 0.25,
+    "cohesionDrop": 0.2,
+    "couplingPopulation": "source",
+    "fallenShared": 3,
+    "floor": "fallen",
+    "floorHeld": false,
+    "floorTrigger": "both",
+    "headDate": "2026-10-24T16:21:58-04:00",
+    "inScopeFiles": 29,
+    "pinnedStart": null,
+    "priorFloor": "fallen",
+    "qualifyingCommits": 1,
+    "qualifyingMinimum": 30,
+    "revisions": 5,
+    "shared": 10,
+    "sharedFloorUsed": 3,
+    "since": "2026-04-27T20:21:58.000Z",
+    "sourceExtensions": [
+      ".js",
+      ".mjs",
+      ".cjs",
+      ".jsx",
+      ".ts",
+      ".tsx",
+      ".mts",
+      ".cts",
+      ".py",
+      ".rs",
+      ".gd"
+    ],
+    "sourceFileReach": 20,
+    "sourceFileRise": 25,
+    "sourceFilesReachingStrongFloor": 0,
+    "strength": 0.5,
+    "windowDays": 180
+  },
+  "strengthDefinition": "strength is the shared qualifying commits divided by either. either is the number of qualifying commits that touch either file."
+}

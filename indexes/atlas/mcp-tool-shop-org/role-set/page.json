@@ -42,7 +42,8 @@
     {
       "kind": "place",
       "readers": [
-        "scripts"
+        "scripts",
+        "src"
       ],
       "target": "roles/domains/naics-2022.json",
       "writers": [
@@ -54,22 +55,22 @@
     "fileCounts": {
       "added": 0,
       "assigned": 0,
-      "changed": 5,
+      "changed": 2,
       "moved": 0,
-      "parts": 4,
+      "parts": 1,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-19; 5 files changed content.",
+        "sentence": "Nothing structural changed since 2026-10-26; 2 files changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "62e47ffccd969092a4510e97c90fe693a4dd5d4f",
-      "generatedAt": "2026-10-19T04:44:11.352Z"
+      "commit": "15834e01e60b27f16bc2ac53d528d60d682bff6d",
+      "generatedAt": "2026-10-26T01:35:11.153Z"
     },
     "unchanged": true
   },
@@ -90,24 +91,9 @@
       "shared": 6
     },
     {
-      "a": "src/role_set/readout.py",
-      "b": "tests/test_paid_run_data.py",
-      "either": 11,
-      "partLabels": [
-        "src",
-        "tests"
-      ],
-      "parts": [
-        "src",
-        "tests"
-      ],
-      "relation": "b-imports-a",
-      "shared": 6
-    },
-    {
       "a": "src/role_set/mock.py",
       "b": "tests/test_runner.py",
-      "either": 21,
+      "either": 26,
       "partLabels": [
         "src",
         "tests"
@@ -117,18 +103,33 @@
         "tests"
       ],
       "relation": "b-imports-a",
-      "shared": 11
+      "shared": 14
+    },
+    {
+      "a": "src/role_set/readout.py",
+      "b": "tests/test_paid_run_data.py",
+      "either": 13,
+      "partLabels": [
+        "src",
+        "tests"
+      ],
+      "parts": [
+        "src",
+        "tests"
+      ],
+      "relation": "b-imports-a",
+      "shared": 7
     }
   ],
   "changesTogetherNote": [
-    "3 files changed together with their own tests, as expected.",
+    "6 files changed together with their own tests, as expected.",
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 14 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 20 source files reach 10 revisions and the floor had fallen; it rises back to 10 when 25 do."
   ],
-  "changesTogetherWithTests": 3,
-  "commit": "6ee4fb7af1f65c577ada4758b53d35df8e0242cf",
+  "changesTogetherWithTests": 6,
+  "commit": "d105f3da4550b6f4354d5ec66fe5f029b20c884e",
   "defaultBranch": "main",
-  "derived": "9 parts, mostly Python (111 files), shell (5), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. It deploys a site to GitHub Pages. People run role-set.",
+  "derived": "9 parts, mostly Python (115 files), shell (5), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. It deploys a site to GitHub Pages. People run role-set.",
   "doors": [
     {
       "checks": [],
@@ -143,12 +144,12 @@
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 53
+          "files": 54
         },
         {
           "boundary": "scripts",
           "depth": 1,
-          "files": 5
+          "files": 9
         },
         {
           "boundary": "src",
@@ -297,13 +298,13 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-19T12:36:32.855Z",
+  "generatedAt": "2026-10-26T12:32:51.184Z",
   "limits": [
     "1 import could not be resolved: `scripts/colab/pin_window.py` imports `stub_llama`, which is no module on its import path and no declared dependency.",
-    "6 writes and 22 reads use paths built at run time and are not named here.",
-    "38 writes and 85 reads go to a path their caller passes, not to this repository.",
-    "12 reads go to the directory the command is run in, not to this repository.",
-    "7 writes and 4 reads go to the directory the command is run in (plan.json/ and roles/) or a path their caller passes, not to this repository.",
+    "8 writes and 31 reads use paths built at run time and are not named here.",
+    "56 writes and 111 reads go to a path their caller passes, not to this repository.",
+    "9 writes and 6 reads go to the directory the command is run in or a path their caller passes, not to this repository.",
+    "15 reads go to the directory the command is run in, not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -331,13 +332,13 @@
   "startReason": "This path follows role-set (a command people run) from its entry, since CI runs only tests.",
   "summary": "role-set plans every slot of a role-shaping batch, has a loopback model write only the writer's parts, and passes each item through aspire-si's gates. It never rents a pod.",
   "summaryFrom": "person",
-  "testFiles": 66,
+  "testFiles": 74,
   "testedBy": {
-    "scripts": 8,
-    "src": 50
+    "scripts": 10,
+    "src": 52
   },
   "testedCodeParts": 2,
-  "unnamedWrites": 6,
+  "unnamedWrites": 8,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],

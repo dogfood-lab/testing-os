@@ -1,18 +1,18 @@
 # readouts: how it works
 
-Mapped at 2026-10-19 from commit f32097d by Atlas 1.26.0.
+Mapped at 2026-10-26 from commit 8ba63d5 by Atlas 1.26.0.
 
 ## What this is
 
-20 parts, mostly Python (163 files), HTML (57), Rust (6), JavaScript (3), CSS (2), PowerShell (2), TypeScript (2) and Astro (1). Work enters through 2 doors; verify and Deploy site to GitHub Pages each reach 2 parts, and verify is followed because a pull request goes through it. It deploys a site to GitHub Pages.
+20 parts, mostly Python (168 files), HTML (57), Rust (6), JavaScript (3), CSS (2), PowerShell (2), TypeScript (2) and Astro (1). Work enters through 2 doors; verify and Deploy site to GitHub Pages each reach 2 parts, and verify is followed because a pull request goes through it. It deploys a site to GitHub Pages.
 
-## What changed since 2026-10-15 (28c0163)
+## What changed since 2026-10-24 (b5c60a8)
 
 - rust-knowledge/catalog/engine-*.md is now written by rust-knowledge/scripts/gen_catalog.py.
 - tensor-engine-knowledge/verifier/results-real-*.json is now written by tensor-engine-knowledge/verifier/citation_panel_eval.py and tensor-engine-knowledge/verifier/citation_panel_eval_3family.py.
 - xrpl-knowledge/catalog/track-*.md is now written by xrpl-knowledge/scripts/gen_catalog.py.
-- And 83 more new writers and readers of places.
-- 2 files changed content, across 1 part.
+- And 90 more new writers and readers of places.
+- No file changed.
 
 ## What comes in
 
@@ -84,6 +84,9 @@ And 15 more candidates.
 
 - **.claude/** is written by shared/gen_root_loadout.py.
 - **README.md** has a block written by shared/sync_readme_table.py.
+- **agent-tooling-knowledge/.claude/loadout/index.json** is written by agent-tooling-knowledge/scripts/gen_loadout.py.
+- **agent-tooling-knowledge/catalog/** is written by agent-tooling-knowledge/scripts/gen_catalog.py.
+- **agent-tooling-knowledge/findings.db** is written by agent-tooling-knowledge/scripts/gen_catalog.py, agent-tooling-knowledge/scripts/gen_loadout.py, agent-tooling-knowledge/scripts/load_db.py and agent-tooling-knowledge/scripts/refresh_meta.py.
 - **blender-knowledge/.claude/loadout/index.json** is written by blender-knowledge/scripts/gen_loadout.py.
 - **blender-knowledge/blender.db** is written by blender-knowledge (4 files).
 - **blender-knowledge/catalog/** is written by blender-knowledge/scripts/gen_catalog.py.
@@ -158,7 +161,7 @@ And 15 more candidates.
 - **xrpl-knowledge/module-drafts/** is written by xrpl-knowledge/scripts/gen_module_drafts.py.
 - **xrpl-knowledge/module-drafts/COVERAGE-GAP.md** is written by xrpl-knowledge/scripts/gen_coverage_gap.py.
 - **xrpl-knowledge/waves/wave-01-foundation/research-raw.json** is written by xrpl-knowledge/scripts/assemble_lanes.py and xrpl-knowledge/scripts/verify_cloud.py.
-- **xrpl-knowledge/xrpl.db** is written by xrpl-knowledge (7 files).
+- **xrpl-knowledge/xrpl.db** is written by xrpl-knowledge (8 files).
 
 ## Hand-authored
 
@@ -179,10 +182,11 @@ Read those in order to follow one pull request end to end.
 - 1 import site names a path outside this repository, so what it loads is not followed.
 - 31 writes and 22 reads use paths built at run time and are not named here.
 - 10 writes go to places this repository does not track, so they are not listed as generated.
-- 23 writes and 62 reads go to a path their caller passes, not to this repository.
+- 23 writes and 63 reads go to a path their caller passes, not to this repository.
 - 6 writes and 2 reads go to a temporary directory, not to this repository.
 - 5 reads go to the home directory (.cargo/), not to this repository.
 - 3 reads go to the directory the command is run in, not to this repository.
+- 17 files belong to no part: agent-tooling-knowledge/.claude/loadout/index.json, agent-tooling-knowledge/README.md, agent-tooling-knowledge/catalog/README.md and 14 more.
 - Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

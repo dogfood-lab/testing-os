@@ -1,22 +1,20 @@
 # interlock: how it works
 
-Mapped at 2026-10-19 from commit 7fbc75b by Atlas 1.26.0.
+Mapped at 2026-10-26 from commit 37eafad by Atlas 1.26.0.
 
 ## What this is
 
 interlock routes each job to a model, engine and device from a receipt-backed table. (written by a person)
 
-10 parts, mostly Python (96 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run interlock.
+10 parts, mostly Python (111 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run interlock.
 
-## What changed since 2026-10-14 (0deac11)
+## What changed since 2026-10-26 (1ecf1db)
 
-- experiments/relay-s1/ is now read by scripts/relay_s1.py.
-- experiments/relay-s1/decode.yaml is now read by scripts/relay_s1.py and tests/test_relay_s1_driver.py.
-- 13 files added and 26 changed content, across 6 parts.
+Nothing structural changed since 2026-10-26; 16 files changed content.
 
 ## What comes in
 
-1. **CI.** On a pull request to main; on a push to main touching 11 paths; or by hand. Runs tests/fuzz_receipts.py and tests/.
+1. **CI.** On a pull request to main; on a push to main touching 11 paths; or by hand. Runs src/interlock/cli.py, tests/fuzz_receipts.py and tests/.
 2. **Release.** When a release is published; or by hand. Checks src/interlock/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **OpenSSF Scorecard.** On a `branch_protection_rule` event; on a schedule (`43 15 * * 1`), Monday at 15:43 UTC; or by hand. Runs no file this map can see.
@@ -24,8 +22,8 @@ interlock routes each job to a model, engine and device from a receipt-backed ta
 
 ## What happens through CI
 
-1. The workflow runs tests/fuzz_receipts.py and tests/ in tests.
-2. That reaches scripts (2 files) and src (50 files).
+1. The workflow runs src/interlock/cli.py in src and tests/fuzz_receipts.py and tests/ in tests.
+2. That reaches scripts (2 files).
 3. It uploads coverage to Codecov.
 
 ## Who reads the results
@@ -49,17 +47,17 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-- **src/switchyard/adapters/openvino.py** and **tests/test_openvino_adapter.py** changed together in 17 of 22 commits.
-- **src/interlock/harness/fill.py** and **tests/test_e5_preflight.py** changed together in 5 of 8 commits, and the tests part imports the src part.
-- **src/interlock/harness/runner.py** and **tests/test_e5_preflight.py** changed together in 5 of 8 commits, and the tests part imports the src part.
-- **src/interlock/harness/fill.py** and **src/interlock/harness/runner.py** changed together in 6 of 10 commits, inside the src part.
-- **src/interlock/harness/fill.py** and **tests/test_fill_card_live.py** changed together in 7 of 13 commits, and the tests part imports the src part.
+- **src/switchyard/adapters/openvino.py** and **tests/test_openvino_adapter.py** changed together in 17 of 23 commits.
+- **site/src/site-config.ts** and **src/interlock/__init__.py** changed together in 8 of 12 commits.
+- **src/interlock/harness/fill.py** and **tests/test_e5_preflight.py** changed together in 5 of 9 commits, and the tests part imports the src part.
+- **src/switchyard/harness/receipts.py** and **src/switchyard/receipt.py** changed together in 7 of 13 commits.
+- **src/interlock/harness/fill.py** and **tests/test_fill_card_live.py** changed together in 8 of 15 commits, and the tests part imports the src part.
 
-1 file changed together with its own test, as expected.
+2 files changed together with their own tests, as expected.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 14 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -85,16 +83,18 @@ People write .github/, docs/ and the repository root. The data in assets/, exper
 
 ## Where to start
 
-src/interlock/cli.py → src/interlock/receipt.py → src/interlock/families.py
+.github/workflows/ci.yml → src/interlock/cli.py → src/interlock/receipt.py → src/interlock/devices.py
 
-Read those in order to follow one run of interlock end to end. This path follows interlock (a command people run) from its entry, since CI runs only tests.
+Read those in order to follow one pull request end to end.
+
+Beside the path, src/interlock/receipt.py also calls src/interlock/families.py.
 
 ## What this map cannot see
 
 - 1 import site names a declared dependency that shares its name with a local module (openvino); it is read as the dependency, which is not in this repository.
-- 5 writes and 4 reads use paths built at run time and are not named here.
-- 17 writes and 41 reads go to a path their caller passes, not to this repository.
-- 5 reads go to the directory the command is run in (logs/, pilot-e4b/ and receipts/), not to this repository.
+- 5 writes and 6 reads use paths built at run time and are not named here.
+- 17 writes and 46 reads go to a path their caller passes, not to this repository.
+- 7 reads go to the directory the command is run in (experiments/, interlock.toml, logs/ and 2 more places), not to this repository.
 - 18 files belong to no part: site/astro.config.mjs, site/package-lock.json, site/package.json and 15 more.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 

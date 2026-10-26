@@ -1,0 +1,173 @@
+{
+  "authored": [
+    ".github/",
+    "examples/",
+    "root"
+  ],
+  "breaks": [
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "src",
+      "partLabel": "src"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 6,
+      "assigned": 0,
+      "changed": 14,
+      "moved": 0,
+      "parts": 3,
+      "removed": 0,
+      "unassigned": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-10-26; 6 files added and 14 changed content.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "ab7c07ce8592296dd52de8d334206d60ae9d4f77",
+      "generatedAt": "2026-10-26T02:31:50.134Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "98befb1bbac5b7ec5f8a7e18b89b57121588541a",
+  "defaultBranch": "main",
+  "derived": "5 parts, mostly Python (39 files). Work enters through 2 doors; the busiest is ci, which reaches 2 parts. People run rdlab.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "ci",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 21
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "files": 18
+        }
+      ],
+      "runs": [
+        "tests/"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [
+        "uploads coverage to Codecov"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a pull request",
+        "on a push to main touching 8 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "pyproject.toml",
+      "id": "pyproject.toml#rdlab",
+      "kind": "command",
+      "landings": [],
+      "name": "rdlab",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 15
+        }
+      ],
+      "runs": [
+        "src/reasoning_dataset_lab/cli.py"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "engine": "1.26.0",
+  "generated": [],
+  "generatedAt": "2026-10-26T12:31:47.553Z",
+  "limits": [
+    "6 import sites name a declared dependency that shares its name with a local module (role_set); they are read as the dependency, which is not in this repository.",
+    "7 reads use paths built at run time and are not named here.",
+    "14 writes and 34 reads go to a path their caller passes, not to this repository.",
+    "1 file belongs to no part: docs/calibration-2026-10-25.md.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "examples": "examples",
+    "root": "the repository root",
+    "src": "src",
+    "tests": "tests"
+  },
+  "parts": 5,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/reasoning-dataset-lab",
+  "sequences": [],
+  "startBeside": [
+    {
+      "files": [
+        "src/reasoning_dataset_lab/pilot_b/__init__.py",
+        "src/reasoning_dataset_lab/pilot_b/models_and_build.py",
+        "src/reasoning_dataset_lab/map.py",
+        "src/reasoning_dataset_lab/config.py",
+        "src/reasoning_dataset_lab/pilot_b/variety.py"
+      ],
+      "from": "src/reasoning_dataset_lab/cli.py"
+    }
+  ],
+  "startDoor": "pyproject.toml#rdlab",
+  "startHere": [
+    "src/reasoning_dataset_lab/cli.py",
+    "src/reasoning_dataset_lab/pilot_b/fact_tables.py",
+    "src/reasoning_dataset_lab/errors.py"
+  ],
+  "startReason": "This path follows rdlab (a command people run) from its entry, since ci runs only tests.",
+  "summary": "reasoning-dataset-lab validates dataset maps, loads the five-file project configuration, and computes deterministic configuration fingerprints.",
+  "summaryFrom": "person",
+  "testFiles": 21,
+  "testedBy": {
+    "src": 20
+  },
+  "testedCodeParts": 1,
+  "unnamedWrites": 0,
+  "unread": [],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [],
+  "written": 0
+}

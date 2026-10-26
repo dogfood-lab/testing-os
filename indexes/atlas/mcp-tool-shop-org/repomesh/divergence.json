@@ -1,10 +1,256 @@
 {
   "repo": "mcp-tool-shop-org/repomesh",
   "generated_from": {
-    "commit_sha": "67079b443f7f17d2e6fb84184bea3d5428fb24cf"
+    "commit_sha": "d1b1b87c74287aa8e438c1564d6334e18515dbe6"
   },
-  "generated_at": "2026-10-19T12:35:47.132Z",
+  "generated_at": "2026-10-26T12:31:59.249Z",
   "shared_commit_floor": 3,
   "confidence": "low",
-  "rows": []
+  "rows": [
+    {
+      "id": "mcp-tool-shop-org/repomesh|file-moved|ledger|ledger/scripts/validate-ledger.mjs",
+      "rule": "file-moved",
+      "value": 0.75,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundary": "ledger",
+      "file": "ledger/scripts/validate-ledger.mjs",
+      "partner_boundary": "repomesh-cli"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|file-moved|registry|registry/scripts/build-trust.mjs",
+      "rule": "file-moved",
+      "value": 0.857143,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundary": "registry",
+      "file": "registry/scripts/build-trust.mjs",
+      "partner_boundary": "tools"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|file-moved|repomesh-cli|packages/repomesh-cli/src/verify/key-window.mjs",
+      "rule": "file-moved",
+      "value": 1,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundary": "repomesh-cli",
+      "file": "packages/repomesh-cli/src/verify/key-window.mjs",
+      "partner_boundary": "verifiers"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|file-moved|repomesh-cli|packages/repomesh-cli/src/verify/verify-release.mjs",
+      "rule": "file-moved",
+      "value": 0.857143,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundary": "repomesh-cli",
+      "file": "packages/repomesh-cli/src/verify/verify-release.mjs",
+      "partner_boundary": "tools"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|file-moved|tools|tools/verify-release.mjs",
+      "rule": "file-moved",
+      "value": 0.857143,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundary": "tools",
+      "file": "tools/verify-release.mjs",
+      "partner_boundary": "repomesh-cli"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|file-moved|verifiers|verifiers/lib/key-window.mjs",
+      "rule": "file-moved",
+      "value": 1,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundary": "verifiers",
+      "file": "verifiers/lib/key-window.mjs",
+      "partner_boundary": "repomesh-cli"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|leaks|ledger",
+      "rule": "leaks",
+      "value": 2.125,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundary": "ledger"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|leaks|registry",
+      "rule": "leaks",
+      "value": 2.357143,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundary": "registry"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|leaks|repomesh-cli",
+      "rule": "leaks",
+      "value": 4.482143,
+      "threshold": 0.625,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundary": "repomesh-cli"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|leaks|tools",
+      "rule": "leaks",
+      "value": 3.339286,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundary": "tools"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|leaks|verifiers",
+      "rule": "leaks",
+      "value": 2.125,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundary": "verifiers"
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|two-may-be-one|ledger|registry",
+      "rule": "two-may-be-one",
+      "value": 0.75,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundaries": [
+        "ledger",
+        "registry"
+      ]
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|two-may-be-one|ledger|repomesh-cli",
+      "rule": "two-may-be-one",
+      "value": 0.75,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundaries": [
+        "ledger",
+        "repomesh-cli"
+      ]
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|two-may-be-one|ledger|tools",
+      "rule": "two-may-be-one",
+      "value": 0.625,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundaries": [
+        "ledger",
+        "tools"
+      ]
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|two-may-be-one|registry|repomesh-cli",
+      "rule": "two-may-be-one",
+      "value": 0.75,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundaries": [
+        "registry",
+        "repomesh-cli"
+      ]
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|two-may-be-one|registry|tools",
+      "rule": "two-may-be-one",
+      "value": 0.857143,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundaries": [
+        "registry",
+        "tools"
+      ]
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|two-may-be-one|repomesh-cli|tools",
+      "rule": "two-may-be-one",
+      "value": 1.357143,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundaries": [
+        "repomesh-cli",
+        "tools"
+      ]
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|two-may-be-one|repomesh-cli|verifiers",
+      "rule": "two-may-be-one",
+      "value": 1.625,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundaries": [
+        "repomesh-cli",
+        "verifiers"
+      ]
+    },
+    {
+      "id": "mcp-tool-shop-org/repomesh|two-may-be-one|tools|verifiers",
+      "rule": "two-may-be-one",
+      "value": 0.5,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:31:59.249Z",
+      "last_seen": "2026-10-26T12:31:59.249Z",
+      "boundaries": [
+        "tools",
+        "verifiers"
+      ]
+    }
+  ]
 }

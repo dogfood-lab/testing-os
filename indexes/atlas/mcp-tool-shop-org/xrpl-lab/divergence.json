@@ -1,12 +1,25 @@
 {
   "repo": "mcp-tool-shop-org/xrpl-lab",
   "generated_from": {
-    "commit_sha": "aa97f4c4698f7c49e7aee181c26adbea4dc59b7f"
+    "commit_sha": "f51a282c460b55bffd4939f83d894a584ee469fc"
   },
-  "generated_at": "2026-10-19T12:39:33.994Z",
+  "generated_at": "2026-10-26T12:33:42.631Z",
   "shared_commit_floor": 3,
   "confidence": "low",
   "rows": [
+    {
+      "id": "mcp-tool-shop-org/xrpl-lab|file-moved|bin|bin/xrpl-lab.js",
+      "rule": "file-moved",
+      "value": 0.714286,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:33:42.631Z",
+      "last_seen": "2026-10-26T12:33:42.631Z",
+      "boundary": "bin",
+      "file": "bin/xrpl-lab.js",
+      "partner_boundary": "xrpl_lab"
+    },
     {
       "id": "mcp-tool-shop-org/xrpl-lab|file-moved|tests|tests/test_doctor.py",
       "rule": "file-moved",
@@ -15,10 +28,23 @@
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-10-05T14:05:47.226Z",
-      "last_seen": "2026-10-19T12:39:33.994Z",
+      "last_seen": "2026-10-26T12:33:42.631Z",
       "boundary": "tests",
       "file": "tests/test_doctor.py",
       "partner_boundary": "xrpl_lab"
+    },
+    {
+      "id": "mcp-tool-shop-org/xrpl-lab|file-moved|xrpl_lab|xrpl_lab/__init__.py",
+      "rule": "file-moved",
+      "value": 0.714286,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:33:42.631Z",
+      "last_seen": "2026-10-26T12:33:42.631Z",
+      "boundary": "xrpl_lab",
+      "file": "xrpl_lab/__init__.py",
+      "partner_boundary": "bin"
     },
     {
       "id": "mcp-tool-shop-org/xrpl-lab|file-moved|xrpl_lab|xrpl_lab/doctor.py",
@@ -28,10 +54,21 @@
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-10-05T14:05:47.226Z",
-      "last_seen": "2026-10-19T12:39:33.994Z",
+      "last_seen": "2026-10-26T12:33:42.631Z",
       "boundary": "xrpl_lab",
       "file": "xrpl_lab/doctor.py",
       "partner_boundary": "tests"
+    },
+    {
+      "id": "mcp-tool-shop-org/xrpl-lab|leaks|bin",
+      "rule": "leaks",
+      "value": 0.714286,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:33:42.631Z",
+      "last_seen": "2026-10-26T12:33:42.631Z",
+      "boundary": "bin"
     },
     {
       "id": "mcp-tool-shop-org/xrpl-lab|leaks|tests",
@@ -41,19 +78,33 @@
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-10-05T14:05:47.226Z",
-      "last_seen": "2026-10-19T12:39:33.994Z",
+      "last_seen": "2026-10-26T12:33:42.631Z",
       "boundary": "tests"
     },
     {
       "id": "mcp-tool-shop-org/xrpl-lab|leaks|xrpl_lab",
       "rule": "leaks",
-      "value": 0.5,
+      "value": 1.214286,
       "threshold": 0,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-10-05T14:05:47.226Z",
-      "last_seen": "2026-10-19T12:39:33.994Z",
+      "last_seen": "2026-10-26T12:33:42.631Z",
       "boundary": "xrpl_lab"
+    },
+    {
+      "id": "mcp-tool-shop-org/xrpl-lab|two-may-be-one|bin|xrpl_lab",
+      "rule": "two-may-be-one",
+      "value": 0.714286,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:33:42.631Z",
+      "last_seen": "2026-10-26T12:33:42.631Z",
+      "boundaries": [
+        "bin",
+        "xrpl_lab"
+      ]
     },
     {
       "id": "mcp-tool-shop-org/xrpl-lab|two-may-be-one|tests|xrpl_lab",
@@ -63,7 +114,7 @@
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-10-05T14:05:47.226Z",
-      "last_seen": "2026-10-19T12:39:33.994Z",
+      "last_seen": "2026-10-26T12:33:42.631Z",
       "boundaries": [
         "tests",
         "xrpl_lab"

@@ -1,6 +1,6 @@
 # portlight-bounty: how it works
 
-Mapped at 2026-10-19 from commit 11338c3 by Atlas 1.26.0.
+Mapped at 2026-10-26 from commit 6bebc9a by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-19 from commit 11338c3 by Atlas 1.26.0.
 
 ## What changed since 2026-10-18 (429510b)
 
-Nothing structural changed since 2026-10-18; 4 files changed content.
+Nothing structural changed since 2026-10-18; 17 files changed content.
 
 ## What comes in
 

@@ -1,6 +1,6 @@
 # backpropagate: how it works
 
-Mapped at 2026-10-19 from commit 498c26b by Atlas 1.26.0.
+Mapped at 2026-10-26 from commit 9b93de0 by Atlas 1.26.0.
 
 ## What this is
 
@@ -10,7 +10,7 @@ Mapped at 2026-10-19 from commit 498c26b by Atlas 1.26.0.
 
 - .github/workflows/*.yml is now read by scripts/check_doc_drift.py.
 - backpropagate/**/*.py is now read by tests/test_error_codes_catalog.py.
-- No file changed.
+- 1 file changed content, across 1 part.
 
 ## What comes in
 

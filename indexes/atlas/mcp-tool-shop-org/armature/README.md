@@ -1,6 +1,6 @@
 # armature: how it works
 
-Mapped at 2026-10-19 from commit 44b3b06 by Atlas 1.26.0.
+Mapped at 2026-10-26 from commit fee4f74 by Atlas 1.26.0.
 
 ## What this is
 

@@ -1,23 +1,36 @@
 {
   "repo": "mcp-tool-shop-org/interlock",
   "generated_from": {
-    "commit_sha": "7fbc75bb9a882000bfed9a6db245ea79071b1692"
+    "commit_sha": "37eafadb86067b3aefc28eab44968f847970d5aa"
   },
-  "generated_at": "2026-10-19T12:33:06.429Z",
+  "generated_at": "2026-10-26T12:30:20.017Z",
   "shared_commit_floor": 3,
   "confidence": "low",
   "rows": [
     {
       "id": "mcp-tool-shop-org/interlock|file-moved|src|src/interlock/harness/fill.py",
       "rule": "file-moved",
-      "value": 0.625,
+      "value": 0.555556,
       "threshold": 0.5,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-10-19T12:33:06.429Z",
-      "last_seen": "2026-10-19T12:33:06.429Z",
+      "last_seen": "2026-10-26T12:30:20.017Z",
       "boundary": "src",
       "file": "src/interlock/harness/fill.py",
+      "partner_boundary": "tests"
+    },
+    {
+      "id": "mcp-tool-shop-org/interlock|file-moved|src|src/interlock/harness/linux_cuda.py",
+      "rule": "file-moved",
+      "value": 0.666667,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:30:20.017Z",
+      "last_seen": "2026-10-26T12:30:20.017Z",
+      "boundary": "src",
+      "file": "src/interlock/harness/linux_cuda.py",
       "partner_boundary": "tests"
     },
     {
@@ -26,7 +39,7 @@
       "value": 0.625,
       "threshold": 0.5,
       "confidence": "low",
-      "state": "open",
+      "state": "cleared",
       "first_seen": "2026-10-19T12:33:06.429Z",
       "last_seen": "2026-10-19T12:33:06.429Z",
       "boundary": "src",
@@ -36,12 +49,12 @@
     {
       "id": "mcp-tool-shop-org/interlock|file-moved|tests|tests/test_e5_preflight.py",
       "rule": "file-moved",
-      "value": 0.625,
+      "value": 0.555556,
       "threshold": 0.5,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-10-19T12:33:06.429Z",
-      "last_seen": "2026-10-19T12:33:06.429Z",
+      "last_seen": "2026-10-26T12:30:20.017Z",
       "boundary": "tests",
       "file": "tests/test_e5_preflight.py",
       "partner_boundary": "src"
@@ -49,47 +62,60 @@
     {
       "id": "mcp-tool-shop-org/interlock|file-moved|tests|tests/test_fill_card_live.py",
       "rule": "file-moved",
-      "value": 0.538462,
+      "value": 0.533333,
       "threshold": 0.5,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-10-19T12:33:06.429Z",
-      "last_seen": "2026-10-19T12:33:06.429Z",
+      "last_seen": "2026-10-26T12:30:20.017Z",
       "boundary": "tests",
       "file": "tests/test_fill_card_live.py",
       "partner_boundary": "src"
     },
     {
+      "id": "mcp-tool-shop-org/interlock|file-moved|tests|tests/test_linux_cuda.py",
+      "rule": "file-moved",
+      "value": 0.666667,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-10-26T12:30:20.017Z",
+      "last_seen": "2026-10-26T12:30:20.017Z",
+      "boundary": "tests",
+      "file": "tests/test_linux_cuda.py",
+      "partner_boundary": "src"
+    },
+    {
       "id": "mcp-tool-shop-org/interlock|leaks|src",
       "rule": "leaks",
-      "value": 1.788462,
-      "threshold": 0.6,
+      "value": 1.755556,
+      "threshold": 0,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-10-19T12:33:06.429Z",
-      "last_seen": "2026-10-19T12:33:06.429Z",
+      "last_seen": "2026-10-26T12:30:20.017Z",
       "boundary": "src"
     },
     {
       "id": "mcp-tool-shop-org/interlock|leaks|tests",
       "rule": "leaks",
-      "value": 1.788462,
+      "value": 1.755556,
       "threshold": 0,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-10-19T12:33:06.429Z",
-      "last_seen": "2026-10-19T12:33:06.429Z",
+      "last_seen": "2026-10-26T12:30:20.017Z",
       "boundary": "tests"
     },
     {
       "id": "mcp-tool-shop-org/interlock|two-may-be-one|src|tests",
       "rule": "two-may-be-one",
-      "value": 1.788462,
+      "value": 1.755556,
       "threshold": 0,
       "confidence": "low",
       "state": "open",
       "first_seen": "2026-10-19T12:33:06.429Z",
-      "last_seen": "2026-10-19T12:33:06.429Z",
+      "last_seen": "2026-10-26T12:30:20.017Z",
       "boundaries": [
         "src",
         "tests"

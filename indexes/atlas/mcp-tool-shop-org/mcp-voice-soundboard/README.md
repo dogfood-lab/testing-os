@@ -1,6 +1,6 @@
 # mcp-voice-soundboard: how it works
 
-Mapped at 2026-10-19 from commit 0348ea0 by Atlas 1.26.0.
+Mapped at 2026-10-26 from commit ffab8a5 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-19 from commit 0348ea0 by Atlas 1.26.0.
 
 ## What changed since 2026-10-15 (1621d92)
 
-Nothing structural changed since 2026-10-15; 4 files added and 6 changed content.
+Nothing structural changed since 2026-10-15; 4 files added and 7 changed content.
 
 ## What comes in
 

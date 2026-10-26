@@ -9,15 +9,11 @@
       "externals": 0,
       "files": [
         {
-          "hash": "215153b9aeb16e634188ec06ccba3b1aa3ed47000d9f6c5211add84a1de6b191",
+          "hash": "623ee16b6650133a57b37721e3d5e38aabd9805206a21400c1825a7b3779958d",
           "path": ".github/workflows/ci.yml"
         },
         {
-          "hash": "d2da174b21c12598abdf977eb7b69d91d4d0aa32d08a27656b3bbbe15bb609d0",
-          "path": ".github/workflows/docker-publish.yml"
-        },
-        {
-          "hash": "70c3cc3b8bf4d77647d89b18d4d77753822d1f8784bf30576d3d1876aeaf6c45",
+          "hash": "1efd7ad4b59eee3dc8ea6b82a9cf4216c3d80c1e4d372825b71cbeb54881ddbc",
           "path": ".github/workflows/docker.yml"
         },
         {
@@ -25,7 +21,7 @@
           "path": ".github/workflows/pages.yml"
         },
         {
-          "hash": "2459518b643e7cd081ecf2906a76cbb3185694cb931b0df8f88e8aae393d1b09",
+          "hash": "3c4bf3b55265a7498da2ea14d1e4d6a015d1080ef7c18f2cd56fec4db9d768b9",
           "path": ".github/workflows/release.yml"
         }
       ],
@@ -50,13 +46,14 @@
       "externals": 0,
       "files": [
         {
-          "hash": "b64501247e6243037afafa8a002a7169519d856398408b52200aa6d9c58f99e9",
+          "hash": "8b29d19d4aa0ac68b7959ce38012668c98e44cf9fe98575063bba4cd5273956b",
           "path": "packages/agent-identity/package.json"
         },
         {
           "exports": [
             "approveGrant",
             "createRegistry",
+            "deriveKeyIdFromPublicKey",
             "getActiveCapabilities",
             "getAgent",
             "getGrantsForAgent",
@@ -65,13 +62,15 @@
             "registerAgent",
             "rejectGrant",
             "requestGrant",
-            "revokeCapability"
+            "revokeAgent",
+            "revokeCapability",
+            "rotateAgentKey"
           ],
-          "hash": "f1988277689ee1739b8dd55f9cec27c5f79979b25687c77f3f9c631376c0d4d1",
+          "hash": "9044c6f61efe96dae4b717932dfffdd65efbcf2e33de04f7393f79bc5fb9b555",
           "importNames": [
             {
               "form": "import",
-              "line": 8,
+              "line": 9,
               "names": [
                 {
                   "name": "ActorId",
@@ -120,7 +119,7 @@
           "path": "packages/agent-identity/src/identity.ts"
         },
         {
-          "hash": "c33ba922857d5fdc726005867476dcfd7a0cfa103048ca515bc7721f20950e20",
+          "hash": "4b237542a458839d85162145672436be8c08bb9d0897243df9fe2f742df68963",
           "importOrder": [
             "packages/agent-identity/src/types.ts",
             "packages/agent-identity/src/vc-types.ts",
@@ -137,7 +136,7 @@
           "reexportsOnly": true
         },
         {
-          "hash": "d54240fde8b3005763c9a0c1f510854b7f12f4fce429bca2a65ba7d59a3c9bf3",
+          "hash": "0ba35d69acc1ec28f1af99fdf01fbed4d7eb528023f94527c213b042920a2424",
           "importNames": [
             {
               "form": "import",
@@ -223,7 +222,7 @@
           "path": "packages/agent-identity/src/vc-types.ts"
         },
         {
-          "hash": "40354a1d835d24a6f763e9e9af8f0ece4f29e3d012a46f444228a2e8fa84d6b5",
+          "hash": "b9a081f7f70dfa16a744708a5906c2f0e6f0489efbc29d5f30b1ab975766bc87",
           "importNames": [
             {
               "form": "import",
@@ -257,7 +256,7 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "ef8251a07cccc2857db8b0b228fbade6fec49d599882180e746b788725301e12",
+          "hash": "f803f1e72a6f71982f0cf3367b04cb7a0e9f3ecc4ed640c5b6e4204eb00cd180",
           "importNames": [
             {
               "form": "import",
@@ -296,7 +295,7 @@
           "path": "packages/agent-identity/tsconfig.json"
         },
         {
-          "hash": "316a7807e4cf85ddb1af7c951b9fbd4c42c900386402069711d4da9f547c5285",
+          "hash": "ca245a53d2f87c52408e68d78137d760ac68954828af9e416dfbab66a548fcdc",
           "importNames": [
             {
               "form": "import",
@@ -328,19 +327,19 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 6,
+          "reads": 8,
           "where": [
             "caller"
           ],
           "writes": 0
         }
       ],
-      "outsideReads": 6,
+      "outsideReads": 8,
       "role": "code",
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 8,
+      "testedBy": 11,
       "unresolvedSites": 0
     },
     {
@@ -352,7 +351,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "9d97b069c3e551eda871bca3c247bd54c87f7fb12e5a29219bfbf33e9a1dc1f6",
+          "hash": "367e5141e4f5884e5791c4021f33a9faa958840a5decf44e1b273a87aad1c459",
           "path": "packages/cognate/LICENSE"
         },
         {
@@ -388,7 +387,7 @@
           "path": "packages/cognate/README.zh.md"
         },
         {
-          "hash": "873c101eed6e3fe61a847873af3d276a74d4dbd1e6eb5366f590d4147dcc3f9a",
+          "hash": "adfb6cb6fbb665ba011aedd8416e10f5d02d18157e9910ba34355902cad69f4b",
           "path": "packages/cognate/package.json"
         },
         {
@@ -699,7 +698,7 @@
           "reexportsOnly": true
         },
         {
-          "hash": "c6c21dd5d494a2ea3abdf2d9dd653a228734e98435e719a0882e742ce09ee647",
+          "hash": "9bebb06d0af5956cf17915db86dab90f38c4c203ec779ae52036507fff25146e",
           "importNames": [
             {
               "form": "import",
@@ -851,34 +850,104 @@
       "externals": 0,
       "files": [
         {
-          "hash": "8c8a75a2839a7fd70889106f5883a42d8847ae49ffc6173a8d2f7b345776750e",
+          "hash": "69914ecdd138471adec161ade78b8948c82e4aab6e56d2b4abce7a4ec0455d5f",
           "path": "packages/model-registry/package.json"
         },
         {
           "exports": [
+            "attestEvaluation",
+            "attestRegisterVersion",
+            "attestRunCompleted",
+            "attestRunPreRegistered",
             "attestTransitionVersion",
             "buildTransitionProof"
           ],
           "failurePaths": [
             {
+              "in": "appendOrThrow",
+              "kind": "catch",
+              "line": 74
+            },
+            {
+              "in": "appendOrThrow",
+              "kind": "throw",
+              "line": 75
+            },
+            {
+              "in": "attestEvaluation",
+              "kind": "throw",
+              "line": 97
+            },
+            {
               "in": "attestTransitionVersion",
               "kind": "catch",
-              "line": 92
+              "line": 214
             },
             {
               "in": "attestTransitionVersion",
               "kind": "throw",
-              "line": 93
+              "line": 215
+            },
+            {
+              "in": "attestRunPreRegistered",
+              "kind": "throw",
+              "line": 253
+            },
+            {
+              "in": "attestRunPreRegistered",
+              "kind": "catch",
+              "line": 271
+            },
+            {
+              "in": "attestRunPreRegistered",
+              "kind": "throw",
+              "line": 272
+            },
+            {
+              "in": "attestRunCompleted",
+              "kind": "throw",
+              "line": 318
+            },
+            {
+              "in": "attestRunCompleted",
+              "kind": "throw",
+              "line": 332
+            },
+            {
+              "in": "attestRunCompleted",
+              "kind": "catch",
+              "line": 355
+            },
+            {
+              "in": "attestRunCompleted",
+              "kind": "throw",
+              "line": 356
             }
           ],
-          "hash": "d39975b6e81d3ce8e743719c56bdbc005d62d7faec62ffb0a9e6257f163d05de",
+          "hash": "2ecd494d71e22feacdd6d38cbcac132d479535233559ea4698f04d869b1c5009",
           "importNames": [
             {
               "form": "import",
               "line": 9,
               "names": [
                 {
+                  "name": "Evaluation",
+                  "type": true
+                },
+                {
+                  "name": "ModelVersion",
+                  "type": true
+                },
+                {
                   "name": "ModelVersionStatus",
+                  "type": true
+                },
+                {
+                  "name": "RunOutcome",
+                  "type": true
+                },
+                {
+                  "name": "RunPreRegistration",
                   "type": true
                 }
               ],
@@ -939,7 +1008,7 @@
           "path": "packages/model-registry/src/attestation.ts"
         },
         {
-          "hash": "1d7554b860f5d698ee41f15c959c85d0fd9e4ffb31b423f31bffaf44c5aaa88a",
+          "hash": "e90c273f9c59123cd747ec3a306e934203c3d5f85182456ca3bbc5312bc6cf36",
           "importOrder": [
             "packages/model-registry/src/registry.ts",
             "packages/model-registry/src/types.ts",
@@ -957,49 +1026,212 @@
           "exports": [
             "createRegistry",
             "getCurrentDeployedVersion",
+            "getEvaluations",
+            "getRunOutcomes",
+            "getRunPreRegistration",
             "getVersionHistory",
+            "isSha256Hex",
+            "preRegisterRun",
+            "recordEvaluation",
+            "recordRunOutcome",
             "registerModel",
             "registerVersion",
-            "transitionVersion"
+            "transitionVersion",
+            "validateHashedIdentifiers",
+            "validateRunOutcome",
+            "validateRunPreRegistration"
           ],
           "failurePaths": [
             {
               "in": "registerModel",
               "kind": "throw",
-              "line": 45
+              "line": 130
             },
             {
               "in": "registerVersion",
               "kind": "throw",
-              "line": 70
+              "line": 155
             },
             {
               "in": "registerVersion",
               "kind": "throw",
-              "line": 77
+              "line": 164
+            },
+            {
+              "in": "registerVersion",
+              "kind": "throw",
+              "line": 172
+            },
+            {
+              "in": "registerVersion",
+              "kind": "throw",
+              "line": 179
             },
             {
               "in": "transitionVersion",
               "kind": "throw",
-              "line": 111
+              "line": 217
             },
             {
               "in": "transitionVersion",
               "kind": "throw",
-              "line": 119
+              "line": 225
             },
             {
               "in": "transitionVersion",
               "kind": "throw",
-              "line": 128
+              "line": 234
+            },
+            {
+              "in": "transitionVersion",
+              "kind": "throw",
+              "line": 244
+            },
+            {
+              "in": "transitionVersion",
+              "kind": "throw",
+              "line": 252
+            },
+            {
+              "in": "transitionVersion",
+              "kind": "throw",
+              "line": 260
+            },
+            {
+              "in": "transitionVersion",
+              "kind": "throw",
+              "line": 269
+            },
+            {
+              "in": "recordEvaluation",
+              "kind": "throw",
+              "line": 320
+            },
+            {
+              "in": "recordEvaluation",
+              "kind": "throw",
+              "line": 327
+            },
+            {
+              "in": "recordEvaluation",
+              "kind": "throw",
+              "line": 334
+            },
+            {
+              "in": "recordEvaluation",
+              "kind": "throw",
+              "line": 343
+            },
+            {
+              "in": "requireNonEmptyString",
+              "kind": "throw",
+              "line": 422
+            },
+            {
+              "in": "validateHashedIdentifiers",
+              "kind": "throw",
+              "line": 449
+            },
+            {
+              "in": "validateHashedIdentifiers",
+              "kind": "throw",
+              "line": 467
+            },
+            {
+              "in": "validateHashedIdentifiers",
+              "kind": "throw",
+              "line": 474
+            },
+            {
+              "in": "validateHashedIdentifiers",
+              "kind": "throw",
+              "line": 482
+            },
+            {
+              "in": "validateHashedIdentifiers",
+              "kind": "throw",
+              "line": 494
+            },
+            {
+              "in": "validateRunPreRegistration",
+              "kind": "throw",
+              "line": 542
+            },
+            {
+              "in": "validateRunOutcome",
+              "kind": "throw",
+              "line": 584
+            },
+            {
+              "in": "validateRunOutcome",
+              "kind": "throw",
+              "line": 591
+            },
+            {
+              "in": "validateRunOutcome",
+              "kind": "throw",
+              "line": 600
+            },
+            {
+              "in": "validateRunOutcome",
+              "kind": "throw",
+              "line": 616
+            },
+            {
+              "in": "validateRunOutcome",
+              "kind": "throw",
+              "line": 627
+            },
+            {
+              "in": "validateRunOutcome",
+              "kind": "throw",
+              "line": 637
+            },
+            {
+              "in": "validateRunOutcome",
+              "kind": "throw",
+              "line": 644
+            },
+            {
+              "in": "validateRunOutcome",
+              "kind": "throw",
+              "line": 665
+            },
+            {
+              "in": "preRegisterRun",
+              "kind": "throw",
+              "line": 699
+            },
+            {
+              "in": "recordRunOutcome",
+              "kind": "throw",
+              "line": 749
+            },
+            {
+              "in": "recordRunOutcome",
+              "kind": "throw",
+              "line": 759
+            },
+            {
+              "in": "recordRunOutcome",
+              "kind": "throw",
+              "line": 769
             }
           ],
-          "hash": "4133b018bc2c53b1c8f9e76dc59e22c819f0460f335d2dc5b858babb4619fc93",
+          "hash": "49f30f74438e2193d8d4d3ea51a303e76ed95016a1ce8d3c32108b6823dc2ec1",
           "importNames": [
             {
               "form": "import",
               "line": 8,
               "names": [
+                {
+                  "name": "Evaluation",
+                  "type": true
+                },
+                {
+                  "name": "HashId",
+                  "type": true
+                },
                 {
                   "name": "Model",
                   "type": true
@@ -1010,6 +1242,22 @@
                 },
                 {
                   "name": "ModelVersionStatus",
+                  "type": true
+                },
+                {
+                  "name": "RunCostBasis",
+                  "type": true
+                },
+                {
+                  "name": "RunOutcome",
+                  "type": true
+                },
+                {
+                  "name": "RunPreRegistration",
+                  "type": true
+                },
+                {
+                  "name": "RunStatus",
                   "type": true
                 }
               ],
@@ -1035,7 +1283,7 @@
           "path": "packages/model-registry/src/registry.ts"
         },
         {
-          "hash": "305815119e15e75a23cd97e6a4eb3b53295f4eecd4f658fc558e454ba70486f9",
+          "hash": "3fbe492ec60cdaba16986759f12bacc3d5029bc2958a9bcd2f6725007c74b6ea",
           "importNames": [
             {
               "form": "import",
@@ -1052,7 +1300,7 @@
             },
             {
               "form": "type-import",
-              "line": 30,
+              "line": 52,
               "names": [
                 {
                   "name": "Model",
@@ -1065,10 +1313,49 @@
             },
             {
               "form": "type-import",
-              "line": 32,
+              "line": 54,
               "names": [
                 {
                   "name": "ModelVersion",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": true
+            },
+            {
+              "form": "type-import",
+              "line": 61,
+              "names": [
+                {
+                  "name": "*",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": true
+            },
+            {
+              "form": "type-import",
+              "line": 64,
+              "names": [
+                {
+                  "name": "RunPreRegistration",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": true
+            },
+            {
+              "form": "type-import",
+              "line": 67,
+              "names": [
+                {
+                  "name": "RunOutcome",
                   "type": true
                 }
               ],
@@ -1089,7 +1376,7 @@
           "path": "packages/model-registry/src/types.ts"
         },
         {
-          "hash": "7cec1da550f33a13708edce548a5f86912392272026b9afb58f20a0826783242",
+          "hash": "540da9ef33a3a627e381f628651ac8cfc6be6099e752cb574ec396e0755e71b8",
           "importNames": [
             {
               "form": "import",
@@ -1153,7 +1440,89 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "6be648e570c600966b4ff04c7cb1467648363bb02ab147eadfca8e3ef9bbae98",
+          "hash": "94320161e64d4073e3de7bf8d006470648d30f5382c89f920171f5c002306fe2",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "Evaluation",
+                  "type": true
+                },
+                {
+                  "name": "Model",
+                  "type": true
+                },
+                {
+                  "name": "ModelVersion",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "MerkleTree"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/attestia",
+              "specifier": "@mcptoolshop/attestia/proof",
+              "typeOnly": false
+            }
+          ],
+          "importOrder": [
+            "packages/types/src/index.ts",
+            "packages/model-registry/src/index.ts",
+            "packages/model-registry/src/types.ts"
+          ],
+          "importsFiles": [
+            "packages/model-registry/src/index.ts",
+            "packages/model-registry/src/types.ts",
+            "packages/types/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/model-registry/package.json",
+              "purl": "pkg:npm/%40cognate/types"
+            },
+            {
+              "manifest": "packages/model-registry/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/attestia"
+            },
+            {
+              "manifest": "packages/model-registry/package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "packages/model-registry/tests/evaluations.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "a12335eb8b5ce842553862439521c22bbf338933ed12af475371a6cab64e25a3",
           "importNames": [
             {
               "form": "import",
@@ -1210,11 +1579,86 @@
           "testFramework": "vitest"
         },
         {
+          "hash": "66e13e685a9590fd271ff9e982ab8edd5c5d803fc9c7e8eb7b895ecef532d9dd",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 17,
+              "names": [
+                {
+                  "name": "ActorId",
+                  "type": true
+                },
+                {
+                  "name": "HashId",
+                  "type": true
+                },
+                {
+                  "name": "RunOutcome",
+                  "type": true
+                },
+                {
+                  "name": "RunPreRegistration",
+                  "type": true
+                },
+                {
+                  "name": "TenantId",
+                  "type": true
+                },
+                {
+                  "name": "Timestamp",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": true
+            }
+          ],
+          "importsFiles": [
+            "packages/model-registry/src/index.ts",
+            "packages/types/src/index.ts"
+          ],
+          "names": [
+            "packages/model-registry/src/registry.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/model-registry/package.json",
+              "purl": "pkg:npm/%40cognate/types"
+            },
+            {
+              "manifest": "packages/model-registry/package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "packages/model-registry/tests/runs.test.ts",
+          "testFramework": "vitest"
+        },
+        {
           "hash": "acd5603719960fea0049a7b4fb2dda51dcff07540af8fe0126956c05eefa2a38",
           "path": "packages/model-registry/tsconfig.json"
         },
         {
-          "hash": "316a7807e4cf85ddb1af7c951b9fbd4c42c900386402069711d4da9f547c5285",
+          "hash": "89887b2efb76eb9f28b6efc881740d2823e60524efc56c631108c3da013a9b40",
           "importNames": [
             {
               "form": "import",
@@ -1248,11 +1692,11 @@
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 8,
+      "testedBy": 13,
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 0,
+      "dynamicReads": 2,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
@@ -1262,8 +1706,23 @@
       "externals": 0,
       "files": [
         {
-          "hash": "9c238bf5cdba0e50559763431c85fba737fff902695fb498b08e48eafe9e20d3",
+          "hash": "d48c9ca1e72e97920739be461968bd5d8cc3938dffe26a709d3a88fffe9bf8f2",
+          "path": "packages/node/config/tenant-roots.json"
+        },
+        {
+          "hash": "98509ad87bb561fb7c0e8252eefb9be688ec7c853a2359e3e82b62a9e184cbe3",
           "path": "packages/node/package.json"
+        },
+        {
+          "exports": [
+            "createSignedClient",
+            "signHttpRequest"
+          ],
+          "hash": "2f352faf1e9141e08733f79eeb4184685913faca3d20160e230a23fc79562785",
+          "importsFiles": [
+            "packages/node/src/middleware/signature.ts"
+          ],
+          "path": "packages/node/src/client.ts"
         },
         {
           "exports": [
@@ -1284,7 +1743,7 @@
               "line": 129
             }
           ],
-          "hash": "82983d5577e12e7789120cba15589dd8d7dc35175009ac09f61881b0e9853f50",
+          "hash": "f34c08b224b71fc94c4b88c4ac933edf97e49ec12e414f695c65e757718c5be2",
           "importNames": [
             {
               "form": "import",
@@ -1328,7 +1787,15 @@
           "path": "packages/node/src/event-proof.ts"
         },
         {
-          "hash": "696002fde16dda4f335e932abee70b994d8f6d598f92f10f1d6330652cfe2b52",
+          "entry": "start",
+          "entryRule": 1,
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 47
+            }
+          ],
+          "hash": "d6b794cf67c5bf83b4229f0fe73bbc2d989326c1e0266e0c0973be00d6676d14",
           "importNames": [
             {
               "form": "import",
@@ -1343,16 +1810,13 @@
               "typeOnly": false
             }
           ],
-          "importOrder": [
-            "packages/repomesh-bridge/src/index.ts",
-            "packages/node/src/release-gate.ts",
-            "packages/node/src/runtime.ts",
-            "packages/node/src/server.ts"
-          ],
           "importsFiles": [
+            "packages/node/src/middleware/signature.ts",
             "packages/node/src/release-gate.ts",
+            "packages/node/src/routes/evaluations.ts",
             "packages/node/src/runtime.ts",
             "packages/node/src/server.ts",
+            "packages/node/src/startup-errors.ts",
             "packages/repomesh-bridge/src/index.ts"
           ],
           "packages": [
@@ -1361,14 +1825,160 @@
               "purl": "pkg:npm/%40cognate/repomesh-bridge"
             }
           ],
-          "path": "packages/node/src/index.ts"
+          "path": "packages/node/src/index.ts",
+          "reexportsAll": [
+            "packages/node/src/server.ts"
+          ],
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "inner": [
+                    {
+                      "line": 39,
+                      "name": "loadSnapshots",
+                      "target": {
+                        "file": "packages/node/src/snapshot.ts"
+                      }
+                    }
+                  ],
+                  "line": 18,
+                  "name": "openRuntime",
+                  "target": {
+                    "file": "packages/node/src/runtime.ts"
+                  }
+                },
+                {
+                  "line": 19,
+                  "name": "releaseConfigFromEnv",
+                  "target": {
+                    "file": "packages/node/src/release-gate.ts"
+                  }
+                },
+                {
+                  "line": 20,
+                  "name": "signedRequestsConfigFromEnv",
+                  "target": {
+                    "file": "packages/node/src/middleware/signature.ts"
+                  }
+                },
+                {
+                  "line": 29,
+                  "name": "citationRuleFromEnv",
+                  "target": {
+                    "file": "packages/node/src/routes/evaluations.ts"
+                  }
+                },
+                {
+                  "inner": [
+                    {
+                      "line": 280,
+                      "name": "validateSignedRequestsConfig",
+                      "target": {
+                        "file": "packages/node/src/middleware/signature.ts"
+                      }
+                    },
+                    {
+                      "line": 287,
+                      "name": "validateTenantRootsList",
+                      "target": {
+                        "file": "packages/node/src/middleware/signature.ts"
+                      }
+                    },
+                    {
+                      "line": 300,
+                      "name": "loadTenantRootsConfig",
+                      "target": {
+                        "file": "packages/node/src/middleware/signature.ts"
+                      }
+                    },
+                    {
+                      "line": 307,
+                      "name": "createReplayStore",
+                      "target": {
+                        "file": "packages/node/src/middleware/signature.ts"
+                      }
+                    },
+                    {
+                      "line": 338,
+                      "name": "normalizeRequestPathname",
+                      "target": {
+                        "file": "packages/node/src/middleware/signature.ts"
+                      }
+                    },
+                    {
+                      "branch": "!normalizedPath.ok",
+                      "line": 201,
+                      "name": "writeHead",
+                      "target": null,
+                      "via": "sendJson"
+                    },
+                    {
+                      "branch": "!normalizedPath.ok",
+                      "line": 202,
+                      "name": "end",
+                      "target": null,
+                      "via": "sendJson"
+                    },
+                    {
+                      "line": 174,
+                      "name": "on",
+                      "target": null,
+                      "via": "readRawBody"
+                    },
+                    {
+                      "branch": "pathname === \"/health\" && method === \"GET\"",
+                      "line": 358,
+                      "name": "handleHealth",
+                      "target": {
+                        "file": "packages/node/src/routes/health.ts"
+                      }
+                    },
+                    {
+                      "branch": "pathname.startsWith(\"/events/\") && method === \"GET\"",
+                      "line": 379,
+                      "name": "verifySignedRequest",
+                      "target": {
+                        "file": "packages/node/src/middleware/signature.ts"
+                      }
+                    },
+                    {
+                      "branch": "!authResult.ok",
+                      "line": 392,
+                      "name": "onAuthLog",
+                      "target": null
+                    },
+                    {
+                      "branch": "!authResult.ok",
+                      "line": 400,
+                      "name": "UNIFORM_UNAUTHENTICATED_BODY",
+                      "passed": true,
+                      "target": {
+                        "file": "packages/node/src/middleware/signature.ts"
+                      }
+                    }
+                  ],
+                  "innerTruncated": true,
+                  "line": 38,
+                  "name": "createCognateServer",
+                  "target": {
+                    "file": "packages/node/src/server.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "start"
+            }
+          ]
         },
         {
           "exports": [
             "authenticate",
             "extractCredentials"
           ],
-          "hash": "f6629278df8ef1c99132f01546b8523b1c636ab1f04610122f90592a39761e66",
+          "hash": "cc25803c02d42b701d923efdd5934f44678524527d5fdcfddcf9b8a3a83c2fb2",
           "importNames": [
             {
               "form": "import",
@@ -1449,6 +2059,331 @@
           "path": "packages/node/src/middleware/rate-limit.ts"
         },
         {
+          "entry": "generateEd25519KeyPair",
+          "entryRule": 1,
+          "exports": [
+            "buildCanonicalRequestString",
+            "canonicalizeJsonBody",
+            "createReplayStore",
+            "deriveKid",
+            "generateEd25519KeyPair",
+            "isJcsCanonicalJsonBytes",
+            "isValidAgentIdHeader",
+            "isValidKeyIdHeader",
+            "isValidNonceHeader",
+            "isValidPublicKeyBase64Url",
+            "isValidRequestMethod",
+            "isValidRequestPath",
+            "isValidSignatureHeader",
+            "isValidTimestampHeader",
+            "loadTenantRootsConfig",
+            "normalizeRequestPathname",
+            "sha256HexBytes",
+            "signCanonicalRequest",
+            "signedRequestsConfigFromEnv",
+            "tryDeriveKid",
+            "validateSignedRequestsConfig",
+            "validateTenantRootsList",
+            "verifyCanonicalRequestSignature",
+            "verifySignedRequest"
+          ],
+          "failurePaths": [
+            {
+              "in": "deriveKid",
+              "kind": "throw",
+              "line": 122
+            },
+            {
+              "in": "createEd25519PrivateKeyFromSeedHex",
+              "kind": "throw",
+              "line": 129
+            },
+            {
+              "in": "createEd25519PublicKeyFromBase64Url",
+              "kind": "throw",
+              "line": 141
+            },
+            {
+              "in": "normalizeRequestPathname",
+              "kind": "catch",
+              "line": 239
+            },
+            {
+              "in": "verifyCanonicalRequestSignature",
+              "kind": "catch",
+              "line": 358
+            },
+            {
+              "in": "isJcsCanonicalJsonBytes",
+              "kind": "catch",
+              "line": 377
+            },
+            {
+              "in": "validateTenantRootsList",
+              "kind": "throw",
+              "line": 536
+            },
+            {
+              "in": "validateTenantRootsList",
+              "kind": "throw",
+              "line": 543
+            },
+            {
+              "in": "validateTenantRootsList",
+              "kind": "throw",
+              "line": 552
+            },
+            {
+              "in": "validateTenantRootsList",
+              "kind": "throw",
+              "line": 559
+            },
+            {
+              "in": "validateTenantRootsList",
+              "kind": "throw",
+              "line": 566
+            },
+            {
+              "in": "validateTenantRootsList",
+              "kind": "throw",
+              "line": 573
+            },
+            {
+              "in": "validateTenantRootsList",
+              "kind": "throw",
+              "line": 585
+            },
+            {
+              "in": "loadTenantRootsConfig",
+              "kind": "throw",
+              "line": 613
+            },
+            {
+              "in": "loadTenantRootsConfig",
+              "kind": "throw",
+              "line": 620
+            },
+            {
+              "in": "loadTenantRootsConfig",
+              "kind": "catch",
+              "line": 630
+            },
+            {
+              "in": "loadTenantRootsConfig",
+              "kind": "throw",
+              "line": 631
+            },
+            {
+              "in": "loadTenantRootsConfig",
+              "kind": "throw",
+              "line": 638
+            },
+            {
+              "in": "loadTenantRootsConfig",
+              "kind": "throw",
+              "line": 646
+            },
+            {
+              "in": "loadTenantRootsConfig",
+              "kind": "throw",
+              "line": 654
+            },
+            {
+              "in": "validateSignedRequestsConfig",
+              "kind": "throw",
+              "line": 672
+            },
+            {
+              "in": "validateSignedRequestsConfig",
+              "kind": "throw",
+              "line": 680
+            },
+            {
+              "in": "validateSignedRequestsConfig",
+              "kind": "throw",
+              "line": 686
+            },
+            {
+              "in": "validateSignedRequestsConfig",
+              "kind": "throw",
+              "line": 691
+            }
+          ],
+          "hash": "7cb04f1657ba25aaa075ae111a5349a34096ec3a027677c8d11a2079a79cceec",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 20,
+              "names": [
+                {
+                  "name": "canonicalize"
+                }
+              ],
+              "purl": "pkg:npm/json-canonicalize",
+              "specifier": "json-canonicalize",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 21,
+              "names": [
+                {
+                  "name": "ActorId",
+                  "type": true
+                },
+                {
+                  "name": "Agent",
+                  "type": true
+                },
+                {
+                  "name": "PrincipalKind",
+                  "type": true
+                },
+                {
+                  "name": "SignedRequestsMode",
+                  "type": true
+                },
+                {
+                  "name": "TenantId",
+                  "type": true
+                },
+                {
+                  "name": "TenantRootKeyEntry",
+                  "type": true
+                },
+                {
+                  "name": "TenantRootsConfig",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 30,
+              "names": [
+                {
+                  "name": "getAgent"
+                },
+                {
+                  "name": "IdentityRegistryState",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/agent-identity",
+              "specifier": "@cognate/agent-identity",
+              "typeOnly": false
+            }
+          ],
+          "importOrder": [
+            "packages/types/src/index.ts",
+            "packages/agent-identity/src/index.ts"
+          ],
+          "importsFiles": [
+            "packages/agent-identity/src/index.ts",
+            "packages/types/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/agent-identity"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/types"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/json-canonicalize"
+            }
+          ],
+          "path": "packages/node/src/middleware/signature.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 269,
+                  "name": "charCodeAt",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "isValidRequestPath"
+            },
+            {
+              "calls": [
+                {
+                  "line": 376,
+                  "name": "equals",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "isJcsCanonicalJsonBytes"
+            },
+            {
+              "calls": [
+                {
+                  "line": 269,
+                  "name": "charCodeAt",
+                  "target": null,
+                  "via": "isValidRequestPath"
+                },
+                {
+                  "branch": "!hasAnySignatureHeader",
+                  "line": 804,
+                  "name": "getAgent",
+                  "target": {
+                    "file": "packages/agent-identity/src/index.ts"
+                  }
+                },
+                {
+                  "branch": "!hasAnySignatureHeader",
+                  "line": 811,
+                  "name": "onLogModeWarning",
+                  "target": null
+                },
+                {
+                  "branch": "rootEntry.kid !== keyIdHeader",
+                  "line": 857,
+                  "name": "hasSeen",
+                  "target": null,
+                  "via": "refuseAfterDummyVerify"
+                },
+                {
+                  "line": 882,
+                  "name": "getAgent",
+                  "target": {
+                    "file": "packages/agent-identity/src/index.ts"
+                  }
+                },
+                {
+                  "line": 917,
+                  "name": "hasSeen",
+                  "target": null
+                },
+                {
+                  "line": 927,
+                  "name": "recordVerified",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "verifySignedRequest"
+            }
+          ]
+        },
+        {
+          "entry": "checkDeploy",
+          "entryRule": 4,
           "exports": [
             "checkDeploy",
             "parseReleaseFailOn",
@@ -1494,20 +2429,92 @@
               "purl": "pkg:npm/%40mcptoolshop/attestia"
             }
           ],
-          "path": "packages/node/src/release-gate.ts"
+          "path": "packages/node/src/release-gate.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 102,
+                  "name": "verifyRelease",
+                  "target": null
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "checkDeploy"
+            }
+          ]
+        },
+        {
+          "exports": [
+            "citationRuleFromEnv",
+            "parseEvaluationRequest"
+          ],
+          "failurePaths": [
+            {
+              "in": "citationRuleFromEnv",
+              "kind": "throw",
+              "line": 19
+            }
+          ],
+          "hash": "a2cb7514256f5b54e0938709bcb49245ce1500e2f85ba68218db8a7c6667381d",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "RequireEvaluationCitations",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/model-registry",
+              "specifier": "@cognate/model-registry",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "Evaluation",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": true
+            }
+          ],
+          "importsFiles": [
+            "packages/model-registry/src/index.ts",
+            "packages/types/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/model-registry"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/types"
+            }
+          ],
+          "path": "packages/node/src/routes/evaluations.ts"
         },
         {
           "exports": [
             "handleHealth"
           ],
-          "hash": "398c23cd80fb538c708386253bbf4318f0aa001fe0bb722bf22dac2f5d103f71",
+          "hash": "a01b6cb430f713fddb3bcc724f9ad25fe652889e6d0759155a7b6817ad48c2e2",
           "path": "packages/node/src/routes/health.ts"
         },
         {
           "exports": [
             "handleIdentity"
           ],
-          "hash": "893f348de391cd635ecf12826ee266f9cc255367a4e044c562a6d8aee6b886dd",
+          "hash": "bdb1b2345b1f5ee12c96f69ed8128bd55705d6d5a9fc17c11c9e3ea93630787f",
           "importNames": [
             {
               "form": "import",
@@ -1526,6 +2533,12 @@
                   "name": "approveGrant"
                 },
                 {
+                  "name": "rotateAgentKey"
+                },
+                {
+                  "name": "revokeAgent"
+                },
+                {
                   "name": "exportGrantAsVC"
                 }
               ],
@@ -1535,68 +2548,36 @@
             },
             {
               "form": "import",
-              "line": 8,
+              "line": 10,
               "names": [
+                {
+                  "name": "ActorId",
+                  "type": true
+                },
                 {
                   "name": "Agent",
                   "type": true
                 },
                 {
+                  "name": "Capability",
+                  "type": true
+                },
+                {
                   "name": "CapabilityGrant",
+                  "type": true
+                },
+                {
+                  "name": "HashId",
+                  "type": true
+                },
+                {
+                  "name": "Timestamp",
                   "type": true
                 }
               ],
               "purl": "pkg:npm/%40cognate/types",
               "specifier": "@cognate/types",
               "typeOnly": true
-            },
-            {
-              "form": "dynamic",
-              "line": 55,
-              "names": [
-                {
-                  "name": "*"
-                }
-              ],
-              "purl": "pkg:npm/%40cognate/types",
-              "specifier": "@cognate/types",
-              "typeOnly": false
-            },
-            {
-              "form": "dynamic",
-              "line": 55,
-              "names": [
-                {
-                  "name": "*"
-                }
-              ],
-              "purl": "pkg:npm/%40cognate/types",
-              "specifier": "@cognate/types",
-              "typeOnly": false
-            },
-            {
-              "form": "dynamic",
-              "line": 55,
-              "names": [
-                {
-                  "name": "*"
-                }
-              ],
-              "purl": "pkg:npm/%40cognate/types",
-              "specifier": "@cognate/types",
-              "typeOnly": false
-            },
-            {
-              "form": "dynamic",
-              "line": 71,
-              "names": [
-                {
-                  "name": "*"
-                }
-              ],
-              "purl": "pkg:npm/%40cognate/types",
-              "specifier": "@cognate/types",
-              "typeOnly": false
             }
           ],
           "importOrder": [
@@ -1895,6 +2876,8 @@
           "path": "packages/node/src/routes/registry.ts"
         },
         {
+          "entry": "openRuntime",
+          "entryRule": 4,
           "exports": [
             "openRuntime",
             "resolveRuntimePaths"
@@ -1936,55 +2919,109 @@
               "purl": "pkg:npm/%40mcptoolshop/attestia"
             }
           ],
-          "path": "packages/node/src/runtime.ts"
+          "path": "packages/node/src/runtime.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 39,
+                  "name": "loadSnapshots",
+                  "target": {
+                    "file": "packages/node/src/snapshot.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "openRuntime"
+            }
+          ]
         },
         {
+          "entry": "createCognateServer",
+          "entryRule": 4,
           "exports": [
             "createCognateServer"
           ],
           "failurePaths": [
             {
-              "in": "parseBody",
+              "in": "checkHashedValue",
               "kind": "catch",
-              "line": 90
-            },
-            {
-              "in": "keep",
-              "kind": "catch",
-              "line": 141
-            },
-            {
-              "in": "keep",
-              "kind": "throw",
-              "line": 145
-            },
-            {
-              "in": "createCognateServer",
-              "kind": "catch",
-              "line": 166
-            },
-            {
-              "in": "createCognateServer",
-              "kind": "catch",
-              "line": 199
-            },
-            {
-              "in": "createCognateServer",
-              "kind": "catch",
-              "line": 366
+              "line": 219
             },
             {
               "in": "createCognateServer",
               "kind": "throw",
+              "line": 289
+            },
+            {
+              "in": "keep",
+              "kind": "catch",
+              "line": 327
+            },
+            {
+              "in": "keep",
+              "kind": "throw",
+              "line": 331
+            },
+            {
+              "in": "createCognateServer",
+              "kind": "catch",
               "line": 371
             },
             {
               "in": "createCognateServer",
               "kind": "catch",
-              "line": 452
+              "line": 429
+            },
+            {
+              "in": "createCognateServer",
+              "kind": "catch",
+              "line": 515
+            },
+            {
+              "in": "createCognateServer",
+              "kind": "throw",
+              "line": 516
+            },
+            {
+              "in": "createCognateServer",
+              "kind": "catch",
+              "line": 667
+            },
+            {
+              "in": "createCognateServer",
+              "kind": "throw",
+              "line": 672
+            },
+            {
+              "in": "createCognateServer",
+              "kind": "catch",
+              "line": 833
+            },
+            {
+              "in": "createCognateServer",
+              "kind": "throw",
+              "line": 838
+            },
+            {
+              "in": "createCognateServer",
+              "kind": "catch",
+              "line": 866
+            },
+            {
+              "in": "createCognateServer",
+              "kind": "throw",
+              "line": 871
+            },
+            {
+              "in": "createCognateServer",
+              "kind": "catch",
+              "line": 1279
             }
           ],
-          "hash": "7eccb77917c7c97eb074dba9264847dbd8f372a059b68265bdb85b933ef5a796",
+          "hash": "f4b6ee4305907f65d42c1a6159b80685d363204481d254e20cbe1af4f7a55436",
           "importNames": [
             {
               "form": "import",
@@ -1995,7 +3032,43 @@
                   "type": true
                 },
                 {
+                  "name": "Agent",
+                  "type": true
+                },
+                {
+                  "name": "CapabilityGrant",
+                  "type": true
+                },
+                {
+                  "name": "HashId",
+                  "type": true
+                },
+                {
+                  "name": "Model",
+                  "type": true
+                },
+                {
                   "name": "ModelVersionStatus",
+                  "type": true
+                },
+                {
+                  "name": "Output",
+                  "type": true
+                },
+                {
+                  "name": "Policy",
+                  "type": true
+                },
+                {
+                  "name": "Prompt",
+                  "type": true
+                },
+                {
+                  "name": "SignedRequestsMode",
+                  "type": true
+                },
+                {
+                  "name": "TenantRootKeyEntry",
                   "type": true
                 }
               ],
@@ -2005,7 +3078,20 @@
             },
             {
               "form": "import",
-              "line": 7,
+              "line": 19,
+              "names": [
+                {
+                  "name": "EvaluationContext",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/policy",
+              "specifier": "@cognate/policy",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 20,
               "names": [
                 {
                   "name": "DomainEvent",
@@ -2022,10 +3108,16 @@
             },
             {
               "form": "import",
-              "line": 8,
+              "line": 21,
               "names": [
                 {
+                  "name": "getActiveCapabilities"
+                },
+                {
                   "name": "getAgent"
+                },
+                {
+                  "name": "hasCapability"
                 }
               ],
               "purl": "pkg:npm/%40cognate/agent-identity",
@@ -2034,22 +3126,26 @@
             },
             {
               "form": "import",
-              "line": 9,
-              "names": [
-                {
-                  "name": "attestTransitionVersion"
-                }
-              ],
-              "purl": "pkg:npm/%40cognate/model-registry",
-              "specifier": "@cognate/model-registry",
-              "typeOnly": false
-            },
-            {
-              "form": "import",
-              "line": 10,
+              "line": 22,
               "names": [
                 {
                   "name": "RegistryError"
+                },
+                {
+                  "name": "attestEvaluation"
+                },
+                {
+                  "name": "attestRegisterVersion"
+                },
+                {
+                  "name": "attestTransitionVersion"
+                },
+                {
+                  "name": "validateHashedIdentifiers"
+                },
+                {
+                  "name": "RequireEvaluationCitations",
+                  "type": true
                 }
               ],
               "purl": "pkg:npm/%40cognate/model-registry",
@@ -2058,7 +3154,7 @@
             },
             {
               "form": "import",
-              "line": 11,
+              "line": 30,
               "names": [
                 {
                   "name": "attestLogOutput"
@@ -2072,52 +3168,119 @@
               "typeOnly": false
             },
             {
-              "form": "import",
-              "line": 12,
+              "form": "dynamic",
+              "line": 575,
               "names": [
                 {
-                  "name": "Output",
-                  "type": true
-                },
-                {
-                  "name": "Prompt",
-                  "type": true
+                  "name": "*"
                 }
               ],
               "purl": "pkg:npm/%40cognate/types",
               "specifier": "@cognate/types",
-              "typeOnly": true
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 600,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 861,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 919,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 1025,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 1041,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 1113,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": false
+            },
+            {
+              "form": "dynamic",
+              "line": 1157,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": false
             }
-          ],
-          "importOrder": [
-            "packages/types/src/index.ts",
-            "packages/agent-identity/src/index.ts",
-            "packages/model-registry/src/index.ts",
-            "packages/prompt-store/src/index.ts",
-            "packages/node/src/routes/health.ts",
-            "packages/node/src/routes/policy.ts",
-            "packages/node/src/routes/registry.ts",
-            "packages/node/src/routes/identity.ts",
-            "packages/node/src/routes/prompts.ts",
-            "packages/node/src/middleware/auth.ts",
-            "packages/node/src/middleware/rate-limit.ts",
-            "packages/node/src/snapshot.ts",
-            "packages/node/src/release-gate.ts",
-            "packages/node/src/event-proof.ts"
           ],
           "importsFiles": [
             "packages/agent-identity/src/index.ts",
             "packages/model-registry/src/index.ts",
+            "packages/node/src/client.ts",
             "packages/node/src/event-proof.ts",
-            "packages/node/src/middleware/auth.ts",
             "packages/node/src/middleware/rate-limit.ts",
+            "packages/node/src/middleware/signature.ts",
             "packages/node/src/release-gate.ts",
+            "packages/node/src/routes/evaluations.ts",
             "packages/node/src/routes/health.ts",
             "packages/node/src/routes/identity.ts",
             "packages/node/src/routes/policy.ts",
             "packages/node/src/routes/prompts.ts",
             "packages/node/src/routes/registry.ts",
             "packages/node/src/snapshot.ts",
+            "packages/node/src/tenant.ts",
+            "packages/policy/src/index.ts",
             "packages/prompt-store/src/index.ts",
             "packages/types/src/index.ts"
           ],
@@ -2132,6 +3295,10 @@
             },
             {
               "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/policy"
+            },
+            {
+              "manifest": "packages/node/package.json",
               "purl": "pkg:npm/%40cognate/prompt-store"
             },
             {
@@ -2143,7 +3310,318 @@
               "purl": "pkg:npm/%40mcptoolshop/attestia"
             }
           ],
-          "path": "packages/node/src/server.ts"
+          "path": "packages/node/src/server.ts",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 152,
+                  "name": "createRateLimitState",
+                  "target": {
+                    "file": "packages/node/src/middleware/rate-limit.ts"
+                  }
+                },
+                {
+                  "line": 156,
+                  "name": "checkRateLimit",
+                  "target": {
+                    "file": "packages/node/src/middleware/rate-limit.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "checkRateLimitForAgent"
+            },
+            {
+              "calls": [
+                {
+                  "line": 174,
+                  "name": "on",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "readRawBody"
+            },
+            {
+              "calls": [
+                {
+                  "line": 201,
+                  "name": "writeHead",
+                  "target": null
+                },
+                {
+                  "line": 202,
+                  "name": "end",
+                  "target": null
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "sendJson"
+            },
+            {
+              "calls": [
+                {
+                  "line": 201,
+                  "name": "writeHead",
+                  "target": null,
+                  "via": "sendJson"
+                },
+                {
+                  "line": 202,
+                  "name": "end",
+                  "target": null,
+                  "via": "sendJson"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "sendActorMismatch"
+            },
+            {
+              "calls": [
+                {
+                  "line": 217,
+                  "name": "validateHashedIdentifiers",
+                  "target": {
+                    "file": "packages/model-registry/src/index.ts"
+                  }
+                },
+                {
+                  "line": 201,
+                  "name": "writeHead",
+                  "target": null,
+                  "via": "sendJson"
+                },
+                {
+                  "line": 202,
+                  "name": "end",
+                  "target": null,
+                  "via": "sendJson"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "checkHashedValue"
+            },
+            {
+              "calls": [
+                {
+                  "line": 201,
+                  "name": "writeHead",
+                  "target": null,
+                  "via": "sendJson"
+                },
+                {
+                  "line": 202,
+                  "name": "end",
+                  "target": null,
+                  "via": "sendJson"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "refused"
+            },
+            {
+              "calls": [
+                {
+                  "line": 280,
+                  "name": "validateSignedRequestsConfig",
+                  "target": {
+                    "file": "packages/node/src/middleware/signature.ts"
+                  }
+                },
+                {
+                  "line": 287,
+                  "name": "validateTenantRootsList",
+                  "target": {
+                    "file": "packages/node/src/middleware/signature.ts"
+                  }
+                },
+                {
+                  "line": 300,
+                  "name": "loadTenantRootsConfig",
+                  "target": {
+                    "file": "packages/node/src/middleware/signature.ts"
+                  }
+                },
+                {
+                  "line": 307,
+                  "name": "createReplayStore",
+                  "target": {
+                    "file": "packages/node/src/middleware/signature.ts"
+                  }
+                },
+                {
+                  "line": 338,
+                  "name": "normalizeRequestPathname",
+                  "target": {
+                    "file": "packages/node/src/middleware/signature.ts"
+                  }
+                },
+                {
+                  "branch": "!normalizedPath.ok",
+                  "line": 201,
+                  "name": "writeHead",
+                  "target": null,
+                  "via": "sendJson"
+                },
+                {
+                  "branch": "!normalizedPath.ok",
+                  "line": 202,
+                  "name": "end",
+                  "target": null,
+                  "via": "sendJson"
+                },
+                {
+                  "line": 174,
+                  "name": "on",
+                  "target": null,
+                  "via": "readRawBody"
+                },
+                {
+                  "branch": "pathname === \"/health\" && method === \"GET\"",
+                  "line": 358,
+                  "name": "handleHealth",
+                  "target": {
+                    "file": "packages/node/src/routes/health.ts"
+                  }
+                },
+                {
+                  "branch": "pathname.startsWith(\"/events/\") && method === \"GET\"",
+                  "line": 379,
+                  "name": "verifySignedRequest",
+                  "target": {
+                    "file": "packages/node/src/middleware/signature.ts"
+                  }
+                },
+                {
+                  "branch": "!authResult.ok",
+                  "line": 392,
+                  "name": "onAuthLog",
+                  "target": null
+                },
+                {
+                  "branch": "!authResult.ok",
+                  "line": 400,
+                  "name": "UNIFORM_UNAUTHENTICATED_BODY",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/node/src/middleware/signature.ts"
+                  }
+                },
+                {
+                  "branch": "pathname.startsWith(\"/events/\") && method === \"GET\"",
+                  "line": 152,
+                  "name": "createRateLimitState",
+                  "target": {
+                    "file": "packages/node/src/middleware/rate-limit.ts"
+                  },
+                  "via": "checkRateLimitForAgent"
+                },
+                {
+                  "branch": "pathname.startsWith(\"/events/\") && method === \"GET\"",
+                  "line": 156,
+                  "name": "checkRateLimit",
+                  "target": {
+                    "file": "packages/node/src/middleware/rate-limit.ts"
+                  },
+                  "via": "checkRateLimitForAgent"
+                },
+                {
+                  "branch": "pathname.startsWith(\"/events/\") && method === \"GET\"",
+                  "line": 438,
+                  "name": "proveRecordedEvent",
+                  "target": {
+                    "file": "packages/node/src/event-proof.ts"
+                  }
+                },
+                {
+                  "branch": "!proved.ok",
+                  "line": 440,
+                  "name": "statusForProof",
+                  "target": {
+                    "file": "packages/node/src/event-proof.ts"
+                  }
+                },
+                {
+                  "branch": "!proved.ok",
+                  "line": 440,
+                  "name": "proofErrorBody",
+                  "target": {
+                    "file": "packages/node/src/event-proof.ts"
+                  }
+                },
+                {
+                  "branch": "method !== \"POST\"",
+                  "line": 453,
+                  "name": "verifySignedRequest",
+                  "target": {
+                    "file": "packages/node/src/middleware/signature.ts"
+                  }
+                },
+                {
+                  "branch": "!authResult.ok",
+                  "line": 466,
+                  "name": "onAuthLog",
+                  "target": null
+                },
+                {
+                  "branch": "!authResult.ok",
+                  "line": 474,
+                  "name": "UNIFORM_UNAUTHENTICATED_BODY",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/node/src/middleware/signature.ts"
+                  }
+                },
+                {
+                  "line": 481,
+                  "name": "verifySignedRequest",
+                  "target": {
+                    "file": "packages/node/src/middleware/signature.ts"
+                  }
+                },
+                {
+                  "branch": "!authResult.ok",
+                  "line": 494,
+                  "name": "onAuthLog",
+                  "target": null
+                },
+                {
+                  "branch": "!authResult.ok",
+                  "line": 502,
+                  "name": "UNIFORM_UNAUTHENTICATED_BODY",
+                  "passed": true,
+                  "target": {
+                    "file": "packages/node/src/middleware/signature.ts"
+                  }
+                },
+                {
+                  "line": 521,
+                  "name": "isJcsCanonicalJsonBytes",
+                  "target": {
+                    "file": "packages/node/src/middleware/signature.ts"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "createCognateServer",
+              "truncated": true
+            }
+          ]
         },
         {
           "exports": [
@@ -2164,15 +3642,15 @@
             {
               "in": "loadPrompts",
               "kind": "throw",
-              "line": 94
+              "line": 98
             },
             {
               "in": "loadPrompts",
               "kind": "throw",
-              "line": 101
+              "line": 105
             }
           ],
-          "hash": "1d19957a2c7fb38cb722a3cd08f6e5d8a94fa8e8d0e368a28856362fafa784c4",
+          "hash": "681c03f1a8325111aa44b96ad968d843dd445b706aaffaee3dd7529cc6cbe690",
           "importNames": [
             {
               "form": "import",
@@ -2314,11 +3792,67 @@
           "path": "packages/node/src/snapshot.ts"
         },
         {
-          "hash": "1302d35c5230bf3b8c9a13bad3e748b9839f010298f9eaabdc2876254ebd2379",
+          "exports": [
+            "failStartup",
+            "formatStartupFailure",
+            "isDebug"
+          ],
+          "hash": "b6f9051218bce11c48d3bfe13cb435f6649932c444ca5347c506db923ecab089",
+          "path": "packages/node/src/startup-errors.ts"
+        },
+        {
+          "exports": [
+            "idMismatch",
+            "refuseForeignRecord",
+            "refuseHiddenAgent",
+            "refuseHiddenGrant",
+            "refuseHiddenModel",
+            "refuseHiddenPrompt",
+            "refuseHiddenVersion",
+            "versionNotFound"
+          ],
+          "hash": "844eb7cecfbb16afae523dbc233c81a0ed65976163b1627088e7b65c56ff0c95",
           "importNames": [
             {
               "form": "import",
-              "line": 1,
+              "line": 10,
+              "names": [
+                {
+                  "name": "ActorId",
+                  "type": true
+                },
+                {
+                  "name": "HashId",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": true
+            }
+          ],
+          "importOrder": [
+            "packages/types/src/index.ts",
+            "packages/node/src/server.ts"
+          ],
+          "importsFiles": [
+            "packages/node/src/server.ts",
+            "packages/types/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/types"
+            }
+          ],
+          "path": "packages/node/src/tenant.ts"
+        },
+        {
+          "hash": "d18559ad6093924397130376e91bb1c1b30e8ba69bb85e5b3bcef65af956b9b7",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
               "names": [
                 {
                   "name": "describe"
@@ -2336,7 +3870,7 @@
             },
             {
               "form": "import",
-              "line": 4,
+              "line": 7,
               "names": [
                 {
                   "name": "createRegistry"
@@ -2357,7 +3891,7 @@
             },
             {
               "form": "import",
-              "line": 10,
+              "line": 13,
               "names": [
                 {
                   "name": "createRegistry"
@@ -2372,7 +3906,7 @@
             },
             {
               "form": "import",
-              "line": 11,
+              "line": 14,
               "names": [
                 {
                   "name": "createStore"
@@ -2386,15 +3920,21 @@
           "importOrder": [
             "packages/node/src/server.ts",
             "packages/node/src/release-gate.ts",
+            "packages/node/src/middleware/signature.ts",
+            "packages/node/src/client.ts",
             "packages/model-registry/src/index.ts",
             "packages/agent-identity/src/index.ts",
-            "packages/prompt-store/src/index.ts"
+            "packages/prompt-store/src/index.ts",
+            "packages/node/tests/fixtures/test-only-tenant-roots.ts"
           ],
           "importsFiles": [
             "packages/agent-identity/src/index.ts",
             "packages/model-registry/src/index.ts",
+            "packages/node/src/client.ts",
+            "packages/node/src/middleware/signature.ts",
             "packages/node/src/release-gate.ts",
             "packages/node/src/server.ts",
+            "packages/node/tests/fixtures/test-only-tenant-roots.ts",
             "packages/prompt-store/src/index.ts"
           ],
           "packages": [
@@ -2419,7 +3959,131 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "5cfc11ed6a36e3f8ffaf4457580e60d47c29f044bc15f7ed6dbeed3b7d189ed3",
+          "hash": "bf5969589d0a0b31fc45857ce3a48ca11fe8d6e2002f18f3940765fdd6a4dd01",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "InMemoryEventStore"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/attestia",
+              "specifier": "@mcptoolshop/attestia/event-store",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "createRegistry"
+                },
+                {
+                  "name": "RequireEvaluationCitations",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/model-registry",
+              "specifier": "@cognate/model-registry",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "createRegistry"
+                },
+                {
+                  "name": "registerAgent"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/agent-identity",
+              "specifier": "@cognate/agent-identity",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "createStore"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/prompt-store",
+              "specifier": "@cognate/prompt-store",
+              "typeOnly": false
+            }
+          ],
+          "importOrder": [
+            "packages/node/src/server.ts",
+            "packages/node/src/event-proof.ts",
+            "packages/model-registry/src/index.ts",
+            "packages/node/src/routes/evaluations.ts",
+            "packages/agent-identity/src/index.ts",
+            "packages/prompt-store/src/index.ts",
+            "packages/node/src/middleware/signature.ts",
+            "packages/node/src/client.ts",
+            "packages/node/tests/fixtures/test-only-tenant-roots.ts"
+          ],
+          "importsFiles": [
+            "packages/agent-identity/src/index.ts",
+            "packages/model-registry/src/index.ts",
+            "packages/node/src/client.ts",
+            "packages/node/src/event-proof.ts",
+            "packages/node/src/middleware/signature.ts",
+            "packages/node/src/routes/evaluations.ts",
+            "packages/node/src/server.ts",
+            "packages/node/tests/fixtures/test-only-tenant-roots.ts",
+            "packages/prompt-store/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/agent-identity"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/model-registry"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/prompt-store"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/attestia"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "packages/node/tests/evaluations.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "a74a29749f1ab5a98214bb5780c279ddd32762fb472dd4faa8e4f46342f752bf",
           "importNames": [
             {
               "form": "import",
@@ -2519,13 +4183,19 @@
             "packages/model-registry/src/index.ts",
             "packages/prompt-store/src/index.ts",
             "packages/node/src/event-proof.ts",
-            "packages/node/src/server.ts"
+            "packages/node/src/server.ts",
+            "packages/node/src/middleware/signature.ts",
+            "packages/node/src/client.ts",
+            "packages/node/tests/fixtures/test-only-tenant-roots.ts"
           ],
           "importsFiles": [
             "packages/agent-identity/src/index.ts",
             "packages/model-registry/src/index.ts",
+            "packages/node/src/client.ts",
             "packages/node/src/event-proof.ts",
+            "packages/node/src/middleware/signature.ts",
             "packages/node/src/server.ts",
+            "packages/node/tests/fixtures/test-only-tenant-roots.ts",
             "packages/prompt-store/src/index.ts"
           ],
           "packages": [
@@ -2551,6 +4221,82 @@
             }
           ],
           "path": "packages/node/tests/event-proof.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "939a118af73d3549c2f5e97fb35ce5d540347b511090c34f4ed429df771022c9",
+          "path": "packages/node/tests/fixtures/test-only-tenant-roots.json"
+        },
+        {
+          "hash": "481f06666f1c8e08b5600d801f7ff2ebf2dc6d243d3ded7457dccd8c8c4e314c",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "TenantRootKeyEntry",
+                  "type": true
+                },
+                {
+                  "name": "TenantRootsConfig",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": true
+            }
+          ],
+          "importsFiles": [
+            "packages/types/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/types"
+            }
+          ],
+          "path": "packages/node/tests/fixtures/test-only-tenant-roots.ts"
+        },
+        {
+          "hash": "40fa01e4e1b285122b98e63981f08c4fe59560fcea53fe1175d137b61bbb3b56",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "packages/node/tests/make-tenant-root.test.ts",
+          "spawns": [
+            "scripts/make-tenant-root.mjs"
+          ],
           "testFramework": "vitest"
         },
         {
@@ -2630,7 +4376,7 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "8d6b8f440990980c0ca79e848e7d6a348a9bc88c33ab227c4b09b3101e3f04ee",
+          "hash": "7271cb859fb1d5ac1b015863befa9b02b9faf458354fec65182c2458eebee5e3",
           "importNames": [
             {
               "form": "import",
@@ -2696,14 +4442,20 @@
             "packages/node/src/routes/prompts.ts",
             "packages/model-registry/src/index.ts",
             "packages/agent-identity/src/index.ts",
-            "packages/prompt-store/src/index.ts"
+            "packages/prompt-store/src/index.ts",
+            "packages/node/src/middleware/signature.ts",
+            "packages/node/src/client.ts",
+            "packages/node/tests/fixtures/test-only-tenant-roots.ts"
           ],
           "importsFiles": [
             "packages/agent-identity/src/index.ts",
             "packages/model-registry/src/index.ts",
+            "packages/node/src/client.ts",
+            "packages/node/src/middleware/signature.ts",
             "packages/node/src/routes/prompts.ts",
             "packages/node/src/routes/registry.ts",
             "packages/node/src/server.ts",
+            "packages/node/tests/fixtures/test-only-tenant-roots.ts",
             "packages/prompt-store/src/index.ts"
           ],
           "packages": [
@@ -2728,11 +4480,11 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "7ed421baad81fbab298a6ea7c089e7e4c7b975b082fc8f021e6009f833438efd",
+          "hash": "78b65772c35e93810f75c2f13e03bd892ddc2c147bc7b458645ace147bc2b858",
           "importNames": [
             {
               "form": "import",
-              "line": 4,
+              "line": 5,
               "names": [
                 {
                   "name": "afterEach"
@@ -2753,16 +4505,58 @@
             },
             {
               "form": "import",
-              "line": 5,
+              "line": 6,
+              "names": [
+                {
+                  "name": "ActorId",
+                  "type": true
+                },
+                {
+                  "name": "Agent",
+                  "type": true
+                },
+                {
+                  "name": "CapabilityGrant",
+                  "type": true
+                },
+                {
+                  "name": "Model",
+                  "type": true
+                },
+                {
+                  "name": "ModelVersion",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 7,
               "names": [
                 {
                   "name": "createRegistry"
                 },
                 {
-                  "name": "registerModel"
+                  "name": "registerAgent"
                 },
                 {
-                  "name": "registerVersion"
+                  "name": "IdentityState",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/agent-identity",
+              "specifier": "@cognate/agent-identity",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 12,
+              "names": [
+                {
+                  "name": "createRegistry"
                 }
               ],
               "purl": "pkg:npm/%40cognate/model-registry",
@@ -2771,7 +4565,129 @@
             },
             {
               "form": "import",
+              "line": 13,
+              "names": [
+                {
+                  "name": "createStore"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/prompt-store",
+              "specifier": "@cognate/prompt-store",
+              "typeOnly": false
+            }
+          ],
+          "importOrder": [
+            "packages/types/src/index.ts",
+            "packages/agent-identity/src/index.ts",
+            "packages/model-registry/src/index.ts",
+            "packages/prompt-store/src/index.ts",
+            "packages/node/src/server.ts",
+            "packages/node/src/middleware/signature.ts",
+            "packages/node/tests/fixtures/test-only-tenant-roots.ts",
+            "packages/node/src/client.ts",
+            "packages/node/src/routes/identity.ts",
+            "packages/node/src/routes/registry.ts",
+            "packages/node/src/routes/prompts.ts",
+            "packages/node/src/middleware/auth.ts",
+            "packages/node/src/runtime.ts"
+          ],
+          "importsFiles": [
+            "packages/agent-identity/src/index.ts",
+            "packages/model-registry/src/index.ts",
+            "packages/node/src/client.ts",
+            "packages/node/src/middleware/auth.ts",
+            "packages/node/src/middleware/signature.ts",
+            "packages/node/src/routes/identity.ts",
+            "packages/node/src/routes/prompts.ts",
+            "packages/node/src/routes/registry.ts",
+            "packages/node/src/runtime.ts",
+            "packages/node/src/server.ts",
+            "packages/node/tests/fixtures/test-only-tenant-roots.ts",
+            "packages/prompt-store/src/index.ts",
+            "packages/types/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/agent-identity"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/model-registry"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/prompt-store"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/types"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "packages/node/tests/signed-requests.test.ts",
+          "spawns": [
+            "packages/node/src/index.ts"
+          ],
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "6662472ff1eb00a0ee17d35e68b830970eb64ebf09e20061a0490ac0d0370a03",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "afterEach"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
               "line": 6,
+              "names": [
+                {
+                  "name": "createRegistry"
+                },
+                {
+                  "name": "getEvaluations"
+                },
+                {
+                  "name": "recordEvaluation"
+                },
+                {
+                  "name": "registerModel"
+                },
+                {
+                  "name": "registerVersion"
+                },
+                {
+                  "name": "transitionVersion"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/model-registry",
+              "specifier": "@cognate/model-registry",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 14,
               "names": [
                 {
                   "name": "createStore"
@@ -2789,7 +4705,7 @@
             },
             {
               "form": "import",
-              "line": 9,
+              "line": 17,
               "names": [
                 {
                   "name": "Agent",
@@ -2797,6 +4713,10 @@
                 },
                 {
                   "name": "CapabilityGrant",
+                  "type": true
+                },
+                {
+                  "name": "Evaluation",
                   "type": true
                 },
                 {
@@ -2857,11 +4777,215 @@
           "testFramework": "vitest"
         },
         {
+          "hash": "68378be305359854c894832519d520a9f18743df29595050fdac0b6b07ba87b8",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "afterAll"
+                },
+                {
+                  "name": "beforeAll"
+                },
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "importsFiles": [
+            "packages/node/src/startup-errors.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "packages/node/tests/startup-errors.test.ts",
+          "spawns": [
+            "packages/node/src/index.ts"
+          ],
+          "testFramework": "vitest"
+        },
+        {
+          "hash": "bee88f2b59ad664d8d13dc47a3c36153f96f6cc8540e4daba1384ec5008a9ee0",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "createRegistry"
+                },
+                {
+                  "name": "recordEvaluation"
+                },
+                {
+                  "name": "registerModel"
+                },
+                {
+                  "name": "registerVersion"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/model-registry",
+              "specifier": "@cognate/model-registry",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "createRegistry"
+                },
+                {
+                  "name": "registerAgent"
+                },
+                {
+                  "name": "requestGrant"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/agent-identity",
+              "specifier": "@cognate/agent-identity",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "createStore"
+                },
+                {
+                  "name": "logPrompt"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/prompt-store",
+              "specifier": "@cognate/prompt-store",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "Agent",
+                  "type": true
+                },
+                {
+                  "name": "CapabilityGrant",
+                  "type": true
+                },
+                {
+                  "name": "Evaluation",
+                  "type": true
+                },
+                {
+                  "name": "Model",
+                  "type": true
+                },
+                {
+                  "name": "ModelVersion",
+                  "type": true
+                },
+                {
+                  "name": "ModelVersionStatus",
+                  "type": true
+                },
+                {
+                  "name": "Prompt",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/types",
+              "specifier": "@cognate/types",
+              "typeOnly": true
+            }
+          ],
+          "importOrder": [
+            "packages/node/src/server.ts",
+            "packages/model-registry/src/index.ts",
+            "packages/agent-identity/src/index.ts",
+            "packages/prompt-store/src/index.ts",
+            "packages/node/src/middleware/signature.ts",
+            "packages/node/src/client.ts",
+            "packages/types/src/index.ts",
+            "packages/node/tests/fixtures/test-only-tenant-roots.ts"
+          ],
+          "importsFiles": [
+            "packages/agent-identity/src/index.ts",
+            "packages/model-registry/src/index.ts",
+            "packages/node/src/client.ts",
+            "packages/node/src/middleware/signature.ts",
+            "packages/node/src/server.ts",
+            "packages/node/tests/fixtures/test-only-tenant-roots.ts",
+            "packages/prompt-store/src/index.ts",
+            "packages/types/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/agent-identity"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/model-registry"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/prompt-store"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/types"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "packages/node/tests/tenant-scoping.test.ts",
+          "testFramework": "vitest"
+        },
+        {
           "hash": "6e2369cbc791956c36103dd8081ebc2f9ed2fc174a4186a72f86f0f094e98fcb",
           "path": "packages/node/tsconfig.json"
         },
         {
-          "hash": "316a7807e4cf85ddb1af7c951b9fbd4c42c900386402069711d4da9f547c5285",
+          "hash": "b09d93275100976d2f7a9f4953ba4afcbe9126129091b01efa335c953b9d2398",
           "importNames": [
             {
               "form": "import",
@@ -2893,20 +5017,27 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 1,
+          "reads": 4,
           "where": [
             "caller"
           ],
           "writes": 3
+        },
+        {
+          "reads": 3,
+          "where": [
+            "cwd"
+          ],
+          "writes": 0
         }
       ],
-      "outsideReads": 1,
+      "outsideReads": 7,
       "outsideWrites": 3,
       "role": "code",
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 7,
+      "testedBy": 13,
       "unresolvedSites": 0
     },
     {
@@ -2920,7 +5051,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "4a3f6443a7c249a6c8cad77095377b04ec6ffce187ea64077d265d605c3a9d9d",
+          "hash": "0ffdd22a27f20dbe4c510aabaad967adeeceddb83902f4de32059f124f69ec13",
           "path": "packages/policy/package.json"
         },
         {
@@ -3099,7 +5230,7 @@
           "path": "packages/policy/tsconfig.json"
         },
         {
-          "hash": "316a7807e4cf85ddb1af7c951b9fbd4c42c900386402069711d4da9f547c5285",
+          "hash": "d8caa0b977b7e062cb6892a6766828f2a547aa81a5f9a3c964fe92546e03a429",
           "importNames": [
             {
               "form": "import",
@@ -3133,7 +5264,7 @@
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 2,
+      "testedBy": 8,
       "unresolvedSites": 0
     },
     {
@@ -3147,7 +5278,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "1d229679cc5904b98fcf13cc54f3a89e328643645ce0e1ac02458210e048845b",
+          "hash": "1cd290167de2684463833577756740a6813da32137d1f0a0a74bbc6bcb4047af",
           "path": "packages/prompt-store/package.json"
         },
         {
@@ -3159,15 +5290,15 @@
             {
               "in": "attestLogPrompt",
               "kind": "catch",
-              "line": 81
+              "line": 84
             },
             {
               "in": "attestLogOutput",
               "kind": "catch",
-              "line": 127
+              "line": 133
             }
           ],
-          "hash": "aff234914c8905bd4df44819e9116104165a6796229cccd788c579eb119a284a",
+          "hash": "614b4d54835722c1ee5aba7fe07c9ecdf56d42cb44673d037bc723ae79cf5db9",
           "importNames": [
             {
               "form": "import",
@@ -3307,7 +5438,7 @@
           "path": "packages/prompt-store/src/store.ts"
         },
         {
-          "hash": "5ba22a8f63a7ed709479b1767f9c624ba84eca0573c7946c85d114e6d172da37",
+          "hash": "d9dfc53228f59cf076a6fc54938b0f7c89adec7bc5899a2cb85d594c97ea0834",
           "importNames": [
             {
               "form": "import",
@@ -3403,7 +5534,7 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "7f73cebe0813c88842ff73ed115558ebaf415e406b596d40148967f0f7b1f6a3",
+          "hash": "9e2834c724061fef0da5cd9304443f73f1a26e1e5be2377337a251d17a50c20b",
           "importNames": [
             {
               "form": "import",
@@ -3441,7 +5572,7 @@
           "path": "packages/prompt-store/tsconfig.json"
         },
         {
-          "hash": "316a7807e4cf85ddb1af7c951b9fbd4c42c900386402069711d4da9f547c5285",
+          "hash": "8c33ca1451776fbd01505ade38ced1da215fe2cbfd1275782d84e426941bfa74",
           "importNames": [
             {
               "form": "import",
@@ -3473,19 +5604,19 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 8,
+          "reads": 9,
           "where": [
             "caller"
           ],
           "writes": 0
         }
       ],
-      "outsideReads": 8,
+      "outsideReads": 9,
       "role": "code",
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 9,
+      "testedBy": 12,
       "unresolvedSites": 0
     },
     {
@@ -3499,7 +5630,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "62e1542da673fa06c636bc8cae918fea43b2623342c5c0a0ce85037e8f9f1dee",
+          "hash": "5b02c489ea2a4b4b25ab9711723ec5c13995ee4dfaf8d4c68d640e85778602fa",
           "path": "packages/repomesh-bridge/package.json"
         },
         {
@@ -3625,7 +5756,7 @@
           "path": "packages/repomesh-bridge/tsconfig.json"
         },
         {
-          "hash": "0619647d853125286b5a534d70895ceba502245748a3d4c20c21b83bce8b3ef6",
+          "hash": "4f38866d5e76aa2e29c2567b72b65a55a291103b0535ce47b254593516eab0d8",
           "importNames": [
             {
               "form": "import",
@@ -3659,7 +5790,7 @@
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 2,
+      "testedBy": 4,
       "unresolvedSites": 0
     },
     {
@@ -3675,11 +5806,11 @@
           "path": ".dockerignore"
         },
         {
-          "hash": "ad0c9578b8e02b2ebd3575158c6a9504e23016719ec98e2ba898b79973f3158e",
+          "hash": "2cabb65fe8a13787f5f742fcff510eeb8bbef69e965c3b08af464c6dfc6216ef",
           "path": ".gitignore"
         },
         {
-          "hash": "d76c1fa57364ef42346d11ca384a6514e18f009faac76688a9b5547f4eeb59f8",
+          "hash": "17e4155f850874765cad65cdf57c26675a208f5afe9cba1d4fd9a3fa692f872d",
           "path": "CHANGELOG.md"
         },
         {
@@ -3691,51 +5822,51 @@
           "path": "Dockerfile"
         },
         {
-          "hash": "2bc1109dde8b2d3fea35ebe0c47248b06638380def170a257a6cc8bc1ac4c117",
+          "hash": "9ff40859d15cc23390ae8cb595c7632fd8db77b6013e8d8fe32d7d696e807fd7",
           "path": "HANDBOOK.md"
         },
         {
-          "hash": "9d97b069c3e551eda871bca3c247bd54c87f7fb12e5a29219bfbf33e9a1dc1f6",
+          "hash": "367e5141e4f5884e5791c4021f33a9faa958840a5decf44e1b273a87aad1c459",
           "path": "LICENSE"
         },
         {
-          "hash": "10232492673f03e4a6a602adedb91b29031e5bd934bbd66cae122217e02a0821",
+          "hash": "a036f2f3e272d9457d3c36ac5e15047c9e8e6c1e7c1a2b1856bca5a9f2e9f2ed",
           "path": "README.es.md"
         },
         {
-          "hash": "95a8e2f44c4acbb3613d03ca22950ac216d7ad0649d36b71bfd6ec664479a011",
+          "hash": "91a68a371b1a0f7850abeea41a9ef5497686730363344105aede8e31378e2a04",
           "path": "README.fr.md"
         },
         {
-          "hash": "89779acef41c4fb5cbcf70b63eaa42fb714200383f0cd6d4ac6e0191a0a2cf8f",
+          "hash": "13920789571414b5efaee1a76d242882af1b8ebe9a08462937e609ad50889d26",
           "path": "README.hi.md"
         },
         {
-          "hash": "6155bce97850bf6d8d3e132871aa36ba588f2083a388bddaf6128c721cef0d9a",
+          "hash": "909e6c5f252e1532725d2222e912a4bda1557e4c5170db47936ec42675ba7f2c",
           "path": "README.it.md"
         },
         {
-          "hash": "062a3b51be2330a20c8dbb1d696819f19588f49f8d25011960eda3d4ba45aeff",
+          "hash": "20d12eb287f16bfb85afcf244c14311bc4f16a1761c237e5ae73443dbfa24d9e",
           "path": "README.ja.md"
         },
         {
-          "hash": "d0fe0a3091c4c5b4fc3e4d43c890f825a314eec34e5d7a72a081824078d72549",
+          "hash": "7219909c81efbaf141383c89844146805e4455b8b572bb1726df0fbfdb64d85a",
           "path": "README.md"
         },
         {
-          "hash": "7436bf60c9ed559ddb520a4c59d3708ef018692cf3dd7fca343a797d0001eca5",
+          "hash": "4faa9ff66f0b71e813257295920d0c382e2104526a83be3a6d21ec9b78c6dd33",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "6e50e9703b4f1a202b45c142ef5e897eb7352c323a77327846d85676ff37ff58",
+          "hash": "34a0a44cbbea1a978d06c0201a2172a8bc2fbba0ad587b07e358af902c841642",
           "path": "README.zh.md"
         },
         {
-          "hash": "9b4529f2eca3175e4ece2f671d4724736312fa60290240590394bdae7dcb2c29",
+          "hash": "c7d245f3ffc78d05809fa381d3b8c41b2fee842b8995b78a0b94111c64988b79",
           "path": "SCORECARD.md"
         },
         {
-          "hash": "be5799921672f6c9265f915d4eff93238c94dd270c2c9cf9c1b3f2741a954d2a",
+          "hash": "ad4f7aacd9484be1b47b2c6a121e77c1eaaf218afb00f4168059302b4324238b",
           "path": "SECURITY.md"
         },
         {
@@ -3747,7 +5878,7 @@
           "path": "docker-compose.prod.yml"
         },
         {
-          "hash": "b22a307cd73aa487659b430853b13b453f12833ce4fe0e7dff1fac66ca8d2869",
+          "hash": "756a215a01deba23723e50ff0e730f999b20a556e1546bff35c45291cc0650b0",
           "path": "docker-compose.yml"
         },
         {
@@ -3755,11 +5886,11 @@
           "path": "node.json"
         },
         {
-          "hash": "086bba88ba76f2043727067c8f8f876a368783dc2ebcebce5d1320c9dec797f1",
+          "hash": "7751dac32f36e19285f6d5122159ded4fdfbb163c81365dccae392ff5a46a9ef",
           "path": "package.json"
         },
         {
-          "hash": "e53afda314ce6036817e0192603a1552fa29c5d100a017d052b014ba7b70f9ac",
+          "hash": "71446c50e816e1dc816b3a21d1b96fe1414a1bd21e9c24ff14ca8f985e6f8e86",
           "path": "pnpm-lock.yaml"
         },
         {
@@ -3792,6 +5923,13 @@
         {
           "hash": "270c1277ae1cc75b8b042ac74c650e9e47f346c9545a1cc5592e20b5c9edc98f",
           "path": "scripts/health-server.mjs"
+        },
+        {
+          "hash": "b2118f1c00195c21b891fabf50aec4863c895cccac6e6fbbd9967881e175c58c",
+          "importsFiles": [
+            "packages/node/src/server.ts"
+          ],
+          "path": "scripts/make-tenant-root.mjs"
         }
       ],
       "globs": [
@@ -3800,8 +5938,22 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 1,
+          "where": [
+            "caller"
+          ],
+          "writes": 2
+        }
+      ],
+      "outsideReads": 1,
+      "outsideWrites": 2,
       "role": "code",
-      "testedBy": 0,
+      "testRunners": [
+        "vitest"
+      ],
+      "testedBy": 1,
       "unresolvedSites": 0
     },
     {
@@ -3869,7 +6021,7 @@
           "path": "site/astro.config.mjs"
         },
         {
-          "hash": "f28e1741415380da01a48577f390b8aa5aa9deda3d3ea3e330b3b8049c5ccc5d",
+          "hash": "617f162a63407087d335d257c91973301b49ac2eaff7da281ed64c871116d062",
           "path": "site/package-lock.json"
         },
         {
@@ -3922,28 +6074,32 @@
           "path": "site/src/content.config.ts"
         },
         {
-          "hash": "7d2ba275976b11624681a968f9fb578b7e025e25846dbc862679619a7dac2b4b",
+          "hash": "4e93880f48edf6b4e7e15e5d1232613834fe22711f8d9c32031b4497f8814c60",
           "path": "site/src/content/docs/handbook/architecture.md"
         },
         {
-          "hash": "2dd3ebe6a9e9e6d39c59f5667bb3f1f22126fc79f371849dd40488a02e165d35",
+          "hash": "8177c91fb893be9aaee10573eb688f354f9a4aaaab36abed1f69f616e729a89a",
           "path": "site/src/content/docs/handbook/getting-started.md"
         },
         {
-          "hash": "5295f41da0961afd9d65638e0b5b03e794bc1f34598db70209e29a1e1a108d69",
+          "hash": "a9e46a773b0cdfd7454b1fcaa6fd28c8e0bbd442cfcb610ac423169574ed50ea",
           "path": "site/src/content/docs/handbook/index.md"
         },
         {
-          "hash": "071730b23de14c60d32570c6a0cc7f5d72dba97052ba2c44dfb8760effc21695",
+          "hash": "d81dfd45406989650e8b0c232ac68302f27ee2af0f2aa705f6d8fbbea6197cf1",
           "path": "site/src/content/docs/handbook/reference.md"
         },
         {
-          "hash": "481b38252cc1d1a8611eadad77121eb49e07e528a611688e157dd2439de9522d",
+          "hash": "909f18d7cc8c878bedaacf3375bdf1b111e027801be943f7cf990d1a2012771e",
           "path": "site/src/content/docs/handbook/security.md"
         },
         {
-          "hash": "67c9e9ce755b64f4fb9eedcb43ddcb0a746d3cc356f9e7080fdf07145e95f173",
+          "hash": "ef714dcd6de95045ab9fff62e8c3fa2ff59084af1d1ee135a846d476fe7ea1d3",
           "path": "site/src/content/docs/handbook/usage.md"
+        },
+        {
+          "hash": "4250e0bed1f8cb8ec6d30d788439a51e659aa4f9bfecb829cbf659f7e283d37c",
+          "path": "site/src/content/docs/handbook/whats-new.md"
         },
         {
           "hash": "4fb84a646c4d833c33f4058e1ed1775849e855c65e5adb7e45d2a633674bd603",
@@ -4051,7 +6207,7 @@
         },
         {
           "constantOnly": true,
-          "hash": "5bce89ed804f5d0719cc0044482b4f1ac50ce02ba6492c9244e24eacf5acad34",
+          "hash": "6fadd47bae32b67d75fd76e9339c4dde2bc430905eab77e38e86cd8d17024877",
           "importNames": [
             {
               "form": "import",
@@ -4132,11 +6288,11 @@
       "externals": 0,
       "files": [
         {
-          "hash": "119f80d2b02b1916d2e7fdf0354182793414835c0e90fa6275dcc46377cae2d1",
+          "hash": "808a6211a6df56ad0bcccf139caa76bf241328a985ad0bf310d6af67c2bf4ff9",
           "path": "packages/types/package.json"
         },
         {
-          "hash": "0d2708400c8b845e830bfbc3814eea462f1ea6f920cf7936e9fa799f958ce8f6",
+          "hash": "b705afaf5cb0f023df00eeab160f8f75e142471afe19f868da220126c1cde36d",
           "path": "packages/types/src/index.ts"
         },
         {
@@ -4154,7 +6310,7 @@
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 13,
+      "testedBy": 19,
       "unresolvedSites": 0
     }
   ],
@@ -4206,6 +6362,45 @@
           "dir": "",
           "job": "build-and-test",
           "programs": [
+            "chmod",
+            "echo",
+            "mktemp",
+            "node",
+            "stat"
+          ],
+          "step": "Tenant root script keeps the secret file at mode 600"
+        },
+        {
+          "dir": "",
+          "job": "build-and-test",
+          "programs": [
+            "echo",
+            "git",
+            "grep"
+          ],
+          "step": "Does this change touch the Docker quick start?"
+        },
+        {
+          "dir": "",
+          "job": "build-and-test",
+          "programs": [
+            "1",
+            "cat",
+            "curl",
+            "docker",
+            "echo",
+            "grep",
+            "mkdir",
+            "node",
+            "seq",
+            "sleep"
+          ],
+          "step": "Docker quick start starts with a roots file and refuses cleanly without one"
+        },
+        {
+          "dir": "",
+          "job": "build-and-test",
+          "programs": [
             "1",
             "echo",
             "grep",
@@ -4248,7 +6443,16 @@
         }
       ],
       "landings": [],
-      "mentions": [],
+      "mentions": [
+        {
+          "job": "build-and-test",
+          "path": "Dockerfile"
+        },
+        {
+          "job": "build-and-test",
+          "path": "docker-compose.yml"
+        }
+      ],
       "name": "CI",
       "permissions": [
         "contents:read"
@@ -4263,17 +6467,17 @@
         {
           "boundary": "cognate",
           "depth": 0,
-          "files": 7
+          "files": 8
         },
         {
           "boundary": "model-registry",
           "depth": 0,
-          "files": 6
+          "files": 8
         },
         {
           "boundary": "node",
           "depth": 0,
-          "files": 18
+          "files": 29
         },
         {
           "boundary": "policy",
@@ -4288,7 +6492,12 @@
         {
           "boundary": "repomesh-bridge",
           "depth": 0,
-          "files": 4
+          "files": 5
+        },
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 1
         },
         {
           "boundary": "types",
@@ -4358,6 +6567,14 @@
           "runKind": "executes"
         },
         {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/cognate/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/cognate/vitest.config.ts"
+        },
+        {
           "built": true,
           "directory": true,
           "job": "build-and-test",
@@ -4384,10 +6601,72 @@
           "via": "tsc packages/node/tsconfig.json"
         },
         {
-          "directory": true,
           "job": "build-and-test",
           "matched": true,
-          "path": "packages/node/tests/",
+          "path": "packages/node/tests/deploy-gate.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/node/tests/evaluations.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/node/tests/event-proof.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/node/tests/make-tenant-root.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/node/tests/middleware.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/node/tests/server.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/node/tests/signed-requests.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/node/tests/snapshot.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/node/tests/startup-errors.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/node/tests/tenant-scoping.test.ts",
           "runKind": "executes",
           "via": "vitest packages/node/vitest.config.ts"
         },
@@ -4435,6 +6714,14 @@
           "via": "tsc packages/repomesh-bridge/tsconfig.json"
         },
         {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/repomesh-bridge/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/repomesh-bridge/vitest.config.ts"
+        },
+        {
           "built": true,
           "directory": true,
           "job": "build-and-test",
@@ -4442,9 +6729,14 @@
           "path": "packages/types/src/",
           "runKind": "executes",
           "via": "tsc packages/types/tsconfig.json"
+        },
+        {
+          "job": "build-and-test",
+          "path": "scripts/make-tenant-root.mjs",
+          "runKind": "executes"
         }
       ],
-      "runsCount": 19,
+      "runsCount": 31,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -4472,10 +6764,22 @@
           ]
         },
         {
+          "config": "packages/cognate/vitest.config.ts",
+          "dir": "packages/cognate",
+          "files": 1,
+          "job": "build-and-test",
+          "runner": "vitest",
+          "step": "Test with coverage",
+          "through": [
+            "pnpm run test:coverage",
+            "pnpm run test:coverage (packages/cognate)"
+          ]
+        },
+        {
           "config": "packages/model-registry/vitest.config.ts",
           "coverage": true,
           "dir": "packages/model-registry",
-          "files": 2,
+          "files": 4,
           "job": "build-and-test",
           "runner": "vitest",
           "step": "Test with coverage",
@@ -4488,7 +6792,7 @@
           "config": "packages/node/vitest.config.ts",
           "coverage": true,
           "dir": "packages/node",
-          "files": 5,
+          "files": 10,
           "job": "build-and-test",
           "runner": "vitest",
           "step": "Test with coverage",
@@ -4524,6 +6828,19 @@
           ]
         },
         {
+          "config": "packages/repomesh-bridge/vitest.config.ts",
+          "coverage": true,
+          "dir": "packages/repomesh-bridge",
+          "files": 1,
+          "job": "build-and-test",
+          "runner": "vitest",
+          "step": "Test with coverage",
+          "through": [
+            "pnpm run test:coverage",
+            "pnpm run test:coverage (packages/repomesh-bridge)"
+          ]
+        },
+        {
           "coverage": true,
           "dir": "packages/types",
           "files": 0,
@@ -4541,15 +6858,7 @@
           "branches": [
             "main"
           ],
-          "event": "pull_request",
-          "paths": [
-            "**/*.ts",
-            ".github/workflows/**",
-            "atlas/**",
-            "package.json",
-            "pnpm-lock.yaml",
-            "tsconfig*.json"
-          ]
+          "event": "pull_request"
         },
         {
           "branches": [
@@ -4558,10 +6867,13 @@
           "event": "push",
           "paths": [
             "**/*.ts",
+            "**/package.json",
             ".github/workflows/**",
+            "Dockerfile",
             "atlas/**",
-            "package.json",
+            "docker-compose*.yml",
             "pnpm-lock.yaml",
+            "scripts/**",
             "tsconfig*.json"
           ]
         },
@@ -4580,286 +6892,23 @@
       "checksCount": 13,
       "commands": [],
       "elsewhere": [],
-      "file": ".github/workflows/docker-publish.yml",
-      "jobs": [
-        {
-          "basis": "declared",
-          "name": "build-and-push",
-          "runsOn": [
-            {
-              "labels": [
-                "ubuntu-latest"
-              ],
-              "platform": {
-                "cpu": "x64",
-                "libc": "glibc",
-                "os": "linux"
-              }
-            }
-          ]
-        }
-      ],
-      "landings": [],
-      "mentions": [],
-      "name": "Docker Publish",
-      "permissions": [
-        "contents:read",
-        "packages:write"
-      ],
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "agent-identity",
-          "depth": 0,
-          "files": 9
-        },
-        {
-          "boundary": "cognate",
-          "depth": 0,
-          "files": 11
-        },
-        {
-          "boundary": "model-registry",
-          "depth": 0,
-          "files": 8
-        },
-        {
-          "boundary": "node",
-          "depth": 0,
-          "files": 20
-        },
-        {
-          "boundary": "policy",
-          "depth": 0,
-          "files": 6
-        },
-        {
-          "boundary": "prompt-store",
-          "depth": 0,
-          "files": 9
-        },
-        {
-          "boundary": "repomesh-bridge",
-          "depth": 0,
-          "files": 7
-        },
-        {
-          "boundary": "root",
-          "depth": 0,
-          "files": 4
-        },
-        {
-          "boundary": "types",
-          "depth": 0,
-          "files": 2
-        }
-      ],
-      "readers": [],
-      "runs": [
-        {
-          "job": "build-and-push",
-          "packed": true,
-          "path": "package.json",
-          "runKind": "checks",
-          "via": "docker build Dockerfile"
-        },
-        {
-          "directory": true,
-          "job": "build-and-push",
-          "packed": true,
-          "path": "packages/",
-          "runKind": "checks",
-          "via": "docker build Dockerfile"
-        },
-        {
-          "job": "build-and-push",
-          "packed": true,
-          "path": "packages/agent-identity/package.json",
-          "runKind": "checks",
-          "via": "docker build Dockerfile"
-        },
-        {
-          "built": true,
-          "directory": true,
-          "job": "build-and-push",
-          "matched": true,
-          "path": "packages/agent-identity/src/",
-          "runKind": "executes",
-          "via": "docker build Dockerfile → tsc packages/agent-identity/tsconfig.json"
-        },
-        {
-          "job": "build-and-push",
-          "packed": true,
-          "path": "packages/cognate/package.json",
-          "runKind": "checks",
-          "via": "docker build Dockerfile"
-        },
-        {
-          "job": "build-and-push",
-          "packed": true,
-          "path": "packages/model-registry/package.json",
-          "runKind": "checks",
-          "via": "docker build Dockerfile"
-        },
-        {
-          "built": true,
-          "directory": true,
-          "job": "build-and-push",
-          "matched": true,
-          "path": "packages/model-registry/src/",
-          "runKind": "executes",
-          "via": "docker build Dockerfile → tsc packages/model-registry/tsconfig.json"
-        },
-        {
-          "job": "build-and-push",
-          "packed": true,
-          "path": "packages/node/package.json",
-          "runKind": "checks",
-          "via": "docker build Dockerfile"
-        },
-        {
-          "built": true,
-          "directory": true,
-          "job": "build-and-push",
-          "matched": true,
-          "path": "packages/node/src/",
-          "runKind": "executes",
-          "via": "docker build Dockerfile → tsc packages/node/tsconfig.json"
-        },
-        {
-          "job": "build-and-push",
-          "path": "packages/node/src/index.ts",
-          "runKind": "executes",
-          "via": "docker build Dockerfile"
-        },
-        {
-          "job": "build-and-push",
-          "packed": true,
-          "path": "packages/policy/package.json",
-          "runKind": "checks",
-          "via": "docker build Dockerfile"
-        },
-        {
-          "built": true,
-          "directory": true,
-          "job": "build-and-push",
-          "matched": true,
-          "path": "packages/policy/src/",
-          "runKind": "executes",
-          "via": "docker build Dockerfile → tsc packages/policy/tsconfig.json"
-        },
-        {
-          "job": "build-and-push",
-          "packed": true,
-          "path": "packages/prompt-store/package.json",
-          "runKind": "checks",
-          "via": "docker build Dockerfile"
-        },
-        {
-          "built": true,
-          "directory": true,
-          "job": "build-and-push",
-          "matched": true,
-          "path": "packages/prompt-store/src/",
-          "runKind": "executes",
-          "via": "docker build Dockerfile → tsc packages/prompt-store/tsconfig.json"
-        },
-        {
-          "job": "build-and-push",
-          "packed": true,
-          "path": "packages/repomesh-bridge/package.json",
-          "runKind": "checks",
-          "via": "docker build Dockerfile"
-        },
-        {
-          "built": true,
-          "directory": true,
-          "job": "build-and-push",
-          "matched": true,
-          "path": "packages/repomesh-bridge/src/",
-          "runKind": "executes",
-          "via": "docker build Dockerfile → tsc packages/repomesh-bridge/tsconfig.json"
-        },
-        {
-          "job": "build-and-push",
-          "packed": true,
-          "path": "packages/types/package.json",
-          "runKind": "checks",
-          "via": "docker build Dockerfile"
-        },
-        {
-          "built": true,
-          "directory": true,
-          "job": "build-and-push",
-          "matched": true,
-          "path": "packages/types/src/",
-          "runKind": "executes",
-          "via": "docker build Dockerfile → tsc packages/types/tsconfig.json"
-        },
-        {
-          "job": "build-and-push",
-          "packed": true,
-          "path": "pnpm-lock.yaml",
-          "runKind": "checks",
-          "via": "docker build Dockerfile"
-        },
-        {
-          "job": "build-and-push",
-          "packed": true,
-          "path": "pnpm-workspace.yaml",
-          "runKind": "checks",
-          "via": "docker build Dockerfile"
-        },
-        {
-          "job": "build-and-push",
-          "packed": true,
-          "path": "tsconfig.json",
-          "runKind": "checks",
-          "via": "docker build Dockerfile"
-        }
-      ],
-      "runsCount": 21,
-      "secrets": [
-        "GITHUB_TOKEN"
-      ],
-      "sends": {
-        "deploysPages": false,
-        "dispatchesTo": [],
-        "opensIssues": false,
-        "opensIssuesOnFailure": false,
-        "opensPullRequests": false,
-        "publishes": true,
-        "publishesTo": [
-          "container image"
-        ],
-        "releases": false
-      },
-      "stages": [],
-      "triggers": [
-        {
-          "event": "push",
-          "tags": [
-            "v*"
-          ]
-        },
-        {
-          "event": "workflow_dispatch"
-        }
-      ],
-      "uses": [
-        "actions/checkout",
-        "docker/build-push-action",
-        "docker/login-action",
-        "docker/metadata-action",
-        "docker/setup-buildx-action"
-      ],
-      "usesWorkflowToken": true
-    },
-    {
-      "checksCount": 13,
-      "commands": [],
-      "elsewhere": [],
       "file": ".github/workflows/docker.yml",
+      "gated": [
+        {
+          "jobs": [
+            "build-and-push"
+          ],
+          "pushes": false,
+          "sends": [
+            "publishesTo:container image"
+          ],
+          "stages": [],
+          "when": {
+            "event": "push",
+            "tags": true
+          }
+        }
+      ],
       "jobs": [
         {
           "basis": "declared",
@@ -4900,12 +6949,12 @@
         {
           "boundary": "model-registry",
           "depth": 0,
-          "files": 8
+          "files": 10
         },
         {
           "boundary": "node",
           "depth": 0,
-          "files": 20
+          "files": 31
         },
         {
           "boundary": "policy",
@@ -5107,10 +7156,8 @@
         "opensIssues": false,
         "opensIssuesOnFailure": false,
         "opensPullRequests": false,
-        "publishes": true,
-        "publishesTo": [
-          "container image"
-        ],
+        "publishes": false,
+        "publishesTo": [],
         "releases": false
       },
       "stages": [],
@@ -5120,6 +7167,9 @@
           "types": [
             "published"
           ]
+        },
+        {
+          "event": "workflow_call"
         },
         {
           "event": "workflow_dispatch"
@@ -5276,7 +7326,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 0,
+      "checksCount": 13,
       "commands": [
         {
           "dir": "",
@@ -5397,6 +7447,22 @@
               "version": "22"
             }
           ]
+        },
+        {
+          "basis": "declared",
+          "name": "image/build-and-push",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],
@@ -5412,54 +7478,92 @@
       ],
       "name": "Release",
       "permissions": [
+        "contents:read",
         "contents:write",
-        "id-token:write"
+        "id-token:write",
+        "packages:write"
       ],
       "pushes": false,
       "reach": [
         {
           "boundary": "agent-identity",
           "depth": 0,
-          "files": 7
+          "files": 9
         },
         {
           "boundary": "cognate",
           "depth": 0,
-          "files": 8
+          "files": 11
         },
         {
           "boundary": "model-registry",
           "depth": 0,
-          "files": 6
+          "files": 10
         },
         {
           "boundary": "node",
           "depth": 0,
-          "files": 18
+          "files": 31
         },
         {
           "boundary": "policy",
           "depth": 0,
-          "files": 4
+          "files": 6
         },
         {
           "boundary": "prompt-store",
           "depth": 0,
-          "files": 7
+          "files": 9
         },
         {
           "boundary": "repomesh-bridge",
           "depth": 0,
-          "files": 5
+          "files": 7
+        },
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 4
         },
         {
           "boundary": "types",
           "depth": 0,
-          "files": 1
+          "files": 2
         }
       ],
       "readers": [],
       "runs": [
+        {
+          "job": "image/build-and-push",
+          "packed": true,
+          "path": "package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "directory": true,
+          "job": "image/build-and-push",
+          "packed": true,
+          "path": "packages/",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "image/build-and-push",
+          "packed": true,
+          "path": "packages/agent-identity/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "image/build-and-push",
+          "matched": true,
+          "path": "packages/agent-identity/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/agent-identity/tsconfig.json"
+        },
         {
           "built": true,
           "directory": true,
@@ -5476,6 +7580,13 @@
           "path": "packages/agent-identity/tests/",
           "runKind": "executes",
           "via": "vitest packages/agent-identity/vitest.config.ts"
+        },
+        {
+          "job": "image/build-and-push",
+          "packed": true,
+          "path": "packages/cognate/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
         },
         {
           "built": true,
@@ -5528,6 +7639,22 @@
           "via": "vitest packages/cognate/vitest.config.ts"
         },
         {
+          "job": "image/build-and-push",
+          "packed": true,
+          "path": "packages/model-registry/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "image/build-and-push",
+          "matched": true,
+          "path": "packages/model-registry/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/model-registry/tsconfig.json"
+        },
+        {
           "built": true,
           "directory": true,
           "job": "release",
@@ -5545,6 +7672,22 @@
           "via": "vitest packages/model-registry/vitest.config.ts"
         },
         {
+          "job": "image/build-and-push",
+          "packed": true,
+          "path": "packages/node/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "image/build-and-push",
+          "matched": true,
+          "path": "packages/node/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/node/tsconfig.json"
+        },
+        {
           "built": true,
           "directory": true,
           "job": "release",
@@ -5554,12 +7697,96 @@
           "via": "tsc packages/node/tsconfig.json"
         },
         {
-          "directory": true,
+          "job": "image/build-and-push",
+          "path": "packages/node/src/index.ts",
+          "runKind": "executes",
+          "via": "docker build Dockerfile"
+        },
+        {
           "job": "release",
           "matched": true,
-          "path": "packages/node/tests/",
+          "path": "packages/node/tests/deploy-gate.test.ts",
           "runKind": "executes",
           "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/node/tests/evaluations.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/node/tests/event-proof.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/node/tests/make-tenant-root.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/node/tests/middleware.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/node/tests/server.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/node/tests/signed-requests.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/node/tests/snapshot.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/node/tests/startup-errors.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/node/tests/tenant-scoping.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
+        },
+        {
+          "job": "image/build-and-push",
+          "packed": true,
+          "path": "packages/policy/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "image/build-and-push",
+          "matched": true,
+          "path": "packages/policy/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/policy/tsconfig.json"
         },
         {
           "built": true,
@@ -5579,6 +7806,22 @@
           "via": "vitest packages/policy/vitest.config.ts"
         },
         {
+          "job": "image/build-and-push",
+          "packed": true,
+          "path": "packages/prompt-store/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "image/build-and-push",
+          "matched": true,
+          "path": "packages/prompt-store/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/prompt-store/tsconfig.json"
+        },
+        {
           "built": true,
           "directory": true,
           "job": "release",
@@ -5594,6 +7837,22 @@
           "path": "packages/prompt-store/tests/",
           "runKind": "executes",
           "via": "vitest packages/prompt-store/vitest.config.ts"
+        },
+        {
+          "job": "image/build-and-push",
+          "packed": true,
+          "path": "packages/repomesh-bridge/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "image/build-and-push",
+          "matched": true,
+          "path": "packages/repomesh-bridge/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/repomesh-bridge/tsconfig.json"
         },
         {
           "built": true,
@@ -5613,6 +7872,22 @@
           "via": "vitest packages/repomesh-bridge/vitest.config.ts"
         },
         {
+          "job": "image/build-and-push",
+          "packed": true,
+          "path": "packages/types/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "image/build-and-push",
+          "matched": true,
+          "path": "packages/types/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/types/tsconfig.json"
+        },
+        {
           "built": true,
           "directory": true,
           "job": "release",
@@ -5620,9 +7895,30 @@
           "path": "packages/types/src/",
           "runKind": "executes",
           "via": "tsc packages/types/tsconfig.json"
+        },
+        {
+          "job": "image/build-and-push",
+          "packed": true,
+          "path": "pnpm-lock.yaml",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "image/build-and-push",
+          "packed": true,
+          "path": "pnpm-workspace.yaml",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "image/build-and-push",
+          "packed": true,
+          "path": "tsconfig.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
         }
       ],
-      "runsCount": 21,
+      "runsCount": 44,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -5641,6 +7937,7 @@
         ],
         "publishes": true,
         "publishesTo": [
+          "container image",
           "npm"
         ],
         "releases": true
@@ -5674,7 +7971,7 @@
         {
           "config": "packages/model-registry/vitest.config.ts",
           "dir": "packages/model-registry",
-          "files": 2,
+          "files": 4,
           "job": "release",
           "runner": "vitest",
           "step": "Run tests",
@@ -5686,7 +7983,7 @@
         {
           "config": "packages/node/vitest.config.ts",
           "dir": "packages/node",
-          "files": 5,
+          "files": 10,
           "job": "release",
           "runner": "vitest",
           "step": "Run tests",
@@ -5753,7 +8050,10 @@
       ],
       "uses": [
         "actions/checkout",
-        "actions/setup-node"
+        "actions/setup-node",
+        "docker/build-push-action",
+        "docker/login-action",
+        "docker/metadata-action"
       ],
       "usesWorkflowToken": true
     },
@@ -5870,14 +8170,81 @@
       "from": "prompt-store",
       "kind": "file",
       "to": "types"
+    },
+    {
+      "from": "scripts",
+      "kind": "file",
+      "to": "node"
     }
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "eea65c6baf677e4a39de12b66e7555df0aefa768",
-    "tracked": 141
+    "commit": "9aef44d05d6767be1738f65226a2b1b306f22800",
+    "tracked": 157
   },
   "landings": [
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
+        },
+        {
+          "by": "packages/node/tests/signed-requests.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "Dockerfile",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/node/tests/signed-requests.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "HANDBOOK.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/node/tests/signed-requests.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/node/tests/signed-requests.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "SECURITY.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
+        }
+      ],
+      "target": "docker-compose.yml",
+      "writers": []
+    },
     {
       "readers": [
         {
@@ -5901,6 +8268,48 @@
     {
       "readers": [
         {
+          "by": "packages/model-registry/tests/runs.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/model-registry",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/node/tests/signed-requests.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/node/config",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/node/tests/signed-requests.test.ts",
+          "call": "existsSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "packages/node/tests/signed-requests.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/node/config/tenant-roots.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "node.json",
           "call": "literal",
           "confidence": "text"
@@ -5912,12 +8321,48 @@
     {
       "readers": [
         {
+          "by": "packages/node/tests/fixtures/test-only-tenant-roots.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/node/tests/fixtures/test-only-tenant-roots.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/node/tests/signed-requests.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/node/vitest.config.ts",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "pnpm-workspace.yaml",
           "call": "literal",
           "confidence": "text"
         }
       ],
       "target": "packages/repomesh-bridge",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/node/tests/make-tenant-root.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "scripts/make-tenant-root.mjs",
       "writers": []
     },
     {
@@ -5941,6 +8386,18 @@
       ],
       "target": "site/src/content/docs/handbook",
       "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/node/tests/signed-requests.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "site/src/content/docs/handbook/security.md",
+      "writers": []
     }
   ],
   "manifests": [
@@ -5950,63 +8407,63 @@
       "private": true,
       "role": "root",
       "roleFrom": "the root manifest",
-      "version": "0.1.8"
+      "version": "1.0.0"
     },
     {
       "name": "@cognate/agent-identity",
       "path": "packages/agent-identity/package.json",
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     {
       "name": "@mcptoolshop/cognate",
       "path": "packages/cognate/package.json",
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
-      "version": "0.1.8"
+      "version": "1.0.0"
     },
     {
       "name": "@cognate/model-registry",
       "path": "packages/model-registry/package.json",
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
-      "version": "0.1.0"
+      "version": "1.0.0"
     },
     {
       "name": "@cognate/node",
       "path": "packages/node/package.json",
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     {
       "name": "@cognate/policy",
       "path": "packages/policy/package.json",
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     {
       "name": "@cognate/prompt-store",
       "path": "packages/prompt-store/package.json",
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     {
       "name": "@cognate/repomesh-bridge",
       "path": "packages/repomesh-bridge/package.json",
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     {
       "name": "@cognate/types",
       "path": "packages/types/package.json",
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
-      "version": "0.1.0"
+      "version": "1.0.0"
     },
     {
       "name": "site",
@@ -6025,8 +8482,8 @@
       "manifest": "package.json",
       "name": "@mcptoolshop/attestia",
       "purl": "pkg:npm/%40mcptoolshop/attestia",
-      "range": "^2.0.5",
-      "version": "2.0.5",
+      "range": "^2.1.3",
+      "version": "2.1.3",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6035,8 +8492,8 @@
       "manifest": "package.json",
       "name": "@vitest/coverage-v8",
       "purl": "pkg:npm/%40vitest/coverage-v8",
-      "range": "^1.6.1",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6047,6 +8504,16 @@
       "purl": "pkg:npm/typescript",
       "range": "^5.4.0",
       "version": "5.9.3",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "package.json",
+      "name": "vite",
+      "purl": "pkg:npm/vite",
+      "range": "^8.3.5",
+      "version": "8.3.5",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6075,8 +8542,8 @@
       "manifest": "packages/agent-identity/package.json",
       "name": "@vitest/coverage-v8",
       "purl": "pkg:npm/%40vitest/coverage-v8",
-      "range": "^1.6.1",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6095,8 +8562,8 @@
       "manifest": "packages/agent-identity/package.json",
       "name": "vitest",
       "purl": "pkg:npm/vitest",
-      "range": "^1.2.0",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6205,8 +8672,8 @@
       "manifest": "packages/cognate/package.json",
       "name": "vitest",
       "purl": "pkg:npm/vitest",
-      "range": "^1.6.1",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6225,8 +8692,8 @@
       "manifest": "packages/model-registry/package.json",
       "name": "@mcptoolshop/attestia",
       "purl": "pkg:npm/%40mcptoolshop/attestia",
-      "range": "^2.0.5",
-      "version": "2.0.5",
+      "range": "^2.1.3",
+      "version": "2.1.3",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6245,8 +8712,8 @@
       "manifest": "packages/model-registry/package.json",
       "name": "@vitest/coverage-v8",
       "purl": "pkg:npm/%40vitest/coverage-v8",
-      "range": "^1.6.1",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6265,8 +8732,8 @@
       "manifest": "packages/model-registry/package.json",
       "name": "vitest",
       "purl": "pkg:npm/vitest",
-      "range": "^1.2.0",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6335,8 +8802,18 @@
       "manifest": "packages/node/package.json",
       "name": "@mcptoolshop/attestia",
       "purl": "pkg:npm/%40mcptoolshop/attestia",
-      "range": "^2.0.5",
-      "version": "2.0.5",
+      "range": "^2.1.3",
+      "version": "2.1.3",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "packages/node/package.json",
+      "name": "json-canonicalize",
+      "purl": "pkg:npm/json-canonicalize",
+      "range": "^2.0.0",
+      "version": "2.0.0",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6355,8 +8832,8 @@
       "manifest": "packages/node/package.json",
       "name": "@vitest/coverage-v8",
       "purl": "pkg:npm/%40vitest/coverage-v8",
-      "range": "^1.6.1",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6375,8 +8852,8 @@
       "manifest": "packages/node/package.json",
       "name": "vitest",
       "purl": "pkg:npm/vitest",
-      "range": "^1.2.0",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6405,8 +8882,8 @@
       "manifest": "packages/policy/package.json",
       "name": "@vitest/coverage-v8",
       "purl": "pkg:npm/%40vitest/coverage-v8",
-      "range": "^1.6.1",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6425,8 +8902,8 @@
       "manifest": "packages/policy/package.json",
       "name": "vitest",
       "purl": "pkg:npm/vitest",
-      "range": "^1.2.0",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6445,8 +8922,8 @@
       "manifest": "packages/prompt-store/package.json",
       "name": "@mcptoolshop/attestia",
       "purl": "pkg:npm/%40mcptoolshop/attestia",
-      "range": "^2.0.5",
-      "version": "2.0.5",
+      "range": "^2.1.3",
+      "version": "2.1.3",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6465,8 +8942,8 @@
       "manifest": "packages/prompt-store/package.json",
       "name": "@vitest/coverage-v8",
       "purl": "pkg:npm/%40vitest/coverage-v8",
-      "range": "^1.6.1",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6485,8 +8962,8 @@
       "manifest": "packages/prompt-store/package.json",
       "name": "vitest",
       "purl": "pkg:npm/vitest",
-      "range": "^1.2.0",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6535,8 +9012,18 @@
       "manifest": "packages/repomesh-bridge/package.json",
       "name": "vitest",
       "purl": "pkg:npm/vitest",
-      "range": "^1.2.0",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "packages/types/package.json",
+      "name": "json-canonicalize",
+      "purl": "pkg:npm/json-canonicalize",
+      "range": "^2.0.0",
+      "version": "2.0.0",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6545,8 +9032,8 @@
       "manifest": "packages/types/package.json",
       "name": "@vitest/coverage-v8",
       "purl": "pkg:npm/%40vitest/coverage-v8",
-      "range": "^1.6.1",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6565,8 +9052,8 @@
       "manifest": "packages/types/package.json",
       "name": "vitest",
       "purl": "pkg:npm/vitest",
-      "range": "^1.2.0",
-      "version": "1.6.1",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -6630,21 +9117,13 @@
       "name": "@mcptoolshop/cognate",
       "purl": "pkg:npm/%40mcptoolshop/cognate",
       "repository": "https://github.com/mcp-tool-shop-org/cognate",
-      "version": "0.1.8"
+      "version": "1.0.0"
     }
   ],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 15,
+  "testFiles": 24,
   "unassigned": [],
-  "unseen": [
-    {
-      "files": [
-        "docker-compose.yml"
-      ],
-      "kind": "deploy"
-    }
-  ],
   "workspaces": [
     "packages/agent-identity",
     "packages/cognate",

@@ -1,6 +1,6 @@
 # record-index: how it works
 
-Mapped at 2026-10-19 from commit e7c5b77 by Atlas 1.26.0.
+Mapped at 2026-10-26 from commit 99efde1 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-19 from commit e7c5b77 by Atlas 1.26.0.
 
 ## What changed since 2026-09-30 (2c20d4b)
 
-Nothing structural changed since 2026-09-30; 1 file changed content.
+Nothing structural changed since 2026-09-30; 2 files changed content.
 
 ## What comes in
 

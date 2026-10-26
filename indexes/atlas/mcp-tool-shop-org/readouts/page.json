@@ -85,9 +85,9 @@
     "fileCounts": {
       "added": 0,
       "assigned": 0,
-      "changed": 2,
+      "changed": 0,
       "moved": 0,
-      "parts": 1,
+      "parts": 0,
       "removed": 0,
       "unassigned": 0
     },
@@ -119,18 +119,18 @@
       },
       {
         "kind": "landing",
-        "sentence": "And 83 more new writers and readers of places.",
+        "sentence": "And 90 more new writers and readers of places.",
         "subjects": []
       },
       {
         "kind": "counts",
-        "sentence": "2 files changed content, across 1 part.",
+        "sentence": "No file changed.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "28c0163f65bdddaa9e3314a0192966d54b7d841a",
-      "generatedAt": "2026-10-15T01:35:44.947Z"
+      "commit": "b5c60a8573661c59f1c5900a933fcc1a717d1e5f",
+      "generatedAt": "2026-10-24T19:55:51.402Z"
     },
     "unchanged": false
   },
@@ -139,9 +139,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "f32097d31d3ce4c56fccf07b2ce1e43a776afd1c",
+  "commit": "8ba63d5dd89a37c0ecbee6fe40cf61adf8cf591b",
   "defaultBranch": "main",
-  "derived": "20 parts, mostly Python (163 files), HTML (57), Rust (6), JavaScript (3), CSS (2), PowerShell (2), TypeScript (2) and Astro (1). Work enters through 2 doors; verify and Deploy site to GitHub Pages each reach 2 parts, and verify is followed because a pull request goes through it. It deploys a site to GitHub Pages.",
+  "derived": "20 parts, mostly Python (168 files), HTML (57), Rust (6), JavaScript (3), CSS (2), PowerShell (2), TypeScript (2) and Astro (1). Work enters through 2 doors; verify and Deploy site to GitHub Pages each reach 2 parts, and verify is followed because a pull request goes through it. It deploys a site to GitHub Pages.",
   "doors": [
     {
       "checks": [],
@@ -385,6 +385,27 @@
       "place": "README.md",
       "writers": [
         "shared/sync_readme_table.py"
+      ]
+    },
+    {
+      "place": "agent-tooling-knowledge/.claude/loadout/index.json",
+      "writers": [
+        "agent-tooling-knowledge/scripts/gen_loadout.py"
+      ]
+    },
+    {
+      "place": "agent-tooling-knowledge/catalog/",
+      "writers": [
+        "agent-tooling-knowledge/scripts/gen_catalog.py"
+      ]
+    },
+    {
+      "place": "agent-tooling-knowledge/findings.db",
+      "writers": [
+        "agent-tooling-knowledge/scripts/gen_catalog.py",
+        "agent-tooling-knowledge/scripts/gen_loadout.py",
+        "agent-tooling-knowledge/scripts/load_db.py",
+        "agent-tooling-knowledge/scripts/refresh_meta.py"
       ]
     },
     {
@@ -842,20 +863,21 @@
     {
       "place": "xrpl-knowledge/xrpl.db",
       "writers": [
-        "xrpl-knowledge (7 files)"
+        "xrpl-knowledge (8 files)"
       ]
     }
   ],
-  "generatedAt": "2026-10-19T12:35:26.044Z",
+  "generatedAt": "2026-10-26T12:31:37.525Z",
   "limits": [
     "16 imports could not be resolved: `rust-knowledge/waves/wave-03-si-rpg-engine/probes/globals_probe.rs` imports `wasmparser::ExternalKind`; `rust-knowledge/waves/wave-03-si-rpg-engine/probes/globals_probe.rs` imports `wasmparser::Operator`; `rust-knowledge/waves/wave-03-si-rpg-engine/probes/globals_probe.rs` imports `wasmparser::Parser`; and 13 more.",
     "1 import site names a path outside this repository, so what it loads is not followed.",
     "31 writes and 22 reads use paths built at run time and are not named here.",
     "10 writes go to places this repository does not track, so they are not listed as generated.",
-    "23 writes and 62 reads go to a path their caller passes, not to this repository.",
+    "23 writes and 63 reads go to a path their caller passes, not to this repository.",
     "6 writes and 2 reads go to a temporary directory, not to this repository.",
     "5 reads go to the home directory (.cargo/), not to this repository.",
     "3 reads go to the directory the command is run in, not to this repository.",
+    "17 files belong to no part: agent-tooling-knowledge/.claude/loadout/index.json, agent-tooling-knowledge/README.md, agent-tooling-knowledge/catalog/README.md and 14 more.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/verify.yml",
@@ -988,5 +1010,5 @@
   "untestedNote": [
     "tensor-engine-knowledge/baselines/_triton_test.py runs in no workflow."
   ],
-  "written": 79
+  "written": 82
 }

@@ -1,0 +1,307 @@
+{
+  "authored": [
+    ".github/",
+    "root",
+    "runs/",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 3,
+      "importedBy": [],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "src",
+      "partLabel": "src"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "root",
+      "partLabel": "the repository root"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "tests",
+      "partLabel": "tests"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 415,
+      "assigned": 0,
+      "changed": 2,
+      "moved": 0,
+      "parts": 4,
+      "removed": 0,
+      "unassigned": 0
+    },
+    "items": [
+      {
+        "kind": "door",
+        "sentence": "Release (.github/workflows/release.yml) is a new door. It starts when a release is published; or by hand. It runs src/rnd_data/__init__.py, tests/ and verify.sh. It checks src/.",
+        "subjects": [
+          ".github/workflows/release.yml",
+          "src/",
+          "src/rnd_data/__init__.py",
+          "tests/",
+          "verify.sh"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "README.md is now also read by runs/xrpl-lab-runs--_harness/manifest.json.",
+        "subjects": [
+          "README.md",
+          "runs/xrpl-lab-runs--_harness/manifest.json"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "runs/xrpl-lab-runs--_harness/files/ is now read by runs/xrpl-lab-runs--_harness/manifest.json.",
+        "subjects": [
+          "runs/xrpl-lab-runs--_harness/files/",
+          "runs/xrpl-lab-runs--_harness/manifest.json"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "runs/xrpl-lab-runs--_harness/files/* is now read by runs/xrpl-lab-runs--_harness/files/capture_ledger.py.",
+        "subjects": [
+          "runs/xrpl-lab-runs--_harness/files/*",
+          "runs/xrpl-lab-runs--_harness/files/capture_ledger.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 412 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
+        "kind": "counts",
+        "sentence": "415 files added and 2 changed content, across 4 parts.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "479d6513dde67d96d7b75772e26e61d496864694",
+      "generatedAt": "2026-10-20T16:46:53.215Z"
+    },
+    "unchanged": false
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "6647b87b5f00915b88974a218d405e9f62da0dea",
+  "defaultBranch": "main",
+  "derived": "6 parts, mostly shell (79 files), Python (70), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to PyPI. It deploys a site to GitHub Pages. People run rnd-data.",
+  "doors": [
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "src/rnd_data/cli.py",
+        "tests/",
+        "verify.sh"
+      ],
+      "runsCount": 3,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request to main",
+        "on a push to main touching 13 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "src/rnd_data/__init__.py",
+        "tests/",
+        "verify.sh"
+      ],
+      "runsCount": 3,
+      "runsMore": 0,
+      "sends": [
+        "publishes to PyPI"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "pyproject.toml",
+      "id": "pyproject.toml#rnd-data",
+      "kind": "command",
+      "landings": [],
+      "name": "rnd-data",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 4
+        }
+      ],
+      "runs": [
+        "src/rnd_data/cli.py"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [
+    {
+      "from": "tests",
+      "fromTests": true,
+      "to": "src"
+    }
+  ],
+  "engine": "1.26.0",
+  "generated": [],
+  "generatedAt": "2026-10-26T12:32:26.991Z",
+  "limits": [
+    "14 imports could not be resolved: `runs/receipts--colab--rung-prestep-muse-20261019--try5/files/prestep_fit_tokenizer.py` imports `pin_window`, which is no module on its import path and no declared dependency; `runs/receipts--colab--rung-prestep-muse-20261019--try5/files/rung_prestep_muse.py` imports `pin_window`, which is no module on its import path and no declared dependency; `runs/receipts--colab--rung-prestep-muse-20261019/files/derive_allow.py` imports `pin_window`, which is no module on its import path and no declared dependency; and 11 more.",
+    "84 writes and 143 reads use paths built at run time and are not named here.",
+    "8 writes and 89 reads go to a path their caller passes, not to this repository.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "root": "the repository root",
+    "runs": "runs",
+    "site": "site",
+    "src": "src",
+    "tests": "tests"
+  },
+  "parts": 6,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/rnd-data",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "src/rnd_data/cli.py",
+    "src/rnd_data/__init__.py",
+    "src/rnd_data/store.py",
+    "src/rnd_data/schema.py"
+  ],
+  "summary": "The raw data behind the studio's research: every run's receipts and outputs, with a manifest per run (rnd-data-run/v1) that pins each file by SHA-256, plus its MIT read-only Python package under src/.",
+  "summaryFrom": "person",
+  "testFiles": 1,
+  "testedBy": {
+    "src": 1
+  },
+  "testedCodeParts": 1,
+  "unnamedWrites": 84,
+  "unread": [],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [],
+  "written": 0
+}

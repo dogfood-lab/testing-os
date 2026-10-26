@@ -1,15 +1,15 @@
 # xrpl-lab: how it works
 
-Mapped at 2026-10-19 from commit aa97f4c by Atlas 1.26.0.
+Mapped at 2026-10-26 from commit f51a282 by Atlas 1.26.0.
 
 ## What this is
 
-11 parts, mostly Python (173 files), Astro (13), TypeScript (8), CSS (4), JavaScript (2), HTML (1) and shell (1). Work enters through 8 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run xrpl-lab.
+10 parts, mostly Python (233 files), Astro (13), TypeScript (8), CSS (4), shell (3), JavaScript (2) and HTML (1). Work enters through 8 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run xrpl-lab.
 
-## What changed since 2026-10-15 (c73deb4)
+## What changed since 2026-10-22 (0a4a07a)
 
 - modules/*.md is now read by tests/test_token_escrow.py.
-- No file changed.
+- 12 files changed content, across 2 parts.
 
 ## What comes in
 
@@ -56,11 +56,13 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-No two source files, other than a file and its own test, changed together often enough to name.
+- **bin/xrpl-lab.js** and **xrpl_lab/__init__.py** changed together in 5 of 7 commits, though neither part imports the other.
 
 1 file changed together with its own test, as expected.
 
-Window: 180 days; a pair counts from 3 shared commits, since 4 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Confidence is low: fewer than 25 source files reach 10 revisions in the window.
+
+Window: 180 days; a pair counts from 3 shared commits, since 5 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -82,7 +84,7 @@ Nothing in this repository writes to a tracked place this map can see.
 
 ## Hand-authored
 
-People write .github/, design/, modules/, the repository root and site/. The data in docs/ and presets/ is written by no code this map names; 3 writes with paths built at run time may land here.
+People write .github/, modules/, the repository root and site/. The data in docs/ and presets/ is written by no code this map names; 3 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -94,9 +96,9 @@ Read those in order to follow one run of xrpl-lab end to end. This path follows 
 
 - 1 import could not be resolved: `tests/test_product_smoke.py` imports a path built at run time.
 - 3 writes and 7 reads use paths built at run time and are not named here.
-- 6 writes and 51 reads go to a path their caller passes, not to this repository.
+- 6 writes and 58 reads go to a path their caller passes, not to this repository.
+- 8 reads go to the directory the command is run in, not to this repository.
 - 1 write and 6 reads go to the home directory (.xrpl-lab/) or a path their caller passes, not to this repository.
-- 6 reads go to the directory the command is run in, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

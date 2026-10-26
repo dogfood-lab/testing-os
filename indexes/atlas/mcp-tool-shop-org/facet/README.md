@@ -1,6 +1,6 @@
 # facet: how it works
 
-Mapped at 2026-10-19 from commit dd48ed7 by Atlas 1.26.0.
+Mapped at 2026-10-26 from commit 80ff9ac by Atlas 1.26.0.
 
 ## What this is
 
@@ -10,7 +10,7 @@ Mapped at 2026-10-19 from commit dd48ed7 by Atlas 1.26.0.
 
 - docs/experiments/E73-treatment-0-8-1-report.md is now read by docs/index/facet.db.cert.json.
 - docs/handbook/props-and-rigs.md is now also read by docs/index/facet.db.cert.json.
-- 4 files changed content, across 2 parts.
+- 5 files changed content, across 3 parts.
 
 ## What comes in
 

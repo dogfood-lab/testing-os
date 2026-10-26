@@ -19,35 +19,116 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 14,
       "assigned": 0,
-      "changed": 3,
+      "changed": 34,
       "moved": 0,
-      "parts": 2,
+      "parts": 4,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI now also runs src/translateAll.untranslated.test.ts, src/translateMarkdown.untranslated.fixes.test.ts and src/translateMarkdown.untranslated.test.ts.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "src/translateAll.untranslated.test.ts",
+          "src/translateMarkdown.untranslated.fixes.test.ts",
+          "src/translateMarkdown.untranslated.test.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Publish to npm now also runs src/translateAll.untranslated.test.ts, src/translateMarkdown.untranslated.fixes.test.ts and src/translateMarkdown.untranslated.test.ts.",
+        "subjects": [
+          ".github/workflows/publish.yml",
+          "src/translateAll.untranslated.test.ts",
+          "src/translateMarkdown.untranslated.fixes.test.ts",
+          "src/translateMarkdown.untranslated.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "LICENSE is now read by src/protectedTerms.test.ts.",
+        "subjects": [
+          "LICENSE",
+          "src/protectedTerms.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "README.es.md is now read by src/translateMarkdown.untranslated.fixes.test.ts.",
+        "subjects": [
+          "README.es.md",
+          "src/translateMarkdown.untranslated.fixes.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "README.fr.md is now read by src/translateMarkdown.untranslated.fixes.test.ts.",
+        "subjects": [
+          "README.fr.md",
+          "src/translateMarkdown.untranslated.fixes.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 2 more new writers and readers of places.",
+        "subjects": []
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-01; 3 files changed content.",
+        "sentence": "14 files added and 34 changed content, across 4 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "e0fd93e1984754317e96214bd4f4723c28406d4f",
-      "generatedAt": "2026-10-01T02:13:34.298Z"
+      "commit": "e920cf46935bf5e4ccc45c40fa5678821e8b6ce2",
+      "generatedAt": "2026-10-20T21:35:38.251Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
-  "changesTogether": [],
+  "changesTogether": [
+    {
+      "a": "scripts/translate-all.mjs",
+      "b": "scripts/translate-readme.mjs",
+      "either": 6,
+      "partLabels": [
+        "scripts",
+        "scripts"
+      ],
+      "parts": [
+        "scripts",
+        "scripts"
+      ],
+      "relation": "inside",
+      "shared": 4
+    },
+    {
+      "a": "scripts/translate-readme.mjs",
+      "b": "src/translateMarkdown.ts",
+      "either": 8,
+      "partLabels": [
+        "scripts",
+        "src"
+      ],
+      "parts": [
+        "scripts",
+        "src"
+      ],
+      "relation": "a-imports-b",
+      "shared": 5
+    }
+  ],
   "changesTogetherNote": [
-    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "5b9702556cb1a0af4cb9a5b2452219617a94baad",
+  "commit": "3a8402389f0b8706f07a5c706d0dc97147d37f3d",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly Markdown (71 files); code in TypeScript (39), JavaScript (4), CSS (2) and Astro (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because it comes first by name. It publishes to npm. It deploys a site to GitHub Pages. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.",
+  "derived": "7 parts, mostly Markdown (83 files); code in TypeScript (50), JavaScript (5), CSS (2) and Astro (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because it comes first by name. It publishes to npm. It deploys a site to GitHub Pages. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.",
   "doors": [
     {
       "builds": [
@@ -65,7 +146,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 36
+          "files": 47
         }
       ],
       "runs": [
@@ -78,21 +159,28 @@
         "src/integration.test.ts",
         "src/languages.test.ts",
         "src/ollama.test.ts",
+        "src/pins.test.ts",
         "src/polish.test.ts",
+        "src/protectedTerms.test.ts",
         "src/semaphore.test.ts",
+        "src/survival.test.ts",
         "src/translate.test.ts",
         "src/translateAll.test.ts",
+        "src/translateAll.untranslated.test.ts",
         "src/translateMarkdown.cache.test.ts",
         "src/translateMarkdown.codespans.test.ts",
         "src/translateMarkdown.concurrency.test.ts",
+        "src/translateMarkdown.protected.test.ts",
         "src/translateMarkdown.roundtrip.test.ts",
         "src/translateMarkdown.test.ts",
+        "src/translateMarkdown.untranslated.fixes.test.ts",
+        "src/translateMarkdown.untranslated.test.ts",
         "src/translateReadme.test.ts",
         "src/validate.test.ts",
         "src/version.test.ts"
       ],
-      "runsCount": 21,
-      "runsMore": 18,
+      "runsCount": 28,
+      "runsMore": 25,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -151,7 +239,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 36
+          "files": 47
         }
       ],
       "runs": [
@@ -164,21 +252,28 @@
         "src/integration.test.ts",
         "src/languages.test.ts",
         "src/ollama.test.ts",
+        "src/pins.test.ts",
         "src/polish.test.ts",
+        "src/protectedTerms.test.ts",
         "src/semaphore.test.ts",
+        "src/survival.test.ts",
         "src/translate.test.ts",
         "src/translateAll.test.ts",
+        "src/translateAll.untranslated.test.ts",
         "src/translateMarkdown.cache.test.ts",
         "src/translateMarkdown.codespans.test.ts",
         "src/translateMarkdown.concurrency.test.ts",
+        "src/translateMarkdown.protected.test.ts",
         "src/translateMarkdown.roundtrip.test.ts",
         "src/translateMarkdown.test.ts",
+        "src/translateMarkdown.untranslated.fixes.test.ts",
+        "src/translateMarkdown.untranslated.test.ts",
         "src/translateReadme.test.ts",
         "src/validate.test.ts",
         "src/version.test.ts"
       ],
-      "runsCount": 21,
-      "runsMore": 18,
+      "runsCount": 28,
+      "runsMore": 25,
       "sends": [
         "publishes to npm"
       ],
@@ -202,7 +297,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 15
+          "files": 19
         }
       ],
       "runs": [
@@ -212,15 +307,19 @@
         "src/glossary.ts",
         "src/languages.ts",
         "src/ollama.ts",
+        "src/pinCorrections.ts",
+        "src/pins.ts",
         "src/polish.ts",
+        "src/protectedTerms.ts",
         "src/semaphore.ts",
+        "src/survival.ts",
         "src/translate.ts",
         "src/translateAll.ts",
         "src/translateMarkdown.ts",
         "src/validate.ts"
       ],
-      "runsCount": 12,
-      "runsMore": 9,
+      "runsCount": 16,
+      "runsMore": 13,
       "sends": [],
       "stages": [],
       "triggers": []
@@ -239,7 +338,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 15
+          "files": 18
         }
       ],
       "runs": [
@@ -258,12 +357,13 @@
   "edges": [],
   "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-10-19T12:34:35.464Z",
+  "generatedAt": "2026-10-26T12:30:46.110Z",
   "limits": [
-    "3 writes and 5 reads use paths built at run time and are not named here.",
-    "5 writes and 6 reads go to a path their caller passes, not to this repository.",
-    "4 commands are built at run time and not followed, 2 of them in tests.",
-    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+    "3 writes and 6 reads use paths built at run time and are not named here.",
+    "6 writes and 11 reads go to a path their caller passes, not to this repository.",
+    "1 read goes to the directory the command is run in (LICENSE), not to this repository.",
+    "12 commands are built at run time and not followed, 10 of them in tests.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
@@ -301,11 +401,11 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 21,
+  "testFiles": 28,
   "testedBy": {
     "scripts": 0,
     "site": 0,
-    "src": 20
+    "src": 26
   },
   "testedCodeParts": 3,
   "unnamedWrites": 3,

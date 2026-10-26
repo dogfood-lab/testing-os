@@ -164,7 +164,7 @@
           "path": ".github/workflows/pages.yml"
         },
         {
-          "hash": "c3eefbf3aa7b06ca2c9e1c42262fc9ac1db3013dc1499167146a5f0bd60af044",
+          "hash": "fd4113f15dc96020614fd0816d7e7839e37cc8666bf3f0258af0902dd48521e2",
           "path": ".github/workflows/publish.yml"
         },
         {
@@ -229,11 +229,11 @@
           "path": "app/src-tauri/.cargo/audit.toml"
         },
         {
-          "hash": "be2fed0983740f857198fb9d804fa3d5bc0ac87739d95c26aa84d15297fbb7d1",
+          "hash": "4862599232416905b8458f2cc26a39e7fbb7472ffc00175813ccb0755b0ef5ae",
           "path": "app/src-tauri/Cargo.lock"
         },
         {
-          "hash": "777cd6cdda7c8aec4dffd388d8fb46cc5ffe54bf3c9145c29f8cbba49e9ee584",
+          "hash": "15e0315c89153aafce23c9f184b2629927aa6ce6b6e6a6f33c0a3a7b4ad88e36",
           "path": "app/src-tauri/Cargo.toml"
         },
         {
@@ -5111,7 +5111,7 @@
           "path": "pyproject.toml"
         },
         {
-          "hash": "145c006113a888fa407aba6d4de668264ba8ad4c3f8e579939c2524df8243ca2",
+          "hash": "e479e5c8a4d8e98c30530b677409ed35e039024473f4a582822b1bb8cd0de074",
           "path": "uv.lock"
         }
       ],
@@ -17633,7 +17633,7 @@
             "test_tauri_conf_has_updater_pubkey",
             "test_updater_plugin_is_the_only_new_native_updater_dep"
           ],
-          "hash": "3558cedd3b5aa265f03597e5cf65369552d4ab5ab13c8344583227a38981d17b",
+          "hash": "b549c78b4a8ef268846a0d616b5935a8a0e9bdac5402a2fb75405b03390c770e",
           "path": "tests/test_tauri_updater_secrets.py"
         },
         {
@@ -20326,7 +20326,7 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "b7c2bfa66d2f6508478dba07b3239cd9730018de",
+    "commit": "8fce39e57ea95dd8bd76175cea8a55f4fcda42a0",
     "tracked": 426
   },
   "landings": [
@@ -20534,6 +20534,18 @@
         }
       ],
       "target": "app/src",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_tauri_updater_secrets.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "app/src-tauri/Cargo.lock",
       "writers": []
     },
     {

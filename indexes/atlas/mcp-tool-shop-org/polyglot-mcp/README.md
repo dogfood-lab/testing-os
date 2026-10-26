@@ -1,26 +1,32 @@
 # polyglot-mcp: how it works
 
-Mapped at 2026-10-19 from commit 5b97025 by Atlas 1.26.0.
+Mapped at 2026-10-26 from commit 3a84023 by Atlas 1.26.0.
 
 ## What this is
 
-7 parts, mostly Markdown (71 files); code in TypeScript (39), JavaScript (4), CSS (2) and Astro (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because it comes first by name. It publishes to npm. It deploys a site to GitHub Pages. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.
+7 parts, mostly Markdown (83 files); code in TypeScript (50), JavaScript (5), CSS (2) and Astro (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because it comes first by name. It publishes to npm. It deploys a site to GitHub Pages. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.
 
-## What changed since 2026-10-01 (e0fd93e)
+## What changed since 2026-10-20 (e920cf4)
 
-Nothing structural changed since 2026-10-01; 3 files changed content.
+- CI now also runs src/translateAll.untranslated.test.ts, src/translateMarkdown.untranslated.fixes.test.ts and src/translateMarkdown.untranslated.test.ts.
+- Publish to npm now also runs src/translateAll.untranslated.test.ts, src/translateMarkdown.untranslated.fixes.test.ts and src/translateMarkdown.untranslated.test.ts.
+- LICENSE is now read by src/protectedTerms.test.ts.
+- README.es.md is now read by src/translateMarkdown.untranslated.fixes.test.ts.
+- README.fr.md is now read by src/translateMarkdown.untranslated.fixes.test.ts.
+- And 2 more new writers and readers of places.
+- 14 files added and 34 changed content, across 4 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main; on a push to main touching 10 paths; or by hand. Runs src/cache.concurrency.test.ts, src/cache.test.ts, src/codeSpans.test.ts and 18 more; builds src/.
+1. **CI.** On a pull request to main; on a push to main touching 10 paths; or by hand. Runs src/cache.concurrency.test.ts, src/cache.test.ts, src/codeSpans.test.ts and 25 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a pull request to main touching 2 paths; on a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
-3. **Publish to npm.** When a release is published; or by hand. Runs src/cache.concurrency.test.ts, src/cache.test.ts, src/codeSpans.test.ts and 18 more; builds src/.
-4. **@mcptoolshop/polyglot-mcp** (the package people import). Loads src/index.ts, src/cache.ts, src/codeSpans.ts and 9 more.
+3. **Publish to npm.** When a release is published; or by hand. Runs src/cache.concurrency.test.ts, src/cache.test.ts, src/codeSpans.test.ts and 25 more; builds src/.
+4. **@mcptoolshop/polyglot-mcp** (the package people import). Loads src/index.ts, src/cache.ts, src/codeSpans.ts and 13 more.
 5. **polyglot-mcp** (a command people run). Runs src/index.ts.
 
 ## What happens through CI
 
-1. The workflow runs 21 files in src; it builds src/ in src.
+1. The workflow runs 28 files in src; it builds src/ in src.
 2. It uploads coverage to Codecov.
 
 ## Who reads the results
@@ -31,9 +37,9 @@ CI writes nothing this map can see.
 
 **Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on a push to main or by hand.
 
-**Publish to npm** runs src/cache.concurrency.test.ts, src/cache.test.ts, src/codeSpans.test.ts and 18 more, builds src/, and publishes to npm.
+**Publish to npm** runs src/cache.concurrency.test.ts, src/cache.test.ts, src/codeSpans.test.ts and 25 more, builds src/, and publishes to npm.
 
-**@mcptoolshop/polyglot-mcp** (the package people import) loads src/index.ts, src/cache.ts, src/codeSpans.ts and 9 more.
+**@mcptoolshop/polyglot-mcp** (the package people import) loads src/index.ts, src/cache.ts, src/codeSpans.ts and 13 more.
 
 **polyglot-mcp** (a command people run) runs src/index.ts.
 
@@ -43,9 +49,12 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-No two source files changed together often enough to name.
+- **scripts/translate-all.mjs** and **scripts/translate-readme.mjs** changed together in 4 of 6 commits, inside the scripts part.
+- **scripts/translate-readme.mjs** and **src/translateMarkdown.ts** changed together in 5 of 8 commits, and the scripts part imports the src part.
 
-Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
+Confidence is low: fewer than 25 source files reach 10 revisions in the window.
+
+Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -78,9 +87,10 @@ Beside the path, src/translate.ts also calls src/languages.ts, src/glossary.ts, 
 
 ## What this map cannot see
 
-- 3 writes and 5 reads use paths built at run time and are not named here.
-- 5 writes and 6 reads go to a path their caller passes, not to this repository.
-- 4 commands are built at run time and not followed, 2 of them in tests.
-- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+- 3 writes and 6 reads use paths built at run time and are not named here.
+- 6 writes and 11 reads go to a path their caller passes, not to this repository.
+- 1 read goes to the directory the command is run in (LICENSE), not to this repository.
+- 12 commands are built at run time and not followed, 10 of them in tests.
+- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.
