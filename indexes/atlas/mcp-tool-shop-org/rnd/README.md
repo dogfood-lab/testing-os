@@ -1,6 +1,6 @@
 # rnd: how it works
 
-Mapped at 2026-10-26 from commit 9b57e18 by Atlas 1.26.0.
+Mapped at 2026-11-02 from commit 505161a by Atlas 1.26.0.
 
 ## What this is
 
@@ -13,10 +13,10 @@ The studio research bench: Markdown entries with tiered sources and checked clai
 - experiments/colab-golden-path/data/windows/window*/gate.jsonl is now read by experiments/colab-golden-path/figures.py.
 - experiments/verifier-gold/calibration/results/2026-10-09-chain/cal-*-tune/metrics.json is now read by experiments/charts/make_charts.py.
 - site/public/charts/*.svg is now read by site/scripts/check_feed.py and site/scripts/render_chart_pngs.py.
-- And 1 more new writer or reader of a place.
+- And 15 more new writers and readers of places.
 - entries was generated and is now mixed.
 - site/scripts/check_feed.py now starts at `main`; it started at `chart_errors`.
-- 1 file added and 8 changed content, across 5 parts.
+- 26 files added and 24 changed content, across 9 parts.
 
 ## What comes in
 

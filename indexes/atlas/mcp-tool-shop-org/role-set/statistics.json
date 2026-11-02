@@ -89,17 +89,17 @@
         "coChangesOnly": [],
         "collapsed": false,
         "confidence": "low",
-        "importsAndCoChanges": [
+        "importsAndCoChanges": [],
+        "importsOnly": [
           "tests"
-        ],
-        "importsOnly": []
+        ]
       },
-      "cohesion": 0,
+      "cohesion": null,
       "cohesionDropped": false,
       "confidence": "full",
       "highWater": null,
       "name": "scripts",
-      "qualifyingSourceCommits": 72,
+      "qualifyingSourceCommits": 80,
       "rebaseline": null
     },
     {
@@ -130,12 +130,12 @@
           "scripts"
         ]
       },
-      "cohesion": 0.11489,
+      "cohesion": 0.098158,
       "cohesionDropped": false,
       "confidence": "full",
       "highWater": null,
       "name": "src",
-      "qualifyingSourceCommits": 91,
+      "qualifyingSourceCommits": 95,
       "rebaseline": null
     },
     {
@@ -145,17 +145,17 @@
         ],
         "collapsed": false,
         "confidence": "low",
-        "importsAndCoChanges": [
+        "importsAndCoChanges": [],
+        "importsOnly": [
           "scripts"
-        ],
-        "importsOnly": []
+        ]
       },
       "cohesion": 0,
       "cohesionDropped": false,
       "confidence": "full",
       "highWater": null,
       "name": "tests",
-      "qualifyingSourceCommits": 133,
+      "qualifyingSourceCommits": 144,
       "rebaseline": null
     }
   ],
@@ -168,14 +168,19 @@
         "path": ".gitattributes"
       },
       {
-        "commits": 17,
-        "lines": 235,
+        "commits": 18,
+        "lines": 240,
         "path": ".github/workflows/ci.yml"
       },
       {
         "commits": 2,
         "lines": 58,
         "path": ".github/workflows/pages.yml"
+      },
+      {
+        "commits": 2,
+        "lines": 109,
+        "path": ".github/workflows/release.yml"
       },
       {
         "commits": 2,
@@ -193,8 +198,8 @@
         "path": "2026-10-11-pilot-3.md}"
       },
       {
-        "commits": 86,
-        "lines": 488,
+        "commits": 91,
+        "lines": 547,
         "path": "CHANGELOG.md"
       },
       {
@@ -208,58 +213,58 @@
         "path": "LICENSE"
       },
       {
-        "commits": 5,
-        "lines": 300,
+        "commits": 6,
+        "lines": 403,
         "path": "README.es.md"
       },
       {
-        "commits": 5,
-        "lines": 300,
+        "commits": 6,
+        "lines": 397,
         "path": "README.fr.md"
       },
       {
-        "commits": 5,
-        "lines": 298,
+        "commits": 6,
+        "lines": 411,
         "path": "README.hi.md"
       },
       {
-        "commits": 5,
-        "lines": 306,
+        "commits": 6,
+        "lines": 411,
         "path": "README.it.md"
       },
       {
-        "commits": 5,
-        "lines": 306,
+        "commits": 6,
+        "lines": 415,
         "path": "README.ja.md"
       },
       {
-        "commits": 16,
-        "lines": 372,
+        "commits": 17,
+        "lines": 381,
         "path": "README.md"
       },
       {
-        "commits": 5,
-        "lines": 302,
+        "commits": 6,
+        "lines": 395,
         "path": "README.pt-BR.md"
       },
       {
-        "commits": 5,
-        "lines": 304,
+        "commits": 6,
+        "lines": 401,
         "path": "README.zh.md"
       },
       {
-        "commits": 3,
-        "lines": 65,
+        "commits": 4,
+        "lines": 79,
         "path": "SCORECARD.md"
       },
       {
-        "commits": 2,
-        "lines": 65,
+        "commits": 3,
+        "lines": 71,
         "path": "SECURITY.md"
       },
       {
-        "commits": 2,
-        "lines": 116,
+        "commits": 3,
+        "lines": 126,
         "path": "SHIP_GATE.md"
       },
       {
@@ -268,8 +273,8 @@
         "path": "assets/logo/role-set-wordmark.png"
       },
       {
-        "commits": 55,
-        "lines": 1055,
+        "commits": 58,
+        "lines": 1133,
         "path": "atlas/README.md"
       },
       {
@@ -278,18 +283,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 55,
-        "lines": 3443,
+        "commits": 58,
+        "lines": 3646,
         "path": "atlas/page.json"
       },
       {
-        "commits": 55,
-        "lines": 8032,
+        "commits": 58,
+        "lines": 8817,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 55,
-        "lines": 39481,
+        "commits": 58,
+        "lines": 44185,
         "path": "atlas/structure.json"
       },
       {
@@ -343,8 +348,8 @@
         "path": "docs/runs/2026-10-12-pilot-3.md"
       },
       {
-        "commits": 18,
-        "lines": 77,
+        "commits": 20,
+        "lines": 105,
         "path": "pyproject.toml"
       },
       {
@@ -383,6 +388,26 @@
         "path": "roles/verifier/sources.json"
       },
       {
+        "commits": 1,
+        "lines": 532,
+        "path": "scripts/batchdrift/build_requests60.py"
+      },
+      {
+        "commits": 1,
+        "lines": 902,
+        "path": "scripts/batchdrift/compare_batch.py"
+      },
+      {
+        "commits": 2,
+        "lines": 1026,
+        "path": "scripts/batchdrift/replay.py"
+      },
+      {
+        "commits": 1,
+        "lines": 60,
+        "path": "scripts/batchdrift/requests-60.jsonl"
+      },
+      {
         "commits": 2,
         "lines": 118,
         "path": "scripts/colab/check_drafts.py"
@@ -408,8 +433,8 @@
         "path": "scripts/colab/mock_job.py"
       },
       {
-        "commits": 69,
-        "lines": 10003,
+        "commits": 75,
+        "lines": 11155,
         "path": "scripts/colab/pin_window.py"
       },
       {
@@ -428,8 +453,8 @@
         "path": "scripts/colab/preflight_window.py"
       },
       {
-        "commits": 41,
-        "lines": 1137,
+        "commits": 46,
+        "lines": 1499,
         "path": "scripts/colab/smoke_window.sh"
       },
       {
@@ -448,8 +473,8 @@
         "path": "scripts/critic_signal/track_a_slots.py"
       },
       {
-        "commits": 1,
-        "lines": 734,
+        "commits": 2,
+        "lines": 747,
         "path": "scripts/critic_signal/track_b_slots.py"
       },
       {
@@ -494,6 +519,41 @@
       },
       {
         "commits": 2,
+        "lines": 36,
+        "path": "scripts/toolcount/__init__.py"
+      },
+      {
+        "commits": 1,
+        "lines": 529,
+        "path": "scripts/toolcount/compass_lists.py"
+      },
+      {
+        "commits": 1,
+        "lines": 861,
+        "path": "scripts/toolcount/gen_registry.py"
+      },
+      {
+        "commits": 3,
+        "lines": 331,
+        "path": "scripts/toolcount/launch-w1.sh"
+      },
+      {
+        "commits": 1,
+        "lines": 240,
+        "path": "scripts/toolcount/oracle.py"
+      },
+      {
+        "commits": 3,
+        "lines": 1666,
+        "path": "scripts/toolcount/runner.py"
+      },
+      {
+        "commits": 1,
+        "lines": 1315,
+        "path": "scripts/toolcount/scorer.py"
+      },
+      {
+        "commits": 2,
         "lines": 96,
         "path": "scripts/variety_sweep.py"
       },
@@ -513,8 +573,8 @@
         "path": "site/astro.config.mjs"
       },
       {
-        "commits": 2,
-        "lines": 5675,
+        "commits": 3,
+        "lines": 5681,
         "path": "site/package-lock.json"
       },
       {
@@ -548,8 +608,8 @@
         "path": "site/src/content/docs/handbook/generator.md"
       },
       {
-        "commits": 5,
-        "lines": 99,
+        "commits": 6,
+        "lines": 110,
         "path": "site/src/content/docs/handbook/getting-started.md"
       },
       {
@@ -608,13 +668,13 @@
         "path": "site/tsconfig.json"
       },
       {
-        "commits": 2,
-        "lines": 10,
+        "commits": 3,
+        "lines": 12,
         "path": "src/role_set/__init__.py"
       },
       {
-        "commits": 12,
-        "lines": 839,
+        "commits": 13,
+        "lines": 970,
         "path": "src/role_set/assemble.py"
       },
       {
@@ -628,8 +688,8 @@
         "path": "src/role_set/b_packs.json"
       },
       {
-        "commits": 9,
-        "lines": 480,
+        "commits": 10,
+        "lines": 636,
         "path": "src/role_set/callcache.py"
       },
       {
@@ -638,8 +698,8 @@
         "path": "src/role_set/cards.py"
       },
       {
-        "commits": 40,
-        "lines": 1012,
+        "commits": 42,
+        "lines": 1076,
         "path": "src/role_set/cli.py"
       },
       {
@@ -648,18 +708,18 @@
         "path": "src/role_set/cost.py"
       },
       {
-        "commits": 12,
-        "lines": 499,
+        "commits": 14,
+        "lines": 563,
         "path": "src/role_set/critic.py"
       },
       {
-        "commits": 5,
-        "lines": 460,
+        "commits": 6,
+        "lines": 479,
         "path": "src/role_set/critic_control.py"
       },
       {
-        "commits": 11,
-        "lines": 3686,
+        "commits": 12,
+        "lines": 3715,
         "path": "src/role_set/critic_eval.py"
       },
       {
@@ -703,8 +763,8 @@
         "path": "src/role_set/generate/build.py"
       },
       {
-        "commits": 10,
-        "lines": 927,
+        "commits": 11,
+        "lines": 978,
         "path": "src/role_set/generate/recipes.py"
       },
       {
@@ -733,8 +793,8 @@
         "path": "src/role_set/generate/t10_cells.json"
       },
       {
-        "commits": 19,
-        "lines": 27489,
+        "commits": 22,
+        "lines": 27495,
         "path": "src/role_set/generate/t10_record.json"
       },
       {
@@ -768,8 +828,8 @@
         "path": "src/role_set/ingest.py"
       },
       {
-        "commits": 21,
-        "lines": 571,
+        "commits": 23,
+        "lines": 577,
         "path": "src/role_set/mock.py"
       },
       {
@@ -778,13 +838,13 @@
         "path": "src/role_set/pack.py"
       },
       {
-        "commits": 9,
-        "lines": 801,
+        "commits": 10,
+        "lines": 971,
         "path": "src/role_set/plan.py"
       },
       {
-        "commits": 22,
-        "lines": 500,
+        "commits": 23,
+        "lines": 550,
         "path": "src/role_set/prompts.py"
       },
       {
@@ -813,8 +873,8 @@
         "path": "src/role_set/rescore.py"
       },
       {
-        "commits": 29,
-        "lines": 1897,
+        "commits": 31,
+        "lines": 2025,
         "path": "src/role_set/runner.py"
       },
       {
@@ -848,13 +908,13 @@
         "path": "src/role_set/transport.py"
       },
       {
-        "commits": 13,
-        "lines": 669,
+        "commits": 14,
+        "lines": 809,
         "path": "src/role_set/waves.py"
       },
       {
-        "commits": 32,
-        "lines": 909,
+        "commits": 33,
+        "lines": 1012,
         "path": "src/role_set/write.py"
       },
       {
@@ -863,8 +923,8 @@
         "path": "tests/conftest.py"
       },
       {
-        "commits": 12,
-        "lines": 319,
+        "commits": 14,
+        "lines": 497,
         "path": "tests/fake_colab/colab"
       },
       {
@@ -963,8 +1023,8 @@
         "path": "tests/fixtures/window12g12h-chain.tar.gz"
       },
       {
-        "commits": 6,
-        "lines": 513,
+        "commits": 8,
+        "lines": 680,
         "path": "tests/stub_llama.py"
       },
       {
@@ -973,14 +1033,19 @@
         "path": "tests/test_apply.py"
       },
       {
-        "commits": 6,
-        "lines": 576,
+        "commits": 7,
+        "lines": 738,
         "path": "tests/test_assemble.py"
       },
       {
         "commits": 1,
         "lines": 171,
         "path": "tests/test_autostart.py"
+      },
+      {
+        "commits": 4,
+        "lines": 1239,
+        "path": "tests/test_batchdrift.py"
       },
       {
         "commits": 3,
@@ -998,8 +1063,8 @@
         "path": "tests/test_cards.py"
       },
       {
-        "commits": 11,
-        "lines": 220,
+        "commits": 12,
+        "lines": 236,
         "path": "tests/test_cli.py"
       },
       {
@@ -1013,13 +1078,13 @@
         "path": "tests/test_cost.py"
       },
       {
-        "commits": 3,
-        "lines": 132,
+        "commits": 4,
+        "lines": 208,
         "path": "tests/test_critic_control.py"
       },
       {
-        "commits": 12,
-        "lines": 6824,
+        "commits": 14,
+        "lines": 7312,
         "path": "tests/test_critic_eval.py"
       },
       {
@@ -1033,8 +1098,8 @@
         "path": "tests/test_defects.py"
       },
       {
-        "commits": 3,
-        "lines": 254,
+        "commits": 4,
+        "lines": 382,
         "path": "tests/test_domains.py"
       },
       {
@@ -1048,8 +1113,8 @@
         "path": "tests/test_gates.py"
       },
       {
-        "commits": 8,
-        "lines": 462,
+        "commits": 9,
+        "lines": 542,
         "path": "tests/test_generate.py"
       },
       {
@@ -1093,13 +1158,13 @@
         "path": "tests/test_pack.py"
       },
       {
-        "commits": 9,
-        "lines": 424,
+        "commits": 10,
+        "lines": 426,
         "path": "tests/test_paid_run_data.py"
       },
       {
-        "commits": 3,
-        "lines": 936,
+        "commits": 4,
+        "lines": 1046,
         "path": "tests/test_perturb.py"
       },
       {
@@ -1118,18 +1183,18 @@
         "path": "tests/test_pilot_findings.py"
       },
       {
-        "commits": 44,
-        "lines": 7539,
+        "commits": 46,
+        "lines": 8356,
         "path": "tests/test_pin_window.py"
       },
       {
-        "commits": 3,
-        "lines": 354,
+        "commits": 4,
+        "lines": 683,
         "path": "tests/test_plan.py"
       },
       {
-        "commits": 10,
-        "lines": 240,
+        "commits": 11,
+        "lines": 863,
         "path": "tests/test_prompts_critic.py"
       },
       {
@@ -1148,8 +1213,8 @@
         "path": "tests/test_puzzle_check.py"
       },
       {
-        "commits": 1,
-        "lines": 232,
+        "commits": 2,
+        "lines": 238,
         "path": "tests/test_python_support.py"
       },
       {
@@ -1193,6 +1258,11 @@
         "path": "tests/test_t10_variety.py"
       },
       {
+        "commits": 3,
+        "lines": 2174,
+        "path": "tests/test_toolcount.py"
+      },
+      {
         "commits": 4,
         "lines": 144,
         "path": "tests/test_transport.py"
@@ -1213,13 +1283,13 @@
         "path": "tests/test_wave_pins.py"
       },
       {
-        "commits": 5,
-        "lines": 430,
+        "commits": 6,
+        "lines": 477,
         "path": "tests/test_waves.py"
       },
       {
-        "commits": 21,
-        "lines": 1481,
+        "commits": 24,
+        "lines": 2088,
         "path": "tests/test_window_script.py"
       },
       {
@@ -1228,13 +1298,13 @@
         "path": "tests/test_write.py"
       },
       {
-        "commits": 16,
-        "lines": 386,
+        "commits": 17,
+        "lines": 396,
         "path": "uv.lock"
       },
       {
-        "commits": 12,
-        "lines": 648,
+        "commits": 13,
+        "lines": 652,
         "path": "writers.json"
       }
     ]
@@ -1243,9 +1313,9 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-10-26T12:32:51.184Z",
+  "generatedAt": "2026-11-02T15:03:08.520Z",
   "generatedFrom": {
-    "commit": "d105f3da4550b6f4354d5ec66fe5f029b20c884e"
+    "commit": "1658cf906bd8d7db0c103dd9d0e111186f1494aa"
   },
   "packageImports": {
     "filesWithLeftOutImports": 0,
@@ -1259,275 +1329,268 @@
     {
       "a": "README.es.md",
       "b": "README.fr.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.hi.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.it.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.ja.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.pt-BR.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.zh.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "site/src/content/docs/handbook/getting-started.md",
-      "either": 6,
-      "shared": 4,
-      "strength": 0.666667
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
     },
     {
       "a": "README.fr.md",
       "b": "README.hi.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.it.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.ja.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.pt-BR.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.zh.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "site/src/content/docs/handbook/getting-started.md",
-      "either": 6,
-      "shared": 4,
-      "strength": 0.666667
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
     },
     {
       "a": "README.hi.md",
       "b": "README.it.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.ja.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.pt-BR.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.zh.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "site/src/content/docs/handbook/getting-started.md",
-      "either": 6,
-      "shared": 4,
-      "strength": 0.666667
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
     },
     {
       "a": "README.it.md",
       "b": "README.ja.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.pt-BR.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.zh.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "site/src/content/docs/handbook/getting-started.md",
-      "either": 6,
-      "shared": 4,
-      "strength": 0.666667
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
     },
     {
       "a": "README.ja.md",
       "b": "README.pt-BR.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.ja.md",
       "b": "README.zh.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.ja.md",
       "b": "site/src/content/docs/handbook/getting-started.md",
-      "either": 6,
-      "shared": 4,
-      "strength": 0.666667
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
     },
     {
       "a": "README.pt-BR.md",
       "b": "README.zh.md",
-      "either": 5,
-      "shared": 5,
+      "either": 6,
+      "shared": 6,
       "strength": 1
     },
     {
       "a": "README.pt-BR.md",
       "b": "site/src/content/docs/handbook/getting-started.md",
-      "either": 6,
-      "shared": 4,
-      "strength": 0.666667
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
     },
     {
       "a": "README.zh.md",
       "b": "site/src/content/docs/handbook/getting-started.md",
-      "either": 6,
-      "shared": 4,
-      "strength": 0.666667
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 50,
-      "shared": 50,
+      "either": 53,
+      "shared": 53,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 50,
-      "shared": 50,
+      "either": 53,
+      "shared": 53,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 50,
-      "shared": 50,
+      "either": 53,
+      "shared": 53,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 50,
-      "shared": 50,
+      "either": 53,
+      "shared": 53,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 50,
-      "shared": 50,
+      "either": 53,
+      "shared": 53,
       "strength": 1
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 50,
-      "shared": 50,
+      "either": 53,
+      "shared": 53,
       "strength": 1
     },
     {
       "a": "docs/generator-design.md",
       "b": "src/role_set/generate/recipes.py",
-      "either": 11,
+      "either": 12,
       "shared": 9,
-      "strength": 0.818182
+      "strength": 0.75
     },
     {
       "a": "pyproject.toml",
       "b": "uv.lock",
-      "either": 18,
-      "shared": 16,
-      "strength": 0.888889
-    },
-    {
-      "a": "scripts/colab/pin_window.py",
-      "b": "tests/test_pin_window.py",
-      "either": 61,
-      "shared": 31,
-      "strength": 0.508197
+      "either": 20,
+      "shared": 17,
+      "strength": 0.85
     },
     {
       "a": "src/role_set/assemble.py",
       "b": "tests/test_assemble.py",
-      "either": 12,
-      "shared": 6,
-      "strength": 0.5
+      "either": 13,
+      "shared": 7,
+      "strength": 0.538462
     },
     {
       "a": "src/role_set/critic_eval.py",
       "b": "tests/test_critic_eval.py",
-      "either": 11,
-      "shared": 8,
-      "strength": 0.727273
+      "either": 13,
+      "shared": 9,
+      "strength": 0.692308
     },
     {
       "a": "src/role_set/gates.py",
@@ -1539,16 +1602,23 @@
     {
       "a": "src/role_set/generate/build.py",
       "b": "src/role_set/generate/recipes.py",
-      "either": 10,
+      "either": 11,
       "shared": 6,
-      "strength": 0.6
+      "strength": 0.545455
+    },
+    {
+      "a": "src/role_set/generate/recipes.py",
+      "b": "tests/test_generate.py",
+      "either": 12,
+      "shared": 6,
+      "strength": 0.5
     },
     {
       "a": "src/role_set/mock.py",
       "b": "tests/test_runner.py",
-      "either": 26,
+      "either": 28,
       "shared": 14,
-      "strength": 0.538462
+      "strength": 0.5
     },
     {
       "a": "src/role_set/puzzle.py",
@@ -1560,23 +1630,23 @@
     {
       "a": "src/role_set/readout.py",
       "b": "tests/test_paid_run_data.py",
-      "either": 13,
+      "either": 14,
       "shared": 7,
-      "strength": 0.538462
+      "strength": 0.5
     },
     {
       "a": "src/role_set/runner.py",
       "b": "tests/test_runner.py",
-      "either": 30,
+      "either": 32,
       "shared": 18,
-      "strength": 0.6
+      "strength": 0.5625
     },
     {
       "a": "tests/fake_colab/colab",
       "b": "tests/test_window_script.py",
-      "either": 17,
-      "shared": 9,
-      "strength": 0.529412
+      "either": 20,
+      "shared": 11,
+      "strength": 0.55
     }
   ],
   "parameters": {
@@ -1589,16 +1659,16 @@
     "floor": "fallen",
     "floorHeld": true,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-10-25T22:06:58-04:00",
-    "inScopeFiles": 214,
+    "headDate": "2026-10-30T12:01:23-04:00",
+    "inScopeFiles": 228,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 176,
+    "qualifyingCommits": 189,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-29T02:06:58.000Z",
+    "since": "2026-05-03T16:01:23.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",
@@ -1614,7 +1684,7 @@
     ],
     "sourceFileReach": 20,
     "sourceFileRise": 25,
-    "sourceFilesReachingStrongFloor": 20,
+    "sourceFilesReachingStrongFloor": 23,
     "strength": 0.5,
     "windowDays": 180
   },

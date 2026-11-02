@@ -1,52 +1,145 @@
 {
   "authored": [
     ".github/",
+    "certification/",
+    "docs/",
     "examples/",
-    "root"
+    "root",
+    "site/"
   ],
   "breaks": [
     {
-      "doors": 2,
-      "importedBy": [],
+      "doors": 3,
+      "importedBy": [
+        "scripts"
+      ],
       "importedByTests": [
         "tests"
       ],
       "kind": "part",
       "name": "src",
       "partLabel": "src"
+    },
+    {
+      "doors": 1,
+      "importedBy": [],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "scripts",
+      "partLabel": "scripts"
     }
   ],
   "changes": {
     "fileCounts": {
-      "added": 6,
+      "added": 0,
       "assigned": 0,
-      "changed": 14,
+      "changed": 0,
       "moved": 0,
-      "parts": 3,
+      "parts": 0,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-26; 6 files added and 14 changed content.",
+        "sentence": "Nothing structural changed since 2026-11-02; no file changed.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "ab7c07ce8592296dd52de8d334206d60ae9d4f77",
-      "generatedAt": "2026-10-26T02:31:50.134Z"
+      "commit": "e8aa37a6c44d6f481d8c3ce7d3c767abe77ab41b",
+      "generatedAt": "2026-11-02T10:18:05.891Z"
     },
     "unchanged": true
   },
-  "changesTogether": [],
-  "changesTogetherNote": [
-    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  "changesTogether": [
+    {
+      "a": "src/reasoning_dataset_lab/pilot_b/value_certification.py",
+      "b": "tests/test_pilot_b_value_certification.py",
+      "either": 8,
+      "partLabels": [
+        "src",
+        "tests"
+      ],
+      "parts": [
+        "src",
+        "tests"
+      ],
+      "relation": "b-imports-a",
+      "shared": 8
+    },
+    {
+      "a": "src/reasoning_dataset_lab/pilot_b/models_and_build.py",
+      "b": "tests/test_pilot_b_ollama_adapters.py",
+      "either": 11,
+      "partLabels": [
+        "src",
+        "tests"
+      ],
+      "parts": [
+        "src",
+        "tests"
+      ],
+      "relation": "b-imports-a",
+      "shared": 9
+    },
+    {
+      "a": "src/reasoning_dataset_lab/pilot_b/fact_tables.py",
+      "b": "tests/test_pilot_b_variety.py",
+      "either": 7,
+      "partLabels": [
+        "src",
+        "tests"
+      ],
+      "parts": [
+        "src",
+        "tests"
+      ],
+      "relation": "b-imports-a",
+      "shared": 5
+    },
+    {
+      "a": "src/reasoning_dataset_lab/pilot_b/bakeoff_judge_score.py",
+      "b": "tests/test_bakeoff_prereg_build.py",
+      "either": 8,
+      "partLabels": [
+        "src",
+        "tests"
+      ],
+      "parts": [
+        "src",
+        "tests"
+      ],
+      "relation": "b-imports-a",
+      "shared": 5
+    },
+    {
+      "a": "src/reasoning_dataset_lab/pilot_b/models_and_build.py",
+      "b": "src/reasoning_dataset_lab/pilot_b/ollama.py",
+      "either": 16,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 9
+    }
   ],
-  "changesTogetherWithTests": 0,
-  "commit": "98befb1bbac5b7ec5f8a7e18b89b57121588541a",
+  "changesTogetherNote": [
+    "1 file changed together with its own test, as expected.",
+    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 4 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 1,
+  "commit": "6436a3a6693050456cd3d0c8e05162c21e20c5e2",
   "defaultBranch": "main",
-  "derived": "5 parts, mostly Python (39 files). Work enters through 2 doors; the busiest is ci, which reaches 2 parts. People run rdlab.",
+  "derived": "9 parts, mostly Python (59 files), CSS (2), TypeScript (2), shell (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is ci, which reaches 3 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run rdlab.",
   "doors": [
     {
       "checks": [],
@@ -54,19 +147,26 @@
       "checksMore": 0,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
-      "landings": [],
+      "landings": [
+        "src/reasoning_dataset_lab/pilot_b/canary_config.json"
+      ],
       "name": "ci",
       "pushes": false,
       "reach": [
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 21
+          "files": 35
+        },
+        {
+          "boundary": "scripts",
+          "depth": 1,
+          "files": 1
         },
         {
           "boundary": "src",
           "depth": 1,
-          "files": 18
+          "files": 23
         }
       ],
       "runs": [
@@ -80,8 +180,69 @@
       "stages": [],
       "triggers": [
         "on a pull request",
-        "on a push to main touching 8 paths",
+        "on a push to main touching 11 paths",
         "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "src/reasoning_dataset_lab/"
+      ],
+      "checksCount": 1,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 23
+        }
+      ],
+      "runs": [],
+      "runsCount": 0,
+      "runsMore": 0,
+      "sends": [
+        "publishes to PyPI",
+        "uploads dist/*.tar.gz and dist/*.whl to the release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published"
       ]
     },
     {
@@ -91,14 +252,16 @@
       "file": "pyproject.toml",
       "id": "pyproject.toml#rdlab",
       "kind": "command",
-      "landings": [],
+      "landings": [
+        "src/reasoning_dataset_lab/pilot_b/canary_config.json"
+      ],
       "name": "rdlab",
       "pushes": false,
       "reach": [
         {
           "boundary": "src",
           "depth": 0,
-          "files": 15
+          "files": 20
         }
       ],
       "runs": [
@@ -114,26 +277,45 @@
   "duplicates": [],
   "duplicatesLead": null,
   "duplicatesNote": [],
-  "edges": [],
+  "edges": [
+    {
+      "from": "scripts",
+      "fromTests": false,
+      "to": "src"
+    }
+  ],
   "engine": "1.26.0",
-  "generated": [],
-  "generatedAt": "2026-10-26T12:31:47.553Z",
+  "generated": [
+    {
+      "block": true,
+      "place": "src/reasoning_dataset_lab/pilot_b/canary_config.json",
+      "writers": [
+        "src/reasoning_dataset_lab/pilot_b/bakeoff_judge.py"
+      ]
+    }
+  ],
+  "generatedAt": "2026-11-02T15:01:56.551Z",
   "limits": [
-    "6 import sites name a declared dependency that shares its name with a local module (role_set); they are read as the dependency, which is not in this repository.",
-    "7 reads use paths built at run time and are not named here.",
-    "14 writes and 34 reads go to a path their caller passes, not to this repository.",
-    "1 file belongs to no part: docs/calibration-2026-10-25.md.",
-    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+    "8 import sites name a declared dependency that shares its name with a local module (role_set); they are read as the dependency, which is not in this repository.",
+    "1 import could not be resolved: `tests/test_bakeoff_judge_d3_transport.py` imports a path built at run time.",
+    "10 writes and 15 reads use paths built at run time and are not named here.",
+    "33 writes and 83 reads go to a path their caller passes, not to this repository.",
+    "1 read goes to the directory the command is run in (certification/), not to this repository.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
     ".github": ".github",
+    "certification": "certification",
+    "docs": "docs",
     "examples": "examples",
     "root": "the repository root",
+    "scripts": "scripts",
+    "site": "site",
     "src": "src",
     "tests": "tests"
   },
-  "parts": 5,
+  "parts": 9,
   "readers": [],
   "repo": "mcp-tool-shop-org/reasoning-dataset-lab",
   "sequences": [],
@@ -141,10 +323,7 @@
     {
       "files": [
         "src/reasoning_dataset_lab/pilot_b/__init__.py",
-        "src/reasoning_dataset_lab/pilot_b/models_and_build.py",
-        "src/reasoning_dataset_lab/map.py",
-        "src/reasoning_dataset_lab/config.py",
-        "src/reasoning_dataset_lab/pilot_b/variety.py"
+        "src/reasoning_dataset_lab/pilot_b/models_and_build.py"
       ],
       "from": "src/reasoning_dataset_lab/cli.py"
     }
@@ -156,18 +335,19 @@
     "src/reasoning_dataset_lab/errors.py"
   ],
   "startReason": "This path follows rdlab (a command people run) from its entry, since ci runs only tests.",
-  "summary": "reasoning-dataset-lab validates dataset maps, loads the five-file project configuration, and computes deterministic configuration fingerprints.",
+  "summary": "reasoning-dataset-lab plans a dataset as a pre-registered map, builds items whose answer keys are constructed and proved by code, asks a local model only for the wording, and records the provenance of every item.",
   "summaryFrom": "person",
-  "testFiles": 21,
+  "testFiles": 43,
   "testedBy": {
-    "src": 20
+    "scripts": 1,
+    "src": 33
   },
-  "testedCodeParts": 1,
-  "unnamedWrites": 0,
+  "testedCodeParts": 2,
+  "unnamedWrites": 10,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
   "untestedNote": [],
-  "written": 0
+  "written": 1
 }

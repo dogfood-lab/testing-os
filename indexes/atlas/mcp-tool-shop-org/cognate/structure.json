@@ -9,7 +9,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "623ee16b6650133a57b37721e3d5e38aabd9805206a21400c1825a7b3779958d",
+          "hash": "93a6349a7bf4c121c54ca79f4c6ff449294f272bf4de8370561fb08f4eb70f02",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -355,40 +355,59 @@
           "path": "packages/cognate/LICENSE"
         },
         {
-          "hash": "d56b8b4cc2fe8f29e1354c032a72c5632c17212d4f2134b00027955fca8dcc1a",
+          "hash": "53ee56530bdd515c167ab858afb5f43147501ee3693c1b4879dfc8bfb8656eac",
           "path": "packages/cognate/README.es.md"
         },
         {
-          "hash": "acb0b0e6daa4dbe7b4825e642a53dbb0143c10dbbd879b98a22471ba8bcf78ca",
+          "hash": "872af614da9256c07e74a7c3b564a6cc38d4b77e7a2c169060e2fccf5960a4d2",
           "path": "packages/cognate/README.fr.md"
         },
         {
-          "hash": "bd942d4922058c4164d81ac2441dcc190633ff4cc5127c7f5534096165841e42",
+          "hash": "b3d638da881701458e9401b1c224e2592753d93cbea76fc116937461fe769892",
           "path": "packages/cognate/README.hi.md"
         },
         {
-          "hash": "42171c8935df7b1e66eb8949f67a81afb9724a29fc43b59f09ad9bab80de2d26",
+          "hash": "1b3128a8217f29a4f52ca32409f3f2224da13fa56c1083cf652a32156de5dc76",
           "path": "packages/cognate/README.it.md"
         },
         {
-          "hash": "4582b61d7cc5387bd8e0edacbe4bd72944f981732d35329f4ec3dad518000d0b",
+          "hash": "2454dd55f92d2479ee4ec93329ec12b3b5e02d8a2effcfa4409277fee1af9c61",
           "path": "packages/cognate/README.ja.md"
         },
         {
-          "hash": "4714ad01e0a3a9e3d302f0cbff948eb9d644c8c72a0198bdd247f4460a0b9659",
+          "hash": "109ada2d3abba7abbdc8006998b3058d2f073db4249bdc90d7bfd7b3c3635f7e",
           "path": "packages/cognate/README.md"
         },
         {
-          "hash": "6570084af1395a3ecf8cf2913be226e47a454974236adceceece1a194dd88509",
+          "hash": "9e16c3b55f8142c7b2ddefeb298b4ec4d890cfdb7ba8bb1a6883a388c59544bc",
           "path": "packages/cognate/README.pt-BR.md"
         },
         {
-          "hash": "6bb68ae2981676bde0675d820f2698ca96e4f1f37ff861a198ed6f0eb7221393",
+          "hash": "a8af05cc0a22cb80bec953cec891a91719f239880142e63ea1d7764579a1f6e1",
           "path": "packages/cognate/README.zh.md"
         },
         {
-          "hash": "adfb6cb6fbb665ba011aedd8416e10f5d02d18157e9910ba34355902cad69f4b",
+          "hash": "9500898d24b4635f7fa3ec7bc1da554dde765c8a72fcb566fc439c2511736498",
           "path": "packages/cognate/package.json"
+        },
+        {
+          "entry": "rewrite",
+          "entryRule": 1,
+          "failurePaths": [
+            {
+              "in": "installedPackage",
+              "kind": "throw",
+              "line": 35
+            },
+            {
+              "in": "vendored",
+              "kind": "throw",
+              "line": 50
+            }
+          ],
+          "hash": "21762289d35bb568fb44faf3d36945e59d284c0c6c346420bf9dcc0c36249d26",
+          "path": "packages/cognate/scripts/vendor-types.mjs",
+          "sequences": []
         },
         {
           "hash": "4b78eb53aeccbbd04005bfbebbc12840a2215e60c10d88d2f0d25f94f531ed94",
@@ -422,11 +441,42 @@
           "reexportsOnly": true
         },
         {
-          "hash": "9c0e3bb0c5274005a2915325317ec89649e3c721f0c94d991632c2e7546ea518",
+          "hash": "b28e4cf0e25bbb1afb4fd1f27dbf7c7120a305cf0eb9ed8794ab64d96cb3616d",
           "importNames": [
             {
               "form": "reexport",
-              "line": 12,
+              "line": 1,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/civility-kernel",
+              "specifier": "@cognate/civility-kernel",
+              "typeOnly": false
+            }
+          ],
+          "importsFiles": [
+            "packages/civility-kernel/src/index.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/cognate/package.json",
+              "purl": "pkg:npm/%40cognate/civility-kernel"
+            }
+          ],
+          "path": "packages/cognate/src/civility-kernel.ts",
+          "reexportsAll": [
+            "packages/civility-kernel/src/index.ts"
+          ],
+          "reexportsOnly": true
+        },
+        {
+          "hash": "271b2532c55a22fce0462ba2c17516c453ec0a05446e4ef80d39043f91960f81",
+          "importNames": [
+            {
+              "form": "reexport",
+              "line": 13,
               "names": [
                 {
                   "name": "*"
@@ -438,7 +488,7 @@
             },
             {
               "form": "reexport",
-              "line": 13,
+              "line": 14,
               "names": [
                 {
                   "name": "*"
@@ -450,7 +500,7 @@
             },
             {
               "form": "reexport",
-              "line": 14,
+              "line": 15,
               "names": [
                 {
                   "name": "*"
@@ -462,7 +512,7 @@
             },
             {
               "form": "reexport",
-              "line": 15,
+              "line": 16,
               "names": [
                 {
                   "name": "*"
@@ -474,7 +524,7 @@
             },
             {
               "form": "reexport",
-              "line": 16,
+              "line": 17,
               "names": [
                 {
                   "name": "*"
@@ -486,7 +536,7 @@
             },
             {
               "form": "reexport",
-              "line": 17,
+              "line": 18,
               "names": [
                 {
                   "name": "*"
@@ -494,6 +544,18 @@
               ],
               "purl": "pkg:npm/%40cognate/repomesh-bridge",
               "specifier": "@cognate/repomesh-bridge",
+              "typeOnly": false
+            },
+            {
+              "form": "reexport",
+              "line": 19,
+              "names": [
+                {
+                  "name": "*"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/civility-kernel",
+              "specifier": "@cognate/civility-kernel",
               "typeOnly": false
             }
           ],
@@ -503,10 +565,12 @@
             "packages/model-registry/src/index.ts",
             "packages/agent-identity/src/index.ts",
             "packages/prompt-store/src/index.ts",
-            "packages/repomesh-bridge/src/index.ts"
+            "packages/repomesh-bridge/src/index.ts",
+            "packages/civility-kernel/src/index.ts"
           ],
           "importsFiles": [
             "packages/agent-identity/src/index.ts",
+            "packages/civility-kernel/src/index.ts",
             "packages/model-registry/src/index.ts",
             "packages/policy/src/index.ts",
             "packages/prompt-store/src/index.ts",
@@ -517,6 +581,10 @@
             {
               "manifest": "packages/cognate/package.json",
               "purl": "pkg:npm/%40cognate/agent-identity"
+            },
+            {
+              "manifest": "packages/cognate/package.json",
+              "purl": "pkg:npm/%40cognate/civility-kernel"
             },
             {
               "manifest": "packages/cognate/package.json",
@@ -698,7 +766,7 @@
           "reexportsOnly": true
         },
         {
-          "hash": "9bebb06d0af5956cf17915db86dab90f38c4c203ec779ae52036507fff25146e",
+          "hash": "4c7fecd4c1909b53d148db388a71b86febb17f1ba2824d8877061582695f52ab",
           "importNames": [
             {
               "form": "import",
@@ -724,10 +792,12 @@
             "packages/cognate/src/policy.ts",
             "packages/cognate/src/model-registry.ts",
             "packages/cognate/src/agent-identity.ts",
-            "packages/cognate/src/prompt-store.ts"
+            "packages/cognate/src/prompt-store.ts",
+            "packages/cognate/src/civility-kernel.ts"
           ],
           "importsFiles": [
             "packages/cognate/src/agent-identity.ts",
+            "packages/cognate/src/civility-kernel.ts",
             "packages/cognate/src/index.ts",
             "packages/cognate/src/model-registry.ts",
             "packages/cognate/src/policy.ts",
@@ -747,7 +817,7 @@
           "path": "packages/cognate/tsconfig.json"
         },
         {
-          "hash": "025bf1d305df2a8569bfa886c8ac0cc501cca9909219a539f217f1bb794fc896",
+          "hash": "dc47e06a73beaf7df2e154d618c7e74e51b0b93f10a76bfa61298dab14714c25",
           "importNames": [
             {
               "form": "import",
@@ -801,6 +871,17 @@
       "importConfidence": "full",
       "name": "cognate",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 2,
+          "where": [
+            "caller"
+          ],
+          "writes": 1
+        }
+      ],
+      "outsideReads": 2,
+      "outsideWrites": 1,
       "role": "code",
       "testRunners": [
         "vitest"
@@ -1692,7 +1773,7 @@
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 13,
+      "testedBy": 14,
       "unresolvedSites": 0
     },
     {
@@ -1710,7 +1791,7 @@
           "path": "packages/node/config/tenant-roots.json"
         },
         {
-          "hash": "98509ad87bb561fb7c0e8252eefb9be688ec7c853a2359e3e82b62a9e184cbe3",
+          "hash": "1a752c6901c5c2ac487e2dc097df366678726663a0abb3a73e29daeb372a9168",
           "path": "packages/node/package.json"
         },
         {
@@ -3848,6 +3929,76 @@
           "path": "packages/node/src/tenant.ts"
         },
         {
+          "hash": "5cdb9e981d177c59f53115243bd23aff10c6a07bfeb14276d9c67dc55219821a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "it"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 2,
+              "names": [
+                {
+                  "name": "InMemoryEventStore"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/attestia",
+              "specifier": "@mcptoolshop/attestia/event-store",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "attestDecision"
+                },
+                {
+                  "name": "createKernel"
+                }
+              ],
+              "purl": "pkg:npm/%40cognate/civility-kernel",
+              "specifier": "@cognate/civility-kernel",
+              "typeOnly": false
+            }
+          ],
+          "importsFiles": [
+            "packages/civility-kernel/src/index.ts",
+            "packages/node/src/event-proof.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40cognate/civility-kernel"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/%40mcptoolshop/attestia"
+            },
+            {
+              "manifest": "packages/node/package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "packages/node/tests/civility-kernel-proof.test.ts",
+          "testFramework": "vitest"
+        },
+        {
           "hash": "d18559ad6093924397130376e91bb1c1b30e8ba69bb85e5b3bcef65af956b9b7",
           "importNames": [
             {
@@ -5037,7 +5188,7 @@
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 13,
+      "testedBy": 14,
       "unresolvedSites": 0
     },
     {
@@ -5616,7 +5767,7 @@
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 12,
+      "testedBy": 13,
       "unresolvedSites": 0
     },
     {
@@ -5810,7 +5961,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "17e4155f850874765cad65cdf57c26675a208f5afe9cba1d4fd9a3fa692f872d",
+          "hash": "614fb72869ff5584c647f250848871556371a93c0645304705f64ecae917b127",
           "path": "CHANGELOG.md"
         },
         {
@@ -5818,11 +5969,11 @@
           "path": "Caddyfile"
         },
         {
-          "hash": "0e863a964ef3445f9eafb50b0aeb38a149b53cc75de481c8409692d96a853aff",
+          "hash": "dde8a5fabb12b4e4a7e6bbadb0422c21744ad221404479a3a7569099496d5602",
           "path": "Dockerfile"
         },
         {
-          "hash": "9ff40859d15cc23390ae8cb595c7632fd8db77b6013e8d8fe32d7d696e807fd7",
+          "hash": "61d4f2883e4a23888b2470425c77062e9f30b106d3a72bad0f75eb1cce138930",
           "path": "HANDBOOK.md"
         },
         {
@@ -5830,35 +5981,35 @@
           "path": "LICENSE"
         },
         {
-          "hash": "a036f2f3e272d9457d3c36ac5e15047c9e8e6c1e7c1a2b1856bca5a9f2e9f2ed",
+          "hash": "283bb6896449745cbd412f6f9d4b6cb24937e39236d16768152f8f9a3433c215",
           "path": "README.es.md"
         },
         {
-          "hash": "91a68a371b1a0f7850abeea41a9ef5497686730363344105aede8e31378e2a04",
+          "hash": "8357c825ac8e6d931c97dfe0f27b2dc272a671e386adf8c07dc0fb52983564fc",
           "path": "README.fr.md"
         },
         {
-          "hash": "13920789571414b5efaee1a76d242882af1b8ebe9a08462937e609ad50889d26",
+          "hash": "1ab30a7facb15510a1ff114b7d8ec123167090c8ae4340a9d558803c471d447c",
           "path": "README.hi.md"
         },
         {
-          "hash": "909e6c5f252e1532725d2222e912a4bda1557e4c5170db47936ec42675ba7f2c",
+          "hash": "c3ebb05c4d0ce255d6f5cb32475481f0cc95748b7b81d8a50dbf052e5267e18b",
           "path": "README.it.md"
         },
         {
-          "hash": "20d12eb287f16bfb85afcf244c14311bc4f16a1761c237e5ae73443dbfa24d9e",
+          "hash": "19b747edb64d92cdc35d160e1330eafecb9509c1c6d988abf86fedbc32d18860",
           "path": "README.ja.md"
         },
         {
-          "hash": "7219909c81efbaf141383c89844146805e4455b8b572bb1726df0fbfdb64d85a",
+          "hash": "3b052c91e8ce9e714575e02622d50b3665a7536abfcefc63bf03ca234e451c96",
           "path": "README.md"
         },
         {
-          "hash": "4faa9ff66f0b71e813257295920d0c382e2104526a83be3a6d21ec9b78c6dd33",
+          "hash": "461665c1fc24538c59595db023be90d0b8f964f0aff0a1c42b31e4de94f6c9fe",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "34a0a44cbbea1a978d06c0201a2172a8bc2fbba0ad587b07e358af902c841642",
+          "hash": "5d01d72e27b9e81df68fef62e9ef57413169d66248f87a1420b8d30bdf7204db",
           "path": "README.zh.md"
         },
         {
@@ -5886,11 +6037,11 @@
           "path": "node.json"
         },
         {
-          "hash": "7751dac32f36e19285f6d5122159ded4fdfbb163c81365dccae392ff5a46a9ef",
+          "hash": "ce0878a543bf3e931aed4f3e607a753a28b03960770f1efcdfc5ab0e3aa54266",
           "path": "package.json"
         },
         {
-          "hash": "71446c50e816e1dc816b3a21d1b96fe1414a1bd21e9c24ff14ca8f985e6f8e86",
+          "hash": "753faa4f01bec1747964beae9b7506da46c050be3073f40be819cbd3f653e216",
           "path": "pnpm-lock.yaml"
         },
         {
@@ -5913,13 +6064,177 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 0,
-      "dynamicSpawns": 0,
+      "dynamicReads": 1,
+      "dynamicSpawns": 4,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 0,
       "entryPoints": [],
       "externals": 0,
       "files": [
+        {
+          "hash": "cd1b0c27332c2bae1a03bd05ccf51beb2bfe153b7c2700d417546268306720be",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "civilityKernel"
+                },
+                {
+                  "name": "policy"
+                },
+                {
+                  "name": "modelRegistry"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/cognate",
+              "specifier": "@mcptoolshop/cognate",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "TenantId",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/cognate",
+              "specifier": "@mcptoolshop/cognate/types",
+              "typeOnly": true
+            },
+            {
+              "form": "import",
+              "line": 5,
+              "names": [
+                {
+                  "name": "evaluatePolicy"
+                },
+                {
+                  "name": "PolicyResult",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/cognate",
+              "specifier": "@mcptoolshop/cognate/policy",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "createRegistry"
+                },
+                {
+                  "name": "RegistryState",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/cognate",
+              "specifier": "@mcptoolshop/cognate/model-registry",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 7,
+              "names": [
+                {
+                  "name": "registerAgent"
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/cognate",
+              "specifier": "@mcptoolshop/cognate/agent-identity",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "createStore"
+                },
+                {
+                  "name": "PromptStoreState",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/cognate",
+              "specifier": "@mcptoolshop/cognate/prompt-store",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 9,
+              "names": [
+                {
+                  "name": "verifyRelease"
+                },
+                {
+                  "name": "RepomeshResult",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/cognate",
+              "specifier": "@mcptoolshop/cognate/repomesh-bridge",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 10,
+              "names": [
+                {
+                  "name": "computeDecisionDigests"
+                },
+                {
+                  "name": "createKernel"
+                },
+                {
+                  "name": "DecisionTrace",
+                  "type": true
+                }
+              ],
+              "purl": "pkg:npm/%40mcptoolshop/cognate",
+              "specifier": "@mcptoolshop/cognate/civility-kernel",
+              "typeOnly": false
+            }
+          ],
+          "packages": [
+            {
+              "manifest": null,
+              "member": true,
+              "purl": "pkg:npm/%40mcptoolshop/cognate"
+            }
+          ],
+          "path": "scripts/bundle-types-fixture/consumer.ts"
+        },
+        {
+          "hash": "6ba6a833b740ce2ad1e5da0b72743a9b5bddd5b4918e613ba5a10f313d1ec69d",
+          "path": "scripts/bundle-types-fixture/package.json"
+        },
+        {
+          "hash": "7f6f0337fce04eb2d93449f0627a9dad670b0e82bc9057d78cebb1357d23fc68",
+          "path": "scripts/bundle-types-fixture/tsconfig.bundler.json"
+        },
+        {
+          "hash": "2c1e834b9eba7bfe694928ecfc4ffeb6ab6fbdf403f1ed74bb77df137d9091cb",
+          "path": "scripts/bundle-types-fixture/tsconfig.node16.json"
+        },
+        {
+          "entry": "run",
+          "entryRule": 1,
+          "failurePaths": [
+            {
+              "kind": "catch",
+              "line": 84
+            }
+          ],
+          "hash": "911794213b93fbba7484f428d8769912baa499b2a7016131a817df53965aab48",
+          "path": "scripts/check-bundle-types.mjs",
+          "sequences": []
+        },
         {
           "hash": "270c1277ae1cc75b8b042ac74c650e9e47f346c9545a1cc5592e20b5c9edc98f",
           "path": "scripts/health-server.mjs"
@@ -5954,7 +6269,24 @@
         "vitest"
       ],
       "testedBy": 1,
-      "unresolvedSites": 0
+      "unresolvedNamed": [
+        {
+          "path": "scripts/bundle-types-fixture/consumer.ts",
+          "specifier": "@mcptoolshop/cognate",
+          "why": "generated"
+        },
+        {
+          "path": "scripts/bundle-types-fixture/consumer.ts",
+          "specifier": "@mcptoolshop/cognate/types",
+          "why": "generated"
+        },
+        {
+          "path": "scripts/bundle-types-fixture/consumer.ts",
+          "specifier": "@mcptoolshop/cognate/policy",
+          "why": "generated"
+        }
+      ],
+      "unresolvedSites": 8
     },
     {
       "dynamicReads": 0,
@@ -6074,7 +6406,7 @@
           "path": "site/src/content.config.ts"
         },
         {
-          "hash": "4e93880f48edf6b4e7e15e5d1232613834fe22711f8d9c32031b4497f8814c60",
+          "hash": "a87bbe28b82f57e3a8121e3713deac77e6f9c40c525738c009822198b50abe2a",
           "path": "site/src/content/docs/handbook/architecture.md"
         },
         {
@@ -6082,23 +6414,23 @@
           "path": "site/src/content/docs/handbook/getting-started.md"
         },
         {
-          "hash": "a9e46a773b0cdfd7454b1fcaa6fd28c8e0bbd442cfcb610ac423169574ed50ea",
+          "hash": "613531648f26f8af95c35d2b88ed3dc5a427be144fefa7b88cbd270264e709c8",
           "path": "site/src/content/docs/handbook/index.md"
         },
         {
-          "hash": "d81dfd45406989650e8b0c232ac68302f27ee2af0f2aa705f6d8fbbea6197cf1",
+          "hash": "6e02c9a085055f5a027c3e8bbce3f4cac618e22a71fa030364b075b56507ed77",
           "path": "site/src/content/docs/handbook/reference.md"
         },
         {
-          "hash": "909f18d7cc8c878bedaacf3375bdf1b111e027801be943f7cf990d1a2012771e",
+          "hash": "623d34526fc56eac5d1ff2334821abb358f1c6a12baad7b4e332af21b9f79041",
           "path": "site/src/content/docs/handbook/security.md"
         },
         {
-          "hash": "ef714dcd6de95045ab9fff62e8c3fa2ff59084af1d1ee135a846d476fe7ea1d3",
+          "hash": "b090705969ef761fb035dee6a0b29296a72e9955e13bea570b2b892a6a4b1ce2",
           "path": "site/src/content/docs/handbook/usage.md"
         },
         {
-          "hash": "4250e0bed1f8cb8ec6d30d788439a51e659aa4f9bfecb829cbf659f7e283d37c",
+          "hash": "2e97cc0462d524da3b95fc16607f4a85785a52fefbd17ce8e3e65bb5d1edaae3",
           "path": "site/src/content/docs/handbook/whats-new.md"
         },
         {
@@ -6207,7 +6539,7 @@
         },
         {
           "constantOnly": true,
-          "hash": "6fadd47bae32b67d75fd76e9339c4dde2bc430905eab77e38e86cd8d17024877",
+          "hash": "c9564e79e55afb6b4f502cf78022ed92967cabfa284ffb8cb09bb41b5d123957",
           "importNames": [
             {
               "form": "import",
@@ -6310,7 +6642,7 @@
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 19,
+      "testedBy": 20,
       "unresolvedSites": 0
     }
   ],
@@ -6349,6 +6681,14 @@
             "pnpm"
           ],
           "step": "Typecheck"
+        },
+        {
+          "dir": "",
+          "job": "build-and-test",
+          "programs": [
+            "node"
+          ],
+          "step": "Bundle types resolve for an npm consumer"
         },
         {
           "dir": "",
@@ -6467,7 +6807,7 @@
         {
           "boundary": "cognate",
           "depth": 0,
-          "files": 8
+          "files": 10
         },
         {
           "boundary": "model-registry",
@@ -6477,7 +6817,7 @@
         {
           "boundary": "node",
           "depth": 0,
-          "files": 29
+          "files": 30
         },
         {
           "boundary": "policy",
@@ -6497,7 +6837,7 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 1
+          "files": 2
         },
         {
           "boundary": "types",
@@ -6526,8 +6866,36 @@
         },
         {
           "built": true,
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/civility-kernel/src/",
+          "runKind": "executes",
+          "via": "tsc packages/civility-kernel/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/civility-kernel/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/civility-kernel/vitest.config.ts"
+        },
+        {
+          "job": "build-and-test",
+          "path": "packages/cognate/scripts/vendor-types.mjs",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
           "job": "build-and-test",
           "path": "packages/cognate/src/agent-identity.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "build-and-test",
+          "path": "packages/cognate/src/civility-kernel.ts",
           "runKind": "executes"
         },
         {
@@ -6599,6 +6967,13 @@
           "path": "packages/node/src/",
           "runKind": "executes",
           "via": "tsc packages/node/tsconfig.json"
+        },
+        {
+          "job": "build-and-test",
+          "matched": true,
+          "path": "packages/node/tests/civility-kernel-proof.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
         },
         {
           "job": "build-and-test",
@@ -6732,11 +7107,16 @@
         },
         {
           "job": "build-and-test",
+          "path": "scripts/check-bundle-types.mjs",
+          "runKind": "executes"
+        },
+        {
+          "job": "build-and-test",
           "path": "scripts/make-tenant-root.mjs",
           "runKind": "executes"
         }
       ],
-      "runsCount": 31,
+      "runsCount": 37,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -6761,6 +7141,19 @@
           "through": [
             "pnpm run test:coverage",
             "pnpm run test:coverage (packages/agent-identity)"
+          ]
+        },
+        {
+          "config": "packages/civility-kernel/vitest.config.ts",
+          "coverage": true,
+          "dir": "packages/civility-kernel",
+          "files": 19,
+          "job": "build-and-test",
+          "runner": "vitest",
+          "step": "Test with coverage",
+          "through": [
+            "pnpm run test:coverage",
+            "pnpm run test:coverage (packages/civility-kernel)"
           ]
         },
         {
@@ -6792,7 +7185,7 @@
           "config": "packages/node/vitest.config.ts",
           "coverage": true,
           "dir": "packages/node",
-          "files": 10,
+          "files": 11,
           "job": "build-and-test",
           "runner": "vitest",
           "step": "Test with coverage",
@@ -6866,6 +7259,7 @@
           ],
           "event": "push",
           "paths": [
+            "**/*.mjs",
             "**/*.ts",
             "**/package.json",
             ".github/workflows/**",
@@ -6881,6 +7275,9 @@
           "event": "workflow_dispatch"
         }
       ],
+      "untrackedLandings": [
+        "packages/cognate/dist/"
+      ],
       "uses": [
         "actions/checkout",
         "actions/setup-node",
@@ -6889,7 +7286,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 13,
+      "checksCount": 14,
       "commands": [],
       "elsewhere": [],
       "file": ".github/workflows/docker.yml",
@@ -6944,7 +7341,7 @@
         {
           "boundary": "cognate",
           "depth": 0,
-          "files": 11
+          "files": 13
         },
         {
           "boundary": "model-registry",
@@ -6954,7 +7351,7 @@
         {
           "boundary": "node",
           "depth": 0,
-          "files": 31
+          "files": 32
         },
         {
           "boundary": "policy",
@@ -7014,6 +7411,22 @@
           "path": "packages/agent-identity/src/",
           "runKind": "executes",
           "via": "docker build Dockerfile → tsc packages/agent-identity/tsconfig.json"
+        },
+        {
+          "job": "build-and-push",
+          "packed": true,
+          "path": "packages/civility-kernel/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "build-and-push",
+          "matched": true,
+          "path": "packages/civility-kernel/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/civility-kernel/tsconfig.json"
         },
         {
           "job": "build-and-push",
@@ -7146,7 +7559,7 @@
           "via": "docker build Dockerfile"
         }
       ],
-      "runsCount": 21,
+      "runsCount": 23,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -7326,7 +7739,7 @@
       "usesWorkflowToken": false
     },
     {
-      "checksCount": 13,
+      "checksCount": 14,
       "commands": [
         {
           "dir": "",
@@ -7493,7 +7906,7 @@
         {
           "boundary": "cognate",
           "depth": 0,
-          "files": 11
+          "files": 13
         },
         {
           "boundary": "model-registry",
@@ -7503,7 +7916,7 @@
         {
           "boundary": "node",
           "depth": 0,
-          "files": 31
+          "files": 32
         },
         {
           "boundary": "policy",
@@ -7584,14 +7997,58 @@
         {
           "job": "image/build-and-push",
           "packed": true,
-          "path": "packages/cognate/package.json",
+          "path": "packages/civility-kernel/package.json",
           "runKind": "checks",
           "via": "docker build Dockerfile"
         },
         {
           "built": true,
+          "directory": true,
+          "job": "image/build-and-push",
+          "matched": true,
+          "path": "packages/civility-kernel/src/",
+          "runKind": "executes",
+          "via": "docker build Dockerfile → tsc packages/civility-kernel/tsconfig.json"
+        },
+        {
+          "built": true,
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/civility-kernel/src/",
+          "runKind": "executes",
+          "via": "tsc packages/civility-kernel/tsconfig.json"
+        },
+        {
+          "directory": true,
+          "job": "release",
+          "matched": true,
+          "path": "packages/civility-kernel/tests/",
+          "runKind": "executes",
+          "via": "vitest packages/civility-kernel/vitest.config.ts"
+        },
+        {
+          "job": "image/build-and-push",
+          "packed": true,
+          "path": "packages/cognate/package.json",
+          "runKind": "checks",
+          "via": "docker build Dockerfile"
+        },
+        {
+          "job": "release",
+          "path": "packages/cognate/scripts/vendor-types.mjs",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
           "job": "release",
           "path": "packages/cognate/src/agent-identity.ts",
+          "runKind": "executes"
+        },
+        {
+          "built": true,
+          "job": "release",
+          "path": "packages/cognate/src/civility-kernel.ts",
           "runKind": "executes"
         },
         {
@@ -7701,6 +8158,13 @@
           "path": "packages/node/src/index.ts",
           "runKind": "executes",
           "via": "docker build Dockerfile"
+        },
+        {
+          "job": "release",
+          "matched": true,
+          "path": "packages/node/tests/civility-kernel-proof.test.ts",
+          "runKind": "executes",
+          "via": "vitest packages/node/vitest.config.ts"
         },
         {
           "job": "release",
@@ -7918,7 +8382,7 @@
           "via": "docker build Dockerfile"
         }
       ],
-      "runsCount": 44,
+      "runsCount": 50,
       "secrets": [
         "GITHUB_TOKEN"
       ],
@@ -7957,6 +8421,18 @@
           ]
         },
         {
+          "config": "packages/civility-kernel/vitest.config.ts",
+          "dir": "packages/civility-kernel",
+          "files": 19,
+          "job": "release",
+          "runner": "vitest",
+          "step": "Run tests",
+          "through": [
+            "pnpm test",
+            "pnpm test (packages/civility-kernel)"
+          ]
+        },
+        {
           "config": "packages/cognate/vitest.config.ts",
           "dir": "packages/cognate",
           "files": 1,
@@ -7983,7 +8459,7 @@
         {
           "config": "packages/node/vitest.config.ts",
           "dir": "packages/node",
-          "files": 10,
+          "files": 11,
           "job": "release",
           "runner": "vitest",
           "step": "Run tests",
@@ -8047,6 +8523,9 @@
             "v*"
           ]
         }
+      ],
+      "untrackedLandings": [
+        "packages/cognate/dist/"
       ],
       "uses": [
         "actions/checkout",
@@ -8179,8 +8658,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "9aef44d05d6767be1738f65226a2b1b306f22800",
-    "tracked": 157
+    "commit": "90d8b208dbd6849976784fb0352133ca14777653",
+    "tracked": 206
   },
   "landings": [
     {
@@ -8258,8 +8737,99 @@
     {
       "readers": [
         {
+          "by": "packages/cognate/scripts/vendor-types.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/cognate/scripts/vendor-types.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "packages/cognate/scripts/vendor-types.mjs",
+          "call": "readdirSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/*",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "packages/cognate/scripts/vendor-types.mjs",
+          "call": "existsSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "packages/cognate/scripts/vendor-types.mjs",
+          "call": "readdirSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/check-bundle-types.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/check-bundle-types.mjs",
+          "call": "readdirSync",
+          "confidence": "ast"
+        }
+      ],
+      "target": "packages/cognate",
+      "writers": []
+    },
+    {
+      "readers": [],
+      "target": "packages/cognate/dist",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "packages/cognate/scripts/vendor-types.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "packages/cognate/dist/_types/attestia/index.d.ts/*",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "packages/cognate/scripts/vendor-types.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "packages/cognate/dist/_types/cognate/*",
+      "tracked": false,
+      "writers": [
+        {
+          "by": "packages/cognate/scripts/vendor-types.mjs",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
           "by": ".github/workflows/release.yml",
           "confidence": "config"
+        },
+        {
+          "by": "scripts/check-bundle-types.mjs",
+          "call": "readFileSync",
+          "confidence": "ast"
         }
       ],
       "target": "packages/cognate/package.json",
@@ -8356,6 +8926,17 @@
     {
       "readers": [
         {
+          "by": "scripts/check-bundle-types.mjs",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "scripts/bundle-types-fixture",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "packages/node/tests/make-tenant-root.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -8407,7 +8988,7 @@
       "private": true,
       "role": "root",
       "roleFrom": "the root manifest",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "@cognate/agent-identity",
@@ -8417,11 +8998,18 @@
       "version": "0.2.0"
     },
     {
+      "name": "@cognate/civility-kernel",
+      "path": "packages/civility-kernel/package.json",
+      "role": "member",
+      "roleFrom": "packages in pnpm-workspace.yaml",
+      "version": "1.1.0"
+    },
+    {
       "name": "@mcptoolshop/cognate",
       "path": "packages/cognate/package.json",
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "@cognate/model-registry",
@@ -8464,6 +9052,13 @@
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
       "version": "1.0.0"
+    },
+    {
+      "name": "cognate-types-consumer",
+      "path": "scripts/bundle-types-fixture/package.json",
+      "private": true,
+      "role": "other",
+      "roleFrom": "no workspace lists it and no install step Atlas reads runs in its directory"
     },
     {
       "name": "site",
@@ -8568,6 +9163,96 @@
     },
     {
       "field": "dependencies",
+      "kind": "workspace",
+      "manifest": "packages/civility-kernel/package.json",
+      "name": "@cognate/types",
+      "purl": "pkg:npm/%40cognate/types",
+      "range": "workspace:*",
+      "unknown": "a workspace dependency moves with the tree",
+      "version": null
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "packages/civility-kernel/package.json",
+      "name": "json-canonicalize",
+      "purl": "pkg:npm/json-canonicalize",
+      "range": "^2.0.0",
+      "version": "2.0.0",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "packages/civility-kernel/package.json",
+      "name": "zod",
+      "purl": "pkg:npm/zod",
+      "range": "^4.3.6",
+      "version": "4.6.7",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "workspace",
+      "manifest": "packages/civility-kernel/package.json",
+      "name": "@cognate/model-registry",
+      "purl": "pkg:npm/%40cognate/model-registry",
+      "range": "workspace:*",
+      "unknown": "a workspace dependency moves with the tree",
+      "version": null
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "packages/civility-kernel/package.json",
+      "name": "@mcptoolshop/attestia",
+      "purl": "pkg:npm/%40mcptoolshop/attestia",
+      "range": "^2.1.3",
+      "version": "2.1.3",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "packages/civility-kernel/package.json",
+      "name": "@types/node",
+      "purl": "pkg:npm/%40types/node",
+      "range": "^22.0.0",
+      "version": "22.20.4",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "packages/civility-kernel/package.json",
+      "name": "@vitest/coverage-v8",
+      "purl": "pkg:npm/%40vitest/coverage-v8",
+      "range": "^4.1.12",
+      "version": "4.1.12",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "packages/civility-kernel/package.json",
+      "name": "typescript",
+      "purl": "pkg:npm/typescript",
+      "range": "^5.3.0",
+      "version": "5.9.3",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "registry",
+      "manifest": "packages/civility-kernel/package.json",
+      "name": "vitest",
+      "purl": "pkg:npm/vitest",
+      "range": "^4.1.12",
+      "version": "4.1.12",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "dependencies",
       "kind": "registry",
       "manifest": "packages/cognate/package.json",
       "name": "@mcptoolshop/repomesh",
@@ -8577,11 +9262,31 @@
       "versionFrom": "pnpm-lock.yaml"
     },
     {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "packages/cognate/package.json",
+      "name": "zod",
+      "purl": "pkg:npm/zod",
+      "range": "^4.3.6",
+      "version": "4.6.7",
+      "versionFrom": "pnpm-lock.yaml"
+    },
+    {
       "field": "devDependencies",
       "kind": "workspace",
       "manifest": "packages/cognate/package.json",
       "name": "@cognate/agent-identity",
       "purl": "pkg:npm/%40cognate/agent-identity",
+      "range": "workspace:*",
+      "unknown": "a workspace dependency moves with the tree",
+      "version": null
+    },
+    {
+      "field": "devDependencies",
+      "kind": "workspace",
+      "manifest": "packages/cognate/package.json",
+      "name": "@cognate/civility-kernel",
+      "purl": "pkg:npm/%40cognate/civility-kernel",
       "range": "workspace:*",
       "unknown": "a workspace dependency moves with the tree",
       "version": null
@@ -8815,6 +9520,16 @@
       "range": "^2.0.0",
       "version": "2.0.0",
       "versionFrom": "pnpm-lock.yaml"
+    },
+    {
+      "field": "devDependencies",
+      "kind": "workspace",
+      "manifest": "packages/node/package.json",
+      "name": "@cognate/civility-kernel",
+      "purl": "pkg:npm/%40cognate/civility-kernel",
+      "range": "workspace:*",
+      "unknown": "a workspace dependency moves with the tree",
+      "version": null
     },
     {
       "field": "devDependencies",
@@ -9117,15 +9832,1323 @@
       "name": "@mcptoolshop/cognate",
       "purl": "pkg:npm/%40mcptoolshop/cognate",
       "repository": "https://github.com/mcp-tool-shop-org/cognate",
-      "version": "1.0.0"
+      "version": "1.1.0"
     }
   ],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 24,
-  "unassigned": [],
+  "testFiles": 44,
+  "unassigned": [
+    {
+      "hash": "fe1791e229deb0c99a30655a59d3055407751c8d90715c14f2016e8f7c32d9f5",
+      "path": "packages/civility-kernel/CHANGELOG.md"
+    },
+    {
+      "hash": "367e5141e4f5884e5791c4021f33a9faa958840a5decf44e1b273a87aad1c459",
+      "path": "packages/civility-kernel/LICENSE"
+    },
+    {
+      "hash": "cfe626964230b04dbbf5a2fac7cac02c29b0e4d7a871590141405e60d62efb8a",
+      "path": "packages/civility-kernel/package.json"
+    },
+    {
+      "exports": [
+        "attestDecision",
+        "computeDecisionDigests"
+      ],
+      "failurePaths": [
+        {
+          "in": "sha256Canonical",
+          "kind": "throw",
+          "line": 53
+        },
+        {
+          "in": "computeDecisionDigests",
+          "kind": "throw",
+          "line": 68
+        },
+        {
+          "in": "attestDecision",
+          "kind": "catch",
+          "line": 143
+        },
+        {
+          "in": "attestDecision",
+          "kind": "throw",
+          "line": 144
+        }
+      ],
+      "hash": "604e727fc57f2b0584219cf2f3ca370a1551632a29ab6fe9be136f73888d44ec",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 10,
+          "names": [
+            {
+              "name": "canonicalize"
+            }
+          ],
+          "purl": "pkg:npm/json-canonicalize",
+          "specifier": "json-canonicalize",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 11,
+          "names": [
+            {
+              "name": "HashId",
+              "type": true
+            }
+          ],
+          "purl": "pkg:npm/%40cognate/types",
+          "specifier": "@cognate/types",
+          "typeOnly": true
+        },
+        {
+          "form": "import",
+          "line": 12,
+          "names": [
+            {
+              "name": "DomainEvent",
+              "type": true
+            },
+            {
+              "name": "EventStore",
+              "type": true
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/attestia",
+          "specifier": "@mcptoolshop/attestia/event-store",
+          "typeOnly": true
+        }
+      ],
+      "importOrder": [
+        "packages/types/src/index.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/types.ts",
+        "packages/types/src/index.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/%40cognate/types"
+        },
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/%40mcptoolshop/attestia"
+        },
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/json-canonicalize"
+        }
+      ],
+      "path": "packages/civility-kernel/src/attestation.ts"
+    },
+    {
+      "hash": "5502c962bbe88126c0c5dcfb2a1a2d6616b5b9f47ae09b54ba1ef21d21c8b027",
+      "importOrder": [
+        "packages/civility-kernel/src/policy/explain.ts",
+        "packages/civility-kernel/src/policy/features.ts",
+        "packages/civility-kernel/src/policy/types.ts",
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/context.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/learning.ts",
+        "packages/civility-kernel/src/policy/lint.ts",
+        "packages/civility-kernel/src/policy/diff.ts",
+        "packages/civility-kernel/src/policy/canonicalize.ts",
+        "packages/civility-kernel/src/policy/persistence.ts",
+        "packages/civility-kernel/src/policy/builder.ts",
+        "packages/civility-kernel/src/policy/kernel.ts",
+        "packages/civility-kernel/src/policy/mcp-adapter.ts",
+        "packages/civility-kernel/src/attestation.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/attestation.ts",
+        "packages/civility-kernel/src/policy/builder.ts",
+        "packages/civility-kernel/src/policy/canonicalize.ts",
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/context.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/diff.ts",
+        "packages/civility-kernel/src/policy/explain.ts",
+        "packages/civility-kernel/src/policy/features.ts",
+        "packages/civility-kernel/src/policy/kernel.ts",
+        "packages/civility-kernel/src/policy/learning.ts",
+        "packages/civility-kernel/src/policy/lint.ts",
+        "packages/civility-kernel/src/policy/mcp-adapter.ts",
+        "packages/civility-kernel/src/policy/persistence.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "path": "packages/civility-kernel/src/index.ts",
+      "reexportsAll": [
+        "packages/civility-kernel/src/attestation.ts",
+        "packages/civility-kernel/src/policy/builder.ts",
+        "packages/civility-kernel/src/policy/canonicalize.ts",
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/context.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/diff.ts",
+        "packages/civility-kernel/src/policy/explain.ts",
+        "packages/civility-kernel/src/policy/features.ts",
+        "packages/civility-kernel/src/policy/kernel.ts",
+        "packages/civility-kernel/src/policy/learning.ts",
+        "packages/civility-kernel/src/policy/lint.ts",
+        "packages/civility-kernel/src/policy/mcp-adapter.ts",
+        "packages/civility-kernel/src/policy/persistence.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "reexportsOnly": true
+    },
+    {
+      "hash": "71dc5385858b3b41e9cfb2e8c5244b6510024c670a9eb83768c6c4dd0b66d924",
+      "importOrder": [
+        "packages/civility-kernel/src/policy/types.ts",
+        "packages/civility-kernel/src/policy/persistence.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/persistence.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "path": "packages/civility-kernel/src/policy/builder.ts"
+    },
+    {
+      "exports": [
+        "canonicalizePolicy"
+      ],
+      "hash": "1d41c993082452db8aee32059e9141d983e4b3badd44db0a4d0860aaec15af68",
+      "importOrder": [
+        "packages/civility-kernel/src/policy/types.ts",
+        "packages/civility-kernel/src/policy/constraints.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "path": "packages/civility-kernel/src/policy/canonicalize.ts"
+    },
+    {
+      "exports": [
+        "registerDefaultConstraints"
+      ],
+      "hash": "2e7fff9f604020cc23e603556bf6efbe245fdd3ae7fafe6f8777d516d466604b",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 2,
+          "names": [
+            {
+              "name": "z"
+            }
+          ],
+          "purl": "pkg:npm/zod",
+          "specifier": "zod",
+          "typeOnly": false
+        }
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/zod"
+        }
+      ],
+      "path": "packages/civility-kernel/src/policy/constraints.ts"
+    },
+    {
+      "exports": [
+        "compileEffectivePolicy",
+        "computeCacheKey",
+        "matchesContext"
+      ],
+      "hash": "c148869fdaa4831c318bf753b9db6709a1b4df9f729b8d14cb6156f39de8478e",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "canonicalize"
+            }
+          ],
+          "purl": "pkg:npm/json-canonicalize",
+          "specifier": "json-canonicalize",
+          "typeOnly": false
+        }
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/json-canonicalize"
+        }
+      ],
+      "path": "packages/civility-kernel/src/policy/context.ts"
+    },
+    {
+      "hash": "077091744118ce2fda962be2ca63eb9033c8e5b3bd2d649fc21dd6c2b67b067a",
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/context.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "path": "packages/civility-kernel/src/policy/decision.ts"
+    },
+    {
+      "exports": [
+        "diffPolicy"
+      ],
+      "hash": "7e6a7597ea7a0aa9daa54099de1b58ed4db0ad2899274d3a376e0e11cea714b6",
+      "importOrder": [
+        "packages/civility-kernel/src/policy/types.ts",
+        "packages/civility-kernel/src/policy/constraints.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "path": "packages/civility-kernel/src/policy/diff.ts"
+    },
+    {
+      "exports": [
+        "explainPolicy"
+      ],
+      "hash": "f5e7ea0577d4dd9cbac9b44b0207e38ce9f953ab5f4d293fe81752b852756d0e",
+      "importOrder": [
+        "packages/civility-kernel/src/policy/types.ts",
+        "packages/civility-kernel/src/policy/constraints.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "path": "packages/civility-kernel/src/policy/explain.ts"
+    },
+    {
+      "exports": [
+        "annotatePlanWithTags",
+        "extractTags"
+      ],
+      "hash": "023b5ac48838e1943de7602f9b986fe713d6345286aaa3aa7bedbad477d0510a",
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "path": "packages/civility-kernel/src/policy/features.ts"
+    },
+    {
+      "exports": [
+        "createKernel"
+      ],
+      "hash": "90dcc522474e934e6afa594378210418e968714b1f16ed032fbc6736da982352",
+      "importOrder": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/lint.ts",
+        "packages/civility-kernel/src/policy/explain.ts",
+        "packages/civility-kernel/src/policy/diff.ts",
+        "packages/civility-kernel/src/policy/learning.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/diff.ts",
+        "packages/civility-kernel/src/policy/explain.ts",
+        "packages/civility-kernel/src/policy/learning.ts",
+        "packages/civility-kernel/src/policy/lint.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "path": "packages/civility-kernel/src/policy/kernel.ts"
+    },
+    {
+      "exports": [
+        "applyPolicyProposal",
+        "proposePolicyUpdates"
+      ],
+      "hash": "a42ab34b58a7685625bb579036b25d11ea1eab8e12aee7397641a1937e107020",
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "path": "packages/civility-kernel/src/policy/learning.ts"
+    },
+    {
+      "exports": [
+        "lintPolicy"
+      ],
+      "hash": "85b9e01012a9feb769534fa49e78e4bdef6b9baea6a976451dcf613df8fbbcab",
+      "importOrder": [
+        "packages/civility-kernel/src/policy/types.ts",
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/scoring.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "path": "packages/civility-kernel/src/policy/lint.ts"
+    },
+    {
+      "exports": [
+        "feedbackFromMcpResult",
+        "planFromMcpToolCall"
+      ],
+      "hash": "57a86ee22959ba58350f9cf039548ea9a3f3fe99efea2adbd648d62b527aa18f",
+      "importOrder": [
+        "packages/civility-kernel/src/policy/types.ts",
+        "packages/civility-kernel/src/policy/learning.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/learning.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "path": "packages/civility-kernel/src/policy/mcp-adapter.ts"
+    },
+    {
+      "exports": [
+        "dumpPolicy",
+        "loadPolicy"
+      ],
+      "failurePaths": [
+        {
+          "in": "loadPolicy",
+          "kind": "throw",
+          "line": 53
+        }
+      ],
+      "hash": "fddada12ba4cf547cff7c725532689b5ebdbeaf6f05385fee21ae0a0432379c8",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "z"
+            }
+          ],
+          "purl": "pkg:npm/zod",
+          "specifier": "zod",
+          "typeOnly": false
+        }
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/zod"
+        }
+      ],
+      "path": "packages/civility-kernel/src/policy/persistence.ts"
+    },
+    {
+      "exports": [
+        "registerDefaultScorers"
+      ],
+      "hash": "e20314b8e0aca6c71aa5976cc3c6a951cb2e21d31c40a1dc56f05abc009e7264",
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "path": "packages/civility-kernel/src/policy/scoring.ts"
+    },
+    {
+      "hash": "791809e411e63e1ba02a0051c70e3ee8fe6a4ded38107b92525d385a6cd042ee",
+      "path": "packages/civility-kernel/src/policy/types.ts"
+    },
+    {
+      "hash": "1f56a287509f741c8641cb4f732fc9518940bc9f0643b745a0b62d6b40c5d54c",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importOrder": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/async-decision.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "80be793c79bb6b9974bb6ca62abb0a05c54d87f3c415f8e124009cd8e7edf835",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 2,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 3,
+          "names": [
+            {
+              "name": "canonicalize"
+            }
+          ],
+          "purl": "pkg:npm/json-canonicalize",
+          "specifier": "json-canonicalize",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 4,
+          "names": [
+            {
+              "name": "InMemoryEventStore"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/attestia",
+          "specifier": "@mcptoolshop/attestia/event-store",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 5,
+          "names": [
+            {
+              "name": "createRegistry"
+            },
+            {
+              "name": "preRegisterRun"
+            },
+            {
+              "name": "getRunPreRegistration"
+            }
+          ],
+          "purl": "pkg:npm/%40cognate/model-registry",
+          "specifier": "@cognate/model-registry",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 6,
+          "names": [
+            {
+              "name": "ActorId",
+              "type": true
+            },
+            {
+              "name": "HashId",
+              "type": true
+            },
+            {
+              "name": "TenantId",
+              "type": true
+            },
+            {
+              "name": "Timestamp",
+              "type": true
+            }
+          ],
+          "purl": "pkg:npm/%40cognate/types",
+          "specifier": "@cognate/types",
+          "typeOnly": true
+        }
+      ],
+      "importOrder": [
+        "packages/model-registry/src/index.ts",
+        "packages/types/src/index.ts",
+        "packages/civility-kernel/src/policy/kernel.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/attestation.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/attestation.ts",
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/kernel.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/types.ts",
+        "packages/model-registry/src/index.ts",
+        "packages/types/src/index.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/%40cognate/model-registry"
+        },
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/%40cognate/types"
+        },
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/%40mcptoolshop/attestia"
+        },
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/json-canonicalize"
+        },
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/attestation.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "3c605926b33d6c174245df07cb41565fc42097aeb1e589d5dfe0d5eef84eb1ea",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/builder.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/builder.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "4993b4ddac7d7308bd4f99b68d423a91ede0038b66573d1f9f360ea47d6dbc93",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/canonicalize.ts",
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/canonicalize.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "fcb6472a5508c77f371a9bb1d58a00d8fc8cdca070cdda937c5436ea42e16947",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 3,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 4,
+          "names": [
+            {
+              "name": "canonicalize"
+            }
+          ],
+          "purl": "pkg:npm/json-canonicalize",
+          "specifier": "json-canonicalize",
+          "typeOnly": false
+        }
+      ],
+      "importOrder": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/context.ts",
+        "packages/civility-kernel/src/policy/kernel.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/context.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/kernel.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/json-canonicalize"
+        },
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/cognate-fixes.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "ec00d9caa45550b4a496c40d78a86d3a2f7d8a70789c5c8e3bd58ca89725fff3",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        },
+        {
+          "form": "dynamic",
+          "line": 50,
+          "names": [
+            {
+              "name": "z"
+            }
+          ],
+          "purl": "pkg:npm/zod",
+          "specifier": "zod",
+          "typeOnly": false
+        }
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/index.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        },
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/zod"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/constraint-param-validation.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "8c5c3ce03638abb1eef014f423d3b1207582ce05640ce59357783af80c64051f",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/context.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/context.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "d44da7f513fa17530aff6e9f9353d2ca49238ab1971d3f007f134d640e276129",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importOrder": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/decision.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "c85d22f6b76ea8d2436e3c8d1e23432c333697e3f4eb60cbe66eea67361079cf",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/diff.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/diff.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "22b3f92f54c4efc665c2707f7e1653fe03fdb60e0eca9863f2db960e7a045608",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importOrder": [
+        "packages/civility-kernel/src/policy/explain.ts",
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/explain.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/explain.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "1cc1a8a7d04e13f705012a3441c6f2dfcf6945184d8a7d8ba154c3137f7aed08",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/features.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/features.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "dc1347a34f9f3c0a277842ab17034d29c7ff4922a578c89fa6296d27d2651e63",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importOrder": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/decision.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/hooks.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "6680947d64792b27ca13999d4a1e4444cd13fb844557396ede5fb4a928273da7",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importOrder": [
+        "packages/civility-kernel/src/policy/kernel.ts",
+        "packages/civility-kernel/src/policy/builder.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/builder.ts",
+        "packages/civility-kernel/src/policy/kernel.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/kernel.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "569373ed3c76d8f2b747f607430641916427e6d620308372572aba62821f04a1",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/learning.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/learning.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "6d892e810e71f40450454bdcb02f81b6431b9dee51ffeaf39a4caf9340128fdb",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importOrder": [
+        "packages/civility-kernel/src/policy/lint.ts",
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/constraints.ts",
+        "packages/civility-kernel/src/policy/lint.ts",
+        "packages/civility-kernel/src/policy/scoring.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/lint.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "abcdb79495a3829fbc224771243390de2dc887ede79d5142730c6d905fb721d2",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/mcp-adapter.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/mcp-adapter.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "f00248a86de7431dec4cf9becd965d575010ca7d726034312d143a9f9c34bc47",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/index.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/parameterized-constraints.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "699cce95362b84e26f904ea25ceda75eebcdf93a774c0303275219abf37b8cb1",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/policy/persistence.ts",
+        "packages/civility-kernel/src/policy/types.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/persistence.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "7548a4ee60bd081c5cb90f40379551d33dd38f0be8e47dacd38ebc44d9a6da23",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "describe"
+            },
+            {
+              "name": "it"
+            },
+            {
+              "name": "expect"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest",
+          "typeOnly": false
+        }
+      ],
+      "importsFiles": [
+        "packages/civility-kernel/src/index.ts"
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/tests/public-api.test.ts",
+      "testFramework": "vitest"
+    },
+    {
+      "hash": "69482d7a725ef98761717809bdfe84a160ac7817888c5e34a6af524f3f91faad",
+      "path": "packages/civility-kernel/tsconfig.json"
+    },
+    {
+      "hash": "06f506e3851bece815c796675180dd641e3c3f180914883b0dc566c72986f5fb",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "defineConfig"
+            }
+          ],
+          "purl": "pkg:npm/vitest",
+          "specifier": "vitest/config",
+          "typeOnly": false
+        }
+      ],
+      "packages": [
+        {
+          "manifest": "packages/civility-kernel/package.json",
+          "purl": "pkg:npm/vitest"
+        }
+      ],
+      "path": "packages/civility-kernel/vitest.config.ts"
+    }
+  ],
   "workspaces": [
     "packages/agent-identity",
+    "packages/civility-kernel",
     "packages/cognate",
     "packages/model-registry",
     "packages/node",

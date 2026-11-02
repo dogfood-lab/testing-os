@@ -1,17 +1,47 @@
 {
-  "authored": [],
-  "breaks": [],
+  "authored": [
+    ".github/",
+    "root",
+    "site/"
+  ],
+  "breaks": [
+    {
+      "doors": 3,
+      "importedBy": [],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "src",
+      "partLabel": "src"
+    }
+  ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "assigned": 0,
-      "changed": 0,
+      "changed": 5,
       "moved": 0,
-      "parts": 0,
+      "parts": 4,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
+      {
+        "kind": "door",
+        "sentence": "ci now also runs tests/test_workflows.py.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "tests/test_workflows.py"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release no longer starts by hand.",
+        "subjects": [
+          ".github/workflows/release.yml"
+        ]
+      },
       {
         "kind": "landing",
         "sentence": "src/aspire_si_gates/*.py is now read by src/aspire_si_gates/__init__.py.",
@@ -22,13 +52,13 @@
       },
       {
         "kind": "counts",
-        "sentence": "No file changed.",
+        "sentence": "1 file added and 5 changed content, across 4 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "430862b2a666f66cf80157e2c33f66b7cf60c0a6",
-      "generatedAt": "2026-10-24T20:21:58.631Z"
+      "commit": "250845f2526ebc9594f00549653a56fee01282fa",
+      "generatedAt": "2026-10-29T19:49:51.820Z"
     },
     "unchanged": false
   },
@@ -37,9 +67,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "8ed78f2fee388e81443953f8dd3753c73e1ff2bd",
+  "commit": "967bf472674f4bc95d2b4bff54e70dd20fc8f432",
   "defaultBranch": "main",
-  "derived": "0 parts, mostly Python (12 files). Work enters through 2 doors, and none of them runs a file this map can see.",
+  "derived": "6 parts, mostly Python (13 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 4 doors; the busiest is ci, which reaches 2 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People import aspire_si_gates.",
   "doors": [
     {
       "checks": [],
@@ -50,22 +80,95 @@
       "landings": [],
       "name": "ci",
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 6
+        },
+        {
+          "boundary": "src",
+          "depth": 1,
+          "files": 6
+        }
+      ],
       "runs": [
         "tests/test_apply_item.py",
         "tests/test_closed_form.py",
         "tests/test_material_and_puzzles.py",
         "tests/test_model_signature.py",
-        "tests/test_package.py"
+        "tests/test_package.py",
+        "tests/test_workflows.py"
       ],
-      "runsCount": 5,
-      "runsMore": 2,
+      "runsCount": 6,
+      "runsMore": 3,
       "sends": [],
       "stages": [],
       "triggers": [
         "on a pull request",
-        "on a push to main touching 5 paths",
+        "on a push to main touching 6 paths",
         "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [
+        "src/"
+      ],
+      "checksCount": 1,
+      "checksMore": 0,
+      "file": ".github/workflows/release.yml",
+      "id": ".github/workflows/release.yml",
+      "landings": [],
+      "name": "Release",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 6
+        }
+      ],
+      "runs": [],
+      "runsCount": 0,
+      "runsMore": 0,
+      "sends": [
+        "publishes to PyPI",
+        "uploads dist/*.tar.gz and dist/*.whl to the release"
+      ],
+      "stages": [],
+      "triggers": [
+        "when a release is published"
       ]
     },
     {
@@ -78,7 +181,13 @@
       "landings": [],
       "name": "aspire_si_gates",
       "pushes": false,
-      "reach": [],
+      "reach": [
+        {
+          "boundary": "src",
+          "depth": 0,
+          "files": 6
+        }
+      ],
       "runs": [
         "src/aspire_si_gates/__init__.py"
       ],
@@ -86,8 +195,7 @@
       "runsMore": 0,
       "sends": [],
       "stages": [],
-      "triggers": [],
-      "unpublished": true
+      "triggers": []
     }
   ],
   "duplicates": [],
@@ -96,29 +204,50 @@
   "edges": [],
   "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-10-26T12:27:39.944Z",
+  "generatedAt": "2026-11-02T15:00:04.015Z",
   "limits": [
-    "24 files belong to no part: .gitattributes, .github/workflows/ci.yml, .gitignore and 21 more.",
+    "3 reads go to a path their caller passes, not to this repository.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
-  "mainDoor": null,
-  "partLabels": {},
-  "parts": 0,
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "site": "site",
+    "src": "src",
+    "tests": "tests"
+  },
+  "parts": 6,
   "readers": [],
   "repo": "mcp-tool-shop-org/aspire-si-gates",
   "sequences": [],
-  "startDoor": null,
-  "startHere": [],
-  "summary": null,
-  "summaryFrom": null,
-  "testFiles": 10,
-  "testedBy": {},
-  "testedCodeParts": 0,
+  "startDoor": "pyproject.toml#aspire_si_gates",
+  "startHere": [
+    "src/aspire_si_gates/__init__.py",
+    "src/aspire_si_gates/context.py",
+    "src/aspire_si_gates/gates.py",
+    "src/aspire_si_gates/answer_format.py"
+  ],
+  "startReason": "This path follows aspire_si_gates (the package people import) from its entry, since ci runs only tests.",
+  "summary": "aspire-si-gates is the Stage 1 data gates for role-training sets: one standard-library Python package that decides whether a row, a batch or a frozen set is fit to train on. It reads the rows it is given and nothing else.",
+  "summaryFrom": "person",
+  "testFiles": 11,
+  "testedBy": {
+    "src": 5
+  },
+  "testedCodeParts": 1,
   "unnamedWrites": 0,
   "unread": [],
+  "unreadCode": [
+    "scripts"
+  ],
+  "unreadCodeUses": "scripts holds only shell files, which this map does not read, so what uses it cannot be seen.",
   "unreadFiles": 0,
   "unreadNote": [],
   "untested": [],
-  "untestedNote": [],
+  "untestedNote": [
+    "scripts holds only shell files, which this map does not read, so whether a test touches it cannot be seen."
+  ],
   "written": 0
 }

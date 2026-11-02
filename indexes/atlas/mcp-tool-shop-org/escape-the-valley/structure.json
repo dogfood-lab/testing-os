@@ -151,6 +151,10 @@
       "externals": 0,
       "files": [
         {
+          "hash": "39c074f2474dc1c248cc84c2a621f7a265e26207337eeede99d695ae0e8c70f6",
+          "path": "docs/LEGACY-PYTHON.md"
+        },
+        {
           "hash": "e226752a0d785525913750cd291a43d3c31c6d8af6c07e9948a3a7f3aee22308",
           "path": "docs/landing-design-brief.md"
         },
@@ -4877,30 +4881,30 @@
             {
               "in": "__init__",
               "kind": "except",
-              "line": 100
+              "line": 101
             },
             {
               "in": "_apply_memory_proposals",
               "kind": "except",
-              "line": 555
+              "line": 584
             },
             {
               "in": "_apply_memory_proposals",
               "kind": "except",
-              "line": 562
+              "line": 591
             },
             {
               "in": "_settle_checkpoint",
               "kind": "except",
-              "line": 605
+              "line": 634
             },
             {
               "in": "_check_parcels",
               "kind": "except",
-              "line": 654
+              "line": 683
             }
           ],
-          "hash": "371c16bf05bcc43951133081ab953ad57ff319b34fa6db9aed2fc366c6e56723",
+          "hash": "4cb13c9115e297ec188430e568411ed6e379621ac9c7495831d162003e80afb1",
           "importOrder": [
             "src/escape_the_valley/events.py",
             "src/escape_the_valley/gm.py",
@@ -4971,7 +4975,7 @@
             "resolve_event",
             "select_event"
           ],
-          "hash": "7b6d1531d7bf10bd9f289323781844cf709f59c746141a6b47e898a7d54ad5bd",
+          "hash": "8c2f38523a2cc8c82e3edb8c98d6c4a8622ecb50b197f6feedd751d0297a9e18",
           "importsFiles": [
             "src/escape_the_valley/event_loader.py",
             "src/escape_the_valley/models.py",
@@ -5036,7 +5040,7 @@
             {
               "calls": [
                 {
-                  "line": 2194,
+                  "line": 2196,
                   "name": "_proximate_death_cause",
                   "target": {
                     "file": "src/escape_the_valley/physics.py"
@@ -6136,6 +6140,7 @@
             "check_health_effects",
             "check_night_travel_danger",
             "check_spoilage",
+            "collect_new_death_effects",
             "compute_daily_consumption",
             "compute_travel_distance",
             "desperate_repair",
@@ -6146,7 +6151,7 @@
             "rest_day",
             "update_morale"
           ],
-          "hash": "838edd8cfde34ad9a81e0050c0bfc02d6867149b57453bd2326fc284c0ec084b",
+          "hash": "c422247f2823775ebc7face9f0a024769435cdc5516fa66c02f93f1726fcc10f",
           "importsFiles": [
             "src/escape_the_valley/models.py"
           ],
@@ -7015,35 +7020,35 @@
             {
               "in": "__init__",
               "kind": "except",
-              "line": 185
+              "line": 187
             },
             {
               "in": "_do_change_pace",
               "kind": "except",
-              "line": 582
+              "line": 588
             },
             {
               "in": "_apply_memory_proposals",
               "kind": "except",
-              "line": 782
+              "line": 808
             },
             {
               "in": "_apply_memory_proposals",
               "kind": "except",
-              "line": 790
+              "line": 816
             },
             {
               "in": "_settle_checkpoint",
               "kind": "except",
-              "line": 1334
+              "line": 1362
             },
             {
               "in": "_check_parcels",
               "kind": "except",
-              "line": 1388
+              "line": 1416
             }
           ],
-          "hash": "e2334b611b64b9640fde5885a3e4f08368fbbbd954aa18e31d00af4a6f20fa2c",
+          "hash": "1ac46df472cdf414e52f07603775e5fd4ff952f058d268ed81a8893719bd8db7",
           "importsFiles": [
             "src/escape_the_valley/backpack.py",
             "src/escape_the_valley/backpack_models.py",
@@ -7062,7 +7067,7 @@
             {
               "calls": [
                 {
-                  "line": 1640,
+                  "line": 1668,
                   "name": "EndingResult",
                   "target": {
                     "file": "src/escape_the_valley/models.py"
@@ -7727,7 +7732,7 @@
       "testRunners": [
         "pytest"
       ],
-      "testedBy": 23,
+      "testedBy": 24,
       "unresolvedNamed": [
         {
           "path": "src/escape_the_valley/notices.py",
@@ -7754,6 +7759,10 @@
           "hash": "e5de409d8483e92e42525036e712898715025638d544cf499445051375de1e41",
           "path": "tests/conftest.py",
           "testFramework": "pytest"
+        },
+        {
+          "hash": "a47e9e161dfdbda0f54368d2fcd20a39508739c960df3ab71d42ac466e29d53e",
+          "path": "tests/fixtures/rng_identity_200_ab628aa.json"
         },
         {
           "hash": "2702870271b01b1596a3e501dc4a84b6675f10db249965a65403ccd9a00ee1c6",
@@ -7946,6 +7955,33 @@
             "src/escape_the_valley/worldgen.py"
           ],
           "path": "tests/test_events.py"
+        },
+        {
+          "exports": [
+            "test_death_in_desperate_repair_and_hard_ration",
+            "test_death_in_event_phase",
+            "test_death_in_hunt_phase",
+            "test_death_in_repair_phase",
+            "test_death_in_rest_phase",
+            "test_death_in_travel_phase",
+            "test_fork_arrival_reload_20_seeds_next_30_steps_equal_uninterrupted",
+            "test_fork_arrival_reload_matches_uninterrupted_seed_2",
+            "test_rng_identity_200_seeds_no_death_no_fork_reload",
+            "test_silent_death_invariant_1000_seeds_x_120_steps"
+          ],
+          "hash": "baebea78560629a76034fc5705f9ac518ef58481f0fbdb329a198a9cf0dca8bd",
+          "importsFiles": [
+            "src/escape_the_valley/adapter.py",
+            "src/escape_the_valley/events.py",
+            "src/escape_the_valley/gm.py",
+            "src/escape_the_valley/intent.py",
+            "src/escape_the_valley/models.py",
+            "src/escape_the_valley/physics.py",
+            "src/escape_the_valley/save.py",
+            "src/escape_the_valley/step_engine.py",
+            "src/escape_the_valley/worldgen.py"
+          ],
+          "path": "tests/test_fork_reload_and_silent_deaths.py"
         },
         {
           "exports": [
@@ -8263,7 +8299,7 @@
             "test_victory_shows_trail_ledger",
             "test_weathered_all_survive_but_slow"
           ],
-          "hash": "591c7755bf11c3ab764301b736a6bc88595f0ac1491613080ed36cb2888367fb",
+          "hash": "d6acf54179a060cfb8ea239d354695590d0b04d4b2602edb8be9b059f23ef2ce",
           "importOrder": [
             "src/escape_the_valley/adapter.py",
             "src/escape_the_valley/gm.py",
@@ -8535,7 +8571,7 @@
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 26
+          "files": 27
         },
         {
           "boundary": "agents",
@@ -8589,7 +8625,7 @@
       "tests": [
         {
           "config": "pyproject.toml",
-          "files": 26,
+          "files": 27,
           "job": "test",
           "junit": true,
           "runner": "pytest",
@@ -9409,7 +9445,7 @@
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 26
+          "files": 27
         },
         {
           "boundary": "agents",
@@ -9474,7 +9510,7 @@
       "tests": [
         {
           "config": "pyproject.toml",
-          "files": 26,
+          "files": 27,
           "job": "gate/test",
           "junit": true,
           "runner": "pytest",
@@ -9670,8 +9706,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "ab628aa9f972d6c05f22ea73f91be2fea0c59546",
-    "tracked": 709
+    "commit": "87104824d1f5b8bfda5b0dc5c14bc5a8e3721407",
+    "tracked": 712
   },
   "landings": [
     {
@@ -9946,6 +9982,18 @@
       ],
       "target": "tests",
       "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_fork_reload_and_silent_deaths.py",
+          "call": "read_bytes",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fixtures/rng_identity_200_ab628aa.json",
+      "writers": []
     }
   ],
   "manifests": [
@@ -10043,6 +10091,6 @@
   ],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 26,
+  "testFiles": 28,
   "unassigned": []
 }

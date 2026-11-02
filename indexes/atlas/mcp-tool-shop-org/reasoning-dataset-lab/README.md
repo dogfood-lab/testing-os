@@ -1,45 +1,61 @@
 # reasoning-dataset-lab: how it works
 
-Mapped at 2026-10-26 from commit 98befb1 by Atlas 1.26.0.
+Mapped at 2026-11-02 from commit 6436a3a by Atlas 1.26.0.
 
 ## What this is
 
-reasoning-dataset-lab validates dataset maps, loads the five-file project configuration, and computes deterministic configuration fingerprints. (written by a person)
+reasoning-dataset-lab plans a dataset as a pre-registered map, builds items whose answer keys are constructed and proved by code, asks a local model only for the wording, and records the provenance of every item. (written by a person)
 
-5 parts, mostly Python (39 files). Work enters through 2 doors; the busiest is ci, which reaches 2 parts. People run rdlab.
+9 parts, mostly Python (59 files), CSS (2), TypeScript (2), shell (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is ci, which reaches 3 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run rdlab.
 
-## What changed since 2026-10-26 (ab7c07c)
+## What changed since 2026-11-02 (e8aa37a)
 
-Nothing structural changed since 2026-10-26; 6 files added and 14 changed content.
+Nothing structural changed since 2026-11-02; no file changed.
 
 ## What comes in
 
-1. **ci.** On a pull request; on a push to main touching 8 paths; or by hand. Runs tests/.
-2. **rdlab** (a command people run). Runs src/reasoning_dataset_lab/cli.py.
+1. **ci.** On a pull request; on a push to main touching 11 paths; or by hand. Runs tests/.
+2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
+3. **Release.** When a release is published. Checks src/reasoning_dataset_lab/.
+4. **rdlab** (a command people run). Runs src/reasoning_dataset_lab/cli.py.
 
 ## What happens through ci
 
 1. The workflow runs tests/ in tests.
-2. That reaches src (18 files).
-3. It uploads coverage to Codecov.
+2. That reaches scripts (1 file) and src (23 files).
+3. It writes to src/reasoning_dataset_lab/pilot_b/canary_config.json.
+4. It uploads coverage to Codecov.
 
 ## Who reads the results
 
-ci writes nothing this map can see.
+Only ci itself reads what it writes.
 
 ## The other doors
 
-**rdlab** (a command people run) runs src/reasoning_dataset_lab/cli.py.
+**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
+
+**Release** checks src/reasoning_dataset_lab/, publishes to PyPI, and uploads dist/*.tar.gz and dist/*.whl to the release.
+
+**rdlab** (a command people run) runs src/reasoning_dataset_lab/cli.py and writes to src/reasoning_dataset_lab/pilot_b/canary_config.json.
 
 ## What breaks what
 
-- **src** is imported only from tests, by 1 part (tests), and sits on the path of 2 doors.
+- **src** is imported by 1 part (scripts), and by 1 more only from tests; it sits on the path of 3 doors.
+- **scripts** is imported only from tests, by 1 part (tests), and sits on the path of 1 door.
 
 ## What tends to change together
 
-No two source files changed together often enough to name.
+- **src/reasoning_dataset_lab/pilot_b/value_certification.py** and **tests/test_pilot_b_value_certification.py** changed together in 8 of 8 commits, and the tests part imports the src part.
+- **src/reasoning_dataset_lab/pilot_b/models_and_build.py** and **tests/test_pilot_b_ollama_adapters.py** changed together in 9 of 11 commits, and the tests part imports the src part.
+- **src/reasoning_dataset_lab/pilot_b/fact_tables.py** and **tests/test_pilot_b_variety.py** changed together in 5 of 7 commits, and the tests part imports the src part.
+- **src/reasoning_dataset_lab/pilot_b/bakeoff_judge_score.py** and **tests/test_bakeoff_prereg_build.py** changed together in 5 of 8 commits, and the tests part imports the src part.
+- **src/reasoning_dataset_lab/pilot_b/models_and_build.py** and **src/reasoning_dataset_lab/pilot_b/ollama.py** changed together in 9 of 16 commits, inside the src part.
 
-Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
+1 file changed together with its own test, as expected.
+
+Confidence is low: fewer than 25 source files reach 10 revisions in the window.
+
+Window: 180 days; a pair counts from 3 shared commits, since 4 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -47,7 +63,7 @@ Every code part is imported by at least one test.
 
 ## Written but never read
 
-No place this map can see is written, so none goes unread.
+Every written place has a reader.
 
 ## Helpers that look duplicated
 
@@ -55,11 +71,11 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-Nothing in this repository writes to a tracked place this map can see.
+- **src/reasoning_dataset_lab/pilot_b/canary_config.json** has a block written by src/reasoning_dataset_lab/pilot_b/bakeoff_judge.py.
 
 ## Hand-authored
 
-People write .github/ and the repository root. Nothing in this repository writes to them. The data in examples/ is written by no code this map names.
+People write .github/, docs/, the repository root and site/. The data in certification/ and examples/ is written by no code this map names; 10 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -67,14 +83,15 @@ src/reasoning_dataset_lab/cli.py → src/reasoning_dataset_lab/pilot_b/fact_tabl
 
 Read those in order to follow one run of rdlab end to end. This path follows rdlab (a command people run) from its entry, since ci runs only tests.
 
-Beside the path, src/reasoning_dataset_lab/cli.py also calls src/reasoning_dataset_lab/pilot_b/__init__.py, src/reasoning_dataset_lab/pilot_b/models_and_build.py, src/reasoning_dataset_lab/map.py, src/reasoning_dataset_lab/config.py and 1 more file.
+Beside the path, src/reasoning_dataset_lab/cli.py also calls src/reasoning_dataset_lab/pilot_b/__init__.py and src/reasoning_dataset_lab/pilot_b/models_and_build.py.
 
 ## What this map cannot see
 
-- 6 import sites name a declared dependency that shares its name with a local module (role_set); they are read as the dependency, which is not in this repository.
-- 7 reads use paths built at run time and are not named here.
-- 14 writes and 34 reads go to a path their caller passes, not to this repository.
-- 1 file belongs to no part: docs/calibration-2026-10-25.md.
-- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
+- 8 import sites name a declared dependency that shares its name with a local module (role_set); they are read as the dependency, which is not in this repository.
+- 1 import could not be resolved: `tests/test_bakeoff_judge_d3_transport.py` imports a path built at run time.
+- 10 writes and 15 reads use paths built at run time and are not named here.
+- 33 writes and 83 reads go to a path their caller passes, not to this repository.
+- 1 read goes to the directory the command is run in (certification/), not to this repository.
+- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

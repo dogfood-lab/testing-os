@@ -1880,6 +1880,10 @@
           "path": "docs/runs/2026-10-08-step-3-plan.md"
         },
         {
+          "hash": "48383aaa0809cec9b486d8e17493d9907ea756f32af4947e43c13c4e154c8360",
+          "path": "docs/runs/2026-10-10-smoke-s1-prereg.md"
+        },
+        {
           "hash": "a1efe68ff8f0de27d46f0352e67b694a74b7e8b24480b69fd987b07e4a2b8a02",
           "path": "docs/runs/receipts/2026-10-08-auditor/B-manifest.json"
         },
@@ -1904,6 +1908,30 @@
           "path": "docs/runs/receipts/2026-10-08-auditor/verdicts-error-B-mistral-small_24b.json"
         },
         {
+          "hash": "25c88d531009e183067e97b80d05f17f5613252f539740dbae5f7f90e32d46ff",
+          "path": "docs/runs/receipts/2026-10-10-smoke/RUN-NOTE.md"
+        },
+        {
+          "hash": "ced537a709bb416599cbbc42d29442f48d3456feedd0ee2558b9db89e693e7f6",
+          "path": "docs/runs/receipts/2026-10-10-smoke/preflight.txt"
+        },
+        {
+          "hash": "66eb69335bce4c094a9d6fdaa7f0fb7d95910a967f05eb1adfc6daa9c1940cb9",
+          "path": "docs/runs/receipts/2026-10-10-smoke/s1-NPU-labels.jsonl"
+        },
+        {
+          "hash": "deebfe2b49022c2611274befbbc8ac714e1676264d180a0418668d25c9c806b5",
+          "path": "docs/runs/receipts/2026-10-10-smoke/s1-NPU.json"
+        },
+        {
+          "hash": "e70cc6df20faa1d438212d61b953ae2ac1934ff7817332d1179f90d13c38d8cd",
+          "path": "docs/runs/receipts/2026-10-10-smoke/s1-iGPU-labels.jsonl"
+        },
+        {
+          "hash": "843efac1fa92625d3db3fc525999be95c94509fc0eb98bd44d14b676c86e4cff",
+          "path": "docs/runs/receipts/2026-10-10-smoke/s1-iGPU.json"
+        },
+        {
           "hash": "168412b204d82fab976ee0eea3e0c27a64394acadd5a2cc6cb8a042a2cc21a7a",
           "path": "docs/spec-feature-enhancements.md"
         }
@@ -1919,10 +1947,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 10,
+      "dynamicReads": 12,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 0,
+      "dynamicWrites": 2,
       "entryPoints": [],
       "externals": 0,
       "files": [
@@ -2767,6 +2795,58 @@
             "examples/sft-experiment/critic_heads.py"
           ],
           "path": "examples/sft-experiment/typicality.py"
+        },
+        {
+          "exports": [
+            "build_pairs",
+            "call_with_timeout",
+            "exit_status",
+            "load_claims",
+            "main",
+            "normalise",
+            "npu_health",
+            "pick_device",
+            "provenance",
+            "read_gold",
+            "readout",
+            "require_healthy_start",
+            "verdict_line",
+            "wilson"
+          ],
+          "failurePaths": [
+            {
+              "in": "build_pairs",
+              "kind": "raise",
+              "line": 100
+            },
+            {
+              "in": "require_healthy_start",
+              "kind": "raise",
+              "line": 178
+            },
+            {
+              "in": "pick_device",
+              "kind": "raise",
+              "line": 211
+            },
+            {
+              "in": "pick_device",
+              "kind": "raise",
+              "line": 217
+            },
+            {
+              "in": "pick_device",
+              "kind": "raise",
+              "line": 218
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 238
+            }
+          ],
+          "hash": "c6c1778edd0859c1e90d9383946ff4d7247a84f1b809bbe3bbb2c6df0b73c423",
+          "path": "examples/verifier-distill/s1_nli_critic.py"
         }
       ],
       "globs": [
@@ -2777,20 +2857,20 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 50,
+          "reads": 51,
           "where": [
             "caller"
           ],
           "writes": 53
         }
       ],
-      "outsideReads": 50,
+      "outsideReads": 51,
       "outsideWrites": 53,
       "role": "code",
       "testRunners": [
         "pytest"
       ],
-      "testedBy": 10,
+      "testedBy": 11,
       "unresolvedSites": 0
     },
     {
@@ -3565,7 +3645,7 @@
           "path": "site/astro.config.mjs"
         },
         {
-          "hash": "0f6fe1ffb88337e4e93a5fe08b880cb6ea07b6646545bb9b9674d7eefa611208",
+          "hash": "c0653a8ecd00aba7b66cbe7ad317735ae1fecb0139315f53a943bccef151ada1",
           "path": "site/package-lock.json"
         },
         {
@@ -4838,6 +4918,14 @@
           "testFramework": "pytest"
         },
         {
+          "hash": "27e0e02a1f9b3cd264341bb27de029fe0ccf349b05afca87bc70cfe30296c6c1",
+          "importsFiles": [
+            "examples/verifier-distill/s1_nli_critic.py"
+          ],
+          "path": "tests/test_verifier_s1.py",
+          "testFramework": "pytest"
+        },
+        {
           "hash": "36758350f1be5ce63e1116535f2047f53138bf1dd05df8db5324d90ba0b4467a",
           "path": "tests/test_windows_compatibility.py",
           "testFramework": "pytest"
@@ -5046,7 +5134,7 @@
         {
           "boundary": "examples",
           "depth": 0,
-          "files": 25
+          "files": 26
         },
         {
           "boundary": "integrations",
@@ -5056,7 +5144,7 @@
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 78
+          "files": 79
         }
       ],
       "readers": [],
@@ -5103,7 +5191,7 @@
         {
           "config": "pyproject.toml",
           "coverage": true,
-          "files": 78,
+          "files": 79,
           "job": "ci",
           "runner": "pytest",
           "step": "Run tests with coverage"
@@ -5528,8 +5616,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "4b755dfd8901bea879cd02b32a4a7f0a1189dd9c",
-    "tracked": 265
+    "commit": "92f4b126cd9600880bcc81e492d024beeaf54705",
+    "tracked": 274
   },
   "landings": [
     {
@@ -5723,6 +5811,18 @@
     {
       "readers": [
         {
+          "by": "tests/test_verifier_s1.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "examples/verifier-distill",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "TESTS-TODO.md",
           "call": "--cov",
           "confidence": "text"
@@ -5892,6 +5992,6 @@
   "packagesPublished": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 78,
+  "testFiles": 79,
   "unassigned": []
 }

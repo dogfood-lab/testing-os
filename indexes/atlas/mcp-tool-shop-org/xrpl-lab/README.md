@@ -1,6 +1,6 @@
 # xrpl-lab: how it works
 
-Mapped at 2026-10-26 from commit f51a282 by Atlas 1.26.0.
+Mapped at 2026-11-02 from commit 51099c6 by Atlas 1.26.0.
 
 ## What this is
 
@@ -9,7 +9,7 @@ Mapped at 2026-10-26 from commit f51a282 by Atlas 1.26.0.
 ## What changed since 2026-10-22 (0a4a07a)
 
 - modules/*.md is now read by tests/test_token_escrow.py.
-- 12 files changed content, across 2 parts.
+- 16 files changed content, across 4 parts.
 
 ## What comes in
 
@@ -56,13 +56,11 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-- **bin/xrpl-lab.js** and **xrpl_lab/__init__.py** changed together in 5 of 7 commits, though neither part imports the other.
-
-1 file changed together with its own test, as expected.
+- **bin/xrpl-lab.js** and **xrpl_lab/__init__.py** changed together in 5 of 6 commits, though neither part imports the other.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 5 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 1 source file reaches 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 

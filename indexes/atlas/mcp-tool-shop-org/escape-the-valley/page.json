@@ -68,11 +68,11 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 81,
+      "added": 84,
       "assigned": 0,
-      "changed": 0,
+      "changed": 5,
       "moved": 0,
-      "parts": 1,
+      "parts": 3,
       "removed": 0,
       "unassigned": 0
     },
@@ -86,8 +86,16 @@
         ]
       },
       {
+        "kind": "landing",
+        "sentence": "tests/fixtures/rng_identity_200_ab628aa.json is now read by tests/test_fork_reload_and_silent_deaths.py.",
+        "subjects": [
+          "tests/fixtures/rng_identity_200_ab628aa.json",
+          "tests/test_fork_reload_and_silent_deaths.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "81 files added, across 1 part.",
+        "sentence": "84 files added and 5 changed content, across 3 parts.",
         "subjects": []
       }
     ],
@@ -129,6 +137,21 @@
       "shared": 6
     },
     {
+      "a": "src/escape_the_valley/engine.py",
+      "b": "tests/test_step_engine.py",
+      "either": 18,
+      "partLabels": [
+        "src",
+        "tests"
+      ],
+      "parts": [
+        "src",
+        "tests"
+      ],
+      "relation": "b-imports-a",
+      "shared": 14
+    },
+    {
       "a": "src/escape_the_valley/ui.py",
       "b": "tests/test_adapter.py",
       "either": 9,
@@ -145,23 +168,8 @@
     },
     {
       "a": "src/escape_the_valley/engine.py",
-      "b": "tests/test_step_engine.py",
-      "either": 17,
-      "partLabels": [
-        "src",
-        "tests"
-      ],
-      "parts": [
-        "src",
-        "tests"
-      ],
-      "relation": "b-imports-a",
-      "shared": 13
-    },
-    {
-      "a": "src/escape_the_valley/engine.py",
       "b": "src/escape_the_valley/step_engine.py",
-      "either": 16,
+      "either": 17,
       "partLabels": [
         "src",
         "src"
@@ -171,7 +179,7 @@
         "src"
       ],
       "relation": "inside",
-      "shared": 12
+      "shared": 13
     }
   ],
   "changesTogetherNote": [
@@ -180,9 +188,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 8 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 8,
-  "commit": "ab628aa9f972d6c05f22ea73f91be2fea0c59546",
+  "commit": "87104824d1f5b8bfda5b0dc5c14bc5a8e3721407",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly Python (63 files), shell (13), CSS (2), JavaScript (2), TypeScript (2) and HTML (1). Work enters through 8 doors; CI and Release each reach 4 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run escape-the-valley and trail.",
+  "derived": "10 parts, mostly Python (64 files), shell (13), CSS (2), JavaScript (2), TypeScript (2) and HTML (1). Work enters through 8 doors; CI and Release each reach 4 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run escape-the-valley and trail.",
   "doors": [
     {
       "checks": [
@@ -210,7 +218,7 @@
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 26
+          "files": 27
         },
         {
           "boundary": "agents",
@@ -261,7 +269,7 @@
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 26
+          "files": 27
         },
         {
           "boundary": "agents",
@@ -500,7 +508,7 @@
   ],
   "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-10-26T12:29:14.279Z",
+  "generatedAt": "2026-11-02T15:00:44.242Z",
   "limits": [
     "1 import could not be resolved: `src/escape_the_valley/notices.py` imports a path built at run time.",
     "1 write and 6 reads use paths built at run time and are not named here.",
@@ -533,12 +541,12 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 26,
+  "testFiles": 28,
   "testedBy": {
     "agents": 1,
     "bin": 0,
     "scripts": 1,
-    "src": 23
+    "src": 24
   },
   "testedCodeParts": 4,
   "unnamedWrites": 1,
