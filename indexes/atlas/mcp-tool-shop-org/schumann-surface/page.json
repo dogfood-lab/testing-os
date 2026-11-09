@@ -1,0 +1,270 @@
+{
+  "authored": [
+    ".claude/",
+    ".github/",
+    "assets/",
+    "docs/",
+    "root",
+    "site/"
+  ],
+  "authoredWritten": [
+    {
+      "place": "experiments/schumann-sft/runs/",
+      "untrackedInputs": true,
+      "writers": [
+        "experiments/schumann-sft/runpod.mjs"
+      ]
+    }
+  ],
+  "breaks": [
+    {
+      "doors": 1,
+      "importedBy": [],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "scripts",
+      "partLabel": "scripts"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "assigned": 0,
+      "changed": 2,
+      "moved": 0,
+      "parts": 1,
+      "removed": 0,
+      "unassigned": 0
+    },
+    "items": [
+      {
+        "kind": "landing",
+        "sentence": "viewer/SN_20*.html is now written by scripts/build_viewer.py.",
+        "subjects": [
+          "viewer/SN_20*.html",
+          "scripts/build_viewer.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "viewer/artifact_20*.html is now written by scripts/build_viewer.py.",
+        "subjects": [
+          "viewer/artifact_20*.html",
+          "scripts/build_viewer.py"
+        ]
+      },
+      {
+        "kind": "origin",
+        "sentence": "viewer was generated and is now mixed.",
+        "subjects": [
+          "viewer"
+        ]
+      },
+      {
+        "kind": "counts",
+        "sentence": "2 files changed content, across 1 part.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "a0cdb88a457483cc17c279d9a2cedad2ffadd865",
+      "generatedAt": "2026-10-15T02:52:31.305Z"
+    },
+    "unchanged": false
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "15ff11aef4c09ed079ea3f8fb6ac13d2e90fe589",
+  "defaultBranch": "main",
+  "derived": "11 parts, mostly HTML (40 files), Python (15), shell (7), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 2 doors; the busiest is ci, which reaches 2 parts. It deploys a site to GitHub Pages.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "ci",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "scripts",
+          "depth": 1,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "tests/"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 5 paths",
+        "on a push touching 5 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "engine": "1.26.0",
+  "generated": [
+    {
+      "place": "dataset/kb/catalog/",
+      "writers": [
+        "experiments/schumann-sft/finish_and_train.sh"
+      ]
+    },
+    {
+      "place": "viewer/SN_20*.html",
+      "writers": [
+        "scripts/build_viewer.py"
+      ]
+    },
+    {
+      "place": "viewer/artifact.html",
+      "writers": [
+        "scripts/build_viewer.py"
+      ]
+    },
+    {
+      "place": "viewer/artifact_20*.html",
+      "writers": [
+        "scripts/build_viewer.py"
+      ]
+    },
+    {
+      "place": "viewer/index.html",
+      "writers": [
+        "scripts/build_viewer.py"
+      ]
+    }
+  ],
+  "generatedAt": "2026-11-09T15:36:36.532Z",
+  "limits": [
+    "16 reads use paths built at run time and are not named here.",
+    "12 writes go to places this repository does not track, so they are not listed as generated.",
+    "2 writes and 12 reads go to a path their caller passes, not to this repository.",
+    "2 writes and 7 reads go to the home directory (.ssh/), not to this repository.",
+    "3 commands are built at run time and not followed.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".claude": ".claude",
+    ".github": ".github",
+    "assets": "assets",
+    "dataset": "dataset",
+    "docs": "docs",
+    "experiments": "experiments",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "site": "site",
+    "tests": "tests",
+    "viewer": "viewer"
+  },
+  "parts": 11,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/schumann-surface",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "scripts/process_month.py"
+  ],
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 2,
+  "testedBy": {
+    "experiments": 1,
+    "scripts": 1
+  },
+  "testedCodeParts": 2,
+  "unnamedWrites": 0,
+  "unread": [
+    {
+      "place": "dataset/kb/catalog/",
+      "writers": [
+        "experiments/schumann-sft/finish_and_train.sh"
+      ]
+    },
+    {
+      "place": "experiments/schumann-sft/runs/",
+      "writers": [
+        "experiments/schumann-sft/runpod.mjs"
+      ]
+    },
+    {
+      "place": "viewer/SN_20*.html",
+      "writers": [
+        "scripts/build_viewer.py"
+      ]
+    },
+    {
+      "place": "viewer/artifact.html",
+      "writers": [
+        "scripts/build_viewer.py"
+      ]
+    },
+    {
+      "place": "viewer/artifact_20*.html",
+      "writers": [
+        "scripts/build_viewer.py"
+      ]
+    }
+  ],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [
+    "experiments/schumann-sft/test_router.py runs in no workflow.",
+    "verify.sh runs in no workflow."
+  ],
+  "written": 6
+}

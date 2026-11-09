@@ -1,23 +1,25 @@
 # interlock: how it works
 
-Mapped at 2026-11-02 from commit c8e9fb4 by Atlas 1.26.0.
+Mapped at 2026-11-09 from commit 0c48a09 by Atlas 1.26.0.
 
 ## What this is
 
 interlock routes each job to a model, engine and device from a receipt-backed table. (written by a person)
 
-10 parts, mostly Python (122 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run interlock.
+10 parts, mostly Python (123 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run interlock.
 
 ## What changed since 2026-10-27 (ad14035)
 
-- experiments/c2-fill-card/spec.yaml is now also read by tests/test_model_manager.py.
-- experiments/c2-generate/spec.yaml is now also read by tests/test_host_ram_cli.py, tests/test_host_ram_projection.py, tests/test_model_manager.py and tests/test_ttft_floor_off.py.
-- tests/fixtures/host_ram_replay.tsv is now read by tests/test_host_ram_projection.py.
-- 11 files added and 27 changed content, across 3 parts.
+- CI now also runs tests/test_desktop_names.py.
+- .github/ is now read by tests/test_desktop_names.py.
+- docs/ is now read by tests/test_desktop_names.py.
+- experiments/ is now also read by tests/test_desktop_names.py.
+- And 9 more new writers and readers of places.
+- 12 files added and 32 changed content, across 4 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main; on a push to main touching 11 paths; or by hand. Runs src/interlock/cli.py, tests/fuzz_receipts.py and tests/.
+1. **CI.** On a pull request to main; on a push to main touching 11 paths; or by hand. Runs src/interlock/cli.py, tests/fuzz_receipts.py, tests/test_desktop_names.py and 63 more.
 2. **Release.** When a release is published; or by hand. Checks src/interlock/.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **OpenSSF Scorecard.** On a `branch_protection_rule` event; on a schedule (`43 15 * * 1`), Monday at 15:43 UTC; or by hand. Runs no file this map can see.
@@ -25,7 +27,7 @@ interlock routes each job to a model, engine and device from a receipt-backed ta
 
 ## What happens through CI
 
-1. The workflow runs src/interlock/cli.py in src and tests/fuzz_receipts.py and tests/ in tests.
+1. The workflow runs src/interlock/cli.py in src and tests/fuzz_receipts.py, tests/test_desktop_names.py and tests/ in tests.
 2. That reaches scripts (2 files).
 3. It uploads coverage to Codecov.
 

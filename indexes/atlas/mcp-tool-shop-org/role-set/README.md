@@ -1,22 +1,23 @@
 # role-set: how it works
 
-Mapped at 2026-11-02 from commit 1658cf9 by Atlas 1.26.0.
+Mapped at 2026-11-09 from commit 15cb913 by Atlas 1.26.0.
 
 ## What this is
 
 role-set plans every slot of a role-shaping batch, has a loopback model write only the writer's parts, and passes each item through aspire-si's gates. It never rents a pod. (written by a person)
 
-9 parts, mostly Python (126 files), shell (6), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 4 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run role-set.
+9 parts, mostly Python (126 files), shell (9), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 4 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run role-set.
 
-## What changed since 2026-10-29 (7feccba)
+## What changed since 2026-11-08 (cfb6ce1)
 
-- Release (.github/workflows/release.yml) is a new door. It starts when a release is published. It checks src/role_set/.
-- pyproject.toml is now also read by .github/workflows/release.yml.
-- 1 file added and 7 changed content, across 3 parts.
+- pyproject.toml is now also read by scripts/colab/lock_common.sh.
+- uv.lock is now also read by scripts/colab/lock_common.sh.
+- uv.lock.exclude-newer is now read by scripts/colab/lock_common.sh.
+- 5 files added and 1 changed content, across 3 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request; on a push to main touching 11 paths; or by hand. Runs tests/.
+1. **CI.** On a pull request; on a push to main touching 12 paths; or by hand. Runs tests/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Release.** When a release is published. Checks src/role_set/.
 4. **role-set** (a command people run). Runs src/role_set/cli.py.

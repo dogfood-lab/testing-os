@@ -1,6 +1,6 @@
 # rnd-data: how it works
 
-Mapped at 2026-10-26 from commit 6647b87 by Atlas 1.26.0.
+Mapped at 2026-11-09 from commit f7b1cfe by Atlas 1.26.0.
 
 ## What this is
 
@@ -15,7 +15,7 @@ The raw data behind the studio's research: every run's receipts and outputs, wit
 - runs/xrpl-lab-runs--_harness/files/ is now read by runs/xrpl-lab-runs--_harness/manifest.json.
 - runs/xrpl-lab-runs--_harness/files/* is now read by runs/xrpl-lab-runs--_harness/files/capture_ledger.py.
 - And 412 more new writers and readers of places.
-- 415 files added and 2 changed content, across 4 parts.
+- 423 files added and 6 changed content, across 5 parts.
 
 ## What comes in
 

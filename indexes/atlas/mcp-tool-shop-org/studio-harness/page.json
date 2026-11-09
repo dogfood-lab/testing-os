@@ -1,0 +1,132 @@
+{
+  "authored": [
+    ".github/",
+    "docs/",
+    "root"
+  ],
+  "breaks": [
+    {
+      "doors": 1,
+      "importedBy": [],
+      "importedByTests": [
+        "tests"
+      ],
+      "kind": "part",
+      "name": "scripts",
+      "partLabel": "scripts"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "assigned": 0,
+      "changed": 8,
+      "moved": 0,
+      "parts": 5,
+      "removed": 0,
+      "unassigned": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-10-24; 8 files changed content.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "3221d02b41351af8b84fffda4a58e348d22726f1",
+      "generatedAt": "2026-10-24T07:46:07.937Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "8055ea3e1a53caae54736598e3d60d4f330f094e",
+  "defaultBranch": "main",
+  "derived": "5 parts, mostly JavaScript (2 files). Work enters through 1 door; the busiest is CI, which reaches 2 parts.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "programs": [
+        "git"
+      ],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "tests",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "scripts/scan.mjs",
+        "tests/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request to main",
+        "on a push to main touching 10 paths",
+        "or by hand"
+      ]
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "engine": "1.26.0",
+  "generated": [],
+  "generatedAt": "2026-11-09T15:36:44.105Z",
+  "limits": [
+    "1 read uses a path built at run time and is not named here.",
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "docs": "docs",
+    "root": "the repository root",
+    "scripts": "scripts",
+    "tests": "tests"
+  },
+  "parts": 5,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/studio-harness",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [
+    ".github/workflows/ci.yml",
+    "scripts/scan.mjs"
+  ],
+  "summary": "Integration harness for Attestia, Cognate, RepoMesh and interlock, tested together at pinned commits.",
+  "summaryFrom": "person",
+  "testFiles": 1,
+  "testedBy": {
+    "scripts": 1
+  },
+  "testedCodeParts": 1,
+  "unnamedWrites": 0,
+  "unread": [],
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [],
+  "written": 0
+}

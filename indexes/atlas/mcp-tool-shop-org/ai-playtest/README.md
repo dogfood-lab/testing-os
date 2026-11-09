@@ -1,6 +1,6 @@
 # ai-playtest: how it works
 
-Mapped at 2026-10-19 from commit 0bca505 by Atlas 1.26.0.
+Mapped at 2026-11-09 from commit 9b7e505 by Atlas 1.26.0.
 
 ## What this is
 
@@ -9,7 +9,7 @@ Mapped at 2026-10-19 from commit 0bca505 by Atlas 1.26.0.
 ## What changed since 2026-09-30 (94e69fc)
 
 - CI now also builds src/rpc-launch.ts.
-- 1 file added and 9 changed content, across 5 parts.
+- 1 file added and 23 changed content, across 5 parts.
 
 ## What comes in
 

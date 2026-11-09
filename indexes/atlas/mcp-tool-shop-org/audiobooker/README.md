@@ -1,6 +1,6 @@
 # audiobooker: how it works
 
-Mapped at 2026-10-26 from commit 395550a by Atlas 1.26.0.
+Mapped at 2026-11-09 from commit a72befb by Atlas 1.26.0.
 
 ## What this is
 
@@ -9,7 +9,7 @@ Mapped at 2026-10-26 from commit 395550a by Atlas 1.26.0.
 ## What changed since 2026-09-30 (6fcd238)
 
 - .github/workflows/*.yml is now read by tools/check_ci_policy.py.
-- 6 files changed content, across 4 parts.
+- 21 files changed content, across 7 parts.
 
 ## What comes in
 
@@ -67,10 +67,10 @@ Mapped at 2026-10-26 from commit 395550a by Atlas 1.26.0.
 
 ## What tends to change together
 
-- **audiobooker/parser/epub.py** and **audiobooker/parser/pdf.py** changed together in 7 of 8 commits, inside the audiobooker part.
+- **audiobooker/parser/epub.py** and **audiobooker/parser/pdf.py** changed together in 7 of 9 commits, inside the audiobooker part.
 - **audiobooker/parser/pdf.py** and **audiobooker/parser/text.py** changed together in 6 of 8 commits, inside the audiobooker part.
 - **audiobooker/renderer/cache_manifest.py** and **audiobooker/renderer/hash_utils.py** changed together in 5 of 7 commits, inside the audiobooker part.
-- **audiobooker/parser/epub.py** and **audiobooker/parser/text.py** changed together in 6 of 9 commits, inside the audiobooker part.
+- **audiobooker/parser/epub.py** and **audiobooker/parser/text.py** changed together in 6 of 10 commits, inside the audiobooker part.
 - **audiobooker/parser/docx.py** and **audiobooker/parser/pdf.py** changed together in 4 of 8 commits, inside the audiobooker part.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.

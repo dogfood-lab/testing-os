@@ -42,7 +42,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "3c3806660b4d6da84e96c4ba005ce8a7f0076cd200af3b999b98d02fa139d66c",
+          "hash": "79502a26d50bbf9984df6df68e7e2f1d3bed5135e0b73e6873fb717719587fa4",
           "path": "packages/api-contract/package.json"
         },
         {
@@ -276,15 +276,15 @@
           "path": "apps/desktop/index.html"
         },
         {
-          "hash": "f302359cb915d1ff68ff9f01c8f623b3863caa2dc50f60167827940e9562ec52",
+          "hash": "9eb92a61c7ae441066c35cf20396566eeee0a751750688c0904b143317bdf0e3",
           "path": "apps/desktop/package.json"
         },
         {
-          "hash": "ce519e2ca9f0716b9188a225a32f52b7386c862295574acbb7305bded9229c65",
+          "hash": "ac3fe9ffa7a93ccd098bcecef4c84fa7ad5d55976bd08211876e488b4f41cadf",
           "path": "apps/desktop/src-tauri/Cargo.lock"
         },
         {
-          "hash": "7d6de84a68c9c6b752eb284f1d30f2fe8080d7a94cb17b74f48d22a339ff66bf",
+          "hash": "6ada9afafbaea628c5fd4b99126d6e463926ef9d6467678d2db6dbe561397f54",
           "path": "apps/desktop/src-tauri/Cargo.toml"
         },
         {
@@ -1911,7 +1911,7 @@
           "path": "apps/desktop/src-tauri/src/types/mod.rs"
         },
         {
-          "hash": "a1ce504172c59e8d2d8e3ac3807909e15b38fb6ab514d9cc84b05bca706d7e2b",
+          "hash": "d7ea87992c72667204fed1223c0b9f1e6697df72cf8542d9c6f50111a55c9956",
           "path": "apps/desktop/src-tauri/tauri.conf.json"
         },
         {
@@ -12147,7 +12147,7 @@
           "path": "apps/desktop/src/components/ToolRail.tsx"
         },
         {
-          "hash": "d3d59836e483f40a1bd951f667c57d843e6b20c4b85f43cab3e438b25890c980",
+          "hash": "35243f5097d4535f3bc6c8e0a3d3cfb1b60825e729506cec8d9571cf8aa5eb7f",
           "importNames": [
             {
               "form": "import",
@@ -18149,7 +18149,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "279e54ee13e9d77a986776a7b691a60852c9ec25ecff3340999ea7255a62e162",
+          "hash": "5615da7f8f232ce6b9f60a6d8ecb9f94ddebda936f715fd6556d5e280c185acc",
           "path": "packages/domain/package.json"
         },
         {
@@ -18900,8 +18900,12 @@
           "path": "packages/mcp-sprite-server/fixtures/output/.gitignore"
         },
         {
-          "hash": "aaf4285456b80097b30bcc66f7d848973f6eeec24d374c7e8c87f8f7e1b7ced2",
+          "hash": "bc955d73bb9c1e4c5152734e1b10a22219992dc3669f0270013bbc2cf514fdca",
           "path": "packages/mcp-sprite-server/package.json"
+        },
+        {
+          "hash": "bd54de4f7085867b99de15c299abeddc7d886d0fc3ebdc8797967998bfd0b151",
+          "path": "packages/mcp-sprite-server/src/__fixtures__/base-tools-list-v1.0.1.json"
         },
         {
           "hash": "e0dcaeae9975de892efe5cb6924ed1d40419646e4013420d1bba082ccf85f463",
@@ -20192,6 +20196,83 @@
         },
         {
           "exports": [
+            "installInputSchemaContract",
+            "restoreInputSchemaContract"
+          ],
+          "failurePaths": [
+            {
+              "in": "installInputSchemaContract",
+              "kind": "throw",
+              "line": 81
+            }
+          ],
+          "hash": "558e8399c94cb1ef77a9aa5c1e28fd86b7af52a901876554eca478f824d9c88d",
+          "path": "packages/mcp-sprite-server/src/schemaCompat.ts"
+        },
+        {
+          "hash": "1f21fed4172c59243186658e587340995c7b49305e07dcf87e6d1cd5d8a4e963",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 1,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 3,
+              "names": [
+                {
+                  "name": "Client"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/client/index.js",
+              "typeOnly": false
+            },
+            {
+              "form": "import",
+              "line": 4,
+              "names": [
+                {
+                  "name": "InMemoryTransport"
+                }
+              ],
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk",
+              "specifier": "@modelcontextprotocol/sdk/inMemory.js",
+              "typeOnly": false
+            }
+          ],
+          "importsFiles": [
+            "packages/mcp-sprite-server/src/server.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "packages/mcp-sprite-server/package.json",
+              "purl": "pkg:npm/%40modelcontextprotocol/sdk"
+            },
+            {
+              "manifest": "packages/mcp-sprite-server/package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "packages/mcp-sprite-server/src/schemaContract.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "exports": [
             "fail",
             "success"
           ],
@@ -20270,7 +20351,7 @@
           "exports": [
             "createGlyphStudioServer"
           ],
-          "hash": "e1b232de0a6763952b22eea070cafdccab342d38e6eaa9c434d4cae42e7c699d",
+          "hash": "198570d9a48c637ffdcebea3d5bb8bd01b14e19295bab8b67010cfeea1ee2a69",
           "importNames": [
             {
               "form": "import",
@@ -20304,13 +20385,15 @@
             "packages/mcp-sprite-server/src/resources/documentResource.ts",
             "packages/mcp-sprite-server/src/resources/stateResource.ts",
             "packages/mcp-sprite-server/src/resources/renderResource.ts",
-            "packages/mcp-sprite-server/src/resources/catalogResource.ts"
+            "packages/mcp-sprite-server/src/resources/catalogResource.ts",
+            "packages/mcp-sprite-server/src/schemaCompat.ts"
           ],
           "importsFiles": [
             "packages/mcp-sprite-server/src/resources/catalogResource.ts",
             "packages/mcp-sprite-server/src/resources/documentResource.ts",
             "packages/mcp-sprite-server/src/resources/renderResource.ts",
             "packages/mcp-sprite-server/src/resources/stateResource.ts",
+            "packages/mcp-sprite-server/src/schemaCompat.ts",
             "packages/mcp-sprite-server/src/session/sessionManager.ts",
             "packages/mcp-sprite-server/src/tools/analysisTools.ts",
             "packages/mcp-sprite-server/src/tools/documentTools.ts",
@@ -21808,7 +21891,7 @@
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 23,
+      "testedBy": 24,
       "unresolvedSites": 0
     },
     {
@@ -21828,7 +21911,7 @@
           "path": ".prettierrc"
         },
         {
-          "hash": "2ab97561efbe05dfa0895ac68dbd17e0a3ae29ccc3d1ed4d6b2f172c05d7a2e9",
+          "hash": "d0b25c6baf2c509fe284914ae65c319d2b498f413f22c2691f96cb715286465f",
           "path": "CHANGELOG.md"
         },
         {
@@ -21836,35 +21919,35 @@
           "path": "LICENSE"
         },
         {
-          "hash": "a4746fe6de52765fae55c2bb49087b3eac606e59fb6c2d4c1c2b4c4fd66f66e7",
+          "hash": "02a1527212f2349c3202b1236a5257957dd818054e726d248fd9b01a6ac0dcfe",
           "path": "README.es.md"
         },
         {
-          "hash": "576622dddbc66a37dbda7b77bff5304d66ef31bd6a29c78e0716b61a89574c1c",
+          "hash": "c3084e6a88f335add776c939d1fa3258a18fb0dc28aa0cb315a7bff570587468",
           "path": "README.fr.md"
         },
         {
-          "hash": "0e7272c99198b4087159fcc1327a56e8c7d36361ffb1e19bd6a07034c89053ab",
+          "hash": "c8d656b5c4029de56c8e0c69a5e2afdfbe7a29f1fdc4da80a04a2f158e181674",
           "path": "README.hi.md"
         },
         {
-          "hash": "c3789961865b9066d0c890698a340bab40111a9d6e2ccd46f5701d22ab5b84fe",
+          "hash": "aea68225e82148387efd1124e2e7588c8cb0afbbefb061e2f246e88d2b7f803a",
           "path": "README.it.md"
         },
         {
-          "hash": "f40fe72f45b3e4a2555f6acce945b9cc21ccad69b4abea9638e12e534055deea",
+          "hash": "8595d69eed9a7a6f7960258e0cc25aa0c5329f78b848650cffc339b9bbad438c",
           "path": "README.ja.md"
         },
         {
-          "hash": "216e6ff01e6ec0b2b14787e10bf0d546c8d54e556db73892c6978af400268b11",
+          "hash": "6d5ba825297f8b27b2e4e675af0ec554c855b04940251c12998ca30e8d331fea",
           "path": "README.md"
         },
         {
-          "hash": "1874abf8ad465ad6c78dbf506946b0bc3098ec1512e33a69bc58aca04b2bd271",
+          "hash": "e03138251e3b9c998581c45777d4409cf9f50d304da23234301d13f37c35932f",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "dab483e7547b0abd91ff2821195367bafe25eea0ca100d4770e845fba91eac85",
+          "hash": "35a3173421bc238de5d0be99915387e733c56ef259f9311e88844eb65136b68e",
           "path": "README.zh.md"
         },
         {
@@ -21900,11 +21983,11 @@
           "path": "llm-sync-drive.yaml"
         },
         {
-          "hash": "b2d594cb296269d04d29f0e85330ac1efe0194ba697e56a65bec4aba32b1d804",
+          "hash": "719392b930637bb97a5419f1c3ba4d247a76b2d7d022318db5c791fb85cb62a6",
           "path": "package.json"
         },
         {
-          "hash": "c2cc0e4954084d655b1cc10abb863c3856872c76ccf7524641ba3b3b3f6446ce",
+          "hash": "100fa072de58bdcd1252986d643a1ec8fa8bd9fc73b7bbc264b2189f0d124193",
           "path": "pnpm-lock.yaml"
         },
         {
@@ -22277,7 +22360,7 @@
           "path": "site/astro.config.mjs"
         },
         {
-          "hash": "0607a19c4f60b635244a906c7ad2424359b50e20c4a83bc140f202abce4a941e",
+          "hash": "c6c51b3f73940d20432ccea006501ddd3b6e5afd767870bff96c64c85273fe0f",
           "path": "site/package-lock.json"
         },
         {
@@ -22513,7 +22596,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "3f65585f40cb74aeb74b2900f91237829ad6e6416bc17bbc09bc3090f853ed62",
+          "hash": "07fd1d7d7499dd43b5a3bfb609b19dda6ed9c0ca61735f5b5cf7bbddacf946f9",
           "path": "packages/state/package.json"
         },
         {
@@ -32176,7 +32259,7 @@
         {
           "boundary": "mcp-sprite-server",
           "depth": 0,
-          "files": 56
+          "files": 58
         },
         {
           "boundary": "state",
@@ -32341,6 +32424,13 @@
           "job": "test",
           "matched": true,
           "path": "packages/mcp-sprite-server/src/resources/catalogResource.test.ts",
+          "runKind": "executes",
+          "via": "vitest"
+        },
+        {
+          "job": "test",
+          "matched": true,
+          "path": "packages/mcp-sprite-server/src/schemaContract.test.ts",
           "runKind": "executes",
           "via": "vitest"
         },
@@ -33081,7 +33171,7 @@
           "via": "vitest"
         }
       ],
-      "runsCount": 123,
+      "runsCount": 124,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -33122,7 +33212,7 @@
         {
           "coverage": true,
           "dir": "packages/mcp-sprite-server",
-          "files": 23,
+          "files": 24,
           "job": "test",
           "junit": true,
           "runner": "vitest",
@@ -33481,8 +33571,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "d2be33cdee252d9251d37295c8c10845ff4c103c",
-    "tracked": 851
+    "commit": "ad36a11278a5727d7dbb39e06c4d835c053ea5f4",
+    "tracked": 854
   },
   "landings": [
     {
@@ -34142,6 +34232,18 @@
     {
       "readers": [
         {
+          "by": "packages/mcp-sprite-server/src/schemaContract.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "packages/mcp-sprite-server/src/__fixtures__/base-tools-list-v1.0.1.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "audit/event-handlers/1-handler-registry.json",
           "call": "literal",
           "confidence": "text"
@@ -34281,7 +34383,7 @@
       "private": true,
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
-      "version": "1.0.0"
+      "version": "1.0.2"
     },
     {
       "name": "glyphstudio",
@@ -34289,35 +34391,35 @@
       "private": true,
       "role": "root",
       "roleFrom": "the root manifest",
-      "version": "1.0.1"
+      "version": "1.0.2"
     },
     {
       "name": "@glyphstudio/api-contract",
       "path": "packages/api-contract/package.json",
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
-      "version": "1.0.0"
+      "version": "1.0.2"
     },
     {
       "name": "@glyphstudio/domain",
       "path": "packages/domain/package.json",
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
-      "version": "1.0.0"
+      "version": "1.0.2"
     },
     {
       "name": "@glyphstudio/mcp-sprite-server",
       "path": "packages/mcp-sprite-server/package.json",
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
-      "version": "1.0.0"
+      "version": "1.0.2"
     },
     {
       "name": "@glyphstudio/state",
       "path": "packages/state/package.json",
       "role": "member",
       "roleFrom": "packages in pnpm-workspace.yaml",
-      "version": "1.0.0"
+      "version": "1.0.2"
     },
     {
       "name": "site",
@@ -34636,8 +34738,8 @@
       "manifest": "packages/mcp-sprite-server/package.json",
       "name": "@modelcontextprotocol/sdk",
       "purl": "pkg:npm/%40modelcontextprotocol/sdk",
-      "range": "^1.27.1",
-      "version": "1.27.1",
+      "range": "1.32.2",
+      "version": "1.32.2",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -34656,8 +34758,8 @@
       "manifest": "packages/mcp-sprite-server/package.json",
       "name": "zod",
       "purl": "pkg:npm/zod",
-      "range": "^3.24.0",
-      "version": "3.25.76",
+      "range": "^4.6.7",
+      "version": "4.6.7",
       "versionFrom": "pnpm-lock.yaml"
     },
     {
@@ -34844,7 +34946,7 @@
   "packagesPublished": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 202,
+  "testFiles": 203,
   "testsNotRun": [
     "apps/desktop/src/components/AISettingsPanel.test.tsx",
     "apps/desktop/src/components/AnchorPanel.test.tsx",

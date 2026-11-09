@@ -1,6 +1,6 @@
 # registry-sync: how it works
 
-Mapped at 2026-10-19 from commit d4bf06d by Atlas 1.26.0.
+Mapped at 2026-11-09 from commit b93b0e3 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-19 from commit d4bf06d by Atlas 1.26.0.
 
 ## What changed since 2026-10-01 (fae9a7c)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-10-01; 24 files changed content.
 
 ## What comes in
 

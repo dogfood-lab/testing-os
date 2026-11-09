@@ -1,0 +1,150 @@
+{
+  "authored": [
+    ".claude/",
+    ".github/",
+    "docs/",
+    "root",
+    "site/"
+  ],
+  "breaks": [],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "assigned": 0,
+      "changed": 2,
+      "moved": 0,
+      "parts": 1,
+      "removed": 0,
+      "unassigned": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-10-15; 2 files changed content.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "c777accf507f0ad5bdd63a46bb2806158f1e4581",
+      "generatedAt": "2026-10-15T02:53:30.564Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [],
+  "changesTogetherNote": [
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "770462b1c1182200832f2f8bc0de9a2542ece062",
+  "defaultBranch": "main",
+  "derived": "8 parts, mostly PowerShell (34 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 2 doors; ci and Deploy site to GitHub Pages each reach 1 part, and ci is followed because a pull request goes through it. It deploys a site to GitHub Pages.",
+  "doors": [
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "ci",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "root",
+          "depth": 0,
+          "files": 1
+        }
+      ],
+      "runs": [
+        "verify.ps1"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request touching 9 paths",
+        "on a push touching 9 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "site",
+          "depth": 0,
+          "files": 5
+        }
+      ],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
+        "or by hand"
+      ]
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "engine": "1.26.0",
+  "generated": [],
+  "generatedAt": "2026-11-09T15:38:18.055Z",
+  "limits": [
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".claude": ".claude",
+    ".github": ".github",
+    "docs": "docs",
+    "origin": "origin",
+    "root": "the repository root",
+    "site": "the site",
+    "src": "src",
+    "tests": "tests"
+  },
+  "parts": 8,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/watchdog",
+  "sequences": [],
+  "startDoor": ".github/workflows/ci.yml",
+  "startHere": [],
+  "startNote": "ci runs no code this map can follow, so there is no path of files to read in order.",
+  "summary": null,
+  "summaryFrom": null,
+  "testFiles": 12,
+  "testedBy": {},
+  "testedCodeParts": 0,
+  "unnamedWrites": 0,
+  "unread": [],
+  "unreadCode": [
+    "origin",
+    "src"
+  ],
+  "unreadCodeUses": "origin and src hold only PowerShell files, which this map does not read, so what uses them cannot be seen.",
+  "unreadFiles": 0,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [
+    "origin and src hold only PowerShell files, which this map does not read, so whether a test touches them cannot be seen."
+  ],
+  "written": 0
+}

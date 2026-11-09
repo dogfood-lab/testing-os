@@ -34,45 +34,55 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 11,
+      "added": 12,
       "assigned": 0,
-      "changed": 27,
+      "changed": 32,
       "moved": 0,
-      "parts": 3,
+      "parts": 4,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
-        "kind": "landing",
-        "sentence": "experiments/c2-fill-card/spec.yaml is now also read by tests/test_model_manager.py.",
+        "kind": "door",
+        "sentence": "CI now also runs tests/test_desktop_names.py.",
         "subjects": [
-          "experiments/c2-fill-card/spec.yaml",
-          "tests/test_model_manager.py"
+          ".github/workflows/ci.yml",
+          "tests/test_desktop_names.py"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "experiments/c2-generate/spec.yaml is now also read by tests/test_host_ram_cli.py, tests/test_host_ram_projection.py, tests/test_model_manager.py and tests/test_ttft_floor_off.py.",
+        "sentence": ".github/ is now read by tests/test_desktop_names.py.",
         "subjects": [
-          "experiments/c2-generate/spec.yaml",
-          "tests/test_host_ram_cli.py",
-          "tests/test_host_ram_projection.py",
-          "tests/test_model_manager.py",
-          "tests/test_ttft_floor_off.py"
+          ".github/",
+          "tests/test_desktop_names.py"
         ]
       },
       {
         "kind": "landing",
-        "sentence": "tests/fixtures/host_ram_replay.tsv is now read by tests/test_host_ram_projection.py.",
+        "sentence": "docs/ is now read by tests/test_desktop_names.py.",
         "subjects": [
-          "tests/fixtures/host_ram_replay.tsv",
-          "tests/test_host_ram_projection.py"
+          "docs/",
+          "tests/test_desktop_names.py"
         ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "experiments/ is now also read by tests/test_desktop_names.py.",
+        "subjects": [
+          "experiments/",
+          "tests/test_desktop_names.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "And 9 more new writers and readers of places.",
+        "subjects": []
       },
       {
         "kind": "counts",
-        "sentence": "11 files added and 27 changed content, across 3 parts.",
+        "sentence": "12 files added and 32 changed content, across 4 parts.",
         "subjects": []
       }
     ],
@@ -165,9 +175,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 16 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 1,
-  "commit": "c8e9fb43754d3976a583b068b9b60621f435c7cc",
+  "commit": "0c48a09442d5c0f468bd27f09f6be005b0611891",
   "defaultBranch": "main",
-  "derived": "10 parts, mostly Python (122 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run interlock.",
+  "derived": "10 parts, mostly Python (123 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run interlock.",
   "doors": [
     {
       "checks": [],
@@ -187,7 +197,7 @@
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 62
+          "files": 63
         },
         {
           "boundary": "scripts",
@@ -198,10 +208,11 @@
       "runs": [
         "src/interlock/cli.py",
         "tests/fuzz_receipts.py",
+        "tests/test_desktop_names.py",
         "tests/"
       ],
-      "runsCount": 3,
-      "runsMore": 0,
+      "runsCount": 4,
+      "runsMore": 63,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -330,7 +341,7 @@
   ],
   "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-11-02T15:01:10.140Z",
+  "generatedAt": "2026-11-09T15:32:25.471Z",
   "limits": [
     "1 import site names a declared dependency that shares its name with a local module (openvino); it is read as the dependency, which is not in this repository.",
     "5 writes and 6 reads use paths built at run time and are not named here.",
@@ -373,7 +384,7 @@
   ],
   "summary": "interlock routes each job to a model, engine and device from a receipt-backed table.",
   "summaryFrom": "person",
-  "testFiles": 94,
+  "testFiles": 95,
   "testedBy": {
     "scripts": 2,
     "src": 59

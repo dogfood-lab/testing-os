@@ -1,20 +1,18 @@
 # forkctl: how it works
 
-Mapped at 2026-10-19 from commit 84c9f39 by Atlas 1.26.0.
+Mapped at 2026-11-09 from commit 6460421 by Atlas 1.26.0.
 
 ## What this is
 
-7 parts, mostly TypeScript (131 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 6 doors; the busiest is CI, which reaches 2 parts. It publishes to npm. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp. People import @mcptoolshop/forkctl.
+7 parts, mostly TypeScript (133 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 6 doors; the busiest is CI, which reaches 2 parts. It publishes to npm. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp. People import @mcptoolshop/forkctl.
 
-## What changed since 2026-10-15 (f1142aa)
+## What changed since 2026-11-07 (608562f)
 
-- Release (.github/workflows/release.yml) is a new door. It starts when a release is published; or by hand. It runs no file this map can see.
-- package.json is now also read by .github/workflows/release.yml.
-- 1 file added and 2 changed content, across 2 parts.
+Nothing structural changed since 2026-11-07; 8 files changed content.
 
 ## What comes in
 
-1. **CI.** On a pull request; on a push to main touching 12 paths; or by hand. Runs tests/assess.test.ts, tests/audit.test.ts, tests/backend-hardening.test.ts and 48 more; builds src/.
+1. **CI.** On a pull request; on a push to main touching 12 paths; or by hand. Runs tests/assess.test.ts, tests/audit.test.ts, tests/backend-hardening.test.ts and 49 more; builds src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Release.** When a release is published; or by hand. Runs no file this map can see.
 4. **@mcptoolshop/forkctl** (the package people import). Loads src/index.ts.
@@ -23,7 +21,7 @@ Mapped at 2026-10-19 from commit 84c9f39 by Atlas 1.26.0.
 
 ## What happens through CI
 
-1. The workflow runs 51 files in tests; it builds src/ in src.
+1. The workflow runs 52 files in tests; it builds src/ in src.
 2. It uploads coverage to Codecov.
 
 ## Who reads the results

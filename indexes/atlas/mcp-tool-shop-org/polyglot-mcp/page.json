@@ -19,73 +19,32 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 14,
+      "added": 0,
       "assigned": 0,
-      "changed": 34,
+      "changed": 7,
       "moved": 0,
-      "parts": 4,
+      "parts": 2,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
-        "kind": "door",
-        "sentence": "CI now also runs src/translateAll.untranslated.test.ts, src/translateMarkdown.untranslated.fixes.test.ts and src/translateMarkdown.untranslated.test.ts.",
-        "subjects": [
-          ".github/workflows/ci.yml",
-          "src/translateAll.untranslated.test.ts",
-          "src/translateMarkdown.untranslated.fixes.test.ts",
-          "src/translateMarkdown.untranslated.test.ts"
-        ]
-      },
-      {
-        "kind": "door",
-        "sentence": "Publish to npm now also runs src/translateAll.untranslated.test.ts, src/translateMarkdown.untranslated.fixes.test.ts and src/translateMarkdown.untranslated.test.ts.",
-        "subjects": [
-          ".github/workflows/publish.yml",
-          "src/translateAll.untranslated.test.ts",
-          "src/translateMarkdown.untranslated.fixes.test.ts",
-          "src/translateMarkdown.untranslated.test.ts"
-        ]
-      },
-      {
         "kind": "landing",
-        "sentence": "LICENSE is now read by src/protectedTerms.test.ts.",
+        "sentence": "scripts/translate-readme.mjs is now also read by src/translateAll.untranslated.test.ts.",
         "subjects": [
-          "LICENSE",
-          "src/protectedTerms.test.ts"
+          "scripts/translate-readme.mjs",
+          "src/translateAll.untranslated.test.ts"
         ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "README.es.md is now read by src/translateMarkdown.untranslated.fixes.test.ts.",
-        "subjects": [
-          "README.es.md",
-          "src/translateMarkdown.untranslated.fixes.test.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "README.fr.md is now read by src/translateMarkdown.untranslated.fixes.test.ts.",
-        "subjects": [
-          "README.fr.md",
-          "src/translateMarkdown.untranslated.fixes.test.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 2 more new writers and readers of places.",
-        "subjects": []
       },
       {
         "kind": "counts",
-        "sentence": "14 files added and 34 changed content, across 4 parts.",
+        "sentence": "7 files changed content, across 2 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "e920cf46935bf5e4ccc45c40fa5678821e8b6ce2",
-      "generatedAt": "2026-10-20T21:35:38.251Z"
+      "commit": "9fd9fe1fd15d6f6ff214531315cdbedaf36c53fe",
+      "generatedAt": "2026-11-08T02:00:31.727Z"
     },
     "unchanged": false
   },
@@ -93,7 +52,7 @@
     {
       "a": "scripts/translate-all.mjs",
       "b": "scripts/translate-readme.mjs",
-      "either": 6,
+      "either": 8,
       "partLabels": [
         "scripts",
         "scripts"
@@ -103,12 +62,12 @@
         "scripts"
       ],
       "relation": "inside",
-      "shared": 4
+      "shared": 6
     },
     {
       "a": "scripts/translate-readme.mjs",
       "b": "src/translateMarkdown.ts",
-      "either": 8,
+      "either": 10,
       "partLabels": [
         "scripts",
         "src"
@@ -126,7 +85,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "3a8402389f0b8706f07a5c706d0dc97147d37f3d",
+  "commit": "d452b68ddc3969dca5c59632faf3db4572d67596",
   "defaultBranch": "main",
   "derived": "7 parts, mostly Markdown (83 files); code in TypeScript (50), JavaScript (5), CSS (2) and Astro (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish to npm, @mcptoolshop/polyglot-mcp and polyglot-mcp each reach 1 part, and CI is followed because it comes first by name. It publishes to npm. It deploys a site to GitHub Pages. People run polyglot-mcp. People import @mcptoolshop/polyglot-mcp.",
   "doors": [
@@ -357,12 +316,12 @@
   "edges": [],
   "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-10-26T12:30:46.110Z",
+  "generatedAt": "2026-11-09T15:32:41.179Z",
   "limits": [
-    "3 writes and 6 reads use paths built at run time and are not named here.",
-    "6 writes and 11 reads go to a path their caller passes, not to this repository.",
+    "3 writes and 11 reads use paths built at run time and are not named here.",
+    "6 writes and 15 reads go to a path their caller passes, not to this repository.",
     "1 read goes to the directory the command is run in (LICENSE), not to this repository.",
-    "12 commands are built at run time and not followed, 10 of them in tests.",
+    "13 commands are built at run time and not followed, 11 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -379,6 +338,9 @@
   "readers": [],
   "repo": "mcp-tool-shop-org/polyglot-mcp",
   "sequences": [],
+  "spawnTested": [
+    "scripts"
+  ],
   "startBeside": [
     {
       "files": [
@@ -403,9 +365,9 @@
   "summaryFrom": null,
   "testFiles": 28,
   "testedBy": {
-    "scripts": 0,
+    "scripts": 1,
     "site": 0,
-    "src": 26
+    "src": 27
   },
   "testedCodeParts": 3,
   "unnamedWrites": 3,
@@ -414,16 +376,13 @@
   "unreadNote": [],
   "untested": [
     {
-      "part": "scripts",
-      "partLabel": "scripts",
-      "testedBy": 0
-    },
-    {
       "part": "site",
       "partLabel": "site",
       "testedBy": 0
     }
   ],
-  "untestedNote": [],
+  "untestedNote": [
+    "scripts is touched by tests only through a spawn: a test runs its files as a child process."
+  ],
   "written": 0
 }

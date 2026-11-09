@@ -1,6 +1,6 @@
 # offrig: how it works
 
-Mapped at 2026-10-26 from commit 7e99996 by Atlas 1.26.0.
+Mapped at 2026-11-09 from commit c45638d by Atlas 1.26.0.
 
 ## What this is
 
@@ -12,7 +12,7 @@ Runs big models on RunPod and wires them into Zed through an SSH tunnel, so they
 
 - ci now also runs crates/offrig-cli/src/.
 - ci no longer runs crates/offrig-cli/src/budget_menu.rs and crates/offrig-cli/src/main.rs.
-- 13 files changed content, across 4 parts.
+- 14 files changed content, across 4 parts.
 
 ## What comes in
 

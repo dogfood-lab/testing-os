@@ -1,29 +1,29 @@
 # glyphstudio: how it works
 
-Mapped at 2026-10-19 from commit d2be33c by Atlas 1.26.0.
+Mapped at 2026-11-09 from commit ad36a11 by Atlas 1.26.0.
 
 ## What this is
 
-15 parts, mostly TypeScript (424 files), Rust (46), JavaScript (20), CSS (4), Astro (1) and HTML (1). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It deploys a site to GitHub Pages. glyphstudio is a desktop app built from apps/desktop/src-tauri (nothing ships it).
+15 parts, mostly TypeScript (426 files), Rust (46), JavaScript (20), CSS (4), Astro (1) and HTML (1). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It deploys a site to GitHub Pages. glyphstudio is a desktop app built from apps/desktop/src-tauri (nothing ships it).
 
-## What changed since 2026-10-01 (5a1cc32)
+## What changed since 2026-11-08 (65f37a9)
 
 - docs/showcase/stage47a-test/monk-47a---*x*.png is now written by scripts/test-47a-prompt.mjs.
 - docs/showcase/stage47b-critique/monk-r0---*x*.png is now written by scripts/test-47b-critique-loop.mjs.
 - docs/showcase/stage47b-critique/monk-r1---*x*.png is now written by scripts/test-47b-critique-loop.mjs.
 - And 2 more new writers and readers of places.
-- 2 files changed content, across 2 parts.
+- 11 files changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request to main; on a push to main touching 9 paths; or by hand. Runs packages/domain/src/ciGates.test.ts, packages/domain/src/shortcutManifest.test.ts, packages/domain/src/sizeProfile.test.ts and 118 more; checks packages/domain/src/, packages/mcp-sprite-server/src/ and packages/state/src/.
+1. **CI.** On a pull request to main; on a push to main touching 9 paths; or by hand. Runs packages/domain/src/ciGates.test.ts, packages/domain/src/shortcutManifest.test.ts, packages/domain/src/sizeProfile.test.ts and 119 more; checks packages/domain/src/, packages/mcp-sprite-server/src/ and packages/state/src/.
 2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 3. **Dogfood.** By hand. Runs no file this map can see.
 4. **glyphstudio** (a desktop app built from apps/desktop/src-tauri, which nothing ships). Runs apps/desktop/src-tauri/src/main.rs.
 
 ## What happens through CI
 
-1. The workflow runs 5 files in domain, 23 files in mcp-sprite-server, and 93 files in state; it checks packages/domain/src/ in domain, packages/mcp-sprite-server/src/ in mcp-sprite-server and packages/state/src/ in state.
+1. The workflow runs 5 files in domain, 24 files in mcp-sprite-server, and 93 files in state; it checks packages/domain/src/ in domain, packages/mcp-sprite-server/src/ in mcp-sprite-server and packages/state/src/ in state.
 2. That reaches api-contract (4 files).
 3. It writes to docs/benchmark-assets/, examples/benchmark-assets/ and packages/mcp-sprite-server/fixtures/golden/.
 4. It uploads coverage to Codecov.

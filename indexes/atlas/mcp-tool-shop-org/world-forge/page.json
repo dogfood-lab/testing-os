@@ -94,16 +94,16 @@
     "fileCounts": {
       "added": 1,
       "assigned": 0,
-      "changed": 2,
+      "changed": 28,
       "moved": 0,
-      "parts": 3,
+      "parts": 11,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; 1 file added and 2 changed content.",
+        "sentence": "Nothing structural changed since 2026-09-30; 1 file added and 28 changed content.",
         "subjects": []
       }
     ],
@@ -115,88 +115,88 @@
   },
   "changesTogether": [
     {
-      "a": "packages/export-godot/src/export.ts",
-      "b": "packages/export-godot/src/index.ts",
-      "either": 15,
+      "a": "packages/editor/src/panels/ExportModal.tsx",
+      "b": "packages/editor/src/panels/TemplateManager.tsx",
+      "either": 5,
       "partLabels": [
-        "export-godot",
-        "export-godot"
+        "editor",
+        "editor"
       ],
       "parts": [
-        "export-godot",
-        "export-godot"
+        "editor",
+        "editor"
       ],
       "relation": "inside",
-      "shared": 12
+      "shared": 5
     },
     {
-      "a": "packages/schema/src/index.ts",
-      "b": "packages/schema/src/project.ts",
+      "a": "dogfood/godot-smoke/smoke_load_world.gd",
+      "b": "dogfood/worlds/multi-target-proof.ts",
       "either": 9,
       "partLabels": [
-        "schema",
-        "schema"
+        "dogfood",
+        "dogfood"
       ],
       "parts": [
-        "schema",
-        "schema"
+        "dogfood",
+        "dogfood"
       ],
       "relation": "inside",
       "shared": 7
     },
     {
-      "a": "packages/export-unreal/src/__tests__/cli.test.ts",
-      "b": "packages/export-unreal/src/export.ts",
-      "either": 6,
-      "partLabels": [
-        "export-unreal",
-        "export-unreal"
-      ],
-      "parts": [
-        "export-unreal",
-        "export-unreal"
-      ],
-      "relation": "inside",
-      "shared": 4
-    },
-    {
-      "a": "packages/export-unreal/src/export.ts",
-      "b": "packages/export-unreal/src/index.ts",
-      "either": 6,
-      "partLabels": [
-        "export-unreal",
-        "export-unreal"
-      ],
-      "parts": [
-        "export-unreal",
-        "export-unreal"
-      ],
-      "relation": "inside",
-      "shared": 4
-    },
-    {
-      "a": "dogfood/worlds/multi-target-proof.ts",
+      "a": "packages/export-godot/src/export.ts",
       "b": "packages/export-godot/src/index.ts",
-      "either": 14,
+      "either": 13,
       "partLabels": [
-        "dogfood",
+        "export-godot",
         "export-godot"
       ],
       "parts": [
-        "dogfood",
+        "export-godot",
         "export-godot"
       ],
-      "relation": "a-imports-b",
-      "shared": 9
+      "relation": "inside",
+      "shared": 10
+    },
+    {
+      "a": "packages/export-ai-rpg/src/content-hash.ts",
+      "b": "packages/export-ai-rpg/src/export.ts",
+      "either": 8,
+      "partLabels": [
+        "export-ai-rpg",
+        "export-ai-rpg"
+      ],
+      "parts": [
+        "export-ai-rpg",
+        "export-ai-rpg"
+      ],
+      "relation": "inside",
+      "shared": 6
+    },
+    {
+      "a": "packages/schema/src/index.ts",
+      "b": "packages/schema/src/project.ts",
+      "either": 8,
+      "partLabels": [
+        "schema",
+        "schema"
+      ],
+      "parts": [
+        "schema",
+        "schema"
+      ],
+      "relation": "inside",
+      "shared": 6
     }
   ],
   "changesTogetherNote": [
-    "4 files changed together with their own tests, as expected.",
+    "2 files changed together with their own tests, as expected.",
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 14 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 8 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
-  "changesTogetherWithTests": 4,
-  "commit": "d9cd135990f0b9ac553dc241150db907e8dc5c5b",
+  "changesTogetherWithTests": 2,
+  "commit": "ac9ae9815ce9e0753b64cd562cf055cfe308b935",
   "defaultBranch": "main",
   "derived": "15 parts, mostly TypeScript (497 files), Astro (4), JavaScript (4), CSS (3), GDScript (1) and HTML (1). Work enters through 11 doors; the busiest is CI, which reaches 11 parts. It publishes @world-forge/editor (packages/editor), @world-forge/export-ai-rpg (packages/export-ai-rpg), @world-forge/export-godot (packages/export-godot), @world-forge/export-unreal (packages/export-unreal), @world-forge/renderer-2d (packages/renderer-2d) and @world-forge/schema (packages/schema) to npm. It deploys a site to GitHub Pages. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal. People import @world-forge/export-ai-rpg, @world-forge/export-godot, @world-forge/export-unreal, @world-forge/renderer-2d and @world-forge/schema.",
   "doors": [
@@ -991,10 +991,10 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-19T12:39:18.382Z",
+  "generatedAt": "2026-11-09T15:38:32.990Z",
   "limits": [
     "9 imports could not be resolved: `dogfood/__tests__/dogfood-runner-exit-codes.test.ts` loads `@ai-rpg-engine/content-schema` when it is installed, which is not declared; `dogfood/godot-smoke/smoke_load_world.gd` imports `res://world.tscn`; `dogfood/run-ai-rpg-smoke.ts` imports `@ai-rpg-engine/content-schema`, which is not declared; and 6 more.",
-    "3 writes and 3 reads use paths built at run time and are not named here.",
+    "3 writes and 4 reads use paths built at run time and are not named here.",
     "37 writes go to places this repository does not track, so they are not listed as generated.",
     "2 writes and 56 reads go to a path their caller passes, not to this repository.",
     "26 writes go to the directory the command is run in (GodotPack/ and UnrealPack/) or a path their caller passes, not to this repository.",

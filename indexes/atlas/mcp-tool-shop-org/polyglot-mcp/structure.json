@@ -310,7 +310,7 @@
           "path": ".polyglot-pins.json"
         },
         {
-          "hash": "521a48234a2bfc825782cdaa391791f7c4f778c9a2ff9935dda378302f175f7d",
+          "hash": "bd5946efeb4f5fc13856937ffe7ed215233715f3d9ef8a6f73a303e728d11457",
           "path": "CHANGELOG.md"
         },
         {
@@ -318,35 +318,35 @@
           "path": "LICENSE"
         },
         {
-          "hash": "cc20aa868e99264b22a9b48c9342e139b9737a765d1c02935784837373910920",
+          "hash": "bcdd90fd25bf6202c655ff892edd5b2540027d7801f0b1dc71266459d124c3a9",
           "path": "README.es.md"
         },
         {
-          "hash": "b4177a1958f2a3c0b470f456677f9d2d2b65cc9f930c29296a47414d3f59816d",
+          "hash": "3aba187218afbbea9ba2fc93938947b770e3fdf0141de788343ac2ff677efc8e",
           "path": "README.fr.md"
         },
         {
-          "hash": "709ee44fe81c4a357beda9d49ba6cba2ab38374f551f1f4d03968a93a4dcd6f2",
+          "hash": "627b9d12548dabe6d2bfff7a996ae7feeed177b0141f528247151c5cbf9be457",
           "path": "README.hi.md"
         },
         {
-          "hash": "98877bdaeb3ddd8c2c842276e4ca093ac1ad5d69d5145fb780cfe9235132f4c4",
+          "hash": "3b9586db8651672e85a5e651ff3c1abb06b45a676e9060e47f62cb40c92db18b",
           "path": "README.it.md"
         },
         {
-          "hash": "c21eee8621cbc53ace197cdb5510dee9f87aac8988be75d03b2612b850e15890",
+          "hash": "45f8a9db94839be931ab8a8fdc25a799820180a4dd27ebd6563f7fb871c56a7e",
           "path": "README.ja.md"
         },
         {
-          "hash": "9ce43a557e4c0abb09637432ce7d14e611450a853de2061d04cce25b8a26341c",
+          "hash": "eb11400dab3b3216a1cbe157391bbbdff14d7f71e2b31cff10c99f25567d5737",
           "path": "README.md"
         },
         {
-          "hash": "073dc903f867caa94ff05e0cab5936c728196dbca1067687978bf8e7448b4a7a",
+          "hash": "0b20d2239173a703fd5e8409c57c184a43e097c4c80947f97974a0a5f61b6432",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "5c4862bf17a5762875d5999e07801bd38730b95451731155aeaffd2b15b7ef8a",
+          "hash": "2cf9db020bdcca37de0e3de9cf89bafca18d62c02f9fbc0f4775e72ef3cf8088",
           "path": "README.zh.md"
         },
         {
@@ -370,11 +370,11 @@
           "path": "logo.png"
         },
         {
-          "hash": "973540d5928d19c1414502544ff0d4e82f0cd79137ecf32bb410dd9a02bb7aa7",
+          "hash": "712e9c93680b481daff0eaada8ec509da4ca025df5959561e6b3301174c00b22",
           "path": "package-lock.json"
         },
         {
-          "hash": "e7ecae7c1e8692ef703da7d443cc324d8bcddf261a4c8c785b212cc45d35b2a0",
+          "hash": "914dcc28c71e43ef024c9fbc8c79e8d9a437a0f1aca77d32c5e899b20cb836fe",
           "path": "package.json"
         },
         {
@@ -418,7 +418,7 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 6,
+      "dynamicReads": 9,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
       "dynamicWrites": 3,
@@ -442,12 +442,13 @@
           "failurePaths": [
             {
               "kind": "catch",
-              "line": 60
+              "line": 99
             }
           ],
-          "hash": "e46a3598a543f1c50dcec84d1fc479995db843781acb74715ec8475bba955410",
+          "hash": "078d13e6ecd54f111eadfaa47c3d6bbc49566b285e2e5031a1bef05829e4194a",
           "importsFiles": [
-            "src/survival.ts"
+            "src/survival.ts",
+            "src/translateAll.ts"
           ],
           "path": "scripts/translate-all.mjs"
         },
@@ -469,18 +470,18 @@
           "failurePaths": [
             {
               "kind": "catch",
-              "line": 64
+              "line": 72
             },
             {
               "kind": "catch",
-              "line": 98
+              "line": 106
             },
             {
               "kind": "throw",
-              "line": 107
+              "line": 115
             }
           ],
-          "hash": "c1889209074a21ce6331f91e370fa7732f398f36785336906acdd6456d93eef1",
+          "hash": "6afff1e87a87c6debce94b203e068984646b61aba68d2e96615d30f3f12c4078",
           "importOrder": [
             "src/translateMarkdown.ts",
             "src/survival.ts"
@@ -499,7 +500,11 @@
       "name": "scripts",
       "origin": "authored",
       "role": "code",
-      "testedBy": 0,
+      "testRunners": [
+        "vitest"
+      ],
+      "testedBy": 1,
+      "testedThroughSpawn": true,
       "unresolvedSites": 0
     },
     {
@@ -789,9 +794,9 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 0,
-      "dynamicSpawns": 12,
-      "dynamicSpawnsInTests": 10,
+      "dynamicReads": 2,
+      "dynamicSpawns": 13,
+      "dynamicSpawnsInTests": 11,
       "dynamicWrites": 0,
       "entryPoints": [
         "src/index.ts"
@@ -1468,7 +1473,7 @@
           "path": "src/languages.ts"
         },
         {
-          "hash": "44a32d0009f55cabe246db0a98c61ac5b0a29af8799ba5fbe8bdaf9cfe354414",
+          "hash": "8ae86ebd0f4f09830e89a48fb471a21363fb9b35a5999666e2ed532c00e4394b",
           "importNames": [
             {
               "form": "import",
@@ -1535,125 +1540,125 @@
             {
               "in": "_generate",
               "kind": "catch",
-              "line": 133
+              "line": 135
             },
             {
               "in": "_generate",
               "kind": "throw",
-              "line": 136
+              "line": 138
             },
             {
               "in": "_generate",
               "kind": "throw",
-              "line": 144
+              "line": 146
             },
             {
               "in": "_generate",
               "kind": "throw",
-              "line": 151
+              "line": 153
             },
             {
               "in": "_generate",
               "kind": "throw",
-              "line": 164
+              "line": 166
             },
             {
               "in": "_generate",
               "kind": "throw",
-              "line": 171
+              "line": 173
             },
             {
               "in": "_generateStreamWithRetry",
               "kind": "catch",
-              "line": 208
+              "line": 210
             },
             {
               "in": "_generateStreamWithRetry",
               "kind": "throw",
-              "line": 218
+              "line": 220
             },
             {
               "in": "_generateStreamWithRetry",
               "kind": "throw",
-              "line": 221
+              "line": 223
             },
             {
               "in": "_generateStream",
               "kind": "catch",
-              "line": 240
+              "line": 244
             },
             {
               "in": "_generateStream",
               "kind": "throw",
-              "line": 243
+              "line": 247
             },
             {
               "in": "_generateStream",
               "kind": "throw",
-              "line": 251
+              "line": 255
             },
             {
               "in": "_generateStream",
               "kind": "throw",
-              "line": 258
+              "line": 262
             },
             {
               "in": "_generateStream",
               "kind": "throw",
-              "line": 272
+              "line": 276
             },
             {
               "in": "_generateStream",
               "kind": "throw",
-              "line": 279
+              "line": 283
             },
             {
               "in": "_generateStream",
               "kind": "throw",
-              "line": 290
+              "line": 294
             },
             {
               "in": "_generateStream",
               "kind": "catch",
-              "line": 324
+              "line": 328
             },
             {
               "in": "listModels",
               "kind": "throw",
-              "line": 347
+              "line": 353
             },
             {
               "in": "isAvailable",
               "kind": "catch",
-              "line": 365
+              "line": 373
             },
             {
               "in": "ensureRunning",
               "kind": "catch",
-              "line": 399
+              "line": 408
             },
             {
               "in": "ensureRunning",
               "kind": "catch",
-              "line": 402
+              "line": 411
             },
             {
               "in": "ensureRunning",
               "kind": "catch",
-              "line": 412
+              "line": 421
             },
             {
               "in": "ensureModel",
               "kind": "catch",
-              "line": 481
+              "line": 492
             },
             {
               "in": "ensureModel",
               "kind": "catch",
-              "line": 487
+              "line": 498
             }
           ],
-          "hash": "cb33c3e11f527d9e96ebff1c211f25ce5810e4eef63c85fe191d536b0d63b625",
+          "hash": "33f344bbf209b50a6eff239cfec8ae675668de63e4e9f07685df000df830519f",
           "importsFiles": [
             "src/errors.ts",
             "src/semaphore.ts"
@@ -3278,7 +3283,7 @@
           ]
         },
         {
-          "hash": "ce847b8c0ced6e08cb894d33c9a1cb848dbaa05069e67eae1496b34fb37e1bef",
+          "hash": "6758c105254ef5dcec08cc760824978bb1746624c3894acf03bb2d6085e32ead",
           "importNames": [
             {
               "form": "import",
@@ -3329,17 +3334,30 @@
           "entryRule": 3,
           "exports": [
             "buildNavBar",
+            "checkSourceNavBar",
+            "doesReceiptMatchDisk",
+            "extractTopNavBarBlock",
             "injectNavBar",
-            "translateAll"
+            "parseMarkdownStructure",
+            "parseWriteReceipt",
+            "resolveNavBarLangCodes",
+            "translateAll",
+            "verifyTranslatedFile",
+            "verifyTranslatedMarkdown"
           ],
           "failurePaths": [
             {
+              "in": "doesReceiptMatchDisk",
+              "kind": "catch",
+              "line": 300
+            },
+            {
               "in": "translateAll",
               "kind": "catch",
-              "line": 218
+              "line": 644
             }
           ],
-          "hash": "2c893d6b7c8e5fa57b1581a51cac4b852fd226e42ba232a945d727d996038f75",
+          "hash": "fe0ccd9c4dac08f82b1827328766e8660d41b14df655e05d2862cb728a4bac94",
           "importsFiles": [
             "src/pins.ts",
             "src/protectedTerms.ts",
@@ -3352,7 +3370,7 @@
             {
               "calls": [
                 {
-                  "line": 188,
+                  "line": 614,
                   "name": "acquire",
                   "receiver": "Semaphore",
                   "target": {
@@ -3451,14 +3469,14 @@
                     }
                   ],
                   "innerTruncated": true,
-                  "line": 200,
+                  "line": 626,
                   "name": "translateMarkdown",
                   "target": {
                     "file": "src/translateMarkdown.ts"
                   }
                 },
                 {
-                  "line": 216,
+                  "line": 642,
                   "name": "onProgress",
                   "target": null
                 }
@@ -3471,7 +3489,7 @@
           ]
         },
         {
-          "hash": "ced166d82878f6bd394d054d7d3edd0a7884c47b5ea4b57445776dca145ff3e3",
+          "hash": "54b05299d4332345553974a905b749ee18ecb530b2c36c38b6f20308a2ca2694",
           "importNames": [
             {
               "form": "import",
@@ -3498,10 +3516,6 @@
               "typeOnly": false
             }
           ],
-          "names": [
-            "scripts/translate-all.mjs",
-            "scripts/translate-readme.mjs"
-          ],
           "packages": [
             {
               "manifest": "package.json",
@@ -3509,6 +3523,10 @@
             }
           ],
           "path": "src/translateAll.untranslated.test.ts",
+          "spawns": [
+            "scripts/translate-all.mjs",
+            "scripts/translate-readme.mjs"
+          ],
           "testFramework": "vitest"
         },
         {
@@ -4786,7 +4804,7 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 11,
+          "reads": 15,
           "where": [
             "caller"
           ],
@@ -4800,13 +4818,13 @@
           "writes": 0
         }
       ],
-      "outsideReads": 12,
+      "outsideReads": 16,
       "outsideWrites": 6,
       "role": "code",
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 26,
+      "testedBy": 27,
       "unresolvedSites": 0
     }
   ],
@@ -5948,7 +5966,7 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "3a8402389f0b8706f07a5c706d0dc97147d37f3d",
+    "commit": "d452b68ddc3969dca5c59632faf3db4572d67596",
     "tracked": 162
   },
   "landings": [
@@ -6026,6 +6044,12 @@
           "fromTests": true
         },
         {
+          "by": "src/translateAll.untranslated.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "src/translateReadme.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -6072,6 +6096,12 @@
     {
       "readers": [
         {
+          "by": "src/translateAll.untranslated.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "src/translateReadme.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -6115,9 +6145,27 @@
     {
       "readers": [
         {
+          "by": "src/translateAll.untranslated.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "scripts/translate-all.mjs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "scripts/translate-all.mjs",
           "call": "literal",
           "confidence": "ast"
+        },
+        {
+          "by": "src/translateAll.untranslated.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
         }
       ],
       "target": "scripts/translate-readme.mjs",
@@ -6218,7 +6266,7 @@
       "path": "package.json",
       "role": "root",
       "roleFrom": "the root manifest",
-      "version": "1.10.1"
+      "version": "1.11.0"
     },
     {
       "name": "site",
@@ -6372,7 +6420,7 @@
       "name": "@mcptoolshop/polyglot-mcp",
       "purl": "pkg:npm/%40mcptoolshop/polyglot-mcp",
       "repository": "https://github.com/mcp-tool-shop-org/polyglot-mcp",
-      "version": "1.10.1"
+      "version": "1.11.0"
     }
   ],
   "submodules": [],

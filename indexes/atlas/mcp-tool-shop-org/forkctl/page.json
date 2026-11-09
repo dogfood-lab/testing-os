@@ -20,50 +20,35 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 1,
+      "added": 0,
       "assigned": 0,
-      "changed": 2,
+      "changed": 8,
       "moved": 0,
-      "parts": 2,
+      "parts": 1,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
-        "kind": "door",
-        "sentence": "Release (.github/workflows/release.yml) is a new door. It starts when a release is published; or by hand. It runs no file this map can see.",
-        "subjects": [
-          ".github/workflows/release.yml"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "package.json is now also read by .github/workflows/release.yml.",
-        "subjects": [
-          "package.json",
-          ".github/workflows/release.yml"
-        ]
-      },
-      {
         "kind": "counts",
-        "sentence": "1 file added and 2 changed content, across 2 parts.",
+        "sentence": "Nothing structural changed since 2026-11-07; 8 files changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "f1142aa855a3b87121e4e3f72c65837fa5dc7481",
-      "generatedAt": "2026-10-15T20:05:01.691Z"
+      "commit": "608562fd5919cf0f11fed2e1d487b3f9ea781899",
+      "generatedAt": "2026-11-07T19:18:03.912Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [],
   "changesTogetherNote": [
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "84c9f39347b93b53351ab7e476ac10599d909666",
+  "commit": "64604215255da1edaa888aeee1bd7cc370ec74d7",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly TypeScript (131 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 6 doors; the busiest is CI, which reaches 2 parts. It publishes to npm. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp. People import @mcptoolshop/forkctl.",
+  "derived": "7 parts, mostly TypeScript (133 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 6 doors; the busiest is CI, which reaches 2 parts. It publishes to npm. It deploys a site to GitHub Pages. People run forkctl and forkctl-mcp. People import @mcptoolshop/forkctl.",
   "doors": [
     {
       "builds": [
@@ -81,12 +66,12 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 67
+          "files": 68
         },
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 61
+          "files": 62
         }
       ],
       "runs": [
@@ -109,6 +94,7 @@
         "tests/fleet-health.test.ts",
         "tests/fleet-octokit-dispatch.test.ts",
         "tests/github.test.ts",
+        "tests/json-schema.test.ts",
         "tests/list-forks.test.ts",
         "tests/logger.test.ts",
         "tests/make-forkable.test.ts",
@@ -132,8 +118,8 @@
         "tests/state.test.ts",
         "tests/sync.test.ts"
       ],
-      "runsCount": 41,
-      "runsMore": 48,
+      "runsCount": 42,
+      "runsMore": 49,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -237,7 +223,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 67
+          "files": 68
         }
       ],
       "runs": [
@@ -265,7 +251,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 66
+          "files": 67
         }
       ],
       "runs": [
@@ -286,7 +272,7 @@
   "edges": [],
   "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-10-19T12:32:36.703Z",
+  "generatedAt": "2026-11-09T15:31:40.037Z",
   "limits": [
     "8 writes and 8 reads use paths built at run time and are not named here.",
     "26 writes and 22 reads go to a path their caller passes, not to this repository.",
@@ -326,9 +312,9 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 61,
+  "testFiles": 62,
   "testedBy": {
-    "src": 52
+    "src": 53
   },
   "testedCodeParts": 1,
   "unnamedWrites": 8,

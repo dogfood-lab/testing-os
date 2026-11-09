@@ -60,7 +60,7 @@
     "fileCounts": {
       "added": 0,
       "assigned": 0,
-      "changed": 2,
+      "changed": 11,
       "moved": 0,
       "parts": 2,
       "removed": 0,
@@ -98,13 +98,13 @@
       },
       {
         "kind": "counts",
-        "sentence": "2 files changed content, across 2 parts.",
+        "sentence": "11 files changed content, across 2 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "5a1cc3213f0da895e6d0a325272dee125e73825a",
-      "generatedAt": "2026-10-01T02:00:24.281Z"
+      "commit": "65f37a9cf30e82264c40aca572cbfc2a63bb81ae",
+      "generatedAt": "2026-11-08T00:24:37.470Z"
     },
     "unchanged": false
   },
@@ -113,9 +113,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "d2be33cdee252d9251d37295c8c10845ff4c103c",
+  "commit": "ad36a11278a5727d7dbb39e06c4d835c053ea5f4",
   "defaultBranch": "main",
-  "derived": "15 parts, mostly TypeScript (424 files), Rust (46), JavaScript (20), CSS (4), Astro (1) and HTML (1). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It deploys a site to GitHub Pages. glyphstudio is a desktop app built from apps/desktop/src-tauri (nothing ships it).",
+  "derived": "15 parts, mostly TypeScript (426 files), Rust (46), JavaScript (20), CSS (4), Astro (1) and HTML (1). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It deploys a site to GitHub Pages. glyphstudio is a desktop app built from apps/desktop/src-tauri (nothing ships it).",
   "doors": [
     {
       "checks": [
@@ -143,7 +143,7 @@
         {
           "boundary": "mcp-sprite-server",
           "depth": 0,
-          "files": 56
+          "files": 58
         },
         {
           "boundary": "state",
@@ -173,6 +173,7 @@
         "packages/mcp-sprite-server/src/adapters/storeAdapter.toolSettings.test.ts",
         "packages/mcp-sprite-server/src/dogfood/",
         "packages/mcp-sprite-server/src/resources/catalogResource.test.ts",
+        "packages/mcp-sprite-server/src/schemaContract.test.ts",
         "packages/mcp-sprite-server/src/server.test.ts",
         "packages/mcp-sprite-server/src/session/sessionManager.test.ts",
         "packages/mcp-sprite-server/src/tools/conformance.test.ts",
@@ -278,8 +279,8 @@
         "packages/state/src/workflowStore.test.ts",
         "packages/state/src/workspaceStore.test.ts"
       ],
-      "runsCount": 120,
-      "runsMore": 118,
+      "runsCount": 121,
+      "runsMore": 119,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -590,7 +591,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-19T12:32:49.750Z",
+  "generatedAt": "2026-11-09T15:31:57.942Z",
   "limits": [
     "17 imports could not be resolved: `scripts/critique-sprite.mjs` imports a path built at run time; `scripts/critique-sprite.mjs` loads `fast-png` when it is installed, which is not declared; `scripts/dogfood-43-creature.mjs` imports a path built at run time; and 14 more.",
     "59 writes and 10 reads use paths built at run time and are not named here.",
@@ -656,12 +657,12 @@
   "startReason": "This path follows glyphstudio (a desktop app built from apps/desktop/src-tauri, which nothing ships) from its entry, since CI runs only tests and checks.",
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 202,
+  "testFiles": 203,
   "testedBy": {
     "api-contract": 5,
     "desktop": 78,
     "domain": 140,
-    "mcp-sprite-server": 23,
+    "mcp-sprite-server": 24,
     "scripts": 0,
     "showcase": 0,
     "state": 145

@@ -1,10 +1,49 @@
 {
   "repo": "mcp-tool-shop-org/loadout-os",
   "generated_from": {
-    "commit_sha": "de45f3eea45d08d8e8532e93960e8aa4e47e633d"
+    "commit_sha": "d4ddd0e4b0f442e2ddbe03eab4958e1d1afde755"
   },
-  "generated_at": "2026-10-19T12:33:11.098Z",
+  "generated_at": "2026-11-09T15:32:31.337Z",
   "shared_commit_floor": 3,
   "confidence": "low",
-  "rows": []
+  "rows": [
+    {
+      "id": "mcp-tool-shop-org/loadout-os|file-moved|kernel|packages/kernel/src/index.ts",
+      "rule": "file-moved",
+      "value": 0.5,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-11-09T15:32:31.337Z",
+      "last_seen": "2026-11-09T15:32:31.337Z",
+      "boundary": "kernel",
+      "file": "packages/kernel/src/index.ts",
+      "partner_boundary": "memories"
+    },
+    {
+      "id": "mcp-tool-shop-org/loadout-os|leaks|kernel",
+      "rule": "leaks",
+      "value": 0.5,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-11-09T15:32:31.337Z",
+      "last_seen": "2026-11-09T15:32:31.337Z",
+      "boundary": "kernel"
+    },
+    {
+      "id": "mcp-tool-shop-org/loadout-os|two-may-be-one|kernel|memories",
+      "rule": "two-may-be-one",
+      "value": 0.5,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-11-09T15:32:31.337Z",
+      "last_seen": "2026-11-09T15:32:31.337Z",
+      "boundaries": [
+        "kernel",
+        "memories"
+      ]
+    }
+  ]
 }

@@ -1,6 +1,6 @@
 # repo-knowledge: how it works
 
-Mapped at 2026-10-19 from commit bb1c92a by Atlas 1.26.0.
+Mapped at 2026-11-09 from commit df78cdf by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-19 from commit bb1c92a by Atlas 1.26.0.
 
 ## What changed since 2026-10-01 (1222602)
 
-Nothing structural changed since 2026-10-01; 5 files changed content.
+Nothing structural changed since 2026-10-01; 16 files changed content.
 
 ## What comes in
 
@@ -46,15 +46,15 @@ CI writes only to dist/, which is not tracked.
 
 ## What tends to change together
 
-- **src/mcp/server.ts** and **test/mcp-server.test.ts** changed together in 6 of 6 commits, and the test part imports the src part.
-- **src/db/init.ts** and **test/migration-sequence.test.ts** changed together in 10 of 13 commits, and the test part imports the src part.
-- **src/index.ts** and **test/migration-sequence.test.ts** changed together in 7 of 10 commits, and the test part imports the src part.
-- **src/index.ts** and **src/sync/index.ts** changed together in 5 of 8 commits, inside the src part.
-- **test/migration-sequence.test.ts** and **test/publish-state.test.ts** changed together in 6 of 10 commits, inside the test part.
+- **src/mcp/server.ts** and **test/mcp-server.test.ts** changed together in 5 of 5 commits, and the test part imports the src part.
+- **src/db/init.ts** and **test/migration-sequence.test.ts** changed together in 9 of 12 commits, and the test part imports the src part.
+- **src/index.ts** and **src/sync/index.ts** changed together in 5 of 7 commits, inside the src part.
+- **src/index.ts** and **test/migration-sequence.test.ts** changed together in 6 of 9 commits, and the test part imports the src part.
+- **test/migration-sequence.test.ts** and **test/publish-state.test.ts** changed together in 6 of 9 commits, inside the test part.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 3 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 2 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 

@@ -40,16 +40,16 @@
     "fileCounts": {
       "added": 0,
       "assigned": 0,
-      "changed": 5,
+      "changed": 16,
       "moved": 0,
-      "parts": 3,
+      "parts": 4,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-01; 5 files changed content.",
+        "sentence": "Nothing structural changed since 2026-10-01; 16 files changed content.",
         "subjects": []
       }
     ],
@@ -63,7 +63,7 @@
     {
       "a": "src/mcp/server.ts",
       "b": "test/mcp-server.test.ts",
-      "either": 6,
+      "either": 5,
       "partLabels": [
         "src",
         "test"
@@ -73,12 +73,12 @@
         "test"
       ],
       "relation": "b-imports-a",
-      "shared": 6
+      "shared": 5
     },
     {
       "a": "src/db/init.ts",
       "b": "test/migration-sequence.test.ts",
-      "either": 13,
+      "either": 12,
       "partLabels": [
         "src",
         "test"
@@ -88,27 +88,12 @@
         "test"
       ],
       "relation": "b-imports-a",
-      "shared": 10
-    },
-    {
-      "a": "src/index.ts",
-      "b": "test/migration-sequence.test.ts",
-      "either": 10,
-      "partLabels": [
-        "src",
-        "test"
-      ],
-      "parts": [
-        "src",
-        "test"
-      ],
-      "relation": "b-imports-a",
-      "shared": 7
+      "shared": 9
     },
     {
       "a": "src/index.ts",
       "b": "src/sync/index.ts",
-      "either": 8,
+      "either": 7,
       "partLabels": [
         "src",
         "src"
@@ -121,9 +106,24 @@
       "shared": 5
     },
     {
+      "a": "src/index.ts",
+      "b": "test/migration-sequence.test.ts",
+      "either": 9,
+      "partLabels": [
+        "src",
+        "test"
+      ],
+      "parts": [
+        "src",
+        "test"
+      ],
+      "relation": "b-imports-a",
+      "shared": 6
+    },
+    {
       "a": "test/migration-sequence.test.ts",
       "b": "test/publish-state.test.ts",
-      "either": 10,
+      "either": 9,
       "partLabels": [
         "test",
         "test"
@@ -138,10 +138,10 @@
   ],
   "changesTogetherNote": [
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 3 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 2 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "bb1c92ad4a38f3b00f1b118bc11d243d558fcbcf",
+  "commit": "df78cdf0d59f0c4c513be5647876a9d8d743a1e4",
   "defaultBranch": "main",
   "derived": "11 parts, mostly Markdown (646 files); code in TypeScript (84), JavaScript (10), CSS (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run rk. People import @mcptoolshop/repo-knowledge.",
   "doors": [
@@ -379,7 +379,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-19T12:35:41.407Z",
+  "generatedAt": "2026-11-09T15:34:50.418Z",
   "limits": [
     "1 import could not be resolved: `src/mcp/server.ts` imports `zod`, which is not declared.",
     "3 writes and 15 reads use paths built at run time and are not named here.",

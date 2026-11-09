@@ -7334,7 +7334,7 @@
           "path": ".gitignore"
         },
         {
-          "hash": "dee716d1f3cf728b4ccfa9be4b1599540cadb90dca1cd27aa1e05f0bbf32518a",
+          "hash": "edb28b983864b743575dae7af9fc3be42633a65ae5469bf45dd7786a86de1b01",
           "path": "CHANGELOG.md"
         },
         {
@@ -7374,7 +7374,7 @@
           "path": "README.ja.md"
         },
         {
-          "hash": "67db7ff36ddbd7c2a3bddf688fa7232c808cc6c0f1e33b3bbe8149f72ccc640b",
+          "hash": "6c7e87f362ba52c6a2fddf0e2caf284376e4e50ebeae52eaa5628f90717316fd",
           "path": "README.md"
         },
         {
@@ -7745,6 +7745,70 @@
       "entryPoints": [],
       "externals": 0,
       "files": [
+        {
+          "exports": [
+            "build_rows",
+            "derive_file_name",
+            "derive_text",
+            "main",
+            "sha256_file",
+            "stage_bundle",
+            "write_jsonl"
+          ],
+          "failurePaths": [
+            {
+              "in": "build_rows",
+              "kind": "raise",
+              "line": 81
+            },
+            {
+              "in": "build_rows",
+              "kind": "raise",
+              "line": 91
+            },
+            {
+              "in": "build_rows",
+              "kind": "raise",
+              "line": 96
+            },
+            {
+              "in": "build_rows",
+              "kind": "raise",
+              "line": 102
+            },
+            {
+              "in": "stage_bundle",
+              "kind": "raise",
+              "line": 140
+            },
+            {
+              "in": "stage_bundle",
+              "kind": "raise",
+              "line": 142
+            },
+            {
+              "in": "stage_bundle",
+              "kind": "raise",
+              "line": 148
+            },
+            {
+              "in": "stage_bundle",
+              "kind": "raise",
+              "line": 157
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 204
+            },
+            {
+              "kind": "raise",
+              "line": 210
+            }
+          ],
+          "hash": "0e48c16cc85715c16148aa9e121e1a746c92ce3fac81c9a71aca635a1c7cc4d2",
+          "path": "tools/build_hf_art_dataset.py"
+        },
         {
           "exports": [
             "bind_inventory",
@@ -9679,6 +9743,24 @@
           "sequences": []
         },
         {
+          "exports": [
+            "test_build_rows_covers_all_78_unique_and_sha_matches",
+            "test_committed_metadata_jsonl_matches_generator",
+            "test_stage_copies_and_verifies_all_78_files",
+            "test_stage_refuses_non_empty_dir"
+          ],
+          "hash": "aba8fa3a0a6e25eb73cabc17d8b8ffbad83dfe02027b8175b33ae21b1be9fcfd",
+          "importsFiles": [
+            "tools/build_hf_art_dataset.py"
+          ],
+          "path": "tools/test_build_hf_art_dataset.py",
+          "selfRun": {
+            "in": "tools",
+            "run": "python test_build_hf_art_dataset.py"
+          },
+          "testFramework": "pytest"
+        },
+        {
           "entry": "studio",
           "entryRule": 4,
           "exports": [
@@ -9817,11 +9899,11 @@
       "origin": "authored",
       "outsidePlaces": [
         {
-          "reads": 12,
+          "reads": 15,
           "where": [
             "caller"
           ],
-          "writes": 0
+          "writes": 3
         },
         {
           "reads": 1,
@@ -9831,13 +9913,13 @@
           "writes": 1
         }
       ],
-      "outsideReads": 13,
-      "outsideWrites": 1,
+      "outsideReads": 16,
+      "outsideWrites": 4,
       "role": "code",
       "testRunners": [
         "python"
       ],
-      "testedBy": 2,
+      "testedBy": 3,
       "unresolvedSites": 0
     }
   ],
@@ -11513,8 +11595,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "6bebc9ae3fee33ceaa94382c1c55c4aeef8d242a",
-    "tracked": 859
+    "commit": "0b72cb94f97939c76af8c7f2ab4dadbc9cd0d313",
+    "tracked": 863
   },
   "landings": [
     {
@@ -11794,6 +11876,11 @@
         {
           "by": "crates/portlight-chart/src/assets.rs",
           "call": "include_str",
+          "confidence": "ast"
+        },
+        {
+          "by": "tools/build_hf_art_dataset.py",
+          "call": "literal",
           "confidence": "ast"
         },
         {
@@ -12700,6 +12787,28 @@
     {
       "readers": [
         {
+          "by": "tools/build_hf_art_dataset.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "hf/portlight-bounty-landing-art/README.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tools/build_hf_art_dataset.py",
+          "call": "literal",
+          "confidence": "ast"
+        }
+      ],
+      "target": "hf/portlight-bounty-landing-art/metadata.jsonl",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "tools/parity/check.py",
           "call": "literal",
           "confidence": "ast"
@@ -12887,6 +12996,18 @@
     {
       "readers": [
         {
+          "by": "tools/test_build_hf_art_dataset.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tools/build_hf_art_dataset.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
           "by": "godot/assets/landing/MANIFEST.json",
           "call": "configuration",
           "confidence": "config"
@@ -13006,8 +13127,19 @@
   "packagesPublished": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 65,
+  "testFiles": 66,
+  "testsNotRun": [
+    "tools/test_build_hf_art_dataset.py"
+  ],
   "unassigned": [
+    {
+      "hash": "99613ac3501e5fb0c4b3ad965d47b55ef26e31cd82b7811b00e2f9dcbc3b6356",
+      "path": "hf/portlight-bounty-landing-art/README.md"
+    },
+    {
+      "hash": "04c8277c414ca26b03419eecab23687eea16343a09b4178f6998d4c0e6c760e3",
+      "path": "hf/portlight-bounty-landing-art/metadata.jsonl"
+    },
     {
       "hash": "21d5fd749b7c12747cc08b93c99dabff98a757498270e401400c4b069ec6f0ec",
       "path": "playtest/README.md"

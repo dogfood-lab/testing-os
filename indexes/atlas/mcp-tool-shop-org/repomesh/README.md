@@ -1,14 +1,14 @@
 # repomesh: how it works
 
-Mapped at 2026-10-26 from commit d1b1b87 by Atlas 1.26.0.
+Mapped at 2026-11-09 from commit 3c04d96 by Atlas 1.26.0.
 
 ## What this is
 
 18 parts, mostly JavaScript (180 files), CSS (3), TypeScript (2), Astro (1) and shell (1). Work enters through 11 doors; the busiest is ledger-ci, which reaches 9 parts. It publishes @mcptoolshop/repomesh to npm and a container image. It deploys a site to GitHub Pages. People run repomesh. People import @mcptoolshop/repomesh. Other repositories use the RepoMesh verify-release action.
 
-## What changed since 2026-10-25 (2081a4b)
+## What changed since 2026-11-07 (d1b1b87)
 
-Nothing structural changed since 2026-10-25; 15 files changed content.
+Nothing structural changed since 2026-11-07; 7 files changed content.
 
 ## What comes in
 

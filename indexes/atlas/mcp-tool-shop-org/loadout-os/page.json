@@ -48,39 +48,89 @@
       "kind": "part",
       "name": "cli",
       "partLabel": "cli"
+    },
+    {
+      "doors": 2,
+      "importedBy": [],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "hook",
+      "partLabel": "hook"
     }
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 3,
       "assigned": 0,
-      "changed": 19,
+      "changed": 26,
       "moved": 0,
-      "parts": 6,
+      "parts": 4,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
+        "kind": "door",
+        "sentence": "CI now also runs packages/cli/src/tests/pretool.test.ts.",
+        "subjects": [
+          ".github/workflows/ci.yml",
+          "packages/cli/src/tests/pretool.test.ts"
+        ]
+      },
+      {
+        "kind": "door",
+        "sentence": "Release now also runs packages/cli/src/tests/pretool.test.ts.",
+        "subjects": [
+          ".github/workflows/release.yml",
+          "packages/cli/src/tests/pretool.test.ts"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "README.md is now also read by packages/cli/src/tests/pretool.test.ts.",
+        "subjects": [
+          "README.md",
+          "packages/cli/src/tests/pretool.test.ts"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-09-30; 19 files changed content.",
+        "sentence": "3 files added and 26 changed content, across 4 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "532deeed98d8a72bc4c8ada226db1f9024dc5dfb",
-      "generatedAt": "2026-09-30T21:29:07.823Z"
+      "commit": "c838284447d36e0435d2840d3bc7d11c2b186a21",
+      "generatedAt": "2026-11-08T17:43:07.867Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
-  "changesTogether": [],
+  "changesTogether": [
+    {
+      "a": "packages/kernel/src/index.ts",
+      "b": "packages/memories/src/index-gen.ts",
+      "either": 8,
+      "partLabels": [
+        "kernel",
+        "memories"
+      ],
+      "parts": [
+        "kernel",
+        "memories"
+      ],
+      "relation": "b-imports-a",
+      "shared": 4
+    }
+  ],
   "changesTogetherNote": [
+    "1 file changed together with its own test, as expected.",
+    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
     "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
-  "changesTogetherWithTests": 0,
-  "commit": "de45f3eea45d08d8e8532e93960e8aa4e47e633d",
+  "changesTogetherWithTests": 1,
+  "commit": "d4ddd0e4b0f442e2ddbe03eab4958e1d1afde755",
   "defaultBranch": "main",
-  "derived": "9 parts, mostly Markdown (236 files); code in TypeScript (84), CSS (8), JavaScript (7), Astro (4) and PowerShell (1). Work enters through 6 doors; the busiest is CI, which reaches 5 parts. It publishes @mcptoolshop/loadout-os to npm. It deploys a site to GitHub Pages. People run ai-loadout, claude-memories, claude-rules and loadout-os.",
+  "derived": "9 parts, mostly Markdown (236 files); code in TypeScript (88), CSS (8), JavaScript (7), Astro (4) and PowerShell (1). Work enters through 6 doors; the busiest is CI, which reaches 6 parts. It publishes @mcptoolshop/loadout-os to npm. It deploys a site to GitHub Pages. People run ai-loadout, claude-memories, claude-rules and loadout-os.",
   "doors": [
     {
       "builds": [
@@ -114,7 +164,12 @@
         {
           "boundary": "cli",
           "depth": 0,
-          "files": 19
+          "files": 22
+        },
+        {
+          "boundary": "hook",
+          "depth": 0,
+          "files": 1
         },
         {
           "boundary": "kernel",
@@ -124,7 +179,7 @@
         {
           "boundary": "memories",
           "depth": 0,
-          "files": 17
+          "files": 18
         },
         {
           "boundary": "rules",
@@ -138,11 +193,13 @@
         }
       ],
       "runs": [
+        "apps/hook/esbuild.config.mjs",
         "packages/cli/src/tests/console.test.ts",
         "packages/cli/src/tests/dispatch.test.ts",
         "packages/cli/src/tests/doctor.test.ts",
         "packages/cli/src/tests/help.test.ts",
         "packages/cli/src/tests/hook.test.ts",
+        "packages/cli/src/tests/pretool.test.ts",
         "packages/cli/src/tests/refresh.test.ts",
         "packages/cli/src/tests/report.test.ts",
         "packages/cli/src/tests/split.test.ts",
@@ -151,8 +208,8 @@
         "packages/memories/src/tests/",
         "packages/rules/src/tests/"
       ],
-      "runsCount": 12,
-      "runsMore": 31,
+      "runsCount": 14,
+      "runsMore": 33,
       "sends": [
         "uploads coverage to Codecov",
         "deploys the site on a push to main"
@@ -162,7 +219,8 @@
         "on a pull request touching 9 paths",
         "on a push to main touching 9 paths",
         "or by hand"
-      ]
+      ],
+      "untracked": ".claude/loadout/, which is not tracked"
     },
     {
       "builds": [
@@ -183,7 +241,12 @@
         {
           "boundary": "cli",
           "depth": 0,
-          "files": 20
+          "files": 23
+        },
+        {
+          "boundary": "hook",
+          "depth": 0,
+          "files": 1
         },
         {
           "boundary": "kernel",
@@ -193,7 +256,7 @@
         {
           "boundary": "memories",
           "depth": 0,
-          "files": 17
+          "files": 18
         },
         {
           "boundary": "rules",
@@ -202,12 +265,14 @@
         }
       ],
       "runs": [
+        "apps/hook/esbuild.config.mjs",
         "packages/cli/esbuild.config.mjs",
         "packages/cli/src/tests/console.test.ts",
         "packages/cli/src/tests/dispatch.test.ts",
         "packages/cli/src/tests/doctor.test.ts",
         "packages/cli/src/tests/help.test.ts",
         "packages/cli/src/tests/hook.test.ts",
+        "packages/cli/src/tests/pretool.test.ts",
         "packages/cli/src/tests/refresh.test.ts",
         "packages/cli/src/tests/report.test.ts",
         "packages/cli/src/tests/split.test.ts",
@@ -216,8 +281,8 @@
         "packages/memories/src/tests/",
         "packages/rules/src/tests/"
       ],
-      "runsCount": 13,
-      "runsMore": 32,
+      "runsCount": 15,
+      "runsMore": 34,
       "sends": [
         "publishes @mcptoolshop/loadout-os to npm",
         "creates a GitHub release"
@@ -225,7 +290,8 @@
       "stages": [],
       "triggers": [
         "when a tag matching `v*` is pushed"
-      ]
+      ],
+      "untracked": ".claude/loadout/, which is not tracked"
     },
     {
       "checks": [],
@@ -433,6 +499,11 @@
       "to": "rules"
     },
     {
+      "from": "hook",
+      "fromTests": false,
+      "to": "kernel"
+    },
+    {
       "from": "memories",
       "fromTests": false,
       "to": "kernel"
@@ -445,18 +516,19 @@
   ],
   "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-10-19T12:33:11.098Z",
+  "generatedAt": "2026-11-09T15:32:31.337Z",
   "limits": [
-    "6 writes and 10 reads use paths built at run time and are not named here.",
+    "6 writes and 23 reads use paths built at run time and are not named here.",
+    "1 write goes to places this repository does not track, so it is not listed as generated.",
+    "7 writes and 61 reads go to a path their caller passes, not to this repository.",
     "2 writes and 26 reads go to the directory the command is run in, not to this repository.",
-    "1 write and 19 reads go to a path their caller passes, not to this repository.",
-    "5 writes and 12 reads go to the home directory (.ai-loadout/ and .claude/) or a path their caller passes, not to this repository.",
+    "7 writes and 13 reads go to the home directory (.ai-loadout/ and .claude/) or a path their caller passes, not to this repository.",
+    "6 writes and 1 read go to a temporary directory, not to this repository.",
     "5 reads go to the directory the command is run in (.claude/ and MEMORY.md/) or the home directory (.claude/), not to this repository.",
     "2 writes and 3 reads go to the home directory (.ai-loadout/), not to this repository.",
-    "4 writes go to a temporary directory, not to this repository.",
     "1 write and 2 reads go to the directory the command is run in (.claude/, MEMORY.md/ and memory/), the home directory (.claude/) or a path their caller passes, not to this repository.",
-    "1 write goes to the directory the command is run in (.claude/ and memory/) or a path its caller passes, not to this repository.",
-    "3 commands are built at run time and not followed, 2 of them in tests.",
+    "1 write and 1 read go to the directory the command is run in (.claude/ and memory/) or a path their caller passes, not to this repository.",
+    "7 commands are built at run time and not followed, 6 of them in tests.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -484,9 +556,9 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 45,
+  "testFiles": 46,
   "testedBy": {
-    "cli": 12,
+    "cli": 13,
     "hook": 0,
     "site": 0
   },

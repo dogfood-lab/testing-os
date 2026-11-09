@@ -1,6 +1,6 @@
 # world-forge: how it works
 
-Mapped at 2026-10-19 from commit d9cd135 by Atlas 1.26.0.
+Mapped at 2026-11-09 from commit ac9ae98 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-10-19 from commit d9cd135 by Atlas 1.26.0.
 
 ## What changed since 2026-09-30 (69358f1)
 
-Nothing structural changed since 2026-09-30; 1 file added and 2 changed content.
+Nothing structural changed since 2026-09-30; 1 file added and 28 changed content.
 
 ## What comes in
 
@@ -70,17 +70,17 @@ Nothing structural changed since 2026-09-30; 1 file added and 2 changed content.
 
 ## What tends to change together
 
-- **packages/export-godot/src/export.ts** and **packages/export-godot/src/index.ts** changed together in 12 of 15 commits, inside the export-godot part.
-- **packages/schema/src/index.ts** and **packages/schema/src/project.ts** changed together in 7 of 9 commits, inside the schema part.
-- **packages/export-unreal/src/__tests__/cli.test.ts** and **packages/export-unreal/src/export.ts** changed together in 4 of 6 commits, inside the export-unreal part.
-- **packages/export-unreal/src/export.ts** and **packages/export-unreal/src/index.ts** changed together in 4 of 6 commits, inside the export-unreal part.
-- **dogfood/worlds/multi-target-proof.ts** and **packages/export-godot/src/index.ts** changed together in 9 of 14 commits, and the dogfood part imports the export-godot part.
+- **packages/editor/src/panels/ExportModal.tsx** and **packages/editor/src/panels/TemplateManager.tsx** changed together in 5 of 5 commits, inside the editor part.
+- **dogfood/godot-smoke/smoke_load_world.gd** and **dogfood/worlds/multi-target-proof.ts** changed together in 7 of 9 commits, inside the dogfood part.
+- **packages/export-godot/src/export.ts** and **packages/export-godot/src/index.ts** changed together in 10 of 13 commits, inside the export-godot part.
+- **packages/export-ai-rpg/src/content-hash.ts** and **packages/export-ai-rpg/src/export.ts** changed together in 6 of 8 commits, inside the export-ai-rpg part.
+- **packages/schema/src/index.ts** and **packages/schema/src/project.ts** changed together in 6 of 8 commits, inside the schema part.
 
-4 files changed together with their own tests, as expected.
+2 files changed together with their own tests, as expected.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 14 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 8 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -128,7 +128,7 @@ Read those in order to follow one run of world-forge-export end to end. This pat
 ## What this map cannot see
 
 - 9 imports could not be resolved: `dogfood/__tests__/dogfood-runner-exit-codes.test.ts` loads `@ai-rpg-engine/content-schema` when it is installed, which is not declared; `dogfood/godot-smoke/smoke_load_world.gd` imports `res://world.tscn`; `dogfood/run-ai-rpg-smoke.ts` imports `@ai-rpg-engine/content-schema`, which is not declared; and 6 more.
-- 3 writes and 3 reads use paths built at run time and are not named here.
+- 3 writes and 4 reads use paths built at run time and are not named here.
 - 37 writes go to places this repository does not track, so they are not listed as generated.
 - 2 writes and 56 reads go to a path their caller passes, not to this repository.
 - 26 writes go to the directory the command is run in (GodotPack/ and UnrealPack/) or a path their caller passes, not to this repository.
