@@ -1,14 +1,14 @@
 # sense-si: how it works
 
-Mapped at 2026-10-19 from commit c52316e by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit fbcca92 by Atlas 1.26.0.
 
 ## What this is
 
 7 parts, mostly Python (28 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 2 doors; the busiest is CI, which reaches 4 parts. People run ai-eyes.
 
-## What changed since 2026-10-15 (f16e8ea)
+## What changed since 2026-11-11 (c52316e)
 
-Nothing structural changed since 2026-10-15; 2 files changed content.
+Nothing structural changed since 2026-11-11; 1 file changed content.
 
 ## What comes in
 

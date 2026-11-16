@@ -1,14 +1,14 @@
 # codecomfy-vscode: how it works
 
-Mapped at 2026-10-19 from commit ae5d8dc by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit c9cd98b by Atlas 1.26.0.
 
 ## What this is
 
 9 parts, mostly TypeScript (50 files), JavaScript (5), CSS (2) and Astro (1). Work enters through 4 doors; CI and Build and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. It deploys a site to GitHub Pages. People install the codecomfy-vscode extension.
 
-## What changed since 2026-10-15 (5c0bd68)
+## What changed since 2026-11-11 (ae5d8dc)
 
-Nothing structural changed since 2026-10-15; no file changed.
+Nothing structural changed since 2026-11-11; 1 file changed content.
 
 ## What comes in
 
@@ -45,13 +45,9 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-- **src/engines/comfyServerEngine.ts** and **src/extension.ts** changed together in 6 of 8 commits, inside the src part.
-- **src/engines/comfyServerEngine.ts** and **src/types/index.ts** changed together in 5 of 8 commits, inside the src part.
-- **src/extension.ts** and **src/types/index.ts** changed together in 4 of 7 commits, inside the src part.
+No two source files changed together often enough to name.
 
-Confidence is low: fewer than 25 source files reach 10 revisions in the window.
-
-Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
 
 ## What no test touches
 
@@ -88,6 +84,6 @@ Beside the path, src/extension.ts also calls src/logging/logger.ts.
 - 2 writes and 6 reads use paths built at run time and are not named here.
 - 16 writes and 39 reads go to a path their caller passes, not to this repository.
 - 4 commands are built at run time and not followed.
-- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
+- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

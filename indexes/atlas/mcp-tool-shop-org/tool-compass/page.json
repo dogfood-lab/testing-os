@@ -27,24 +27,24 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 1,
       "assigned": 0,
-      "changed": 6,
+      "changed": 10,
       "moved": 0,
-      "parts": 3,
+      "parts": 2,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-15; 6 files changed content.",
+        "sentence": "Nothing structural changed since 2026-11-12; 1 file added and 10 changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "5b2768d1f579d24077e2530b05fb3ae7a0df876c",
-      "generatedAt": "2026-10-15T03:56:21.577Z"
+      "commit": "03a2cf4315de134caedc90124f0e79f81180cc74",
+      "generatedAt": "2026-11-12T08:47:23.869Z"
     },
     "unchanged": true
   },
@@ -53,7 +53,7 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "31d906453472e58d5d141b0ea73e6e990a003c1a",
+  "commit": "a8333ada73aa4a34ec374c7e649f9cbd4bf3bdc1",
   "defaultBranch": "main",
   "derived": "8 parts, mostly Python (46 files), JavaScript (4), shell (4), CSS (2), TypeScript (2) and Astro (1). Work enters through 7 doors; the busiest is CI, which reaches 5 parts. It publishes to PyPI, @mcptoolshop/tool-compass to npm, and a container image. It deploys a site to GitHub Pages. People run tool-compass and tool-compass-ui.",
   "doors": [
@@ -89,7 +89,6 @@
         "backend_client_simple.py",
         "bootstrap.py",
         "chain_indexer.py",
-        "cli.py",
         "compass_config.example.json",
         "config.py",
         "embedder.py",
@@ -97,8 +96,7 @@
         "llms.txt",
         "pyproject.toml",
         "sync_manager.py",
-        "tool_manifest.py",
-        "ui.py"
+        "tool_manifest.py"
       ],
       "pushes": false,
       "reach": [
@@ -129,16 +127,18 @@
         }
       ],
       "runs": [
+        "cli.py",
         "docker-entrypoint.sh",
         "gateway.py",
         "scripts/check-org-urls.sh",
         "scripts/regenerate-scorecard.sh",
         "scripts/verify-metrics.sh",
+        "ui.py",
         "npm/test/",
         "tests/"
       ],
-      "runsCount": 7,
-      "runsMore": 35,
+      "runsCount": 9,
+      "runsMore": 37,
       "sends": [
         "uploads coverage to Codecov",
         "runs the pre-commit hooks",
@@ -177,8 +177,7 @@
         "pyproject.toml",
         "requirements.txt",
         "sync_manager.py",
-        "tool_manifest.py",
-        "ui.py"
+        "tool_manifest.py"
       ],
       "pushes": false,
       "reach": [
@@ -191,10 +190,11 @@
       "runs": [
         "cli.py",
         "docker-entrypoint.sh",
-        "gateway.py"
+        "gateway.py",
+        "ui.py"
       ],
-      "runsCount": 3,
-      "runsMore": 0,
+      "runsCount": 4,
+      "runsMore": 1,
       "sends": [
         "publishes to PyPI and a container image"
       ],
@@ -372,7 +372,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-26T12:33:23.107Z",
+  "generatedAt": "2026-11-16T15:28:30.929Z",
   "limits": [
     "11 writes and 4 reads use paths built at run time and are not named here.",
     "5 writes and 35 reads go to a path their caller passes, not to this repository.",
@@ -498,9 +498,54 @@
           "phrase": "`indexer.py`"
         }
       ]
+    },
+    {
+      "entry": "main",
+      "file": "ui.py",
+      "inner": [],
+      "part": "root",
+      "partLabel": "the repository root",
+      "phrase": "`main`",
+      "steps": [
+        {
+          "name": "load_config",
+          "part": "root",
+          "partLabel": "the repository root",
+          "phrase": "`load_config`"
+        },
+        {
+          "count": 3,
+          "name": null,
+          "part": "root",
+          "partLabel": "the repository root",
+          "phrase": "`embedder.py`"
+        },
+        {
+          "name": "load_config",
+          "part": "root",
+          "partLabel": "the repository root",
+          "phrase": "`load_config`"
+        },
+        {
+          "count": 3,
+          "name": null,
+          "part": "root",
+          "partLabel": "the repository root",
+          "phrase": "`embedder.py`"
+        }
+      ]
     }
   ],
   "startBeside": [
+    {
+      "files": [
+        "indexer.py",
+        "backend_client_simple.py",
+        "sync_manager.py",
+        "ui.py"
+      ],
+      "from": "cli.py"
+    },
     {
       "files": [
         "backend_client_simple.py",
@@ -513,6 +558,7 @@
   "startDoor": ".github/workflows/ci.yml",
   "startHere": [
     ".github/workflows/ci.yml",
+    "cli.py",
     "gateway.py",
     "config.py",
     "tool_manifest.py"

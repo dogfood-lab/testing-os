@@ -1,14 +1,14 @@
 # repo-knowledge: how it works
 
-Mapped at 2026-11-09 from commit df78cdf by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit f6b55f8 by Atlas 1.26.0.
 
 ## What this is
 
 11 parts, mostly Markdown (646 files); code in TypeScript (84), JavaScript (10), CSS (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run rk. People import @mcptoolshop/repo-knowledge.
 
-## What changed since 2026-10-01 (1222602)
+## What changed since 2026-11-11 (df78cdf)
 
-Nothing structural changed since 2026-10-01; 16 files changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

@@ -1,15 +1,14 @@
 # prompt-craft: how it works
 
-Mapped at 2026-10-26 from commit 018f3c9 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 04890b8 by Atlas 1.26.0.
 
 ## What this is
 
 8 parts, mostly Python (112 files), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 5 doors; the busiest is release, which reaches 5 parts. It publishes to PyPI and @mcptoolshop/prompt-crafter to npm. It deploys a site to GitHub Pages. People run pcraft.
 
-## What changed since 2026-09-30 (43f3cfe)
+## What changed since 2026-11-11 (018f3c9)
 
-- src/**/__pycache__ is now read by scripts/mutate_predicates.py.
-- 2 files changed content, across 2 parts.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

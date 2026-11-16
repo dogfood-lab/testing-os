@@ -1,0 +1,438 @@
+{
+  "authored": [
+    ".github/",
+    "docs/",
+    "root"
+  ],
+  "breaks": [
+    {
+      "doors": 4,
+      "importedBy": [
+        "league-standalone"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "league-ledger",
+      "partLabel": "league-ledger"
+    },
+    {
+      "doors": 1,
+      "importedBy": [
+        "league-standalone"
+      ],
+      "importedByTests": [],
+      "kind": "part",
+      "name": "league-core",
+      "partLabel": "league-core"
+    }
+  ],
+  "changes": {
+    "fileCounts": {
+      "added": 0,
+      "assigned": 0,
+      "changed": 0,
+      "moved": 0,
+      "parts": 0,
+      "removed": 0,
+      "unassigned": 0
+    },
+    "items": [
+      {
+        "kind": "counts",
+        "sentence": "Nothing structural changed since 2026-11-16; no file changed.",
+        "subjects": []
+      }
+    ],
+    "since": {
+      "commit": "f713dc44d8485ba92f2e6021fcf01d36152e93d2",
+      "generatedAt": "2026-11-16T06:55:17.425Z"
+    },
+    "unchanged": true
+  },
+  "changesTogether": [
+    {
+      "a": "crates/league-gen/src/feasibility.rs",
+      "b": "crates/league-gen/src/schema.rs",
+      "either": 6,
+      "partLabels": [
+        "league-gen",
+        "league-gen"
+      ],
+      "parts": [
+        "league-gen",
+        "league-gen"
+      ],
+      "relation": "inside",
+      "shared": 6
+    },
+    {
+      "a": "crates/league-relay/src/relay.rs",
+      "b": "crates/league-relay/tests/relay_integration.rs",
+      "either": 19,
+      "partLabels": [
+        null,
+        null
+      ],
+      "parts": [
+        null,
+        null
+      ],
+      "relation": "unassigned",
+      "shared": 17
+    },
+    {
+      "a": "crates/league-gen/src/feasibility.rs",
+      "b": "crates/league-gen/src/generator.rs",
+      "either": 6,
+      "partLabels": [
+        "league-gen",
+        "league-gen"
+      ],
+      "parts": [
+        "league-gen",
+        "league-gen"
+      ],
+      "relation": "inside",
+      "shared": 5
+    },
+    {
+      "a": "crates/league-gen/src/generator.rs",
+      "b": "crates/league-gen/src/schema.rs",
+      "either": 6,
+      "partLabels": [
+        "league-gen",
+        "league-gen"
+      ],
+      "parts": [
+        "league-gen",
+        "league-gen"
+      ],
+      "relation": "inside",
+      "shared": 5
+    },
+    {
+      "a": "crates/league-relay/src/cli.rs",
+      "b": "crates/league-relay/src/error.rs",
+      "either": 9,
+      "partLabels": [
+        null,
+        null
+      ],
+      "parts": [
+        null,
+        null
+      ],
+      "relation": "unassigned",
+      "shared": 6
+    }
+  ],
+  "changesTogetherNote": [
+    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 2 source files reach 10 revisions; the floor rises to 10 when 25 do."
+  ],
+  "changesTogetherWithTests": 0,
+  "commit": "d59d0a16815c57a2d3c525085516b09ab4231d54",
+  "defaultBranch": "main",
+  "derived": "11 parts, mostly Rust (336 files), Python (3), shell (3) and JavaScript (1). Work enters through 6 doors; the busiest is CI, which reaches 8 parts. People run league-relay. xrpl is a command built from vendor/xrpl-rust (nothing ships it).",
+  "doors": [
+    {
+      "checks": [
+        "crates/league-gen/src/lib.rs",
+        "crates/league-relay/src/lib.rs",
+        "crates/league-relay/src/main.rs"
+      ],
+      "checksCount": 3,
+      "checksMore": 0,
+      "file": ".github/workflows/ci.yml",
+      "id": ".github/workflows/ci.yml",
+      "landings": [],
+      "name": "CI",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "league-core",
+          "depth": 0,
+          "files": 8
+        },
+        {
+          "boundary": "league-dice",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "league-gen",
+          "depth": 0,
+          "files": 8
+        },
+        {
+          "boundary": "league-ledger",
+          "depth": 0,
+          "files": 6
+        },
+        {
+          "boundary": "league-season",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "league-standalone",
+          "depth": 0,
+          "files": 5
+        },
+        {
+          "boundary": "league-tui",
+          "depth": 0,
+          "files": 1
+        },
+        {
+          "boundary": "scripts",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runs": [
+        "scripts/check-copy.sh",
+        "scripts/check-testnet-only.sh",
+        "scripts/test-guards.sh",
+        "crates/league-core/src/engine.rs",
+        "crates/league-core/src/lib.rs",
+        "crates/league-core/src/replay.rs",
+        "crates/league-core/tests/",
+        "crates/league-dice/",
+        "crates/league-gen/src/empirical.rs",
+        "crates/league-gen/src/feasibility.rs",
+        "crates/league-gen/src/generator.rs",
+        "crates/league-gen/src/lp.rs",
+        "crates/league-gen/src/rng.rs",
+        "crates/league-gen/src/schema.rs",
+        "crates/league-gen/tests/",
+        "crates/league-ledger/examples/",
+        "crates/league-ledger/src/",
+        "crates/league-ledger/tests/vectors.rs",
+        "crates/league-relay/tests/",
+        "crates/league-season/",
+        "crates/league-standalone/",
+        "crates/league-tui/"
+      ],
+      "runsCount": 22,
+      "runsMore": 26,
+      "sends": [],
+      "stages": [],
+      "triggers": [
+        "on a pull request",
+        "on a push to main touching 9 paths",
+        "or by hand"
+      ]
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "example": true,
+      "file": "crates/league-ledger/Cargo.toml",
+      "id": "crates/league-ledger/Cargo.toml#testnet_escrow_expiry",
+      "kind": "command",
+      "landings": [],
+      "name": "testnet_escrow_expiry",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "league-ledger",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runWith": "cargo run --example testnet_escrow_expiry",
+      "runs": [
+        "crates/league-ledger/examples/testnet_escrow_expiry.rs"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "example": true,
+      "file": "crates/league-ledger/Cargo.toml",
+      "id": "crates/league-ledger/Cargo.toml#testnet_proof",
+      "kind": "command",
+      "landings": [],
+      "name": "testnet_proof",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "league-ledger",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runWith": "cargo run --example testnet_proof",
+      "runs": [
+        "crates/league-ledger/examples/testnet_proof.rs"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "example": true,
+      "file": "crates/league-ledger/Cargo.toml",
+      "id": "crates/league-ledger/Cargo.toml#testnet_requireauth",
+      "kind": "command",
+      "landings": [],
+      "name": "testnet_requireauth",
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "league-ledger",
+          "depth": 0,
+          "files": 3
+        }
+      ],
+      "runWith": "cargo run --example testnet_requireauth",
+      "runs": [
+        "crates/league-ledger/examples/testnet_requireauth.rs"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "crates/league-relay/Cargo.toml",
+      "id": "crates/league-relay/Cargo.toml#league-relay",
+      "kind": "command",
+      "landings": [],
+      "name": "league-relay",
+      "pushes": false,
+      "reach": [],
+      "runs": [
+        "crates/league-relay/src/main.rs"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": []
+    },
+    {
+      "builtFrom": "vendor/xrpl-rust",
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": "vendor/xrpl-rust/Cargo.toml",
+      "id": "vendor/xrpl-rust/Cargo.toml#xrpl",
+      "kind": "command",
+      "landings": [],
+      "name": "xrpl",
+      "pushes": false,
+      "reach": [],
+      "runs": [
+        "vendor/xrpl-rust/src/bin/xrpl.rs"
+      ],
+      "runsCount": 1,
+      "runsMore": 0,
+      "sends": [],
+      "stages": [],
+      "triggers": [],
+      "unshipped": true
+    }
+  ],
+  "duplicates": [],
+  "duplicatesLead": null,
+  "duplicatesNote": [],
+  "edges": [],
+  "engine": "1.26.0",
+  "generated": [],
+  "generatedAt": "2026-11-16T15:18:22.183Z",
+  "limits": [
+    "1 file uses syntax the parser cannot read (crates/league-ledger/tests/vectors/LICENSE-xrpl.js), so what it imports is not known.",
+    "4 writes and 3 reads go to a path their caller passes, not to this repository.",
+    "371 files belong to no part: crates/league-relay/Cargo.toml, crates/league-relay/src/cli.rs, crates/league-relay/src/error.rs and 368 more.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
+  ],
+  "mainDoor": ".github/workflows/ci.yml",
+  "partLabels": {
+    ".github": ".github",
+    "docs": "docs",
+    "league-core": "league-core",
+    "league-dice": "league-dice",
+    "league-gen": "league-gen",
+    "league-ledger": "league-ledger",
+    "league-season": "league-season",
+    "league-standalone": "league-standalone",
+    "league-tui": "league-tui",
+    "root": "the repository root",
+    "scripts": "scripts"
+  },
+  "parts": 11,
+  "readers": [],
+  "repo": "mcp-tool-shop-org/merchant-league",
+  "sequences": [],
+  "startBeside": [
+    {
+      "files": [
+        "crates/league-relay/src/relay.rs"
+      ],
+      "from": "crates/league-relay/src/cli.rs"
+    }
+  ],
+  "startDoor": "crates/league-relay/Cargo.toml#league-relay",
+  "startHere": [
+    "crates/league-relay/src/main.rs",
+    "crates/league-relay/src/lib.rs",
+    "crates/league-relay/src/cli.rs",
+    "crates/league-relay/src/secret.rs",
+    "crates/league-relay/src/seats.rs",
+    "crates/league-relay/src/wording.rs",
+    "crates/league-relay/src/error.rs"
+  ],
+  "startReason": "This path follows league-relay (a command people run) from its entry, since CI runs only tests and checks.",
+  "summary": "Merchant League: a slow-turn trading game for 2 to 6 players, played only on the XRPL Testnet.",
+  "summaryFrom": "person",
+  "testFiles": 36,
+  "testedBy": {
+    "league-core": 5,
+    "league-dice": 1,
+    "league-gen": 7,
+    "league-ledger": 7,
+    "league-season": 1,
+    "league-standalone": 5,
+    "league-tui": 1
+  },
+  "testedCodeParts": 7,
+  "testedInside": [
+    "league-dice",
+    "league-season",
+    "league-tui"
+  ],
+  "unnamedWrites": 0,
+  "unread": [],
+  "unreadCode": [
+    "scripts"
+  ],
+  "unreadCodeUses": "scripts holds only shell files, which this map does not read, so what uses it cannot be seen.",
+  "unreadFiles": 1,
+  "unreadNote": [],
+  "untested": [],
+  "untestedNote": [
+    "league-dice is tested only by the unit tests in its own files.",
+    "league-season is tested only by the unit tests in its own files.",
+    "league-tui is tested only by the unit tests in its own files.",
+    "scripts holds only shell files, which this map does not read, so whether a test touches it cannot be seen."
+  ],
+  "written": 0
+}

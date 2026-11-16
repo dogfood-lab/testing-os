@@ -1,15 +1,14 @@
 # role-os: how it works
 
-Mapped at 2026-10-19 from commit 43e187e by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 80e44bc by Atlas 1.26.0.
 
 ## What this is
 
 15 parts, mostly JavaScript (170 files), Python (30), Astro (2), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run roleos.
 
-## What changed since 2026-10-14 (bd32c74)
+## What changed since 2026-11-11 (43e187e)
 
-- test/live-tool-contracts.test.mjs is now read by tools/conformance-dataset/live-tools/RECEIPT.md.
-- No file changed.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

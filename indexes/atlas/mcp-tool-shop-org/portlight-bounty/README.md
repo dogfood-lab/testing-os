@@ -1,14 +1,14 @@
 # portlight-bounty: how it works
 
-Mapped at 2026-11-09 from commit 0b72cb9 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 6e2c0db by Atlas 1.26.0.
 
 ## What this is
 
 12 parts, mostly Rust (83 files), Python (15), CSS (2), JavaScript (2), TypeScript (2), Astro (1), GDScript (1), PowerShell (1) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 6 parts. It deploys a site to GitHub Pages. People run portlight. People run the game. gen_placeholders is a command built from crates/portlight-chart (nothing ships it).
 
-## What changed since 2026-11-05 (a4efd53)
+## What changed since 2026-11-11 (0b72cb9)
 
-Nothing structural changed since 2026-11-05; no file changed.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

@@ -32,12 +32,8 @@
       "externals": 0,
       "files": [
         {
-          "hash": "52f7db80e5c23076b9a372934486a7dfaebf6c54c0ce7fdc768560f8d321a6ac",
+          "hash": "6ea7a97c54ec8faa1b554490addd50915b37d510df6ec703567661b7f1681ce3",
           "path": ".github/workflows/ci.yml"
-        },
-        {
-          "hash": "a668c160820b7e4c2e41e19b3f710c6ac711536302067665c5252785890c9cda",
-          "path": ".github/workflows/pages.yml"
         }
       ],
       "globs": [
@@ -153,35 +149,35 @@
           "path": "LICENSE"
         },
         {
-          "hash": "649d6e06d1dff63676357da64a173eddab56c06b7dab9685aa02d8188102f9fc",
+          "hash": "6fc446e406ab1b697ab4b2de9be932268bde5b31c852d011ce8e00b3baab73ac",
           "path": "README.es.md"
         },
         {
-          "hash": "ad590cf86af6e6f0843923a1020943c99c86108b6937d904c587be6d0189f94d",
+          "hash": "4366691619dbe5f9392565850c0283e0d7f8f5c4909e767dff441b70bc5473d0",
           "path": "README.fr.md"
         },
         {
-          "hash": "00cb9337cb6ad9c5e92f3a26c480af13814ac9b7da38e89819412b9c534a036b",
+          "hash": "deda35aad4bd0de864a546a16a914ef90e6d37d88de75fda8a61a380fc275833",
           "path": "README.hi.md"
         },
         {
-          "hash": "18c9fcfb8b0f0d0a739c85218bffc167289cdabc06f92f36178864c505d353b3",
+          "hash": "b85b8e53999bb46733dee7d78648b16e2f2fc1e3d21cdb64e6867efd56cb6dfd",
           "path": "README.it.md"
         },
         {
-          "hash": "30a899288879410bcaf9562868fe4a650dbdf7ff90fb3108bb56c5d42a39bc15",
+          "hash": "f35144d652bffcae007da3c61a8cdf6ba4d276c28d44e1cff2c41a3bfe179ad3",
           "path": "README.ja.md"
         },
         {
-          "hash": "9fc0b6dddc0c85a2f180fb71d3cd45379253f07785ecbec7879a4089797a3121",
+          "hash": "416b3851d77c31dcc10c7162d4b60cc525b4d67b6eff573ddd82d8b04b50494c",
           "path": "README.md"
         },
         {
-          "hash": "132d7bca799b646b28b4242c0dc3af7e2ce71f9594077d1981a94e721be3d06a",
+          "hash": "1f1ba61e8c768e4363766ece96a490c6340b0283543162556d93b589dccbab79",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "30d2c930af20f1a9c1383f4251203ec0341438841c80ff0cb77d549b6f2ffa9d",
+          "hash": "3fb485a05ca92d5811076d10f2b30e3188999ee344b2e30f12b3b81593de8914",
           "path": "README.zh.md"
         },
         {
@@ -280,7 +276,7 @@
           "path": "site/astro.config.mjs"
         },
         {
-          "hash": "01b4c7259256650c2f468783bdaf2d5edbf6ac868174322bc113e2b7667c47bb",
+          "hash": "e09b6ca769f2ee5424e1ca93bb831043a799ef9d49000173c73bc5d7f7a3c564",
           "path": "site/package-lock.json"
         },
         {
@@ -816,155 +812,13 @@
         "actions/setup-node"
       ],
       "usesWorkflowToken": false
-    },
-    {
-      "checksCount": 0,
-      "commands": [
-        {
-          "dir": "site",
-          "job": "build",
-          "programs": [
-            "npm"
-          ],
-          "step": "Install site dependencies"
-        },
-        {
-          "dir": "site",
-          "job": "build",
-          "programs": [
-            "npm"
-          ],
-          "step": "Build site"
-        }
-      ],
-      "elsewhere": [],
-      "file": ".github/workflows/pages.yml",
-      "jobs": [
-        {
-          "basis": "declared",
-          "name": "build",
-          "runsOn": [
-            {
-              "labels": [
-                "ubuntu-latest"
-              ],
-              "platform": {
-                "cpu": "x64",
-                "libc": "glibc",
-                "os": "linux"
-              }
-            }
-          ],
-          "setup": [
-            {
-              "ranges": [
-                {
-                  "from": "22",
-                  "range": ">=22.0.0 <23.0.0-0"
-                }
-              ],
-              "step": "1",
-              "uses": "actions/setup-node",
-              "version": "22"
-            }
-          ]
-        },
-        {
-          "basis": "declared",
-          "environment": {
-            "name": "github-pages"
-          },
-          "name": "deploy",
-          "runsOn": [
-            {
-              "labels": [
-                "ubuntu-latest"
-              ],
-              "platform": {
-                "cpu": "x64",
-                "libc": "glibc",
-                "os": "linux"
-              }
-            }
-          ]
-        }
-      ],
-      "landings": [],
-      "mentions": [],
-      "name": "Deploy site to GitHub Pages",
-      "permissions": [
-        "contents:read",
-        "id-token:write",
-        "pages:write"
-      ],
-      "pushes": false,
-      "reach": [
-        {
-          "boundary": "site",
-          "depth": 0,
-          "files": 5
-        }
-      ],
-      "readers": [],
-      "runs": [
-        {
-          "job": "build",
-          "matched": true,
-          "path": "site/astro.config.mjs",
-          "runKind": "executes",
-          "via": "astro build"
-        },
-        {
-          "directory": true,
-          "job": "build",
-          "matched": true,
-          "path": "site/src/",
-          "runKind": "executes",
-          "via": "astro build"
-        }
-      ],
-      "runsCount": 2,
-      "secrets": [],
-      "sends": {
-        "deploysPages": true,
-        "dispatchesTo": [],
-        "opensIssues": false,
-        "opensIssuesOnFailure": false,
-        "opensPullRequests": false,
-        "publishes": false,
-        "publishesTo": [],
-        "releases": false
-      },
-      "stages": [],
-      "triggers": [
-        {
-          "branches": [
-            "main"
-          ],
-          "event": "push",
-          "paths": [
-            ".github/workflows/pages.yml",
-            "site/**"
-          ]
-        },
-        {
-          "event": "workflow_dispatch"
-        }
-      ],
-      "uses": [
-        "actions/checkout",
-        "actions/deploy-pages",
-        "actions/setup-node",
-        "actions/upload-pages-artifact"
-      ],
-      "usesWorkflowToken": false
     }
   ],
   "edges": [],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "770462b1c1182200832f2f8bc0de9a2542ece062",
-    "tracked": 82
+    "commit": "5492ab8fa37bfc214714c673f9882691fe25c0c2",
+    "tracked": 81
   },
   "landings": [
     {
@@ -995,8 +849,8 @@
       "name": "site",
       "path": "site/package.json",
       "private": true,
-      "role": "installed",
-      "roleFrom": "door Deploy site to GitHub Pages, job build, step Install site dependencies: npm ci in site",
+      "role": "other",
+      "roleFrom": "no workspace lists it and no install step Atlas reads runs in its directory",
       "version": "0.0.1"
     }
   ],
@@ -1009,7 +863,7 @@
       "name": "@astrojs/starlight",
       "purl": "pkg:npm/%40astrojs/starlight",
       "range": "^0.42.1",
-      "version": "0.42.6",
+      "version": "0.42.11",
       "versionFrom": "site/package-lock.json"
     },
     {
@@ -1039,7 +893,7 @@
       "name": "astro",
       "purl": "pkg:npm/astro",
       "range": "^7.3.3",
-      "version": "7.3.3",
+      "version": "7.4.11",
       "versionFrom": "site/package-lock.json"
     },
     {

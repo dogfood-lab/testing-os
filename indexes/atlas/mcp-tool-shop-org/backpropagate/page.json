@@ -73,47 +73,31 @@
     "fileCounts": {
       "added": 0,
       "assigned": 0,
-      "changed": 1,
+      "changed": 6,
       "moved": 0,
-      "parts": 1,
+      "parts": 2,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
-        "kind": "landing",
-        "sentence": ".github/workflows/*.yml is now read by scripts/check_doc_drift.py.",
-        "subjects": [
-          ".github/workflows/*.yml",
-          "scripts/check_doc_drift.py"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "backpropagate/**/*.py is now read by tests/test_error_codes_catalog.py.",
-        "subjects": [
-          "backpropagate/**/*.py",
-          "tests/test_error_codes_catalog.py"
-        ]
-      },
-      {
         "kind": "counts",
-        "sentence": "1 file changed content, across 1 part.",
+        "sentence": "Nothing structural changed since 2026-11-13; 6 files changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "88625c9aa7ff3bd5877a4684f7dbe3c1e040b686",
-      "generatedAt": "2026-10-15T03:14:15.382Z"
+      "commit": "e0f857089b6549c1de91a3e2b0ecfd25bc0c7c0d",
+      "generatedAt": "2026-11-13T00:10:31.764Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [],
   "changesTogetherNote": [
     "Window: 180 days; a pair counts from 10 shared commits, since 27 source files reach 10 revisions; the floor falls to 3 when fewer than 20 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "9b93de02608e71023a59429e6cb239db2d60ed9a",
+  "commit": "232939fdd3131f5848bd8b616e8c81eefda5c763",
   "defaultBranch": "main",
   "derived": "13 parts, mostly Python (273 files), shell (11), Astro (2), CSS (2), JavaScript (2) and TypeScript (2). Work enters through 13 doors; the busiest is CI, which reaches 6 parts. It publishes to npm and PyPI, and a container image. It deploys a site to GitHub Pages. People run backprop and backpropagate.",
   "doors": [
@@ -578,7 +562,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-26T12:28:34.970Z",
+  "generatedAt": "2026-11-16T15:12:30.834Z",
   "limits": [
     "56 import sites name a declared dependency that shares its name with a local module (datasets); they are read as the dependency, which is not in this repository.",
     "16 imports could not be resolved: `backpropagate/trainer.py` imports a path built at run time; `tests/test_fp8_smoke.py` imports a path built at run time; `tests/test_full_ft_offload_smoke.py` imports a path built at run time; and 13 more.",

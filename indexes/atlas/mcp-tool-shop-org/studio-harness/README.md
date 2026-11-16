@@ -1,6 +1,6 @@
 # studio-harness: how it works
 
-Mapped at 2026-11-09 from commit 8055ea3 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit f80547d by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,9 +8,9 @@ Integration harness for Attestia, Cognate, RepoMesh and interlock, tested togeth
 
 5 parts, mostly JavaScript (2 files). Work enters through 1 door; the busiest is CI, which reaches 2 parts.
 
-## What changed since 2026-10-24 (3221d02)
+## What changed since 2026-11-11 (8055ea3)
 
-Nothing structural changed since 2026-10-24; 8 files changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

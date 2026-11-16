@@ -64,74 +64,45 @@
     "fileCounts": {
       "added": 0,
       "assigned": 0,
-      "changed": 4,
+      "changed": 0,
       "moved": 0,
-      "parts": 2,
+      "parts": 0,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
-        "kind": "landing",
-        "sentence": "fixtures/bad/batch.bad-*.jsonl is now written by scripts/generate-batch-bad-fixtures.ts.",
-        "subjects": [
-          "fixtures/bad/batch.bad-*.jsonl",
-          "scripts/generate-batch-bad-fixtures.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "fixtures/bad/external.bad-*.jsonl is now written by scripts/generate-external-bad-fixtures.ts.",
-        "subjects": [
-          "fixtures/bad/external.bad-*.jsonl",
-          "scripts/generate-external-bad-fixtures.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "fixtures/bad/multi-step-external.bad-*.jsonl is now written by scripts/generate-multi-step-external-bad-fixtures.ts.",
-        "subjects": [
-          "fixtures/bad/multi-step-external.bad-*.jsonl",
-          "scripts/generate-multi-step-external-bad-fixtures.ts"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 1 more new writer or reader of a place.",
-        "subjects": []
-      },
-      {
         "kind": "counts",
-        "sentence": "4 files changed content, across 2 parts.",
+        "sentence": "Nothing structural changed since 2026-11-12; no file changed.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "aa93d580e049ce1c883bc7646d0d47ab015daa29",
-      "generatedAt": "2026-09-30T21:29:25.497Z"
+      "commit": "ce06a6db19c5036966709fb0116f6705a136ee21",
+      "generatedAt": "2026-11-12T00:55:45.687Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [
     {
-      "a": "scripts/build-pytorch-helper-fixtures.mjs",
-      "b": "test/import-pytorch-helper.test.ts",
-      "either": 6,
+      "a": "src/import-observer.ts",
+      "b": "src/reconcile.ts",
+      "either": 8,
       "partLabels": [
-        "scripts",
-        "test"
+        "src",
+        "src"
       ],
       "parts": [
-        "scripts",
-        "test"
+        "src",
+        "src"
       ],
-      "relation": "none",
+      "relation": "inside",
       "shared": 6
     },
     {
-      "a": "src/schema-loader.ts",
-      "b": "src/validate.ts",
-      "either": 11,
+      "a": "src/bin/bp.ts",
+      "b": "src/reconcile.ts",
+      "either": 8,
       "partLabels": [
         "src",
         "src"
@@ -141,61 +112,15 @@
         "src"
       ],
       "relation": "inside",
-      "shared": 9
-    },
-    {
-      "a": "src/general-engine.ts",
-      "b": "src/schema-loader.ts",
-      "either": 13,
-      "partLabels": [
-        "src",
-        "src"
-      ],
-      "parts": [
-        "src",
-        "src"
-      ],
-      "relation": "inside",
-      "shared": 9
-    },
-    {
-      "a": "src/general-engine.ts",
-      "b": "src/validate.ts",
-      "either": 13,
-      "partLabels": [
-        "src",
-        "src"
-      ],
-      "parts": [
-        "src",
-        "src"
-      ],
-      "relation": "inside",
-      "shared": 9
-    },
-    {
-      "a": "scripts/build-pytorch-helper-fixtures.mjs",
-      "b": "scripts/extract/pytorch.py",
-      "either": 9,
-      "partLabels": [
-        "scripts",
-        "scripts"
-      ],
-      "parts": [
-        "scripts",
-        "scripts"
-      ],
-      "relation": "inside",
-      "shared": 6
+      "shared": 5
     }
   ],
   "changesTogetherNote": [
-    "1 file changed together with its own test, as expected.",
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 8 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
-  "changesTogetherWithTests": 1,
-  "commit": "e1d9d4aac6e5962997a175c60b7602cac9984f7a",
+  "changesTogetherWithTests": 0,
+  "commit": "2a13f687ae3f3aa95ad28659fb2db61cee13e7dc",
   "defaultBranch": "main",
   "derived": "10 parts, mostly JSON data (242 files); code in TypeScript (148), Python (5), JavaScript (4), CSS (2) and Astro (1). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run bp. People import @mcptoolshop/backprop-trace.",
   "doors": [
@@ -1000,7 +925,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-19T12:30:18.326Z",
+  "generatedAt": "2026-11-16T15:11:42.033Z",
   "limits": [
     "1 import site names a declared dependency that shares its name with a local module (jax); it is read as the dependency, which is not in this repository.",
     "15 writes and 11 reads use paths built at run time and are not named here.",

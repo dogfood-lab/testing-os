@@ -1,14 +1,14 @@
 # mcp-tool-registry: how it works
 
-Mapped at 2026-10-19 from commit 8ca0d25 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 1dd2b78 by Atlas 1.26.0.
 
 ## What this is
 
 13 parts, mostly JavaScript (17 files), CSS (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Operations each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People import @mcptoolshop/mcp-tool-registry.
 
-## What changed since 2026-09-30 (2bb195f)
+## What changed since 2026-11-11 (8ca0d25)
 
-Nothing structural changed since 2026-09-30; 3 files changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

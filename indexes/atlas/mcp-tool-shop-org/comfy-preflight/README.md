@@ -1,16 +1,14 @@
 # comfy-preflight: how it works
 
-Mapped at 2026-10-26 from commit ee223cd by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 2478f2f by Atlas 1.26.0.
 
 ## What this is
 
 8 parts, mostly Python (33 files), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run comfy-preflight.
 
-## What changed since 2026-09-30 (d8e4911)
+## What changed since 2026-11-11 (ee223cd)
 
-- src/comfy_preflight/**/*.py is now read by tests/test_no_assert_in_library.py.
-- tests/**/*.py is now read by tests/test_fixtures_are_self_contained.py.
-- 2 files changed content, across 2 parts.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

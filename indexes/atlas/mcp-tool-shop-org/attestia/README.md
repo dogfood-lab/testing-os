@@ -1,18 +1,14 @@
 # attestia: how it works
 
-Mapped at 2026-10-26 from commit 57d5745 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit ed4d32f by Atlas 1.26.0.
 
 ## What this is
 
 23 parts, mostly TypeScript (411 files), JavaScript (3), CSS (2) and Astro (1). Work enters through 5 doors; Publish to GHCR and Release each reach 16 parts, and Publish to GHCR is followed because it comes first by name. It publishes @mcptoolshop/attestia to npm and a container image. It deploys a site to GitHub Pages. People import @mcptoolshop/attestia.
 
-## What changed since 2026-10-15 (4ce59c2)
+## What changed since 2026-11-11 (57d5745)
 
-- CI now also runs packages/attestia/tests/, packages/event-store/tests/torn-tail-resume.test.ts and packages/node/tests/zod-schemas.test.ts.
-- Publish to GHCR now also starts on a `workflow_call` event.
-- Release now also runs packages/event-store/tests/torn-tail-resume.test.ts, packages/node/src/main.ts and packages/node/tests/zod-schemas.test.ts.
-- And 1 more change to a door.
-- 5 files added and 44 changed content, across 12 parts.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

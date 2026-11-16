@@ -1,15 +1,14 @@
 # plain-sight: how it works
 
-Mapped at 2026-10-19 from commit 67b4009 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 04c4130 by Atlas 1.26.0.
 
 ## What this is
 
 5 parts, mostly Python (9 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 4 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. People run plain-sight and plain-sight-mcp.
 
-## What changed since 2026-09-30 (cf9b6eb)
+## What changed since 2026-11-11 (67b4009)
 
-- CI now also runs tests/.
-- 1 file changed content, across 1 part.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

@@ -1,14 +1,14 @@
 # cognate: how it works
 
-Mapped at 2026-11-02 from commit 90d8b20 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 0d8a92f by Atlas 1.26.0.
 
 ## What this is
 
 14 parts, mostly TypeScript (119 files), JavaScript (5), CSS (2) and Astro (1). Work enters through 5 doors; CI, Publish to GHCR and Release each reach 9 parts, and CI is followed because a pull request goes through it. It publishes @mcptoolshop/cognate to npm and a container image. It deploys a site to GitHub Pages. People import @mcptoolshop/cognate.
 
-## What changed since 2026-10-28 (f3f8a28)
+## What changed since 2026-11-11 (90d8b20)
 
-Nothing structural changed since 2026-10-28; 23 files changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

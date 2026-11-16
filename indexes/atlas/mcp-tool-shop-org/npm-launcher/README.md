@@ -1,14 +1,14 @@
 # npm-launcher: how it works
 
-Mapped at 2026-10-26 from commit 1957985 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 280a643 by Atlas 1.26.0.
 
 ## What this is
 
 10 parts, mostly JavaScript (15 files), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 10 doors; the busiest is CI, which reaches 3 parts. It publishes @mcptoolshop/npm-launcher, @mcptoolshop/backpropagate (examples/backpropagate), @mcptoolshop/sovereignty (examples/sovereignty), @mcptoolshop/xrpl-camp (examples/xrpl-camp) and @mcptoolshop/xrpl-lab (examples/xrpl-lab) to npm. It deploys a site to GitHub Pages. People run backpropagate, mcptoolshop-launch, sovereignty, xrpl-camp and xrpl-lab. People import @mcptoolshop/npm-launcher.
 
-## What changed since 2026-10-22 (51a04b3)
+## What changed since 2026-11-11 (1957985)
 
-Nothing structural changed since 2026-10-22; 22 files changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

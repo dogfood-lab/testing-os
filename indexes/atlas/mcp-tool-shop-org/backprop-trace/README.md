@@ -1,18 +1,14 @@
 # backprop-trace: how it works
 
-Mapped at 2026-10-19 from commit e1d9d4a by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 2a13f68 by Atlas 1.26.0.
 
 ## What this is
 
 10 parts, mostly JSON data (242 files); code in TypeScript (148), Python (5), JavaScript (4), CSS (2) and Astro (1). Work enters through 7 doors; ci and Release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run bp. People import @mcptoolshop/backprop-trace.
 
-## What changed since 2026-09-30 (aa93d58)
+## What changed since 2026-11-12 (ce06a6d)
 
-- fixtures/bad/batch.bad-*.jsonl is now written by scripts/generate-batch-bad-fixtures.ts.
-- fixtures/bad/external.bad-*.jsonl is now written by scripts/generate-external-bad-fixtures.ts.
-- fixtures/bad/multi-step-external.bad-*.jsonl is now written by scripts/generate-multi-step-external-bad-fixtures.ts.
-- And 1 more new writer or reader of a place.
-- 4 files changed content, across 2 parts.
+Nothing structural changed since 2026-11-12; no file changed.
 
 ## What comes in
 
@@ -57,17 +53,12 @@ ci writes nothing this map can see.
 
 ## What tends to change together
 
-- **scripts/build-pytorch-helper-fixtures.mjs** and **test/import-pytorch-helper.test.ts** changed together in 6 of 6 commits, though neither part imports the other.
-- **src/schema-loader.ts** and **src/validate.ts** changed together in 9 of 11 commits, inside the src part.
-- **src/general-engine.ts** and **src/schema-loader.ts** changed together in 9 of 13 commits, inside the src part.
-- **src/general-engine.ts** and **src/validate.ts** changed together in 9 of 13 commits, inside the src part.
-- **scripts/build-pytorch-helper-fixtures.mjs** and **scripts/extract/pytorch.py** changed together in 6 of 9 commits, inside the scripts part.
-
-1 file changed together with its own test, as expected.
+- **src/import-observer.ts** and **src/reconcile.ts** changed together in 6 of 8 commits, inside the src part.
+- **src/bin/bp.ts** and **src/reconcile.ts** changed together in 5 of 8 commits, inside the src part.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 8 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 

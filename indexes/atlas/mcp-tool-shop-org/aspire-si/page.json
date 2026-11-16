@@ -45,20 +45,20 @@
       "assigned": 0,
       "changed": 4,
       "moved": 0,
-      "parts": 4,
+      "parts": 2,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-11-09; 4 files changed content.",
+        "sentence": "Nothing structural changed since 2026-11-12; 4 files changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "93ba61801e84f785ee85db84a6caaeb11d846966",
-      "generatedAt": "2026-11-09T04:16:58.093Z"
+      "commit": "78ae66688aadf1905fe46cbd1b8ee32a7574cd1f",
+      "generatedAt": "2026-11-12T18:13:38.319Z"
     },
     "unchanged": true
   },
@@ -81,7 +81,7 @@
     {
       "a": "examples/verifier-distill/s2_grpo_smoke.py",
       "b": "tests/test_verifier_s2.py",
-      "either": 19,
+      "either": 20,
       "partLabels": [
         "examples",
         "tests"
@@ -115,9 +115,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 4 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 1,
-  "commit": "5407b37077609fba91312dc98ef461453309f306",
+  "commit": "3526218dd0ecc147ea25f5d3bc94acd7ac93cd58",
   "defaultBranch": "main",
-  "derived": "8 parts, mostly Python (182 files), shell (11), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run aspire.",
+  "derived": "8 parts, mostly Python (185 files), shell (11), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run aspire.",
   "doors": [
     {
       "checks": [
@@ -140,7 +140,7 @@
         {
           "boundary": "examples",
           "depth": 0,
-          "files": 34
+          "files": 35
         },
         {
           "boundary": "integrations",
@@ -150,7 +150,7 @@
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 81
+          "files": 83
         }
       ],
       "runs": [
@@ -274,12 +274,12 @@
   ],
   "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-11-09T15:30:44.489Z",
+  "generatedAt": "2026-11-16T15:10:54.569Z",
   "limits": [
     "3 import sites name a declared dependency that shares its name with a local module (openai); they are read as the dependency, which is not in this repository.",
     "3 imports could not be resolved: `aspire/cli.py` imports a path built at run time; `examples/verifier-distill/s2_v11_config.py` imports a path built at run time; `tests/test_cli_errors.py` imports a path built at run time.",
-    "13 writes and 32 reads use paths built at run time and are not named here.",
-    "63 writes and 102 reads go to a path their caller passes, not to this repository.",
+    "13 writes and 33 reads use paths built at run time and are not named here.",
+    "65 writes and 105 reads go to a path their caller passes, not to this repository.",
     "1 read goes to the home directory (.cache/), not to this repository.",
     "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
@@ -330,10 +330,10 @@
   ],
   "summary": "ASPIRE training system (student, critic, teachers) with a training-dynamics export for ScalarScope",
   "summaryFrom": "person",
-  "testFiles": 83,
+  "testFiles": 85,
   "testedBy": {
     "aspire": 49,
-    "examples": 13,
+    "examples": 15,
     "integrations": 21
   },
   "testedCodeParts": 3,

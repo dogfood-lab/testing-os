@@ -1,14 +1,14 @@
 # knowledge-core: how it works
 
-Mapped at 2026-10-19 from commit d03c40c by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit f66c28a by Atlas 1.26.0.
 
 ## What this is
 
 6 parts, mostly TypeScript (17 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages.
 
-## What changed since 2026-10-01 (ba4ad42)
+## What changed since 2026-11-11 (d03c40c)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

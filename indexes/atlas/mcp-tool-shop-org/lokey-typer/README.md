@@ -1,6 +1,6 @@
 # lokey-typer: how it works
 
-Mapped at 2026-10-19 from commit d3120c3 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit bbe2cb1 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,9 +8,9 @@ LoKey Typer is a calm typing practice app: a browser client, a Windows shell for
 
 12 parts, mostly TypeScript (88 files), JavaScript (16), Python (9), C# (7), HTML (4) and CSS (3). Work enters through 3 doors; the busiest is CI, which reaches 6 parts. It publishes a container image. It deploys a site to GitHub Pages.
 
-## What changed since 2026-10-15 (c01213c)
+## What changed since 2026-11-13 (4390910)
 
-Nothing structural changed since 2026-10-15; 5 files changed content.
+Nothing structural changed since 2026-11-13; no file changed.
 
 ## What comes in
 

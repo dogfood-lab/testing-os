@@ -1,14 +1,14 @@
 # saints-mile: how it works
 
-Mapped at 2026-10-19 from commit 7164c2f by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 18fed81 by Atlas 1.26.0.
 
 ## What this is
 
 6 parts, mostly Rust (109 files), JavaScript (3), CSS (2), TypeScript (2), Astro (1), PowerShell (1) and shell (1). Work enters through 4 doors; CI and Release Binaries each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to crates.io. It deploys a site to GitHub Pages. People run saints-mile.
 
-## What changed since 2026-10-01 (f161838)
+## What changed since 2026-11-11 (7164c2f)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

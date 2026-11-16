@@ -1,6 +1,6 @@
 # si-rpg-engine: how it works
 
-Mapped at 2026-10-19 from commit 06c9367 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit c5aa28f by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,9 +8,9 @@ Deterministic 3D RPG tick: the model proposes, a checker admits, and the host dr
 
 17 parts, mostly JSON data (619 files) and Markdown (108); code in JavaScript (141), Rust (6), TypeScript (3), shell (3), CSS (2), Astro (1) and HTML (1). Work enters through 15 doors; the busiest is CI, which reaches 9 parts. It deploys a site to GitHub Pages. People run host, load, play and replay. bench, host, load, play, propose, replay and write-golden are commands of a private package (nothing ships them).
 
-## What changed since 2026-09-30 (07894f1)
+## What changed since 2026-11-12 (25c0939)
 
-Nothing structural changed since 2026-09-30; no file changed.
+Nothing structural changed since 2026-11-12; no file changed.
 
 ## What comes in
 

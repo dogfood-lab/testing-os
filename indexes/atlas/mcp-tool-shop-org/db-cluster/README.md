@@ -1,14 +1,14 @@
 # db-cluster: how it works
 
-Mapped at 2026-10-19 from commit 0ae53ee by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 3497006 by Atlas 1.26.0.
 
 ## What this is
 
 13 parts, mostly TypeScript (291 files), JavaScript (17), CSS (2), Astro (1) and HTML (1). Work enters through 9 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run db-cluster and db-cluster-mcp. People import @mcptoolshop/db-cluster.
 
-## What changed since 2026-10-01 (193d70c)
+## What changed since 2026-11-11 (0ae53ee)
 
-Nothing structural changed since 2026-10-01; 6 files changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

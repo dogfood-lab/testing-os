@@ -36,7 +36,7 @@
           "path": ".github/workflows/pages.yml"
         },
         {
-          "hash": "62e1d3edf63ed8367d4dc87f5c4c2a63b748bd5e867bf181e323fccaeb3a7495",
+          "hash": "5ad12cf7a1b47fb7dd85db4056ada3cba9e8bcffd52da55be9c7fd72ee23f126",
           "path": ".github/workflows/verify.yml"
         }
       ],
@@ -1698,15 +1698,15 @@
           "path": "SHIP_GATE.md"
         },
         {
-          "hash": "de4325d0169bc1ff14522dce5861097a7db02ad842dbff98a5fec9d1eb58f310",
+          "hash": "443b88b34c52eadf501723d0cf145bc7db53267187c5900a090e0affd8b6210d",
           "path": "index.html"
         },
         {
-          "hash": "cfd158b837bfe5771852ecbbe7d7300f1b110f467d5819c85aad74c2d039aee6",
+          "hash": "8ca2170f04dbf3898916538f41a4bc01364c48438c53a75a34140e5c5b7426a1",
           "path": "index.json"
         },
         {
-          "hash": "3fe18fd8f96022df83d2caa05533227254f3ea537ed61a526ae0a2239f310ffe",
+          "hash": "d4e1cdca40a698ff3d5752eb87c89339921e45ccf32414a95202ff7f1e31dbf9",
           "path": "index.md"
         },
         {
@@ -3776,7 +3776,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "ac527f9b044f6b88938a222c4419d440d3daf4201a50800a41561f7ea7fec26e",
+          "hash": "ec9849989cf9612933482bab29e81b28e09f70aeafd41f4b711bb53e3e343526",
           "importNames": [
             {
               "form": "import",
@@ -3832,16 +3832,35 @@
           "path": "site/astro.config.mjs"
         },
         {
-          "hash": "536825ce0f394a9c53053dc0bf8e8ab099613f23dbad052d0d5367442e0a6aad",
+          "hash": "10c42602490b636f3e6f6d44b17266748af12c573e2a98361e37c1fe4b5b52b2",
           "path": "site/package-lock.json"
         },
         {
-          "hash": "9c39e620ebae2c5718ecd8c6188bd3451409a614ec8f5308dc15d5fd886e5b91",
+          "hash": "31d3852cd6ba2d4b46644c2c6838f3521238ec8cf4b33919ed4ebc902f337350",
           "path": "site/package.json"
         },
         {
           "hash": "102cf8d6fdc6d055a8656ae423e140b08384318a944b8487b7d6fef04749a708",
           "path": "site/public/favicon.svg"
+        },
+        {
+          "hash": "3e69695987f062ce2159f248aecd689515ac5598061cd64a1ed68be9bb827215",
+          "path": "site/public/results/etv-narrator-local-vs-cloud.svg"
+        },
+        {
+          "hash": "815b9543d8d3b14e3aa51dc92ff5040b3efb0c6a35bf3ab3704bb0066e00e8ce",
+          "path": "site/public/results/etv-narrator-speed-by-hardware.svg"
+        },
+        {
+          "exports": [
+            "chart_cloud",
+            "chart_speed",
+            "head",
+            "main",
+            "text"
+          ],
+          "hash": "2bb104a8e8e65e901813344bcce85dc17997d5bb47690095d35be527e2ca19a8",
+          "path": "site/scripts/etv_narrator_charts.py"
         },
         {
           "hash": "47c0c6b4ab1f94f39f7b75eda070c5442ccabe7dc9f6dd8b9086feaa2b7e30aa",
@@ -3951,6 +3970,14 @@
         {
           "hash": "4ad10c2f66e666e92e0d278484edba9c9d15df22fa677ea843dfe3238c34f86f",
           "path": "site/src/content/docs/newsletter/2026-10-22.md"
+        },
+        {
+          "hash": "b5697d6b09f6a273800ae0948c957012e3f02147001a2012f7942c8beea0ff13",
+          "path": "site/src/content/docs/results/etv-narrator.md"
+        },
+        {
+          "hash": "862a25fe7a3ff1c002cb0c3b4c44595b2f71f538ee31fa7c1236688b1094041b",
+          "path": "site/src/data/etv-narrator.json"
         },
         {
           "hash": "7645efd871fdec693eca3fb3a34bbfcebbbfdfa5ea314d087158f726a773d9ca",
@@ -4104,7 +4131,7 @@
       ],
       "importConfidence": "full",
       "name": "site",
-      "origin": "authored",
+      "origin": "mixed",
       "role": "site",
       "testedBy": 0,
       "unresolvedSites": 0
@@ -8387,8 +8414,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "8ba63d5dd89a37c0ecbee6fe40cf61adf8cf591b",
-    "tracked": 1252
+    "commit": "b16093d2da8994fe5ab8ed47fa41c1faff98f185",
+    "tracked": 1257
   },
   "landings": [
     {
@@ -10941,6 +10968,26 @@
       "writers": []
     },
     {
+      "readers": [],
+      "target": "site/public/results/etv-narrator-local-vs-cloud.svg",
+      "writers": [
+        {
+          "by": "site/scripts/etv_narrator_charts.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
+      "readers": [],
+      "target": "site/public/results/etv-narrator-speed-by-hardware.svg",
+      "writers": [
+        {
+          "by": "site/scripts/etv_narrator_charts.py",
+          "confidence": "ast"
+        }
+      ]
+    },
+    {
       "readers": [
         {
           "by": "site/astro.config.mjs",
@@ -10971,6 +11018,28 @@
         }
       ],
       "target": "site/src/content/docs/newsletter",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs/results",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/scripts/etv_narrator_charts.py",
+          "call": "open",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/data/etv-narrator.json",
       "writers": []
     },
     {
@@ -13044,8 +13113,8 @@
       "manifest": "site/package.json",
       "name": "astro",
       "purl": "pkg:npm/astro",
-      "range": "^7.3.1",
-      "version": "7.3.5",
+      "range": "^7.4.12",
+      "version": "7.4.12",
       "versionFrom": "site/package-lock.json"
     },
     {

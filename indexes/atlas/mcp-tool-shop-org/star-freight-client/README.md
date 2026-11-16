@@ -1,14 +1,14 @@
 # star-freight-client: how it works
 
-Mapped at 2026-10-19 from commit 86e0ff0 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 5b5331e by Atlas 1.26.0.
 
 ## What this is
 
 6 parts, mostly images (74 files) and Markdown (18); code in GDScript (4), CSS (2), TypeScript (2), Astro (1), JavaScript (1), Python (1) and shell (1). Work enters through 3 doors; the busiest is the game, which reaches 2 parts. It deploys a site to GitHub Pages. People run the game.
 
-## What changed since 2026-10-01 (659f5b3)
+## What changed since 2026-11-11 (86e0ff0)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

@@ -1,14 +1,14 @@
 # world-forge: how it works
 
-Mapped at 2026-11-09 from commit ac9ae98 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 023ff9a by Atlas 1.26.0.
 
 ## What this is
 
 15 parts, mostly TypeScript (497 files), Astro (4), JavaScript (4), CSS (3), GDScript (1) and HTML (1). Work enters through 11 doors; the busiest is CI, which reaches 11 parts. It publishes @world-forge/editor (packages/editor), @world-forge/export-ai-rpg (packages/export-ai-rpg), @world-forge/export-godot (packages/export-godot), @world-forge/export-unreal (packages/export-unreal), @world-forge/renderer-2d (packages/renderer-2d) and @world-forge/schema (packages/schema) to npm. It deploys a site to GitHub Pages. People run world-forge-export, world-forge-export-godot and world-forge-export-unreal. People import @world-forge/export-ai-rpg, @world-forge/export-godot, @world-forge/export-unreal, @world-forge/renderer-2d and @world-forge/schema.
 
-## What changed since 2026-09-30 (69358f1)
+## What changed since 2026-11-11 (ac9ae98)
 
-Nothing structural changed since 2026-09-30; 1 file added and 28 changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

@@ -1,15 +1,14 @@
 # audiobooker: how it works
 
-Mapped at 2026-11-09 from commit a72befb by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit d35dff5 by Atlas 1.26.0.
 
 ## What this is
 
 10 parts, mostly Python (131 files), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 7 doors; CI and Publish to GHCR each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to PyPI, @mcptoolshop/audiobooker to npm, and a container image. It deploys a site to GitHub Pages. People run audiobooker. Other repositories use the Audiobooker action.
 
-## What changed since 2026-09-30 (6fcd238)
+## What changed since 2026-11-11 (a72befb)
 
-- .github/workflows/*.yml is now read by tools/check_ci_policy.py.
-- 21 files changed content, across 7 parts.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

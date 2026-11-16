@@ -1,18 +1,14 @@
 # glyphstudio: how it works
 
-Mapped at 2026-11-09 from commit ad36a11 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 8dcb9f5 by Atlas 1.26.0.
 
 ## What this is
 
 15 parts, mostly TypeScript (426 files), Rust (46), JavaScript (20), CSS (4), Astro (1) and HTML (1). Work enters through 4 doors; the busiest is CI, which reaches 4 parts. It deploys a site to GitHub Pages. glyphstudio is a desktop app built from apps/desktop/src-tauri (nothing ships it).
 
-## What changed since 2026-11-08 (65f37a9)
+## What changed since 2026-11-11 (ad36a11)
 
-- docs/showcase/stage47a-test/monk-47a---*x*.png is now written by scripts/test-47a-prompt.mjs.
-- docs/showcase/stage47b-critique/monk-r0---*x*.png is now written by scripts/test-47b-critique-loop.mjs.
-- docs/showcase/stage47b-critique/monk-r1---*x*.png is now written by scripts/test-47b-critique-loop.mjs.
-- And 2 more new writers and readers of places.
-- 11 files changed content, across 2 parts.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

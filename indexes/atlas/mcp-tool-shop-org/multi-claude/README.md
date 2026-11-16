@@ -1,14 +1,14 @@
 # multi-claude: how it works
 
-Mapped at 2026-10-19 from commit 4c5b11e by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 756b1d2 by Atlas 1.26.0.
 
 ## What this is
 
 11 parts, mostly TypeScript (328 files), CSS (3), JavaScript (3), Astro (1) and HTML (1). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. It deploys a site to GitHub Pages. People run multi-claude.
 
-## What changed since 2026-10-01 (5f00fa1)
+## What changed since 2026-11-11 (4c5b11e)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

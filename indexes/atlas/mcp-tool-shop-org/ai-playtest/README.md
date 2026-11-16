@@ -1,15 +1,14 @@
 # ai-playtest: how it works
 
-Mapped at 2026-11-09 from commit 9b7e505 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit d816094 by Atlas 1.26.0.
 
 ## What this is
 
 6 parts, mostly TypeScript (35 files), JavaScript (4), CSS (2) and Astro (1). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. It deploys a site to GitHub Pages. ai-playtest is a command of a private package (nothing ships it).
 
-## What changed since 2026-09-30 (94e69fc)
+## What changed since 2026-11-11 (9b7e505)
 
-- CI now also builds src/rpc-launch.ts.
-- 1 file added and 23 changed content, across 5 parts.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

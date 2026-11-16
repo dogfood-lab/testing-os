@@ -1,14 +1,14 @@
 # prism-verify: how it works
 
-Mapped at 2026-10-26 from commit 025f4b6 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 4dff386 by Atlas 1.26.0.
 
 ## What this is
 
 18 parts, mostly Python (200 files), JavaScript (6), CSS (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 9 parts, and CI is followed because a pull request goes through it. It publishes to PyPI and @mcptoolshop/prism-verify to npm. It deploys a site to GitHub Pages. People run prism.
 
-## What changed since 2026-10-15 (551c163)
+## What changed since 2026-11-11 (025f4b6)
 
-Nothing structural changed since 2026-10-15; 1 file changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

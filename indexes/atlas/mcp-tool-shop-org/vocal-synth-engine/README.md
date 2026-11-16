@@ -1,15 +1,14 @@
 # vocal-synth-engine: how it works
 
-Mapped at 2026-10-19 from commit fda7b3a by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit c887f37 by Atlas 1.26.0.
 
 ## What this is
 
 10 parts, mostly TypeScript (99 files), JavaScript (3), Astro (2), CSS (2), shell (2), HTML (1) and Python (1). Work enters through 15 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run vocal-synth-engine-mcp, vse-analyze, vse-build-preset, vse-compare, vse-gen-vowel-wav, vse-inspect, vse-phonemize, vse-play-score, vse-resynth and vse-score-from-midi. People import @mcptoolshop/vocal-synth-engine.
 
-## What changed since 2026-10-14 (334186e)
+## What changed since 2026-11-12 (8aa9f1c)
 
-- Release now also starts by hand.
-- 7 files changed content, across 4 parts.
+Nothing structural changed since 2026-11-12; no file changed.
 
 ## What comes in
 
@@ -78,7 +77,7 @@ CI writes nothing this map can see.
 
 No two source files changed together often enough to name.
 
-Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits.
 
 ## What no test touches
 
@@ -117,6 +116,6 @@ Read those in order to follow one pull request end to end.
 - cockpit calls src over HTTP at 11 routes, a link no import shows: the map draws it, and no door's reach follows it.
 - scripts calls src over HTTP at 1 route, a link no import shows: the map draws it, and no door's reach follows it.
 - There are a Dockerfile, a fly.toml and a render.yaml that no workflow runs; what deploys from them does so from outside this repository, and is not on this page.
-- Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
+- Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

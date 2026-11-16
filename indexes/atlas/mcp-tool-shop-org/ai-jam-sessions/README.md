@@ -1,17 +1,14 @@
 # ai-jam-sessions: how it works
 
-Mapped at 2026-11-09 from commit 2aa1ca7 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 8f3c7ff by Atlas 1.26.0.
 
 ## What this is
 
 14 parts, mostly JSON data (1554 files) and Markdown (357); code in TypeScript (620), Python (77), JavaScript (32), shell (30), PowerShell (3), Astro (2), CSS (2) and HTML (2). Work enters through 10 doors; CI and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the Hugging Face Hub and npm, a container image, and a record on Zenodo. It deploys a site to GitHub Pages. People run ai-jam-sessions and ai-jam-sessions-mcp. People import @mcptoolshop/ai-jam-sessions.
 
-## What changed since 2026-10-09 (836641e)
+## What changed since 2026-11-11 (2aa1ca7)
 
-- experiments/rollout-arc/p4/runs/summary-*.json is now written by experiments/rollout-arc/p4/scripts/score-curriculum.mts.
-- site/public/america-the-beautiful-m*-*.svg is now written by scripts/render-landing-pianoroll.ts.
-- datasets/jam-actions-v0/records/* is now read by experiments/jam-actions-v0-lora/generate_train_jsonl.py.
-- 16 files changed content, across 3 parts.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 
@@ -72,11 +69,11 @@ Mapped at 2026-11-09 from commit 2aa1ca7 by Atlas 1.26.0.
 
 - **scripts/build-score-clock.mjs** and **scripts/render-piano-bed.mjs** changed together in 4 of 6 commits, inside the scripts part.
 
-5 files changed together with their own tests, as expected.
+4 files changed together with their own tests, as expected.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 10 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 

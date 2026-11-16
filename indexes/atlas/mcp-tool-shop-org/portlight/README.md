@@ -1,14 +1,14 @@
 # portlight: how it works
 
-Mapped at 2026-10-26 from commit 9a49727 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 771ff85 by Atlas 1.26.0.
 
 ## What this is
 
 12 parts, mostly Python (183 files), JavaScript (3), CSS (2), TypeScript (2), Astro (1) and shell (1). Work enters through 6 doors; CI, Release and Release Binaries each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run portlight.
 
-## What changed since 2026-10-01 (4c668d5)
+## What changed since 2026-11-11 (9a49727)
 
-Nothing structural changed since 2026-10-01; 2 files changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

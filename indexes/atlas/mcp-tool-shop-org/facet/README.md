@@ -1,16 +1,14 @@
 # facet: how it works
 
-Mapped at 2026-10-26 from commit 80ff9ac by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit e1f486d by Atlas 1.26.0.
 
 ## What this is
 
 10 parts, mostly Markdown (489 files); code in Python (292), CSS (2), JavaScript (2), TypeScript (2), Astro (1), PowerShell (1) and shell (1). Work enters through 6 doors; the busiest is ci, which reaches 2 parts. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run facet, facet-index and facet-mcp.
 
-## What changed since 2026-09-30 (8d2fa34)
+## What changed since 2026-11-11 (80ff9ac)
 
-- docs/experiments/E73-treatment-0-8-1-report.md is now read by docs/index/facet.db.cert.json.
-- docs/handbook/props-and-rigs.md is now also read by docs/index/facet.db.cert.json.
-- 5 files changed content, across 3 parts.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

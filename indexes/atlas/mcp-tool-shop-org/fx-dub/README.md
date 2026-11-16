@@ -1,14 +1,14 @@
 # fx-dub: how it works
 
-Mapped at 2026-10-26 from commit fb4f362 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit a4d7c77 by Atlas 1.26.0.
 
 ## What this is
 
 9 parts, mostly Python (22 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 5 doors; ci and release each reach 3 parts, and ci is followed because a pull request goes through it. It publishes to PyPI. It deploys a site to GitHub Pages. People run fxdub-dialogue and fxdub-receipt.
 
-## What changed since 2026-09-30 (8bb7ee7)
+## What changed since 2026-11-11 (fb4f362)
 
-Nothing structural changed since 2026-09-30; 9 files changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

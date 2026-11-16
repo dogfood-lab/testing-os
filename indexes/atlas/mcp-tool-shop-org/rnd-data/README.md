@@ -1,6 +1,6 @@
 # rnd-data: how it works
 
-Mapped at 2026-11-09 from commit f7b1cfe by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit f24ee29 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,14 +8,9 @@ The raw data behind the studio's research: every run's receipts and outputs, wit
 
 6 parts, mostly shell (79 files), Python (70), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to PyPI. It deploys a site to GitHub Pages. People run rnd-data.
 
-## What changed since 2026-10-20 (479d651)
+## What changed since 2026-11-12 (b6a3ae3)
 
-- Release (.github/workflows/release.yml) is a new door. It starts when a release is published; or by hand. It runs src/rnd_data/__init__.py, tests/ and verify.sh. It checks src/.
-- README.md is now also read by runs/xrpl-lab-runs--_harness/manifest.json.
-- runs/xrpl-lab-runs--_harness/files/ is now read by runs/xrpl-lab-runs--_harness/manifest.json.
-- runs/xrpl-lab-runs--_harness/files/* is now read by runs/xrpl-lab-runs--_harness/files/capture_ledger.py.
-- And 412 more new writers and readers of places.
-- 423 files added and 6 changed content, across 5 parts.
+Nothing structural changed since 2026-11-12; no file changed.
 
 ## What comes in
 

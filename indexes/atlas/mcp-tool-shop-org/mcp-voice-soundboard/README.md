@@ -1,14 +1,14 @@
 # mcp-voice-soundboard: how it works
 
-Mapped at 2026-10-26 from commit ffab8a5 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 8df81ae by Atlas 1.26.0.
 
 ## What this is
 
 14 parts, mostly Python (209 files), TypeScript (89), CSS (2), Astro (1) and JavaScript (1). Work enters through 9 doors; CI, Publish to GHCR, Publish to npm, @mcptoolshop/voice-soundboard-mcp and voice-soundboard-mcp each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to PyPI, @mcptoolshop/voice-soundboard-core (packages/core) and @mcptoolshop/voice-soundboard-mcp (packages/mcp-server) to npm, and a container image. It deploys a site to GitHub Pages. People run voice-soundboard and voice-soundboard-mcp. People import @mcptoolshop/voice-soundboard-core and @mcptoolshop/voice-soundboard-mcp.
 
-## What changed since 2026-10-15 (1621d92)
+## What changed since 2026-11-11 (ffab8a5)
 
-Nothing structural changed since 2026-10-15; 4 files added and 7 changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

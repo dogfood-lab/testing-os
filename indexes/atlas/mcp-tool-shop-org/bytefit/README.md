@@ -1,14 +1,14 @@
 # bytefit: how it works
 
-Mapped at 2026-10-19 from commit 478a32d by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 1b05a62 by Atlas 1.26.0.
 
 ## What this is
 
 6 parts, mostly TypeScript (49 files), CSS (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 5 doors; ci, Deploy site to GitHub Pages, Release, @mcptoolshop/bytefit and bytefit each reach 1 part, and ci is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run bytefit. People import @mcptoolshop/bytefit.
 
-## What changed since 2026-10-01 (13fd265)
+## What changed since 2026-11-11 (478a32d)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

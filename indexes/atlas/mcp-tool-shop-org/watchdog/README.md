@@ -1,19 +1,18 @@
 # watchdog: how it works
 
-Mapped at 2026-11-09 from commit 770462b by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 5492ab8 by Atlas 1.26.0.
 
 ## What this is
 
-8 parts, mostly PowerShell (34 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 2 doors; ci and Deploy site to GitHub Pages each reach 1 part, and ci is followed because a pull request goes through it. It deploys a site to GitHub Pages.
+8 parts, mostly PowerShell (34 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 1 door; the busiest is ci, which reaches 1 part.
 
-## What changed since 2026-10-15 (c777acc)
+## What changed since 2026-11-13 (d4953d7)
 
-Nothing structural changed since 2026-10-15; 2 files changed content.
+Nothing structural changed since 2026-11-13; no file changed.
 
 ## What comes in
 
 1. **ci.** On a pull request touching 9 paths; on a push touching 9 paths; or by hand. Runs verify.ps1.
-2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 
 ## What happens through ci
 
@@ -22,10 +21,6 @@ Nothing structural changed since 2026-10-15; 2 files changed content.
 ## Who reads the results
 
 ci writes nothing this map can see.
-
-## The other doors
-
-**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site.
 
 ## What breaks what
 

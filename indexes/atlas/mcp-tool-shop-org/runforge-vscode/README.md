@@ -1,14 +1,14 @@
 # runforge-vscode: how it works
 
-Mapped at 2026-10-19 from commit 7bda38c by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit ec1703b by Atlas 1.26.0.
 
 ## What this is
 
 10 parts, mostly TypeScript (90 files), Python (45), JavaScript (3), CSS (2) and Astro (1). Work enters through 4 doors; CI and Build and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. It deploys a site to GitHub Pages. People install the runforge extension.
 
-## What changed since 2026-10-01 (b4242c5)
+## What changed since 2026-11-11 (7bda38c)
 
-Nothing structural changed since 2026-10-01; no file changed.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 
@@ -43,9 +43,7 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-- **src/observability/export-markdown-command.ts** and **src/observability/interpretability-index-command.ts** changed together in 5 of 6 commits, inside the src part.
-
-Confidence is low: fewer than 25 source files reach 10 revisions in the window.
+No two source files changed together often enough to name.
 
 Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
 

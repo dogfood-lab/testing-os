@@ -33,7 +33,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "app",
-      "qualifyingSourceCommits": 18,
+      "qualifyingSourceCommits": 17,
       "rebaseline": null
     },
     {
@@ -49,7 +49,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "assets",
-      "qualifyingSourceCommits": 2,
+      "qualifyingSourceCommits": 1,
       "rebaseline": null
     },
     {
@@ -134,31 +134,52 @@
     },
     {
       "breakage": {
-        "coChangesOnly": [],
+        "coChangesOnly": [
+          "sov_daemon"
+        ],
         "collapsed": false,
         "confidence": "low",
         "importsAndCoChanges": [],
         "importsOnly": []
       },
-      "cohesion": null,
+      "cohesion": 0,
       "cohesionDropped": false,
       "confidence": "low",
       "highWater": null,
       "name": "site",
-      "qualifyingSourceCommits": 16,
+      "qualifyingSourceCommits": 9,
+      "rebaseline": null
+    },
+    {
+      "breakage": {
+        "coChangesOnly": [],
+        "collapsed": false,
+        "confidence": "low",
+        "importsAndCoChanges": [],
+        "importsOnly": [
+          "sov_daemon",
+          "sov_engine",
+          "tests"
+        ]
+      },
+      "cohesion": null,
+      "cohesionDropped": false,
+      "confidence": "low",
+      "highWater": null,
+      "name": "sov_cli",
+      "qualifyingSourceCommits": 13,
       "rebaseline": null
     },
     {
       "breakage": {
         "coChangesOnly": [
-          "sov_transport"
+          "site"
         ],
         "collapsed": false,
         "confidence": "low",
         "importsAndCoChanges": [],
         "importsOnly": [
-          "sov_daemon",
-          "sov_engine",
+          "sov_cli",
           "tests"
         ]
       },
@@ -166,8 +187,8 @@
       "cohesionDropped": false,
       "confidence": "low",
       "highWater": null,
-      "name": "sov_cli",
-      "qualifyingSourceCommits": 23,
+      "name": "sov_daemon",
+      "qualifyingSourceCommits": 19,
       "rebaseline": null
     },
     {
@@ -177,7 +198,9 @@
         "confidence": "low",
         "importsAndCoChanges": [],
         "importsOnly": [
+          "assets",
           "sov_cli",
+          "sov_daemon",
           "tests"
         ]
       },
@@ -185,70 +208,45 @@
       "cohesionDropped": false,
       "confidence": "low",
       "highWater": null,
-      "name": "sov_daemon",
-      "qualifyingSourceCommits": 20,
-      "rebaseline": null
-    },
-    {
-      "breakage": {
-        "coChangesOnly": [],
-        "collapsed": false,
-        "confidence": "low",
-        "importsAndCoChanges": [
-          "tests"
-        ],
-        "importsOnly": [
-          "assets",
-          "sov_cli",
-          "sov_daemon"
-        ]
-      },
-      "cohesion": 0,
-      "cohesionDropped": false,
-      "confidence": "low",
-      "highWater": null,
       "name": "sov_engine",
-      "qualifyingSourceCommits": 16,
-      "rebaseline": null
-    },
-    {
-      "breakage": {
-        "coChangesOnly": [],
-        "collapsed": false,
-        "confidence": "low",
-        "importsAndCoChanges": [
-          "sov_cli"
-        ],
-        "importsOnly": [
-          "sov_daemon",
-          "sov_engine",
-          "tests"
-        ]
-      },
-      "cohesion": 0.571429,
-      "cohesionDropped": false,
-      "confidence": "low",
-      "highWater": null,
-      "name": "sov_transport",
       "qualifyingSourceCommits": 8,
       "rebaseline": null
     },
     {
       "breakage": {
-        "coChangesOnly": [
-          "sov_engine"
-        ],
+        "coChangesOnly": [],
+        "collapsed": false,
+        "confidence": "low",
+        "importsAndCoChanges": [],
+        "importsOnly": [
+          "sov_cli",
+          "sov_daemon",
+          "sov_engine",
+          "tests"
+        ]
+      },
+      "cohesion": null,
+      "cohesionDropped": false,
+      "confidence": "low",
+      "highWater": null,
+      "name": "sov_transport",
+      "qualifyingSourceCommits": 2,
+      "rebaseline": null
+    },
+    {
+      "breakage": {
+        "coChangesOnly": [],
         "collapsed": false,
         "confidence": "low",
         "importsAndCoChanges": [],
         "importsOnly": []
       },
-      "cohesion": 0,
+      "cohesion": null,
       "cohesionDropped": false,
       "confidence": "full",
       "highWater": null,
       "name": "tests",
-      "qualifyingSourceCommits": 43,
+      "qualifyingSourceCommits": 30,
       "rebaseline": null
     }
   ],
@@ -292,7 +290,7 @@
       },
       {
         "commits": 4,
-        "lines": 98,
+        "lines": 107,
         "path": ".github/dependabot.yml"
       },
       {
@@ -311,13 +309,13 @@
         "path": ".github/scripts/stage-tauri-artifacts.sh"
       },
       {
-        "commits": 28,
-        "lines": 734,
+        "commits": 21,
+        "lines": 656,
         "path": ".github/workflows/ci.yml"
       },
       {
-        "commits": 1,
-        "lines": 135,
+        "commits": 2,
+        "lines": 137,
         "path": ".github/workflows/docker.yml"
       },
       {
@@ -326,22 +324,22 @@
         "path": ".github/workflows/npm.yml"
       },
       {
-        "commits": 7,
-        "lines": 78,
+        "commits": 6,
+        "lines": 68,
         "path": ".github/workflows/pages.yml"
       },
       {
-        "commits": 22,
-        "lines": 800,
+        "commits": 19,
+        "lines": 889,
         "path": ".github/workflows/publish.yml"
       },
       {
-        "commits": 7,
-        "lines": 250,
+        "commits": 3,
+        "lines": 39,
         "path": ".github/workflows/release.yml"
       },
       {
-        "commits": 4,
+        "commits": 3,
         "lines": 49,
         "path": ".gitignore"
       },
@@ -351,23 +349,23 @@
         "path": ".pip-audit-ignore"
       },
       {
-        "commits": 8,
-        "lines": 225,
+        "commits": 4,
+        "lines": 211,
         "path": "BUILD.md"
       },
       {
-        "commits": 41,
-        "lines": 645,
+        "commits": 27,
+        "lines": 676,
         "path": "CHANGELOG.md"
       },
       {
-        "commits": 27,
-        "lines": 262,
+        "commits": 17,
+        "lines": 196,
         "path": "CLAUDE.md"
       },
       {
-        "commits": 4,
-        "lines": 255,
+        "commits": 1,
+        "lines": 235,
         "path": "CONTRIBUTING.md"
       },
       {
@@ -382,57 +380,57 @@
       },
       {
         "commits": 17,
-        "lines": 988,
+        "lines": 953,
         "path": "README.es.md"
       },
       {
         "commits": 17,
-        "lines": 1066,
+        "lines": 955,
         "path": "README.fr.md"
       },
       {
         "commits": 17,
-        "lines": 946,
+        "lines": 939,
         "path": "README.hi.md"
       },
       {
         "commits": 17,
-        "lines": 1082,
+        "lines": 943,
         "path": "README.it.md"
       },
       {
-        "commits": 18,
-        "lines": 1043,
+        "commits": 17,
+        "lines": 1072,
         "path": "README.ja.md"
       },
       {
-        "commits": 34,
-        "lines": 720,
+        "commits": 18,
+        "lines": 541,
         "path": "README.md"
       },
       {
-        "commits": 18,
-        "lines": 982,
+        "commits": 17,
+        "lines": 929,
         "path": "README.pt-BR.md"
       },
       {
-        "commits": 18,
-        "lines": 1269,
+        "commits": 17,
+        "lines": 974,
         "path": "README.zh.md"
       },
       {
-        "commits": 2,
-        "lines": 94,
+        "commits": 1,
+        "lines": 80,
         "path": "SCORECARD.md"
       },
       {
-        "commits": 8,
-        "lines": 227,
+        "commits": 5,
+        "lines": 193,
         "path": "SECURITY.md"
       },
       {
-        "commits": 2,
-        "lines": 130,
+        "commits": 1,
+        "lines": 80,
         "path": "SHIP_GATE.md"
       },
       {
@@ -446,18 +444,18 @@
         "path": "app/biome.json"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 25,
         "path": "app/index.html"
       },
       {
-        "commits": 14,
-        "lines": 4951,
+        "commits": 17,
+        "lines": 6761,
         "path": "app/package-lock.json"
       },
       {
-        "commits": 14,
-        "lines": 74,
+        "commits": 16,
+        "lines": 84,
         "path": "app/package.json"
       },
       {
@@ -466,12 +464,12 @@
         "path": "app/src-tauri/.cargo/audit.toml"
       },
       {
-        "commits": 10,
-        "lines": 5906,
+        "commits": 13,
+        "lines": 6564,
         "path": "app/src-tauri/Cargo.lock"
       },
       {
-        "commits": 5,
+        "commits": 4,
         "lines": 37,
         "path": "app/src-tauri/Cargo.toml"
       },
@@ -651,7 +649,7 @@
         "path": "app/src-tauri/icons/icon.ico"
       },
       {
-        "commits": 3,
+        "commits": 1,
         "lines": 0,
         "path": "app/src-tauri/icons/icon.png"
       },
@@ -746,23 +744,23 @@
         "path": "app/src-tauri/icons/ios/AppIcon-83.5x83.5@2x.png"
       },
       {
-        "commits": 5,
-        "lines": 794,
+        "commits": 2,
+        "lines": 756,
         "path": "app/src-tauri/src/commands.rs"
       },
       {
-        "commits": 4,
-        "lines": 357,
+        "commits": 3,
+        "lines": 351,
         "path": "app/src-tauri/src/config.rs"
       },
       {
-        "commits": 10,
-        "lines": 1286,
+        "commits": 7,
+        "lines": 1220,
         "path": "app/src-tauri/src/daemon.rs"
       },
       {
-        "commits": 6,
-        "lines": 516,
+        "commits": 2,
+        "lines": 448,
         "path": "app/src-tauri/src/lib.rs"
       },
       {
@@ -771,7 +769,7 @@
         "path": "app/src-tauri/src/main.rs"
       },
       {
-        "commits": 12,
+        "commits": 11,
         "lines": 77,
         "path": "app/src-tauri/tauri.conf.json"
       },
@@ -781,13 +779,13 @@
         "path": "app/src/App.test.tsx"
       },
       {
-        "commits": 3,
-        "lines": 49,
+        "commits": 1,
+        "lines": 31,
         "path": "app/src/App.tsx"
       },
       {
-        "commits": 2,
-        "lines": 47,
+        "commits": 1,
+        "lines": 45,
         "path": "app/src/components/ConfirmDialog.module.css"
       },
       {
@@ -801,33 +799,33 @@
         "path": "app/src/components/ConfirmDialog.tsx"
       },
       {
-        "commits": 2,
-        "lines": 84,
+        "commits": 1,
+        "lines": 80,
         "path": "app/src/components/DaemonDisconnectedBanner.module.css"
       },
       {
-        "commits": 6,
-        "lines": 199,
+        "commits": 5,
+        "lines": 197,
         "path": "app/src/components/DaemonDisconnectedBanner.test.tsx"
       },
       {
-        "commits": 3,
-        "lines": 93,
+        "commits": 2,
+        "lines": 91,
         "path": "app/src/components/DaemonDisconnectedBanner.tsx"
       },
       {
-        "commits": 2,
-        "lines": 39,
+        "commits": 1,
+        "lines": 37,
         "path": "app/src/components/EmptyState.module.css"
       },
       {
-        "commits": 2,
-        "lines": 67,
+        "commits": 1,
+        "lines": 65,
         "path": "app/src/components/EmptyState.test.tsx"
       },
       {
-        "commits": 2,
-        "lines": 107,
+        "commits": 1,
+        "lines": 103,
         "path": "app/src/components/EmptyState.tsx"
       },
       {
@@ -841,13 +839,13 @@
         "path": "app/src/components/EventFeed.test.tsx"
       },
       {
-        "commits": 2,
-        "lines": 75,
+        "commits": 1,
+        "lines": 73,
         "path": "app/src/components/EventFeed.tsx"
       },
       {
-        "commits": 2,
-        "lines": 47,
+        "commits": 1,
+        "lines": 45,
         "path": "app/src/components/ExpandableRow.module.css"
       },
       {
@@ -861,8 +859,8 @@
         "path": "app/src/components/ExpandableRow.tsx"
       },
       {
-        "commits": 2,
-        "lines": 46,
+        "commits": 1,
+        "lines": 44,
         "path": "app/src/components/LoadingSpinner.module.css"
       },
       {
@@ -891,18 +889,18 @@
         "path": "app/src/components/PanicModal.tsx"
       },
       {
-        "commits": 2,
-        "lines": 76,
+        "commits": 1,
+        "lines": 68,
         "path": "app/src/components/Pill.module.css"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 75,
         "path": "app/src/components/Pill.test.tsx"
       },
       {
-        "commits": 2,
-        "lines": 44,
+        "commits": 1,
+        "lines": 38,
         "path": "app/src/components/Pill.tsx"
       },
       {
@@ -941,8 +939,8 @@
         "path": "app/src/hooks/useDaemon.test.tsx"
       },
       {
-        "commits": 3,
-        "lines": 133,
+        "commits": 2,
+        "lines": 125,
         "path": "app/src/hooks/useDaemon.tsx"
       },
       {
@@ -956,8 +954,8 @@
         "path": "app/src/hooks/useDaemonEvents.test.ts"
       },
       {
-        "commits": 2,
-        "lines": 143,
+        "commits": 1,
+        "lines": 121,
         "path": "app/src/hooks/useDaemonEvents.ts"
       },
       {
@@ -971,23 +969,23 @@
         "path": "app/src/hooks/useGameState.ts"
       },
       {
-        "commits": 6,
-        "lines": 539,
+        "commits": 4,
+        "lines": 548,
         "path": "app/src/hooks/useVerifyFlow.test.tsx"
       },
       {
-        "commits": 6,
-        "lines": 315,
+        "commits": 4,
+        "lines": 288,
         "path": "app/src/hooks/useVerifyFlow.ts"
       },
       {
-        "commits": 5,
-        "lines": 231,
+        "commits": 4,
+        "lines": 223,
         "path": "app/src/lib/daemonClient.test.ts"
       },
       {
-        "commits": 6,
-        "lines": 164,
+        "commits": 3,
+        "lines": 146,
         "path": "app/src/lib/daemonClient.ts"
       },
       {
@@ -1016,48 +1014,48 @@
         "path": "app/src/lib/url.ts"
       },
       {
-        "commits": 2,
-        "lines": 48,
+        "commits": 4,
+        "lines": 70,
         "path": "app/src/lib/verifyDisplay.test.ts"
       },
       {
-        "commits": 2,
-        "lines": 94,
+        "commits": 4,
+        "lines": 108,
         "path": "app/src/lib/verifyDisplay.ts"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 17,
         "path": "app/src/main.tsx"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 105,
         "path": "app/src/routes/Audit.module.css"
       },
       {
-        "commits": 5,
-        "lines": 287,
+        "commits": 3,
+        "lines": 279,
         "path": "app/src/routes/Audit.test.tsx"
       },
       {
-        "commits": 7,
-        "lines": 724,
+        "commits": 3,
+        "lines": 655,
         "path": "app/src/routes/Audit.tsx"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 66,
         "path": "app/src/routes/Game.module.css"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 186,
         "path": "app/src/routes/Game.test.tsx"
       },
       {
-        "commits": 4,
-        "lines": 191,
+        "commits": 1,
+        "lines": 165,
         "path": "app/src/routes/Game.tsx"
       },
       {
@@ -1071,28 +1069,28 @@
         "path": "app/src/routes/Index.test.tsx"
       },
       {
-        "commits": 5,
-        "lines": 244,
+        "commits": 2,
+        "lines": 178,
         "path": "app/src/routes/Index.tsx"
       },
       {
-        "commits": 2,
-        "lines": 106,
+        "commits": 1,
+        "lines": 104,
         "path": "app/src/routes/Settings.module.css"
       },
       {
-        "commits": 5,
-        "lines": 374,
+        "commits": 4,
+        "lines": 364,
         "path": "app/src/routes/Settings.test.tsx"
       },
       {
-        "commits": 6,
-        "lines": 623,
+        "commits": 2,
+        "lines": 449,
         "path": "app/src/routes/Settings.tsx"
       },
       {
-        "commits": 3,
-        "lines": 152,
+        "commits": 1,
+        "lines": 90,
         "path": "app/src/styles/globals.css"
       },
       {
@@ -1101,7 +1099,7 @@
         "path": "app/src/styles/globals.test.ts"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 50,
         "path": "app/src/styles/theme.css"
       },
@@ -1121,8 +1119,8 @@
         "path": "app/src/test/fixtures/proof.real.json"
       },
       {
-        "commits": 4,
-        "lines": 155,
+        "commits": 3,
+        "lines": 147,
         "path": "app/src/test/msw-handlers.ts"
       },
       {
@@ -1141,13 +1139,13 @@
         "path": "app/src/types/css-modules.d.ts"
       },
       {
-        "commits": 5,
-        "lines": 221,
+        "commits": 3,
+        "lines": 222,
         "path": "app/src/types/daemon.test.ts"
       },
       {
-        "commits": 6,
-        "lines": 273,
+        "commits": 4,
+        "lines": 271,
         "path": "app/src/types/daemon.ts"
       },
       {
@@ -1156,8 +1154,8 @@
         "path": "app/src/types/game.ts"
       },
       {
-        "commits": 1,
-        "lines": 21,
+        "commits": 2,
+        "lines": 23,
         "path": "app/tsconfig.json"
       },
       {
@@ -1441,8 +1439,8 @@
         "path": "assets/print/treaty-quick-ref.md"
       },
       {
-        "commits": 24,
-        "lines": 510,
+        "commits": 27,
+        "lines": 568,
         "path": "atlas/README.md"
       },
       {
@@ -1451,18 +1449,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 24,
-        "lines": 2061,
+        "commits": 27,
+        "lines": 2266,
         "path": "atlas/page.json"
       },
       {
-        "commits": 24,
-        "lines": 5523,
+        "commits": 27,
+        "lines": 8201,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 24,
-        "lines": 29334,
+        "commits": 27,
+        "lines": 31717,
         "path": "atlas/structure.json"
       },
       {
@@ -1486,8 +1484,8 @@
         "path": "docker/healthcheck.py"
       },
       {
-        "commits": 2,
-        "lines": 70,
+        "commits": 1,
+        "lines": 32,
         "path": "docs/board/board_v1.md"
       },
       {
@@ -1501,8 +1499,8 @@
         "path": "docs/cards/events_v1.md"
       },
       {
-        "commits": 3,
-        "lines": 162,
+        "commits": 1,
+        "lines": 150,
         "path": "docs/cli-json-output.md"
       },
       {
@@ -1521,7 +1519,7 @@
         "path": "docs/migration-v1-to-v2.md"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 146,
         "path": "docs/multi-save.md"
       },
@@ -1556,13 +1554,273 @@
         "path": "docs/postcards/spicy-example.md"
       },
       {
-        "commits": 4,
-        "lines": 131,
+        "commits": 2,
+        "lines": 93,
         "path": "docs/print-and-play.md"
       },
       {
-        "commits": 8,
-        "lines": 154,
+        "commits": 1,
+        "lines": 91,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/README.md"
+      },
+      {
+        "commits": 1,
+        "lines": 6,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/00_preflight.txt"
+      },
+      {
+        "commits": 1,
+        "lines": 4,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/00_snapshot.txt"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/01_old_new.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/01_old_new.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 16,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/01_old_new.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/02_old_end_round.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/02_old_end_round.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 5,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/02_old_end_round.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/03_old_wallet.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/03_old_wallet.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 12,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/03_old_wallet.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/04_old_anchor.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/04_old_anchor.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 12,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/04_old_anchor.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/05_verify_old_proof.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/05_verify_old_proof.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 4,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/05_verify_old_proof.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/06_reanchor_nothing_lost.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/06_reanchor_nothing_lost.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 3,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/06_reanchor_nothing_lost.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/07_verify_after_reset_tx_present.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/07_verify_after_reset_tx_present.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 4,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/07_verify_after_reset_tx_present.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/08_other_new.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/08_other_new.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 16,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/08_other_new.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/09_other_end_round.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/09_other_end_round.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 5,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/09_other_end_round.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/10_verify_after_reset_other_hash.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/10_verify_after_reset_other_hash.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 3,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/10_verify_after_reset_other_hash.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/11_verify_absent_before_reset.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/11_verify_absent_before_reset.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 3,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/11_verify_absent_before_reset.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/12_verify_absent_after_reset.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/12_verify_absent_after_reset.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 4,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/12_verify_absent_after_reset.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/13_record_absent_txid.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/13_record_absent_txid.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/13_record_absent_txid.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/14_reanchor_lost.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/14_reanchor_lost.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 13,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/14_reanchor_lost.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/15_verify_reanchored.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/15_verify_reanchored.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 4,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/15_verify_reanchored.out"
+      },
+      {
+        "commits": 1,
+        "lines": 0,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/16_reanchor_again.err"
+      },
+      {
+        "commits": 1,
+        "lines": 1,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/16_reanchor_again.exit"
+      },
+      {
+        "commits": 1,
+        "lines": 3,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/16_reanchor_again.out"
+      },
+      {
+        "commits": 1,
+        "lines": 6,
+        "path": "docs/receipts/2.4.0-reset-live-check-1016c26/raw/17_anchors_after.json"
+      },
+      {
+        "commits": 7,
+        "lines": 126,
         "path": "docs/roadmap.md"
       },
       {
@@ -1626,33 +1884,33 @@
         "path": "docs/start_here.md"
       },
       {
-        "commits": 4,
-        "lines": 299,
+        "commits": 1,
+        "lines": 261,
         "path": "docs/v2.1-bridge-changes.md"
       },
       {
-        "commits": 4,
-        "lines": 341,
+        "commits": 3,
+        "lines": 345,
         "path": "docs/v2.1-daemon-ipc.md"
       },
       {
-        "commits": 3,
-        "lines": 144,
+        "commits": 1,
+        "lines": 76,
         "path": "docs/v2.1-roadmap.md"
       },
       {
-        "commits": 4,
-        "lines": 445,
+        "commits": 1,
+        "lines": 437,
         "path": "docs/v2.1-tauri-shell.md"
       },
       {
         "commits": 3,
-        "lines": 466,
+        "lines": 468,
         "path": "docs/v2.1-views.md"
       },
       {
-        "commits": 8,
-        "lines": 75,
+        "commits": 3,
+        "lines": 71,
         "path": "docs/v2.2-backlog.md"
       },
       {
@@ -1676,13 +1934,13 @@
         "path": "npm/bin/sovereignty.js"
       },
       {
-        "commits": 5,
-        "lines": 50,
+        "commits": 7,
+        "lines": 58,
         "path": "npm/package-lock.json"
       },
       {
-        "commits": 5,
-        "lines": 50,
+        "commits": 7,
+        "lines": 54,
         "path": "npm/package.json"
       },
       {
@@ -1691,13 +1949,8 @@
         "path": "npm/test/launcher.test.js"
       },
       {
-        "commits": 1,
-        "lines": 0,
-        "path": "publish.yml}"
-      },
-      {
-        "commits": 23,
-        "lines": 144,
+        "commits": 13,
+        "lines": 128,
         "path": "pyproject.toml"
       },
       {
@@ -1711,28 +1964,28 @@
         "path": "scripts/check-theme-tokens.sh"
       },
       {
-        "commits": 2,
-        "lines": 151,
+        "commits": 1,
+        "lines": 141,
         "path": "scripts/check-voice.sh"
       },
       {
-        "commits": 3,
-        "lines": 48,
+        "commits": 1,
+        "lines": 42,
         "path": "scripts/verify.sh"
       },
       {
-        "commits": 3,
+        "commits": 2,
         "lines": 55,
         "path": "site/astro.config.mjs"
       },
       {
-        "commits": 11,
-        "lines": 14748,
+        "commits": 13,
+        "lines": 16423,
         "path": "site/package-lock.json"
       },
       {
-        "commits": 9,
-        "lines": 36,
+        "commits": 11,
+        "lines": 40,
         "path": "site/package.json"
       },
       {
@@ -1781,8 +2034,8 @@
         "path": "site/src/content/docs/handbook/beginners.md"
       },
       {
-        "commits": 1,
-        "lines": 39,
+        "commits": 3,
+        "lines": 69,
         "path": "site/src/content/docs/handbook/diary-mode.md"
       },
       {
@@ -1791,8 +2044,8 @@
         "path": "site/src/content/docs/handbook/docker.md"
       },
       {
-        "commits": 16,
-        "lines": 241,
+        "commits": 15,
+        "lines": 239,
         "path": "site/src/content/docs/handbook/getting-started.md"
       },
       {
@@ -1801,18 +2054,18 @@
         "path": "site/src/content/docs/handbook/how-to-play.md"
       },
       {
-        "commits": 3,
-        "lines": 56,
+        "commits": 1,
+        "lines": 38,
         "path": "site/src/content/docs/handbook/index.md"
       },
       {
-        "commits": 4,
-        "lines": 130,
+        "commits": 2,
+        "lines": 78,
         "path": "site/src/content/docs/handbook/print-and-play.md"
       },
       {
-        "commits": 4,
-        "lines": 120,
+        "commits": 2,
+        "lines": 114,
         "path": "site/src/content/docs/handbook/reference.md"
       },
       {
@@ -1821,18 +2074,18 @@
         "path": "site/src/content/docs/handbook/tiers.md"
       },
       {
-        "commits": 7,
-        "lines": 186,
+        "commits": 2,
+        "lines": 158,
         "path": "site/src/pages/index.astro"
       },
       {
-        "commits": 17,
-        "lines": 183,
+        "commits": 10,
+        "lines": 143,
         "path": "site/src/site-config.ts"
       },
       {
-        "commits": 3,
-        "lines": 195,
+        "commits": 1,
+        "lines": 193,
         "path": "site/src/styles/global.css"
       },
       {
@@ -1851,27 +2104,27 @@
         "path": "sov_cli/__init__.py"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 6,
         "path": "sov_cli/__main__.py"
       },
       {
-        "commits": 14,
-        "lines": 1204,
+        "commits": 6,
+        "lines": 1002,
         "path": "sov_cli/errors.py"
       },
       {
-        "commits": 27,
-        "lines": 6993,
+        "commits": 15,
+        "lines": 5976,
         "path": "sov_cli/main.py"
       },
       {
-        "commits": 8,
-        "lines": 61,
+        "commits": 10,
+        "lines": 65,
         "path": "sov_daemon/__init__.py"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 99,
         "path": "sov_daemon/__main__.py"
       },
@@ -1881,13 +2134,13 @@
         "path": "sov_daemon/auth.py"
       },
       {
-        "commits": 4,
-        "lines": 546,
+        "commits": 1,
+        "lines": 506,
         "path": "sov_daemon/events.py"
       },
       {
-        "commits": 9,
-        "lines": 1198,
+        "commits": 6,
+        "lines": 1156,
         "path": "sov_daemon/lifecycle.py"
       },
       {
@@ -1896,8 +2149,8 @@
         "path": "sov_daemon/log_fields.py"
       },
       {
-        "commits": 13,
-        "lines": 2191,
+        "commits": 10,
+        "lines": 1986,
         "path": "sov_daemon/server.py"
       },
       {
@@ -1911,23 +2164,23 @@
         "path": "sov_engine/content.py"
       },
       {
-        "commits": 9,
-        "lines": 217,
+        "commits": 4,
+        "lines": 135,
         "path": "sov_engine/hashing.py"
       },
       {
-        "commits": 9,
-        "lines": 1123,
+        "commits": 4,
+        "lines": 985,
         "path": "sov_engine/io_utils.py"
       },
       {
-        "commits": 2,
-        "lines": 448,
+        "commits": 1,
+        "lines": 442,
         "path": "sov_engine/models.py"
       },
       {
-        "commits": 7,
-        "lines": 496,
+        "commits": 4,
+        "lines": 468,
         "path": "sov_engine/proof.py"
       },
       {
@@ -1941,33 +2194,33 @@
         "path": "sov_engine/rules/__init__.py"
       },
       {
-        "commits": 4,
-        "lines": 759,
+        "commits": 1,
+        "lines": 677,
         "path": "sov_engine/rules/campfire.py"
       },
       {
-        "commits": 3,
-        "lines": 110,
+        "commits": 1,
+        "lines": 100,
         "path": "sov_engine/rules/market_day.py"
       },
       {
-        "commits": 3,
-        "lines": 266,
+        "commits": 1,
+        "lines": 232,
         "path": "sov_engine/rules/town_hall.py"
       },
       {
-        "commits": 3,
-        "lines": 443,
+        "commits": 1,
+        "lines": 351,
         "path": "sov_engine/rules/treaty_table.py"
       },
       {
-        "commits": 2,
-        "lines": 116,
+        "commits": 1,
+        "lines": 106,
         "path": "sov_engine/schemas.py"
       },
       {
-        "commits": 4,
-        "lines": 196,
+        "commits": 2,
+        "lines": 162,
         "path": "sov_engine/serialize.py"
       },
       {
@@ -1976,38 +2229,43 @@
         "path": "sov_engine/wallet_seed.py"
       },
       {
-        "commits": 6,
+        "commits": 1,
         "lines": 44,
         "path": "sov_transport/__init__.py"
       },
       {
-        "commits": 7,
-        "lines": 252,
+        "commits": 2,
+        "lines": 197,
         "path": "sov_transport/base.py"
       },
       {
-        "commits": 6,
-        "lines": 142,
+        "commits": 1,
+        "lines": 78,
         "path": "sov_transport/null.py"
       },
       {
-        "commits": 6,
-        "lines": 1250,
+        "commits": 2,
+        "lines": 130,
+        "path": "sov_transport/resets.py"
+      },
+      {
+        "commits": 2,
+        "lines": 749,
         "path": "sov_transport/xrpl.py"
       },
       {
-        "commits": 5,
-        "lines": 787,
+        "commits": 1,
+        "lines": 607,
         "path": "sov_transport/xrpl_async.py"
       },
       {
-        "commits": 4,
-        "lines": 314,
+        "commits": 1,
+        "lines": 284,
         "path": "sov_transport/xrpl_internals.py"
       },
       {
-        "commits": 6,
-        "lines": 1259,
+        "commits": 1,
+        "lines": 127,
         "path": "sov_transport/xrpl_testnet.py"
       },
       {
@@ -2017,7 +2275,7 @@
       },
       {
         "commits": 2,
-        "lines": 50,
+        "lines": 52,
         "path": "tests/conftest.py"
       },
       {
@@ -2026,13 +2284,13 @@
         "path": "tests/test_active_game_resolution.py"
       },
       {
-        "commits": 3,
-        "lines": 347,
+        "commits": 1,
+        "lines": 325,
         "path": "tests/test_anchor_batch.py"
       },
       {
-        "commits": 7,
-        "lines": 721,
+        "commits": 2,
+        "lines": 679,
         "path": "tests/test_anchor_cli.py"
       },
       {
@@ -2056,7 +2314,7 @@
         "path": "tests/test_backtick_rendering.py"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 416,
         "path": "tests/test_bridge_amend_wave11.py"
       },
@@ -2086,8 +2344,8 @@
         "path": "tests/test_cli_help_no_placeholders.py"
       },
       {
-        "commits": 4,
-        "lines": 748,
+        "commits": 2,
+        "lines": 710,
         "path": "tests/test_cli_integration.py"
       },
       {
@@ -2126,13 +2384,13 @@
         "path": "tests/test_daemon_cors.py"
       },
       {
-        "commits": 3,
-        "lines": 597,
+        "commits": 2,
+        "lines": 595,
         "path": "tests/test_daemon_endpoints.py"
       },
       {
-        "commits": 4,
-        "lines": 621,
+        "commits": 2,
+        "lines": 619,
         "path": "tests/test_daemon_lifecycle.py"
       },
       {
@@ -2156,13 +2414,13 @@
         "path": "tests/test_daemon_server_coverage.py"
       },
       {
-        "commits": 3,
-        "lines": 557,
+        "commits": 2,
+        "lines": 375,
         "path": "tests/test_daemon_sse.py"
       },
       {
         "commits": 3,
-        "lines": 168,
+        "lines": 160,
         "path": "tests/test_daemon_types_ts_in_sync.py"
       },
       {
@@ -2176,18 +2434,18 @@
         "path": "tests/test_daemon_wallet_file.py"
       },
       {
-        "commits": 2,
-        "lines": 212,
+        "commits": 1,
+        "lines": 208,
         "path": "tests/test_deals.py"
       },
       {
-        "commits": 2,
-        "lines": 257,
+        "commits": 1,
+        "lines": 253,
         "path": "tests/test_doctor_summary.py"
       },
       {
-        "commits": 3,
-        "lines": 756,
+        "commits": 1,
+        "lines": 730,
         "path": "tests/test_engine.py"
       },
       {
@@ -2196,8 +2454,8 @@
         "path": "tests/test_error_hints_have_commands.py"
       },
       {
-        "commits": 4,
-        "lines": 258,
+        "commits": 1,
+        "lines": 246,
         "path": "tests/test_errors.py"
       },
       {
@@ -2206,8 +2464,8 @@
         "path": "tests/test_errors_hint_backticks.py"
       },
       {
-        "commits": 2,
-        "lines": 406,
+        "commits": 1,
+        "lines": 166,
         "path": "tests/test_errors_registry_no_inline_codes.py"
       },
       {
@@ -2231,13 +2489,13 @@
         "path": "tests/test_load_proof_errors.py"
       },
       {
-        "commits": 2,
-        "lines": 262,
+        "commits": 1,
+        "lines": 258,
         "path": "tests/test_log_contracts.py"
       },
       {
-        "commits": 2,
-        "lines": 256,
+        "commits": 1,
+        "lines": 236,
         "path": "tests/test_market_day.py"
       },
       {
@@ -2246,9 +2504,14 @@
         "path": "tests/test_models.py"
       },
       {
-        "commits": 2,
-        "lines": 366,
+        "commits": 1,
+        "lines": 360,
         "path": "tests/test_multi_save.py"
+      },
+      {
+        "commits": 1,
+        "lines": 533,
+        "path": "tests/test_network_reset_verdict.py"
       },
       {
         "commits": 1,
@@ -2266,13 +2529,13 @@
         "path": "tests/test_persistence_coverage.py"
       },
       {
-        "commits": 5,
-        "lines": 384,
+        "commits": 3,
+        "lines": 380,
         "path": "tests/test_proof_anchor_status.py"
       },
       {
-        "commits": 8,
-        "lines": 852,
+        "commits": 5,
+        "lines": 774,
         "path": "tests/test_proofs.py"
       },
       {
@@ -2281,9 +2544,14 @@
         "path": "tests/test_publish_linux_bundles.py"
       },
       {
-        "commits": 2,
-        "lines": 186,
+        "commits": 1,
+        "lines": 168,
         "path": "tests/test_readme_examples.py"
+      },
+      {
+        "commits": 1,
+        "lines": 320,
+        "path": "tests/test_reanchor_cli.py"
       },
       {
         "commits": 1,
@@ -2316,7 +2584,7 @@
         "path": "tests/test_sov_play_alias.py"
       },
       {
-        "commits": 2,
+        "commits": 1,
         "lines": 241,
         "path": "tests/test_sov_resume_cli.py"
       },
@@ -2331,13 +2599,18 @@
         "path": "tests/test_tauri_updater_secrets.py"
       },
       {
-        "commits": 2,
-        "lines": 326,
+        "commits": 1,
+        "lines": 132,
+        "path": "tests/test_tauri_versions_in_step.py"
+      },
+      {
+        "commits": 1,
+        "lines": 304,
         "path": "tests/test_town_hall.py"
       },
       {
-        "commits": 5,
-        "lines": 845,
+        "commits": 1,
+        "lines": 31,
         "path": "tests/test_transport.py"
       },
       {
@@ -2346,8 +2619,8 @@
         "path": "tests/test_transport_coverage.py"
       },
       {
-        "commits": 2,
-        "lines": 443,
+        "commits": 1,
+        "lines": 411,
         "path": "tests/test_treaty_table.py"
       },
       {
@@ -2361,8 +2634,8 @@
         "path": "tests/test_validate_game_id.py"
       },
       {
-        "commits": 3,
-        "lines": 59,
+        "commits": 2,
+        "lines": 53,
         "path": "tests/test_version.py"
       },
       {
@@ -2376,8 +2649,8 @@
         "path": "tests/test_version_in_sync.py"
       },
       {
-        "commits": 2,
-        "lines": 374,
+        "commits": 1,
+        "lines": 352,
         "path": "tests/test_vouchers.py"
       },
       {
@@ -2386,23 +2659,23 @@
         "path": "tests/test_wallet_keychain.py"
       },
       {
-        "commits": 3,
-        "lines": 679,
+        "commits": 1,
+        "lines": 623,
         "path": "tests/test_xrpl_amend_regressions.py"
       },
       {
-        "commits": 2,
-        "lines": 123,
+        "commits": 1,
+        "lines": 119,
         "path": "tests/test_xrpl_async_integration.py"
       },
       {
-        "commits": 4,
-        "lines": 446,
+        "commits": 1,
+        "lines": 434,
         "path": "tests/test_xrpl_async_transport.py"
       },
       {
-        "commits": 5,
-        "lines": 314,
+        "commits": 1,
+        "lines": 240,
         "path": "tests/test_xrpl_integration.py"
       },
       {
@@ -2411,18 +2684,18 @@
         "path": "tests/test_xrpl_internals.py"
       },
       {
-        "commits": 3,
-        "lines": 581,
+        "commits": 1,
+        "lines": 551,
         "path": "tests/test_xrpl_transport.py"
       },
       {
-        "commits": 3,
-        "lines": 314,
+        "commits": 1,
+        "lines": 308,
         "path": "tests/test_xrpl_transport_legacy.py"
       },
       {
-        "commits": 22,
-        "lines": 1521,
+        "commits": 15,
+        "lines": 1489,
         "path": "uv.lock"
       }
     ]
@@ -2431,9 +2704,9 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-10-26T12:33:05.499Z",
+  "generatedAt": "2026-11-16T15:25:56.468Z",
   "generatedFrom": {
-    "commit": "8fce39e57ea95dd8bd76175cea8a55f4fcda42a0"
+    "commit": "3096bd47294c1554c37b67b94943696234ec2763"
   },
   "packageImports": {
     "filesWithLeftOutImports": 0,
@@ -2444,6 +2717,20 @@
     "namesLeftOutOmitted": 0
   },
   "pairs": [
+    {
+      "a": "CLAUDE.md",
+      "b": "app/src-tauri/tauri.conf.json",
+      "either": 15,
+      "shared": 8,
+      "strength": 0.533333
+    },
+    {
+      "a": "CLAUDE.md",
+      "b": "sov_daemon/__init__.py",
+      "either": 14,
+      "shared": 8,
+      "strength": 0.571429
+    },
     {
       "a": "README.es.md",
       "b": "README.fr.md",
@@ -2468,23 +2755,51 @@
     {
       "a": "README.es.md",
       "b": "README.ja.md",
-      "either": 16,
+      "either": 15,
       "shared": 15,
-      "strength": 0.9375
+      "strength": 1
+    },
+    {
+      "a": "README.es.md",
+      "b": "README.md",
+      "either": 16,
+      "shared": 14,
+      "strength": 0.875
     },
     {
       "a": "README.es.md",
       "b": "README.pt-BR.md",
-      "either": 16,
+      "either": 15,
       "shared": 15,
-      "strength": 0.9375
+      "strength": 1
     },
     {
       "a": "README.es.md",
       "b": "README.zh.md",
-      "either": 16,
+      "either": 15,
       "shared": 15,
-      "strength": 0.9375
+      "strength": 1
+    },
+    {
+      "a": "README.es.md",
+      "b": "app/src-tauri/tauri.conf.json",
+      "either": 16,
+      "shared": 8,
+      "strength": 0.5
+    },
+    {
+      "a": "README.es.md",
+      "b": "site/src/content/docs/handbook/getting-started.md",
+      "either": 17,
+      "shared": 10,
+      "strength": 0.588235
+    },
+    {
+      "a": "README.es.md",
+      "b": "sov_daemon/__init__.py",
+      "either": 15,
+      "shared": 8,
+      "strength": 0.533333
     },
     {
       "a": "README.fr.md",
@@ -2503,23 +2818,51 @@
     {
       "a": "README.fr.md",
       "b": "README.ja.md",
-      "either": 16,
+      "either": 15,
       "shared": 15,
-      "strength": 0.9375
+      "strength": 1
+    },
+    {
+      "a": "README.fr.md",
+      "b": "README.md",
+      "either": 16,
+      "shared": 14,
+      "strength": 0.875
     },
     {
       "a": "README.fr.md",
       "b": "README.pt-BR.md",
-      "either": 16,
+      "either": 15,
       "shared": 15,
-      "strength": 0.9375
+      "strength": 1
     },
     {
       "a": "README.fr.md",
       "b": "README.zh.md",
-      "either": 16,
+      "either": 15,
       "shared": 15,
-      "strength": 0.9375
+      "strength": 1
+    },
+    {
+      "a": "README.fr.md",
+      "b": "app/src-tauri/tauri.conf.json",
+      "either": 16,
+      "shared": 8,
+      "strength": 0.5
+    },
+    {
+      "a": "README.fr.md",
+      "b": "site/src/content/docs/handbook/getting-started.md",
+      "either": 17,
+      "shared": 10,
+      "strength": 0.588235
+    },
+    {
+      "a": "README.fr.md",
+      "b": "sov_daemon/__init__.py",
+      "either": 15,
+      "shared": 8,
+      "strength": 0.533333
     },
     {
       "a": "README.hi.md",
@@ -2531,205 +2874,443 @@
     {
       "a": "README.hi.md",
       "b": "README.ja.md",
-      "either": 16,
+      "either": 15,
       "shared": 15,
-      "strength": 0.9375
+      "strength": 1
+    },
+    {
+      "a": "README.hi.md",
+      "b": "README.md",
+      "either": 16,
+      "shared": 14,
+      "strength": 0.875
     },
     {
       "a": "README.hi.md",
       "b": "README.pt-BR.md",
-      "either": 16,
+      "either": 15,
       "shared": 15,
-      "strength": 0.9375
+      "strength": 1
     },
     {
       "a": "README.hi.md",
       "b": "README.zh.md",
-      "either": 16,
+      "either": 15,
       "shared": 15,
-      "strength": 0.9375
+      "strength": 1
+    },
+    {
+      "a": "README.hi.md",
+      "b": "app/src-tauri/tauri.conf.json",
+      "either": 16,
+      "shared": 8,
+      "strength": 0.5
+    },
+    {
+      "a": "README.hi.md",
+      "b": "site/src/content/docs/handbook/getting-started.md",
+      "either": 17,
+      "shared": 10,
+      "strength": 0.588235
+    },
+    {
+      "a": "README.hi.md",
+      "b": "sov_daemon/__init__.py",
+      "either": 15,
+      "shared": 8,
+      "strength": 0.533333
     },
     {
       "a": "README.it.md",
       "b": "README.ja.md",
-      "either": 16,
+      "either": 15,
       "shared": 15,
-      "strength": 0.9375
+      "strength": 1
+    },
+    {
+      "a": "README.it.md",
+      "b": "README.md",
+      "either": 16,
+      "shared": 14,
+      "strength": 0.875
     },
     {
       "a": "README.it.md",
       "b": "README.pt-BR.md",
-      "either": 16,
+      "either": 15,
       "shared": 15,
-      "strength": 0.9375
+      "strength": 1
     },
     {
       "a": "README.it.md",
       "b": "README.zh.md",
-      "either": 16,
+      "either": 15,
       "shared": 15,
-      "strength": 0.9375
+      "strength": 1
+    },
+    {
+      "a": "README.it.md",
+      "b": "app/src-tauri/tauri.conf.json",
+      "either": 16,
+      "shared": 8,
+      "strength": 0.5
+    },
+    {
+      "a": "README.it.md",
+      "b": "site/src/content/docs/handbook/getting-started.md",
+      "either": 17,
+      "shared": 10,
+      "strength": 0.588235
+    },
+    {
+      "a": "README.it.md",
+      "b": "sov_daemon/__init__.py",
+      "either": 15,
+      "shared": 8,
+      "strength": 0.533333
+    },
+    {
+      "a": "README.ja.md",
+      "b": "README.md",
+      "either": 16,
+      "shared": 14,
+      "strength": 0.875
     },
     {
       "a": "README.ja.md",
       "b": "README.pt-BR.md",
-      "either": 16,
-      "shared": 16,
+      "either": 15,
+      "shared": 15,
       "strength": 1
     },
     {
       "a": "README.ja.md",
       "b": "README.zh.md",
-      "either": 16,
-      "shared": 16,
+      "either": 15,
+      "shared": 15,
       "strength": 1
+    },
+    {
+      "a": "README.ja.md",
+      "b": "app/src-tauri/tauri.conf.json",
+      "either": 16,
+      "shared": 8,
+      "strength": 0.5
+    },
+    {
+      "a": "README.ja.md",
+      "b": "site/src/content/docs/handbook/getting-started.md",
+      "either": 17,
+      "shared": 10,
+      "strength": 0.588235
+    },
+    {
+      "a": "README.ja.md",
+      "b": "sov_daemon/__init__.py",
+      "either": 15,
+      "shared": 8,
+      "strength": 0.533333
+    },
+    {
+      "a": "README.md",
+      "b": "README.pt-BR.md",
+      "either": 16,
+      "shared": 14,
+      "strength": 0.875
+    },
+    {
+      "a": "README.md",
+      "b": "README.zh.md",
+      "either": 16,
+      "shared": 14,
+      "strength": 0.875
+    },
+    {
+      "a": "README.md",
+      "b": "app/src-tauri/tauri.conf.json",
+      "either": 16,
+      "shared": 8,
+      "strength": 0.5
+    },
+    {
+      "a": "README.md",
+      "b": "site/src/content/docs/handbook/getting-started.md",
+      "either": 16,
+      "shared": 11,
+      "strength": 0.6875
+    },
+    {
+      "a": "README.md",
+      "b": "sov_daemon/__init__.py",
+      "either": 15,
+      "shared": 8,
+      "strength": 0.533333
     },
     {
       "a": "README.pt-BR.md",
       "b": "README.zh.md",
-      "either": 16,
-      "shared": 16,
+      "either": 15,
+      "shared": 15,
       "strength": 1
+    },
+    {
+      "a": "README.pt-BR.md",
+      "b": "app/src-tauri/tauri.conf.json",
+      "either": 16,
+      "shared": 8,
+      "strength": 0.5
+    },
+    {
+      "a": "README.pt-BR.md",
+      "b": "site/src/content/docs/handbook/getting-started.md",
+      "either": 17,
+      "shared": 10,
+      "strength": 0.588235
+    },
+    {
+      "a": "README.pt-BR.md",
+      "b": "sov_daemon/__init__.py",
+      "either": 15,
+      "shared": 8,
+      "strength": 0.533333
+    },
+    {
+      "a": "README.zh.md",
+      "b": "app/src-tauri/tauri.conf.json",
+      "either": 16,
+      "shared": 8,
+      "strength": 0.5
+    },
+    {
+      "a": "README.zh.md",
+      "b": "site/src/content/docs/handbook/getting-started.md",
+      "either": 17,
+      "shared": 10,
+      "strength": 0.588235
+    },
+    {
+      "a": "README.zh.md",
+      "b": "sov_daemon/__init__.py",
+      "either": 15,
+      "shared": 8,
+      "strength": 0.533333
     },
     {
       "a": "app/package-lock.json",
       "b": "app/package.json",
-      "either": 12,
-      "shared": 12,
-      "strength": 1
+      "either": 15,
+      "shared": 14,
+      "strength": 0.933333
     },
     {
       "a": "app/package-lock.json",
       "b": "app/src-tauri/tauri.conf.json",
-      "either": 13,
+      "either": 15,
       "shared": 9,
-      "strength": 0.692308
+      "strength": 0.6
     },
     {
       "a": "app/package-lock.json",
       "b": "sov_daemon/__init__.py",
-      "either": 13,
-      "shared": 7,
-      "strength": 0.538462
+      "either": 15,
+      "shared": 8,
+      "strength": 0.533333
     },
     {
       "a": "app/package.json",
       "b": "app/src-tauri/tauri.conf.json",
-      "either": 13,
+      "either": 14,
       "shared": 9,
-      "strength": 0.692308
+      "strength": 0.642857
     },
     {
       "a": "app/package.json",
       "b": "sov_daemon/__init__.py",
-      "either": 13,
-      "shared": 7,
-      "strength": 0.538462
+      "either": 14,
+      "shared": 8,
+      "strength": 0.571429
     },
     {
-      "a": "app/src-tauri/Cargo.lock",
-      "b": "app/src-tauri/Cargo.toml",
+      "a": "app/src-tauri/tauri.conf.json",
+      "b": "docs/roadmap.md",
+      "either": 9,
+      "shared": 5,
+      "strength": 0.555556
+    },
+    {
+      "a": "app/src-tauri/tauri.conf.json",
+      "b": "npm/package-lock.json",
       "either": 10,
       "shared": 5,
       "strength": 0.5
     },
     {
       "a": "app/src-tauri/tauri.conf.json",
-      "b": "sov_daemon/__init__.py",
-      "either": 11,
+      "b": "npm/package.json",
+      "either": 10,
+      "shared": 5,
+      "strength": 0.5
+    },
+    {
+      "a": "app/src-tauri/tauri.conf.json",
+      "b": "pyproject.toml",
+      "either": 13,
       "shared": 7,
-      "strength": 0.636364
+      "strength": 0.538462
+    },
+    {
+      "a": "app/src-tauri/tauri.conf.json",
+      "b": "site/src/content/docs/handbook/getting-started.md",
+      "either": 13,
+      "shared": 8,
+      "strength": 0.615385
+    },
+    {
+      "a": "app/src-tauri/tauri.conf.json",
+      "b": "site/src/site-config.ts",
+      "either": 11,
+      "shared": 6,
+      "strength": 0.545455
+    },
+    {
+      "a": "app/src-tauri/tauri.conf.json",
+      "b": "sov_daemon/__init__.py",
+      "either": 9,
+      "shared": 8,
+      "strength": 0.888889
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/page.json",
-      "either": 23,
-      "shared": 23,
+      "either": 26,
+      "shared": 26,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/statistics.json",
-      "either": 23,
-      "shared": 23,
+      "either": 26,
+      "shared": 26,
       "strength": 1
     },
     {
       "a": "atlas/README.md",
       "b": "atlas/structure.json",
-      "either": 23,
-      "shared": 23,
+      "either": 26,
+      "shared": 26,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/statistics.json",
-      "either": 23,
-      "shared": 23,
+      "either": 26,
+      "shared": 26,
       "strength": 1
     },
     {
       "a": "atlas/page.json",
       "b": "atlas/structure.json",
-      "either": 23,
-      "shared": 23,
+      "either": 26,
+      "shared": 26,
       "strength": 1
     },
     {
       "a": "atlas/statistics.json",
       "b": "atlas/structure.json",
-      "either": 23,
-      "shared": 23,
+      "either": 26,
+      "shared": 26,
       "strength": 1
     },
     {
       "a": "docs/roadmap.md",
+      "b": "site/src/site-config.ts",
+      "either": 8,
+      "shared": 5,
+      "strength": 0.625
+    },
+    {
+      "a": "docs/roadmap.md",
+      "b": "sov_daemon/__init__.py",
+      "either": 8,
+      "shared": 5,
+      "strength": 0.625
+    },
+    {
+      "a": "npm/package-lock.json",
+      "b": "npm/package.json",
+      "either": 6,
+      "shared": 6,
+      "strength": 1
+    },
+    {
+      "a": "npm/package-lock.json",
+      "b": "pyproject.toml",
+      "either": 11,
+      "shared": 6,
+      "strength": 0.545455
+    },
+    {
+      "a": "npm/package-lock.json",
       "b": "sov_daemon/__init__.py",
       "either": 9,
       "shared": 5,
       "strength": 0.555556
     },
     {
-      "a": "npm/package-lock.json",
-      "b": "npm/package.json",
-      "either": 5,
+      "a": "npm/package.json",
+      "b": "pyproject.toml",
+      "either": 11,
+      "shared": 6,
+      "strength": 0.545455
+    },
+    {
+      "a": "npm/package.json",
+      "b": "sov_daemon/__init__.py",
+      "either": 9,
       "shared": 5,
-      "strength": 1
+      "strength": 0.555556
+    },
+    {
+      "a": "pyproject.toml",
+      "b": "sov_daemon/__init__.py",
+      "either": 12,
+      "shared": 7,
+      "strength": 0.583333
     },
     {
       "a": "pyproject.toml",
       "b": "uv.lock",
-      "either": 26,
-      "shared": 14,
-      "strength": 0.538462
+      "either": 16,
+      "shared": 8,
+      "strength": 0.5
     },
     {
       "a": "site/package-lock.json",
       "b": "site/package.json",
-      "either": 9,
+      "either": 11,
+      "shared": 10,
+      "strength": 0.909091
+    },
+    {
+      "a": "site/src/content/docs/handbook/getting-started.md",
+      "b": "sov_daemon/__init__.py",
+      "either": 12,
       "shared": 8,
-      "strength": 0.888889
-    },
-    {
-      "a": "sov_cli/errors.py",
-      "b": "sov_transport/xrpl_testnet.py",
-      "either": 10,
-      "shared": 5,
-      "strength": 0.5
-    },
-    {
-      "a": "sov_engine/hashing.py",
-      "b": "tests/test_proofs.py",
-      "either": 8,
-      "shared": 6,
-      "strength": 0.75
-    },
-    {
-      "a": "sov_transport/base.py",
-      "b": "sov_transport/xrpl_testnet.py",
-      "either": 6,
-      "shared": 4,
       "strength": 0.666667
+    },
+    {
+      "a": "site/src/site-config.ts",
+      "b": "sov_daemon/__init__.py",
+      "either": 10,
+      "shared": 6,
+      "strength": 0.6
+    },
+    {
+      "a": "sov_daemon/__init__.py",
+      "b": "uv.lock",
+      "either": 14,
+      "shared": 7,
+      "strength": 0.5
     }
   ],
   "parameters": {
@@ -2742,16 +3323,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-10-20T16:39:18-04:00",
-    "inScopeFiles": 431,
+    "headDate": "2026-11-13T23:26:25-05:00",
+    "inScopeFiles": 487,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 130,
+    "qualifyingCommits": 104,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-23T20:39:18.000Z",
+    "since": "2026-05-18T04:26:25.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",
@@ -2767,7 +3348,7 @@
     ],
     "sourceFileReach": 20,
     "sourceFileRise": 25,
-    "sourceFilesReachingStrongFloor": 4,
+    "sourceFilesReachingStrongFloor": 1,
     "strength": 0.5,
     "windowDays": 180
   },

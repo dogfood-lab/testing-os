@@ -1,14 +1,14 @@
 # registry-sync: how it works
 
-Mapped at 2026-11-09 from commit b93b0e3 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 7d6f822 by Atlas 1.26.0.
 
 ## What this is
 
 7 parts, mostly TypeScript (40 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI and Publish each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run registry-sync. People import @mcptoolshop/registry-sync.
 
-## What changed since 2026-10-01 (fae9a7c)
+## What changed since 2026-11-11 (b93b0e3)
 
-Nothing structural changed since 2026-10-01; 24 files changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

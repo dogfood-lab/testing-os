@@ -1,6 +1,6 @@
 # runforge: how it works
 
-Mapped at 2026-10-19 from commit ca3aae2 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit c842ea9 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,10 +8,9 @@ A Windows instrument for fine-tuning runs: it draws every stored sample from a f
 
 11 parts, mostly Rust (35 files), CSS (2), PowerShell (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 3 doors; CI and runforge each reach 3 parts, and CI is followed because a pull request goes through it. It deploys a site to GitHub Pages. runforge is a command built from crates/runforge (nothing ships it).
 
-## What changed since 2026-10-07 (8d5955e)
+## What changed since 2026-11-11 (ca3aae2)
 
-- crates/runforge-core/tests/fixtures/tool_specs.json is now read by crates/runforge-core/src/session.rs.
-- 2 files added and 7 changed content, across 3 parts.
+Nothing structural changed since 2026-11-11; 1 file changed content.
 
 ## What comes in
 

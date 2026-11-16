@@ -1,14 +1,14 @@
 # escape-the-valley: how it works
 
-Mapped at 2026-11-09 from commit 714f79e by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 4654d7e by Atlas 1.26.0.
 
 ## What this is
 
-10 parts, mostly Python (66 files), shell (13), CSS (2), JavaScript (2), TypeScript (2) and HTML (1). Work enters through 8 doors; CI and Release each reach 4 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run escape-the-valley and trail.
+10 parts, mostly Python (68 files), shell (13), CSS (2), JavaScript (2), TypeScript (2) and HTML (1). Work enters through 8 doors; CI and Release each reach 4 parts, and CI is followed because a pull request goes through it. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run escape-the-valley and trail.
 
-## What changed since 2026-11-09 (5e0367f)
+## What changed since 2026-11-11 (714f79e)
 
-Nothing structural changed since 2026-11-09; no file changed.
+Nothing structural changed since 2026-11-11; 2 files added and 14 changed content.
 
 ## What comes in
 
@@ -57,17 +57,17 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-- **src/escape_the_valley/tui_app.py** and **tests/test_tui_smoke.py** changed together in 13 of 14 commits, and the tests part imports the src part.
-- **src/escape_the_valley/cli.py** and **tests/test_cli_stats.py** changed together in 6 of 7 commits, and the tests part imports the src part.
+- **src/escape_the_valley/tui_app.py** and **tests/test_tui_smoke.py** changed together in 13 of 15 commits, and the tests part imports the src part.
 - **src/escape_the_valley/engine.py** and **tests/test_step_engine.py** changed together in 14 of 18 commits, and the tests part imports the src part.
 - **src/escape_the_valley/ui.py** and **tests/test_adapter.py** changed together in 7 of 9 commits, and the tests part imports the src part.
 - **src/escape_the_valley/engine.py** and **src/escape_the_valley/step_engine.py** changed together in 13 of 17 commits, inside the src part.
+- **src/escape_the_valley/cli.py** and **tests/test_cli_stats.py** changed together in 7 of 10 commits, and the tests part imports the src part.
 
 8 files changed together with their own tests, as expected.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 8 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 9 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 

@@ -77,78 +77,31 @@
     "fileCounts": {
       "added": 0,
       "assigned": 0,
-      "changed": 0,
+      "changed": 1,
       "moved": 0,
-      "parts": 0,
+      "parts": 1,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-15; no file changed.",
+        "sentence": "Nothing structural changed since 2026-11-11; 1 file changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "5c0bd68f5edd0c2b824efedf19b90a961f8c750e",
-      "generatedAt": "2026-10-15T03:11:18.368Z"
+      "commit": "ae5d8dcfdd273a28d85302f5703d9640a57811e5",
+      "generatedAt": "2026-11-11T22:12:56.998Z"
     },
     "unchanged": true
   },
-  "changesTogether": [
-    {
-      "a": "src/engines/comfyServerEngine.ts",
-      "b": "src/extension.ts",
-      "either": 8,
-      "partLabels": [
-        "src",
-        "src"
-      ],
-      "parts": [
-        "src",
-        "src"
-      ],
-      "relation": "inside",
-      "shared": 6
-    },
-    {
-      "a": "src/engines/comfyServerEngine.ts",
-      "b": "src/types/index.ts",
-      "either": 8,
-      "partLabels": [
-        "src",
-        "src"
-      ],
-      "parts": [
-        "src",
-        "src"
-      ],
-      "relation": "inside",
-      "shared": 5
-    },
-    {
-      "a": "src/extension.ts",
-      "b": "src/types/index.ts",
-      "either": 7,
-      "partLabels": [
-        "src",
-        "src"
-      ],
-      "parts": [
-        "src",
-        "src"
-      ],
-      "relation": "inside",
-      "shared": 4
-    }
-  ],
+  "changesTogether": [],
   "changesTogetherNote": [
-    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "ae5d8dcfdd273a28d85302f5703d9640a57811e5",
+  "commit": "c9cd98bd27632e1ad48941f989ece3df0aac9f25",
   "defaultBranch": "main",
   "derived": "9 parts, mostly TypeScript (50 files), JavaScript (5), CSS (2) and Astro (1). Work enters through 4 doors; CI and Build and Release each reach 5 parts, and CI is followed because a pull request goes through it. It publishes to the VS Code Marketplace. It deploys a site to GitHub Pages. People install the codecomfy-vscode extension.",
   "doors": [
@@ -355,13 +308,13 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-19T12:31:17.976Z",
+  "generatedAt": "2026-11-16T15:13:17.504Z",
   "limits": [
     "1 import could not be resolved: `test/helpers.ts` imports a path built at run time.",
     "2 writes and 6 reads use paths built at run time and are not named here.",
     "16 writes and 39 reads go to a path their caller passes, not to this repository.",
     "4 commands are built at run time and not followed.",
-    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
+    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {

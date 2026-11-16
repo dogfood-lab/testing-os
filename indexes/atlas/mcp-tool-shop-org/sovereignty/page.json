@@ -98,111 +98,68 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 0,
+      "added": 53,
       "assigned": 0,
       "changed": 29,
       "moved": 0,
-      "parts": 7,
+      "parts": 8,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
         "kind": "landing",
-        "sentence": "app/src-tauri/Cargo.lock is now read by tests/test_tauri_updater_secrets.py.",
+        "sentence": "app/package-lock.json is now read by tests/test_tauri_versions_in_step.py.",
+        "subjects": [
+          "app/package-lock.json",
+          "tests/test_tauri_versions_in_step.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "app/src-tauri/Cargo.lock is now also read by tests/test_tauri_versions_in_step.py.",
         "subjects": [
           "app/src-tauri/Cargo.lock",
-          "tests/test_tauri_updater_secrets.py"
+          "tests/test_tauri_versions_in_step.py"
         ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "app/src-tauri/gen/schemas is now read by tests/test_tauri_updater_secrets.py.",
-        "subjects": [
-          "app/src-tauri/gen/schemas",
-          "tests/test_tauri_updater_secrets.py"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "assets/print/source/print-bundle.js is now also read by tests/test_tauri_updater_secrets.py.",
-        "subjects": [
-          "assets/print/source/print-bundle.js",
-          "tests/test_tauri_updater_secrets.py"
-        ]
-      },
-      {
-        "kind": "landing",
-        "sentence": "And 1 more new writer or reader of a place.",
-        "subjects": []
       },
       {
         "kind": "counts",
-        "sentence": "29 files changed content, across 7 parts.",
+        "sentence": "53 files added and 29 changed content, across 8 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "83f9b40eba1ef98f18c978316208899b5e450860",
-      "generatedAt": "2026-09-30T20:13:11.703Z"
+      "commit": "fc1d04269cea3fee90a48b16bcc81cad29067e07",
+      "generatedAt": "2026-11-13T16:13:01.413Z"
     },
     "unchanged": false
   },
   "changesTogether": [
     {
-      "a": "sov_engine/hashing.py",
-      "b": "tests/test_proofs.py",
-      "either": 8,
-      "partLabels": [
-        "sov_engine",
-        "tests"
-      ],
-      "parts": [
-        "sov_engine",
-        "tests"
-      ],
-      "relation": "b-imports-a",
-      "shared": 6
-    },
-    {
-      "a": "sov_transport/base.py",
-      "b": "sov_transport/xrpl_testnet.py",
-      "either": 6,
-      "partLabels": [
-        "sov_transport",
-        "sov_transport"
-      ],
-      "parts": [
-        "sov_transport",
-        "sov_transport"
-      ],
-      "relation": "inside",
-      "shared": 4
-    },
-    {
-      "a": "sov_cli/errors.py",
-      "b": "sov_transport/xrpl_testnet.py",
+      "a": "site/src/site-config.ts",
+      "b": "sov_daemon/__init__.py",
       "either": 10,
       "partLabels": [
-        "sov_cli",
-        "sov_transport"
+        "the site",
+        "sov_daemon"
       ],
       "parts": [
-        "sov_cli",
-        "sov_transport"
+        "site",
+        "sov_daemon"
       ],
-      "relation": "a-imports-b",
-      "shared": 5
+      "relation": "none",
+      "shared": 6
     }
   ],
   "changesTogetherNote": [
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 4 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 1 source file reaches 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "8fce39e57ea95dd8bd76175cea8a55f4fcda42a0",
+  "commit": "3096bd47294c1554c37b67b94943696234ec2763",
   "defaultBranch": "main",
-  "derived": "14 parts, mostly Python (121 files), TypeScript (61), JavaScript (21), CSS (19), Rust (6), shell (5), HTML (4) and Astro (2). Work enters through 8 doors; the busiest is CI, which reaches 11 parts. It publishes to PyPI, @mcptoolshop/sovereignty to npm, and a container image. It deploys a site to GitHub Pages. People run sov and sovereignty. People install the sov-tauri-shell desktop app.",
+  "derived": "14 parts, mostly Python (125 files), TypeScript (61), JavaScript (21), CSS (19), Rust (6), shell (5), HTML (4) and Astro (2). Work enters through 8 doors; the busiest is CI, which reaches 11 parts. It publishes to PyPI, @mcptoolshop/sovereignty to npm, and a container image. It deploys a site to GitHub Pages. People run sov and sovereignty. People install the sov-tauri-shell desktop app.",
   "doors": [
     {
       "checks": [],
@@ -234,7 +191,7 @@
             "assets/print/source/inline-fonts.py",
             "docker/"
           ],
-          "checksMore": 29,
+          "checksMore": 30,
           "lead": "except on a schedule",
           "runs": [
             ".github/scripts/check-publish-yml.py",
@@ -249,7 +206,7 @@
             "app/src/",
             "app/vite.config.ts"
           ],
-          "runsMore": 146,
+          "runsMore": 149,
           "when": "except on a schedule"
         }
       ],
@@ -306,12 +263,12 @@
         {
           "boundary": "sov_transport",
           "depth": 0,
-          "files": 7
+          "files": 8
         },
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 82
+          "files": 85
         }
       ],
       "runs": [],
@@ -338,7 +295,7 @@
         "sov_transport/"
       ],
       "checksCount": 4,
-      "checksMore": 7,
+      "checksMore": 8,
       "file": ".github/workflows/docker.yml",
       "id": ".github/workflows/docker.yml",
       "landings": [],
@@ -379,7 +336,7 @@
         {
           "boundary": "sov_transport",
           "depth": 0,
-          "files": 7
+          "files": 8
         }
       ],
       "runs": [
@@ -411,7 +368,7 @@
         "app/src-tauri/src/lib.rs"
       ],
       "checksCount": 5,
-      "checksMore": 8,
+      "checksMore": 9,
       "file": ".github/workflows/publish.yml",
       "id": ".github/workflows/publish.yml",
       "landings": [],
@@ -446,7 +403,7 @@
         {
           "boundary": "sov_transport",
           "depth": 0,
-          "files": 7
+          "files": 8
         }
       ],
       "runs": [
@@ -560,7 +517,7 @@
         {
           "boundary": "sov_transport",
           "depth": 1,
-          "files": 5
+          "files": 6
         }
       ],
       "runs": [
@@ -680,11 +637,11 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-26T12:33:05.499Z",
+  "generatedAt": "2026-11-16T15:25:56.468Z",
   "limits": [
-    "35 import sites name a declared dependency that shares its name with a local module (xrpl); they are read as the dependency, which is not in this repository.",
+    "37 import sites name a declared dependency that shares its name with a local module (xrpl); they are read as the dependency, which is not in this repository.",
     "3 imports could not be resolved: `assets/print/source/render.mjs` imports `puppeteer-core`, which is not declared; `assets/print/source/vendor/react-dom.production.min.js` imports `react`, which is not declared; `sov_cli/main.py` imports a path built at run time.",
-    "1 write and 32 reads use paths built at run time and are not named here.",
+    "1 write and 35 reads use paths built at run time and are not named here.",
     "1 write goes to places this repository does not track, so it is not listed as generated.",
     "3 writes and 42 reads go to a path their caller passes, not to this repository.",
     "1 write and 4 reads go to the directory the command is run in (.sov/, README.md and docs/), not to this repository.",
@@ -731,15 +688,15 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 119,
+  "testFiles": 122,
   "testedBy": {
     "app": 32,
     "assets": 0,
     "npm": 1,
-    "sov_cli": 43,
-    "sov_daemon": 40,
-    "sov_engine": 62,
-    "sov_transport": 56
+    "sov_cli": 45,
+    "sov_daemon": 42,
+    "sov_engine": 64,
+    "sov_transport": 58
   },
   "testedByScript": [
     "npm"

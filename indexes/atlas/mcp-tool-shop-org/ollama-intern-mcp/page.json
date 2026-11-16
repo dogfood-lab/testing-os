@@ -2,6 +2,7 @@
   "authored": [
     ".github/",
     "docs/",
+    "evals/",
     "root"
   ],
   "breaks": [
@@ -50,28 +51,58 @@
     "fileCounts": {
       "added": 0,
       "assigned": 0,
-      "changed": 7,
+      "changed": 4,
       "moved": 0,
-      "parts": 2,
+      "parts": 3,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-15; 7 files changed content.",
+        "sentence": "Nothing structural changed since 2026-11-12; 4 files changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "8cad98f5730cb13929a0babec675451bf7906c20",
-      "generatedAt": "2026-10-15T19:33:43.917Z"
+      "commit": "4b28c620a17b3a7828a34f523dee8160f7375ccb",
+      "generatedAt": "2026-11-12T00:49:01.727Z"
     },
     "unchanged": true
   },
   "changesTogether": [
     {
       "a": "src/tools/packs/changePack.ts",
+      "b": "src/tools/packs/repoPack.ts",
+      "either": 5,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 5
+    },
+    {
+      "a": "src/tools/codeReview.ts",
+      "b": "src/tools/packs/changePack.ts",
+      "either": 7,
+      "partLabels": [
+        "src",
+        "src"
+      ],
+      "parts": [
+        "src",
+        "src"
+      ],
+      "relation": "inside",
+      "shared": 4
+    },
+    {
+      "a": "src/tools/codeReview.ts",
       "b": "src/tools/packs/repoPack.ts",
       "either": 7,
       "partLabels": [
@@ -83,76 +114,16 @@
         "src"
       ],
       "relation": "inside",
-      "shared": 7
-    },
-    {
-      "a": "src/tools/changeBrief.ts",
-      "b": "src/tools/incidentBrief.ts",
-      "either": 5,
-      "partLabels": [
-        "src",
-        "src"
-      ],
-      "parts": [
-        "src",
-        "src"
-      ],
-      "relation": "inside",
-      "shared": 5
-    },
-    {
-      "a": "src/tools/changeBrief.ts",
-      "b": "src/tools/repoBrief.ts",
-      "either": 5,
-      "partLabels": [
-        "src",
-        "src"
-      ],
-      "parts": [
-        "src",
-        "src"
-      ],
-      "relation": "inside",
-      "shared": 5
-    },
-    {
-      "a": "src/tools/incidentBrief.ts",
-      "b": "src/tools/repoBrief.ts",
-      "either": 5,
-      "partLabels": [
-        "src",
-        "src"
-      ],
-      "parts": [
-        "src",
-        "src"
-      ],
-      "relation": "inside",
-      "shared": 5
-    },
-    {
-      "a": "src/tools/packs/changePack.ts",
-      "b": "src/tools/packs/incidentPack.ts",
-      "either": 7,
-      "partLabels": [
-        "src",
-        "src"
-      ],
-      "parts": [
-        "src",
-        "src"
-      ],
-      "relation": "inside",
-      "shared": 5
+      "shared": 4
     }
   ],
   "changesTogetherNote": [
-    "2 files changed together with their own tests, as expected.",
+    "1 file changed together with its own test, as expected.",
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 5 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 3 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
-  "changesTogetherWithTests": 2,
-  "commit": "769b4a6fb8e1696d00149f17a190cffc9836a7d7",
+  "changesTogetherWithTests": 1,
+  "commit": "c7b3604707621146dbdd0298006fd8196432e4d0",
   "defaultBranch": "main",
   "derived": "11 parts, mostly TypeScript (198 files), JavaScript (10), CSS (2), Python (2) and Astro (1). Work enters through 8 doors; CI and Doc Drift each reach 4 parts, and CI is followed because it comes first by name. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run ollama-intern-mcp. People import ollama-intern-mcp.",
   "doors": [
@@ -595,16 +566,6 @@
   "engine": "1.26.0",
   "generated": [
     {
-      "addedBy": "dependabot[bot]",
-      "place": "bench/",
-      "writers": []
-    },
-    {
-      "addedBy": "dependabot[bot]",
-      "place": "evals/",
-      "writers": []
-    },
-    {
       "block": true,
       "place": "site/src/content/docs/handbook/tools.md",
       "writers": [
@@ -612,7 +573,7 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-19T12:34:31.465Z",
+  "generatedAt": "2026-11-16T15:18:54.046Z",
   "limits": [
     "1 import could not be resolved: `scripts/gen-tool-docs.mjs` imports a path built at run time.",
     "3 writes and 9 reads use paths built at run time and are not named here.",

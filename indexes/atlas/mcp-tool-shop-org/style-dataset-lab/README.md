@@ -1,28 +1,26 @@
 # style-dataset-lab: how it works
 
-Mapped at 2026-11-09 from commit 20a098e by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 594a1f6 by Atlas 1.26.0.
 
 ## What this is
 
-13 parts, mostly JSON data (2619 files); code in JavaScript (249), Python (59), shell (9), Astro (3), PowerShell (3), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; CI and Publish each reach 4 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run sdlab.
+13 parts, mostly JSON data (2619 files); code in JavaScript (249), Python (63), shell (10), Astro (3), PowerShell (3), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; CI and Publish each reach 4 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run sdlab.
 
-## What changed since 2026-11-08 (a21ca85)
+## What changed since 2026-11-12 (ce6da8a)
 
-- projects/ai-eye-test/outputs/synthetic/phase2/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2_build.py.
-- projects/ai-eye-test/outputs/synthetic/phase2_noshadow/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2_noshadow_build.py.
-- projects/ai-eye-test/outputs/synthetic/phase2b/apple_n*_s*.json is now written by projects/ai-eye-test/compositor/phase2b_build.py.
-- 17 files changed content, across 5 parts.
+- scripts/colab/launch_guards.py is now read by scripts/colab/lane3_rung.py.
+- 2 files added and 17 changed content, across 2 parts.
 
 ## What comes in
 
-1. **CI.** On a pull request; on a push touching 16 paths; or by hand. Runs bin/sdlab.js, scripts/colab/preflight_resolve.sh, tests/checkpoint_eval/ and 121 more.
+1. **CI.** On a pull request; on a push touching 16 paths; or by hand. Runs bin/sdlab.js, scripts/colab/preflight_resolve.sh, tests/checkpoint_eval/ and 125 more.
 2. **Publish.** When a release is published; or by hand. Runs bin/sdlab.js, tests/canon-star-freight/, tests/cli-scripts/ and 74 more.
 3. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
 4. **sdlab** (a command people run). Runs bin/sdlab.js.
 
 ## What happens through CI
 
-1. The workflow runs bin/sdlab.js in bin, scripts/colab/preflight_resolve.sh in scripts, and 122 files in tests.
+1. The workflow runs bin/sdlab.js in bin, scripts/colab/preflight_resolve.sh in scripts, and 126 files in tests.
    1. Inside bin/sdlab.js, `main` does, in order: `enableDebug` (lib) and `setLogLevel`.
    2. Or, for an entry of `namespaces` where `command === head`, `main` does `findClosest` (lib) and `inputError` instead.
    3. Or, when `command === 'critique'`, `main` does `run` (scripts) instead.
@@ -65,12 +63,16 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-- **tests/colab/fixtures/fake_colab.py** and **tests/colab/test_launch_lane3_stub.py** changed together in 8 of 13 commits, inside the tests part.
-- **tests/colab/test_launch_lane1_stub.py** and **tests/colab/test_launch_lane3_stub.py** changed together in 5 of 10 commits, inside the tests part.
+- **tests/colab/test_launch_guards.py** and **tests/colab/test_launch_lane1_stub.py** changed together in 6 of 11 commits, inside the tests part.
+- **scripts/colab/lane3_rung.py** and **tests/colab/test_lane3_gpu_rung.py** changed together in 7 of 14 commits, and the tests part imports the scripts part.
+- **tests/colab/test_launch_lane1_stub.py** and **tests/colab/test_launch_lane3_stub.py** changed together in 7 of 14 commits, inside the tests part.
+- **scripts/colab/lane3_rung.py** and **scripts/colab/remote_runner.py** changed together in 4 of 8 commits, inside the scripts part.
+
+1 file changed together with its own test, as expected.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 1 source file reaches 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 4 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -115,7 +117,7 @@ No two parts export a helper that looks alike.
 
 ## Hand-authored
 
-People write .github/, docs/, the repository root, site/ and workflows/. The data in runtime/, schemas/ and templates/ is written by no code this map names; 40 writes with paths built at run time may land here.
+People write .github/, docs/, the repository root, site/ and workflows/. The data in runtime/, schemas/ and templates/ is written by no code this map names; 44 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -126,9 +128,9 @@ Read those in order to follow one pull request end to end.
 ## What this map cannot see
 
 - 5 imports could not be resolved: `bin/sdlab.js` imports a path built at run time; `lib/training-adapters.js` imports a path built at run time; `projects/salt-road/inputs/prompts/wave-runner.py` imports a path built at run time; and 2 more.
-- 40 writes and 73 reads use paths built at run time and are not named here.
+- 44 writes and 79 reads use paths built at run time and are not named here.
 - 3 writes go to places this repository does not track, so they are not listed as generated.
-- 163 writes and 310 reads go to a path their caller passes, not to this repository.
+- 170 writes and 322 reads go to a path their caller passes, not to this repository.
 - 12 writes and 3 reads go to the directory the command is run in or a path their caller passes, not to this repository.
 - 7 reads go to the directory the command is run in, not to this repository.
 - 1 write and 2 reads go to a temporary directory, not to this repository.

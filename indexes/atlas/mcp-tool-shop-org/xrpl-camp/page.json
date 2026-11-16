@@ -47,24 +47,41 @@
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-10-23; no file changed.",
+        "sentence": "Nothing structural changed since 2026-11-13; no file changed.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "f33e1f2ffd7595dcf0f4f7a85045a3a8aa6f9f57",
-      "generatedAt": "2026-10-23T07:42:22.756Z"
+      "commit": "f76a5949ef34e1d76d8e6603297fa9969c741650",
+      "generatedAt": "2026-11-13T13:43:42.816Z"
     },
     "unchanged": true
   },
-  "changesTogether": [],
+  "changesTogether": [
+    {
+      "a": "xrpl_camp/cli.py",
+      "b": "xrpl_camp/proof_pack.py",
+      "either": 6,
+      "partLabels": [
+        "xrpl_camp",
+        "xrpl_camp"
+      ],
+      "parts": [
+        "xrpl_camp",
+        "xrpl_camp"
+      ],
+      "relation": "inside",
+      "shared": 4
+    }
+  ],
   "changesTogetherNote": [
-    "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
+    "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
+    "Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "d3a2bb2e202f8a4ae7b61c6496417c70ac754433",
+  "commit": "a9160e500072abd5a8fd2b8673008d0262dcaf11",
   "defaultBranch": "main",
-  "derived": "7 parts, mostly Python (37 files), shell (26), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 7 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. It deploys a site to GitHub Pages. People run xrpl-camp.",
+  "derived": "7 parts, mostly Python (40 files), shell (29), CSS (2), JavaScript (2), TypeScript (2) and Astro (1). Work enters through 7 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI, and a container image. It deploys a site to GitHub Pages. People run xrpl-camp.",
   "doors": [
     {
       "checks": [
@@ -74,7 +91,7 @@
         "tests/"
       ],
       "checksCount": 4,
-      "checksMore": 26,
+      "checksMore": 28,
       "file": ".github/workflows/ci.yml",
       "id": ".github/workflows/ci.yml",
       "landings": [],
@@ -94,12 +111,12 @@
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 26
+          "files": 28
         },
         {
           "boundary": "xrpl_camp",
           "depth": 0,
-          "files": 10
+          "files": 11
         }
       ],
       "runs": [
@@ -166,7 +183,7 @@
         {
           "boundary": "xrpl_camp",
           "depth": 0,
-          "files": 10
+          "files": 11
         }
       ],
       "runs": [],
@@ -317,7 +334,7 @@
         {
           "boundary": "xrpl_camp",
           "depth": 0,
-          "files": 9
+          "files": 10
         }
       ],
       "runs": [
@@ -343,14 +360,14 @@
       ]
     }
   ],
-  "generatedAt": "2026-10-26T12:33:30.125Z",
+  "generatedAt": "2026-11-16T15:29:56.990Z",
   "limits": [
     "1 import could not be resolved: `xrpl_camp/cli.py` imports a path built at run time.",
     "6 reads use paths built at run time and are not named here.",
     "4 writes and 10 reads go to a path their caller passes, not to this repository.",
     "1 write goes to a temporary directory, not to this repository.",
-    "913 files belong to no part: docs/receipts/1.4.1-live-check/README.md, docs/receipts/1.4.1-live-check/account_checks.txt, docs/receipts/1.4.1-live-check/channels/npm-dryrun.cmd and 910 more.",
-    "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
+    "1044 files belong to no part: docs/receipts/1.4.1-live-check/README.md, docs/receipts/1.4.1-live-check/account_checks.txt, docs/receipts/1.4.1-live-check/channels/npm-dryrun.cmd and 1041 more.",
+    "Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window."
   ],
   "mainDoor": ".github/workflows/ci.yml",
   "partLabels": {
@@ -375,10 +392,10 @@
   "startReason": "This path follows xrpl-camp (a command people run, from pyproject.toml) from its entry, since CI only checks code.",
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 34,
+  "testFiles": 36,
   "testedBy": {
     "bin": 0,
-    "xrpl_camp": 23
+    "xrpl_camp": 25
   },
   "testedCodeParts": 2,
   "unnamedWrites": 0,

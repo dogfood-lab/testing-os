@@ -1,6 +1,6 @@
 # aspire-si-gates: how it works
 
-Mapped at 2026-11-02 from commit 967bf47 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit fc5a869 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,12 +8,9 @@ aspire-si-gates is the Stage 1 data gates for role-training sets: one standard-l
 
 6 parts, mostly Python (13 files), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and shell (1). Work enters through 4 doors; the busiest is ci, which reaches 2 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People import aspire_si_gates.
 
-## What changed since 2026-10-29 (250845f)
+## What changed since 2026-11-11 (967bf47)
 
-- ci now also runs tests/test_workflows.py.
-- Release no longer starts by hand.
-- src/aspire_si_gates/*.py is now read by src/aspire_si_gates/__init__.py.
-- 1 file added and 5 changed content, across 4 parts.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

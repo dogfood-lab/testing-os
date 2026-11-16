@@ -1,14 +1,14 @@
 # shipcheck: how it works
 
-Mapped at 2026-10-19 from commit dee5731 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 8fbf743 by Atlas 1.26.0.
 
 ## What this is
 
 10 parts, mostly Markdown (79 files); code in JavaScript (5), CSS (2), TypeScript (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run shipcheck.
 
-## What changed since 2026-10-15 (90be536)
+## What changed since 2026-11-11 (dee5731)
 
-Nothing structural changed since 2026-10-15; 2 files changed content.
+Nothing structural changed since 2026-11-11; 1 file changed content.
 
 ## What comes in
 
@@ -46,7 +46,9 @@ CI writes nothing this map can see.
 
 ## What tends to change together
 
-No two source files changed together often enough to name.
+No two source files, other than a file and its own test, changed together often enough to name.
+
+1 file changed together with its own test, as expected.
 
 Window: 180 days; a pair counts from 3 shared commits, since 0 source files reach 10 revisions; the floor rises to 10 when 25 do.
 

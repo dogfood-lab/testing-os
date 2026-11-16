@@ -1,14 +1,14 @@
 # repo-dataset: how it works
 
-Mapped at 2026-10-19 from commit 84e1689 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 05e0fab by Atlas 1.26.0.
 
 ## What this is
 
 5 parts, mostly TypeScript (78 files), CSS (2), Astro (1) and JavaScript (1). Work enters through 5 doors; CI, Deploy site to GitHub Pages, Publish, @mcptoolshop/repo-dataset and repo-dataset each reach 1 part, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run repo-dataset. People import @mcptoolshop/repo-dataset.
 
-## What changed since 2026-10-01 (fdf8c06)
+## What changed since 2026-11-11 (84e1689)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

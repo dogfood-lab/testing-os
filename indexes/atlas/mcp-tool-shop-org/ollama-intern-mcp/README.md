@@ -1,14 +1,14 @@
 # ollama-intern-mcp: how it works
 
-Mapped at 2026-10-19 from commit 769b4a6 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit c7b3604 by Atlas 1.26.0.
 
 ## What this is
 
 11 parts, mostly TypeScript (198 files), JavaScript (10), CSS (2), Python (2) and Astro (1). Work enters through 8 doors; CI and Doc Drift each reach 4 parts, and CI is followed because it comes first by name. It publishes to npm and a container image. It deploys a site to GitHub Pages. People run ollama-intern-mcp. People import ollama-intern-mcp.
 
-## What changed since 2026-10-15 (8cad98f)
+## What changed since 2026-11-12 (4b28c62)
 
-Nothing structural changed since 2026-10-15; 7 files changed content.
+Nothing structural changed since 2026-11-12; 4 files changed content.
 
 ## What comes in
 
@@ -59,17 +59,15 @@ Nothing structural changed since 2026-10-15; 7 files changed content.
 
 ## What tends to change together
 
-- **src/tools/packs/changePack.ts** and **src/tools/packs/repoPack.ts** changed together in 7 of 7 commits, inside the src part.
-- **src/tools/changeBrief.ts** and **src/tools/incidentBrief.ts** changed together in 5 of 5 commits, inside the src part.
-- **src/tools/changeBrief.ts** and **src/tools/repoBrief.ts** changed together in 5 of 5 commits, inside the src part.
-- **src/tools/incidentBrief.ts** and **src/tools/repoBrief.ts** changed together in 5 of 5 commits, inside the src part.
-- **src/tools/packs/changePack.ts** and **src/tools/packs/incidentPack.ts** changed together in 5 of 7 commits, inside the src part.
+- **src/tools/packs/changePack.ts** and **src/tools/packs/repoPack.ts** changed together in 5 of 5 commits, inside the src part.
+- **src/tools/codeReview.ts** and **src/tools/packs/changePack.ts** changed together in 4 of 7 commits, inside the src part.
+- **src/tools/codeReview.ts** and **src/tools/packs/repoPack.ts** changed together in 4 of 7 commits, inside the src part.
 
-2 files changed together with their own tests, as expected.
+1 file changed together with its own test, as expected.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 5 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 3 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -88,13 +86,11 @@ No two parts export a helper that looks alike.
 
 ## Generated, never hand-edited
 
-- **bench/** is written by dependabot[bot], which added every file in it.
-- **evals/** is written by dependabot[bot], which added every file in it.
 - **site/src/content/docs/handbook/tools.md** has a block written by scripts/gen-tool-docs.mjs.
 
 ## Hand-authored
 
-People write .github/, docs/ and the repository root; 3 writes with paths built at run time may land here.
+People write .github/, docs/, evals/ and the repository root; 3 writes with paths built at run time may land here.
 
 ## Where to start
 

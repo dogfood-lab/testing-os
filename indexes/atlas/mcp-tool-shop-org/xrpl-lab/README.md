@@ -1,15 +1,14 @@
 # xrpl-lab: how it works
 
-Mapped at 2026-11-02 from commit 51099c6 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 7d7c730 by Atlas 1.26.0.
 
 ## What this is
 
-10 parts, mostly Python (233 files), Astro (13), TypeScript (8), CSS (4), shell (3), JavaScript (2) and HTML (1). Work enters through 8 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run xrpl-lab.
+10 parts, mostly Python (241 files), Astro (13), TypeScript (8), CSS (4), shell (3), JavaScript (2) and HTML (1). Work enters through 8 doors; the busiest is CI, which reaches 4 parts. It publishes to npm and PyPI. It deploys a site to GitHub Pages. People run xrpl-lab.
 
-## What changed since 2026-10-22 (0a4a07a)
+## What changed since 2026-11-13 (61cbd9a)
 
-- modules/*.md is now read by tests/test_token_escrow.py.
-- 16 files changed content, across 4 parts.
+Nothing structural changed since 2026-11-13; 106 files added and 9 changed content.
 
 ## What comes in
 
@@ -57,10 +56,12 @@ CI writes nothing this map can see.
 ## What tends to change together
 
 - **bin/xrpl-lab.js** and **xrpl_lab/__init__.py** changed together in 5 of 6 commits, though neither part imports the other.
+- **xrpl_lab/api/routes.py** and **xrpl_lab/state.py** changed together in 5 of 8 commits, inside the xrpl_lab part.
+- **xrpl_lab/doctor.py** and **xrpl_lab/workshop.py** changed together in 4 of 7 commits, inside the xrpl_lab part.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 1 source file reaches 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 2 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
@@ -93,10 +94,10 @@ Read those in order to follow one run of xrpl-lab end to end. This path follows 
 ## What this map cannot see
 
 - 1 import could not be resolved: `tests/test_product_smoke.py` imports a path built at run time.
-- 3 writes and 7 reads use paths built at run time and are not named here.
-- 6 writes and 58 reads go to a path their caller passes, not to this repository.
-- 8 reads go to the directory the command is run in, not to this repository.
+- 3 writes and 6 reads use paths built at run time and are not named here.
+- 6 writes and 64 reads go to a path their caller passes, not to this repository.
 - 1 write and 6 reads go to the home directory (.xrpl-lab/) or a path their caller passes, not to this repository.
+- 7 reads go to the directory the command is run in, not to this repository.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

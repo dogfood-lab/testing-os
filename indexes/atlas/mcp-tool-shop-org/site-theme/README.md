@@ -1,14 +1,14 @@
 # site-theme: how it works
 
-Mapped at 2026-10-19 from commit 1fac977 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit b9b9dc2 by Atlas 1.26.0.
 
 ## What this is
 
 14 parts, in JavaScript (51 files), Astro (45 files), TypeScript (20 files), CSS (4 files) and HTML (2 files). Work enters through 6 doors; the busiest is @mcptoolshop/site-theme, which reaches 5 parts. It publishes to npm. It deploys a site to GitHub Pages. People run site-theme. People import @mcptoolshop/site-theme.
 
-## What changed since 2026-10-01 (9300fba)
+## What changed since 2026-11-12 (f7d102f)
 
-Nothing structural changed since 2026-10-01; 2 files changed content.
+Nothing structural changed since 2026-11-12; no file changed.
 
 ## What comes in
 

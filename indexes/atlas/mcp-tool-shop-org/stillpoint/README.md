@@ -1,14 +1,14 @@
 # stillpoint: how it works
 
-Mapped at 2026-10-19 from commit c629ce3 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit e856e80 by Atlas 1.26.0.
 
 ## What this is
 
 7 parts, mostly TypeScript (26 files), CSS (3), JavaScript (3), Rust (2), Astro (1), HTML (1) and PowerShell (1). Work enters through 3 doors; the busiest is CI, which reaches 2 parts. It deploys a site to GitHub Pages. stillpoint is a desktop app built from apps/desktop/src-tauri (nothing ships it).
 
-## What changed since 2026-10-01 (95417cd)
+## What changed since 2026-11-12 (f48cddc)
 
-Nothing structural changed since 2026-10-01; 3 files changed content.
+Nothing structural changed since 2026-11-12; no file changed.
 
 ## What comes in
 

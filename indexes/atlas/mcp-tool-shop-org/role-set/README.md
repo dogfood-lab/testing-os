@@ -1,6 +1,6 @@
 # role-set: how it works
 
-Mapped at 2026-11-09 from commit 15cb913 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit f8e3909 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,12 +8,9 @@ role-set plans every slot of a role-shaping batch, has a loopback model write on
 
 9 parts, mostly Python (126 files), shell (9), CSS (2), TypeScript (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 4 doors; the busiest is CI, which reaches 3 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run role-set.
 
-## What changed since 2026-11-08 (cfb6ce1)
+## What changed since 2026-11-11 (15cb913)
 
-- pyproject.toml is now also read by scripts/colab/lock_common.sh.
-- uv.lock is now also read by scripts/colab/lock_common.sh.
-- uv.lock.exclude-newer is now read by scripts/colab/lock_common.sh.
-- 5 files added and 1 changed content, across 3 parts.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

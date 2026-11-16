@@ -1,14 +1,14 @@
 # websketch-ir: how it works
 
-Mapped at 2026-10-19 from commit deda83e by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 4abbe93 by Atlas 1.26.0.
 
 ## What this is
 
 6 parts, mostly TypeScript (46 files), CSS (2), JavaScript (2) and Astro (1). Work enters through 4 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People import @mcptoolshop/websketch-ir.
 
-## What changed since 2026-10-15 (de085a9)
+## What changed since 2026-11-12 (1837fdd)
 
-Nothing structural changed since 2026-10-15; no file changed.
+Nothing structural changed since 2026-11-12; no file changed.
 
 ## What comes in
 

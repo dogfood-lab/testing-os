@@ -244,7 +244,7 @@
           "path": ".github/dependabot.yml"
         },
         {
-          "hash": "c445ab914765fa364600faf999ad14b5b722521d70c8291140c5d6bcd5c737a7",
+          "hash": "2af710a37723f50e113738e726ea8dba9aa3cbbf40cc90115fac0766d3aa3b90",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -298,7 +298,38 @@
       "externals": 0,
       "files": [
         {
-          "hash": "9049f3d3de731cab5b906e8087d1a8ffe2618fe54a049d5473dab2edb56e59b9",
+          "hash": "10a40fb92413e204efe7f1b1bb27d163eee9f865b0d1907fc3b7692ab3cf99b6",
+          "path": "docs/colab-cli-contract.md"
+        },
+        {
+          "hash": "5bda1f7b2e8740b17b724028edd6254ac121c9342126069a532e88933fb19bd1",
+          "path": "docs/colab-rung1-request.md"
+        },
+        {
+          "hash": "fab3169be3fa0178d41d215b9f0bea84a994034bb34476ddd72a71f1848a42e7",
+          "path": "docs/colab-translations.md"
+        }
+      ],
+      "globs": [
+        "docs/**"
+      ],
+      "importConfidence": "full",
+      "name": "docs",
+      "origin": "authored",
+      "role": "docs",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "f501396ee8d0561c626e0ddb0cfe053f04b47c4321c7bf2593a52426925c7615",
           "path": ".gitignore"
         },
         {
@@ -310,7 +341,7 @@
           "path": ".polyglot-pins.json"
         },
         {
-          "hash": "bd5946efeb4f5fc13856937ffe7ed215233715f3d9ef8a6f73a303e728d11457",
+          "hash": "76a859960840815751a587ab28438c7d005b5644774b56604f0bde26fee2a3ed",
           "path": "CHANGELOG.md"
         },
         {
@@ -418,13 +449,159 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 9,
+      "dynamicReads": 13,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 3,
+      "dynamicWrites": 5,
       "entryPoints": [],
       "externals": 0,
       "files": [
+        {
+          "hash": "580b5d34c73491a3625185e8d8b8572bce189cdc528bcf2c4f735eb176374f08",
+          "path": "scripts/colab/colab_window.sh"
+        },
+        {
+          "exports": [
+            "compare_single_document",
+            "compare_translation_sets",
+            "extract_top_nav_bar",
+            "main",
+            "parse_markdown_structure"
+          ],
+          "failurePaths": [
+            {
+              "kind": "raise",
+              "line": 324
+            }
+          ],
+          "hash": "1ebd61b21583133d8baa38acb333dac2b41f19dfb19df435a19e77bf8a3cda25",
+          "path": "scripts/colab/compare_translations.py"
+        },
+        {
+          "exports": [
+            "check_host_ram_projection",
+            "compute_cap_trip",
+            "evaluate_cap_budget",
+            "evaluate_cap_guard",
+            "evaluate_host_ram_projection",
+            "evaluate_vitals_and_stall_guard",
+            "evaluate_wall_guard",
+            "format_dry_cap_budget",
+            "gpu_projection_rate",
+            "host_ram_reading",
+            "host_ram_status",
+            "is_vitals_line",
+            "main",
+            "normalize_hex_sha",
+            "parse_active_assignments",
+            "parse_usage_text",
+            "parse_vitals_log",
+            "run_between_item_fetch",
+            "run_output_bytes",
+            "scrub_colab_tokens",
+            "scrub_file_in_place",
+            "segments_done",
+            "sha256_file",
+            "sha256_self_normalized",
+            "update_window_rate",
+            "verify_input_shas",
+            "wall_cap_refusal",
+            "window_rate_decision"
+          ],
+          "failurePaths": [
+            {
+              "in": "verify_input_shas",
+              "kind": "raise",
+              "line": 73
+            },
+            {
+              "in": "verify_input_shas",
+              "kind": "raise",
+              "line": 81
+            },
+            {
+              "in": "parse_usage_text",
+              "kind": "raise",
+              "line": 344
+            },
+            {
+              "in": "_select_rate",
+              "kind": "raise",
+              "line": 364
+            },
+            {
+              "in": "_failure_rates",
+              "kind": "except",
+              "line": 377
+            },
+            {
+              "in": "parse_usage_text",
+              "kind": "except",
+              "line": 453
+            },
+            {
+              "in": "parse_usage_text",
+              "kind": "raise",
+              "line": 456
+            },
+            {
+              "in": "parse_vitals_log",
+              "kind": "except",
+              "line": 745
+            },
+            {
+              "in": "check_host_ram_projection",
+              "kind": "raise",
+              "line": 1105
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 1258
+            },
+            {
+              "kind": "raise",
+              "line": 1362
+            }
+          ],
+          "hash": "4e6d30ee02773a23deec84fa64df056395a31730ca4b8686cc2fdc7831a0d873",
+          "path": "scripts/colab/launch_guards.py"
+        },
+        {
+          "hash": "1adf84ecd6c356aa9a2d1b70a5c734c74dcb9adde3313e09de45e2856efb0749",
+          "path": "scripts/colab/launch_translate.sh"
+        },
+        {
+          "exports": [
+            "run_remote_script",
+            "scrub_line"
+          ],
+          "hash": "834e669de7f611c8d3b0e24dcd65c568c0d97a2bafb6080b235ea9a22b4f99d9",
+          "path": "scripts/colab/remote_runner.py"
+        },
+        {
+          "exports": [
+            "bundle_now"
+          ],
+          "failurePaths": [
+            {
+              "in": "_scrub_file",
+              "kind": "except",
+              "line": 39
+            },
+            {
+              "in": "bundle_now",
+              "kind": "except",
+              "line": 109
+            },
+            {
+              "kind": "raise",
+              "line": 150
+            }
+          ],
+          "hash": "dadc1f2956cd84d357506b1397c39f83dd2ab5541081a5db3f557ba6258d1db8",
+          "path": "scripts/colab/translate_bundle_now.py"
+        },
         {
           "failurePaths": [
             {
@@ -445,7 +622,7 @@
               "line": 99
             }
           ],
-          "hash": "078d13e6ecd54f111eadfaa47c3d6bbc49566b285e2e5031a1bef05829e4194a",
+          "hash": "474d9cb9a7977ea63788793f108c2270138fab00dd401a73a5a3d1ca9c7a34af",
           "importsFiles": [
             "src/survival.ts",
             "src/translateAll.ts"
@@ -473,15 +650,20 @@
               "line": 72
             },
             {
+              "in": "writeHeartbeat",
               "kind": "catch",
               "line": 106
             },
             {
+              "kind": "catch",
+              "line": 129
+            },
+            {
               "kind": "throw",
-              "line": 115
+              "line": 138
             }
           ],
-          "hash": "6afff1e87a87c6debce94b203e068984646b61aba68d2e96615d30f3f12c4078",
+          "hash": "3b9cee469b4c75b84db26459ecfe803cc73510839caaa0b86b33abc7273a9e57",
           "importOrder": [
             "src/translateMarkdown.ts",
             "src/survival.ts"
@@ -499,6 +681,17 @@
       "importConfidence": "full",
       "name": "scripts",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 9,
+          "where": [
+            "caller"
+          ],
+          "writes": 6
+        }
+      ],
+      "outsideReads": 9,
+      "outsideWrites": 6,
       "role": "code",
       "testRunners": [
         "vitest"
@@ -795,8 +988,8 @@
     },
     {
       "dynamicReads": 2,
-      "dynamicSpawns": 13,
-      "dynamicSpawnsInTests": 11,
+      "dynamicSpawns": 32,
+      "dynamicSpawnsInTests": 30,
       "dynamicWrites": 0,
       "entryPoints": [
         "src/index.ts"
@@ -1056,6 +1249,50 @@
           ]
         },
         {
+          "hash": "c986162c1fa13ef252393b44f781c37e8185f67d65e66c6666ab0cc8cb973f02",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "beforeAll"
+                },
+                {
+                  "name": "afterAll"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "names": [
+            "scripts/colab/compare_translations.py",
+            "scripts/colab/launch_guards.py",
+            "scripts/colab/remote_runner.py",
+            "scripts/colab/translate_bundle_now.py",
+            "scripts/translate-all.mjs"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "src/colabLane.test.ts",
+          "testFramework": "vitest"
+        },
+        {
           "hash": "547671a18164f295066ab274e5c2fd2621c1a904b71a22c055ce834bbf69b37f",
           "importNames": [
             {
@@ -1093,7 +1330,7 @@
           "exports": [
             "friendlyError"
           ],
-          "hash": "edb957480cf823e14905d2a1a6042f27aec1f7eece0399a9f2aa6bdd93a5663b",
+          "hash": "520ff14285718d3ec8c4600248f444bf4569515dafd17b56fc158e2c88d6b466",
           "path": "src/errors.ts"
         },
         {
@@ -1473,6 +1710,70 @@
           "path": "src/languages.ts"
         },
         {
+          "hash": "0021255b8681249f5e4f04f96900292cf48c652062a434c4027a154997cc1ccb",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 8,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "vi"
+                },
+                {
+                  "name": "afterEach"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "importOrder": [
+            "src/ollama.ts",
+            "src/numCtx.ts"
+          ],
+          "importsFiles": [
+            "src/numCtx.ts",
+            "src/ollama.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "src/numCtx.test.ts",
+          "testFramework": "vitest"
+        },
+        {
+          "exports": [
+            "estimateTokens",
+            "numPredictFor",
+            "resolveNumCtx"
+          ],
+          "failurePaths": [
+            {
+              "in": "numPredictFor",
+              "kind": "throw",
+              "line": 42
+            }
+          ],
+          "hash": "7a0d20b6f460d88af846c8dbf13c8bf76cbc556f8cbad9a2843182525f1409cb",
+          "importsFiles": [
+            "src/errors.ts"
+          ],
+          "path": "src/numCtx.ts"
+        },
+        {
           "hash": "8ae86ebd0f4f09830e89a48fb471a21363fb9b35a5999666e2ed532c00e4394b",
           "importNames": [
             {
@@ -1523,39 +1824,29 @@
         {
           "failurePaths": [
             {
+              "in": "withContext",
+              "kind": "throw",
+              "line": 100
+            },
+            {
               "in": "_generateWithRetry",
+              "kind": "catch",
+              "line": 131
+            },
+            {
+              "in": "_generateWithRetry",
+              "kind": "throw",
+              "line": 141
+            },
+            {
+              "in": "_generateWithRetry",
+              "kind": "throw",
+              "line": 145
+            },
+            {
+              "in": "_generate",
               "kind": "catch",
-              "line": 103
-            },
-            {
-              "in": "_generateWithRetry",
-              "kind": "throw",
-              "line": 113
-            },
-            {
-              "in": "_generateWithRetry",
-              "kind": "throw",
-              "line": 117
-            },
-            {
-              "in": "_generate",
-              "kind": "catch",
-              "line": 135
-            },
-            {
-              "in": "_generate",
-              "kind": "throw",
-              "line": 138
-            },
-            {
-              "in": "_generate",
-              "kind": "throw",
-              "line": 146
-            },
-            {
-              "in": "_generate",
-              "kind": "throw",
-              "line": 153
+              "line": 163
             },
             {
               "in": "_generate",
@@ -1565,42 +1856,42 @@
             {
               "in": "_generate",
               "kind": "throw",
-              "line": 173
+              "line": 174
+            },
+            {
+              "in": "_generate",
+              "kind": "throw",
+              "line": 181
+            },
+            {
+              "in": "_generate",
+              "kind": "throw",
+              "line": 194
+            },
+            {
+              "in": "_generate",
+              "kind": "throw",
+              "line": 201
             },
             {
               "in": "_generateStreamWithRetry",
               "kind": "catch",
-              "line": 210
+              "line": 239
             },
             {
               "in": "_generateStreamWithRetry",
               "kind": "throw",
-              "line": 220
+              "line": 249
             },
             {
               "in": "_generateStreamWithRetry",
               "kind": "throw",
-              "line": 223
+              "line": 252
             },
             {
               "in": "_generateStream",
               "kind": "catch",
-              "line": 244
-            },
-            {
-              "in": "_generateStream",
-              "kind": "throw",
-              "line": 247
-            },
-            {
-              "in": "_generateStream",
-              "kind": "throw",
-              "line": 255
-            },
-            {
-              "in": "_generateStream",
-              "kind": "throw",
-              "line": 262
+              "line": 273
             },
             {
               "in": "_generateStream",
@@ -1610,57 +1901,78 @@
             {
               "in": "_generateStream",
               "kind": "throw",
-              "line": 283
+              "line": 284
             },
             {
               "in": "_generateStream",
               "kind": "throw",
-              "line": 294
+              "line": 291
+            },
+            {
+              "in": "_generateStream",
+              "kind": "throw",
+              "line": 305
+            },
+            {
+              "in": "_generateStream",
+              "kind": "throw",
+              "line": 312
+            },
+            {
+              "in": "_generateStream",
+              "kind": "throw",
+              "line": 323
             },
             {
               "in": "_generateStream",
               "kind": "catch",
-              "line": 328
+              "line": 357
             },
             {
               "in": "listModels",
               "kind": "throw",
-              "line": 353
+              "line": 382
             },
             {
               "in": "isAvailable",
               "kind": "catch",
-              "line": 373
+              "line": 402
             },
             {
               "in": "ensureRunning",
               "kind": "catch",
-              "line": 408
+              "line": 437
             },
             {
               "in": "ensureRunning",
               "kind": "catch",
-              "line": 411
+              "line": 440
             },
             {
               "in": "ensureRunning",
               "kind": "catch",
-              "line": 421
+              "line": 450
             },
             {
               "in": "ensureModel",
               "kind": "catch",
-              "line": 492
+              "line": 521
             },
             {
               "in": "ensureModel",
               "kind": "catch",
-              "line": 498
+              "line": 527
             }
           ],
-          "hash": "33f344bbf209b50a6eff239cfec8ae675668de63e4e9f07685df000df830519f",
+          "hash": "26a9a1e19f9ad59795633b0f62de09c723c3eaa7966aadea2a96c9e48894c5cc",
+          "importOrder": [
+            "src/errors.ts",
+            "src/semaphore.ts",
+            "src/numCtx.ts"
+          ],
           "importsFiles": [
             "src/errors.ts",
+            "src/numCtx.ts",
             "src/semaphore.ts"
           ],
           "path": "src/ollama.ts"
@@ -1885,7 +2197,7 @@
                 {
                   "inner": [
                     {
-                      "line": 514,
+                      "line": 521,
                       "name": "safeDecodeSlug",
                       "target": {
                         "file": "src/survival.ts"
@@ -2456,6 +2768,40 @@
           "path": "src/semaphore.ts"
         },
         {
+          "hash": "31ed57c04a22fd6e64ddbb613dbdcafe1bba91b0987b8782222f37906a26bb0e",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "names": [
+            "scripts/colab/launch_guards.py"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "src/stallHeartbeat.test.ts",
+          "testFramework": "vitest"
+        },
+        {
           "hash": "fb748aca42fd7be8f5dd0f1001036191c98be28e7cdd845ecf84a9de7c137725",
           "importNames": [
             {
@@ -3010,6 +3356,43 @@
           "testFramework": "vitest"
         },
         {
+          "hash": "7526c38152844e4d936ab766ddc0d967908e28e03518ccbfababa676b5a6b40a",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 6,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "vi"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "importsFiles": [
+            "src/translate.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "src/translate.truncation.test.ts",
+          "testFramework": "vitest"
+        },
+        {
           "entry": "translate",
           "entryRule": 3,
           "exports": [
@@ -3024,40 +3407,41 @@
             {
               "in": "resolveSetup",
               "kind": "throw",
-              "line": 180
+              "line": 185
             },
             {
               "in": "resolveSetup",
               "kind": "throw",
-              "line": 190
+              "line": 195
             },
             {
               "in": "resolveSetup",
               "kind": "throw",
-              "line": 199
+              "line": 204
             },
             {
               "in": "resolveSetup",
               "kind": "throw",
-              "line": 211
+              "line": 216
             },
             {
               "in": "resolveSetup",
               "kind": "throw",
-              "line": 220
+              "line": 225
             },
             {
               "in": "translate",
               "kind": "catch",
-              "line": 286
+              "line": 297
             }
           ],
-          "hash": "4191c8e62848b699c9a67310d0fcec9b05b21298c56b5612548eb2943e172353",
+          "hash": "762b6effb15b1a4dbafb73ac728f5c42c84079a6b5cd68e46d7078d7ab88e087",
           "importsFiles": [
             "src/codeSpans.ts",
             "src/errors.ts",
             "src/glossary.ts",
             "src/languages.ts",
+            "src/numCtx.ts",
             "src/ollama.ts",
             "src/polish.ts",
             "src/validate.ts"
@@ -3067,7 +3451,7 @@
             {
               "calls": [
                 {
-                  "line": 112,
+                  "line": 117,
                   "name": "containsCodePlaceholder",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -3082,7 +3466,7 @@
             {
               "calls": [
                 {
-                  "line": 127,
+                  "line": 132,
                   "name": "containsCodePlaceholder",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -3097,14 +3481,14 @@
             {
               "calls": [
                 {
-                  "line": 178,
+                  "line": 183,
                   "name": "resolveLanguage",
                   "target": {
                     "file": "src/languages.ts"
                   }
                 },
                 {
-                  "line": 210,
+                  "line": 215,
                   "name": "ensureRunning",
                   "receiver": "OllamaClient",
                   "target": {
@@ -3112,7 +3496,7 @@
                   }
                 },
                 {
-                  "line": 219,
+                  "line": 224,
                   "name": "ensureModel",
                   "receiver": "OllamaClient",
                   "target": {
@@ -3128,7 +3512,7 @@
             {
               "calls": [
                 {
-                  "line": 178,
+                  "line": 183,
                   "name": "resolveLanguage",
                   "target": {
                     "file": "src/languages.ts"
@@ -3136,7 +3520,7 @@
                   "via": "resolveSetup"
                 },
                 {
-                  "line": 210,
+                  "line": 215,
                   "name": "ensureRunning",
                   "receiver": "OllamaClient",
                   "target": {
@@ -3145,7 +3529,7 @@
                   "via": "resolveSetup"
                 },
                 {
-                  "line": 219,
+                  "line": 224,
                   "name": "ensureModel",
                   "receiver": "OllamaClient",
                   "target": {
@@ -3154,14 +3538,14 @@
                   "via": "resolveSetup"
                 },
                 {
-                  "line": 259,
+                  "line": 264,
                   "name": "buildGlossaryHint",
                   "target": {
                     "file": "src/glossary.ts"
                   }
                 },
                 {
-                  "line": 112,
+                  "line": 117,
                   "name": "containsCodePlaceholder",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -3169,14 +3553,21 @@
                   "via": "buildPrompt"
                 },
                 {
-                  "line": 278,
+                  "line": 270,
+                  "name": "numPredictFor",
+                  "target": {
+                    "file": "src/numCtx.ts"
+                  }
+                },
+                {
+                  "line": 289,
                   "name": "polish",
                   "target": {
                     "file": "src/polish.ts"
                   }
                 },
                 {
-                  "line": 284,
+                  "line": 295,
                   "name": "validateTranslation",
                   "target": {
                     "file": "src/validate.ts"
@@ -3191,7 +3582,7 @@
             {
               "calls": [
                 {
-                  "line": 178,
+                  "line": 183,
                   "name": "resolveLanguage",
                   "target": {
                     "file": "src/languages.ts"
@@ -3199,7 +3590,7 @@
                   "via": "resolveSetup"
                 },
                 {
-                  "line": 210,
+                  "line": 215,
                   "name": "ensureRunning",
                   "receiver": "OllamaClient",
                   "target": {
@@ -3208,7 +3599,7 @@
                   "via": "resolveSetup"
                 },
                 {
-                  "line": 219,
+                  "line": 224,
                   "name": "ensureModel",
                   "receiver": "OllamaClient",
                   "target": {
@@ -3217,14 +3608,14 @@
                   "via": "resolveSetup"
                 },
                 {
-                  "line": 349,
+                  "line": 360,
                   "name": "buildGlossaryHint",
                   "target": {
                     "file": "src/glossary.ts"
                   }
                 },
                 {
-                  "line": 112,
+                  "line": 117,
                   "name": "containsCodePlaceholder",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -3232,21 +3623,28 @@
                   "via": "buildPrompt"
                 },
                 {
-                  "line": 358,
+                  "line": 365,
+                  "name": "numPredictFor",
+                  "target": {
+                    "file": "src/numCtx.ts"
+                  }
+                },
+                {
+                  "line": 372,
                   "name": "polish",
                   "target": {
                     "file": "src/polish.ts"
                   }
                 },
                 {
-                  "line": 364,
+                  "line": 378,
                   "name": "buildGlossaryHint",
                   "target": {
                     "file": "src/glossary.ts"
                   }
                 },
                 {
-                  "line": 127,
+                  "line": 132,
                   "name": "containsCodePlaceholder",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -3254,25 +3652,44 @@
                   "via": "buildBatchPrompt"
                 },
                 {
-                  "line": 379,
+                  "line": 383,
+                  "name": "numPredictFor",
+                  "target": {
+                    "file": "src/numCtx.ts"
+                  }
+                },
+                {
+                  "line": 394,
                   "name": "polish",
                   "target": {
                     "file": "src/polish.ts"
                   }
                 },
                 {
-                  "line": 386,
+                  "line": 401,
                   "name": "buildGlossaryHint",
                   "target": {
                     "file": "src/glossary.ts"
                   }
                 },
                 {
-                  "line": 395,
+                  "line": 406,
+                  "name": "numPredictFor",
+                  "target": {
+                    "file": "src/numCtx.ts"
+                  }
+                },
+                {
+                  "line": 411,
                   "name": "polish",
                   "target": {
                     "file": "src/polish.ts"
                   }
+                },
+                {
+                  "line": 419,
+                  "name": "onItemsDone",
+                  "target": null
                 }
               ],
               "exported": true,
@@ -3380,70 +3797,70 @@
                 {
                   "inner": [
                     {
-                      "line": 823,
+                      "line": 830,
                       "name": "resolveLanguage",
                       "target": {
                         "file": "src/languages.ts"
                       }
                     },
                     {
-                      "line": 853,
+                      "line": 860,
                       "name": "loadProtectedTerms",
                       "target": {
                         "file": "src/protectedTerms.ts"
                       }
                     },
                     {
-                      "line": 854,
+                      "line": 861,
                       "name": "loadPins",
                       "target": {
                         "file": "src/pins.ts"
                       }
                     },
                     {
-                      "line": 854,
+                      "line": 861,
                       "name": "createPins",
                       "target": {
                         "file": "src/pins.ts"
                       }
                     },
                     {
-                      "line": 859,
+                      "line": 866,
                       "name": "loadCache",
                       "target": {
                         "file": "src/cache.ts"
                       }
                     },
                     {
-                      "line": 863,
+                      "line": 870,
                       "name": "clearCache",
                       "target": {
                         "file": "src/cache.ts"
                       }
                     },
                     {
-                      "line": 864,
+                      "line": 871,
                       "name": "saveCache",
                       "target": {
                         "file": "src/cache.ts"
                       }
                     },
                     {
-                      "line": 866,
+                      "line": 873,
                       "name": "pruneCache",
                       "target": {
                         "file": "src/cache.ts"
                       }
                     },
                     {
-                      "line": 869,
+                      "line": 876,
                       "name": "createCache",
                       "target": {
                         "file": "src/cache.ts"
                       }
                     },
                     {
-                      "line": 917,
+                      "line": 924,
                       "name": "getPin",
                       "target": {
                         "file": "src/pins.ts"
@@ -3451,7 +3868,7 @@
                       "via": "enqueue"
                     },
                     {
-                      "line": 923,
+                      "line": 930,
                       "name": "maskCodeSpans",
                       "target": {
                         "file": "src/codeSpans.ts"
@@ -3459,7 +3876,7 @@
                       "via": "enqueue"
                     },
                     {
-                      "line": 923,
+                      "line": 930,
                       "name": "DEFAULT_PROTECTED_TERMS",
                       "passed": true,
                       "target": {
@@ -3675,6 +4092,49 @@
           "testFramework": "vitest"
         },
         {
+          "hash": "2be018bb2be19daa1c2f7396d520629f45d698f58fefed7fb3965c2dacd8c705",
+          "importNames": [
+            {
+              "form": "import",
+              "line": 13,
+              "names": [
+                {
+                  "name": "describe"
+                },
+                {
+                  "name": "it"
+                },
+                {
+                  "name": "expect"
+                },
+                {
+                  "name": "vi"
+                },
+                {
+                  "name": "beforeEach"
+                },
+                {
+                  "name": "afterEach"
+                }
+              ],
+              "purl": "pkg:npm/vitest",
+              "specifier": "vitest",
+              "typeOnly": false
+            }
+          ],
+          "importsFiles": [
+            "src/translateMarkdown.ts"
+          ],
+          "packages": [
+            {
+              "manifest": "package.json",
+              "purl": "pkg:npm/vitest"
+            }
+          ],
+          "path": "src/translateMarkdown.heartbeat.test.ts",
+          "testFramework": "vitest"
+        },
+        {
           "hash": "342987a435461ffb5c749be39eccff841aa13ca1b85acd9e1cb72974d4187a67",
           "importNames": [
             {
@@ -3834,20 +4294,20 @@
             {
               "in": "translateMarkdown",
               "kind": "throw",
-              "line": 825
+              "line": 832
             },
             {
               "in": "translateMarkdown",
               "kind": "throw",
-              "line": 835
+              "line": 842
             },
             {
               "in": "translateMarkdown",
               "kind": "catch",
-              "line": 1148
+              "line": 1165
             }
           ],
-          "hash": "403989cd99a649b6b08803c640151a64cb8394524e2a596131c2b3a4c631e610",
+          "hash": "65a106b3d3124516cd29eb5d20c5c2a5ed6102393c91e84158e91bf4ba7149a1",
           "importNames": [
             {
               "form": "import",
@@ -3884,21 +4344,21 @@
             {
               "calls": [
                 {
-                  "line": 452,
+                  "line": 459,
                   "name": "stripHeadingMarkup",
                   "target": {
                     "file": "src/survival.ts"
                   }
                 },
                 {
-                  "line": 452,
+                  "line": 459,
                   "name": "safeDecodeSlug",
                   "target": {
                     "file": "src/survival.ts"
                   }
                 },
                 {
-                  "line": 454,
+                  "line": 461,
                   "name": "stripHeadingMarkup",
                   "target": {
                     "file": "src/survival.ts"
@@ -3913,7 +4373,7 @@
             {
               "calls": [
                 {
-                  "line": 514,
+                  "line": 521,
                   "name": "safeDecodeSlug",
                   "target": {
                     "file": "src/survival.ts"
@@ -3928,28 +4388,28 @@
             {
               "calls": [
                 {
-                  "line": 543,
+                  "line": 550,
                   "name": "extractRefDefinitions",
                   "target": {
                     "file": "src/survival.ts"
                   }
                 },
                 {
-                  "line": 550,
+                  "line": 557,
                   "name": "checkSegment",
                   "target": {
                     "file": "src/survival.ts"
                   }
                 },
                 {
-                  "line": 561,
+                  "line": 568,
                   "name": "expectedSpans",
                   "target": {
                     "file": "src/survival.ts"
                   }
                 },
                 {
-                  "line": 561,
+                  "line": 568,
                   "name": "DEFAULT_PROTECTED_TERMS",
                   "passed": true,
                   "target": {
@@ -3957,35 +4417,35 @@
                   }
                 },
                 {
-                  "line": 572,
+                  "line": 579,
                   "name": "checkLinks",
                   "target": {
                     "file": "src/survival.ts"
                   }
                 },
                 {
-                  "line": 578,
+                  "line": 585,
                   "name": "checkPlaceholders",
                   "target": {
                     "file": "src/survival.ts"
                   }
                 },
                 {
-                  "line": 584,
+                  "line": 591,
                   "name": "checkCodeStructure",
                   "target": {
                     "file": "src/survival.ts"
                   }
                 },
                 {
-                  "line": 585,
+                  "line": 592,
                   "name": "anchorsEnabled",
                   "target": {
                     "file": "src/protectedTerms.ts"
                   }
                 },
                 {
-                  "line": 585,
+                  "line": 592,
                   "name": "DEFAULT_PROTECTED_TERMS",
                   "passed": true,
                   "target": {
@@ -3993,14 +4453,14 @@
                   }
                 },
                 {
-                  "line": 586,
+                  "line": 593,
                   "name": "extractLinks",
                   "target": {
                     "file": "src/survival.ts"
                   }
                 },
                 {
-                  "line": 599,
+                  "line": 606,
                   "name": "checkAnchors",
                   "target": {
                     "file": "src/survival.ts"
@@ -4015,7 +4475,7 @@
             {
               "calls": [
                 {
-                  "line": 643,
+                  "line": 650,
                   "name": "PLACEHOLDER_PATTERN",
                   "passed": true,
                   "target": {
@@ -4031,7 +4491,7 @@
             {
               "calls": [
                 {
-                  "line": 761,
+                  "line": 768,
                   "name": "PLACEHOLDER_PATTERN",
                   "passed": true,
                   "target": {
@@ -4039,7 +4499,7 @@
                   }
                 },
                 {
-                  "line": 766,
+                  "line": 773,
                   "name": "translateBatch",
                   "target": {
                     "file": "src/translate.ts"
@@ -4047,7 +4507,7 @@
                 },
                 {
                   "branch": "spans.length === 0",
-                  "line": 803,
+                  "line": 810,
                   "name": "survivingProse",
                   "target": {
                     "file": "src/survival.ts"
@@ -4055,7 +4515,7 @@
                   "via": "unusableReason"
                 },
                 {
-                  "line": 804,
+                  "line": 811,
                   "name": "restoreCodeSpans",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -4063,7 +4523,7 @@
                   "via": "unusableReason"
                 },
                 {
-                  "line": 806,
+                  "line": 813,
                   "name": "survivingProse",
                   "target": {
                     "file": "src/survival.ts"
@@ -4071,7 +4531,7 @@
                   "via": "unusableReason"
                 },
                 {
-                  "line": 773,
+                  "line": 780,
                   "name": "PLACEHOLDER_PATTERN",
                   "passed": true,
                   "target": {
@@ -4088,21 +4548,21 @@
               "calls": [
                 {
                   "branch": "spans.length === 0",
-                  "line": 803,
+                  "line": 810,
                   "name": "survivingProse",
                   "target": {
                     "file": "src/survival.ts"
                   }
                 },
                 {
-                  "line": 804,
+                  "line": 811,
                   "name": "restoreCodeSpans",
                   "target": {
                     "file": "src/codeSpans.ts"
                   }
                 },
                 {
-                  "line": 806,
+                  "line": 813,
                   "name": "survivingProse",
                   "target": {
                     "file": "src/survival.ts"
@@ -4117,63 +4577,63 @@
             {
               "calls": [
                 {
-                  "line": 823,
+                  "line": 830,
                   "name": "resolveLanguage",
                   "target": {
                     "file": "src/languages.ts"
                   }
                 },
                 {
-                  "line": 853,
+                  "line": 860,
                   "name": "loadProtectedTerms",
                   "target": {
                     "file": "src/protectedTerms.ts"
                   }
                 },
                 {
-                  "line": 854,
+                  "line": 861,
                   "name": "loadPins",
                   "target": {
                     "file": "src/pins.ts"
                   }
                 },
                 {
-                  "line": 854,
+                  "line": 861,
                   "name": "createPins",
                   "target": {
                     "file": "src/pins.ts"
                   }
                 },
                 {
-                  "line": 859,
+                  "line": 866,
                   "name": "loadCache",
                   "target": {
                     "file": "src/cache.ts"
                   }
                 },
                 {
-                  "line": 863,
+                  "line": 870,
                   "name": "clearCache",
                   "target": {
                     "file": "src/cache.ts"
                   }
                 },
                 {
-                  "line": 864,
+                  "line": 871,
                   "name": "saveCache",
                   "target": {
                     "file": "src/cache.ts"
                   }
                 },
                 {
-                  "line": 866,
+                  "line": 873,
                   "name": "pruneCache",
                   "target": {
                     "file": "src/cache.ts"
                   }
                 },
                 {
-                  "line": 869,
+                  "line": 876,
                   "name": "createCache",
                   "target": {
                     "file": "src/cache.ts"
@@ -4190,7 +4650,7 @@
                       "via": "pinKey"
                     }
                   ],
-                  "line": 917,
+                  "line": 924,
                   "name": "getPin",
                   "target": {
                     "file": "src/pins.ts"
@@ -4214,7 +4674,7 @@
                       }
                     }
                   ],
-                  "line": 923,
+                  "line": 930,
                   "name": "maskCodeSpans",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -4222,7 +4682,7 @@
                   "via": "enqueue"
                 },
                 {
-                  "line": 923,
+                  "line": 930,
                   "name": "DEFAULT_PROTECTED_TERMS",
                   "passed": true,
                   "target": {
@@ -4231,7 +4691,7 @@
                   "via": "enqueue"
                 },
                 {
-                  "line": 924,
+                  "line": 931,
                   "name": "cacheKey",
                   "target": {
                     "file": "src/cache.ts"
@@ -4240,7 +4700,7 @@
                 },
                 {
                   "branch": "!/\\p{L}/u.test(masked)",
-                  "line": 929,
+                  "line": 936,
                   "name": "restoreCodeSpans",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -4248,7 +4708,7 @@
                   "via": "enqueue"
                 },
                 {
-                  "line": 935,
+                  "line": 942,
                   "name": "getCached",
                   "target": {
                     "file": "src/cache.ts"
@@ -4268,7 +4728,7 @@
                       "via": "proseText"
                     }
                   ],
-                  "line": 803,
+                  "line": 810,
                   "name": "survivingProse",
                   "target": {
                     "file": "src/survival.ts"
@@ -4276,7 +4736,7 @@
                   "via": "unusableReason"
                 },
                 {
-                  "line": 804,
+                  "line": 811,
                   "name": "restoreCodeSpans",
                   "target": {
                     "file": "src/codeSpans.ts"
@@ -4295,7 +4755,7 @@
                       "via": "proseText"
                     }
                   ],
-                  "line": 806,
+                  "line": 813,
                   "name": "survivingProse",
                   "target": {
                     "file": "src/survival.ts"
@@ -4303,7 +4763,7 @@
                   "via": "unusableReason"
                 },
                 {
-                  "line": 941,
+                  "line": 948,
                   "name": "getFuzzyCached",
                   "target": {
                     "file": "src/cache.ts"
@@ -4311,14 +4771,14 @@
                   "via": "enqueue"
                 },
                 {
-                  "line": 986,
+                  "line": 993,
                   "name": "onProgress",
                   "target": null
                 },
                 {
                   "inner": [
                     {
-                      "line": 178,
+                      "line": 183,
                       "name": "resolveLanguage",
                       "target": {
                         "file": "src/languages.ts"
@@ -4326,7 +4786,7 @@
                       "via": "resolveSetup"
                     },
                     {
-                      "line": 210,
+                      "line": 215,
                       "name": "ensureRunning",
                       "receiver": "OllamaClient",
                       "target": {
@@ -4335,7 +4795,7 @@
                       "via": "resolveSetup"
                     },
                     {
-                      "line": 219,
+                      "line": 224,
                       "name": "ensureModel",
                       "receiver": "OllamaClient",
                       "target": {
@@ -4344,14 +4804,14 @@
                       "via": "resolveSetup"
                     },
                     {
-                      "line": 349,
+                      "line": 360,
                       "name": "buildGlossaryHint",
                       "target": {
                         "file": "src/glossary.ts"
                       }
                     },
                     {
-                      "line": 112,
+                      "line": 117,
                       "name": "containsCodePlaceholder",
                       "target": {
                         "file": "src/codeSpans.ts"
@@ -4359,21 +4819,28 @@
                       "via": "buildPrompt"
                     },
                     {
-                      "line": 358,
+                      "line": 365,
+                      "name": "numPredictFor",
+                      "target": {
+                        "file": "src/numCtx.ts"
+                      }
+                    },
+                    {
+                      "line": 372,
                       "name": "polish",
                       "target": {
                         "file": "src/polish.ts"
                       }
                     },
                     {
-                      "line": 364,
+                      "line": 378,
                       "name": "buildGlossaryHint",
                       "target": {
                         "file": "src/glossary.ts"
                       }
                     },
                     {
-                      "line": 127,
+                      "line": 132,
                       "name": "containsCodePlaceholder",
                       "target": {
                         "file": "src/codeSpans.ts"
@@ -4381,35 +4848,36 @@
                       "via": "buildBatchPrompt"
                     },
                     {
-                      "line": 379,
+                      "line": 383,
+                      "name": "numPredictFor",
+                      "target": {
+                        "file": "src/numCtx.ts"
+                      }
+                    },
+                    {
+                      "line": 394,
                       "name": "polish",
                       "target": {
                         "file": "src/polish.ts"
                       }
                     },
                     {
-                      "line": 386,
+                      "line": 401,
                       "name": "buildGlossaryHint",
                       "target": {
                         "file": "src/glossary.ts"
                       }
-                    },
-                    {
-                      "line": 395,
-                      "name": "polish",
-                      "target": {
-                        "file": "src/polish.ts"
-                      }
                     }
                   ],
-                  "line": 1000,
+                  "innerTruncated": true,
+                  "line": 1007,
                   "name": "translateBatch",
                   "target": {
                     "file": "src/translate.ts"
                   }
                 },
                 {
-                  "line": 1042,
+                  "line": 1055,
                   "name": "segmentLabel",
                   "target": {
                     "file": "src/survival.ts"
@@ -4418,7 +4886,7 @@
                 {
                   "inner": [
                     {
-                      "line": 178,
+                      "line": 183,
                       "name": "resolveLanguage",
                       "target": {
                         "file": "src/languages.ts"
@@ -4426,7 +4894,7 @@
                       "via": "resolveSetup"
                     },
                     {
-                      "line": 210,
+                      "line": 215,
                       "name": "ensureRunning",
                       "receiver": "OllamaClient",
                       "target": {
@@ -4435,7 +4903,7 @@
                       "via": "resolveSetup"
                     },
                     {
-                      "line": 219,
+                      "line": 224,
                       "name": "ensureModel",
                       "receiver": "OllamaClient",
                       "target": {
@@ -4444,14 +4912,14 @@
                       "via": "resolveSetup"
                     },
                     {
-                      "line": 349,
+                      "line": 360,
                       "name": "buildGlossaryHint",
                       "target": {
                         "file": "src/glossary.ts"
                       }
                     },
                     {
-                      "line": 112,
+                      "line": 117,
                       "name": "containsCodePlaceholder",
                       "target": {
                         "file": "src/codeSpans.ts"
@@ -4459,21 +4927,28 @@
                       "via": "buildPrompt"
                     },
                     {
-                      "line": 358,
+                      "line": 365,
+                      "name": "numPredictFor",
+                      "target": {
+                        "file": "src/numCtx.ts"
+                      }
+                    },
+                    {
+                      "line": 372,
                       "name": "polish",
                       "target": {
                         "file": "src/polish.ts"
                       }
                     },
                     {
-                      "line": 364,
+                      "line": 378,
                       "name": "buildGlossaryHint",
                       "target": {
                         "file": "src/glossary.ts"
                       }
                     },
                     {
-                      "line": 127,
+                      "line": 132,
                       "name": "containsCodePlaceholder",
                       "target": {
                         "file": "src/codeSpans.ts"
@@ -4481,41 +4956,38 @@
                       "via": "buildBatchPrompt"
                     },
                     {
-                      "line": 379,
+                      "line": 383,
+                      "name": "numPredictFor",
+                      "target": {
+                        "file": "src/numCtx.ts"
+                      }
+                    },
+                    {
+                      "line": 394,
                       "name": "polish",
                       "target": {
                         "file": "src/polish.ts"
                       }
                     },
                     {
-                      "line": 386,
+                      "line": 401,
                       "name": "buildGlossaryHint",
                       "target": {
                         "file": "src/glossary.ts"
                       }
-                    },
-                    {
-                      "line": 395,
-                      "name": "polish",
-                      "target": {
-                        "file": "src/polish.ts"
-                      }
                     }
                   ],
-                  "line": 1061,
+                  "innerTruncated": true,
+                  "line": 1076,
                   "name": "translateBatch",
                   "target": {
                     "file": "src/translate.ts"
                   }
                 },
                 {
-                  "line": 761,
-                  "name": "PLACEHOLDER_PATTERN",
-                  "passed": true,
-                  "target": {
-                    "file": "src/codeSpans.ts"
-                  },
-                  "via": "translateByPieces"
+                  "line": 1079,
+                  "name": "onHeartbeat",
+                  "target": null
                 }
               ],
               "exported": true,
@@ -4824,7 +5296,7 @@
       "testRunners": [
         "vitest"
       ],
-      "testedBy": 27,
+      "testedBy": 30,
       "unresolvedSites": 0
     }
   ],
@@ -4991,7 +5463,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 47
+          "files": 53
         }
       ],
       "readers": [],
@@ -5023,6 +5495,13 @@
           "job": "quality-gates",
           "matched": true,
           "path": "src/codeSpans.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/colabLane.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -5064,6 +5543,13 @@
         {
           "job": "quality-gates",
           "matched": true,
+          "path": "src/numCtx.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
           "path": "src/ollama.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -5099,6 +5585,13 @@
         {
           "job": "quality-gates",
           "matched": true,
+          "path": "src/stallHeartbeat.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
           "path": "src/survival.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -5107,6 +5600,13 @@
           "job": "quality-gates",
           "matched": true,
           "path": "src/translate.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/translate.truncation.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -5142,6 +5642,13 @@
           "job": "quality-gates",
           "matched": true,
           "path": "src/translateMarkdown.concurrency.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "quality-gates",
+          "matched": true,
+          "path": "src/translateMarkdown.heartbeat.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -5202,7 +5709,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 29,
+      "runsCount": 34,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -5219,7 +5726,7 @@
         {
           "config": "vitest.config.ts",
           "coverage": true,
-          "files": 28,
+          "files": 33,
           "job": "quality-gates",
           "junit": true,
           "runner": "vitest",
@@ -5245,8 +5752,10 @@
             ".github/workflows/**",
             "atlas/**",
             "codecov.yml",
+            "docs/**",
             "package-lock.json",
             "package.json",
+            "scripts/**",
             "site/astro.config.mjs",
             "site/package-lock.json",
             "site/package.json",
@@ -5549,7 +6058,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 47
+          "files": 53
         }
       ],
       "readers": [],
@@ -5581,6 +6090,13 @@
           "job": "publish",
           "matched": true,
           "path": "src/codeSpans.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/colabLane.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -5622,6 +6138,13 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "src/numCtx.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "src/ollama.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -5657,6 +6180,13 @@
         {
           "job": "publish",
           "matched": true,
+          "path": "src/stallHeartbeat.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
           "path": "src/survival.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
@@ -5665,6 +6195,13 @@
           "job": "publish",
           "matched": true,
           "path": "src/translate.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/translate.truncation.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -5700,6 +6237,13 @@
           "job": "publish",
           "matched": true,
           "path": "src/translateMarkdown.concurrency.test.ts",
+          "runKind": "executes",
+          "via": "vitest vitest.config.ts"
+        },
+        {
+          "job": "publish",
+          "matched": true,
+          "path": "src/translateMarkdown.heartbeat.test.ts",
           "runKind": "executes",
           "via": "vitest vitest.config.ts"
         },
@@ -5760,7 +6304,7 @@
           "via": "vitest vitest.config.ts"
         }
       ],
-      "runsCount": 29,
+      "runsCount": 34,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -5785,7 +6329,7 @@
       "tests": [
         {
           "config": "vitest.config.ts",
-          "files": 28,
+          "files": 33,
           "job": "publish",
           "runner": "vitest",
           "step": "4",
@@ -5827,7 +6371,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 19
+          "files": 20
         }
       ],
       "readers": [],
@@ -5929,7 +6473,7 @@
         {
           "boundary": "src",
           "depth": 0,
-          "files": 18
+          "files": 19
         }
       ],
       "readers": [],
@@ -5966,12 +6510,17 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "d452b68ddc3969dca5c59632faf3db4572d67596",
-    "tracked": 162
+    "commit": "0dde70b67db6ab0ccf3b6d531fd0af0dbee6aad9",
+    "tracked": 177
   },
   "landings": [
     {
       "readers": [
+        {
+          "by": "scripts/colab/launch_translate.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
         {
           "by": "src/pins.ts",
           "call": "readFileSync",
@@ -6014,6 +6563,16 @@
     {
       "readers": [
         {
+          "by": "scripts/colab/compare_translations.py",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/colab/launch_translate.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
           "by": "src/translateMarkdown.untranslated.fixes.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -6026,6 +6585,16 @@
     {
       "readers": [
         {
+          "by": "scripts/colab/compare_translations.py",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/colab/launch_translate.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
           "by": "src/translateMarkdown.untranslated.fixes.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -6037,6 +6606,54 @@
     },
     {
       "readers": [
+        {
+          "by": "scripts/colab/compare_translations.py",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/colab/launch_translate.sh",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "README.hi.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/colab/compare_translations.py",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/colab/launch_translate.sh",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "README.it.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/colab/compare_translations.py",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/colab/launch_translate.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "src/colabLane.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
         {
           "by": "src/translateAll.test.ts",
           "call": "literal",
@@ -6062,6 +6679,16 @@
     {
       "readers": [
         {
+          "by": "scripts/colab/compare_translations.py",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/colab/launch_translate.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
           "by": "src/translateReadme.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -6073,6 +6700,16 @@
     },
     {
       "readers": [
+        {
+          "by": "scripts/colab/compare_translations.py",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/colab/launch_translate.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
         {
           "by": "scripts/translate-all.mjs",
           "call": "literal",
@@ -6096,6 +6733,22 @@
     {
       "readers": [
         {
+          "by": "scripts/colab/compare_translations.py",
+          "call": "literal",
+          "confidence": "ast"
+        },
+        {
+          "by": "scripts/colab/launch_translate.sh",
+          "call": "literal",
+          "confidence": "text"
+        },
+        {
+          "by": "src/colabLane.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
           "by": "src/translateAll.untranslated.test.ts",
           "call": "literal",
           "confidence": "ast",
@@ -6116,6 +6769,11 @@
         {
           "by": ".github/workflows/publish.yml",
           "confidence": "config"
+        },
+        {
+          "by": "scripts/colab/launch_translate.sh",
+          "call": "literal",
+          "confidence": "text"
         }
       ],
       "target": "package-lock.json",
@@ -6126,6 +6784,11 @@
         {
           "by": ".github/workflows/publish.yml",
           "confidence": "config"
+        },
+        {
+          "by": "scripts/colab/launch_translate.sh",
+          "call": "literal",
+          "confidence": "text"
         },
         {
           "by": "src/version.test.ts",
@@ -6140,6 +6803,95 @@
         }
       ],
       "target": "package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/colabLane.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "src/colabLane.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "scripts/colab/colab_window.sh",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/colabLane.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "scripts/colab/compare_translations.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/colabLane.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "scripts/colab/launch_guards.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/colabLane.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "src/colabLane.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "src/numCtx.test.ts",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "scripts/colab/launch_translate.sh",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/colab/launch_translate.sh",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "scripts/colab/remote_runner.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "src/colabLane.test.ts",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "scripts/colab/translate_bundle_now.py",
       "writers": []
     },
     {
@@ -6257,6 +7009,17 @@
         }
       ],
       "target": "src/fixtures/issue-50/slips.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/colab/launch_translate.sh",
+          "call": "literal",
+          "confidence": "text"
+        }
+      ],
+      "target": "tsconfig.json",
       "writers": []
     }
   ],
@@ -6425,6 +7188,6 @@
   ],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 28,
+  "testFiles": 33,
   "unassigned": []
 }

@@ -1,10 +1,73 @@
 {
   "repo": "mcp-tool-shop-org/shipcheck",
   "generated_from": {
-    "commit_sha": "dee57316e9a0a6b16fbb4b8b322f83ee5605cd01"
+    "commit_sha": "8fbf743fba680840b35050f9c2fa1d8e2ac90d8e"
   },
-  "generated_at": "2026-10-19T12:36:55.674Z",
+  "generated_at": "2026-11-16T15:25:14.685Z",
   "shared_commit_floor": 3,
   "confidence": "low",
-  "rows": []
+  "rows": [
+    {
+      "id": "mcp-tool-shop-org/shipcheck|file-moved|bin|bin/shipcheck.mjs",
+      "rule": "file-moved",
+      "value": 0.5,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-11-16T15:25:14.685Z",
+      "last_seen": "2026-11-16T15:25:14.685Z",
+      "boundary": "bin",
+      "file": "bin/shipcheck.mjs",
+      "partner_boundary": "test"
+    },
+    {
+      "id": "mcp-tool-shop-org/shipcheck|file-moved|test|test/shipcheck.test.mjs",
+      "rule": "file-moved",
+      "value": 0.5,
+      "threshold": 0.5,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-11-16T15:25:14.685Z",
+      "last_seen": "2026-11-16T15:25:14.685Z",
+      "boundary": "test",
+      "file": "test/shipcheck.test.mjs",
+      "partner_boundary": "bin"
+    },
+    {
+      "id": "mcp-tool-shop-org/shipcheck|leaks|bin",
+      "rule": "leaks",
+      "value": 0.5,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-11-16T15:25:14.685Z",
+      "last_seen": "2026-11-16T15:25:14.685Z",
+      "boundary": "bin"
+    },
+    {
+      "id": "mcp-tool-shop-org/shipcheck|leaks|test",
+      "rule": "leaks",
+      "value": 0.5,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-11-16T15:25:14.685Z",
+      "last_seen": "2026-11-16T15:25:14.685Z",
+      "boundary": "test"
+    },
+    {
+      "id": "mcp-tool-shop-org/shipcheck|two-may-be-one|bin|test",
+      "rule": "two-may-be-one",
+      "value": 0.5,
+      "threshold": 0,
+      "confidence": "low",
+      "state": "open",
+      "first_seen": "2026-11-16T15:25:14.685Z",
+      "last_seen": "2026-11-16T15:25:14.685Z",
+      "boundaries": [
+        "bin",
+        "test"
+      ]
+    }
+  ]
 }

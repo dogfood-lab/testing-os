@@ -9,7 +9,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "3c92efd3b69ba1253170c5c708843c78af79c13ac92470bc8adc5609267997f4",
+          "hash": "2568fa47de3670c8e98809d31bc2025bbfff38fa2f300792be4853e8e1472c88",
           "path": ".github/workflows/ci.yml"
         },
         {
@@ -40,47 +40,1308 @@
       "externals": 0,
       "files": [
         {
-          "hash": "afadaf8b46d609ad1e576b62cb6897bfc90a947cd81c932c379f88e4787784dc",
+          "hash": "ae2a465dee9aa24f22ba5e6ed49f322c48efc747501abdd3720f557c4b3d92de",
+          "path": "fixtures/conformance/v3/01_kdf_and_rng.json"
+        },
+        {
+          "hash": "26ed1cfa3647644e79d4ada639608b8688aefa1f40986ad774d8bc665b6d3d4d",
+          "path": "fixtures/conformance/v3/02_grammar_and_ast.json"
+        },
+        {
+          "hash": "c83aeedbd7b4271a57f854ee531e2410876bd7ef5df3d2b84dd3f841ea3caa24",
+          "path": "fixtures/conformance/v3/03_rolls_and_receipts.json"
+        },
+        {
+          "hash": "385c0ebac23f38b4bbc7813a4bdf816cc1f400bb0a35c5d367b642d464127835",
+          "path": "fixtures/conformance/v3/04_exact_analysis.json"
+        },
+        {
+          "hash": "ec184aa7f5a3da36fe2d9c3000e734358546331654c340771836bf2c614f8054",
+          "path": "fixtures/conformance/v3/MANIFEST.sha256"
+        }
+      ],
+      "globs": [
+        "fixtures/**"
+      ],
+      "importConfidence": "full",
+      "name": "fixtures",
+      "origin": "authored",
+      "role": "data",
+      "testedBy": 0,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "crates/roll-cli/src/lib.rs",
+        "crates/roll-cli/src/main.rs"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "9ab0b8f3e9b36e09ba07df19a3e59462587676af3e246f8414fe40ff602d4128",
+          "path": "crates/roll-cli/Cargo.toml"
+        },
+        {
+          "entry": "write_fixtures_to_dir",
+          "entryRule": 4,
+          "exports": [
+            "run_cli",
+            "write_fixtures_to_dir"
+          ],
+          "failurePaths": [
+            {
+              "in": "run_cli",
+              "kind": "match-err",
+              "line": 67
+            },
+            {
+              "in": "run_cli",
+              "kind": "match-err",
+              "line": 87
+            }
+          ],
+          "hash": "778742de440eab7a4c7b458c02bc608bd9887759793eab84cb595ab1cd88af36",
+          "importsFiles": [
+            "crates/roll-core/src/conformance.rs"
+          ],
+          "path": "crates/roll-cli/src/lib.rs",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "line": 48,
+                  "name": "build_conformance_suite",
+                  "target": {
+                    "file": "crates/roll-core/src/conformance.rs"
+                  }
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "write_fixtures_to_dir"
+            },
+            {
+              "calls": [
+                {
+                  "line": 48,
+                  "name": "build_conformance_suite",
+                  "target": {
+                    "file": "crates/roll-core/src/conformance.rs"
+                  },
+                  "via": "write_fixtures_to_dir"
+                }
+              ],
+              "exported": true,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "run_cli"
+            }
+          ]
+        },
+        {
+          "entry": "main",
+          "entryRule": 1,
+          "hash": "c1a4d0f1fea36d53327733d83371d66c8f59c2259e3552279921f8be92d17f3e",
+          "importsFiles": [
+            "crates/roll-cli/src/lib.rs"
+          ],
+          "library": "crates/roll-cli/src/lib.rs",
+          "path": "crates/roll-cli/src/main.rs",
+          "sequences": [
+            {
+              "calls": [
+                {
+                  "inner": [
+                    {
+                      "line": 48,
+                      "name": "build_conformance_suite",
+                      "target": {
+                        "file": "crates/roll-core/src/conformance.rs"
+                      },
+                      "via": "write_fixtures_to_dir"
+                    }
+                  ],
+                  "line": 9,
+                  "name": "run_cli",
+                  "target": {
+                    "file": "crates/roll-cli/src/lib.rs"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": true,
+              "isDefaultExport": false,
+              "name": "main"
+            }
+          ]
+        },
+        {
+          "hash": "a31d613af33edf53760d3c7100cd206586872fc14090b962057b212054305381",
+          "importsFiles": [
+            "crates/roll-cli/src/lib.rs"
+          ],
+          "library": "crates/roll-cli/src/lib.rs",
+          "path": "crates/roll-cli/tests/cli_fixtures.rs",
+          "spawns": [
+            "crates/roll-cli/src/main.rs"
+          ],
+          "spawnsInstalled": [
+            "crates/roll-cli/src/main.rs"
+          ],
+          "testsInside": true
+        }
+      ],
+      "globs": [
+        "crates/roll-cli/**"
+      ],
+      "importConfidence": "full",
+      "name": "roll-cli",
+      "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 0,
+          "where": [
+            "caller"
+          ],
+          "writes": 3
+        }
+      ],
+      "outsideWrites": 3,
+      "role": "code",
+      "testRunners": [
+        "cargo test"
+      ],
+      "testedBy": 1,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [
+        "crates/roll-core/src/lib.rs"
+      ],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "b7b0c44ba24ff21c0a10d79b1c573008b934607f9198fa1432e037fd7c2c1eb4",
+          "path": "crates/roll-core/Cargo.toml"
+        },
+        {
+          "exports": [
+            "analyze",
+            "analyze_with_min_samples",
+            "certain_draws_per_die",
+            "compare",
+            "compare_with_min_samples",
+            "compute_stats",
+            "exact_phase",
+            "expr_max_die_rolls",
+            "group_max_die_rolls",
+            "lemire_witness_word",
+            "monte_carlo_distribution",
+            "reduce_keep_drop_interval",
+            "run_prefix_tape_oracle"
+          ],
+          "failurePaths": [
+            {
+              "in": "prob_exactly",
+              "kind": "match-err",
+              "line": 397
+            },
+            {
+              "in": "target_for_probability",
+              "kind": "err",
+              "line": 444
+            },
+            {
+              "in": "exact_phase",
+              "kind": "err",
+              "line": 638
+            },
+            {
+              "in": "exact_phase",
+              "kind": "match-err",
+              "line": 661
+            },
+            {
+              "in": "exact_phase",
+              "kind": "err",
+              "line": 664
+            },
+            {
+              "in": "exact_phase",
+              "kind": "match-err",
+              "line": 666
+            },
+            {
+              "in": "sampling_phase",
+              "kind": "err",
+              "line": 683
+            },
+            {
+              "in": "compare_with_min_samples",
+              "kind": "err",
+              "line": 768
+            },
+            {
+              "in": "compare_with_min_samples",
+              "kind": "match-err",
+              "line": 856
+            },
+            {
+              "in": "compare_with_min_samples",
+              "kind": "err",
+              "line": 856
+            },
+            {
+              "in": "compare_with_min_samples",
+              "kind": "match-err",
+              "line": 857
+            },
+            {
+              "in": "charge_transitions",
+              "kind": "err",
+              "line": 977
+            },
+            {
+              "in": "reserve_live",
+              "kind": "err",
+              "line": 987
+            },
+            {
+              "in": "evaluate",
+              "kind": "err",
+              "line": 1316
+            },
+            {
+              "in": "evaluate",
+              "kind": "match-err",
+              "line": 1333
+            },
+            {
+              "in": "evaluate",
+              "kind": "err",
+              "line": 1340
+            },
+            {
+              "in": "evaluate",
+              "kind": "match-err",
+              "line": 1343
+            },
+            {
+              "in": "evaluate",
+              "kind": "err",
+              "line": 1343
+            },
+            {
+              "in": "run",
+              "kind": "match-err",
+              "line": 1439
+            },
+            {
+              "in": "run",
+              "kind": "match-err",
+              "line": 1443
+            },
+            {
+              "in": "precheck_divisors",
+              "kind": "err",
+              "line": 1556
+            },
+            {
+              "in": "precheck_divisors",
+              "kind": "err",
+              "line": 1584
+            },
+            {
+              "in": "precheck_divisors",
+              "kind": "err",
+              "line": 1630
+            },
+            {
+              "in": "precheck_divisors",
+              "kind": "err",
+              "line": 1635
+            },
+            {
+              "in": "add_capped",
+              "kind": "err",
+              "line": 1710
+            },
+            {
+              "in": "finish_node_frame",
+              "kind": "match-err",
+              "line": 1814
+            },
+            {
+              "in": "finish_node_frame",
+              "kind": "err",
+              "line": 1816
+            },
+            {
+              "in": "tolerant_pairwise",
+              "kind": "err",
+              "line": 1852
+            },
+            {
+              "in": "combine_binary_exact",
+              "kind": "match-err",
+              "line": 1937
+            },
+            {
+              "in": "combine_binary_exact",
+              "kind": "err",
+              "line": 1942
+            },
+            {
+              "in": "combine_binary_exact",
+              "kind": "match-err",
+              "line": 1955
+            },
+            {
+              "in": "combine_binary_exact",
+              "kind": "err",
+              "line": 1957
+            },
+            {
+              "in": "combine_binary_exact",
+              "kind": "match-err",
+              "line": 1962
+            },
+            {
+              "in": "combine_binary_exact",
+              "kind": "err",
+              "line": 1964
+            },
+            {
+              "in": "combine_binary_exact",
+              "kind": "match-err",
+              "line": 1978
+            },
+            {
+              "in": "combine_binary_exact",
+              "kind": "match-err",
+              "line": 1982
+            },
+            {
+              "in": "combine_binary_exact",
+              "kind": "err",
+              "line": 1982
+            },
+            {
+              "in": "try_exact",
+              "kind": "err",
+              "line": 2023
+            },
+            {
+              "in": "try_exact",
+              "kind": "match-err",
+              "line": 2047
+            },
+            {
+              "in": "try_exact",
+              "kind": "err",
+              "line": 2048
+            },
+            {
+              "in": "try_exact",
+              "kind": "match-err",
+              "line": 2050
+            },
+            {
+              "in": "try_exact",
+              "kind": "err",
+              "line": 2050
+            },
+            {
+              "in": "try_exact",
+              "kind": "match-err",
+              "line": 2107
+            },
+            {
+              "in": "try_exact",
+              "kind": "err",
+              "line": 2107
+            },
+            {
+              "in": "try_exact",
+              "kind": "match-err",
+              "line": 2126
+            },
+            {
+              "in": "try_exact",
+              "kind": "err",
+              "line": 2130
+            },
+            {
+              "in": "try_exact",
+              "kind": "err",
+              "line": 2147
+            },
+            {
+              "in": "try_exact",
+              "kind": "match-err",
+              "line": 2155
+            },
+            {
+              "in": "try_exact",
+              "kind": "err",
+              "line": 2155
+            },
+            {
+              "in": "single_die_pre_explode",
+              "kind": "err",
+              "line": 2271
+            },
+            {
+              "in": "single_die_pre_explode",
+              "kind": "err",
+              "line": 2280
+            },
+            {
+              "in": "explosion_chain_sum_pmf_inner",
+              "kind": "err",
+              "line": 2557
+            },
+            {
+              "in": "try_exact_dice",
+              "kind": "err",
+              "line": 2741
+            },
+            {
+              "in": "try_exact_dice",
+              "kind": "err",
+              "line": 2758
+            },
+            {
+              "in": "divide_distribution_weighted",
+              "kind": "err",
+              "line": 3195
+            },
+            {
+              "in": "convolve",
+              "kind": "err",
+              "line": 3330
+            },
+            {
+              "in": "subtract_distributions",
+              "kind": "err",
+              "line": 3371
+            },
+            {
+              "in": "convolve_n_uniform_contiguous",
+              "kind": "err",
+              "line": 3447
+            },
+            {
+              "in": "convolve_n_uniform_contiguous",
+              "kind": "err",
+              "line": 3451
+            },
+            {
+              "in": "convolve_n_inner",
+              "kind": "err",
+              "line": 3624
+            },
+            {
+              "in": "multiply_distributions",
+              "kind": "err",
+              "line": 3648
+            },
+            {
+              "in": "divide_distributions",
+              "kind": "err",
+              "line": 3694
+            },
+            {
+              "in": "divide_distributions",
+              "kind": "err",
+              "line": 3727
+            },
+            {
+              "in": "monte_carlo_fallback",
+              "kind": "err",
+              "line": 4092
+            },
+            {
+              "in": "monte_carlo_fallback",
+              "kind": "err",
+              "line": 4101
+            },
+            {
+              "in": "next_u64_word",
+              "kind": "err",
+              "line": 4173
+            },
+            {
+              "in": "walk",
+              "kind": "match-err",
+              "line": 4225
+            },
+            {
+              "in": "walk",
+              "kind": "match-err",
+              "line": 4228
+            },
+            {
+              "in": "walk",
+              "kind": "err",
+              "line": 4228
+            }
+          ],
+          "hash": "cf35ca90bc70b39c8467c63930b52395adfc245cbc9d35c5d9f39f284ed8d6e9",
+          "importOrder": [
+            "crates/roll-core/src/ast.rs",
+            "crates/roll-core/src/error.rs",
+            "crates/roll-core/src/eval.rs",
+            "crates/roll-core/src/math.rs",
+            "crates/roll-core/src/rng.rs",
+            "crates/roll-core/src/support.rs",
+            "crates/roll-core/src/parser.rs"
+          ],
+          "importsFiles": [
+            "crates/roll-core/src/ast.rs",
+            "crates/roll-core/src/error.rs",
+            "crates/roll-core/src/eval.rs",
+            "crates/roll-core/src/math.rs",
+            "crates/roll-core/src/parser.rs",
+            "crates/roll-core/src/rng.rs",
+            "crates/roll-core/src/support.rs"
+          ],
+          "path": "crates/roll-core/src/analyze.rs",
+          "testsInside": true
+        },
+        {
+          "hash": "2a23517e50c45cd6e133ac859181b4f310a19fba13f65a98d835b30dfd2828cb",
+          "path": "crates/roll-core/src/ast.rs"
+        },
+        {
+          "exports": [
+            "cmp_utf16_code_units",
+            "to_canonical_json"
+          ],
+          "failurePaths": [
+            {
+              "in": "write_canonical_value",
+              "kind": "err",
+              "line": 36
+            }
+          ],
+          "hash": "c523ffe61ddc8b706f9a55ff8e2191cd95b5de3d16c2375948f55a437879229d",
+          "importsFiles": [
+            "crates/roll-core/src/error.rs"
+          ],
+          "path": "crates/roll-core/src/canonical_json.rs"
+        },
+        {
+          "exports": [
+            "decode_bytes32_hex",
+            "decode_u64_hex",
+            "encode_hex_lower",
+            "encode_u64_hex",
+            "parse_canonical_i64",
+            "parse_canonical_u64"
+          ],
+          "failurePaths": [
+            {
+              "in": "decode_bytes32_hex",
+              "kind": "err",
+              "line": 35
+            },
+            {
+              "in": "decode_u64_hex",
+              "kind": "err",
+              "line": 52
+            },
+            {
+              "in": "parse_canonical_i64",
+              "kind": "err",
+              "line": 70
+            },
+            {
+              "in": "parse_canonical_i64",
+              "kind": "err",
+              "line": 77
+            },
+            {
+              "in": "parse_canonical_u64",
+              "kind": "err",
+              "line": 86
+            },
+            {
+              "in": "parse_canonical_u64",
+              "kind": "err",
+              "line": 92
+            }
+          ],
+          "hash": "bd3c3792a22a9ec6bb26e1c4d16b1384d569c755a1cef5b310301158982b255d",
+          "path": "crates/roll-core/src/codec.rs"
+        },
+        {
+          "exports": [
+            "build_conformance_suite",
+            "compute_10k_receipts_sha256"
+          ],
+          "failurePaths": [
+            {
+              "in": "build_02_grammar_and_ast",
+              "kind": "match-err",
+              "line": 909
+            },
+            {
+              "in": "build_02_grammar_and_ast",
+              "kind": "match-err",
+              "line": 917
+            },
+            {
+              "in": "build_02_grammar_and_ast",
+              "kind": "match-err",
+              "line": 925
+            },
+            {
+              "in": "build_draw_budget_cases",
+              "kind": "match-err",
+              "line": 1127
+            },
+            {
+              "in": "build_draw_budget_cases",
+              "kind": "match-err",
+              "line": 1144
+            }
+          ],
+          "hash": "d15a68a010c1df659a304676b26de9063a103945277e3bcee41388296914da58",
+          "importsFiles": [
+            "crates/roll-core/src/analyze.rs",
+            "crates/roll-core/src/ast.rs",
+            "crates/roll-core/src/canonical_json.rs",
+            "crates/roll-core/src/codec.rs",
+            "crates/roll-core/src/error.rs",
+            "crates/roll-core/src/eval.rs",
+            "crates/roll-core/src/parser.rs",
+            "crates/roll-core/src/receipt.rs",
+            "crates/roll-core/src/rng.rs"
+          ],
+          "path": "crates/roll-core/src/conformance.rs"
+        },
+        {
+          "hash": "b9e5feea885850521f30cd986e82b516798deabab919eabeb1654eb076a1b18f",
+          "path": "crates/roll-core/src/error.rs"
+        },
+        {
+          "exports": [
+            "checked_div_floor",
+            "evaluate_total_with_source",
+            "evaluate_with_rng",
+            "evaluate_with_source",
+            "evaluate_with_tape",
+            "pool_die_delta"
+          ],
+          "failurePaths": [
+            {
+              "in": "checked_div_floor",
+              "kind": "err",
+              "line": 64
+            },
+            {
+              "in": "next_u64_word",
+              "kind": "err",
+              "line": 124
+            }
+          ],
+          "hash": "e379e8327865b31a81ea35418e19fb85c8215bced6f6d9d1bd1eacd482ea26cc",
+          "importsFiles": [
+            "crates/roll-core/src/ast.rs",
+            "crates/roll-core/src/error.rs",
+            "crates/roll-core/src/rng.rs"
+          ],
+          "path": "crates/roll-core/src/eval.rs"
+        },
+        {
+          "hash": "a6586796edf9a2c0cf56a0d9125cb872bf41338886babdbc9635e679efd5d689",
+          "importsFiles": [
+            "crates/roll-core/src/analyze.rs",
+            "crates/roll-core/src/ast.rs",
+            "crates/roll-core/src/canonical_json.rs",
+            "crates/roll-core/src/codec.rs",
+            "crates/roll-core/src/conformance.rs",
+            "crates/roll-core/src/error.rs",
+            "crates/roll-core/src/eval.rs",
+            "crates/roll-core/src/math.rs",
+            "crates/roll-core/src/parser.rs",
+            "crates/roll-core/src/receipt.rs",
+            "crates/roll-core/src/rng.rs",
+            "crates/roll-core/src/support.rs"
+          ],
+          "path": "crates/roll-core/src/lib.rs"
+        },
+        {
+          "exports": [
+            "canon_f64",
+            "log2_f64",
+            "powi_u32",
+            "sqrt_f64"
+          ],
+          "hash": "959362c71c66f57a042fd2fb69cde6b8644767a7ea694eae7e9d9f0dc43a91cf",
+          "path": "crates/roll-core/src/math.rs"
+        },
+        {
+          "exports": [
+            "parse",
+            "parse_canonical"
+          ],
+          "failurePaths": [
+            {
+              "in": "parse_with_limits",
+              "kind": "err",
+              "line": 39
+            },
+            {
+              "in": "parse_with_limits",
+              "kind": "err",
+              "line": 62
+            },
+            {
+              "in": "parse_with_limits",
+              "kind": "err",
+              "line": 68
+            },
+            {
+              "in": "count_binary_op",
+              "kind": "err",
+              "line": 163
+            },
+            {
+              "in": "parse_factor",
+              "kind": "err",
+              "line": 220
+            },
+            {
+              "in": "parse_factor",
+              "kind": "err",
+              "line": 245
+            },
+            {
+              "in": "parse_factor",
+              "kind": "err",
+              "line": 261
+            },
+            {
+              "in": "parse_factor",
+              "kind": "err",
+              "line": 280
+            },
+            {
+              "in": "parse_factor",
+              "kind": "err",
+              "line": 299
+            },
+            {
+              "in": "parse_factor",
+              "kind": "err",
+              "line": 304
+            },
+            {
+              "in": "parse_factor",
+              "kind": "err",
+              "line": 319
+            },
+            {
+              "in": "parse_factor",
+              "kind": "err",
+              "line": 340
+            },
+            {
+              "in": "parse_factor",
+              "kind": "err",
+              "line": 347
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 360
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 384
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 391
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 401
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 430
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 439
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 449
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 458
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 502
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 508
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 530
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 540
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 548
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 559
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 569
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 577
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 587
+            },
+            {
+              "in": "parse_dice",
+              "kind": "err",
+              "line": 596
+            },
+            {
+              "in": "parse_required_i64",
+              "kind": "err",
+              "line": 661
+            }
+          ],
+          "hash": "c2a1948740a8f7eb31ea742fc7e2b8d7aa005c2616d24a61fe6dabe91d4f8872",
+          "importsFiles": [
+            "crates/roll-core/src/ast.rs",
+            "crates/roll-core/src/error.rs"
+          ],
+          "path": "crates/roll-core/src/parser.rs"
+        },
+        {
+          "exports": [
+            "compute_receipt_sha256",
+            "evaluate_addressed",
+            "to_canonical_receipt_json",
+            "verify_receipt",
+            "verify_receipt_json"
+          ],
+          "failurePaths": [
+            {
+              "in": "evaluate_addressed",
+              "kind": "err",
+              "line": 106
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "err",
+              "line": 139
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "err",
+              "line": 146
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "err",
+              "line": 154
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "err",
+              "line": 161
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "err",
+              "line": 172
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "err",
+              "line": 189
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "err",
+              "line": 205
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "err",
+              "line": 227
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "match-err",
+              "line": 241
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "err",
+              "line": 241
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "match-err",
+              "line": 242
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "err",
+              "line": 243
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "err",
+              "line": 252
+            },
+            {
+              "in": "verify_receipt",
+              "kind": "err",
+              "line": 261
+            }
+          ],
+          "hash": "0114d13f0ebcf5c9ad02ff2e2bb7a6a98228585f99b6129d50b2615cc325f469",
+          "importsFiles": [
+            "crates/roll-core/src/ast.rs",
+            "crates/roll-core/src/canonical_json.rs",
+            "crates/roll-core/src/codec.rs",
+            "crates/roll-core/src/error.rs",
+            "crates/roll-core/src/eval.rs",
+            "crates/roll-core/src/parser.rs",
+            "crates/roll-core/src/rng.rs"
+          ],
+          "path": "crates/roll-core/src/receipt.rs"
+        },
+        {
+          "exports": [
+            "derive_roll_key",
+            "lemire_sample_from_tape"
+          ],
+          "failurePaths": [
+            {
+              "in": "validate",
+              "kind": "err",
+              "line": 74
+            },
+            {
+              "in": "validate",
+              "kind": "err",
+              "line": 80
+            },
+            {
+              "in": "validate",
+              "kind": "err",
+              "line": 86
+            },
+            {
+              "in": "validate",
+              "kind": "err",
+              "line": 93
+            },
+            {
+              "in": "validate",
+              "kind": "err",
+              "line": 99
+            },
+            {
+              "in": "validate",
+              "kind": "err",
+              "line": 106
+            },
+            {
+              "in": "validate",
+              "kind": "err",
+              "line": 112
+            },
+            {
+              "in": "validate",
+              "kind": "err",
+              "line": 122
+            },
+            {
+              "in": "lemire_sample_from_tape",
+              "kind": "match-err",
+              "line": 212
+            },
+            {
+              "in": "lemire_sample_from_tape",
+              "kind": "err",
+              "line": 212
+            },
+            {
+              "in": "next_u64_word",
+              "kind": "err",
+              "line": 237
+            },
+            {
+              "in": "sample_u64",
+              "kind": "match-err",
+              "line": 279
+            },
+            {
+              "in": "sample_inclusive",
+              "kind": "err",
+              "line": 286
+            }
+          ],
+          "hash": "cce5ef4dea936480a820110007591cf546c48eaa35b0b3439809b51ccb664b1e",
+          "importsFiles": [
+            "crates/roll-core/src/error.rs"
+          ],
+          "path": "crates/roll-core/src/rng.rs"
+        },
+        {
+          "exports": [
+            "can_succeed",
+            "min_rolls_per_die",
+            "walk"
+          ],
+          "hash": "e85d90904e0535d6736f528a1d05d5ee3b6f9b332d44d75887cf99258409c58d",
+          "importOrder": [
+            "crates/roll-core/src/ast.rs",
+            "crates/roll-core/src/eval.rs",
+            "crates/roll-core/src/analyze.rs",
+            "crates/roll-core/src/parser.rs"
+          ],
+          "importsFiles": [
+            "crates/roll-core/src/analyze.rs",
+            "crates/roll-core/src/ast.rs",
+            "crates/roll-core/src/eval.rs",
+            "crates/roll-core/src/parser.rs"
+          ],
+          "path": "crates/roll-core/src/support.rs",
+          "testsInside": true
+        },
+        {
+          "hash": "9eb11749951370a6bcca0f0a94244abbdb62be8b8e39d83612ac39ee8c46b008",
+          "importOrder": [
+            "crates/roll-core/src/lib.rs",
+            "crates/roll-core/src/analyze.rs"
+          ],
+          "importsFiles": [
+            "crates/roll-core/src/analyze.rs",
+            "crates/roll-core/src/lib.rs"
+          ],
+          "library": "crates/roll-core/src/lib.rs",
+          "path": "crates/roll-core/tests/analyzer.rs",
+          "testsInside": true
+        },
+        {
+          "hash": "668683449480abb0d986fdf040156945bc0b64ad674702e2535e3e1d06a8ab28",
+          "importOrder": [
+            "crates/roll-core/src/lib.rs",
+            "crates/roll-core/src/analyze.rs"
+          ],
+          "importsFiles": [
+            "crates/roll-core/src/analyze.rs",
+            "crates/roll-core/src/lib.rs"
+          ],
+          "library": "crates/roll-core/src/lib.rs",
+          "path": "crates/roll-core/tests/draw_budget.rs",
+          "testsInside": true
+        },
+        {
+          "hash": "483eac9de50715e7b05beb3e382c40e600f90bd2641e7f1ee20716a6ceec3ca1",
+          "importOrder": [
+            "crates/roll-core/src/lib.rs",
+            "crates/roll-core/src/analyze.rs"
+          ],
+          "importsFiles": [
+            "crates/roll-core/src/analyze.rs",
+            "crates/roll-core/src/lib.rs"
+          ],
+          "library": "crates/roll-core/src/lib.rs",
+          "path": "crates/roll-core/tests/grammar_and_eval.rs",
+          "testsInside": true
+        },
+        {
+          "hash": "2ef48c5d725bad15a8d3bdd99f71867baf48ced9de36274f379d12e1bcb811a1",
+          "importOrder": [
+            "crates/roll-core/src/lib.rs",
+            "crates/roll-core/src/analyze.rs"
+          ],
+          "importsFiles": [
+            "crates/roll-core/src/analyze.rs",
+            "crates/roll-core/src/lib.rs"
+          ],
+          "library": "crates/roll-core/src/lib.rs",
+          "path": "crates/roll-core/tests/oracle.rs",
+          "testsInside": true
+        },
+        {
+          "hash": "45d561db6b2a4758cb35f669cd05ae3306d5eb7af0a56fd8f2d22c7104fba786",
+          "importOrder": [
+            "crates/roll-core/src/lib.rs",
+            "crates/roll-core/src/analyze.rs",
+            "crates/roll-core/src/math.rs"
+          ],
+          "importsFiles": [
+            "crates/roll-core/src/analyze.rs",
+            "crates/roll-core/src/lib.rs",
+            "crates/roll-core/src/math.rs"
+          ],
+          "library": "crates/roll-core/src/lib.rs",
+          "path": "crates/roll-core/tests/properties.rs"
+        },
+        {
+          "hash": "089ef71b59cbd1ab97b0847e3e6215625ae45ea6611d8ba082d0eb2d9bf2c501",
+          "importOrder": [
+            "crates/roll-core/src/lib.rs",
+            "crates/roll-core/src/codec.rs"
+          ],
+          "importsFiles": [
+            "crates/roll-core/src/codec.rs",
+            "crates/roll-core/src/lib.rs"
+          ],
+          "library": "crates/roll-core/src/lib.rs",
+          "path": "crates/roll-core/tests/receipts.rs",
+          "testsInside": true
+        },
+        {
+          "hash": "327a0f8b4ae1e8b851f058976db86eda734dea9f4a169a54ec5176f4aba13f9c",
+          "importsFiles": [
+            "crates/roll-core/src/conformance.rs"
+          ],
+          "library": "crates/roll-core/src/lib.rs",
+          "path": "crates/roll-core/tests/reproducibility.rs",
+          "testsInside": true
+        },
+        {
+          "hash": "3cd89be3fb293c34a15eefea31dff41271ac4b55b2ce693438ec9f69ecd4cb88",
+          "importsFiles": [
+            "crates/roll-core/src/codec.rs",
+            "crates/roll-core/src/lib.rs"
+          ],
+          "library": "crates/roll-core/src/lib.rs",
+          "path": "crates/roll-core/tests/rng_and_address.rs",
+          "testsInside": true
+        }
+      ],
+      "globs": [
+        "crates/roll-core/**"
+      ],
+      "importConfidence": "full",
+      "name": "roll-core",
+      "origin": "authored",
+      "role": "code",
+      "testRunners": [
+        "cargo test"
+      ],
+      "testedBy": 11,
+      "unresolvedSites": 0
+    },
+    {
+      "dynamicReads": 0,
+      "dynamicSpawns": 0,
+      "dynamicSpawnsInTests": 0,
+      "dynamicWrites": 0,
+      "entryPoints": [],
+      "externals": 0,
+      "files": [
+        {
+          "hash": "c78b9bbb283698e37a969d8469549961750feadae6634ddbe41332ba09af3ea8",
+          "path": ".gitattributes"
+        },
+        {
+          "hash": "3b8b2d436204917a398e798fbbda7465a4a48bd13c807a14b2f435810c5ffccf",
           "path": ".gitignore"
         },
         {
-          "hash": "586025ba7b0bd9f7497559fe87a5818afc35263e457aa0360b31ae07676293c3",
+          "hash": "10795f92bf6ca1dc2c9897f98b3378a03ae99d9db3af1068b122f8590eb30158",
           "path": "CHANGELOG.md"
+        },
+        {
+          "hash": "57059b1b9bdaa317fe70b07c9846982221c61d9cbe58f74c8f2e1dbaf97966c9",
+          "path": "Cargo.lock"
+        },
+        {
+          "hash": "eeabc9828c6e80ba146d0cb748f62b99e78617aef24fa10085a40fb084d1f760",
+          "path": "Cargo.toml"
         },
         {
           "hash": "367e5141e4f5884e5791c4021f33a9faa958840a5decf44e1b273a87aad1c459",
           "path": "LICENSE"
         },
         {
-          "hash": "9d5379c0bfb665a13b65e58aa0cf8b4a2e2e9e8389e8b92c636224701ad41ab7",
+          "hash": "9c9abff55bd3c92369b14299b92ee412b1592914582b6780730db49e1f187fcc",
           "path": "README.es.md"
         },
         {
-          "hash": "89a6311ee019597b3e9ef077c6e7a7611bf4780cabe161afd954f225dac9f222",
+          "hash": "952509a277ca3950d417b9e8dc9b2b3d4aab993dc4866637ba6f65c3e4de69df",
           "path": "README.fr.md"
         },
         {
-          "hash": "63a3ac5662820f3f7fab000c8e1d2954d2f56ad99b785a31f20fdc7b16ee067d",
+          "hash": "991fed028502b859b1ebc3af6c85190d0ca069dd834bf0f9f83afe6a179b6427",
           "path": "README.hi.md"
         },
         {
-          "hash": "89fc60035efdd9cab87bd98c5eb2b527654d09f36799299aa08b425d3ce62010",
+          "hash": "4ce97fd0a4df3ea8c7dac8796e2eb01d30ef7f547c26d37d44b9b03964da6fbe",
           "path": "README.it.md"
         },
         {
-          "hash": "c675f5c5c71dc4fb06c19d63ec90e05f32b4bf07e85d58900cf23910409bf733",
+          "hash": "832b6422fd69387ae500cef5f5b84be9554b70a2012fb30025a55b4142564ff6",
           "path": "README.ja.md"
         },
         {
-          "hash": "3247321ace624801b472ae45d6f12fc0d0fc585add31c0d0d3091a80cedfed36",
+          "hash": "85471850cf956ab9e967a4c785bbdb3f3b77fa3d816754c7ae7ac44d90687e66",
           "path": "README.md"
         },
         {
-          "hash": "02f7917676677f4316e537d056fa6bc916faca33c9fecd28ed912bff5fbd120f",
+          "hash": "877c29a16e0cd14f4af78eb4172708769e9b4fe9174911bfa1882264fceeee37",
           "path": "README.pt-BR.md"
         },
         {
-          "hash": "98788ea2e6434c50713227527bb7ff05594cb5a91056fe5918ec08f44f4b86be",
+          "hash": "e34fd621fe4c822c4ef1d21256573dffd67c0b1b8e5cbc77594f46edf2d6e630",
           "path": "README.zh.md"
         },
         {
@@ -92,7 +1353,7 @@
           "path": "SECURITY.md"
         },
         {
-          "hash": "2181979954a5b1df215059371ecb499bade0ab7cc1b0454244b9c49bdff93a27",
+          "hash": "7b1771459adf1dd401f95e41f888f0051cf24c7475ee74fc271e01725d15321e",
           "path": "SHIP_GATE.md"
         },
         {
@@ -100,11 +1361,11 @@
           "path": "codecov.yml"
         },
         {
-          "hash": "0a035b515470fa3f3a6c8b68831a6b1e7a9c8fa4dfa813c59fff3b8a4d36f5bc",
+          "hash": "63c44732ec66c47e4d959ad8b414a711f9dff2eb1a5d306a536a90773dc63be7",
           "path": "package-lock.json"
         },
         {
-          "hash": "a0355b73c79428d8415d1b08149fe7664192ae742927ca5539517beeb200aaa0",
+          "hash": "75a9ad7f9c05282e90483afd41650e0da74ff81f31239bfdfd5bb195023145f4",
           "path": "package.json"
         },
         {
@@ -463,40 +1724,85 @@
             {
               "in": "assertNever",
               "kind": "throw",
-              "line": 59
+              "line": 87
             },
             {
               "in": "convolve",
               "kind": "throw",
-              "line": 311
+              "line": 382
             },
             {
               "in": "convolve",
               "kind": "throw",
-              "line": 315
+              "line": 386
             },
             {
               "in": "singleExploding",
               "kind": "throw",
-              "line": 475
+              "line": 551
+            },
+            {
+              "in": "divideDistribution",
+              "kind": "throw",
+              "line": 653
+            },
+            {
+              "in": "divideDistributions",
+              "kind": "throw",
+              "line": 668
+            },
+            {
+              "in": "divideDistributions",
+              "kind": "throw",
+              "line": 671
             },
             {
               "in": "computeDistributionWithMethod",
               "kind": "throw",
-              "line": 683
+              "line": 737
             },
             {
               "in": "computeDistributionWithMethod",
               "kind": "catch",
-              "line": 696
+              "line": 751
             },
             {
               "in": "computeDistributionWithMethod",
               "kind": "throw",
-              "line": 700
+              "line": 755
+            },
+            {
+              "in": "tryExact",
+              "kind": "catch",
+              "line": 847
+            },
+            {
+              "in": "tryExact",
+              "kind": "throw",
+              "line": 852
+            },
+            {
+              "in": "tryExact",
+              "kind": "throw",
+              "line": 857
+            },
+            {
+              "in": "tryExact",
+              "kind": "catch",
+              "line": 865
+            },
+            {
+              "in": "tryExact",
+              "kind": "throw",
+              "line": 870
+            },
+            {
+              "in": "tryExact",
+              "kind": "throw",
+              "line": 875
             }
           ],
-          "hash": "fac18c589051a347a187b2c30c141af2e3a7fa0f90f39b5159d263cda2cfe537",
+          "hash": "c8613c7bd25e7e0b010bc32f54da48d8847d903ff79cdb1384c695190d8f5a3c",
           "importsFiles": [
             "src/analyze/montecarlo.ts",
             "src/engine/pipeline.ts",
@@ -508,7 +1814,37 @@
             {
               "calls": [
                 {
-                  "line": 213,
+                  "line": 168,
+                  "name": "estimateAstAnalyzeRolls",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "countTotalDice"
+            },
+            {
+              "calls": [
+                {
+                  "line": 238,
+                  "name": "matchesCompare",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  }
+                },
+                {
+                  "line": 257,
+                  "name": "MAX_REROLLS",
+                  "passed": true,
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  }
+                },
+                {
+                  "line": 276,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
@@ -523,8 +1859,41 @@
             {
               "calls": [
                 {
+                  "line": 238,
+                  "name": "matchesCompare",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "singleDieWithReroll"
+                },
+                {
+                  "line": 257,
+                  "name": "MAX_REROLLS",
+                  "passed": true,
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "singleDieWithReroll"
+                },
+                {
+                  "line": 276,
+                  "name": "matchesCompare",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "singleDieWithReroll"
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "singleDiePreExplode"
+            },
+            {
+              "calls": [
+                {
                   "branch": "depth === node.count",
-                  "line": 407,
+                  "line": 458,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
@@ -540,7 +1909,14 @@
             {
               "calls": [
                 {
-                  "line": 490,
+                  "line": 525,
+                  "name": "countMatchingFaces",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  }
+                },
+                {
+                  "line": 568,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
@@ -556,27 +1932,11 @@
             {
               "calls": [
                 {
-                  "line": 538,
+                  "line": 614,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
                   }
-                }
-              ],
-              "exported": false,
-              "invokedAtTopLevel": false,
-              "isDefaultExport": false,
-              "name": "rerollDistribution"
-            },
-            {
-              "calls": [
-                {
-                  "line": 213,
-                  "name": "matchesCompare",
-                  "target": {
-                    "file": "src/engine/pipeline.ts"
-                  },
-                  "via": "singleDieWithReroll"
                 }
               ],
               "exported": false,
@@ -587,8 +1947,32 @@
             {
               "calls": [
                 {
-                  "branch": "isSuccessCount && !hasKeepDrop && !hasExplosion",
-                  "line": 213,
+                  "line": 168,
+                  "name": "estimateAstAnalyzeRolls",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "countTotalDice"
+                },
+                {
+                  "line": 238,
+                  "name": "matchesCompare",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "singleDieWithReroll"
+                },
+                {
+                  "line": 257,
+                  "name": "MAX_REROLLS",
+                  "passed": true,
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "singleDieWithReroll"
+                },
+                {
+                  "line": 276,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
@@ -597,7 +1981,7 @@
                 },
                 {
                   "branch": "hasKeepDrop",
-                  "line": 407,
+                  "line": 458,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
@@ -606,7 +1990,16 @@
                 },
                 {
                   "branch": "hasExplosion",
-                  "line": 490,
+                  "line": 525,
+                  "name": "countMatchingFaces",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "explosionDistribution"
+                },
+                {
+                  "branch": "hasExplosion",
+                  "line": 568,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
@@ -614,16 +2007,16 @@
                   "via": "singleExploding"
                 },
                 {
-                  "branch": "hasReroll",
-                  "line": 538,
+                  "branch": "isSuccessCount",
+                  "line": 614,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
                   },
-                  "via": "rerollDistribution"
+                  "via": "successCountDistribution"
                 },
                 {
-                  "line": 709,
+                  "line": 770,
                   "name": "monteCarloDistribution",
                   "target": {
                     "file": "src/analyze/montecarlo.ts"
@@ -631,7 +2024,7 @@
                   "via": "computeDistributionWithMethod"
                 },
                 {
-                  "line": 709,
+                  "line": 770,
                   "name": "DEFAULT_MONTE_CARLO_SAMPLES",
                   "passed": true,
                   "target": {
@@ -648,8 +2041,32 @@
             {
               "calls": [
                 {
-                  "branch": "isSuccessCount && !hasKeepDrop && !hasExplosion",
-                  "line": 213,
+                  "line": 168,
+                  "name": "estimateAstAnalyzeRolls",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "countTotalDice"
+                },
+                {
+                  "line": 238,
+                  "name": "matchesCompare",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "singleDieWithReroll"
+                },
+                {
+                  "line": 257,
+                  "name": "MAX_REROLLS",
+                  "passed": true,
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "singleDieWithReroll"
+                },
+                {
+                  "line": 276,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
@@ -658,7 +2075,7 @@
                 },
                 {
                   "branch": "hasKeepDrop",
-                  "line": 407,
+                  "line": 458,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
@@ -667,7 +2084,16 @@
                 },
                 {
                   "branch": "hasExplosion",
-                  "line": 490,
+                  "line": 525,
+                  "name": "countMatchingFaces",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "explosionDistribution"
+                },
+                {
+                  "branch": "hasExplosion",
+                  "line": 568,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
@@ -675,23 +2101,23 @@
                   "via": "singleExploding"
                 },
                 {
-                  "branch": "hasReroll",
-                  "line": 538,
+                  "branch": "isSuccessCount",
+                  "line": 614,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
                   },
-                  "via": "rerollDistribution"
+                  "via": "successCountDistribution"
                 },
                 {
-                  "line": 709,
+                  "line": 770,
                   "name": "monteCarloDistribution",
                   "target": {
                     "file": "src/analyze/montecarlo.ts"
                   }
                 },
                 {
-                  "line": 709,
+                  "line": 770,
                   "name": "DEFAULT_MONTE_CARLO_SAMPLES",
                   "passed": true,
                   "target": {
@@ -707,8 +2133,24 @@
             {
               "calls": [
                 {
-                  "branch": "isSuccessCount && !hasKeepDrop && !hasExplosion",
-                  "line": 213,
+                  "line": 238,
+                  "name": "matchesCompare",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "singleDieWithReroll"
+                },
+                {
+                  "line": 257,
+                  "name": "MAX_REROLLS",
+                  "passed": true,
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "singleDieWithReroll"
+                },
+                {
+                  "line": 276,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
@@ -717,7 +2159,7 @@
                 },
                 {
                   "branch": "hasKeepDrop",
-                  "line": 407,
+                  "line": 458,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
@@ -726,7 +2168,16 @@
                 },
                 {
                   "branch": "hasExplosion",
-                  "line": 490,
+                  "line": 525,
+                  "name": "countMatchingFaces",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "explosionDistribution"
+                },
+                {
+                  "branch": "hasExplosion",
+                  "line": 568,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
@@ -734,13 +2185,13 @@
                   "via": "singleExploding"
                 },
                 {
-                  "branch": "hasReroll",
-                  "line": 538,
+                  "branch": "isSuccessCount",
+                  "line": 614,
                   "name": "matchesCompare",
                   "target": {
                     "file": "src/engine/pipeline.ts"
                   },
-                  "via": "rerollDistribution"
+                  "via": "successCountDistribution"
                 }
               ],
               "exported": false,
@@ -754,18 +2205,34 @@
           "exports": [
             "monteCarloDistribution"
           ],
-          "hash": "a2d6622bb412821a0a11e75544dee8aa0ddb515680826eba49939bc00daa8e77",
+          "failurePaths": [
+            {
+              "in": "monteCarloDistribution",
+              "kind": "throw",
+              "line": 34
+            },
+            {
+              "in": "monteCarloDistribution",
+              "kind": "throw",
+              "line": 57
+            }
+          ],
+          "hash": "92c0f406c474bc6c717010962d5f225b3819b71e6b2455ba6201d7341ff213eb",
           "importOrder": [
             "src/parser/ast.ts",
+            "src/parser/parser.ts",
+            "src/engine/pipeline.ts",
             "src/engine/roller.ts",
             "src/engine/random.ts",
             "src/analyze/distribution.ts"
           ],
           "importsFiles": [
             "src/analyze/distribution.ts",
+            "src/engine/pipeline.ts",
             "src/engine/random.ts",
             "src/engine/roller.ts",
-            "src/parser/ast.ts"
+            "src/parser/ast.ts",
+            "src/parser/parser.ts"
           ],
           "path": "src/analyze/montecarlo.ts"
         },
@@ -796,132 +2263,122 @@
             {
               "in": "parseTimes",
               "kind": "throw",
-              "line": 156
+              "line": 157
             },
             {
               "in": "parseTimes",
               "kind": "throw",
-              "line": 161
+              "line": 162
             },
             {
               "in": "parseTimes",
               "kind": "throw",
-              "line": 165
+              "line": 166
             },
             {
               "in": "parseSeed",
               "kind": "throw",
-              "line": 182
+              "line": 183
             },
             {
               "in": "parseSeed",
               "kind": "throw",
-              "line": 187
+              "line": 188
             },
             {
               "in": "parseQueryValue",
               "kind": "throw",
-              "line": 202
+              "line": 203
             },
             {
               "in": "parseRange",
               "kind": "throw",
-              "line": 222
+              "line": 223
             },
             {
               "in": "parseRange",
               "kind": "throw",
-              "line": 234
+              "line": 235
             },
             {
               "in": "parseRange",
               "kind": "throw",
-              "line": 238
+              "line": 239
             },
             {
               "in": "parseProbability",
               "kind": "throw",
-              "line": 251
+              "line": 252
             },
             {
               "in": "parseProbabilityAtMostFor",
               "kind": "throw",
-              "line": 264
+              "line": 265
             },
             {
               "in": "run",
               "kind": "catch",
-              "line": 279
+              "line": 280
             },
             {
               "in": "dispatch",
               "kind": "throw",
-              "line": 368
+              "line": 369
             },
             {
               "in": "dispatch",
               "kind": "throw",
-              "line": 383
+              "line": 384
             },
             {
               "in": "dispatch",
               "kind": "throw",
-              "line": 388
+              "line": 389
             },
             {
               "in": "dispatch",
               "kind": "throw",
-              "line": 393
+              "line": 394
             },
             {
               "in": "dispatch",
               "kind": "throw",
-              "line": 398
+              "line": 399
             },
             {
               "in": "dispatch",
               "kind": "throw",
-              "line": 403
+              "line": 404
             },
             {
               "in": "dispatch",
               "kind": "throw",
-              "line": 408
+              "line": 409
             },
             {
               "in": "dispatch",
               "kind": "throw",
-              "line": 413
+              "line": 414
             },
             {
               "in": "dispatch",
               "kind": "throw",
-              "line": 418
+              "line": 419
             },
             {
               "in": "dispatch",
               "kind": "throw",
-              "line": 435
+              "line": 436
             },
             {
               "in": "handleRoll",
               "kind": "throw",
-              "line": 518
+              "line": 509
             },
             {
               "in": "handleLoot",
               "kind": "catch",
-              "line": 773
-            },
-            {
-              "in": "handleLoot",
-              "kind": "throw",
-              "line": 779
-            },
-            {
-              "in": "handleLoot",
-              "kind": "catch",
-              "line": 785
+              "line": 781
             },
             {
               "in": "handleLoot",
@@ -930,16 +2387,26 @@
             },
             {
               "in": "handleLoot",
+              "kind": "catch",
+              "line": 793
+            },
+            {
+              "in": "handleLoot",
               "kind": "throw",
-              "line": 801
+              "line": 795
             },
             {
               "in": "handleLoot",
               "kind": "throw",
               "line": 809
+            },
+            {
+              "in": "handleLoot",
+              "kind": "throw",
+              "line": 817
             }
           ],
-          "hash": "b6b4794978b4ca0950445f5d182fc68badbf052e676e658ec8866db34bdf8e10",
+          "hash": "db08d9d99ae88083aec994d9666631f67ec42584a117cec68290ad4ef3b16728",
           "importsFiles": [
             "src/analyze/distribution.ts",
             "src/analyze/stats.ts",
@@ -947,6 +2414,7 @@
             "src/display/color.ts",
             "src/display/format.ts",
             "src/display/histogram.ts",
+            "src/engine/pipeline.ts",
             "src/engine/random.ts",
             "src/engine/roller.ts",
             "src/entry.ts",
@@ -960,7 +2428,7 @@
               "calls": [
                 {
                   "branch": "!/^\\d+$/.test(raw.trim())",
-                  "line": 155,
+                  "line": 156,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -968,13 +2436,13 @@
                 },
                 {
                   "branch": "!/^\\d+$/.test(raw.trim())",
-                  "line": 155,
+                  "line": 156,
                   "name": "err",
                   "target": null
                 },
                 {
                   "branch": "!Number.isFinite(n) || n < 1",
-                  "line": 160,
+                  "line": 161,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -982,13 +2450,13 @@
                 },
                 {
                   "branch": "!Number.isFinite(n) || n < 1",
-                  "line": 160,
+                  "line": 161,
                   "name": "err",
                   "target": null
                 },
                 {
                   "branch": "n > MAX_TIMES",
-                  "line": 164,
+                  "line": 165,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -996,7 +2464,7 @@
                 },
                 {
                   "branch": "n > MAX_TIMES",
-                  "line": 164,
+                  "line": 165,
                   "name": "err",
                   "target": null
                 }
@@ -1010,7 +2478,7 @@
               "calls": [
                 {
                   "branch": "!/^-?\\d+$/.test(trimmed)",
-                  "line": 181,
+                  "line": 182,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1018,13 +2486,13 @@
                 },
                 {
                   "branch": "!/^-?\\d+$/.test(trimmed)",
-                  "line": 181,
+                  "line": 182,
                   "name": "err",
                   "target": null
                 },
                 {
                   "branch": "!Number.isSafeInteger(n)",
-                  "line": 186,
+                  "line": 187,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1032,7 +2500,7 @@
                 },
                 {
                   "branch": "!Number.isSafeInteger(n)",
-                  "line": 186,
+                  "line": 187,
                   "name": "err",
                   "target": null
                 }
@@ -1046,7 +2514,7 @@
               "calls": [
                 {
                   "branch": "raw.trim() === \"\" || !Number.isFinite(n)",
-                  "line": 201,
+                  "line": 202,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1054,7 +2522,7 @@
                 },
                 {
                   "branch": "raw.trim() === \"\" || !Number.isFinite(n)",
-                  "line": 201,
+                  "line": 202,
                   "name": "err",
                   "target": null
                 }
@@ -1068,22 +2536,8 @@
               "calls": [
                 {
                   "branch": "parts.length !== 2",
-                  "line": 220,
-                  "name": "red",
-                  "target": {
-                    "file": "src/display/color.ts"
-                  }
-                },
-                {
-                  "branch": "parts.length !== 2",
-                  "line": 220,
-                  "name": "err",
-                  "target": null
-                },
-                {
-                  "branch": "parts.length !== 2",
                   "line": 221,
-                  "name": "dim",
+                  "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
                   }
@@ -1095,8 +2549,22 @@
                   "target": null
                 },
                 {
+                  "branch": "parts.length !== 2",
+                  "line": 222,
+                  "name": "dim",
+                  "target": {
+                    "file": "src/display/color.ts"
+                  }
+                },
+                {
+                  "branch": "parts.length !== 2",
+                  "line": 222,
+                  "name": "err",
+                  "target": null
+                },
+                {
                   "branch": "parts[0]!.trim() === \"\" || parts[1]!.trim() === \"\" || !Numb…",
-                  "line": 232,
+                  "line": 233,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1104,13 +2572,13 @@
                 },
                 {
                   "branch": "parts[0]!.trim() === \"\" || parts[1]!.trim() === \"\" || !Numb…",
-                  "line": 232,
+                  "line": 233,
                   "name": "err",
                   "target": null
                 },
                 {
                   "branch": "parts[0]!.trim() === \"\" || parts[1]!.trim() === \"\" || !Numb…",
-                  "line": 233,
+                  "line": 234,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1118,13 +2586,13 @@
                 },
                 {
                   "branch": "parts[0]!.trim() === \"\" || parts[1]!.trim() === \"\" || !Numb…",
-                  "line": 233,
+                  "line": 234,
                   "name": "err",
                   "target": null
                 },
                 {
                   "branch": "lo > hi",
-                  "line": 237,
+                  "line": 238,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1132,7 +2600,7 @@
                 },
                 {
                   "branch": "lo > hi",
-                  "line": 237,
+                  "line": 238,
                   "name": "err",
                   "target": null
                 }
@@ -1146,7 +2614,7 @@
               "calls": [
                 {
                   "branch": "raw.trim() === \"\" || !Number.isFinite(p) || p <= 0 || p > 1",
-                  "line": 250,
+                  "line": 251,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1154,7 +2622,7 @@
                 },
                 {
                   "branch": "raw.trim() === \"\" || !Number.isFinite(p) || p <= 0 || p > 1",
-                  "line": 250,
+                  "line": 251,
                   "name": "err",
                   "target": null
                 }
@@ -1168,7 +2636,7 @@
               "calls": [
                 {
                   "branch": "raw.trim() === \"\" || !Number.isFinite(p) || p <= 0 || p > 1",
-                  "line": 263,
+                  "line": 264,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1176,7 +2644,7 @@
                 },
                 {
                   "branch": "raw.trim() === \"\" || !Number.isFinite(p) || p <= 0 || p > 1",
-                  "line": 263,
+                  "line": 264,
                   "name": "err",
                   "target": null
                 }
@@ -1189,7 +2657,7 @@
             {
               "calls": [
                 {
-                  "line": 345,
+                  "line": 346,
                   "name": "setColorEnabled",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1198,21 +2666,21 @@
                 },
                 {
                   "branch": "values.help",
-                  "line": 349,
+                  "line": 350,
                   "name": "out",
                   "target": null,
                   "via": "dispatch"
                 },
                 {
                   "branch": "values.version",
-                  "line": 354,
+                  "line": 355,
                   "name": "out",
                   "target": null,
                   "via": "dispatch"
                 },
                 {
                   "branch": "values.loot",
-                  "line": 775,
+                  "line": 783,
                   "name": "sanitize",
                   "target": {
                     "file": "src/display/box.ts"
@@ -1221,7 +2689,7 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 775,
+                  "line": 783,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1230,14 +2698,14 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 775,
+                  "line": 783,
                   "name": "err",
                   "target": null,
                   "via": "handleLoot"
                 },
                 {
                   "branch": "values.loot",
-                  "line": 777,
+                  "line": 785,
                   "name": "sanitize",
                   "target": {
                     "file": "src/display/box.ts"
@@ -1246,7 +2714,7 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 777,
+                  "line": 785,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1255,14 +2723,14 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 777,
+                  "line": 785,
                   "name": "err",
                   "target": null,
                   "via": "handleLoot"
                 },
                 {
                   "branch": "values.loot",
-                  "line": 786,
+                  "line": 794,
                   "name": "sanitize",
                   "target": {
                     "file": "src/display/box.ts"
@@ -1271,7 +2739,7 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 786,
+                  "line": 794,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1280,14 +2748,14 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 786,
+                  "line": 794,
                   "name": "err",
                   "target": null,
                   "via": "handleLoot"
                 },
                 {
                   "branch": "values.loot",
-                  "line": 800,
+                  "line": 808,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1296,7 +2764,7 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 800,
+                  "line": 808,
                   "name": "err",
                   "target": null,
                   "via": "handleLoot"
@@ -1312,7 +2780,7 @@
                       }
                     }
                   ],
-                  "line": 804,
+                  "line": 812,
                   "name": "validateLootTables",
                   "target": {
                     "file": "src/loot/table.ts"
@@ -1321,7 +2789,7 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 806,
+                  "line": 814,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1330,14 +2798,14 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 806,
+                  "line": 814,
                   "name": "err",
                   "target": null,
                   "via": "handleLoot"
                 },
                 {
                   "branch": "values.loot",
-                  "line": 808,
+                  "line": 816,
                   "name": "sanitize",
                   "target": {
                     "file": "src/display/box.ts"
@@ -1346,7 +2814,7 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 808,
+                  "line": 816,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1355,7 +2823,7 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 808,
+                  "line": 816,
                   "name": "err",
                   "target": null,
                   "via": "handleLoot"
@@ -1392,7 +2860,7 @@
                       }
                     }
                   ],
-                  "line": 812,
+                  "line": 820,
                   "name": "rollLootTable",
                   "target": {
                     "file": "src/loot/table.ts"
@@ -1401,14 +2869,14 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 815,
+                  "line": 823,
                   "name": "out",
                   "target": null,
                   "via": "handleLoot"
                 },
                 {
                   "branch": "values.loot",
-                  "line": 824,
+                  "line": 832,
                   "name": "sanitize",
                   "target": {
                     "file": "src/display/box.ts"
@@ -1417,7 +2885,7 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 824,
+                  "line": 832,
                   "name": "boldYellow",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1434,7 +2902,7 @@
             {
               "calls": [
                 {
-                  "line": 345,
+                  "line": 346,
                   "name": "setColorEnabled",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1442,19 +2910,19 @@
                 },
                 {
                   "branch": "values.help",
-                  "line": 349,
+                  "line": 350,
                   "name": "out",
                   "target": null
                 },
                 {
                   "branch": "values.version",
-                  "line": 354,
+                  "line": 355,
                   "name": "out",
                   "target": null
                 },
                 {
                   "branch": "values.loot",
-                  "line": 775,
+                  "line": 783,
                   "name": "sanitize",
                   "target": {
                     "file": "src/display/box.ts"
@@ -1463,7 +2931,7 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 775,
+                  "line": 783,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1472,14 +2940,14 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 775,
+                  "line": 783,
                   "name": "err",
                   "target": null,
                   "via": "handleLoot"
                 },
                 {
                   "branch": "values.loot",
-                  "line": 777,
+                  "line": 785,
                   "name": "sanitize",
                   "target": {
                     "file": "src/display/box.ts"
@@ -1488,7 +2956,7 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 777,
+                  "line": 785,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1497,14 +2965,14 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 777,
+                  "line": 785,
                   "name": "err",
                   "target": null,
                   "via": "handleLoot"
                 },
                 {
                   "branch": "values.loot",
-                  "line": 786,
+                  "line": 794,
                   "name": "sanitize",
                   "target": {
                     "file": "src/display/box.ts"
@@ -1513,7 +2981,7 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 786,
+                  "line": 794,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1522,59 +2990,9 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 786,
+                  "line": 794,
                   "name": "err",
                   "target": null,
-                  "via": "handleLoot"
-                },
-                {
-                  "branch": "values.loot",
-                  "line": 800,
-                  "name": "red",
-                  "target": {
-                    "file": "src/display/color.ts"
-                  },
-                  "via": "handleLoot"
-                },
-                {
-                  "branch": "values.loot",
-                  "line": 800,
-                  "name": "err",
-                  "target": null,
-                  "via": "handleLoot"
-                },
-                {
-                  "branch": "values.loot",
-                  "line": 804,
-                  "name": "validateLootTables",
-                  "target": {
-                    "file": "src/loot/table.ts"
-                  },
-                  "via": "handleLoot"
-                },
-                {
-                  "branch": "values.loot",
-                  "line": 806,
-                  "name": "red",
-                  "target": {
-                    "file": "src/display/color.ts"
-                  },
-                  "via": "handleLoot"
-                },
-                {
-                  "branch": "values.loot",
-                  "line": 806,
-                  "name": "err",
-                  "target": null,
-                  "via": "handleLoot"
-                },
-                {
-                  "branch": "values.loot",
-                  "line": 808,
-                  "name": "sanitize",
-                  "target": {
-                    "file": "src/display/box.ts"
-                  },
                   "via": "handleLoot"
                 },
                 {
@@ -1596,7 +3014,7 @@
                 {
                   "branch": "values.loot",
                   "line": 812,
-                  "name": "rollLootTable",
+                  "name": "validateLootTables",
                   "target": {
                     "file": "src/loot/table.ts"
                   },
@@ -1604,14 +3022,23 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 815,
-                  "name": "out",
+                  "line": 814,
+                  "name": "red",
+                  "target": {
+                    "file": "src/display/color.ts"
+                  },
+                  "via": "handleLoot"
+                },
+                {
+                  "branch": "values.loot",
+                  "line": 814,
+                  "name": "err",
                   "target": null,
                   "via": "handleLoot"
                 },
                 {
                   "branch": "values.loot",
-                  "line": 824,
+                  "line": 816,
                   "name": "sanitize",
                   "target": {
                     "file": "src/display/box.ts"
@@ -1620,7 +3047,48 @@
                 },
                 {
                   "branch": "values.loot",
-                  "line": 824,
+                  "line": 816,
+                  "name": "red",
+                  "target": {
+                    "file": "src/display/color.ts"
+                  },
+                  "via": "handleLoot"
+                },
+                {
+                  "branch": "values.loot",
+                  "line": 816,
+                  "name": "err",
+                  "target": null,
+                  "via": "handleLoot"
+                },
+                {
+                  "branch": "values.loot",
+                  "line": 820,
+                  "name": "rollLootTable",
+                  "target": {
+                    "file": "src/loot/table.ts"
+                  },
+                  "via": "handleLoot"
+                },
+                {
+                  "branch": "values.loot",
+                  "line": 823,
+                  "name": "out",
+                  "target": null,
+                  "via": "handleLoot"
+                },
+                {
+                  "branch": "values.loot",
+                  "line": 832,
+                  "name": "sanitize",
+                  "target": {
+                    "file": "src/display/box.ts"
+                  },
+                  "via": "handleLoot"
+                },
+                {
+                  "branch": "values.loot",
+                  "line": 832,
                   "name": "boldYellow",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1637,15 +3105,38 @@
             {
               "calls": [
                 {
-                  "line": 505,
+                  "line": 486,
+                  "name": "estimateAstAnalyzeRolls",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  }
+                }
+              ],
+              "exported": false,
+              "invokedAtTopLevel": false,
+              "isDefaultExport": false,
+              "name": "estimateDiceCount"
+            },
+            {
+              "calls": [
+                {
+                  "line": 496,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
                   }
                 },
                 {
+                  "line": 486,
+                  "name": "estimateAstAnalyzeRolls",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "estimateDiceCount"
+                },
+                {
                   "branch": "dicePerRoll * times > MAX_TOTAL_DICE",
-                  "line": 513,
+                  "line": 504,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1653,13 +3144,13 @@
                 },
                 {
                   "branch": "dicePerRoll * times > MAX_TOTAL_DICE",
-                  "line": 512,
+                  "line": 503,
                   "name": "err",
                   "target": null
                 },
                 {
                   "branch": "dicePerRoll * times > MAX_TOTAL_DICE",
-                  "line": 517,
+                  "line": 508,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
@@ -1667,57 +3158,57 @@
                 },
                 {
                   "branch": "dicePerRoll * times > MAX_TOTAL_DICE",
-                  "line": 517,
+                  "line": 508,
                   "name": "err",
                   "target": null
                 },
                 {
-                  "line": 524,
+                  "line": 515,
                   "name": "seededRng",
                   "target": {
                     "file": "src/engine/random.ts"
                   }
                 },
                 {
-                  "line": 527,
+                  "line": 518,
                   "name": "evaluate",
                   "target": {
                     "file": "src/engine/roller.ts"
                   }
                 },
                 {
-                  "line": 531,
+                  "line": 522,
                   "name": "formatJson",
                   "target": {
                     "file": "src/display/format.ts"
                   }
                 },
                 {
-                  "line": 531,
+                  "line": 522,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 534,
+                  "line": 525,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 534,
+                  "line": 525,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 536,
+                  "line": 527,
                   "name": "formatRollResult",
                   "target": {
                     "file": "src/display/format.ts"
                   }
                 },
                 {
-                  "line": 536,
+                  "line": 527,
                   "name": "out",
                   "target": null
                 }
@@ -1730,21 +3221,21 @@
             {
               "calls": [
                 {
-                  "line": 543,
+                  "line": 534,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
                   }
                 },
                 {
-                  "line": 546,
+                  "line": 537,
                   "name": "computeDistributionWithMethod",
                   "target": {
                     "file": "src/analyze/distribution.ts"
                   }
                 },
                 {
-                  "line": 547,
+                  "line": 538,
                   "name": "computeStats",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -1752,48 +3243,48 @@
                 },
                 {
                   "branch": "json",
-                  "line": 551,
+                  "line": 542,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 561,
+                  "line": 559,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 562,
+                  "line": 560,
                   "name": "renderHistogram",
                   "target": {
                     "file": "src/display/histogram.ts"
                   }
                 },
                 {
-                  "line": 562,
+                  "line": 560,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 564,
+                  "line": 562,
                   "name": "formatStats",
                   "target": {
                     "file": "src/display/format.ts"
                   }
                 },
                 {
-                  "line": 564,
+                  "line": 562,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 567,
+                  "line": 565,
                   "name": "formatMethodNote",
                   "target": {
                     "file": "src/display/format.ts"
                   }
                 },
                 {
-                  "line": 567,
+                  "line": 565,
                   "name": "out",
                   "target": null
                 }
@@ -1806,21 +3297,21 @@
             {
               "calls": [
                 {
-                  "line": 572,
+                  "line": 570,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
                   }
                 },
                 {
-                  "line": 573,
+                  "line": 571,
                   "name": "computeDistributionWithMethod",
                   "target": {
                     "file": "src/analyze/distribution.ts"
                   }
                 },
                 {
-                  "line": 574,
+                  "line": 572,
                   "name": "probabilityAtLeast",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -1828,36 +3319,36 @@
                 },
                 {
                   "branch": "json",
-                  "line": 577,
+                  "line": 575,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 587,
+                  "line": 592,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 588,
+                  "line": 593,
                   "name": "formatAtLeast",
                   "target": {
                     "file": "src/display/format.ts"
                   }
                 },
                 {
-                  "line": 588,
+                  "line": 593,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 589,
+                  "line": 594,
                   "name": "formatMethodNote",
                   "target": {
                     "file": "src/display/format.ts"
                   }
                 },
                 {
-                  "line": 589,
+                  "line": 594,
                   "name": "out",
                   "target": null
                 }
@@ -1870,28 +3361,28 @@
             {
               "calls": [
                 {
-                  "line": 594,
+                  "line": 599,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
                   }
                 },
                 {
-                  "line": 596,
+                  "line": 601,
                   "name": "computeDistribution",
                   "target": {
                     "file": "src/analyze/distribution.ts"
                   }
                 },
                 {
-                  "line": 598,
+                  "line": 603,
                   "name": "computeStats",
                   "target": {
                     "file": "src/analyze/stats.ts"
                   }
                 },
                 {
-                  "line": 604,
+                  "line": 609,
                   "name": "compareDistributions",
                   "target": {
                     "file": "src/analyze/distribution.ts"
@@ -1899,98 +3390,98 @@
                 },
                 {
                   "branch": "json",
-                  "line": 608,
+                  "line": 613,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 627,
+                  "line": 632,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 628,
+                  "line": 633,
                   "name": "formatComparison",
                   "target": {
                     "file": "src/display/format.ts"
                   }
                 },
                 {
-                  "line": 628,
+                  "line": 633,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 630,
+                  "line": 635,
                   "name": "formatVersus",
                   "target": {
                     "file": "src/display/format.ts"
                   }
                 },
                 {
-                  "line": 630,
+                  "line": 635,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 634,
+                  "line": 639,
                   "name": "cyan",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 634,
+                  "line": 639,
                   "name": "bold",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 634,
+                  "line": 639,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 635,
+                  "line": 640,
                   "name": "renderHistogram",
                   "target": {
                     "file": "src/display/histogram.ts"
                   }
                 },
                 {
-                  "line": 635,
+                  "line": 640,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 637,
+                  "line": 642,
                   "name": "cyan",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 637,
+                  "line": 642,
                   "name": "bold",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 637,
+                  "line": 642,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 638,
+                  "line": 643,
                   "name": "renderHistogram",
                   "target": {
                     "file": "src/display/histogram.ts"
                   }
                 },
                 {
-                  "line": 638,
+                  "line": 643,
                   "name": "out",
                   "target": null
                 }
@@ -2003,35 +3494,35 @@
             {
               "calls": [
                 {
-                  "line": 656,
+                  "line": 661,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
                   }
                 },
                 {
-                  "line": 657,
+                  "line": 662,
                   "name": "computeDistributionWithMethod",
                   "target": {
                     "file": "src/analyze/distribution.ts"
                   }
                 },
                 {
-                  "line": 664,
+                  "line": 669,
                   "name": "probabilityAtMost",
                   "target": {
                     "file": "src/analyze/stats.ts"
                   }
                 },
                 {
-                  "line": 669,
+                  "line": 674,
                   "name": "probabilityExactly",
                   "target": {
                     "file": "src/analyze/stats.ts"
                   }
                 },
                 {
-                  "line": 675,
+                  "line": 680,
                   "name": "probabilityInRange",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -2039,36 +3530,36 @@
                 },
                 {
                   "branch": "json",
-                  "line": 682,
+                  "line": 687,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 698,
+                  "line": 704,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 699,
+                  "line": 705,
                   "name": "formatProbabilityQuery",
                   "target": {
                     "file": "src/display/format.ts"
                   }
                 },
                 {
-                  "line": 699,
+                  "line": 705,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 700,
+                  "line": 706,
                   "name": "formatMethodNote",
                   "target": {
                     "file": "src/display/format.ts"
                   }
                 },
                 {
-                  "line": 700,
+                  "line": 706,
                   "name": "out",
                   "target": null
                 }
@@ -2081,21 +3572,21 @@
             {
               "calls": [
                 {
-                  "line": 709,
+                  "line": 715,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
                   }
                 },
                 {
-                  "line": 710,
+                  "line": 716,
                   "name": "computeDistributionWithMethod",
                   "target": {
                     "file": "src/analyze/distribution.ts"
                   }
                 },
                 {
-                  "line": 711,
+                  "line": 717,
                   "name": "targetForProbability",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -2103,36 +3594,36 @@
                 },
                 {
                   "branch": "json",
-                  "line": 714,
+                  "line": 720,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 730,
+                  "line": 737,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 731,
+                  "line": 738,
                   "name": "formatTargetFor",
                   "target": {
                     "file": "src/display/format.ts"
                   }
                 },
                 {
-                  "line": 731,
+                  "line": 738,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 732,
+                  "line": 739,
                   "name": "formatMethodNote",
                   "target": {
                     "file": "src/display/format.ts"
                   }
                 },
                 {
-                  "line": 732,
+                  "line": 739,
                   "name": "out",
                   "target": null
                 }
@@ -2145,21 +3636,21 @@
             {
               "calls": [
                 {
-                  "line": 741,
+                  "line": 748,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
                   }
                 },
                 {
-                  "line": 742,
+                  "line": 749,
                   "name": "computeDistributionWithMethod",
                   "target": {
                     "file": "src/analyze/distribution.ts"
                   }
                 },
                 {
-                  "line": 743,
+                  "line": 750,
                   "name": "targetForProbability",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -2167,36 +3658,36 @@
                 },
                 {
                   "branch": "json",
-                  "line": 746,
+                  "line": 753,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 763,
+                  "line": 771,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 764,
+                  "line": 772,
                   "name": "formatTargetForAtMost",
                   "target": {
                     "file": "src/display/format.ts"
                   }
                 },
                 {
-                  "line": 764,
+                  "line": 772,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 765,
+                  "line": 773,
                   "name": "formatMethodNote",
                   "target": {
                     "file": "src/display/format.ts"
                   }
                 },
                 {
-                  "line": 765,
+                  "line": 773,
                   "name": "out",
                   "target": null
                 }
@@ -2209,76 +3700,76 @@
             {
               "calls": [
                 {
-                  "line": 775,
+                  "line": 783,
                   "name": "sanitize",
                   "target": {
                     "file": "src/display/box.ts"
                   }
                 },
                 {
-                  "line": 775,
+                  "line": 783,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 775,
+                  "line": 783,
                   "name": "err",
                   "target": null
                 },
                 {
-                  "line": 777,
+                  "line": 785,
                   "name": "sanitize",
                   "target": {
                     "file": "src/display/box.ts"
                   }
                 },
                 {
-                  "line": 777,
+                  "line": 785,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 777,
+                  "line": 785,
                   "name": "err",
                   "target": null
                 },
                 {
-                  "line": 786,
+                  "line": 794,
                   "name": "sanitize",
                   "target": {
                     "file": "src/display/box.ts"
                   }
                 },
                 {
-                  "line": 786,
+                  "line": 794,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 786,
+                  "line": 794,
                   "name": "err",
                   "target": null
                 },
                 {
-                  "line": 800,
+                  "line": 808,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 800,
+                  "line": 808,
                   "name": "err",
                   "target": null
                 },
                 {
-                  "line": 804,
+                  "line": 812,
                   "name": "validateLootTables",
                   "target": {
                     "file": "src/loot/table.ts"
@@ -2286,7 +3777,7 @@
                 },
                 {
                   "branch": "errors.length > 0",
-                  "line": 806,
+                  "line": 814,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -2294,13 +3785,13 @@
                 },
                 {
                   "branch": "errors.length > 0",
-                  "line": 806,
+                  "line": 814,
                   "name": "err",
                   "target": null
                 },
                 {
                   "branch": "errors.length > 0",
-                  "line": 808,
+                  "line": 816,
                   "name": "sanitize",
                   "target": {
                     "file": "src/display/box.ts"
@@ -2308,7 +3799,7 @@
                 },
                 {
                   "branch": "errors.length > 0",
-                  "line": 808,
+                  "line": 816,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -2316,12 +3807,12 @@
                 },
                 {
                   "branch": "errors.length > 0",
-                  "line": 808,
+                  "line": 816,
                   "name": "err",
                   "target": null
                 },
                 {
-                  "line": 812,
+                  "line": 820,
                   "name": "rollLootTable",
                   "target": {
                     "file": "src/loot/table.ts"
@@ -2329,40 +3820,40 @@
                 },
                 {
                   "branch": "json",
-                  "line": 815,
+                  "line": 823,
                   "name": "out",
                   "target": null
                 },
                 {
-                  "line": 824,
+                  "line": 832,
                   "name": "sanitize",
                   "target": {
                     "file": "src/display/box.ts"
                   }
                 },
                 {
-                  "line": 824,
+                  "line": 832,
                   "name": "boldYellow",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 825,
+                  "line": 833,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 827,
+                  "line": 835,
                   "name": "green",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 827,
+                  "line": 835,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
@@ -2404,40 +3895,40 @@
             {
               "in": "validateCount",
               "kind": "throw",
-              "line": 495
+              "line": 505
             },
             {
               "in": "validateCount",
               "kind": "throw",
-              "line": 498
+              "line": 508
             },
             {
               "in": "validateCollection",
               "kind": "throw",
-              "line": 507
-            },
-            {
-              "in": "validateCollection",
-              "kind": "throw",
-              "line": 511
-            },
-            {
-              "in": "validateCollection",
-              "kind": "throw",
-              "line": 515
-            },
-            {
-              "in": "validateCollection",
-              "kind": "throw",
-              "line": 518
+              "line": 517
             },
             {
               "in": "validateCollection",
               "kind": "throw",
               "line": 521
+            },
+            {
+              "in": "validateCollection",
+              "kind": "throw",
+              "line": 525
+            },
+            {
+              "in": "validateCollection",
+              "kind": "throw",
+              "line": 528
+            },
+            {
+              "in": "validateCollection",
+              "kind": "throw",
+              "line": 531
             }
           ],
-          "hash": "da18c5ac7f3a6774d069b7f953f31650500730c3373b0acf44eae155b4fa2c44",
+          "hash": "26ce876801253945d1716559022c9167d37018037c6334b7f946b9476e651613",
           "importsFiles": [
             "src/analyze/distribution.ts",
             "src/analyze/stats.ts",
@@ -2455,7 +3946,7 @@
             {
               "calls": [
                 {
-                  "line": 427,
+                  "line": 437,
                   "name": "compareDistributions",
                   "target": {
                     "file": "src/analyze/distribution.ts"
@@ -2609,7 +4100,7 @@
             "formatTargetForAtMost",
             "formatVersus"
           ],
-          "hash": "e0a6b81d326556a9285775570821f409acb929eb0a712f212cfbcebb79ac294d",
+          "hash": "ebfd124162876d54d111b3d433dd65ee86bab8e23962d1938c7f7ee18c7f2157",
           "importsFiles": [
             "src/analyze/distribution.ts",
             "src/analyze/stats.ts",
@@ -3094,13 +4585,13 @@
               "calls": [
                 {
                   "branch": "method === \"monte-carlo\"",
-                  "line": 88,
+                  "line": 94,
                   "name": "toLocaleString",
                   "target": null
                 },
                 {
                   "branch": "method === \"monte-carlo\"",
-                  "line": 89,
+                  "line": 95,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
@@ -3108,14 +4599,22 @@
                 },
                 {
                   "branch": "method === \"monte-carlo\"",
-                  "line": 89,
+                  "line": 95,
                   "name": "yellow",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 91,
+                  "branch": "parts.length > 0",
+                  "line": 106,
+                  "name": "dim",
+                  "target": {
+                    "file": "src/display/color.ts"
+                  }
+                },
+                {
+                  "line": 109,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
@@ -3130,35 +4629,35 @@
             {
               "calls": [
                 {
-                  "line": 98,
+                  "line": 116,
                   "name": "bold",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 102,
+                  "line": 120,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 103,
+                  "line": 121,
                   "name": "bold",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 109,
+                  "line": 127,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 113,
+                  "line": 131,
                   "name": "drawBox",
                   "target": {
                     "file": "src/display/box.ts"
@@ -3173,56 +4672,56 @@
             {
               "calls": [
                 {
-                  "line": 124,
+                  "line": 142,
                   "name": "green",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 124,
+                  "line": 142,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 126,
+                  "line": 144,
                   "name": "bold",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 128,
+                  "line": 146,
                   "name": "boldYellow",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 131,
+                  "line": 149,
                   "name": "green",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 133,
+                  "line": 151,
                   "name": "yellow",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 135,
+                  "line": 153,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 138,
+                  "line": 156,
                   "name": "drawBox",
                   "target": {
                     "file": "src/display/box.ts"
@@ -3237,27 +4736,27 @@
             {
               "calls": [
                 {
-                  "line": 151,
+                  "line": 169,
                   "name": "bold",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 153,
+                  "line": 171,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 156,
+                  "line": 174,
                   "name": "toFixed",
                   "target": null,
                   "via": "row"
                 },
                 {
-                  "line": 159,
+                  "line": 177,
                   "name": "green",
                   "target": {
                     "file": "src/display/color.ts"
@@ -3265,7 +4764,7 @@
                   "via": "row"
                 },
                 {
-                  "line": 159,
+                  "line": 177,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
@@ -3273,7 +4772,7 @@
                   "via": "row"
                 },
                 {
-                  "line": 159,
+                  "line": 177,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
@@ -3281,7 +4780,7 @@
                   "via": "row"
                 },
                 {
-                  "line": 171,
+                  "line": 189,
                   "name": "drawBox",
                   "target": {
                     "file": "src/display/box.ts"
@@ -3296,115 +4795,115 @@
             {
               "calls": [
                 {
-                  "line": 189,
+                  "line": 207,
                   "name": "cyan",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 189,
+                  "line": 207,
                   "name": "bold",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 189,
+                  "line": 207,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 189,
+                  "line": 207,
                   "name": "cyan",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 189,
+                  "line": 207,
                   "name": "bold",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 192,
+                  "line": 210,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 192,
+                  "line": 210,
                   "name": "boldGreen",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 193,
+                  "line": 211,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 193,
+                  "line": 211,
                   "name": "boldYellow",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 194,
+                  "line": 212,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 194,
+                  "line": 212,
                   "name": "boldRed",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 200,
+                  "line": 218,
                   "name": "toFixed",
                   "target": null
                 },
                 {
-                  "line": 200,
+                  "line": 218,
                   "name": "green",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 202,
+                  "line": 220,
                   "name": "toFixed",
                   "target": null
                 },
                 {
-                  "line": 202,
+                  "line": 220,
                   "name": "red",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 203,
+                  "line": 221,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 206,
+                  "line": 224,
                   "name": "drawBox",
                   "target": {
                     "file": "src/display/box.ts"
@@ -3419,21 +4918,21 @@
             {
               "calls": [
                 {
-                  "line": 217,
+                  "line": 235,
                   "name": "bold",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 217,
+                  "line": 235,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 217,
+                  "line": 235,
                   "name": "boldYellow",
                   "target": {
                     "file": "src/display/color.ts"
@@ -3448,35 +4947,35 @@
             {
               "calls": [
                 {
-                  "line": 232,
+                  "line": 250,
                   "name": "boldYellow",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 232,
+                  "line": 250,
                   "name": "bold",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 233,
+                  "line": 251,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 233,
+                  "line": 251,
                   "name": "boldGreen",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 233,
+                  "line": 251,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
@@ -3491,35 +4990,35 @@
             {
               "calls": [
                 {
-                  "line": 244,
+                  "line": 262,
                   "name": "boldYellow",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 244,
+                  "line": 262,
                   "name": "bold",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 245,
+                  "line": 263,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 245,
+                  "line": 263,
                   "name": "boldGreen",
                   "target": {
                     "file": "src/display/color.ts"
                   }
                 },
                 {
-                  "line": 245,
+                  "line": 263,
                   "name": "dim",
                   "target": {
                     "file": "src/display/color.ts"
@@ -3616,6 +5115,9 @@
         },
         {
           "exports": [
+            "countMatchingFaces",
+            "estimateAstAnalyzeRolls",
+            "estimateDiceNodeRolls",
             "matchesCompare",
             "resolveSides",
             "rollSingleDie",
@@ -3629,23 +5131,53 @@
             "stageSort",
             "stageTotal"
           ],
-          "hash": "e515b9ad94b474492196e554f984a2b0e8cd6b71c05283888d6e6675c8e6bb7d",
+          "failurePaths": [
+            {
+              "in": "stageExplode",
+              "kind": "throw",
+              "line": 443
+            },
+            {
+              "in": "stageExplode",
+              "kind": "throw",
+              "line": 454
+            },
+            {
+              "in": "stageExplode",
+              "kind": "throw",
+              "line": 480
+            },
+            {
+              "in": "stageExplode",
+              "kind": "throw",
+              "line": 503
+            },
+            {
+              "in": "stageExplode",
+              "kind": "throw",
+              "line": 531
+            }
+          ],
+          "hash": "23d431c1d812bbc6ea37055eab10bca4d013bef32d133e72f584f3a7e0e089f5",
           "importOrder": [
             "src/parser/ast.ts",
+            "src/parser/parser.ts",
             "src/engine/random.ts"
           ],
           "importsFiles": [
             "src/engine/random.ts",
-            "src/parser/ast.ts"
+            "src/parser/ast.ts",
+            "src/parser/parser.ts"
           ],
           "path": "src/engine/pipeline.ts"
         },
         {
           "exports": [
             "cryptoRng",
-            "seededRng"
+            "seededRng",
+            "seededRngWithDraws"
           ],
-          "hash": "fffb966895969681d2c753c0225babe3136b26f9b7e03d328640c0e752ec34f9",
+          "hash": "061c1c86b42484febfb8d5bb6542dab3c37823af0de67bfb82b63f5b77794745",
           "path": "src/engine/random.ts"
         },
         {
@@ -3730,7 +5262,7 @@
             "analyze",
             "roll"
           ],
-          "hash": "f602614b07b1a14054aefbdc69e5bd5c4a50f43431bf21c21db4233cba3ba43a",
+          "hash": "8ab33e97254347f569a5e6e05cad447293291912f85efacc47614e065df98f8c",
           "importsFiles": [
             "src/analyze/distribution.ts",
             "src/analyze/montecarlo.ts",
@@ -3756,14 +5288,14 @@
             {
               "calls": [
                 {
-                  "line": 98,
+                  "line": 105,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
                   }
                 },
                 {
-                  "line": 99,
+                  "line": 106,
                   "name": "evaluate",
                   "target": {
                     "file": "src/engine/roller.ts"
@@ -3787,7 +5319,7 @@
                       }
                     }
                   ],
-                  "line": 111,
+                  "line": 122,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
@@ -3796,8 +5328,32 @@
                 {
                   "inner": [
                     {
-                      "branch": "isSuccessCount && !hasKeepDrop && !hasExplosion",
-                      "line": 213,
+                      "line": 168,
+                      "name": "estimateAstAnalyzeRolls",
+                      "target": {
+                        "file": "src/engine/pipeline.ts"
+                      },
+                      "via": "countTotalDice"
+                    },
+                    {
+                      "line": 238,
+                      "name": "matchesCompare",
+                      "target": {
+                        "file": "src/engine/pipeline.ts"
+                      },
+                      "via": "singleDieWithReroll"
+                    },
+                    {
+                      "line": 257,
+                      "name": "MAX_REROLLS",
+                      "passed": true,
+                      "target": {
+                        "file": "src/engine/pipeline.ts"
+                      },
+                      "via": "singleDieWithReroll"
+                    },
+                    {
+                      "line": 276,
                       "name": "matchesCompare",
                       "target": {
                         "file": "src/engine/pipeline.ts"
@@ -3806,7 +5362,7 @@
                     },
                     {
                       "branch": "hasKeepDrop",
-                      "line": 407,
+                      "line": 458,
                       "name": "matchesCompare",
                       "target": {
                         "file": "src/engine/pipeline.ts"
@@ -3815,7 +5371,16 @@
                     },
                     {
                       "branch": "hasExplosion",
-                      "line": 490,
+                      "line": 525,
+                      "name": "countMatchingFaces",
+                      "target": {
+                        "file": "src/engine/pipeline.ts"
+                      },
+                      "via": "explosionDistribution"
+                    },
+                    {
+                      "branch": "hasExplosion",
+                      "line": 568,
                       "name": "matchesCompare",
                       "target": {
                         "file": "src/engine/pipeline.ts"
@@ -3823,23 +5388,23 @@
                       "via": "singleExploding"
                     },
                     {
-                      "branch": "hasReroll",
-                      "line": 538,
+                      "branch": "isSuccessCount",
+                      "line": 614,
                       "name": "matchesCompare",
                       "target": {
                         "file": "src/engine/pipeline.ts"
                       },
-                      "via": "rerollDistribution"
+                      "via": "successCountDistribution"
                     },
                     {
-                      "line": 709,
+                      "line": 770,
                       "name": "monteCarloDistribution",
                       "target": {
                         "file": "src/analyze/montecarlo.ts"
                       }
                     },
                     {
-                      "line": 709,
+                      "line": 770,
                       "name": "DEFAULT_MONTE_CARLO_SAMPLES",
                       "passed": true,
                       "target": {
@@ -3847,21 +5412,21 @@
                       }
                     }
                   ],
-                  "line": 112,
+                  "line": 123,
                   "name": "computeDistributionWithMethod",
                   "target": {
                     "file": "src/analyze/distribution.ts"
                   }
                 },
                 {
-                  "line": 113,
+                  "line": 124,
                   "name": "computeStats",
                   "target": {
                     "file": "src/analyze/stats.ts"
                   }
                 },
                 {
-                  "line": 124,
+                  "line": 135,
                   "name": "cumulativeDistribution",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -3982,57 +5547,57 @@
             {
               "in": "requireString",
               "kind": "throw",
-              "line": 78
+              "line": 79
             },
             {
               "in": "optionalCount",
               "kind": "throw",
-              "line": 93
+              "line": 94
             },
             {
               "in": "optionalCount",
               "kind": "throw",
-              "line": 96
+              "line": 97
             },
             {
               "in": "optionalNumber",
               "kind": "throw",
-              "line": 107
+              "line": 108
             },
             {
               "in": "optionalPair",
               "kind": "throw",
-              "line": 129
+              "line": 130
             },
             {
               "in": "requireCollection",
               "kind": "throw",
-              "line": 142
+              "line": 143
             },
             {
               "in": "requireCollection",
               "kind": "throw",
-              "line": 146
+              "line": 147
             },
             {
               "in": "requireCollection",
               "kind": "throw",
-              "line": 150
+              "line": 151
             },
             {
               "in": "requireCollection",
               "kind": "throw",
-              "line": 153
+              "line": 154
             },
             {
               "in": "requireCollection",
               "kind": "throw",
-              "line": 156
+              "line": 157
             },
             {
               "in": "handleToolCall",
               "kind": "throw",
-              "line": 316
+              "line": 224
             },
             {
               "in": "handleToolCall",
@@ -4042,45 +5607,51 @@
             {
               "in": "handleToolCall",
               "kind": "throw",
-              "line": 340
+              "line": 344
+            },
+            {
+              "in": "handleToolCall",
+              "kind": "throw",
+              "line": 354
             },
             {
               "in": "handleRequest",
               "kind": "catch",
-              "line": 417
+              "line": 431
             },
             {
               "in": "dispatch",
               "kind": "catch",
-              "line": 458
+              "line": 472
             },
             {
               "in": "traceRequest",
               "kind": "catch",
-              "line": 530
+              "line": 544
             },
             {
               "in": "traceRequest",
               "kind": "catch",
-              "line": 540
+              "line": 554
             },
             {
               "in": "main",
               "kind": "catch",
-              "line": 577
+              "line": 591
             },
             {
               "in": "main",
               "kind": "catch",
-              "line": 584
+              "line": 598
             }
           ],
-          "hash": "d29e4efcbc00e6085911a1669e4908be19728f7439ec8eded6cec7d3acfb0fc4",
+          "hash": "a11e2aa3357146049239c7a35159827c20f9333bf2139d311ab72e9a163c5a5e",
           "importOrder": [
             "src/entry.ts",
             "src/mcp/tools.ts",
             "src/parser/parser.ts",
             "src/parser/lexer.ts",
+            "src/engine/pipeline.ts",
             "src/engine/roller.ts",
             "src/analyze/distribution.ts",
             "src/analyze/stats.ts",
@@ -4096,6 +5667,7 @@
             "src/analyze/stats.ts",
             "src/bridge/handler.ts",
             "src/bridge/protocol.ts",
+            "src/engine/pipeline.ts",
             "src/engine/random.ts",
             "src/engine/roller.ts",
             "src/entry.ts",
@@ -4111,28 +5683,35 @@
             {
               "calls": [
                 {
-                  "line": 213,
+                  "line": 220,
                   "name": "seededRng",
                   "target": {
                     "file": "src/engine/random.ts"
                   }
                 },
                 {
-                  "line": 217,
+                  "line": 221,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
                   }
                 },
                 {
-                  "line": 218,
+                  "line": 222,
+                  "name": "estimateAstAnalyzeRolls",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  }
+                },
+                {
+                  "line": 231,
                   "name": "evaluate",
                   "target": {
                     "file": "src/engine/roller.ts"
                   }
                 },
                 {
-                  "line": 218,
+                  "line": 231,
                   "name": "cryptoRng",
                   "passed": true,
                   "target": {
@@ -4140,63 +5719,63 @@
                   }
                 },
                 {
-                  "line": 227,
+                  "line": 240,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
                   }
                 },
                 {
-                  "line": 228,
+                  "line": 241,
                   "name": "computeDistributionWithMethod",
                   "target": {
                     "file": "src/analyze/distribution.ts"
                   }
                 },
                 {
-                  "line": 229,
+                  "line": 242,
                   "name": "computeStats",
-                  "target": {
-                    "file": "src/analyze/stats.ts"
-                  }
-                },
-                {
-                  "line": 237,
-                  "name": "probabilityAtLeast",
                   "target": {
                     "file": "src/analyze/stats.ts"
                   }
                 },
                 {
                   "line": 251,
+                  "name": "probabilityAtLeast",
+                  "target": {
+                    "file": "src/analyze/stats.ts"
+                  }
+                },
+                {
+                  "line": 265,
                   "name": "probabilityAtMost",
                   "target": {
                     "file": "src/analyze/stats.ts"
                   }
                 },
                 {
-                  "line": 254,
+                  "line": 268,
                   "name": "probabilityExactly",
                   "target": {
                     "file": "src/analyze/stats.ts"
                   }
                 },
                 {
-                  "line": 260,
+                  "line": 274,
                   "name": "probabilityInRange",
                   "target": {
                     "file": "src/analyze/stats.ts"
                   }
                 },
                 {
-                  "line": 264,
+                  "line": 278,
                   "name": "targetForProbability",
                   "target": {
                     "file": "src/analyze/stats.ts"
                   }
                 },
                 {
-                  "line": 276,
+                  "line": 290,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
@@ -4204,7 +5783,7 @@
                   "via": "analyze"
                 },
                 {
-                  "line": 277,
+                  "line": 291,
                   "name": "computeDistributionWithMethod",
                   "target": {
                     "file": "src/analyze/distribution.ts"
@@ -4212,7 +5791,7 @@
                   "via": "analyze"
                 },
                 {
-                  "line": 280,
+                  "line": 294,
                   "name": "computeStats",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4220,28 +5799,28 @@
                   "via": "analyze"
                 },
                 {
-                  "line": 292,
+                  "line": 306,
                   "name": "makeVersus",
                   "target": {
                     "file": "src/bridge/handler.ts"
                   }
                 },
                 {
-                  "line": 307,
+                  "line": 321,
                   "name": "rollGameTable",
                   "target": {
                     "file": "src/tables/engine.ts"
                   }
                 },
                 {
-                  "line": 332,
+                  "line": 346,
                   "name": "analyzeCollection",
                   "target": {
                     "file": "src/tables/analyze.ts"
                   }
                 },
                 {
-                  "line": 336,
+                  "line": 350,
                   "name": "serializeTableAnalysis",
                   "target": {
                     "file": "src/bridge/handler.ts"
@@ -4256,7 +5835,7 @@
             {
               "calls": [
                 {
-                  "line": 213,
+                  "line": 220,
                   "name": "seededRng",
                   "target": {
                     "file": "src/engine/random.ts"
@@ -4264,7 +5843,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 217,
+                  "line": 221,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
@@ -4272,7 +5851,15 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 218,
+                  "line": 222,
+                  "name": "estimateAstAnalyzeRolls",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "handleToolCall"
+                },
+                {
+                  "line": 231,
                   "name": "evaluate",
                   "target": {
                     "file": "src/engine/roller.ts"
@@ -4280,7 +5867,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 218,
+                  "line": 231,
                   "name": "cryptoRng",
                   "passed": true,
                   "target": {
@@ -4289,7 +5876,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 227,
+                  "line": 240,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
@@ -4297,7 +5884,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 228,
+                  "line": 241,
                   "name": "computeDistributionWithMethod",
                   "target": {
                     "file": "src/analyze/distribution.ts"
@@ -4305,16 +5892,8 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 229,
+                  "line": 242,
                   "name": "computeStats",
-                  "target": {
-                    "file": "src/analyze/stats.ts"
-                  },
-                  "via": "handleToolCall"
-                },
-                {
-                  "line": 237,
-                  "name": "probabilityAtLeast",
                   "target": {
                     "file": "src/analyze/stats.ts"
                   },
@@ -4322,6 +5901,14 @@
                 },
                 {
                   "line": 251,
+                  "name": "probabilityAtLeast",
+                  "target": {
+                    "file": "src/analyze/stats.ts"
+                  },
+                  "via": "handleToolCall"
+                },
+                {
+                  "line": 265,
                   "name": "probabilityAtMost",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4329,7 +5916,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 254,
+                  "line": 268,
                   "name": "probabilityExactly",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4337,7 +5924,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 260,
+                  "line": 274,
                   "name": "probabilityInRange",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4345,7 +5932,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 264,
+                  "line": 278,
                   "name": "targetForProbability",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4353,7 +5940,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 276,
+                  "line": 290,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
@@ -4361,7 +5948,7 @@
                   "via": "analyze"
                 },
                 {
-                  "line": 277,
+                  "line": 291,
                   "name": "computeDistributionWithMethod",
                   "target": {
                     "file": "src/analyze/distribution.ts"
@@ -4369,7 +5956,7 @@
                   "via": "analyze"
                 },
                 {
-                  "line": 280,
+                  "line": 294,
                   "name": "computeStats",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4377,7 +5964,7 @@
                   "via": "analyze"
                 },
                 {
-                  "line": 292,
+                  "line": 306,
                   "name": "makeVersus",
                   "target": {
                     "file": "src/bridge/handler.ts"
@@ -4385,7 +5972,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 307,
+                  "line": 321,
                   "name": "rollGameTable",
                   "target": {
                     "file": "src/tables/engine.ts"
@@ -4393,7 +5980,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 332,
+                  "line": 346,
                   "name": "analyzeCollection",
                   "target": {
                     "file": "src/tables/analyze.ts"
@@ -4401,7 +5988,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 336,
+                  "line": 350,
                   "name": "serializeTableAnalysis",
                   "target": {
                     "file": "src/bridge/handler.ts"
@@ -4409,7 +5996,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 435,
+                  "line": 449,
                   "name": "error",
                   "target": {
                     "file": "src/bridge/protocol.ts"
@@ -4425,7 +6012,7 @@
               "calls": [
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 213,
+                  "line": 220,
                   "name": "seededRng",
                   "target": {
                     "file": "src/engine/random.ts"
@@ -4434,7 +6021,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 217,
+                  "line": 221,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
@@ -4443,7 +6030,16 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 218,
+                  "line": 222,
+                  "name": "estimateAstAnalyzeRolls",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "handleToolCall"
+                },
+                {
+                  "branch": "Array.isArray(parsed)",
+                  "line": 231,
                   "name": "evaluate",
                   "target": {
                     "file": "src/engine/roller.ts"
@@ -4452,7 +6048,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 218,
+                  "line": 231,
                   "name": "cryptoRng",
                   "passed": true,
                   "target": {
@@ -4462,7 +6058,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 227,
+                  "line": 240,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
@@ -4471,7 +6067,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 228,
+                  "line": 241,
                   "name": "computeDistributionWithMethod",
                   "target": {
                     "file": "src/analyze/distribution.ts"
@@ -4480,17 +6076,8 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 229,
+                  "line": 242,
                   "name": "computeStats",
-                  "target": {
-                    "file": "src/analyze/stats.ts"
-                  },
-                  "via": "handleToolCall"
-                },
-                {
-                  "branch": "Array.isArray(parsed)",
-                  "line": 237,
-                  "name": "probabilityAtLeast",
                   "target": {
                     "file": "src/analyze/stats.ts"
                   },
@@ -4499,6 +6086,15 @@
                 {
                   "branch": "Array.isArray(parsed)",
                   "line": 251,
+                  "name": "probabilityAtLeast",
+                  "target": {
+                    "file": "src/analyze/stats.ts"
+                  },
+                  "via": "handleToolCall"
+                },
+                {
+                  "branch": "Array.isArray(parsed)",
+                  "line": 265,
                   "name": "probabilityAtMost",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4507,7 +6103,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 254,
+                  "line": 268,
                   "name": "probabilityExactly",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4516,7 +6112,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 260,
+                  "line": 274,
                   "name": "probabilityInRange",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4525,7 +6121,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 264,
+                  "line": 278,
                   "name": "targetForProbability",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4534,7 +6130,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 276,
+                  "line": 290,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
@@ -4543,7 +6139,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 277,
+                  "line": 291,
                   "name": "computeDistributionWithMethod",
                   "target": {
                     "file": "src/analyze/distribution.ts"
@@ -4552,7 +6148,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 280,
+                  "line": 294,
                   "name": "computeStats",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4561,7 +6157,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 292,
+                  "line": 306,
                   "name": "makeVersus",
                   "target": {
                     "file": "src/bridge/handler.ts"
@@ -4570,7 +6166,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 307,
+                  "line": 321,
                   "name": "rollGameTable",
                   "target": {
                     "file": "src/tables/engine.ts"
@@ -4579,7 +6175,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 332,
+                  "line": 346,
                   "name": "analyzeCollection",
                   "target": {
                     "file": "src/tables/analyze.ts"
@@ -4588,7 +6184,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 336,
+                  "line": 350,
                   "name": "serializeTableAnalysis",
                   "target": {
                     "file": "src/bridge/handler.ts"
@@ -4597,7 +6193,7 @@
                 },
                 {
                   "branch": "Array.isArray(parsed)",
-                  "line": 435,
+                  "line": 449,
                   "name": "error",
                   "target": {
                     "file": "src/bridge/protocol.ts"
@@ -4613,7 +6209,7 @@
             {
               "calls": [
                 {
-                  "line": 213,
+                  "line": 220,
                   "name": "seededRng",
                   "target": {
                     "file": "src/engine/random.ts"
@@ -4621,7 +6217,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 217,
+                  "line": 221,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
@@ -4629,7 +6225,15 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 218,
+                  "line": 222,
+                  "name": "estimateAstAnalyzeRolls",
+                  "target": {
+                    "file": "src/engine/pipeline.ts"
+                  },
+                  "via": "handleToolCall"
+                },
+                {
+                  "line": 231,
                   "name": "evaluate",
                   "target": {
                     "file": "src/engine/roller.ts"
@@ -4637,7 +6241,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 218,
+                  "line": 231,
                   "name": "cryptoRng",
                   "passed": true,
                   "target": {
@@ -4646,7 +6250,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 227,
+                  "line": 240,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
@@ -4654,7 +6258,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 228,
+                  "line": 241,
                   "name": "computeDistributionWithMethod",
                   "target": {
                     "file": "src/analyze/distribution.ts"
@@ -4662,16 +6266,8 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 229,
+                  "line": 242,
                   "name": "computeStats",
-                  "target": {
-                    "file": "src/analyze/stats.ts"
-                  },
-                  "via": "handleToolCall"
-                },
-                {
-                  "line": 237,
-                  "name": "probabilityAtLeast",
                   "target": {
                     "file": "src/analyze/stats.ts"
                   },
@@ -4679,6 +6275,14 @@
                 },
                 {
                   "line": 251,
+                  "name": "probabilityAtLeast",
+                  "target": {
+                    "file": "src/analyze/stats.ts"
+                  },
+                  "via": "handleToolCall"
+                },
+                {
+                  "line": 265,
                   "name": "probabilityAtMost",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4686,7 +6290,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 254,
+                  "line": 268,
                   "name": "probabilityExactly",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4694,7 +6298,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 260,
+                  "line": 274,
                   "name": "probabilityInRange",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4702,7 +6306,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 264,
+                  "line": 278,
                   "name": "targetForProbability",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4710,7 +6314,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 276,
+                  "line": 290,
                   "name": "parse",
                   "target": {
                     "file": "src/parser/parser.ts"
@@ -4718,7 +6322,7 @@
                   "via": "analyze"
                 },
                 {
-                  "line": 277,
+                  "line": 291,
                   "name": "computeDistributionWithMethod",
                   "target": {
                     "file": "src/analyze/distribution.ts"
@@ -4726,7 +6330,7 @@
                   "via": "analyze"
                 },
                 {
-                  "line": 280,
+                  "line": 294,
                   "name": "computeStats",
                   "target": {
                     "file": "src/analyze/stats.ts"
@@ -4734,7 +6338,7 @@
                   "via": "analyze"
                 },
                 {
-                  "line": 292,
+                  "line": 306,
                   "name": "makeVersus",
                   "target": {
                     "file": "src/bridge/handler.ts"
@@ -4742,7 +6346,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 307,
+                  "line": 321,
                   "name": "rollGameTable",
                   "target": {
                     "file": "src/tables/engine.ts"
@@ -4750,7 +6354,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 332,
+                  "line": 346,
                   "name": "analyzeCollection",
                   "target": {
                     "file": "src/tables/analyze.ts"
@@ -4758,7 +6362,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 336,
+                  "line": 350,
                   "name": "serializeTableAnalysis",
                   "target": {
                     "file": "src/bridge/handler.ts"
@@ -4766,7 +6370,7 @@
                   "via": "handleToolCall"
                 },
                 {
-                  "line": 435,
+                  "line": 449,
                   "name": "error",
                   "target": {
                     "file": "src/bridge/protocol.ts"
@@ -4782,7 +6386,7 @@
           ]
         },
         {
-          "hash": "2e99c4457468eb527d0944d78448c459a87ecaeabb952dd3350ea14900f7822f",
+          "hash": "2d9b1bf11b81bc0305692ccd8faa6c178473eaf147f6bcbab0fdf7ff5e5ed79c",
           "path": "src/mcp/tools.ts"
         },
         {
@@ -5413,7 +7017,7 @@
       "externals": 0,
       "files": [
         {
-          "hash": "bd53dd46c7f9942ee856b6e8c5fbee1c978dabd4c93064c0d283c61e895ac6f7",
+          "hash": "a59cb7a31aa6245a8af95eb8f8122aadc2052e8258ada246d91df42bd7c6a961",
           "importNames": [
             {
               "form": "import",
@@ -5436,18 +7040,30 @@
           ],
           "importOrder": [
             "src/parser/parser.ts",
+            "src/parser/ast.ts",
             "src/analyze/distribution.ts",
             "src/analyze/stats.ts",
             "src/analyze/montecarlo.ts",
             "src/engine/roller.ts",
-            "src/engine/random.ts"
+            "src/engine/pipeline.ts",
+            "src/engine/random.ts",
+            "src/index.ts",
+            "src/bin.ts",
+            "src/bridge/handler.ts",
+            "src/mcp/server.ts"
           ],
           "importsFiles": [
             "src/analyze/distribution.ts",
             "src/analyze/montecarlo.ts",
             "src/analyze/stats.ts",
+            "src/bin.ts",
+            "src/bridge/handler.ts",
+            "src/engine/pipeline.ts",
             "src/engine/random.ts",
             "src/engine/roller.ts",
+            "src/index.ts",
+            "src/mcp/server.ts",
+            "src/parser/ast.ts",
             "src/parser/parser.ts"
           ],
           "packages": [
@@ -5460,7 +7076,7 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "be07e4b13f0b60ff8e6e5014613265d60b393a1708248700cbb05aed4748a53c",
+          "hash": "da7c07016ab40f4ecc93348560a9e72208a5f6409cc9b06c7f7664aeab6c96cf",
           "importNames": [
             {
               "form": "import",
@@ -5484,11 +7100,21 @@
           "importOrder": [
             "src/parser/parser.ts",
             "src/analyze/distribution.ts",
-            "src/analyze/stats.ts"
+            "src/analyze/montecarlo.ts",
+            "src/analyze/stats.ts",
+            "src/engine/pipeline.ts",
+            "src/index.ts",
+            "src/bin.ts",
+            "src/mcp/server.ts"
           ],
           "importsFiles": [
             "src/analyze/distribution.ts",
+            "src/analyze/montecarlo.ts",
             "src/analyze/stats.ts",
+            "src/bin.ts",
+            "src/engine/pipeline.ts",
+            "src/index.ts",
+            "src/mcp/server.ts",
             "src/parser/parser.ts"
           ],
           "packages": [
@@ -5892,7 +7518,7 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "8bb3aae7bca30b910ff3b74e874520e96febb4da9218762b8accd67e79d61166",
+          "hash": "86bbb7f99cac842a2a0a206a6f623d15af8b8ab19f98ba47758f711e1af1591c",
           "importNames": [
             {
               "form": "import",
@@ -6352,7 +7978,7 @@
           "testFramework": "vitest"
         },
         {
-          "hash": "3e2db48d90c9133ac3ea37bbc7768dddfaefe8a78fd8ed47c3e3d88bbdbfbd89",
+          "hash": "d32c977eaa718cd0aa38e6d3681d81c0ff5236d2bc6d6288fc66f5c238a773ac",
           "importNames": [
             {
               "form": "import",
@@ -6376,12 +8002,16 @@
           "importOrder": [
             "src/engine/random.ts",
             "src/engine/pipeline.ts",
+            "src/parser/parser.ts",
+            "src/index.ts",
             "src/parser/ast.ts"
           ],
           "importsFiles": [
             "src/engine/pipeline.ts",
             "src/engine/random.ts",
-            "src/parser/ast.ts"
+            "src/index.ts",
+            "src/parser/ast.ts",
+            "src/parser/parser.ts"
           ],
           "packages": [
             {
@@ -6544,7 +8174,7 @@
   ],
   "doors": [
     {
-      "checksCount": 0,
+      "checksCount": 2,
       "commands": [
         {
           "dir": "",
@@ -6585,10 +8215,130 @@
             "node"
           ],
           "step": "8"
+        },
+        {
+          "dir": "",
+          "job": "rust",
+          "programs": [
+            "curl",
+            "echo",
+            "mkdir",
+            "sha256sum",
+            "tar"
+          ],
+          "step": "Install wasmtime and cargo-audit"
+        },
+        {
+          "dir": "",
+          "job": "rust",
+          "programs": [
+            "cargo"
+          ],
+          "step": "Check formatting"
+        },
+        {
+          "dir": "",
+          "job": "rust",
+          "programs": [
+            "cargo"
+          ],
+          "step": "Clippy"
+        },
+        {
+          "dir": "",
+          "job": "rust",
+          "programs": [
+            "cargo"
+          ],
+          "step": "Check roll-core no_std + alloc"
+        },
+        {
+          "dir": "",
+          "job": "rust",
+          "programs": [
+            "cargo"
+          ],
+          "step": "Test (native)"
+        },
+        {
+          "dir": "",
+          "job": "rust",
+          "programs": [
+            "cargo"
+          ],
+          "step": "Build (native release analyzer bounds)"
+        },
+        {
+          "dir": "",
+          "job": "rust",
+          "programs": [
+            "cargo",
+            "ulimit"
+          ],
+          "step": "Test (native release analyzer bounds)"
+        },
+        {
+          "dir": "",
+          "job": "rust",
+          "programs": [
+            "cargo"
+          ],
+          "step": "Test (wasm32-wasip1)"
+        },
+        {
+          "dir": "",
+          "job": "rust",
+          "programs": [
+            "cargo",
+            "git",
+            "test"
+          ],
+          "step": "Regenerate conformance fixtures and check for drift"
+        },
+        {
+          "dir": "",
+          "job": "rust",
+          "programs": [
+            "cargo"
+          ],
+          "step": "Audit Cargo.lock"
         }
       ],
       "elsewhere": [],
       "file": ".github/workflows/ci.yml",
+      "findings": [
+        {
+          "job": "test",
+          "legs": 2,
+          "lines": [
+            {
+              "file": ".github/workflows/ci.yml",
+              "line": 45
+            },
+            {
+              "file": ".github/workflows/ci.yml",
+              "line": 58
+            },
+            {
+              "file": "package-lock.json",
+              "line": 1491
+            }
+          ],
+          "package": "vitest",
+          "pinnedBy": {
+            "step": "1",
+            "version": "${{ matrix.node-version }}"
+          },
+          "pins": [
+            "23"
+          ],
+          "requires": "^20.0.0 || ^22.0.0 || >=24.0.0",
+          "rule": "D1",
+          "step": "5",
+          "tool": "vitest run",
+          "version": "4.1.12"
+        }
+      ],
       "jobs": [
         {
           "basis": "declared",
@@ -6638,6 +8388,22 @@
               }
             }
           ]
+        },
+        {
+          "basis": "declared",
+          "name": "rust",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
         }
       ],
       "landings": [],
@@ -6655,6 +8421,16 @@
       "pushes": false,
       "reach": [
         {
+          "boundary": "roll-cli",
+          "depth": 0,
+          "files": 3
+        },
+        {
+          "boundary": "roll-core",
+          "depth": 0,
+          "files": 21
+        },
+        {
           "boundary": "src",
           "depth": 0,
           "files": 28
@@ -6667,6 +8443,55 @@
       ],
       "readers": [],
       "runs": [
+        {
+          "job": "rust",
+          "matched": true,
+          "path": "crates/roll-cli/src/lib.rs",
+          "runKind": "checks",
+          "via": "cargo clippy"
+        },
+        {
+          "job": "rust",
+          "path": "crates/roll-cli/src/main.rs",
+          "runKind": "executes"
+        },
+        {
+          "directory": true,
+          "job": "rust",
+          "matched": true,
+          "path": "crates/roll-cli/tests/",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "rust",
+          "matched": true,
+          "path": "crates/roll-core/src/analyze.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "job": "rust",
+          "matched": true,
+          "path": "crates/roll-core/src/lib.rs",
+          "runKind": "checks",
+          "via": "cargo check"
+        },
+        {
+          "job": "rust",
+          "matched": true,
+          "path": "crates/roll-core/src/support.rs",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
+        {
+          "directory": true,
+          "job": "rust",
+          "matched": true,
+          "path": "crates/roll-core/tests/",
+          "runKind": "executes",
+          "via": "cargo test"
+        },
         {
           "built": true,
           "directory": true,
@@ -6690,7 +8515,7 @@
           "via": "tsc tsconfig.test.json"
         }
       ],
-      "runsCount": 3,
+      "runsCount": 10,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -6714,6 +8539,30 @@
             "npm run verify",
             "npm test"
           ]
+        },
+        {
+          "files": 11,
+          "job": "rust",
+          "runner": "cargo test",
+          "step": "Test (native)"
+        },
+        {
+          "files": 1,
+          "job": "rust",
+          "runner": "cargo test",
+          "step": "Build (native release analyzer bounds)"
+        },
+        {
+          "files": 1,
+          "job": "rust",
+          "runner": "cargo test",
+          "step": "Test (native release analyzer bounds)"
+        },
+        {
+          "files": 11,
+          "job": "rust",
+          "runner": "cargo test",
+          "step": "Test (wasm32-wasip1)"
         }
       ],
       "triggers": [
@@ -6724,8 +8573,12 @@
           "event": "push",
           "paths": [
             ".github/workflows/**",
+            "Cargo.lock",
+            "Cargo.toml",
             "atlas/**",
             "codecov.yml",
+            "crates/**",
+            "fixtures/**",
             "package-lock.json",
             "package.json",
             "site/astro.config.mjs",
@@ -6741,11 +8594,13 @@
         }
       ],
       "uses": [
+        "Swatinem/rust-cache",
         "actions/checkout",
         "actions/download-artifact",
         "actions/setup-node",
         "actions/upload-artifact",
-        "codecov/codecov-action"
+        "codecov/codecov-action",
+        "dtolnay/rust-toolchain"
       ],
       "usesWorkflowToken": false
     },
@@ -7124,6 +8979,58 @@
       "checksCount": 0,
       "commands": [],
       "elsewhere": [],
+      "file": "crates/roll-cli/Cargo.toml",
+      "kind": "command",
+      "landings": [],
+      "mentions": [],
+      "name": "roll",
+      "permissions": [],
+      "pushes": false,
+      "reach": [
+        {
+          "boundary": "roll-cli",
+          "depth": 0,
+          "files": 2
+        },
+        {
+          "boundary": "roll-core",
+          "depth": 2,
+          "enters": {
+            "file": "crates/roll-core/src/conformance.rs",
+            "from": "crates/roll-cli/src/lib.rs"
+          },
+          "files": 12
+        }
+      ],
+      "readers": [],
+      "runs": [
+        {
+          "path": "crates/roll-cli/src/main.rs",
+          "runKind": "executes"
+        }
+      ],
+      "runsCount": 1,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [],
+      "unshipped": true,
+      "uses": [],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [],
+      "elsewhere": [],
       "entry": "src/index.ts",
       "file": "package.json",
       "kind": "package",
@@ -7300,6 +9207,11 @@
   ],
   "edges": [
     {
+      "from": "roll-cli",
+      "kind": "file",
+      "to": "roll-core"
+    },
+    {
       "from": "tests",
       "fromTests": true,
       "kind": "file",
@@ -7308,8 +9220,8 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "88eebf7031bf9ef0a660207eb3167546a1ffacd7",
-    "tracked": 94
+    "commit": "56b5eaba9709f1cd23ef0a4c069690469b8efeea",
+    "tracked": 129
   },
   "landings": [
     {
@@ -7320,6 +9232,137 @@
         }
       ],
       "target": "CHANGELOG.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "crates/roll-cli",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "crates/roll-cli/Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "crates/roll-cli/src/main.rs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
+          "by": "crates/roll-cli/Cargo.toml",
+          "call": "configuration",
+          "confidence": "config"
+        }
+      ],
+      "target": "crates/roll-core",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "docs/spec/roll-3.0.md",
+          "call": "--",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "CHANGELOG.md",
+          "call": "--out",
+          "confidence": "text"
+        },
+        {
+          "by": "docs/spec/roll-3.0.md",
+          "call": "--out",
+          "confidence": "text"
+        }
+      ],
+      "target": "fixtures/conformance/v3",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "crates/roll-cli/tests/cli_fixtures.rs",
+          "call": "include_bytes",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/conformance/v3/01_kdf_and_rng.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "crates/roll-cli/tests/cli_fixtures.rs",
+          "call": "include_bytes",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/conformance/v3/02_grammar_and_ast.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "crates/roll-cli/tests/cli_fixtures.rs",
+          "call": "include_bytes",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/conformance/v3/03_rolls_and_receipts.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "crates/roll-cli/tests/cli_fixtures.rs",
+          "call": "include_bytes",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/conformance/v3/04_exact_analysis.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "crates/roll-cli/tests/cli_fixtures.rs",
+          "call": "include_bytes",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "crates/roll-core/tests/reproducibility.rs",
+          "call": "include_str",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "fixtures/conformance/v3/MANIFEST.sha256",
       "writers": []
     },
     {
@@ -7340,6 +9383,17 @@
         }
       ],
       "target": "package.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "docs/spec/roll-3.0.md",
+          "call": "--prefix",
+          "confidence": "text"
+        }
+      ],
+      "target": "site",
       "writers": []
     },
     {
@@ -7420,7 +9474,7 @@
       "path": "package.json",
       "role": "root",
       "roleFrom": "the root manifest",
-      "version": "2.1.1"
+      "version": "2.1.3"
     },
     {
       "name": "site",
@@ -7449,8 +9503,8 @@
       "manifest": "package.json",
       "name": "@vitest/coverage-v8",
       "purl": "pkg:npm/%40vitest/coverage-v8",
-      "range": "^3.2.6",
-      "version": "3.2.6",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "package-lock.json"
     },
     {
@@ -7469,8 +9523,8 @@
       "manifest": "package.json",
       "name": "vitest",
       "purl": "pkg:npm/vitest",
-      "range": "^3.0.0",
-      "version": "3.2.6",
+      "range": "^4.1.12",
+      "version": "4.1.12",
       "versionFrom": "package-lock.json"
     },
     {
@@ -7534,11 +9588,16 @@
       "name": "@mcptoolshop/roll",
       "purl": "pkg:npm/%40mcptoolshop/roll",
       "repository": "https://github.com/mcp-tool-shop-org/roll",
-      "version": "2.1.1"
+      "version": "2.1.3"
     }
   ],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 29,
-  "unassigned": []
+  "testFiles": 40,
+  "unassigned": [
+    {
+      "hash": "eeb2ac4d531bf094ff0184708c6f22352bca4dc4502af338a4dcfb7f1140551a",
+      "path": "docs/spec/roll-3.0.md"
+    }
+  ]
 }

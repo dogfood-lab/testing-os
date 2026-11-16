@@ -313,8 +313,8 @@
     "definition": "commits is how many commits in the window touch the file, including merges and commits dropped from coupling. lines is added plus deleted in those commits.",
     "files": [
       {
-        "commits": 11,
-        "lines": 96,
+        "commits": 12,
+        "lines": 98,
         "path": ".github/workflows/ci.yml"
       },
       {
@@ -363,8 +363,8 @@
         "path": "SHIP_GATE.md"
       },
       {
-        "commits": 8,
-        "lines": 236,
+        "commits": 9,
+        "lines": 245,
         "path": "atlas/README.md"
       },
       {
@@ -373,18 +373,18 @@
         "path": "atlas/boundaries.yaml"
       },
       {
-        "commits": 8,
-        "lines": 624,
+        "commits": 9,
+        "lines": 651,
         "path": "atlas/page.json"
       },
       {
-        "commits": 8,
-        "lines": 126298,
+        "commits": 9,
+        "lines": 126332,
         "path": "atlas/statistics.json"
       },
       {
-        "commits": 8,
-        "lines": 187768,
+        "commits": 9,
+        "lines": 187779,
         "path": "atlas/structure.json"
       },
       {
@@ -35638,9 +35638,9 @@
     "level": "low",
     "reason": "fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions"
   },
-  "generatedAt": "2026-10-19T12:37:59.744Z",
+  "generatedAt": "2026-11-16T15:26:43.721Z",
   "generatedFrom": {
-    "commit": "116e02a036396404dc16a8ccd39bb01fc3f2ea65"
+    "commit": "7023ffbda806668e418a4dbeed7147f9e41b8369"
   },
   "packageImports": {
     "filesWithLeftOutImports": 0,
@@ -35650,7 +35650,78 @@
     "namesLeftOut": {},
     "namesLeftOutOmitted": 0
   },
-  "pairs": [],
+  "pairs": [
+    {
+      "a": ".github/workflows/ci.yml",
+      "b": "atlas/README.md",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": ".github/workflows/ci.yml",
+      "b": "atlas/page.json",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": ".github/workflows/ci.yml",
+      "b": "atlas/statistics.json",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": ".github/workflows/ci.yml",
+      "b": "atlas/structure.json",
+      "either": 7,
+      "shared": 5,
+      "strength": 0.714286
+    },
+    {
+      "a": "atlas/README.md",
+      "b": "atlas/page.json",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "atlas/README.md",
+      "b": "atlas/statistics.json",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "atlas/README.md",
+      "b": "atlas/structure.json",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "atlas/page.json",
+      "b": "atlas/statistics.json",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "atlas/page.json",
+      "b": "atlas/structure.json",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    },
+    {
+      "a": "atlas/statistics.json",
+      "b": "atlas/structure.json",
+      "either": 5,
+      "shared": 5,
+      "strength": 1
+    }
+  ],
   "parameters": {
     "appliedChangesetLimit": 50,
     "changeset": 50,
@@ -35661,16 +35732,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "both",
-    "headDate": "2026-10-01T13:35:35-07:00",
+    "headDate": "2026-11-11T18:37:47-05:00",
     "inScopeFiles": 7064,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 12,
+    "qualifyingCommits": 13,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-04-04T20:35:35.000Z",
+    "since": "2026-05-15T23:37:47.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",

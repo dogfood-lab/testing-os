@@ -1,18 +1,14 @@
 # readouts: how it works
 
-Mapped at 2026-10-26 from commit 8ba63d5 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit b16093d by Atlas 1.26.0.
 
 ## What this is
 
-20 parts, mostly Python (168 files), HTML (57), Rust (6), JavaScript (3), CSS (2), PowerShell (2), TypeScript (2) and Astro (1). Work enters through 2 doors; verify and Deploy site to GitHub Pages each reach 2 parts, and verify is followed because a pull request goes through it. It deploys a site to GitHub Pages.
+20 parts, mostly Python (169 files), HTML (57), Rust (6), JavaScript (3), CSS (2), PowerShell (2), TypeScript (2) and Astro (1). Work enters through 2 doors; verify and Deploy site to GitHub Pages each reach 2 parts, and verify is followed because a pull request goes through it. It deploys a site to GitHub Pages.
 
-## What changed since 2026-10-24 (b5c60a8)
+## What changed since 2026-11-14 (5916275)
 
-- rust-knowledge/catalog/engine-*.md is now written by rust-knowledge/scripts/gen_catalog.py.
-- tensor-engine-knowledge/verifier/results-real-*.json is now written by tensor-engine-knowledge/verifier/citation_panel_eval.py and tensor-engine-knowledge/verifier/citation_panel_eval_3family.py.
-- xrpl-knowledge/catalog/track-*.md is now written by xrpl-knowledge/scripts/gen_catalog.py.
-- And 90 more new writers and readers of places.
-- No file changed.
+Nothing structural changed since 2026-11-14; 2 files changed content.
 
 ## What comes in
 
@@ -58,15 +54,15 @@ tensor-engine-knowledge/baselines/_triton_test.py runs in no workflow.
 ## Written but never read
 
 - **model-knowledge/workflows/** holds files written by model-knowledge/scripts/fetch_workflows.py and read by nothing else in this repository.
+- **site/public/results/etv-narrator-local-vs-cloud.svg** is written by site/scripts/etv_narrator_charts.py and read by nothing else in this repository.
+- **site/public/results/etv-narrator-speed-by-hardware.svg** is written by site/scripts/etv_narrator_charts.py and read by nothing else in this repository.
 - **tensor-engine-knowledge/baselines/chroma-results.json** is written by tensor-engine-knowledge/baselines/_chroma_bench.py and read by nothing else in this repository.
 - **tensor-engine-knowledge/baselines/qwenimg-results.json** is written by tensor-engine-knowledge/baselines/_qwenimg_bench.py and read by nothing else in this repository.
 - **tensor-engine-knowledge/baselines/qwenimg-sa-results.json** is written by tensor-engine-knowledge/baselines/_qwenimg_sa.py and read by nothing else in this repository.
 - **tensor-engine-knowledge/baselines/sage-results.json** is written by tensor-engine-knowledge/baselines/_sage_bench.py and read by nothing else in this repository.
 - **tensor-engine-knowledge/baselines/sage2-res-results.json** is written by tensor-engine-knowledge/baselines/_sage2_res.py and read by nothing else in this repository.
-- **tensor-engine-knowledge/baselines/sage2-results.json** is written by tensor-engine-knowledge/baselines/_sage2_bench.py and read by nothing else in this repository.
-- **tensor-engine-knowledge/baselines/sage2-zimage-results.json** is written by tensor-engine-knowledge/baselines/_sage2_zimage.py and read by nothing else in this repository.
 
-And 15 more places.
+And 17 more places.
 
 ## Helpers that look duplicated
 
@@ -112,6 +108,8 @@ And 15 more candidates.
 - **rust-knowledge/verification/** holds files written by rust-knowledge/scripts/assemble_lanes.py.
 - **rust-knowledge/verification/verdicts.json** has a block written by rust-knowledge/scripts/build_ledger.py.
 - **rust-knowledge/waves/** holds files written by rust-knowledge/scripts/assemble_lanes.py.
+- **site/public/results/etv-narrator-local-vs-cloud.svg** is written by site/scripts/etv_narrator_charts.py.
+- **site/public/results/etv-narrator-speed-by-hardware.svg** is written by site/scripts/etv_narrator_charts.py.
 - **sprite-motion-knowledge/.claude/loadout/index.json** is written by sprite-motion-knowledge/scripts/gen_loadout.py.
 - **sprite-motion-knowledge/catalog/** is written by sprite-motion-knowledge/scripts/gen_catalog.py.
 - **sprite-motion-knowledge/recipes.db** is written by sprite-motion-knowledge (4 files).
@@ -165,7 +163,7 @@ And 15 more candidates.
 
 ## Hand-authored
 
-People write .github/, docs/ and site/; 31 writes with paths built at run time may land here.
+People write .github/ and docs/; 31 writes with paths built at run time may land here.
 
 - **docker-knowledge/waves/wave-02-measurement/research-raw.json** is written by docker-knowledge/waves/wave-02-measurement/_build_raw.py from inputs this repository does not keep, and by people.
 - **rust-knowledge/waves/wave-04-si-jam-sessions/** holds files written by rust-knowledge/scripts/openrouter_lane.py from inputs this repository does not keep, and by people.

@@ -1,6 +1,6 @@
 # session-record: how it works
 
-Mapped at 2026-11-09 from commit acaa581 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 5b7b0ef by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,9 +8,9 @@ A private Python package that stores a session as addresses a later turn can ope
 
 4 parts, mostly Python (11 files). Work enters through 2 doors; the busiest is CI, which reaches 2 parts. People run session-record.
 
-## What changed since 2026-10-14 (c791653)
+## What changed since 2026-11-11 (acaa581)
 
-Nothing structural changed since 2026-10-14; no file changed.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

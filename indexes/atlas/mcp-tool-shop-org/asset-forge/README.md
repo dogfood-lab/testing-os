@@ -1,14 +1,14 @@
 # asset-forge: how it works
 
-Mapped at 2026-10-19 from commit ca8d9cf by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 1178210 by Atlas 1.26.0.
 
 ## What this is
 
 7 parts, mostly Rust (32 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 2 doors; the busiest is CI, which reaches 4 parts.
 
-## What changed since 2026-10-01 (1077bc0)
+## What changed since 2026-11-11 (ca8d9cf)
 
-Nothing structural changed since 2026-10-01; 1 file changed content.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 

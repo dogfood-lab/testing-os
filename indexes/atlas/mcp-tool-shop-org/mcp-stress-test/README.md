@@ -1,14 +1,14 @@
 # mcp-stress-test: how it works
 
-Mapped at 2026-10-26 from commit 034aa3f by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 8f29595 by Atlas 1.26.0.
 
 ## What this is
 
 6 parts, mostly Python (76 files), CSS (2), TypeScript (2), Astro (1) and JavaScript (1). Work enters through 4 doors; the busiest is Publish, which reaches 3 parts. It publishes to PyPI and a container image. It deploys a site to GitHub Pages. People run mcp-stress.
 
-## What changed since 2026-10-15 (bdad139)
+## What changed since 2026-11-11 (034aa3f)
 
-Nothing structural changed since 2026-10-15; 3 files changed content.
+Nothing structural changed since 2026-11-11; 1 file changed content.
 
 ## What comes in
 

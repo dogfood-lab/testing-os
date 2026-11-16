@@ -1,16 +1,14 @@
 # taste-engine: how it works
 
-Mapped at 2026-10-19 from commit 0d7f414 by Atlas 1.26.0.
+Mapped at 2026-11-16 from commit 48ffca0 by Atlas 1.26.0.
 
 ## What this is
 
 11 parts, mostly TypeScript (144 files), shell (7), JavaScript (3), CSS (2), Astro (1) and HTML (1). Work enters through 4 doors; CI and Release each reach 2 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run taste.
 
-## What changed since 2026-10-15 (a8298b1)
+## What changed since 2026-11-11 (0d7f414)
 
-- Release (.github/workflows/release.yml) is a new door. It starts when a release is published; or by hand. It runs test/. It builds src/.
-- package.json is now also read by .github/workflows/release.yml.
-- 1 file added and 3 changed content, across 2 parts.
+Nothing structural changed since 2026-11-11; no file changed.
 
 ## What comes in
 
