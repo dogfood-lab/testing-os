@@ -1,6 +1,6 @@
 # loadout-os: how it works
 
-Mapped at 2026-11-16 from commit a4836e0 by Atlas 1.26.0.
+Mapped at 2026-11-23 from commit 81c08df by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-11-16 from commit a4836e0 by Atlas 1.26.0.
 
 ## What changed since 2026-11-11 (3fe2ae4)
 
-Nothing structural changed since 2026-11-11; no file changed.
+Nothing structural changed since 2026-11-11; 7 files changed content.
 
 ## What comes in
 
@@ -55,9 +55,9 @@ CI writes only to .claude/loadout/, which is not tracked.
 
 - **packages/cli/src/cli.ts** and **packages/cli/src/doctor.ts** changed together in 5 of 7 commits, inside the cli part.
 - **packages/cli/src/cli.ts** and **packages/cli/src/help.ts** changed together in 5 of 7 commits, inside the cli part.
-- **packages/cli/src/cli.ts** and **packages/cli/src/tests/doctor.test.ts** changed together in 5 of 7 commits, inside the cli part.
 - **packages/cli/src/doctor.ts** and **packages/cli/src/help.ts** changed together in 4 of 6 commits, inside the cli part.
-- **packages/cli/src/help.ts** and **packages/cli/src/tests/doctor.test.ts** changed together in 4 of 6 commits, inside the cli part.
+- **packages/cli/src/cli.ts** and **packages/cli/src/tests/doctor.test.ts** changed together in 5 of 8 commits, inside the cli part.
+- **packages/cli/src/help.ts** and **packages/cli/src/tests/doctor.test.ts** changed together in 4 of 7 commits, inside the cli part.
 
 2 files changed together with their own tests, as expected.
 

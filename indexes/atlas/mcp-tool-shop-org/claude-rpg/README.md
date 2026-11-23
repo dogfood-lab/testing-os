@@ -1,14 +1,14 @@
 # claude-rpg: how it works
 
-Mapped at 2026-11-16 from commit 8e8531c by Atlas 1.26.0.
+Mapped at 2026-11-23 from commit ea46c5a by Atlas 1.26.0.
 
 ## What this is
 
 8 parts, mostly TypeScript (218 files), JavaScript (3), CSS (2) and Astro (1). Work enters through 5 doors; CI and Release each reach 3 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run claude-rpg. People import @mcptoolshop/claude-rpg.
 
-## What changed since 2026-11-11 (e39fc82)
+## What changed since 2026-11-19 (8e8531c)
 
-Nothing structural changed since 2026-11-11; no file changed.
+Nothing structural changed since 2026-11-19; 5 files changed content.
 
 ## What comes in
 

@@ -1,6 +1,6 @@
 # sovereignty: how it works
 
-Mapped at 2026-11-16 from commit 3096bd4 by Atlas 1.26.0.
+Mapped at 2026-11-23 from commit cd05cc2 by Atlas 1.26.0.
 
 ## What this is
 
@@ -10,7 +10,7 @@ Mapped at 2026-11-16 from commit 3096bd4 by Atlas 1.26.0.
 
 - app/package-lock.json is now read by tests/test_tauri_versions_in_step.py.
 - app/src-tauri/Cargo.lock is now also read by tests/test_tauri_versions_in_step.py.
-- 53 files added and 29 changed content, across 8 parts.
+- 53 files added and 30 changed content, across 8 parts.
 
 ## What comes in
 

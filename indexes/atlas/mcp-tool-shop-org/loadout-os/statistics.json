@@ -49,7 +49,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "cli",
-      "qualifyingSourceCommits": 10,
+      "qualifyingSourceCommits": 12,
       "rebaseline": null
     },
     {
@@ -65,7 +65,7 @@
       "confidence": "low",
       "highWater": null,
       "name": "hook",
-      "qualifyingSourceCommits": 4,
+      "qualifyingSourceCommits": 5,
       "rebaseline": null
     },
     {
@@ -190,8 +190,8 @@
         "path": ".gitignore"
       },
       {
-        "commits": 10,
-        "lines": 510,
+        "commits": 12,
+        "lines": 530,
         "path": "CHANGELOG.md"
       },
       {
@@ -265,8 +265,8 @@
         "path": "apps/hook/esbuild.config.mjs"
       },
       {
-        "commits": 5,
-        "lines": 454,
+        "commits": 6,
+        "lines": 476,
         "path": "apps/hook/loadout-hook.mjs"
       },
       {
@@ -385,8 +385,8 @@
         "path": "packages/cli/src/index.ts"
       },
       {
-        "commits": 2,
-        "lines": 2551,
+        "commits": 4,
+        "lines": 2588,
         "path": "packages/cli/src/pretool-rules.ts"
       },
       {
@@ -415,13 +415,13 @@
         "path": "packages/cli/src/tests/dispatch.test.ts"
       },
       {
-        "commits": 5,
-        "lines": 988,
+        "commits": 6,
+        "lines": 1073,
         "path": "packages/cli/src/tests/doctor.test.ts"
       },
       {
-        "commits": 4,
-        "lines": 592,
+        "commits": 5,
+        "lines": 675,
         "path": "packages/cli/src/tests/fixtures.ts"
       },
       {
@@ -430,13 +430,13 @@
         "path": "packages/cli/src/tests/help.test.ts"
       },
       {
-        "commits": 2,
-        "lines": 1268,
+        "commits": 3,
+        "lines": 1361,
         "path": "packages/cli/src/tests/hook.test.ts"
       },
       {
-        "commits": 2,
-        "lines": 3239,
+        "commits": 4,
+        "lines": 3280,
         "path": "packages/cli/src/tests/pretool.test.ts"
       },
       {
@@ -2190,9 +2190,9 @@
     "level": "low",
     "reason": "fewer than 25 source files reach 10 revisions in the window"
   },
-  "generatedAt": "2026-11-16T15:16:56.405Z",
+  "generatedAt": "2026-11-23T17:37:44.033Z",
   "generatedFrom": {
-    "commit": "a4836e0037a1f580c2e07ccdbc5537a1d493a396"
+    "commit": "81c08dfa932530ad6a5d8d562a441742966ff1de"
   },
   "packageImports": {
     "filesWithLeftOutImports": 0,
@@ -2227,9 +2227,16 @@
     {
       "a": "packages/cli/src/cli.ts",
       "b": "packages/cli/src/tests/doctor.test.ts",
-      "either": 7,
+      "either": 8,
       "shared": 5,
-      "strength": 0.714286
+      "strength": 0.625
+    },
+    {
+      "a": "packages/cli/src/cli.ts",
+      "b": "packages/cli/src/tests/fixtures.ts",
+      "either": 8,
+      "shared": 4,
+      "strength": 0.5
     },
     {
       "a": "packages/cli/src/doctor.ts",
@@ -2241,16 +2248,23 @@
     {
       "a": "packages/cli/src/doctor.ts",
       "b": "packages/cli/src/tests/doctor.test.ts",
-      "either": 5,
+      "either": 6,
       "shared": 5,
-      "strength": 1
+      "strength": 0.833333
     },
     {
       "a": "packages/cli/src/help.ts",
       "b": "packages/cli/src/tests/doctor.test.ts",
-      "either": 6,
+      "either": 7,
       "shared": 4,
-      "strength": 0.666667
+      "strength": 0.571429
+    },
+    {
+      "a": "packages/cli/src/tests/doctor.test.ts",
+      "b": "packages/cli/src/tests/fixtures.ts",
+      "either": 7,
+      "shared": 4,
+      "strength": 0.571429
     },
     {
       "a": "packages/kernel/src/index.ts",
@@ -2277,16 +2291,16 @@
     "floor": "fallen",
     "floorHeld": false,
     "floorTrigger": "revision-depth",
-    "headDate": "2026-11-11T18:35:12-05:00",
+    "headDate": "2026-11-21T11:35:36-05:00",
     "inScopeFiles": 393,
     "pinnedStart": null,
     "priorFloor": "fallen",
-    "qualifyingCommits": 48,
+    "qualifyingCommits": 50,
     "qualifyingMinimum": 30,
     "revisions": 5,
     "shared": 10,
     "sharedFloorUsed": 3,
-    "since": "2026-05-15T23:35:12.000Z",
+    "since": "2026-05-25T16:35:36.000Z",
     "sourceExtensions": [
       ".js",
       ".mjs",

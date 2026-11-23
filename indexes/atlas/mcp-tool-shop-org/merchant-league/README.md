@@ -1,76 +1,91 @@
 # merchant-league: how it works
 
-Mapped at 2026-11-16 from commit d59d0a1 by Atlas 1.26.0.
+Mapped at 2026-11-23 from commit c077190 by Atlas 1.26.0.
 
 ## What this is
 
 Merchant League: a slow-turn trading game for 2 to 6 players, played only on the XRPL Testnet. (written by a person)
 
-11 parts, mostly Rust (336 files), Python (3), shell (3) and JavaScript (1). Work enters through 6 doors; the busiest is CI, which reaches 8 parts. People run league-relay. xrpl is a command built from vendor/xrpl-rust (nothing ships it).
+16 parts, mostly Rust (404 files), shell (5), JavaScript (4), Python (3), CSS (2), TypeScript (2) and Astro (1). Work enters through 10 doors; the busiest is CI, which reaches 13 parts. It deploys a site to GitHub Pages. People run league-eval, league-relay, league-scorer and league-tui. xrpl is a command built from vendor/xrpl-rust (nothing ships it).
 
-## What changed since 2026-11-16 (f713dc4)
+## What changed since 2026-11-23 (7195744)
 
-Nothing structural changed since 2026-11-16; no file changed.
+Nothing structural changed since 2026-11-23; 5 files changed content.
 
 ## What comes in
 
-1. **CI.** On a pull request; on a push to main touching 9 paths; or by hand. Runs scripts/check-copy.sh, scripts/check-testnet-only.sh, scripts/test-guards.sh and 26 more; checks crates/league-gen/src/lib.rs, crates/league-relay/src/lib.rs and crates/league-relay/src/main.rs.
-2. **testnet_escrow_expiry** (a command people run with `cargo run --example testnet_escrow_expiry`). Runs crates/league-ledger/examples/testnet_escrow_expiry.rs.
-3. **testnet_proof** (a command people run with `cargo run --example testnet_proof`). Runs crates/league-ledger/examples/testnet_proof.rs.
-4. **testnet_requireauth** (a command people run with `cargo run --example testnet_requireauth`). Runs crates/league-ledger/examples/testnet_requireauth.rs.
+1. **CI.** On a pull request; on a push to main touching 15 paths; or by hand. Runs scripts/check-audit-allowlist.mjs, scripts/check-audit-allowlist.test.mjs, scripts/check-copy.sh and 71 more; checks crates/league-eval/src/lib.rs, crates/league-eval/src/main.rs, crates/league-gen/src/lib.rs and 4 more.
+2. **Deploy site to GitHub Pages.** On a push to main touching 2 paths; or by hand. Runs site/astro.config.mjs and site/src/.
+3. **league-tui** (a command people run). Runs crates/league-tui/src/main.rs.
+4. **league-eval** (a command people run). Runs crates/league-eval/src/main.rs.
 5. **league-relay** (a command people run). Runs crates/league-relay/src/main.rs.
-6. **xrpl** (a command built from vendor/xrpl-rust, which nothing ships). Runs vendor/xrpl-rust/src/bin/xrpl.rs.
+6. **league-scorer** (a command people run). Runs crates/league-scorer/src/main.rs.
+7. **testnet_escrow_expiry** (a command people run with `cargo run --example testnet_escrow_expiry`). Runs crates/league-ledger/examples/testnet_escrow_expiry.rs.
+8. **testnet_proof** (a command people run with `cargo run --example testnet_proof`). Runs crates/league-ledger/examples/testnet_proof.rs.
+9. **testnet_requireauth** (a command people run with `cargo run --example testnet_requireauth`). Runs crates/league-ledger/examples/testnet_requireauth.rs.
+10. **xrpl** (a command built from vendor/xrpl-rust, which nothing ships). Runs vendor/xrpl-rust/src/bin/xrpl.rs.
 
 ## What happens through CI
 
-1. The workflow runs scripts/check-copy.sh, scripts/check-testnet-only.sh and scripts/test-guards.sh in scripts, 4 files in league-core, crates/league-dice/ in league-dice, 7 files in league-gen, crates/league-ledger/examples/, crates/league-ledger/src/ and crates/league-ledger/tests/vectors.rs in league-ledger, and 8 files in 4 more places; it checks crates/league-gen/src/lib.rs in league-gen, crates/league-relay/src/lib.rs and crates/league-relay/src/main.rs.
+1. The workflow runs 6 files in scripts, 17 files in league-core, crates/league-error/ in league-error, 11 files in league-eval, 10 files in league-gen, and 28 files in 10 more places; it checks crates/league-eval/src/lib.rs and crates/league-eval/src/main.rs in league-eval, crates/league-gen/src/lib.rs in league-gen, crates/league-relay/src/lib.rs and crates/league-relay/src/main.rs in league-relay, and crates/league-scorer/src/lib.rs and crates/league-scorer/src/main.rs in league-scorer.
+2. It writes to site/audit-report.json, which is not tracked.
 
 ## Who reads the results
 
-CI writes nothing in the files this map could read; 1 file could not be.
+CI writes only to site/audit-report.json, which is not tracked.
 
 ## The other doors
 
-**testnet_escrow_expiry** (a command people run with `cargo run --example testnet_escrow_expiry`) runs crates/league-ledger/examples/testnet_escrow_expiry.rs.
+**Deploy site to GitHub Pages** runs site/astro.config.mjs and site/src/, and deploys the site on main.
 
-**testnet_proof** (a command people run with `cargo run --example testnet_proof`) runs crates/league-ledger/examples/testnet_proof.rs.
+**league-tui** (a command people run) runs crates/league-tui/src/main.rs and reaches league-core, league-error, league-gen, league-seat-types and league-seat-ui.
 
-**testnet_requireauth** (a command people run with `cargo run --example testnet_requireauth`) runs crates/league-ledger/examples/testnet_requireauth.rs.
+**league-eval** (a command people run) runs crates/league-eval/src/main.rs and reaches league-core, league-error, league-relay and league-seat-types.
 
-**league-relay** (a command people run) runs crates/league-relay/src/main.rs.
+**league-relay** (a command people run) runs crates/league-relay/src/main.rs and reaches league-core, league-error and league-seat-types.
+
+**league-scorer** (a command people run) runs crates/league-scorer/src/main.rs and reaches league-core, league-error and league-seat-types.
+
+**testnet_escrow_expiry** (a command people run with `cargo run --example testnet_escrow_expiry`) runs crates/league-ledger/examples/testnet_escrow_expiry.rs and reaches league-error.
+
+**testnet_proof** (a command people run with `cargo run --example testnet_proof`) runs crates/league-ledger/examples/testnet_proof.rs and reaches league-error.
+
+**testnet_requireauth** (a command people run with `cargo run --example testnet_requireauth`) runs crates/league-ledger/examples/testnet_requireauth.rs and reaches league-error.
 
 **xrpl** (a command built from vendor/xrpl-rust, which nothing ships) runs vendor/xrpl-rust/src/bin/xrpl.rs.
 
 ## What breaks what
 
+- **league-core** is imported by 6 parts (league-eval, league-gen, league-relay, league-scorer, league-standalone, league-tui) and sits on the path of 5 doors.
+- **league-error** is imported by 5 parts (league-core, league-ledger, league-relay, league-seat-types, league-standalone) and sits on the path of 8 doors.
+- **league-seat-types** is imported by 5 parts (league-core, league-gen, league-scorer, league-seat-ui, league-tui) and sits on the path of 5 doors.
 - **league-ledger** is imported by 1 part (league-standalone) and sits on the path of 4 doors.
-- **league-core** is imported by 1 part (league-standalone) and sits on the path of 1 door.
-
-scripts holds only shell files, which this map does not read, so what uses it cannot be seen.
+- **league-relay** is imported by 1 part (league-eval) and sits on the path of 3 doors.
+- **league-gen** is imported by 1 part (league-tui) and sits on the path of 2 doors.
+- **league-seat-ui** is imported by 1 part (league-tui) and sits on the path of 2 doors.
+- **league-eval** is imported by no other part and sits on the path of 2 doors.
 
 ## What tends to change together
 
-- **crates/league-gen/src/feasibility.rs** and **crates/league-gen/src/schema.rs** changed together in 6 of 6 commits, inside the league-gen part.
-- **crates/league-relay/src/relay.rs** and **crates/league-relay/tests/relay_integration.rs** changed together in 17 of 19 commits.
-- **crates/league-gen/src/feasibility.rs** and **crates/league-gen/src/generator.rs** changed together in 5 of 6 commits, inside the league-gen part.
-- **crates/league-gen/src/generator.rs** and **crates/league-gen/src/schema.rs** changed together in 5 of 6 commits, inside the league-gen part.
-- **crates/league-relay/src/cli.rs** and **crates/league-relay/src/error.rs** changed together in 6 of 9 commits.
+- **crates/league-eval/src/driver.rs** and **crates/league-eval/tests/play_and_branch.rs** changed together in 6 of 6 commits, inside the league-eval part.
+- **crates/league-eval/src/driver.rs** and **crates/league-eval/src/records.rs** changed together in 5 of 6 commits, inside the league-eval part.
+- **crates/league-eval/src/driver.rs** and **crates/league-eval/tests/addendum_item9.rs** changed together in 5 of 6 commits, inside the league-eval part.
+- **crates/league-eval/src/records.rs** and **crates/league-eval/tests/play_and_branch.rs** changed together in 5 of 6 commits, inside the league-eval part.
+- **crates/league-eval/tests/addendum_item9.rs** and **crates/league-eval/tests/play_and_branch.rs** changed together in 5 of 6 commits, inside the league-eval part.
 
 Confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
-Window: 180 days; a pair counts from 3 shared commits, since 2 source files reach 10 revisions; the floor rises to 10 when 25 do.
+Window: 180 days; a pair counts from 3 shared commits, since 11 source files reach 10 revisions; the floor rises to 10 when 25 do.
 
 ## What no test touches
 
-Every code part this map reads is touched by at least one test.
-
-league-dice is tested only by the unit tests in its own files.
+Every code part is touched by at least one test.
 
 league-season is tested only by the unit tests in its own files.
 
-league-tui is tested only by the unit tests in its own files.
+league-seat-ui is tested only by the unit tests in its own files.
 
-scripts holds only shell files, which this map does not read, so whether a test touches it cannot be seen.
+league-tui is tested only by the unit tests in its own files.
 
 ## Written but never read
 
@@ -86,21 +101,23 @@ Nothing in the files this map could read writes to a tracked place; 1 file could
 
 ## Hand-authored
 
-People write .github/, docs/ and the repository root. Nothing in the files this map could read writes to them; 1 file could not be.
+People write .github/, docs/ and the repository root; 41 writes with paths built at run time may land here.
 
 ## Where to start
 
-crates/league-relay/src/main.rs → crates/league-relay/src/lib.rs → crates/league-relay/src/cli.rs → crates/league-relay/src/secret.rs → crates/league-relay/src/seats.rs → crates/league-relay/src/wording.rs → crates/league-relay/src/error.rs
+crates/league-tui/src/main.rs → crates/league-core/src/lib.rs → crates/league-core/src/bot.rs → crates/league-core/src/commit.rs → crates/league-seat-types/src/lib.rs → crates/league-error/src/lib.rs
 
-Read those in order to follow one run of league-relay end to end. This path follows league-relay (a command people run) from its entry, since CI runs only tests and checks.
-
-Beside the path, crates/league-relay/src/cli.rs also calls crates/league-relay/src/relay.rs.
+Read those in order to follow one run of league-tui end to end. This path follows league-tui (a command people run) from its entry, since CI runs only tests, scripts that import no code here and checks.
 
 ## What this map cannot see
 
 - 1 file uses syntax the parser cannot read (crates/league-ledger/tests/vectors/LICENSE-xrpl.js), so what it imports is not known.
-- 4 writes and 3 reads go to a path their caller passes, not to this repository.
-- 371 files belong to no part: crates/league-relay/Cargo.toml, crates/league-relay/src/cli.rs, crates/league-relay/src/error.rs and 368 more.
+- 41 writes and 32 reads use paths built at run time and are not named here.
+- 1 write goes to places this repository does not track, so it is not listed as generated.
+- 18 writes and 49 reads go to a path their caller passes, not to this repository.
+- 2 writes go to a temporary directory, not to this repository.
+- There is a Dockerfile that no workflow runs; what deploys from it does so from outside this repository, and is not on this page.
+- 378 files belong to no part: site/astro.config.mjs, site/package-lock.json, site/package.json and 375 more.
 - Statistics confidence is low: fewer than 25 source files reach 10 revisions in the window.
 
 Regenerate with `npx --yes @dogfood-lab/atlas map`.

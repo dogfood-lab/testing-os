@@ -1,6 +1,6 @@
 # runforge: how it works
 
-Mapped at 2026-11-16 from commit c842ea9 by Atlas 1.26.0.
+Mapped at 2026-11-23 from commit ce54e55 by Atlas 1.26.0.
 
 ## What this is
 
@@ -10,7 +10,7 @@ A Windows instrument for fine-tuning runs: it draws every stored sample from a f
 
 ## What changed since 2026-11-11 (ca3aae2)
 
-Nothing structural changed since 2026-11-11; 1 file changed content.
+Nothing structural changed since 2026-11-11; 3 files changed content.
 
 ## What comes in
 

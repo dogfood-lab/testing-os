@@ -3,8 +3,10 @@
     ".claude/",
     ".github/",
     "catalogs/",
+    "changes/",
     "datapacks/",
-    "docs/"
+    "docs/",
+    "questions/"
   ],
   "breaks": [
     {
@@ -84,26 +86,42 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 1,
+      "added": 15,
       "assigned": 0,
-      "changed": 3,
+      "changed": 28,
       "moved": 0,
-      "parts": 4,
-      "removed": 0,
+      "parts": 8,
+      "removed": 1,
       "unassigned": 0
     },
     "items": [
       {
+        "kind": "landing",
+        "sentence": "CHANGELOG.md is now also read by tests/test_rnd_1_3_a.py.",
+        "subjects": [
+          "CHANGELOG.md",
+          "tests/test_rnd_1_3_a.py"
+        ]
+      },
+      {
+        "kind": "landing",
+        "sentence": "README.md is now also read by tests/test_rnd_1_3_a.py.",
+        "subjects": [
+          "README.md",
+          "tests/test_rnd_1_3_a.py"
+        ]
+      },
+      {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-11-15; 1 file added and 3 changed content.",
+        "sentence": "15 files added, 1 removed and 28 changed content, across 8 parts.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "2ef559df9d7a8ae6c7400c3360a0dcfb82f0f51f",
-      "generatedAt": "2026-11-15T11:40:48.380Z"
+      "commit": "0c14743c213299b8d29b146fcd10d8c49fc9f455",
+      "generatedAt": "2026-11-20T03:56:36.901Z"
     },
-    "unchanged": true
+    "unchanged": false
   },
   "changesTogether": [
     {
@@ -122,21 +140,6 @@
       "shared": 15
     },
     {
-      "a": "mcptoolshop_rnd/layout.py",
-      "b": "tests/test_runs.py",
-      "either": 8,
-      "partLabels": [
-        "mcptoolshop_rnd",
-        "tests"
-      ],
-      "parts": [
-        "mcptoolshop_rnd",
-        "tests"
-      ],
-      "relation": "b-imports-a",
-      "shared": 5
-    },
-    {
       "a": "mcptoolshop_rnd/localbuilders/proxy.py",
       "b": "tests/test_localbuilders.py",
       "either": 7,
@@ -153,33 +156,18 @@
     },
     {
       "a": "mcptoolshop_rnd/layout.py",
-      "b": "mcptoolshop_rnd/runs.py",
-      "either": 8,
+      "b": "tests/test_runs.py",
+      "either": 9,
       "partLabels": [
         "mcptoolshop_rnd",
-        "mcptoolshop_rnd"
-      ],
-      "parts": [
-        "mcptoolshop_rnd",
-        "mcptoolshop_rnd"
-      ],
-      "relation": "inside",
-      "shared": 4
-    },
-    {
-      "a": "rnd/cli.py",
-      "b": "tests/test_rnd.py",
-      "either": 8,
-      "partLabels": [
-        null,
         "tests"
       ],
       "parts": [
-        null,
+        "mcptoolshop_rnd",
         "tests"
       ],
-      "relation": "unassigned",
-      "shared": 4
+      "relation": "b-imports-a",
+      "shared": 5
     }
   ],
   "changesTogetherNote": [
@@ -188,9 +176,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since 5 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 2,
-  "commit": "19a000d6f9a5810dac5fb31fa03c8ed21cbc42ac",
+  "commit": "64836f1f1c829a4e1788d7db42e970d7914b9b1c",
   "defaultBranch": "main",
-  "derived": "14 parts, mostly Python (145 files), shell (30), CSS (2), HTML (2), TypeScript (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 4 doors; the busiest is CI, which reaches 6 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run rnd.",
+  "derived": "16 parts, mostly Python (152 files), shell (30), CSS (2), HTML (2), TypeScript (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 4 doors; the busiest is CI, which reaches 6 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run rnd.",
   "doors": [
     {
       "checks": [
@@ -212,7 +200,7 @@
         {
           "boundary": "mcptoolshop_rnd",
           "depth": 0,
-          "files": 26
+          "files": 30
         },
         {
           "boundary": "root",
@@ -222,7 +210,7 @@
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 28
+          "files": 31
         },
         {
           "boundary": "experiments",
@@ -271,7 +259,7 @@
         {
           "boundary": "mcptoolshop_rnd",
           "depth": 0,
-          "files": 26
+          "files": 30
         },
         {
           "boundary": "root",
@@ -342,7 +330,7 @@
         {
           "boundary": "mcptoolshop_rnd",
           "depth": 0,
-          "files": 16
+          "files": 20
         }
       ],
       "runs": [
@@ -529,13 +517,13 @@
       ]
     }
   ],
-  "generatedAt": "2026-11-16T15:23:11.207Z",
+  "generatedAt": "2026-11-23T17:39:48.480Z",
   "limits": [
-    "11 imports could not be resolved: `experiments/data-designer/tests/test_lockdown.py` imports `egress`, which is no module on its import path and no declared dependency; `experiments/data-designer/tests/test_lockdown.py` imports `studio_lock`, which is no module on its import path and no declared dependency; `experiments/distill-ladder/make_ladder_v2.py` imports a path built at run time; and 8 more.",
-    "24 writes and 35 reads use paths built at run time and are not named here.",
+    "12 imports could not be resolved: `experiments/data-designer/tests/test_lockdown.py` imports `egress`, which is no module on its import path and no declared dependency; `experiments/data-designer/tests/test_lockdown.py` imports `studio_lock`, which is no module on its import path and no declared dependency; `experiments/distill-ladder/make_ladder_v2.py` imports a path built at run time; and 9 more.",
+    "28 writes and 36 reads use paths built at run time and are not named here.",
     "7 writes go to places this repository does not track, so they are not listed as generated.",
-    "41 writes and 125 reads go to a path their caller passes, not to this repository.",
-    "12 reads go to the directory the command is run in (README.md, SECURITY.md, entries and 3 more places), not to this repository.",
+    "45 writes and 140 reads go to a path their caller passes, not to this repository.",
+    "18 reads go to the directory the command is run in, not to this repository.",
     "2 reads go to the directory the command is run in or a path their caller passes, not to this repository.",
     "2 reads go to the home directory (.claude/), not to this repository.",
     "4 files belong to no part: scripts/colab/collect_windows.py, scripts/colab/probe.py, scripts/colab/rates.sh and 1 more.",
@@ -546,6 +534,7 @@
     ".claude": ".claude",
     ".github": ".github",
     "catalogs": "catalogs",
+    "changes": "changes",
     "datapacks": "datapacks",
     "docs": "docs",
     "entries": "entries",
@@ -553,12 +542,13 @@
     "instruments": "instruments",
     "licences": "licences",
     "mcptoolshop_rnd": "mcptoolshop_rnd",
+    "questions": "questions",
     "rnd": "rnd",
     "root": "the repository root",
     "site": "site",
     "tests": "tests"
   },
-  "parts": 14,
+  "parts": 16,
   "readers": [
     {
       "readers": [
@@ -589,14 +579,14 @@
   "startReason": "This path follows rnd (a command people run) from its entry, since CI runs only tests and checks.",
   "summary": "The studio research bench: Markdown entries with tiered sources and checked claims, rig experiments, an instrument registry and rated catalogues, indexed and searched by the rnd CLI (Python, standard library only).",
   "summaryFrom": "person",
-  "testFiles": 61,
+  "testFiles": 64,
   "testedBy": {
     "experiments": 7,
-    "mcptoolshop_rnd": 20,
+    "mcptoolshop_rnd": 23,
     "rnd": 1
   },
   "testedCodeParts": 3,
-  "unnamedWrites": 24,
+  "unnamedWrites": 28,
   "unread": [
     {
       "into": true,
@@ -666,11 +656,13 @@
           "experiments/embeddinggemma-2/harness/check_grades.py",
           "experiments/embeddinggemma-2/harness/grading.py",
           "experiments/embeddinggemma-2/harness/score.py",
+          "mcptoolshop_rnd/numbers.py",
           "mcptoolshop_rnd/store.py"
         ],
         "patterns": [
           "*.json",
-          "*.jsonl"
+          "*.jsonl",
+          "experiments/**/*.md"
         ]
       },
       "place": "experiments/ollama-cuda-backend/",
@@ -685,11 +677,13 @@
           "experiments/embeddinggemma-2/harness/check_grades.py",
           "experiments/embeddinggemma-2/harness/grading.py",
           "experiments/embeddinggemma-2/harness/score.py",
+          "mcptoolshop_rnd/numbers.py",
           "mcptoolshop_rnd/store.py"
         ],
         "patterns": [
           "*.json",
-          "*.jsonl"
+          "*.jsonl",
+          "experiments/**/*.md"
         ]
       },
       "place": "experiments/verifier-gold/crossfamily/",

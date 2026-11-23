@@ -1,6 +1,6 @@
 # offrig: how it works
 
-Mapped at 2026-11-16 from commit 942cd27 by Atlas 1.26.0.
+Mapped at 2026-11-23 from commit cfe94ab by Atlas 1.26.0.
 
 ## What this is
 
@@ -10,7 +10,7 @@ Runs big models on RunPod and wires them into Zed through an SSH tunnel, so they
 
 ## What changed since 2026-11-12 (bc59019)
 
-Nothing structural changed since 2026-11-12; 2 files changed content.
+Nothing structural changed since 2026-11-12; 4 files changed content.
 
 ## What comes in
 

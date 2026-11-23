@@ -1,14 +1,16 @@
 # brand: how it works
 
-Mapped at 2026-11-16 from commit 5a58e07 by Atlas 1.26.0.
+Mapped at 2026-11-23 from commit 2b36ecf by Atlas 1.26.0.
 
 ## What this is
 
-11 parts, mostly images (278 files) and Markdown (60); code in TypeScript (40), JavaScript (8), Astro (2), CSS (2) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run brand.
+11 parts, mostly images (280 files) and Markdown (60); code in TypeScript (40), JavaScript (8), Astro (2), CSS (2) and shell (1). Work enters through 5 doors; the busiest is CI, which reaches 4 parts. It publishes to npm. It deploys a site to GitHub Pages. People run brand.
 
 ## What changed since 2026-11-12 (4cf45de)
 
-Nothing structural changed since 2026-11-12; no file changed.
+- logos/colab-runner/readme.png is now read by manifest.json.
+- logos/merchant-league/readme.png is now read by manifest.json.
+- 2 files added and 2 changed content, across 3 parts.
 
 ## What comes in
 
@@ -75,7 +77,7 @@ Every tracked place code writes here is edited by people too; see Hand-authored.
 
 People write .claude/, .githooks/, .github/, assets/, docs/, logos/ and site/. Nothing in this repository writes to them.
 
-- **manifest.json** is written by .github/workflows/sync.yml, and by people: 55 of its 56 commits in the window are theirs.
+- **manifest.json** is written by .github/workflows/sync.yml, and by people: 60 of its 61 commits in the window are theirs.
 
 ## Where to start
 

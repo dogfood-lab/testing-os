@@ -1,16 +1,18 @@
 # rnd: how it works
 
-Mapped at 2026-11-16 from commit 19a000d by Atlas 1.26.0.
+Mapped at 2026-11-23 from commit 64836f1 by Atlas 1.26.0.
 
 ## What this is
 
 The studio research bench: Markdown entries with tiered sources and checked claims, rig experiments, an instrument registry and rated catalogues, indexed and searched by the rnd CLI (Python, standard library only). (written by a person)
 
-14 parts, mostly Python (145 files), shell (30), CSS (2), HTML (2), TypeScript (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 4 doors; the busiest is CI, which reaches 6 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run rnd.
+16 parts, mostly Python (152 files), shell (30), CSS (2), HTML (2), TypeScript (2), Astro (1), JavaScript (1) and PowerShell (1). Work enters through 4 doors; the busiest is CI, which reaches 6 parts. It publishes to PyPI. It deploys a site to GitHub Pages. People run rnd.
 
-## What changed since 2026-11-15 (2ef559d)
+## What changed since 2026-11-20 (0c14743)
 
-Nothing structural changed since 2026-11-15; 1 file added and 3 changed content.
+- CHANGELOG.md is now also read by tests/test_rnd_1_3_a.py.
+- README.md is now also read by tests/test_rnd_1_3_a.py.
+- 15 files added, 1 removed and 28 changed content, across 8 parts.
 
 ## What comes in
 
@@ -55,10 +57,8 @@ the repository root holds only shell files, which this map does not read, so wha
 ## What tends to change together
 
 - **experiments/atlas-mcp-utility/run.py** and **tests/test_atlas_mcp_utility_run.py** changed together in 15 of 15 commits.
-- **mcptoolshop_rnd/layout.py** and **tests/test_runs.py** changed together in 5 of 8 commits, and the tests part imports the mcptoolshop_rnd part.
 - **mcptoolshop_rnd/localbuilders/proxy.py** and **tests/test_localbuilders.py** changed together in 4 of 7 commits, and the tests part imports the mcptoolshop_rnd part.
-- **mcptoolshop_rnd/layout.py** and **mcptoolshop_rnd/runs.py** changed together in 4 of 8 commits, inside the mcptoolshop_rnd part.
-- **rnd/cli.py** and **tests/test_rnd.py** changed together in 4 of 8 commits.
+- **mcptoolshop_rnd/layout.py** and **tests/test_runs.py** changed together in 5 of 9 commits, and the tests part imports the mcptoolshop_rnd part.
 
 2 files changed together with their own tests, as expected.
 
@@ -80,8 +80,8 @@ the repository root holds only shell files, which this map does not read, so whe
 - **experiments/colab-golden-path/figures.json** is written by experiments/colab-golden-path/figures.py and read by nothing else this map can name: experiments/embeddinggemma-2/harness/score.py and mcptoolshop_rnd/store.py read `*.json` under a directory chosen at run time, which may include it.
 - **experiments/natural-errors/data/baselines_p1.json** is written by experiments/natural-errors/baselines_p1.py and read by nothing else this map can name: experiments/embeddinggemma-2/harness/score.py and mcptoolshop_rnd/store.py read `*.json` under a directory chosen at run time, which may include it.
 - **experiments/natural-errors/data/corrections.json** is written by experiments/natural-errors/build_corrections.py and read by nothing else this map can name: experiments/embeddinggemma-2/harness/score.py and mcptoolshop_rnd/store.py read `*.json` under a directory chosen at run time, which may include it.
-- **experiments/ollama-cuda-backend/** holds files written by experiments/ollama-cuda-backend/diag_test-v4-draft.py and read by nothing else this map can name: experiments/embeddinggemma-2/harness/check_grades.py, experiments/embeddinggemma-2/harness/grading.py, experiments/embeddinggemma-2/harness/score.py and 1 more file read `*.json` and `*.jsonl` under a directory chosen at run time, which may include it.
-- **experiments/verifier-gold/crossfamily/** holds files written by experiments/verifier-gold/crossfamily/run_labeller.py and read by nothing else this map can name: experiments/embeddinggemma-2/harness/check_grades.py, experiments/embeddinggemma-2/harness/grading.py, experiments/embeddinggemma-2/harness/score.py and 1 more file read `*.json` and `*.jsonl` under a directory chosen at run time, which may include it.
+- **experiments/ollama-cuda-backend/** holds files written by experiments/ollama-cuda-backend/diag_test-v4-draft.py and read by nothing else this map can name: experiments/embeddinggemma-2/harness/check_grades.py, experiments/embeddinggemma-2/harness/grading.py, experiments/embeddinggemma-2/harness/score.py and 2 more files read `*.json`, `*.jsonl` and `experiments/**/*.md` under a directory chosen at run time, which may include it.
+- **experiments/verifier-gold/crossfamily/** holds files written by experiments/verifier-gold/crossfamily/run_labeller.py and read by nothing else this map can name: experiments/embeddinggemma-2/harness/check_grades.py, experiments/embeddinggemma-2/harness/grading.py, experiments/embeddinggemma-2/harness/score.py and 2 more files read `*.json`, `*.jsonl` and `experiments/**/*.md` under a directory chosen at run time, which may include it.
 - **experiments/verifier-gold/crossfamily/blind_key.json** is written by experiments/verifier-gold/crossfamily/make_sample.py and read by nothing else this map can name: experiments/embeddinggemma-2/harness/score.py and mcptoolshop_rnd/store.py read `*.json` under a directory chosen at run time, which may include it.
 - **experiments/verifier-gold/crossfamily/sample.jsonl** is written by experiments/verifier-gold/crossfamily/make_sample.py and read by nothing else this map can name: experiments/embeddinggemma-2/harness/check_grades.py and experiments/embeddinggemma-2/harness/grading.py read `*.jsonl` under a directory chosen at run time, which may include it.
 
@@ -115,7 +115,7 @@ These are candidates from names and call order, not a judgement.
 
 ## Hand-authored
 
-People write .claude/, .github/ and docs/. The data in catalogs/ and datapacks/ is written by no code this map names; 24 writes with paths built at run time may land here.
+People write .claude/, .github/, changes/, docs/ and questions/. The data in catalogs/ and datapacks/ is written by no code this map names; 28 writes with paths built at run time may land here.
 
 ## Where to start
 
@@ -125,11 +125,11 @@ Read those in order to follow one run of rnd end to end. This path follows rnd (
 
 ## What this map cannot see
 
-- 11 imports could not be resolved: `experiments/data-designer/tests/test_lockdown.py` imports `egress`, which is no module on its import path and no declared dependency; `experiments/data-designer/tests/test_lockdown.py` imports `studio_lock`, which is no module on its import path and no declared dependency; `experiments/distill-ladder/make_ladder_v2.py` imports a path built at run time; and 8 more.
-- 24 writes and 35 reads use paths built at run time and are not named here.
+- 12 imports could not be resolved: `experiments/data-designer/tests/test_lockdown.py` imports `egress`, which is no module on its import path and no declared dependency; `experiments/data-designer/tests/test_lockdown.py` imports `studio_lock`, which is no module on its import path and no declared dependency; `experiments/distill-ladder/make_ladder_v2.py` imports a path built at run time; and 9 more.
+- 28 writes and 36 reads use paths built at run time and are not named here.
 - 7 writes go to places this repository does not track, so they are not listed as generated.
-- 41 writes and 125 reads go to a path their caller passes, not to this repository.
-- 12 reads go to the directory the command is run in (README.md, SECURITY.md, entries and 3 more places), not to this repository.
+- 45 writes and 140 reads go to a path their caller passes, not to this repository.
+- 18 reads go to the directory the command is run in, not to this repository.
 - 2 reads go to the directory the command is run in or a path their caller passes, not to this repository.
 - 2 reads go to the home directory (.claude/), not to this repository.
 - 4 files belong to no part: scripts/colab/collect_windows.py, scripts/colab/probe.py, scripts/colab/rates.sh and 1 more.

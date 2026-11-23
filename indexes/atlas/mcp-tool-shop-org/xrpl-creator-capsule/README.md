@@ -1,6 +1,6 @@
 # xrpl-creator-capsule: how it works
 
-Mapped at 2026-11-16 from commit 7662d28 by Atlas 1.26.0.
+Mapped at 2026-11-23 from commit 8357172 by Atlas 1.26.0.
 
 ## What this is
 
@@ -8,7 +8,7 @@ Mapped at 2026-11-16 from commit 7662d28 by Atlas 1.26.0.
 
 ## What changed since 2026-11-11 (e94f89e)
 
-Nothing structural changed since 2026-11-11; no file changed.
+Nothing structural changed since 2026-11-11; 1 file changed content.
 
 ## What comes in
 

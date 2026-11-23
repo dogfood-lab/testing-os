@@ -75,69 +75,31 @@
   ],
   "changes": {
     "fileCounts": {
-      "added": 2,
+      "added": 0,
       "assigned": 0,
-      "changed": 17,
+      "changed": 11,
       "moved": 0,
-      "parts": 2,
+      "parts": 4,
       "removed": 0,
       "unassigned": 0
     },
     "items": [
       {
-        "kind": "landing",
-        "sentence": "scripts/colab/launch_guards.py is now read by scripts/colab/lane3_rung.py.",
-        "subjects": [
-          "scripts/colab/launch_guards.py",
-          "scripts/colab/lane3_rung.py"
-        ]
-      },
-      {
         "kind": "counts",
-        "sentence": "2 files added and 17 changed content, across 2 parts.",
+        "sentence": "Nothing structural changed since 2026-11-19; 11 files changed content.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "ce6da8a40949c592f389dbe5cb395a6f6d1688b1",
-      "generatedAt": "2026-11-12T23:08:02.035Z"
+      "commit": "a2ee86f077c16d4d67b9a17f71ce84eafebcd5e2",
+      "generatedAt": "2026-11-19T13:37:54.597Z"
     },
-    "unchanged": false
+    "unchanged": true
   },
   "changesTogether": [
     {
       "a": "tests/colab/test_launch_guards.py",
       "b": "tests/colab/test_launch_lane1_stub.py",
-      "either": 11,
-      "partLabels": [
-        "tests",
-        "tests"
-      ],
-      "parts": [
-        "tests",
-        "tests"
-      ],
-      "relation": "inside",
-      "shared": 6
-    },
-    {
-      "a": "scripts/colab/lane3_rung.py",
-      "b": "tests/colab/test_lane3_gpu_rung.py",
-      "either": 14,
-      "partLabels": [
-        "scripts",
-        "tests"
-      ],
-      "parts": [
-        "scripts",
-        "tests"
-      ],
-      "relation": "b-imports-a",
-      "shared": 7
-    },
-    {
-      "a": "tests/colab/test_launch_lane1_stub.py",
-      "b": "tests/colab/test_launch_lane3_stub.py",
       "either": 14,
       "partLabels": [
         "tests",
@@ -164,17 +126,32 @@
       ],
       "relation": "inside",
       "shared": 4
+    },
+    {
+      "a": "tests/colab/test_gpu_rate_gate.py",
+      "b": "tests/colab/test_host_ram_guard.py",
+      "either": 8,
+      "partLabels": [
+        "tests",
+        "tests"
+      ],
+      "parts": [
+        "tests",
+        "tests"
+      ],
+      "relation": "inside",
+      "shared": 4
     }
   ],
   "changesTogetherNote": [
     "1 file changed together with its own test, as expected.",
     "Confidence is low: fewer than 25 source files reach 10 revisions in the window.",
-    "Window: 180 days; a pair counts from 3 shared commits, since 4 source files reach 10 revisions; the floor rises to 10 when 25 do."
+    "Window: 180 days; a pair counts from 3 shared commits, since 5 source files reach 10 revisions; the floor rises to 10 when 25 do."
   ],
   "changesTogetherWithTests": 1,
-  "commit": "594a1f64673907cd44a39c85d0473983dbc9efdb",
+  "commit": "011165f23a868b0d2cc97ac42c1633aa65d4d83b",
   "defaultBranch": "main",
-  "derived": "13 parts, mostly JSON data (2619 files); code in JavaScript (249), Python (63), shell (10), Astro (3), PowerShell (3), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; CI and Publish each reach 4 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run sdlab.",
+  "derived": "13 parts, mostly JSON data (2621 files); code in JavaScript (249), Python (71), shell (10), Astro (3), PowerShell (3), CSS (2), HTML (2) and TypeScript (2). Work enters through 4 doors; CI and Publish each reach 4 parts, and CI is followed because a pull request goes through it. It publishes to npm. It deploys a site to GitHub Pages. People run sdlab.",
   "doors": [
     {
       "checks": [],
@@ -194,12 +171,12 @@
         {
           "boundary": "scripts",
           "depth": 0,
-          "files": 50
+          "files": 52
         },
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 130
+          "files": 136
         },
         {
           "boundary": "lib",
@@ -244,7 +221,7 @@
         "tests/lib-runtime/"
       ],
       "runsCount": 34,
-      "runsMore": 125,
+      "runsMore": 131,
       "sends": [
         "uploads coverage to Codecov"
       ],
@@ -511,12 +488,12 @@
       ]
     }
   ],
-  "generatedAt": "2026-11-16T15:28:11.893Z",
+  "generatedAt": "2026-11-23T17:40:44.055Z",
   "limits": [
-    "5 imports could not be resolved: `bin/sdlab.js` imports a path built at run time; `lib/training-adapters.js` imports a path built at run time; `projects/salt-road/inputs/prompts/wave-runner.py` imports a path built at run time; and 2 more.",
-    "44 writes and 79 reads use paths built at run time and are not named here.",
+    "8 imports could not be resolved: `bin/sdlab.js` imports a path built at run time; `lib/training-adapters.js` imports a path built at run time; `projects/salt-road/inputs/prompts/wave-runner.py` imports a path built at run time; and 5 more.",
+    "45 writes and 79 reads use paths built at run time and are not named here.",
     "3 writes go to places this repository does not track, so they are not listed as generated.",
-    "170 writes and 322 reads go to a path their caller passes, not to this repository.",
+    "176 writes and 337 reads go to a path their caller passes, not to this repository.",
     "12 writes and 3 reads go to the directory the command is run in or a path their caller passes, not to this repository.",
     "7 reads go to the directory the command is run in, not to this repository.",
     "1 write and 2 reads go to a temporary directory, not to this repository.",
@@ -797,14 +774,14 @@
   ],
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 140,
+  "testFiles": 146,
   "testedBy": {
     "bin": 11,
     "lib": 98,
-    "scripts": 33
+    "scripts": 37
   },
   "testedCodeParts": 3,
-  "unnamedWrites": 44,
+  "unnamedWrites": 45,
   "unread": [
     {
       "place": "projects/ai-eye-test/outputs/synthetic/phase2/apple_n*_s*.json",

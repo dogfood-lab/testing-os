@@ -9,8 +9,16 @@
       "externals": 0,
       "files": [
         {
-          "hash": "2d3336bfb15f77a7564a4a0899c39a6b98295f3b6a8437c4daf4727a21bb1fd1",
+          "hash": "6eb567f99daedc21f8d0a326018ecd9469c92469f30b25d5de8d77ebd378d40e",
+          "path": ".github/audit-allowlist.json"
+        },
+        {
+          "hash": "5445689929cb3624a5991aa43162c6565048434d991a9fa1a650c1648f2a7605",
           "path": ".github/workflows/ci.yml"
+        },
+        {
+          "hash": "2c1a225b2abadc8f00b601576b5a00f54cf3f49eb7509ead7fd1061d332fe2a8",
+          "path": ".github/workflows/pages.yml"
         }
       ],
       "globs": [
@@ -24,10 +32,10 @@
       "unresolvedSites": 0
     },
     {
-      "dynamicReads": 0,
+      "dynamicReads": 6,
       "dynamicSpawns": 0,
       "dynamicSpawnsInTests": 0,
-      "dynamicWrites": 0,
+      "dynamicWrites": 7,
       "entryPoints": [
         "colab_runner/__init__.py"
       ],
@@ -35,24 +43,671 @@
       "files": [
         {
           "constantOnly": true,
-          "hash": "78598dbf5d00a6c2cb69bbfa60347ee6c735d0297350aed5cb12c817bfa8e75e",
+          "hash": "0d83166d67f2d92e94f32e831bdd7124e8009e823d34f60b1b87a3534e358562",
           "path": "colab_runner/__init__.py"
         },
         {
           "exports": [
-            "main"
+            "kit_env",
+            "main",
+            "refuse_unbounded",
+            "run_command",
+            "run_exit_code",
+            "stop_command"
           ],
           "failurePaths": [
             {
+              "in": "kit_env",
               "kind": "raise",
-              "line": 21
+              "line": 128
+            },
+            {
+              "in": "kit_env",
+              "kind": "raise",
+              "line": 131
+            },
+            {
+              "in": "run_command",
+              "kind": "raise",
+              "line": 197
+            },
+            {
+              "in": "run_command",
+              "kind": "raise",
+              "line": 199
+            },
+            {
+              "in": "run_command",
+              "kind": "except",
+              "line": 212
+            },
+            {
+              "in": "run_command",
+              "kind": "except",
+              "line": 214
+            },
+            {
+              "in": "stop_command",
+              "kind": "raise",
+              "line": 246
+            },
+            {
+              "in": "stop_command",
+              "kind": "except",
+              "line": 247
+            },
+            {
+              "in": "stop_command",
+              "kind": "raise",
+              "line": 248
+            },
+            {
+              "in": "stop_command",
+              "kind": "except",
+              "line": 250
+            },
+            {
+              "in": "stop_command",
+              "kind": "except",
+              "line": 252
+            },
+            {
+              "kind": "raise",
+              "line": 278
             }
           ],
-          "hash": "853a09a59f38738b43b597b2cc776e828c74af5c78e06765d02395db6d1659c4",
+          "hash": "d5d8a64c79e4b5afa159b8016bfb3350c5bc44d7e230de3a7b7f6b68e96abba1",
           "importsFiles": [
-            "colab_runner/__init__.py"
+            "colab_runner/__init__.py",
+            "colab_runner/colab_cli.py",
+            "colab_runner/errors.py",
+            "colab_runner/runner.py",
+            "colab_runner/spend.py"
           ],
           "path": "colab_runner/__main__.py"
+        },
+        {
+          "exports": [
+            "bare_quarantine_dir",
+            "binary_token_hit",
+            "cli_from_env",
+            "default_quarantine_dir",
+            "env_preamble",
+            "is_binary_bytes",
+            "kernel_timeout",
+            "kill_group",
+            "scrub",
+            "scrub_local",
+            "token_shaped",
+            "write_cell"
+          ],
+          "failurePaths": [
+            {
+              "in": "_byte_twin_source",
+              "kind": "raise",
+              "line": 89
+            },
+            {
+              "in": "_byte_twin_source",
+              "kind": "raise",
+              "line": 95
+            },
+            {
+              "in": "_byte_twin_source",
+              "kind": "raise",
+              "line": 115
+            },
+            {
+              "in": "_byte_twin_source",
+              "kind": "raise",
+              "line": 121
+            },
+            {
+              "in": "_byte_twin_source",
+              "kind": "raise",
+              "line": 126
+            },
+            {
+              "in": "_byte_twin_source",
+              "kind": "raise",
+              "line": 137
+            },
+            {
+              "in": "default_quarantine_dir",
+              "kind": "raise",
+              "line": 209
+            },
+            {
+              "in": "is_binary_bytes",
+              "kind": "except",
+              "line": 229
+            },
+            {
+              "in": "kill_group",
+              "kind": "except",
+              "line": 265
+            },
+            {
+              "in": "kill_group",
+              "kind": "except",
+              "line": 269
+            },
+            {
+              "in": "_drain",
+              "kind": "except",
+              "line": 279
+            },
+            {
+              "in": "_drain",
+              "kind": "except",
+              "line": 283
+            },
+            {
+              "in": "_drain",
+              "kind": "except",
+              "line": 287
+            },
+            {
+              "in": "_read",
+              "kind": "except",
+              "line": 318
+            },
+            {
+              "in": "_kill",
+              "kind": "except",
+              "line": 354
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 391
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 395
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 398
+            },
+            {
+              "in": "run",
+              "kind": "raise",
+              "line": 401
+            },
+            {
+              "in": "start_cell",
+              "kind": "except",
+              "line": 430
+            },
+            {
+              "in": "_unlink_quiet",
+              "kind": "except",
+              "line": 461
+            },
+            {
+              "in": "_unlink_link",
+              "kind": "except",
+              "line": 469
+            },
+            {
+              "in": "_unlink_link",
+              "kind": "except",
+              "line": 472
+            },
+            {
+              "in": "_reparse_tag",
+              "kind": "except",
+              "line": 485
+            },
+            {
+              "in": "_quarantine_dest",
+              "kind": "raise",
+              "line": 578
+            },
+            {
+              "in": "scrub_local",
+              "kind": "except",
+              "line": 610
+            },
+            {
+              "in": "scrub_local",
+              "kind": "except",
+              "line": 619
+            },
+            {
+              "in": "scrub_local",
+              "kind": "except",
+              "line": 631
+            },
+            {
+              "in": "scrub_local",
+              "kind": "raise",
+              "line": 645
+            },
+            {
+              "in": "scrub_local",
+              "kind": "raise",
+              "line": 647
+            },
+            {
+              "in": "cli_from_env",
+              "kind": "except",
+              "line": 657
+            },
+            {
+              "in": "cli_from_env",
+              "kind": "raise",
+              "line": 658
+            }
+          ],
+          "hash": "155e94015f996bc4b9577170cab06f25d1fdd73f43ae3a7e90957cb66ce3ece9",
+          "importsFiles": [
+            "colab_runner/errors.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py"
+          ],
+          "path": "colab_runner/colab_cli.py"
+        },
+        {
+          "exports": [
+            "cap_trip_record",
+            "error_record",
+            "lookup"
+          ],
+          "hash": "6677735195d68f3466b54f2bb346688485e8a72ceca67632bf46b1938b4054e9",
+          "path": "colab_runner/errors.py"
+        },
+        {
+          "exports": [
+            "cell_source",
+            "parse_poll",
+            "require_number",
+            "scrub",
+            "scrub_obj",
+            "vm_lib_source",
+            "write_json_atomic"
+          ],
+          "failurePaths": [
+            {
+              "in": "parse_poll",
+              "kind": "except",
+              "line": 113
+            },
+            {
+              "in": "require_number",
+              "kind": "raise",
+              "line": 140
+            },
+            {
+              "in": "_parse_resident_max_s",
+              "kind": "except",
+              "line": 151
+            },
+            {
+              "in": "_parse_resident_max_s",
+              "kind": "raise",
+              "line": 152
+            },
+            {
+              "in": "download",
+              "kind": "except",
+              "line": 445
+            },
+            {
+              "in": "download",
+              "kind": "raise",
+              "line": 448
+            },
+            {
+              "in": "download",
+              "kind": "except",
+              "line": 455
+            },
+            {
+              "in": "download",
+              "kind": "raise",
+              "line": 458
+            },
+            {
+              "in": "_fetch_record",
+              "kind": "except",
+              "line": 471
+            },
+            {
+              "in": "_collect_resident_log",
+              "kind": "except",
+              "line": 505
+            },
+            {
+              "in": "_collect_resident_log",
+              "kind": "raise",
+              "line": 507
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 568
+            },
+            {
+              "in": "run",
+              "kind": "except",
+              "line": 570
+            },
+            {
+              "in": "run",
+              "kind": "raise",
+              "line": 591
+            },
+            {
+              "in": "_check_run",
+              "kind": "raise",
+              "line": 610
+            },
+            {
+              "in": "_check_run",
+              "kind": "raise",
+              "line": 621
+            },
+            {
+              "in": "_check_run",
+              "kind": "raise",
+              "line": 624
+            },
+            {
+              "in": "_check_run",
+              "kind": "raise",
+              "line": 631
+            },
+            {
+              "in": "_check_run",
+              "kind": "except",
+              "line": 633
+            },
+            {
+              "in": "_check_run",
+              "kind": "raise",
+              "line": 634
+            },
+            {
+              "in": "_loop",
+              "kind": "except",
+              "line": 772
+            },
+            {
+              "in": "_step",
+              "kind": "except",
+              "line": 820
+            },
+            {
+              "in": "_step",
+              "kind": "except",
+              "line": 827
+            },
+            {
+              "in": "_salvage",
+              "kind": "except",
+              "line": 888
+            },
+            {
+              "in": "_on_signal",
+              "kind": "raise",
+              "line": 901
+            },
+            {
+              "in": "_on_signal",
+              "kind": "raise",
+              "line": 905
+            },
+            {
+              "in": "_signal_name",
+              "kind": "except",
+              "line": 953
+            }
+          ],
+          "hash": "e43b2e92690faeefd7b766d3ccd7f4a9662ba56f4e0462e40f4e3e00cbbe2579",
+          "importsFiles": [
+            "colab_runner/colab_cli.py",
+            "colab_runner/errors.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py"
+          ],
+          "path": "colab_runner/runner.py"
+        },
+        {
+          "exports": [
+            "neighbour_warning"
+          ],
+          "failurePaths": [
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 68
+            },
+            {
+              "in": "__post_init__",
+              "kind": "raise",
+              "line": 72
+            },
+            {
+              "in": "fold_usage",
+              "kind": "except",
+              "line": 105
+            }
+          ],
+          "hash": "5a27198cb19db2d7ced28ac48635c6bea7d44d3b38e9b7109bccfec21576f4cd",
+          "importsFiles": [
+            "colab_runner/runner.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py"
+          ],
+          "path": "colab_runner/spend.py"
+        },
+        {
+          "hash": "739a08f188d08fd2d8eabc76cb32bc642efedcb2b20767871341e6047ad96681",
+          "path": "colab_runner/vm/kill.py"
+        },
+        {
+          "exports": [
+            "cr_alive",
+            "cr_collect",
+            "cr_first_int",
+            "cr_group_alive",
+            "cr_kill_job",
+            "cr_owner",
+            "cr_pid",
+            "cr_progress",
+            "cr_read",
+            "cr_run_id",
+            "cr_start_job",
+            "cr_status",
+            "cr_units",
+            "cr_whole_chars"
+          ],
+          "failurePaths": [
+            {
+              "in": "cr_read",
+              "kind": "except",
+              "line": 74
+            },
+            {
+              "in": "cr_alive",
+              "kind": "except",
+              "line": 83
+            },
+            {
+              "in": "cr_alive",
+              "kind": "except",
+              "line": 85
+            },
+            {
+              "in": "cr_alive",
+              "kind": "except",
+              "line": 90
+            },
+            {
+              "in": "cr_status",
+              "kind": "except",
+              "line": 100
+            },
+            {
+              "in": "cr_group_alive",
+              "kind": "except",
+              "line": 177
+            },
+            {
+              "in": "cr_kill_job",
+              "kind": "except",
+              "line": 196
+            },
+            {
+              "in": "cr_kill_job",
+              "kind": "except",
+              "line": 204
+            },
+            {
+              "in": "cr_collect",
+              "kind": "except",
+              "line": 229
+            },
+            {
+              "in": "cr_collect",
+              "kind": "except",
+              "line": 235
+            },
+            {
+              "in": "cr_collect",
+              "kind": "except",
+              "line": 253
+            }
+          ],
+          "hash": "1dcd99e4708c778a984853bc4e0abb9972c5fdc9574f479b8c7172789a047a03",
+          "path": "colab_runner/vm/lib.py"
+        },
+        {
+          "hash": "c977381cba2ab3a2e2bfe2ea2a493132e13c9a491a365e24d926ff4e794de2a2",
+          "path": "colab_runner/vm/poll.py"
+        },
+        {
+          "hash": "80e81d415c0a17ddf377c942f603e5696fcab8354ded4bb358362d9f088c9bae",
+          "path": "colab_runner/vm/resident.py"
+        },
+        {
+          "hash": "f9776e616c6a0efd2fcfcf78e7ad7ebbac5e3843b3cf78a549df716acacd8b2e",
+          "path": "colab_runner/vm/start.py"
+        },
+        {
+          "hash": "818467c545b7368fa4e1b81b18996e4cd677864b7c835fd5d2ee1208cd34a781",
+          "path": "colab_runner/window_lib/PROVENANCE.md"
+        },
+        {
+          "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "noStatements": true,
+          "path": "colab_runner/window_lib/__init__.py"
+        },
+        {
+          "hash": "d147ba95ade4ff7b17128a27750927d7092a143151841e0147fa7ecd33453ecf",
+          "path": "colab_runner/window_lib/colab_window.sh"
+        },
+        {
+          "exports": [
+            "check_host_ram_projection",
+            "compute_cap_trip",
+            "evaluate_cap_budget",
+            "evaluate_cap_guard",
+            "evaluate_host_ram_projection",
+            "evaluate_vitals_and_stall_guard",
+            "evaluate_wall_guard",
+            "format_dry_cap_budget",
+            "gpu_projection_rate",
+            "host_ram_reading",
+            "host_ram_status",
+            "is_vitals_line",
+            "main",
+            "normalize_hex_sha",
+            "parse_active_assignments",
+            "parse_usage_text",
+            "parse_vitals_log",
+            "run_between_item_fetch",
+            "run_output_bytes",
+            "scrub_colab_tokens",
+            "scrub_file_in_place",
+            "sha256_file",
+            "sha256_self_normalized",
+            "update_window_rate",
+            "verify_input_shas",
+            "wall_cap_refusal",
+            "window_rate_decision"
+          ],
+          "failurePaths": [
+            {
+              "in": "verify_input_shas",
+              "kind": "raise",
+              "line": 70
+            },
+            {
+              "in": "verify_input_shas",
+              "kind": "raise",
+              "line": 78
+            },
+            {
+              "in": "parse_usage_text",
+              "kind": "raise",
+              "line": 341
+            },
+            {
+              "in": "_select_rate",
+              "kind": "raise",
+              "line": 361
+            },
+            {
+              "in": "_failure_rates",
+              "kind": "except",
+              "line": 374
+            },
+            {
+              "in": "parse_usage_text",
+              "kind": "except",
+              "line": 450
+            },
+            {
+              "in": "parse_usage_text",
+              "kind": "raise",
+              "line": 453
+            },
+            {
+              "in": "parse_vitals_log",
+              "kind": "except",
+              "line": 743
+            },
+            {
+              "in": "check_host_ram_projection",
+              "kind": "raise",
+              "line": 1132
+            },
+            {
+              "in": "main",
+              "kind": "except",
+              "line": 1277
+            },
+            {
+              "kind": "raise",
+              "line": 1391
+            }
+          ],
+          "hash": "2998b4f8e3aea3aea2ecc9f779c743b4b44824b30e7ff55fb1da782d7a416c69",
+          "path": "colab_runner/window_lib/launch_guards.py"
+        },
+        {
+          "exports": [
+            "prepare_content_downloads",
+            "run_remote_script",
+            "scrub_line"
+          ],
+          "hash": "393929ed704ccbacaee2b590010e348a5d635cbdd70361209d3e0103d1fba6eb",
+          "path": "colab_runner/window_lib/remote_runner.py"
         }
       ],
       "globs": [
@@ -61,11 +716,30 @@
       "importConfidence": "full",
       "name": "colab_runner",
       "origin": "authored",
+      "outsidePlaces": [
+        {
+          "reads": 15,
+          "where": [
+            "caller"
+          ],
+          "writes": 9
+        },
+        {
+          "reads": 0,
+          "where": [
+            "caller",
+            "temp"
+          ],
+          "writes": 1
+        }
+      ],
+      "outsideReads": 15,
+      "outsideWrites": 10,
       "role": "code",
       "testRunners": [
         "unittest"
       ],
-      "testedBy": 1,
+      "testedBy": 15,
       "unresolvedSites": 0
     },
     {
@@ -81,11 +755,15 @@
           "path": ".gitattributes"
         },
         {
-          "hash": "d2c9408a02c467abd23efd968315fb51112de7f3f7e743764c4e19b6bee89f09",
+          "hash": "2e119cace277c9e6a314e18f090f97866246a7e850ce8289b1f3f8398a0580ab",
           "path": ".gitignore"
         },
         {
-          "hash": "c9783d679ee14ef8e77dc884dc9961dbd1e21cc3634397b7998f7b1be1ace341",
+          "hash": "3e153bdea775848418c568918bd7f3479e509a735cb155d151d4d57febb08f7f",
+          "path": ".polyglot-pins.json"
+        },
+        {
+          "hash": "d33a7065ae0aeab8771014dc4502ec3286a55a1e0bbcbe07d7d2e0d72e125644",
           "path": "CHANGELOG.md"
         },
         {
@@ -93,16 +771,60 @@
           "path": "LICENSE"
         },
         {
-          "hash": "b91ecd12d9102269dd6a8499183016994a210a0b540c06c613670135aa4b7169",
+          "hash": "513f16c00060a65749de9a977f4936d272d66e76d481b18c515aa648354a3543",
+          "path": "README.es.md"
+        },
+        {
+          "hash": "afdfa679777d579e79139b29caa3895698c95b783632d067080492f716ddc5c7",
+          "path": "README.fr.md"
+        },
+        {
+          "hash": "ed1f5fa5e45b0b763bb623bb3f4c1714151671c976ea2482f93dd0597d137d8a",
+          "path": "README.hi.md"
+        },
+        {
+          "hash": "54dbbf79b704415b167a3c1395093fff780fd794c60e045ddd62bb839f0f10a3",
+          "path": "README.it.md"
+        },
+        {
+          "hash": "be840d925d6fe94a3eec5c94ebfd9712b726daebfb3d26bb73546d52e84450c5",
+          "path": "README.ja.md"
+        },
+        {
+          "hash": "3cf29fe28e513589b98621e6dfdfcb5e5ac2f370215bbebbde51ff9131cd19f7",
           "path": "README.md"
+        },
+        {
+          "hash": "cc9d823fec1cc885f45772ce5ebc2f45f55f853a80575ef91ccd1fae1c0bf5c4",
+          "path": "README.pt-BR.md"
+        },
+        {
+          "hash": "2ac6912094671cf45a55dc1e9b8044155500279606e69cf372fcd96ad05d8ab8",
+          "path": "README.zh.md"
+        },
+        {
+          "hash": "5dd4e9ee7ee5b1abab153da8abc339bcae1b7e0278da341051f8477d577c53c7",
+          "path": "SCORECARD.md"
+        },
+        {
+          "hash": "93287594d7f21628bbd7968f7a557a7d3e58ddb74a1dbd0482baa608b8fbe7a4",
+          "path": "SECURITY.md"
+        },
+        {
+          "hash": "4929823374f78dc0e52305a171c179fad6493a246392a553ed2d5379f636bd77",
+          "path": "SHIP_GATE.md"
         },
         {
           "hash": "3430759e0e9dc78320aa93faa7d9140bf540174bf7bfd0a0fcbbba4b5ec0e08d",
           "path": "codecov.yml"
         },
         {
-          "hash": "dbac0e994f5bcab2c1628e63735e49772b60d08561c65be558a710c920886365",
+          "hash": "11d710d67dffe40f4cb2b3256b140ae3c900cf2b804a7556f8d4fb7183765da9",
           "path": "pyproject.toml"
+        },
+        {
+          "hash": "b0fc97c4c9f87207dbc3341de1ca7ec6ce926ad550be112d5237f03498705d08",
+          "path": "uv.lock"
         },
         {
           "hash": "7bce6544cc29b98892eb2f20fe095ca7cbe80018981e6db99ed6da86acb8c1fc",
@@ -133,12 +855,341 @@
           "path": "tests/__init__.py"
         },
         {
-          "hash": "57c875fc27554920e988b478f4779a2b3c9c0b02b24734f5dce2579f22cfa4f9",
+          "exports": [
+            "main"
+          ],
+          "hash": "ac6649a73baf6529900811ab3a3c154d5fc4f703e40ed560f7fa97f601ae9a94",
+          "path": "tests/fake_colab.py",
+          "selfRun": {
+            "in": "tests",
+            "run": "python fake_colab.py"
+          }
+        },
+        {
+          "exports": [
+            "exec_vm_lib",
+            "guard",
+            "make",
+            "rec",
+            "usage_text"
+          ],
+          "hash": "dd17135eea8ff321841ee711ad243ddd13b835c1889941c1b8a4b61926b67227",
+          "importsFiles": [
+            "colab_runner/colab_cli.py",
+            "colab_runner/runner.py",
+            "colab_runner/spend.py"
+          ],
+          "names": [
+            "colab_runner/vm/lib.py"
+          ],
+          "path": "tests/fakes.py",
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "cli"
+          ],
+          "hash": "49a14b7ae2639f9cf6630bc8a3d462952bbd4ed1747ad5b3937c218efd0c5736",
+          "importOrder": [
+            "colab_runner/__main__.py",
+            "colab_runner/runner.py",
+            "colab_runner/spend.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py",
+            "tests/fakes.py",
+            "colab_runner/colab_cli.py"
+          ],
+          "importsFiles": [
+            "colab_runner/__main__.py",
+            "colab_runner/colab_cli.py",
+            "colab_runner/runner.py",
+            "colab_runner/spend.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py",
+            "tests/fakes.py"
+          ],
+          "path": "tests/test_bounds.py",
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "cli",
+            "library_refusal_codes",
+            "source_codes",
+            "trip_codes"
+          ],
+          "hash": "a12e04e5e3435cb8f74ab869cf5d16aed5b1c8588d7a54ea7a1e020cc1bd3f7f",
+          "importOrder": [
+            "colab_runner/__main__.py",
+            "colab_runner/errors.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py",
+            "tests/fakes.py",
+            "tests/test_tokens.py",
+            "colab_runner/runner.py"
+          ],
+          "importsFiles": [
+            "colab_runner/__main__.py",
+            "colab_runner/errors.py",
+            "colab_runner/runner.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py",
+            "tests/fakes.py",
+            "tests/test_tokens.py"
+          ],
+          "names": [
+            "colab_runner/spend.py"
+          ],
+          "path": "tests/test_errors.py",
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "scenarios",
+            "signal_at_second_poll"
+          ],
+          "hash": "de117e4ecbcad420ae1e9218c09a759f83e8487d4385983ca7ec6d7348e780f9",
+          "importsFiles": [
+            "colab_runner/__main__.py",
+            "colab_runner/runner.py",
+            "tests/fakes.py"
+          ],
+          "path": "tests/test_exits.py",
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "poisoned"
+          ],
+          "hash": "8ef7d98ded468231096f7dd1bc9ae13c54a07630f7823454dc36f8714e0dc6bf",
+          "importOrder": [
+            "colab_runner/colab_cli.py",
+            "colab_runner/errors.py",
+            "colab_runner/runner.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py",
+            "tests/fakes.py",
+            "tests/test_tokens.py",
+            "colab_runner/__main__.py"
+          ],
+          "importsFiles": [
+            "colab_runner/__main__.py",
+            "colab_runner/colab_cli.py",
+            "colab_runner/errors.py",
+            "colab_runner/runner.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py",
+            "tests/fakes.py",
+            "tests/test_tokens.py"
+          ],
+          "path": "tests/test_followups.py",
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "gone",
+            "library_alone"
+          ],
+          "hash": "7a0454436ca87237f3d4d61995c4c60cf9dda8e15bba5d534207d176c48436c3",
+          "importsFiles": [
+            "colab_runner/__init__.py",
+            "colab_runner/colab_cli.py",
+            "colab_runner/spend.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py",
+            "tests/fakes.py"
+          ],
+          "path": "tests/test_library.py",
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "progress_bar"
+          ],
+          "hash": "ed8967ede1f8e0e00d22d92e03de284d268196d911ac3907ac3dd1ac4e6dee3f",
+          "importsFiles": [
+            "tests/fakes.py"
+          ],
+          "path": "tests/test_logs.py",
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "cli",
+            "count_downloads",
+            "overrun_first_poll",
+            "poisoned",
+            "snapshot",
+            "trip_scenarios"
+          ],
+          "hash": "7f3751ae989f5cde19c6d107bb903ccea503aa28507c71794d1eedac959895b2",
+          "importOrder": [
+            "colab_runner/__init__.py",
+            "colab_runner/colab_cli.py",
+            "colab_runner/errors.py",
+            "colab_runner/runner.py",
+            "tests/fakes.py",
+            "tests/test_tokens.py",
+            "colab_runner/__main__.py"
+          ],
+          "importsFiles": [
+            "colab_runner/__init__.py",
+            "colab_runner/__main__.py",
+            "colab_runner/colab_cli.py",
+            "colab_runner/errors.py",
+            "colab_runner/runner.py",
+            "tests/fakes.py",
+            "tests/test_tokens.py"
+          ],
+          "path": "tests/test_post010.py",
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "cli",
+            "poisoned",
+            "snapshot"
+          ],
+          "hash": "b8d68df2983ece48766134b417f79f3c01523b9f7e3e350f8c41809fba271543",
+          "importOrder": [
+            "colab_runner/__init__.py",
+            "colab_runner/colab_cli.py",
+            "colab_runner/errors.py",
+            "colab_runner/runner.py",
+            "tests/fakes.py",
+            "tests/test_tokens.py",
+            "colab_runner/__main__.py"
+          ],
+          "importsFiles": [
+            "colab_runner/__init__.py",
+            "colab_runner/__main__.py",
+            "colab_runner/colab_cli.py",
+            "colab_runner/errors.py",
+            "colab_runner/runner.py",
+            "tests/fakes.py",
+            "tests/test_tokens.py"
+          ],
+          "path": "tests/test_pr4_fix1.py",
+          "testFramework": "unittest"
+        },
+        {
+          "hash": "dba6881d325d2022609675d2efdf4ce3654df50e260b7c97e2a70e227e0943fe",
+          "importOrder": [
+            "colab_runner/colab_cli.py",
+            "tests/fakes.py",
+            "colab_runner/__main__.py",
+            "colab_runner/runner.py"
+          ],
+          "importsFiles": [
+            "colab_runner/__main__.py",
+            "colab_runner/colab_cli.py",
+            "colab_runner/runner.py",
+            "tests/fakes.py"
+          ],
+          "path": "tests/test_resident.py",
+          "testFramework": "unittest"
+        },
+        {
+          "hash": "9a17fb68bb8b753ded482ebf15c8970ba13387167ae2817f5232d5a15091ec9e",
+          "importOrder": [
+            "colab_runner/runner.py",
+            "colab_runner/spend.py",
+            "tests/fakes.py",
+            "colab_runner/__main__.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py",
+            "colab_runner/colab_cli.py"
+          ],
+          "importsFiles": [
+            "colab_runner/__main__.py",
+            "colab_runner/colab_cli.py",
+            "colab_runner/runner.py",
+            "colab_runner/spend.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py",
+            "tests/fakes.py"
+          ],
+          "path": "tests/test_runner.py",
+          "testFramework": "unittest"
+        },
+        {
+          "hash": "2ed5535a40765184d63f59f34f28a0f200ed8bbffd51e0d4b800e8ce1917d60b",
           "importsFiles": [
             "colab_runner/__init__.py",
             "colab_runner/__main__.py"
           ],
           "path": "tests/test_scaffold.py",
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "fake_tokens",
+            "leak_lines",
+            "png",
+            "values"
+          ],
+          "hash": "edba5cbaad014afe12651aa9f5a6b8719a801cbadc1841332b0231fb036b7225",
+          "importOrder": [
+            "colab_runner/colab_cli.py",
+            "colab_runner/runner.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py",
+            "tests/fakes.py",
+            "colab_runner/__main__.py",
+            "colab_runner/__init__.py"
+          ],
+          "importsFiles": [
+            "colab_runner/__init__.py",
+            "colab_runner/__main__.py",
+            "colab_runner/colab_cli.py",
+            "colab_runner/runner.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py",
+            "tests/fakes.py"
+          ],
+          "path": "tests/test_tokens.py",
+          "testFramework": "unittest"
+        },
+        {
+          "hash": "a4ce5d3b0099363f37ee0fd6b14238032d69fda6b73ed8dfbf4c39c33e3caf6d",
+          "importsFiles": [
+            "tests/fakes.py"
+          ],
+          "path": "tests/test_torn_phase.py",
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "gone",
+            "reap_job",
+            "run_cell",
+            "wait_for"
+          ],
+          "hash": "a570dd349877d406cf4369da42a689bcf0c0e1222cc059aebe5eb4aeb4f99659",
+          "importsFiles": [
+            "colab_runner/colab_cli.py",
+            "colab_runner/runner.py",
+            "tests/fakes.py"
+          ],
+          "path": "tests/test_vm_cells.py",
+          "testFramework": "unittest"
+        },
+        {
+          "exports": [
+            "parse_table"
+          ],
+          "hash": "57ef6a582d252929c44b269f3fed16b9556e60f70758c1f5f46af8b09fa617b8",
+          "names": [
+            "colab_runner/vm/kill.py",
+            "colab_runner/vm/lib.py",
+            "colab_runner/vm/poll.py",
+            "colab_runner/vm/resident.py",
+            "colab_runner/vm/start.py",
+            "colab_runner/window_lib/__init__.py",
+            "colab_runner/window_lib/launch_guards.py",
+            "colab_runner/window_lib/remote_runner.py"
+          ],
+          "path": "tests/test_window_lib.py",
           "testFramework": "unittest"
         }
       ],
@@ -191,6 +1242,24 @@
             "npx"
           ],
           "step": "Atlas check"
+        },
+        {
+          "dir": "site",
+          "job": "ci",
+          "programs": [
+            "node",
+            "npm"
+          ],
+          "step": "Site build"
+        },
+        {
+          "dir": "",
+          "job": "ci",
+          "programs": [
+            "cat",
+            "python"
+          ],
+          "step": "Dependency audit (pip-audit)"
         }
       ],
       "elsewhere": [],
@@ -242,7 +1311,16 @@
         }
       ],
       "landings": [],
-      "mentions": [],
+      "mentions": [
+        {
+          "job": "ci",
+          "path": ".github/audit-allowlist.json"
+        },
+        {
+          "job": "ci",
+          "path": "site/package-lock.json"
+        }
+      ],
       "name": "CI",
       "permissions": [
         "contents:read",
@@ -253,7 +1331,7 @@
         {
           "boundary": "colab_runner",
           "depth": 0,
-          "files": 2
+          "files": 14
         },
         {
           "boundary": "root",
@@ -263,7 +1341,7 @@
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 2
+          "files": 18
         }
       ],
       "readers": [],
@@ -275,6 +1353,31 @@
           "path": "colab_runner/",
           "runKind": "checks",
           "via": "verify.sh → ruff"
+        },
+        {
+          "job": "ci",
+          "path": "scripts/check-audit-allowlist.mjs",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "path": "scripts/check-audit-allowlist.test.mjs",
+          "runKind": "executes"
+        },
+        {
+          "job": "ci",
+          "matched": true,
+          "path": "site/astro.config.mjs",
+          "runKind": "executes",
+          "via": "astro build"
+        },
+        {
+          "directory": true,
+          "job": "ci",
+          "matched": true,
+          "path": "site/src/",
+          "runKind": "executes",
+          "via": "astro build"
         },
         {
           "directory": true,
@@ -290,7 +1393,7 @@
           "runKind": "executes"
         }
       ],
-      "runsCount": 3,
+      "runsCount": 7,
       "secrets": [],
       "sends": {
         "deploysPages": false,
@@ -317,10 +1420,17 @@
         },
         {
           "coverage": true,
-          "files": 2,
+          "files": 18,
           "job": "ci",
           "runner": "unittest",
           "step": "Coverage (floor 90)"
+        },
+        {
+          "dir": "site",
+          "files": 1,
+          "job": "ci",
+          "runner": "node --test",
+          "step": "Site build"
         }
       ],
       "triggers": [
@@ -336,11 +1446,14 @@
           ],
           "event": "push",
           "paths": [
+            ".github/audit-allowlist.json",
             ".github/workflows/**",
             "atlas/**",
             "codecov.yml",
             "colab_runner/**",
             "pyproject.toml",
+            "scripts/**",
+            "site/**",
             "tests/**",
             "verify.sh"
           ]
@@ -349,11 +1462,167 @@
           "event": "workflow_dispatch"
         }
       ],
+      "untrackedLandings": [
+        "site/audit-report.json"
+      ],
       "uses": [
         "actions/checkout",
         "actions/setup-node",
         "actions/setup-python",
         "codecov/codecov-action"
+      ],
+      "usesWorkflowToken": false
+    },
+    {
+      "checksCount": 0,
+      "commands": [
+        {
+          "dir": "site",
+          "job": "build",
+          "programs": [
+            "npm"
+          ],
+          "step": "Install site dependencies"
+        },
+        {
+          "dir": "site",
+          "job": "build",
+          "programs": [
+            "npm"
+          ],
+          "step": "Build site"
+        }
+      ],
+      "elsewhere": [],
+      "file": ".github/workflows/pages.yml",
+      "gated": [
+        {
+          "jobs": [
+            "deploy"
+          ],
+          "pushes": false,
+          "sends": [
+            "deploysPages"
+          ],
+          "stages": [],
+          "when": {
+            "branches": [
+              "main"
+            ]
+          }
+        }
+      ],
+      "jobs": [
+        {
+          "basis": "declared",
+          "name": "build",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ],
+          "setup": [
+            {
+              "ranges": [
+                {
+                  "from": "22",
+                  "range": ">=22.0.0 <23.0.0-0"
+                }
+              ],
+              "step": "1",
+              "uses": "actions/setup-node",
+              "version": "22"
+            }
+          ]
+        },
+        {
+          "basis": "declared",
+          "environment": {
+            "name": "github-pages"
+          },
+          "name": "deploy",
+          "runsOn": [
+            {
+              "labels": [
+                "ubuntu-latest"
+              ],
+              "platform": {
+                "cpu": "x64",
+                "libc": "glibc",
+                "os": "linux"
+              }
+            }
+          ]
+        }
+      ],
+      "landings": [],
+      "mentions": [],
+      "name": "Deploy site to GitHub Pages",
+      "permissions": [
+        "contents:read",
+        "id-token:write",
+        "pages:write"
+      ],
+      "pushes": false,
+      "reach": [],
+      "readers": [],
+      "runs": [
+        {
+          "job": "build",
+          "matched": true,
+          "path": "site/astro.config.mjs",
+          "runKind": "executes",
+          "via": "astro build"
+        },
+        {
+          "directory": true,
+          "job": "build",
+          "matched": true,
+          "path": "site/src/",
+          "runKind": "executes",
+          "via": "astro build"
+        }
+      ],
+      "runsCount": 2,
+      "secrets": [],
+      "sends": {
+        "deploysPages": false,
+        "dispatchesTo": [],
+        "opensIssues": false,
+        "opensIssuesOnFailure": false,
+        "opensPullRequests": false,
+        "publishes": false,
+        "publishesTo": [],
+        "releases": false
+      },
+      "stages": [],
+      "triggers": [
+        {
+          "branches": [
+            "main"
+          ],
+          "event": "push",
+          "paths": [
+            ".github/workflows/**",
+            "site/**"
+          ]
+        },
+        {
+          "event": "workflow_dispatch"
+        }
+      ],
+      "uses": [
+        "actions/checkout",
+        "actions/deploy-pages",
+        "actions/setup-node",
+        "actions/upload-pages-artifact"
       ],
       "usesWorkflowToken": false
     },
@@ -412,10 +1681,38 @@
   ],
   "engine": "1.26.0",
   "generatedFrom": {
-    "commit": "3ef5ad12acfaaf43d1c5b34169bd4090a4a6a4d8",
-    "tracked": 13
+    "commit": "f6247ae06594b8e4d04b0647e14d7b4651f1d216",
+    "tracked": 75
   },
   "landings": [
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
+        },
+        {
+          "by": "scripts/check-audit-allowlist.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": ".github/audit-allowlist.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/check-audit-allowlist.test.mjs",
+          "call": "readFileSync",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": ".github/workflows/ci.yml",
+      "writers": []
+    },
     {
       "readers": [
         {
@@ -426,11 +1723,644 @@
       ],
       "target": "README.md",
       "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_errors.py",
+          "call": "rglob",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "colab_runner",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_errors.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "colab_runner/**/*.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_errors.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        },
+        {
+          "by": "tests/test_errors.py",
+          "call": "read_text",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "colab_runner/spend.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "colab_runner/runner.py",
+          "call": "read_text",
+          "confidence": "ast"
+        }
+      ],
+      "target": "colab_runner/vm",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_window_lib.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "colab_runner/vm/kill.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "colab_runner/runner.py",
+          "call": "read_text",
+          "confidence": "ast"
+        },
+        {
+          "by": "tests/test_window_lib.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "colab_runner/vm/lib.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_window_lib.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "colab_runner/vm/poll.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_window_lib.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "colab_runner/vm/resident.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_window_lib.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "colab_runner/vm/start.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "pyproject.toml",
+          "call": "configuration",
+          "confidence": "config"
+        },
+        {
+          "by": "tests/test_errors.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "colab_runner/window_lib",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_window_lib.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "colab_runner/window_lib/PROVENANCE.md",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_window_lib.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "colab_runner/window_lib/__init__.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_window_lib.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "colab_runner/window_lib/colab_window.sh",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_window_lib.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "colab_runner/window_lib/launch_guards.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_window_lib.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "colab_runner/window_lib/remote_runner.py",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "scripts/check-audit-allowlist.test.mjs",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "scripts/check-audit-allowlist.mjs",
+      "writers": []
+    },
+    {
+      "readers": [],
+      "target": "site/audit-report.json",
+      "tracked": false,
+      "writers": [
+        {
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
+        }
+      ]
+    },
+    {
+      "readers": [
+        {
+          "by": ".github/workflows/ci.yml",
+          "confidence": "config"
+        }
+      ],
+      "target": "site/package-lock.json",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "content-collection",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "site/astro.config.mjs",
+          "call": "autogenerate",
+          "confidence": "ast"
+        }
+      ],
+      "target": "site/src/content/docs/handbook",
+      "writers": []
+    },
+    {
+      "readers": [
+        {
+          "by": "tests/test_vm_cells.py",
+          "call": "literal",
+          "confidence": "ast",
+          "fromTests": true
+        }
+      ],
+      "target": "tests/fake_colab.py",
+      "writers": []
+    }
+  ],
+  "manifests": [
+    {
+      "name": "site",
+      "path": "site/package.json",
+      "private": true,
+      "role": "installed",
+      "roleFrom": "door CI, job ci, step Site build: npm ci in site",
+      "version": "0.0.1"
     }
   ],
   "overlaps": [],
+  "packageDependencies": [
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@astrojs/starlight",
+      "purl": "pkg:npm/%40astrojs/starlight",
+      "range": "^0.42.0",
+      "version": "0.42.11",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@mcptoolshop/site-theme",
+      "purl": "pkg:npm/%40mcptoolshop/site-theme",
+      "range": "^2.2.0",
+      "version": "2.2.0",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "@tailwindcss/vite",
+      "purl": "pkg:npm/%40tailwindcss/vite",
+      "range": "^4.2.0",
+      "version": "4.3.5",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "astro",
+      "purl": "pkg:npm/astro",
+      "range": "^7.3.1",
+      "version": "7.4.12",
+      "versionFrom": "site/package-lock.json"
+    },
+    {
+      "field": "dependencies",
+      "kind": "registry",
+      "manifest": "site/package.json",
+      "name": "tailwindcss",
+      "purl": "pkg:npm/tailwindcss",
+      "range": "^4.2.0",
+      "version": "4.3.5",
+      "versionFrom": "site/package-lock.json"
+    }
+  ],
+  "packagesPublished": [],
   "submodules": [],
   "symlinks": [],
-  "testFiles": 2,
-  "unassigned": []
+  "testFiles": 19,
+  "unassigned": [
+    {
+      "entry": "failClosed",
+      "entryRule": 1,
+      "failurePaths": [
+        {
+          "kind": "catch",
+          "line": 69
+        },
+        {
+          "kind": "catch",
+          "line": 78
+        },
+        {
+          "kind": "catch",
+          "line": 112
+        },
+        {
+          "kind": "catch",
+          "line": 211
+        }
+      ],
+      "hash": "7e16a8c0c9b4fa3990b16826768cf1260732089401db756e9c741935f90a0029",
+      "path": "scripts/check-audit-allowlist.mjs",
+      "sequences": []
+    },
+    {
+      "entry": "run",
+      "entryRule": 1,
+      "hash": "e5d8ad97f7d9427c8d87002d7a29d189c464ec432d3c7c4814138877396b5d00",
+      "path": "scripts/check-audit-allowlist.test.mjs",
+      "sequences": [],
+      "spawns": [
+        "scripts/check-audit-allowlist.mjs"
+      ],
+      "testFramework": "node --test"
+    },
+    {
+      "hash": "ccf07a3ca23dfc6c13f4cc7c572015998ac1de136033b6d7a40af93b28cdf121",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 2,
+          "names": [
+            {
+              "name": "defineConfig"
+            }
+          ],
+          "purl": "pkg:npm/astro",
+          "specifier": "astro/config",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 3,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40astrojs/starlight",
+          "specifier": "@astrojs/starlight",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 4,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40tailwindcss/vite",
+          "specifier": "@tailwindcss/vite",
+          "typeOnly": false
+        }
+      ],
+      "packages": [
+        {
+          "manifest": "site/package.json",
+          "purl": "pkg:npm/%40astrojs/starlight"
+        },
+        {
+          "manifest": "site/package.json",
+          "purl": "pkg:npm/%40tailwindcss/vite"
+        },
+        {
+          "manifest": "site/package.json",
+          "purl": "pkg:npm/astro"
+        }
+      ],
+      "path": "site/astro.config.mjs"
+    },
+    {
+      "hash": "41ec5c228253fea2eace9a25bb51e0315a581e240cb9d4d1765f83af0d2b3df6",
+      "path": "site/package-lock.json"
+    },
+    {
+      "hash": "9c39e620ebae2c5718ecd8c6188bd3451409a614ec8f5308dc15d5fd886e5b91",
+      "path": "site/package.json"
+    },
+    {
+      "hash": "db3c76ae1d22efa9f6c9a1cf3d8b1f45a5e94210d34e4b518006018e7d3d097d",
+      "path": "site/public/favicon.svg"
+    },
+    {
+      "hash": "282a5460ef3a66923bd89207fabfb0b964c2d511879efc2eef8fc83331ab04cf",
+      "path": "site/src/assets/logo.png"
+    },
+    {
+      "constantOnly": true,
+      "hash": "ee756dfba4122d2acc94a39b2555d9f200fff56a87a8c0b10f9cd01df26a8b62",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 2,
+          "names": [
+            {
+              "name": "docsLoader"
+            }
+          ],
+          "purl": "pkg:npm/%40astrojs/starlight",
+          "specifier": "@astrojs/starlight/loaders",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 3,
+          "names": [
+            {
+              "name": "docsSchema"
+            }
+          ],
+          "purl": "pkg:npm/%40astrojs/starlight",
+          "specifier": "@astrojs/starlight/schema",
+          "typeOnly": false
+        }
+      ],
+      "packages": [
+        {
+          "manifest": "site/package.json",
+          "purl": "pkg:npm/%40astrojs/starlight"
+        }
+      ],
+      "path": "site/src/content.config.ts"
+    },
+    {
+      "hash": "e6ec4113e0253423b1f2399b174a7cf2cbb2e55e34792b8a4db926d2589d5ad5",
+      "path": "site/src/content/docs/handbook/getting-started.md"
+    },
+    {
+      "hash": "0fcc93b0c94b1f6a889c89b24a1e6693e7c26d682770f29231ba2bdaee9531ec",
+      "path": "site/src/content/docs/handbook/index.md"
+    },
+    {
+      "hash": "91129b1a0ae6a03d5f2c5d621271dc5f68b0cc48acfdcd4b44a163dabcdb9fdd",
+      "path": "site/src/content/docs/handbook/lanes.md"
+    },
+    {
+      "hash": "f2082a994f5262f92c960ddc74823ccc8287abb81a9ae82e2426fb699ad24647",
+      "path": "site/src/content/docs/handbook/reference.md"
+    },
+    {
+      "hash": "869259f8300e901c6a28728e3a601e91b598bb670bb6da3d36c1ddcc44b04abd",
+      "path": "site/src/content/docs/handbook/security.md"
+    },
+    {
+      "hash": "4fb84a646c4d833c33f4058e1ed1775849e855c65e5adb7e45d2a633674bd603",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 3,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme/components/BaseLayout.astro",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 4,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme/components/Hero.astro",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 5,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme/components/Section.astro",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 6,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme/components/FeatureGrid.astro",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 7,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme/components/DataTable.astro",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 8,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme/components/CodeCardGrid.astro",
+          "typeOnly": false
+        },
+        {
+          "form": "import",
+          "line": 9,
+          "names": [
+            {
+              "name": "default"
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme/components/ApiList.astro",
+          "typeOnly": false
+        }
+      ],
+      "importOrder": [
+        "site/src/styles/global.css",
+        "site/src/site-config.ts"
+      ],
+      "importsFiles": [
+        "site/src/site-config.ts",
+        "site/src/styles/global.css"
+      ],
+      "packages": [
+        {
+          "manifest": "site/package.json",
+          "purl": "pkg:npm/%40mcptoolshop/site-theme"
+        }
+      ],
+      "path": "site/src/pages/index.astro"
+    },
+    {
+      "constantOnly": true,
+      "hash": "d7d8d8a338fbd0b5e8c1d9053383837b14ea8af9ead3f4eae05d6b8e0fbe853f",
+      "importNames": [
+        {
+          "form": "import",
+          "line": 1,
+          "names": [
+            {
+              "name": "SiteConfig",
+              "type": true
+            }
+          ],
+          "purl": "pkg:npm/%40mcptoolshop/site-theme",
+          "specifier": "@mcptoolshop/site-theme",
+          "typeOnly": true
+        }
+      ],
+      "packages": [
+        {
+          "manifest": "site/package.json",
+          "purl": "pkg:npm/%40mcptoolshop/site-theme"
+        }
+      ],
+      "path": "site/src/site-config.ts"
+    },
+    {
+      "hash": "29ee8df91833e694bdba973126b34a6177de4cf01dab6d9ef7d3126e8e2b67fb",
+      "path": "site/src/styles/global.css"
+    },
+    {
+      "hash": "cdb0845dea4e7835ceb5c750caa9358e03cb03132cd85c17931a9fb96299b94f",
+      "path": "site/src/styles/starlight-custom.css"
+    },
+    {
+      "hash": "b5b0a5b04a14cddd7713c5e1c82e86c79c17c2f86b170e26e9b170b3d5e01cd9",
+      "path": "site/tsconfig.json"
+    }
+  ]
 }

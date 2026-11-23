@@ -28,13 +28,13 @@
     "items": [
       {
         "kind": "counts",
-        "sentence": "Nothing structural changed since 2026-11-12; no file changed.",
+        "sentence": "Nothing structural changed since 2026-11-19; no file changed.",
         "subjects": []
       }
     ],
     "since": {
-      "commit": "8bb60e377208dc77edfcff2b57d5221ba9ae92e7",
-      "generatedAt": "2026-11-12T19:59:32.761Z"
+      "commit": "a9abaff22452dd46edb890806be3a9022a1e926d",
+      "generatedAt": "2026-11-19T04:27:16.819Z"
     },
     "unchanged": true
   },
@@ -43,9 +43,9 @@
     "Window: 180 days; a pair counts from 3 shared commits, since the window holds fewer than 30 qualifying commits."
   ],
   "changesTogetherWithTests": 0,
-  "commit": "3ef5ad12acfaaf43d1c5b34169bd4090a4a6a4d8",
+  "commit": "f6247ae06594b8e4d04b0647e14d7b4651f1d216",
   "defaultBranch": "main",
-  "derived": "4 parts, mostly Python (4 files) and shell (1). Work enters through 2 doors; the busiest is CI, which reaches 3 parts.",
+  "derived": "4 parts, mostly Python (32 files), JavaScript (3), CSS (2), TypeScript (2), shell (2) and Astro (1). Work enters through 3 doors; the busiest is CI, which reaches 3 parts. It deploys a site to GitHub Pages.",
   "doors": [
     {
       "checks": [
@@ -62,7 +62,7 @@
         {
           "boundary": "colab_runner",
           "depth": 0,
-          "files": 2
+          "files": 14
         },
         {
           "boundary": "root",
@@ -72,22 +72,52 @@
         {
           "boundary": "tests",
           "depth": 0,
-          "files": 2
+          "files": 18
         }
       ],
       "runs": [
+        "scripts/check-audit-allowlist.mjs",
+        "scripts/check-audit-allowlist.test.mjs",
         "verify.sh",
+        "site/astro.config.mjs",
+        "site/src/",
         "tests/"
       ],
-      "runsCount": 2,
-      "runsMore": 0,
+      "runsCount": 6,
+      "runsMore": 21,
       "sends": [
         "uploads coverage to Codecov"
       ],
       "stages": [],
       "triggers": [
         "on a pull request to main",
-        "on a push to main touching 7 paths",
+        "on a push to main touching 10 paths",
+        "or by hand"
+      ],
+      "untracked": "site/audit-report.json, which is not tracked"
+    },
+    {
+      "checks": [],
+      "checksCount": 0,
+      "checksMore": 0,
+      "file": ".github/workflows/pages.yml",
+      "id": ".github/workflows/pages.yml",
+      "landings": [],
+      "name": "Deploy site to GitHub Pages",
+      "pushes": false,
+      "reach": [],
+      "runs": [
+        "site/astro.config.mjs",
+        "site/src/"
+      ],
+      "runsCount": 2,
+      "runsMore": 0,
+      "sends": [
+        "deploys the site on main"
+      ],
+      "stages": [],
+      "triggers": [
+        "on a push to main touching 2 paths",
         "or by hand"
       ]
     },
@@ -125,8 +155,13 @@
   "edges": [],
   "engine": "1.26.0",
   "generated": [],
-  "generatedAt": "2026-11-16T15:13:26.397Z",
+  "generatedAt": "2026-11-23T17:37:28.758Z",
   "limits": [
+    "7 writes and 6 reads use paths built at run time and are not named here.",
+    "1 write goes to places this repository does not track, so it is not listed as generated.",
+    "9 writes and 15 reads go to a path their caller passes, not to this repository.",
+    "1 write goes to a temporary directory or a path its caller passes, not to this repository.",
+    "18 files belong to no part: scripts/check-audit-allowlist.mjs, scripts/check-audit-allowlist.test.mjs, site/astro.config.mjs and 15 more.",
     "Statistics confidence is low: fewer than 30 qualifying commits in the window, and fewer than 25 source files reach 10 revisions."
   ],
   "mainDoor": ".github/workflows/ci.yml",
@@ -141,18 +176,16 @@
   "repo": "mcp-tool-shop-org/colab-runner",
   "sequences": [],
   "startDoor": ".github/workflows/ci.yml",
-  "startHere": [
-    ".github/workflows/ci.yml",
-    "colab_runner/__main__.py"
-  ],
+  "startHere": [],
+  "startNote": "CI runs no code this map can follow; it only checks code, so there is no path of files to read in order.",
   "summary": null,
   "summaryFrom": null,
-  "testFiles": 2,
+  "testFiles": 19,
   "testedBy": {
-    "colab_runner": 1
+    "colab_runner": 15
   },
   "testedCodeParts": 1,
-  "unnamedWrites": 0,
+  "unnamedWrites": 7,
   "unread": [],
   "unreadFiles": 0,
   "unreadNote": [],
